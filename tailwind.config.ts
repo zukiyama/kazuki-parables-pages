@@ -18,6 +18,11 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				heading: ['Playfair Display', 'serif'],
+				body: ['Source Serif Pro', 'serif'],
+				accent: ['Crimson Text', 'serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -61,7 +66,13 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				'indigo-moon': 'hsl(var(--indigo-moon))',
+				'canvas-base': 'hsl(var(--canvas-base))',
+				'ink-black': 'hsl(var(--ink-black))',
+				'brush-brown': 'hsl(var(--brush-brown))',
+				'earth-tone': 'hsl(var(--earth-tone))',
+				'smoke-grey': 'hsl(var(--smoke-grey))',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
