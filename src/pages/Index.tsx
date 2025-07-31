@@ -119,13 +119,13 @@ const Index = () => {
             Email: contact@kazukiyamakawa.com
           </p>
           <div className="flex justify-center space-x-8 mt-8">
-            <a href="/writing" className="font-body text-accent hover:text-accent/80 transition-colors">
+            <a href="#/writing" className="font-body text-accent hover:text-accent/80 transition-colors">
               Writing
             </a>
-            <a href="/music" className="font-body text-accent hover:text-accent/80 transition-colors">
+            <a href="#/music" className="font-body text-accent hover:text-accent/80 transition-colors">
               Music
             </a>
-            <a href="/comics" className="font-body text-accent hover:text-accent/80 transition-colors">
+            <a href="#/comics" className="font-body text-accent hover:text-accent/80 transition-colors">
               Comics
             </a>
           </div>
