@@ -4,13 +4,14 @@ import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import magazineCover from "@/assets/magazine-cover-1979.jpg";
 import officeView from "@/assets/office-window-view.jpg";
+import kyotoTvShop from "@/assets/kyoto-tv-shop-evening.jpg";
 
 const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
 
-  const images = [magazineCover, officeView];
+  const images = [magazineCover, officeView, kyotoTvShop];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,11 +34,11 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Auto-dissolve between images every 6 seconds when magazine is visible
+    // Auto-dissolve between images every 12 seconds when magazine is visible
     if (showMagazine) {
       const interval = setInterval(() => {
         setCurrentImage(prev => (prev + 1) % images.length);
-      }, 6000);
+      }, 12000);
       
       return () => clearInterval(interval);
     }
@@ -86,8 +87,8 @@ const Index = () => {
             {images.map((image, index) => (
               <div
                 key={index}
-                className={`absolute inset-0 bg-cover bg-center transition-all duration-[5000ms] ease-in-out ${
-                  index === currentImage ? "opacity-100 scale-100" : "opacity-0 scale-105"
+                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[3000ms] ease-in-out ${
+                  index === currentImage ? "opacity-100" : "opacity-0"
                 }`}
                 style={{ backgroundImage: `url(${image})` }}
               >
