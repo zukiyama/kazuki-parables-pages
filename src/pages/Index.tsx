@@ -86,7 +86,7 @@ const Index = () => {
             {images.map((image, index) => (
               <div
                 key={index}
-                className={`absolute inset-0 bg-cover bg-center transition-all duration-3000 ease-in-out ${
+                className={`absolute inset-0 bg-cover bg-center transition-all duration-[5000ms] ease-in-out ${
                   index === currentImage ? "opacity-100 scale-100" : "opacity-0 scale-105"
                 }`}
                 style={{ backgroundImage: `url(${image})` }}
