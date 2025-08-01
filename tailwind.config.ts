@@ -109,24 +109,12 @@ export default {
 						transform: 'translateY(-5px) scale(1)',
 						opacity: '1'
 					}
-				},
-				'slow-zoom': {
-					'0%': {
-						transform: 'scale(1.02)'
-					},
-					'50%': {
-						transform: 'scale(1.05)'
-					},
-					'100%': {
-						transform: 'scale(1.02)'
-					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'float': 'float 3s ease-out forwards',
-				'slow-zoom': 'slow-zoom 30s ease-in-out infinite'
+				'float': 'float 3s ease-out forwards'
 			}
 		}
 	},
