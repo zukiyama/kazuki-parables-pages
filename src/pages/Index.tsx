@@ -11,7 +11,7 @@ const Index = () => {
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
 
-  const images = [childrenSilhouette, officeView, kyotoTvShop];
+  const images = [officeView, childrenSilhouette, kyotoTvShop];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,7 +23,7 @@ const Index = () => {
         setShowMagazine(true);
       }
       
-      // Show quote when on second image
+      // Show quote when on playground image (second image)
       if (scrollY > viewportHeight * 1.5) {
         setShowQuote(true);
       }
