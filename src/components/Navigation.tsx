@@ -14,8 +14,9 @@ const Navigation = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="font-heading text-2xl font-bold text-ink-black">
-            KAZUKIYAMAKAWA
+          <Link to="/" className="font-heading text-2xl font-bold text-ink-black flex flex-col leading-tight">
+            <span>KAZUKI</span>
+            <span className="lowercase">yamakawa</span>
           </Link>
           
           <div className="flex space-x-8">
