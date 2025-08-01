@@ -23,8 +23,8 @@ const Index = () => {
         setShowMagazine(true);
       }
       
-      // Show quote when on playground image (second image)
-      if (scrollY > viewportHeight * 1.5) {
+      // Show quote when on first image (office window)
+      if (scrollY > viewportHeight * 0.8) {
         setShowQuote(true);
       }
     };
