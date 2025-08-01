@@ -7,11 +7,21 @@
     <script>
       // GitHub Pages SPA fallback
       // Redirect to index.html with hash routing
-      const path = window.location.pathname.slice(1);
+      const pathSegments = window.location.pathname.split('/').filter(Boolean);
+      const repoName = 'kazuki-yamakawa-website';
+      
+      // Remove repo name from path if present
+      if (pathSegments[0] === repoName) {
+        pathSegments.shift();
+      }
+      
+      const path = pathSegments.join('/');
+      const baseURL = window.location.origin + '/' + repoName;
+      
       if (path) {
-        window.location.replace(window.location.origin + '/#/' + path);
+        window.location.replace(baseURL + '/#/' + path);
       } else {
-        window.location.replace(window.location.origin);
+        window.location.replace(baseURL);
       }
     </script>
   </head>
