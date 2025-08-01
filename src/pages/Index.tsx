@@ -100,7 +100,7 @@ const Index = () => {
             {showQuote && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <ScrollFadeUp id="floating-quote" delay={500}>
-                  <blockquote className="literary-quote text-2xl md:text-3xl text-white/90 leading-relaxed animate-float">
+                  <blockquote className="literary-quote text-2xl md:text-3xl text-white/90 leading-relaxed animate-float animate-quote-expand">
                     <span className="font-bold text-3xl">Feelings</span> are the{" "}
                     <span className="font-semibold text-2xl">thoughts</span> of the{" "}
                     <span className="font-bold text-4xl">heart</span>
