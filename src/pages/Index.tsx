@@ -23,8 +23,8 @@ const Index = () => {
         setShowMagazine(true);
       }
       
-      // Show quote when on first image (office window)
-      if (scrollY > viewportHeight * 0.8) {
+      // Show quote quickly when scrolled past 60% of viewport
+      if (scrollY > viewportHeight * 0.6) {
         setShowQuote(true);
       }
     };
