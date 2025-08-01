@@ -3,7 +3,7 @@ import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 
 // Use public folder assets with proper base path for GitHub Pages
-const basePath = import.meta.env.BASE_URL || '/';
+const basePath = import.meta.env.BASE_URL;
 const japaneseBackground = `${basePath}japanese-painting-background.jpg`;
 const magazineCover = `${basePath}magazine-cover-1979.jpg`;
 const officeView = `${basePath}office-window-view.jpg`;

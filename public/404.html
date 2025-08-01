@@ -5,23 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KAZUKIYAMAKAWA - Writer, Artist, Storyteller</title>
     <script>
-      // GitHub Pages SPA fallback
-      // Redirect to index.html with hash routing
-      const pathSegments = window.location.pathname.split('/').filter(Boolean);
-      const repoName = 'kazuki-yamakawa-website';
+      // GitHub Pages SPA fallback for kazuki-yamakawa-website
+      const pathname = window.location.pathname;
+      const baseURL = window.location.origin + '/kazuki-yamakawa-website';
       
-      // Remove repo name from path if present
-      if (pathSegments[0] === repoName) {
-        pathSegments.shift();
-      }
-      
-      const path = pathSegments.join('/');
-      const baseURL = window.location.origin + '/' + repoName;
-      
-      if (path) {
-        window.location.replace(baseURL + '/#/' + path);
+      // Extract path after repo name
+      const repoIndex = pathname.indexOf('/kazuki-yamakawa-website');
+      if (repoIndex !== -1) {
+        const path = pathname.substring(repoIndex + '/kazuki-yamakawa-website'.length);
+        if (path && path !== '/') {
+          window.location.replace(baseURL + '/#' + path);
+        } else {
+          window.location.replace(baseURL + '/');
+        }
       } else {
-        window.location.replace(baseURL);
+        window.location.replace(baseURL + '/');
       }
     </script>
   </head>
