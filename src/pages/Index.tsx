@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
-import magazineCover from "@/assets/magazine-cover-1979.jpg";
+import childrenSilhouette from "@/assets/children-silhouette-kyoto.jpg";
 import officeView from "@/assets/office-window-view.jpg";
-import kyotoTvShop from "@/assets/kyoto-tv-shop-evening.jpg";
+import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
 
 const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
 
-  const images = [magazineCover, officeView, kyotoTvShop];
+  const images = [childrenSilhouette, officeView, kyotoTvShop];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,7 +87,7 @@ const Index = () => {
             {images.map((image, index) => (
               <div
                 key={index}
-                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[3000ms] ease-in-out ${
+                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[5000ms] ease-in-out animate-slow-zoom ${
                   index === currentImage ? "opacity-100" : "opacity-0"
                 }`}
                 style={{ backgroundImage: `url(${image})` }}
