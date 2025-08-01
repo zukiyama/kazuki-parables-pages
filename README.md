@@ -1,4 +1,4 @@
-# Welcome to your Lovable project
+# Kazuki Yamakawa - Official Website
 
 ## Project info
 

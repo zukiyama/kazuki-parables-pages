@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KAZUKIYAMAKAWA - Writer, Artist, Storyteller</title>
     <script>
-      // Simple redirect to index.html for GitHub Pages SPA
-      window.location.replace('/kazuki-yamakawa-website/');
+      // GitHub Pages SPA fallback
+      const segment = 1;
+      const l = window.location;
+      l.replace(l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + 
+                '/kazuki-yamakawa-website/' + '/#' + 
+                l.pathname.slice(segment).replace(/&/g, '~and~'));
     </script>
   </head>
   <body>
