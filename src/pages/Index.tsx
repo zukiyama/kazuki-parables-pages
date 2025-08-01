@@ -86,8 +86,8 @@ const Index = () => {
             {images.map((image, index) => (
               <div
                 key={index}
-                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-2000 ${
-                  index === currentImage ? "opacity-100" : "opacity-0"
+                className={`absolute inset-0 bg-cover bg-center transition-all duration-3000 ease-in-out ${
+                  index === currentImage ? "opacity-100 scale-100" : "opacity-0 scale-105"
                 }`}
                 style={{ backgroundImage: `url(${image})` }}
               >
@@ -95,11 +95,11 @@ const Index = () => {
               </div>
             ))}
             
-            {/* Floating Quote */}
-            {showQuote && currentImage === 1 && (
+            {/* Floating Quote - appears over both images */}
+            {showQuote && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <ScrollFadeUp id="floating-quote" delay={500}>
-                  <blockquote className="literary-quote text-2xl md:text-3xl text-white/90 leading-relaxed">
+                  <blockquote className="literary-quote text-2xl md:text-3xl text-white/90 leading-relaxed animate-float">
                     <span className="font-bold text-3xl">Feelings</span> are the{" "}
                     <span className="font-semibold text-2xl">thoughts</span> of the{" "}
                     <span className="font-bold text-4xl">heart</span>
