@@ -10,10 +10,10 @@ const Comics = () => {
       
       <main className="container mx-auto px-6 pt-24 pb-12">
         {/* Background pattern of manga character sheets */}
-        <div className="fixed inset-0 opacity-5 pointer-events-none">
+        <div className="fixed inset-0 opacity-10 pointer-events-none">
           <div className="w-full h-full bg-repeat" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20h60v60H20z' fill='none' stroke='%23000' stroke-width='1'/%3E%3Cpath d='M30 30h40v40H30z' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
-            backgroundSize: '120px 120px'
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='200' height='280' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-width='0.5'%3E%3Crect x='10' y='10' width='180' height='260' /%3E%3Cline x1='10' y1='40' x2='190' y2='40' stroke-dasharray='2,2'/%3E%3Cline x1='10' y1='70' x2='190' y2='70' stroke-dasharray='2,2'/%3E%3Ccircle cx='50' cy='100' r='15' /%3E%3Crect x='80' y='90' width='100' height='20' /%3E%3Cline x1='20' y1='130' x2='80' y2='130'/%3E%3Cline x1='20' y1='140' x2='70' y2='140'/%3E%3Cline x1='100' y1='130' x2='170' y2='130'/%3E%3Cpath d='M30 160 Q50 150 70 160' /%3E%3Crect x='20' y='180' width='50' height='60' /%3E%3Cline x1='90' y1='190' x2='170' y2='190'/%3E%3Cline x1='90' y1='200' x2='160' y2='200'/%3E%3Cline x1='90' y1='210' x2='180' y2='210'/%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundSize: '200px 280px'
           }} />
         </div>
         
