@@ -96,8 +96,8 @@ const Index = () => {
               </div>
             ))}
             
-            {/* Floating Quote - appears over both images */}
-            {showQuote && (
+            {/* Floating Quote - appears over first two images */}
+            {showQuote && currentImage !== 2 && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <ScrollFadeUp id="floating-quote" delay={500}>
                   <blockquote className="literary-quote text-2xl md:text-3xl text-white/90 leading-relaxed animate-float animate-quote-expand">
@@ -105,6 +105,25 @@ const Index = () => {
                     <span className="font-semibold text-2xl">thoughts</span> of the{" "}
                     <span className="font-bold text-4xl">heart</span>
                   </blockquote>
+                </ScrollFadeUp>
+              </div>
+            )}
+            
+            {/* Text overlay for TV shop image */}
+            {showQuote && currentImage === 2 && (
+              <div className="absolute top-1/3 left-1/4 max-w-md">
+                <ScrollFadeUp id="tv-shop-text" delay={500}>
+                  <div className="text-white/90 leading-relaxed animate-fade-in">
+                    <h2 className="font-heading text-3xl md:text-4xl mb-2">summer 1979</h2>
+                    <h3 className="font-heading text-2xl md:text-3xl mb-4">Kyoto Japan</h3>
+                    <div className="border-t border-white/30 pt-4">
+                      <h4 className="font-heading text-2xl md:text-3xl font-bold mb-2">KAIJU</h4>
+                      <div className="font-body text-sm md:text-base text-white/80">
+                        <span className="italic">noun</span> /ˈkaɪdʒuː/<br/>
+                        <span className="font-medium">mysterious beast</span>
+                      </div>
+                    </div>
+                  </div>
                 </ScrollFadeUp>
               </div>
             )}
