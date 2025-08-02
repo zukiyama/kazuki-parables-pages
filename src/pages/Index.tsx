@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
-import playgroundScene from "@/assets/playground-scene.jpg";
+import childrenSilhouette from "@/assets/children-silhouette-kyoto.jpg";
 import officeView from "@/assets/office-window-view.jpg";
-import kyotoTvShop from "@/assets/kyoto-tv-shop-evening.jpg";
+import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
 
 const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
 
-  const images = [officeView, playgroundScene, kyotoTvShop];
+  const images = [officeView, childrenSilhouette, kyotoTvShop];
 
   useEffect(() => {
     const handleScroll = () => {
