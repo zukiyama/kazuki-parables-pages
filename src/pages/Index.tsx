@@ -34,15 +34,18 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Auto-dissolve between images every 12 seconds when magazine is visible
+    // Auto-dissolve between images - TV shop stays longer (30 seconds), others 12 seconds
     if (showMagazine) {
       const interval = setInterval(() => {
-        setCurrentImage(prev => (prev + 1) % images.length);
-      }, 12000);
+        setCurrentImage(prev => {
+          const next = (prev + 1) % images.length;
+          return next;
+        });
+      }, currentImage === 2 ? 30000 : 12000); // TV shop image stays for 30 seconds
       
       return () => clearInterval(interval);
     }
-  }, [showMagazine, images.length]);
+  }, [showMagazine, images.length, currentImage]);
 
   return (
     <div className="relative">
@@ -103,7 +106,7 @@ const Index = () => {
                   <blockquote className="literary-quote text-2xl md:text-3xl text-white/90 leading-relaxed animate-float animate-quote-expand">
                     <span className="font-bold text-3xl">Feelings</span> are the{" "}
                     <span className="font-semibold text-2xl">thoughts</span> of the{" "}
-                    <span className="font-bold text-4xl">heart</span>
+                    <span className="font-bold text-4xl">heart</span>.
                   </blockquote>
                 </ScrollFadeUp>
               </div>
@@ -121,6 +124,11 @@ const Index = () => {
                       <div className="font-body text-sm md:text-base text-white/80">
                         <span className="italic">noun</span> /ˈkaɪdʒuː/<br/>
                         <span className="font-medium">mysterious beast</span>
+                      </div>
+                    </div>
+                    <div className="mt-8 text-center">
+                      <div className="font-mono text-2xl md:text-4xl font-bold text-white animate-pulse tracking-wider">
+                        <span className="filter blur-[0.5px] opacity-90">SOMETHING IS COMING</span>
                       </div>
                     </div>
                   </div>
