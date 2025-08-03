@@ -79,7 +79,7 @@ const Writing = () => {
               <h1 className={`font-serif text-6xl font-bold text-white mb-12 text-center tracking-wide transition-all duration-1000 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
               }`}>
-                Writing
+                Novels
               </h1>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

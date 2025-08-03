@@ -12,7 +12,7 @@ const Comics = () => {
       {/* Pencil sketches background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-20"
+          className="absolute inset-0 bg-cover bg-center opacity-15"
           style={{ backgroundImage: `url(${mangaSketchesBackground})` }}
         ></div>
       </div>

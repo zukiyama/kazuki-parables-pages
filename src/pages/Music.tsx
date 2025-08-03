@@ -3,12 +3,12 @@ import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
 
-// Background and parallax images
-import claymationCountryside from "@/assets/claymation-countryside.jpg";
-import parallaxClouds from "@/assets/parallax-clouds.jpg";
-import parallaxObjects from "@/assets/parallax-objects.jpg";
-import parallaxCloudsLayer1 from "@/assets/parallax-clouds-layer1.png";
-import parallaxCloudsLayer2 from "@/assets/parallax-clouds-layer2.png";
+// Background images for different themes
+import kabukiTheatreBackground from "@/assets/kabuki-theatre-background.jpg";
+import englishMansionBackground from "@/assets/english-mansion-background.jpg";
+import englishStreetBackground from "@/assets/office-window-view.jpg"; // Using existing street scene
+import japanLakeBackground from "@/assets/japan-lake-background.jpg";
+import scifiSetBackground from "@/assets/scifi-set-background.jpg";
 
 // Album covers
 import magicalGardenAlbum from "@/assets/magical-garden-album-updated.jpg";
@@ -23,6 +23,8 @@ const albums = [
     id: 1,
     title: "Magical Secret Garden",
     cover: magicalGardenAlbum,
+    background: englishMansionBackground,
+    theme: "stately-home",
     tracks: [
       "Through the Garden Gate",
       "Fairy Light Serenade",
@@ -35,6 +37,8 @@ const albums = [
     id: 2,
     title: "Melting Dreams",
     cover: meltingGuitarAlbum,
+    background: kabukiTheatreBackground,
+    theme: "kabuki-theatre",
     tracks: [
       "Liquid Strings",
       "Wax and Memory",
@@ -47,6 +51,8 @@ const albums = [
     id: 3,
     title: "Surreal Symphony",
     cover: musicSurrealAlbum,
+    background: englishStreetBackground,
+    theme: "english-street",
     tracks: [
       "Objects in Flight",
       "Floating Melodies",
@@ -59,6 +65,8 @@ const albums = [
     id: 4,
     title: "Paper Cutout Dreams",
     cover: paperCutoutAlbum,
+    background: japanLakeBackground,
+    theme: "japan-lake",
     tracks: [
       "Torn Sheet Music",
       "Collage of Sound",
@@ -71,6 +79,8 @@ const albums = [
     id: 5,
     title: "Floating Memories",
     cover: floatingToysAlbum,
+    background: scifiSetBackground,
+    theme: "scifi-set",
     tracks: [
       "Teddy Bear Waltz",
       "Wooden Block Percussion",
@@ -85,6 +95,7 @@ const Music = () => {
   const [scrollY, setScrollY] = useState(0);
   const [selectedAlbum, setSelectedAlbum] = useState(albums[0]);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -92,62 +103,68 @@ const Music = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleAlbumSelect = (album: typeof albums[0]) => {
+    if (album.id === selectedAlbum.id) return;
+    
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setSelectedAlbum(album);
+      setIsTransitioning(false);
+    }, 300);
+  };
+
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <Navigation />
       
-      {/* Fixed Background Layers */}
+      {/* Dynamic Background Based on Selected Album */}
       <div className="fixed inset-0">
-        {/* Main countryside background */}
         <div 
-          className="absolute inset-0 bg-cover bg-center"
+          className={`absolute inset-0 bg-cover bg-center transition-all duration-700 ${isTransitioning ? 'opacity-0 scale-110' : 'opacity-100 scale-100'}`}
           style={{ 
-            backgroundImage: `url(${claymationCountryside})`,
+            backgroundImage: `url(${selectedAlbum.background})`,
             transform: `translateY(${scrollY * 0.3}px)`
           }}
         />
-        
-        {/* Parallax objects layer */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{ 
-            backgroundImage: `url(${parallaxObjects})`,
-            transform: `translateY(${scrollY * 0.5}px)`
-          }}
-        />
-        
-        {/* Clouds layer */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-40"
-          style={{ 
-            backgroundImage: `url(${parallaxClouds})`,
-            transform: `translateY(${scrollY * 0.7}px)`
-          }}
-        />
-        
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 bg-black/50"></div>
       </div>
       
-      {/* Floating Cloud Layers - Above content */}
-      <div className="fixed inset-0 pointer-events-none z-20">
-        {/* Top Cloud Layer with hot air balloon */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-60"
-          style={{ 
-            backgroundImage: `url(${parallaxCloudsLayer1})`,
-            transform: `translateY(${scrollY * 0.2}px)`
-          }}
-        />
+      {/* Theme-specific Foreground Elements */}
+      <div className="fixed inset-0 pointer-events-none z-5">
+        {selectedAlbum.theme === 'kabuki-theatre' && (
+          <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 translate-x-full' : 'opacity-100 translate-x-0'}`}>
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-red-600 text-6xl">🎭</div>
+            <div className="absolute right-4 top-1/3 text-yellow-600 text-4xl">⛩️</div>
+          </div>
+        )}
         
-        {/* Bottom Cloud Layer - smaller clouds */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-40"
-          style={{ 
-            backgroundImage: `url(${parallaxCloudsLayer2})`,
-            transform: `translateY(${scrollY * 0.15}px)`
-          }}
-        />
+        {selectedAlbum.theme === 'stately-home' && (
+          <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 -translate-x-full' : 'opacity-100 translate-x-0'}`}>
+            <div className="absolute left-8 bottom-20 text-green-600 text-5xl">🌿</div>
+            <div className="absolute right-8 top-20 text-yellow-400 text-3xl">✨</div>
+          </div>
+        )}
+        
+        {selectedAlbum.theme === 'english-street' && (
+          <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 translate-y-full' : 'opacity-100 translate-y-0'}`}>
+            <div className="absolute left-6 bottom-32 text-red-600 text-4xl">📮</div>
+            <div className="absolute right-6 bottom-40 text-amber-700 text-3xl">🐕</div>
+          </div>
+        )}
+        
+        {selectedAlbum.theme === 'japan-lake' && (
+          <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 scale-50' : 'opacity-100 scale-100'}`}>
+            <div className="absolute left-4 top-20 text-pink-400 text-4xl">🌸</div>
+            <div className="absolute right-4 bottom-24 text-red-600 text-3xl">⛩️</div>
+          </div>
+        )}
+        
+        {selectedAlbum.theme === 'scifi-set' && (
+          <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 rotate-180' : 'opacity-100 rotate-0'}`}>
+            <div className="absolute left-8 top-32 text-blue-400 text-4xl">🛸</div>
+            <div className="absolute right-8 bottom-28 text-purple-400 text-3xl">⭐</div>
+          </div>
+        )}
       </div>
       
       <main className="container mx-auto px-6 pt-24 pb-12 relative z-10">
@@ -226,7 +243,7 @@ const Music = () => {
                     selectedAlbum.id === album.id ? 'ring-4 ring-white/60 rounded-lg' : ''
                   }`}
                   style={{ animationDelay: `${index * 100}ms` }}
-                  onClick={() => setSelectedAlbum(album)}
+                  onClick={() => handleAlbumSelect(album)}
                 >
                   <img 
                     src={album.cover} 
