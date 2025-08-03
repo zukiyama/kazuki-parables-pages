@@ -1,20 +1,42 @@
+import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import mangaSketchesBackground from "@/assets/manga-sketches-background.jpg";
+import pencilOverlay from "@/assets/pencil-overlay.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.jpg";
 import soulTiedCover from "@/assets/soul-tied-cover.jpg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
 
 const Comics = () => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <Navigation />
       
-      {/* Pencil sketches background */}
+      {/* Pencil sketches background with parallax zoom effect */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-15"
-          style={{ backgroundImage: `url(${mangaSketchesBackground})` }}
+          className="absolute inset-0 bg-cover bg-center opacity-20 transition-transform duration-100"
+          style={{ 
+            backgroundImage: `url(${mangaSketchesBackground})`,
+            transform: `scale(${1 + scrollY * 0.0001})`,
+          }}
         ></div>
+      </div>
+      
+      {/* Pencil overlay at bottom */}
+      <div className="fixed bottom-8 right-12 pointer-events-none z-30">
+        <img 
+          src={pencilOverlay} 
+          alt="Pencil" 
+          className="w-32 h-16 opacity-60"
+        />
       </div>
       
       <main className="container mx-auto px-6 pt-24 pb-12 relative z-10">

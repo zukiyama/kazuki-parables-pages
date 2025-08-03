@@ -116,8 +116,10 @@ const Music = () => {
     setIsTransitioning(true);
     setTimeout(() => {
       setSelectedAlbum(album);
-      setIsTransitioning(false);
-    }, 300);
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 100);
+    }, 600);
   };
 
   return (
@@ -127,7 +129,7 @@ const Music = () => {
       {/* Dynamic Background Based on Selected Album */}
       <div className="fixed inset-0">
         <div 
-          className={`absolute inset-0 bg-cover bg-center transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+          className={`absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out ${isTransitioning ? 'opacity-0 scale-105' : 'opacity-100 scale-100'}`}
           style={{ 
             backgroundImage: `url(${selectedAlbum.background})`
           }}
@@ -135,65 +137,96 @@ const Music = () => {
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
       
-      {/* Subtle Edge Elements Only - No Full Coverage */}
+      {/* Sliding Theme Elements from Edges */}
       <div className="fixed inset-0 pointer-events-none z-50">
         {selectedAlbum.theme === 'kabuki-theatre' && (
-          <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-            {/* Only curtains at top corners of video area */}
+          <div className={`absolute inset-0 transition-all duration-1000 ease-out ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+            {/* Curtains slide in from sides */}
             <div 
-              className="absolute top-24 left-1/2 transform -translate-x-1/2 w-96 h-32 bg-contain bg-no-repeat opacity-40"
+              className={`absolute top-24 left-0 w-32 h-40 bg-contain bg-no-repeat opacity-50 transform transition-transform duration-1000 ${isTransitioning ? '-translate-x-full' : 'translate-x-0'}`}
               style={{ 
                 backgroundImage: `url(${theatreCurtainsOverlay})`,
-                backgroundPosition: 'top center'
+                backgroundPosition: 'top left'
+              }}
+            />
+            <div 
+              className={`absolute top-24 right-0 w-32 h-40 bg-contain bg-no-repeat opacity-50 transform transition-transform duration-1000 scale-x-[-1] ${isTransitioning ? 'translate-x-full' : 'translate-x-0'}`}
+              style={{ 
+                backgroundImage: `url(${theatreCurtainsOverlay})`,
+                backgroundPosition: 'top right'
               }}
             />
           </div>
         )}
         
         {selectedAlbum.theme === 'stately-home' && (
-          <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-            {/* Small garden elements at edges only */}
-            <div className="absolute top-32 left-8 w-24 h-24 opacity-30">
-              <div className="text-4xl">🌿</div>
+          <div className={`absolute inset-0 transition-all duration-1000 ease-out ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+            {/* Garden foliage slides in from sides */}
+            <div className={`absolute top-32 left-0 text-6xl opacity-40 transform transition-transform duration-1000 ${isTransitioning ? '-translate-x-full' : 'translate-x-4'}`}>
+              🌿
             </div>
-            <div className="absolute top-40 right-12 w-20 h-20 opacity-30">
-              <div className="text-3xl">🦋</div>
+            <div className={`absolute top-56 left-0 text-4xl opacity-30 transform transition-transform duration-1200 ${isTransitioning ? '-translate-x-full' : 'translate-x-2'}`}>
+              🦋
+            </div>
+            <div className={`absolute top-40 right-0 text-5xl opacity-35 transform transition-transform duration-1100 ${isTransitioning ? 'translate-x-full' : '-translate-x-4'}`}>
+              🌺
+            </div>
+            <div className={`absolute bottom-32 right-0 text-4xl opacity-30 transform transition-transform duration-1300 ${isTransitioning ? 'translate-x-full' : '-translate-x-2'}`}>
+              🍃
             </div>
           </div>
         )}
         
         {selectedAlbum.theme === 'seaside-scene' && (
-          <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-            {/* Small British street objects at edges */}
-            <div className="absolute bottom-32 left-6 w-16 h-16 opacity-40">
-              <div className="text-2xl">📮</div>
+          <div className={`absolute inset-0 transition-all duration-1000 ease-out ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+            {/* British street objects slide in from sides */}
+            <div className={`absolute bottom-32 left-0 text-4xl opacity-40 transform transition-transform duration-1000 ${isTransitioning ? '-translate-x-full' : 'translate-x-6'}`}>
+              📮
             </div>
-            <div className="absolute top-36 right-8 w-12 h-12 opacity-30">
-              <div className="text-xl">☂️</div>
+            <div className={`absolute top-36 left-0 text-3xl opacity-35 transform transition-transform duration-1200 ${isTransitioning ? '-translate-x-full' : 'translate-x-4'}`}>
+              ☂️
+            </div>
+            <div className={`absolute top-48 right-0 text-3xl opacity-30 transform transition-transform duration-1100 ${isTransitioning ? 'translate-x-full' : '-translate-x-8'}`}>
+              🚌
+            </div>
+            <div className={`absolute bottom-40 right-0 text-2xl opacity-35 transform transition-transform duration-1300 ${isTransitioning ? 'translate-x-full' : '-translate-x-6'}`}>
+              🐕
             </div>
           </div>
         )}
         
         {selectedAlbum.theme === 'mount-fuji' && (
-          <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-            {/* Small Japanese elements at edges */}
-            <div className="absolute top-32 left-10 w-20 h-20 opacity-30">
-              <div className="text-3xl">🏮</div>
+          <div className={`absolute inset-0 transition-all duration-1000 ease-out ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+            {/* Japanese elements slide in from sides */}
+            <div className={`absolute top-32 left-0 text-5xl opacity-40 transform transition-transform duration-1000 ${isTransitioning ? '-translate-x-full' : 'translate-x-8'}`}>
+              🏮
             </div>
-            <div className="absolute bottom-40 right-10 w-18 h-18 opacity-30">
-              <div className="text-2xl">🌸</div>
+            <div className={`absolute bottom-40 left-0 text-4xl opacity-35 transform transition-transform duration-1200 ${isTransitioning ? '-translate-x-full' : 'translate-x-4'}`}>
+              ⛩️
+            </div>
+            <div className={`absolute top-40 right-0 text-4xl opacity-30 transform transition-transform duration-1100 ${isTransitioning ? 'translate-x-full' : '-translate-x-8'}`}>
+              🌸
+            </div>
+            <div className={`absolute bottom-32 right-0 text-3xl opacity-35 transform transition-transform duration-1300 ${isTransitioning ? 'translate-x-full' : '-translate-x-6'}`}>
+              🗾
             </div>
           </div>
         )}
         
         {selectedAlbum.theme === 'scifi-set' && (
-          <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-            {/* Small sci-fi elements at edges */}
-            <div className="absolute top-36 left-8 w-16 h-16 opacity-40">
-              <div className="text-2xl">🛸</div>
+          <div className={`absolute inset-0 transition-all duration-1000 ease-out ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+            {/* Sci-fi elements slide in from sides */}
+            <div className={`absolute top-36 left-0 text-4xl opacity-40 transform transition-transform duration-1000 ${isTransitioning ? '-translate-x-full' : 'translate-x-6'}`}>
+              🛸
             </div>
-            <div className="absolute bottom-36 right-8 w-14 h-14 opacity-30">
-              <div className="text-xl">⭐</div>
+            <div className={`absolute bottom-36 left-0 text-3xl opacity-35 transform transition-transform duration-1200 ${isTransitioning ? '-translate-x-full' : 'translate-x-4'}`}>
+              🚀
+            </div>
+            <div className={`absolute top-32 right-0 text-3xl opacity-30 transform transition-transform duration-1100 ${isTransitioning ? 'translate-x-full' : '-translate-x-8'}`}>
+              ⭐
+            </div>
+            <div className={`absolute bottom-40 right-0 text-2xl opacity-35 transform transition-transform duration-1300 ${isTransitioning ? 'translate-x-full' : '-translate-x-6'}`}>
+              🌌
             </div>
           </div>
         )}
