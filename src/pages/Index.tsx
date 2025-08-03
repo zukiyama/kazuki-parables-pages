@@ -72,12 +72,15 @@ const Index = () => {
         {/* Book Announcement */}
         <div className="container mx-auto px-6 py-20">
           <ScrollFadeUp id="book-announcement" className="text-center mb-16">
-            <h2 className="font-heading text-3xl md:text-5xl text-accent mb-4">
+            <h2 className="font-heading text-3xl md:text-5xl mb-4" style={{ color: '#2d1b1b' }}>
               Book One of The Parable Trilogy
             </h2>
             <h3 className="font-heading text-4xl md:text-6xl font-bold text-ink-black">
               KAIJU
             </h3>
+            <p className="font-body text-lg text-muted-foreground mt-2">
+              A metaphysical fantasy
+            </p>
             <p className="font-body text-xl text-muted-foreground mt-6">
               Coming Soon
             </p>
