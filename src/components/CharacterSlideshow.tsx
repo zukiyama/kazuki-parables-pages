@@ -115,22 +115,24 @@ export const CharacterSlideshow = () => {
       </div>
       
       {/* Navigation */}
-      <div className="absolute bottom-4 right-4 flex space-x-2">
+      <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
         <Button
           variant="outline"
-          size="sm"
+          size="lg"
           onClick={prevCharacter}
-          className="bg-white/20 border-white/40 text-white hover:bg-white/30"
+          className="bg-black/60 border-2 border-white/60 text-white hover:bg-black/80 hover:border-white hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="w-6 h-6" />
         </Button>
+      </div>
+      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
         <Button
           variant="outline"
-          size="sm"
+          size="lg"
           onClick={nextCharacter}
-          className="bg-white/20 border-white/40 text-white hover:bg-white/30"
+          className="bg-black/60 border-2 border-white/60 text-white hover:bg-black/80 hover:border-white hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl"
         >
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="w-6 h-6" />
         </Button>
       </div>
       

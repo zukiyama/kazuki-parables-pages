@@ -45,7 +45,7 @@ export const YoungAdultSlideshow = () => {
   const book = books[currentBook];
 
   return (
-    <div className="relative w-full bg-card/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg">
+    <div className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">
       <div className="p-8">
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${
           book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
@@ -61,11 +61,11 @@ export const YoungAdultSlideshow = () => {
           
           {/* Book Info */}
           <div className={book.layout === "cover-right" ? "lg:col-start-1" : ""}>
-            <h3 className="font-heading text-3xl font-bold text-ink-black mb-2">{book.title}</h3>
+            <h3 className="font-serif text-3xl font-bold text-white mb-2">{book.title}</h3>
             {book.subtitle && (
-              <h4 className="font-heading text-xl text-accent mb-4">{book.subtitle}</h4>
+              <h4 className="font-serif text-xl text-yellow-300 mb-4">{book.subtitle}</h4>
             )}
-            <p className="font-body text-muted-foreground leading-relaxed">
+            <p className="font-serif text-lg leading-relaxed text-white/90">
               {book.summary}
             </p>
           </div>
@@ -73,22 +73,24 @@ export const YoungAdultSlideshow = () => {
       </div>
       
       {/* Navigation */}
-      <div className="absolute top-4 right-4 flex space-x-2">
+      <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
         <Button
           variant="outline"
-          size="sm"
+          size="lg"
           onClick={prevBook}
-          className="bg-white/80 hover:bg-white"
+          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="w-6 h-6" />
         </Button>
+      </div>
+      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
         <Button
           variant="outline"
-          size="sm"
+          size="lg"
           onClick={nextBook}
-          className="bg-white/80 hover:bg-white"
+          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl"
         >
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="w-6 h-6" />
         </Button>
       </div>
       
@@ -98,7 +100,7 @@ export const YoungAdultSlideshow = () => {
           <div
             key={index}
             className={`w-2 h-2 rounded-full ${
-              index === currentBook ? 'bg-accent' : 'bg-accent/40'
+              index === currentBook ? 'bg-yellow-300' : 'bg-yellow-300/40'
             }`}
           />
         ))}

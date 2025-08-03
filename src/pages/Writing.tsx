@@ -101,7 +101,7 @@ const Writing = () => {
                   <h3 className="font-serif text-2xl text-yellow-300 mb-6 tracking-wide">
                     Book One of The Parable Trilogy
                   </h3>
-                  <div className="bg-black/40 backdrop-blur-sm rounded-lg p-6 mb-8">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 mb-8 border border-white/20">
                     <p className="font-serif text-lg leading-relaxed text-white">
                       A mystery unfolds in a small Japanese town in summer 1979, where a group of boys discover that no one remembers how they got there. Strange creatures appear in the sky while the children search for answers in their forgotten past.
                     </p>
@@ -121,12 +121,12 @@ const Writing = () => {
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div className={`text-white order-2 lg:order-1 transition-all duration-1000 delay-300 ${
-                  visibleSections.has('hoax') ? 'opacity-100 -translate-x-0' : 'opacity-0 -translate-x-20'
+                  visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
                     HOAX
                   </h2>
-                  <div className="bg-black/40 backdrop-blur-sm rounded-lg p-6">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
                     <p className="font-serif text-lg leading-relaxed text-white">
                       A writer named Peter Carlyle wrote a book, then received a mysterious phone call. When he drove to the location, it felt like he was living inside his own story. Set in a strange commune in the Australian outback, where fairy lights drape over entrance arches and secrets hide in the vegetable patches.
                     </p>
@@ -166,7 +166,7 @@ const Writing = () => {
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
                     SIPHONS
                   </h2>
-                  <div className="bg-black/40 backdrop-blur-sm rounded-lg p-6">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
                     <p className="font-serif text-lg leading-relaxed text-white">
                       A man remembers watching a TV show as a kid, but when he tries to find any details about it, it becomes a mystery. The deeper he searches, the stranger the mystery becomes, leading him into a world of bizarre children's shows with otherworldly implications.
                     </p>
@@ -188,7 +188,7 @@ const Writing = () => {
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
                     OBA
                   </h2>
-                  <div className="bg-black/40 backdrop-blur-sm rounded-lg p-6">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
                     <p className="font-serif text-lg leading-relaxed text-white">
                       Set in Zimbabwe, this story follows a man with an African name who returns to his hometown at the edge of a receding jungle. He's there to teach as a speech therapist, working with a young girl in his home village, but ends up learning more from her than he could ever teach.
                     </p>
