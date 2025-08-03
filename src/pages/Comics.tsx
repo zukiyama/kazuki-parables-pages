@@ -7,25 +7,18 @@ import soulTiedCover from "@/assets/soul-tied-cover.jpg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
 
 const Comics = () => {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // Removed scroll animation effect
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <Navigation />
       
-      {/* Pencil sketches background with parallax zoom effect */}
+      {/* Pencil sketches background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-20 transition-transform duration-100"
+          className="absolute inset-0 bg-cover bg-center opacity-30"
           style={{ 
-            backgroundImage: `url(${mangaSketchesBackground})`,
-            transform: `scale(${1 + scrollY * 0.0001})`,
+            backgroundImage: `url(${mangaSketchesBackground})`
           }}
         ></div>
       </div>
