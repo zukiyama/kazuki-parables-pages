@@ -6,9 +6,16 @@ import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
 // Background images for different themes
 import kabukiTheatreBackground from "@/assets/kabuki-theatre-background.jpg";
 import englishMansionBackground from "@/assets/english-mansion-background.jpg";
-import englishStreetBackground from "@/assets/office-window-view.jpg"; // Using existing street scene
-import japanLakeBackground from "@/assets/japan-lake-background.jpg";
+import seasideIslandBackground from "@/assets/seaside-island-background.jpg";
+import mountFujiInvertedBackground from "@/assets/mount-fuji-inverted.jpg";
 import scifiSetBackground from "@/assets/scifi-set-background.jpg";
+
+// Foreground overlay elements
+import theatreCurtainsOverlay from "@/assets/theatre-curtains-overlay.png";
+import britishStreetObjects from "@/assets/british-street-objects.png";
+import japaneseElements from "@/assets/japanese-elements.png";
+import englishGardenElements from "@/assets/english-garden-elements.png";
+import scifiElements from "@/assets/scifi-elements.png";
 
 // Album covers
 import magicalGardenAlbum from "@/assets/magical-garden-album-updated.jpg";
@@ -51,8 +58,8 @@ const albums = [
     id: 3,
     title: "Surreal Symphony",
     cover: musicSurrealAlbum,
-    background: englishStreetBackground,
-    theme: "english-street",
+    background: seasideIslandBackground,
+    theme: "seaside-scene",
     tracks: [
       "Objects in Flight",
       "Floating Melodies",
@@ -65,8 +72,8 @@ const albums = [
     id: 4,
     title: "Paper Cutout Dreams",
     cover: paperCutoutAlbum,
-    background: japanLakeBackground,
-    theme: "japan-lake",
+    background: mountFujiInvertedBackground,
+    theme: "mount-fuji",
     tracks: [
       "Torn Sheet Music",
       "Collage of Sound",
@@ -120,49 +127,58 @@ const Music = () => {
       {/* Dynamic Background Based on Selected Album */}
       <div className="fixed inset-0">
         <div 
-          className={`absolute inset-0 bg-cover bg-center transition-all duration-700 ${isTransitioning ? 'opacity-0 scale-110' : 'opacity-100 scale-100'}`}
+          className={`absolute inset-0 bg-cover bg-center transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
           style={{ 
-            backgroundImage: `url(${selectedAlbum.background})`,
-            transform: `translateY(${scrollY * 0.3}px)`
+            backgroundImage: `url(${selectedAlbum.background})`
           }}
         />
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
       
       {/* Theme-specific Foreground Elements */}
-      <div className="fixed inset-0 pointer-events-none z-5">
+      <div className="fixed inset-0 pointer-events-none z-20">
         {selectedAlbum.theme === 'kabuki-theatre' && (
-          <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 translate-x-full' : 'opacity-100 translate-x-0'}`}>
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-red-600 text-6xl">🎭</div>
-            <div className="absolute right-4 top-1/3 text-yellow-600 text-4xl">⛩️</div>
+          <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+            <div 
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${theatreCurtainsOverlay})` }}
+            />
           </div>
         )}
         
         {selectedAlbum.theme === 'stately-home' && (
-          <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 -translate-x-full' : 'opacity-100 translate-x-0'}`}>
-            <div className="absolute left-8 bottom-20 text-green-600 text-5xl">🌿</div>
-            <div className="absolute right-8 top-20 text-yellow-400 text-3xl">✨</div>
+          <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+            <div 
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${englishGardenElements})` }}
+            />
           </div>
         )}
         
-        {selectedAlbum.theme === 'english-street' && (
-          <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 translate-y-full' : 'opacity-100 translate-y-0'}`}>
-            <div className="absolute left-6 bottom-32 text-red-600 text-4xl">📮</div>
-            <div className="absolute right-6 bottom-40 text-amber-700 text-3xl">🐕</div>
+        {selectedAlbum.theme === 'seaside-scene' && (
+          <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+            <div 
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${britishStreetObjects})` }}
+            />
           </div>
         )}
         
-        {selectedAlbum.theme === 'japan-lake' && (
-          <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 scale-50' : 'opacity-100 scale-100'}`}>
-            <div className="absolute left-4 top-20 text-pink-400 text-4xl">🌸</div>
-            <div className="absolute right-4 bottom-24 text-red-600 text-3xl">⛩️</div>
+        {selectedAlbum.theme === 'mount-fuji' && (
+          <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+            <div 
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${japaneseElements})` }}
+            />
           </div>
         )}
         
         {selectedAlbum.theme === 'scifi-set' && (
-          <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 rotate-180' : 'opacity-100 rotate-0'}`}>
-            <div className="absolute left-8 top-32 text-blue-400 text-4xl">🛸</div>
-            <div className="absolute right-8 bottom-28 text-purple-400 text-3xl">⭐</div>
+          <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+            <div 
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${scifiElements})` }}
+            />
           </div>
         )}
       </div>
