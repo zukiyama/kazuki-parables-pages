@@ -135,50 +135,66 @@ const Music = () => {
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
       
-      {/* Theme-specific Foreground Elements */}
-      <div className="fixed inset-0 pointer-events-none z-20">
+      {/* Subtle Edge Elements Only - No Full Coverage */}
+      <div className="fixed inset-0 pointer-events-none z-50">
         {selectedAlbum.theme === 'kabuki-theatre' && (
           <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+            {/* Only curtains at top corners of video area */}
             <div 
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${theatreCurtainsOverlay})` }}
+              className="absolute top-24 left-1/2 transform -translate-x-1/2 w-96 h-32 bg-contain bg-no-repeat opacity-40"
+              style={{ 
+                backgroundImage: `url(${theatreCurtainsOverlay})`,
+                backgroundPosition: 'top center'
+              }}
             />
           </div>
         )}
         
         {selectedAlbum.theme === 'stately-home' && (
           <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${englishGardenElements})` }}
-            />
+            {/* Small garden elements at edges only */}
+            <div className="absolute top-32 left-8 w-24 h-24 opacity-30">
+              <div className="text-4xl">🌿</div>
+            </div>
+            <div className="absolute top-40 right-12 w-20 h-20 opacity-30">
+              <div className="text-3xl">🦋</div>
+            </div>
           </div>
         )}
         
         {selectedAlbum.theme === 'seaside-scene' && (
           <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${britishStreetObjects})` }}
-            />
+            {/* Small British street objects at edges */}
+            <div className="absolute bottom-32 left-6 w-16 h-16 opacity-40">
+              <div className="text-2xl">📮</div>
+            </div>
+            <div className="absolute top-36 right-8 w-12 h-12 opacity-30">
+              <div className="text-xl">☂️</div>
+            </div>
           </div>
         )}
         
         {selectedAlbum.theme === 'mount-fuji' && (
           <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${japaneseElements})` }}
-            />
+            {/* Small Japanese elements at edges */}
+            <div className="absolute top-32 left-10 w-20 h-20 opacity-30">
+              <div className="text-3xl">🏮</div>
+            </div>
+            <div className="absolute bottom-40 right-10 w-18 h-18 opacity-30">
+              <div className="text-2xl">🌸</div>
+            </div>
           </div>
         )}
         
         {selectedAlbum.theme === 'scifi-set' && (
           <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${scifiElements})` }}
-            />
+            {/* Small sci-fi elements at edges */}
+            <div className="absolute top-36 left-8 w-16 h-16 opacity-40">
+              <div className="text-2xl">🛸</div>
+            </div>
+            <div className="absolute bottom-36 right-8 w-14 h-14 opacity-30">
+              <div className="text-xl">⭐</div>
+            </div>
           </div>
         )}
       </div>
