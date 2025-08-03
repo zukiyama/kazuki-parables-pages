@@ -62,7 +62,7 @@ const Index = () => {
             Kazuki Yamakawa
           </h1>
           <p className="font-body text-xl md:text-2xl text-foreground/80">
-            Writer • Artist • Storyteller
+            Writer • Musician
           </p>
         </div>
       </section>
