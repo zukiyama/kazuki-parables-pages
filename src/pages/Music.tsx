@@ -7,6 +7,8 @@ import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
 import claymationCountryside from "@/assets/claymation-countryside.jpg";
 import parallaxClouds from "@/assets/parallax-clouds.jpg";
 import parallaxObjects from "@/assets/parallax-objects.jpg";
+import parallaxCloudsLayer1 from "@/assets/parallax-clouds-layer1.png";
+import parallaxCloudsLayer2 from "@/assets/parallax-clouds-layer2.png";
 
 // Album covers
 import magicalGardenAlbum from "@/assets/magical-garden-album-updated.jpg";
@@ -127,6 +129,27 @@ const Music = () => {
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
       
+      {/* Floating Cloud Layers - Above content */}
+      <div className="fixed inset-0 pointer-events-none z-20">
+        {/* Top Cloud Layer with hot air balloon */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-60"
+          style={{ 
+            backgroundImage: `url(${parallaxCloudsLayer1})`,
+            transform: `translateY(${scrollY * 0.2}px)`
+          }}
+        />
+        
+        {/* Bottom Cloud Layer - smaller clouds */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-40"
+          style={{ 
+            backgroundImage: `url(${parallaxCloudsLayer2})`,
+            transform: `translateY(${scrollY * 0.15}px)`
+          }}
+        />
+      </div>
+      
       <main className="container mx-auto px-6 pt-24 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -137,6 +160,20 @@ const Music = () => {
             <p className="text-white/80 text-xl font-serif">
               A collection of surreal soundscapes and magical melodies
             </p>
+          </div>
+          
+          {/* Video Player - Moved to top */}
+          <div className="mb-16">
+            <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20">
+              <h3 className="text-white text-xl font-bold mb-4 font-serif">Music Video</h3>
+              <div className="aspect-video bg-black rounded-lg flex items-center justify-center">
+                <div className="text-white/60 text-center">
+                  <div className="text-6xl mb-4">🎬</div>
+                  <p className="text-lg font-serif">Video for "{selectedAlbum.title}"</p>
+                  <p className="text-sm">Coming soon...</p>
+                </div>
+              </div>
+            </div>
           </div>
           
           {/* Featured Album */}
@@ -224,19 +261,6 @@ const Music = () => {
             </div>
           </div>
           
-          {/* Video Player */}
-          <div className="mb-8">
-            <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20">
-              <h3 className="text-white text-xl font-bold mb-4 font-serif">Music Video</h3>
-              <div className="aspect-video bg-black rounded-lg flex items-center justify-center">
-                <div className="text-white/60 text-center">
-                  <div className="text-6xl mb-4">🎬</div>
-                  <p className="text-lg font-serif">Video for "{selectedAlbum.title}"</p>
-                  <p className="text-sm">Coming soon...</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </main>
       
