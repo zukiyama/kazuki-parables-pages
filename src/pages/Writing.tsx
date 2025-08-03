@@ -95,13 +95,13 @@ const Writing = () => {
                 <div className={`text-white transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-shadow-lg">
-                    KAIJU
-                  </h2>
-                  <h3 className="font-serif text-2xl text-yellow-300 mb-6 tracking-wide">
-                    Book One of The Parable Trilogy
-                  </h3>
-                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 mb-8 border border-white/20">
+                  <div className="bg-black/80 backdrop-blur-sm rounded-lg p-6 mb-8 border border-white/20">
+                    <h2 className="font-serif text-5xl font-bold mb-4 text-white">
+                      KAIJU
+                    </h2>
+                    <h3 className="font-serif text-2xl text-yellow-300 mb-6 tracking-wide">
+                      Book One of The Parable Trilogy
+                    </h3>
                     <p className="font-serif text-lg leading-relaxed text-white">
                       A mystery unfolds in a small Japanese town in summer 1979, where a group of boys discover that no one remembers how they got there. Strange creatures appear in the sky while the children search for answers in their forgotten past.
                     </p>

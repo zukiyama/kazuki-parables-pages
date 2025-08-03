@@ -115,22 +115,22 @@ export const CharacterSlideshow = () => {
       </div>
       
       {/* Navigation */}
-      <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+      <div className="absolute -left-2 top-1/2 transform -translate-y-1/2 z-20">
         <Button
           variant="outline"
           size="lg"
           onClick={prevCharacter}
-          className="bg-black/60 border-2 border-white/60 text-white hover:bg-black/80 hover:border-white hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl"
+          className="bg-black/80 border-2 border-white/80 text-white hover:bg-white hover:text-black hover:scale-110 transition-all duration-300 rounded-full w-14 h-14 p-0 backdrop-blur-sm shadow-2xl"
         >
           <ChevronLeft className="w-6 h-6" />
         </Button>
       </div>
-      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+      <div className="absolute -right-2 top-1/2 transform -translate-y-1/2 z-20">
         <Button
           variant="outline"
           size="lg"
           onClick={nextCharacter}
-          className="bg-black/60 border-2 border-white/60 text-white hover:bg-black/80 hover:border-white hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl"
+          className="bg-black/80 border-2 border-white/80 text-white hover:bg-white hover:text-black hover:scale-110 transition-all duration-300 rounded-full w-14 h-14 p-0 backdrop-blur-sm shadow-2xl"
         >
           <ChevronRight className="w-6 h-6" />
         </Button>
