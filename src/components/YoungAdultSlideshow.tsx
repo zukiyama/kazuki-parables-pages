@@ -46,7 +46,7 @@ export const YoungAdultSlideshow = () => {
 
   return (
     <div className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">
-      <div className="p-8">
+      <div className="px-16 py-8 md:px-12 lg:px-8">
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${
           book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
         }`}>

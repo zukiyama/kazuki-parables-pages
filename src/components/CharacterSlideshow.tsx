@@ -92,7 +92,7 @@ export const CharacterSlideshow = () => {
       </div>
       
       {/* Content */}
-      <div className="relative z-10 h-full flex items-center p-8">
+      <div className="relative z-10 h-full flex items-center px-16 py-8 md:px-12 lg:px-8">
         <div className="flex items-center space-x-8 w-full">
           {/* Character Portrait */}
           <div className="flex-shrink-0">

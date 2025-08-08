@@ -58,7 +58,7 @@ const Index = () => {
       >
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-10 text-center px-6">
-          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide">
+          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
             Kazuki Yamakawa
           </h1>
           <p className="font-body text-xl md:text-2xl text-foreground/80">
@@ -75,10 +75,10 @@ const Index = () => {
             <h2 className="font-heading text-3xl md:text-5xl mb-4" style={{ color: '#2d1b1b' }}>
               Book One of The Parable Trilogy
             </h2>
-            <h3 className="font-heading text-4xl md:text-6xl font-bold text-ink-black">
+            <h3 className="font-heading text-4xl md:text-6xl font-bold text-primary">
               KAIJU
             </h3>
-            <p className="font-body text-lg text-muted-foreground mt-2">
+            <p className="font-handwriting text-3xl md:text-4xl text-primary mt-6 inline-block rotate-[-2deg] handwriting-write">
               A metaphysical fantasy
             </p>
             <p className="font-body text-xl text-muted-foreground mt-6">

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Serif+Pro:wght@300;400;600&family=Crimson+Text:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Serif+Pro:wght@300;400;600&family=Crimson+Text:wght@400;600&family=Great+Vibes&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -49,6 +49,7 @@
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Source Serif Pro', serif;
     --font-accent: 'Crimson Text', serif;
+    --font-handwriting: 'Great Vibes', cursive;
 
     --radius: 0.5rem;
 
@@ -160,4 +161,26 @@
   .magazine-slide.visible {
     transform: translateY(0);
   }
+}
+
+@layer components {
+  .font-handwriting {
+    font-family: var(--font-handwriting);
+  }
+  /* Handwriting effect: prepares hidden state until parent .scroll-fade-up becomes .visible */
+  .scroll-fade-up .handwriting-write {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    opacity: 0.2;
+    clip-path: inset(0 100% 0 0);
+  }
+  .scroll-fade-up.visible .handwriting-write {
+    animation: handwrite 1.1s ease-out 0.2s both;
+  }
+}
+
+@keyframes handwrite {
+  from { clip-path: inset(0 100% 0 0); opacity: 0.2; }
+  to { clip-path: inset(0 0 0 0); opacity: 1; }
 }
