@@ -4,33 +4,25 @@ import { Button } from "@/components/ui/button";
 import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
 
 // Background images for different themes
-import kabukiTheatreBackground from "@/assets/kabuki-theatre-background.jpg";
-import englishMansionBackground from "@/assets/english-mansion-background.jpg";
-import seasideIslandBackground from "@/assets/seaside-island-background.jpg";
-import mountFujiInvertedBackground from "@/assets/mount-fuji-inverted.jpg";
+import desertKidsBg from "@/assets/music-bg-desert-kids.jpg";
+import saltKitesBg from "@/assets/music-bg-salt-kites.jpg";
+import pastelRiverBg from "@/assets/music-bg-pastel-river.jpg";
+import cloudPlainBg from "@/assets/music-bg-cloud-plain.jpg";
 import scifiSetBackground from "@/assets/scifi-set-background.jpg";
 
-// Foreground overlay elements
-import theatreCurtainsOverlay from "@/assets/theatre-curtains-overlay.png";
-import britishStreetObjects from "@/assets/british-street-objects.png";
-import japaneseElements from "@/assets/japanese-elements.png";
-import englishGardenElements from "@/assets/english-garden-elements.png";
-import scifiElements from "@/assets/scifi-elements.png";
-
 // Album covers
-import magicalGardenAlbum from "@/assets/magical-garden-album-updated.jpg";
-import meltingGuitarAlbum from "@/assets/melting-guitar-1.jpg";
-import musicSurrealAlbum from "@/assets/music-surreal-objects-1.jpg";
-import paperCutoutAlbum from "@/assets/paper-cutout-album.jpg";
+import magicalGardenAlbumNew from "@/assets/magical-garden-album-new.jpg";
+import meltingDreamsAlbumNew from "@/assets/melting-dreams-album-new.jpg";
+import surrealSymphonyAlbumNew from "@/assets/surreal-symphony-album-new.jpg";
+import paperCutoutAlbumNew from "@/assets/paper-cutout-album-new.jpg";
 import floatingToysAlbum from "@/assets/floating-toys-album.jpg";
-import geometricSurrealAlbum from "@/assets/geometric-surreal-album.jpg";
 
 const albums = [
   {
     id: 1,
     title: "Magical Secret Garden",
-    cover: magicalGardenAlbum,
-    background: englishMansionBackground,
+    cover: magicalGardenAlbumNew,
+    background: desertKidsBg,
     theme: "stately-home",
     tracks: [
       "Through the Garden Gate",
@@ -43,8 +35,8 @@ const albums = [
   {
     id: 2,
     title: "Melting Dreams",
-    cover: meltingGuitarAlbum,
-    background: kabukiTheatreBackground,
+    cover: meltingDreamsAlbumNew,
+    background: saltKitesBg,
     theme: "kabuki-theatre",
     tracks: [
       "Liquid Strings",
@@ -57,8 +49,8 @@ const albums = [
   {
     id: 3,
     title: "Surreal Symphony",
-    cover: musicSurrealAlbum,
-    background: seasideIslandBackground,
+    cover: surrealSymphonyAlbumNew,
+    background: pastelRiverBg,
     theme: "seaside-scene",
     tracks: [
       "Objects in Flight",
@@ -71,8 +63,8 @@ const albums = [
   {
     id: 4,
     title: "Paper Cutout Dreams",
-    cover: paperCutoutAlbum,
-    background: mountFujiInvertedBackground,
+    cover: paperCutoutAlbumNew,
+    background: cloudPlainBg,
     theme: "mount-fuji",
     tracks: [
       "Torn Sheet Music",
