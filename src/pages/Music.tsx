@@ -94,6 +94,7 @@ const Music = () => {
   const [scrollY, setScrollY] = useState(0);
   const [selectedAlbum, setSelectedAlbum] = useState(albums[0]);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
@@ -161,17 +162,26 @@ const Music = () => {
               <img 
                 src={selectedAlbum.cover} 
                 alt={selectedAlbum.title}
-                className="w-80 h-80 mx-auto rounded-lg shadow-2xl mb-6 transition-all duration-500 hover:scale-105"
+                className="w-96 h-96 mx-auto rounded-lg shadow-2xl mb-6 transition-all duration-500 hover:scale-105"
               />
               <h2 className="font-serif text-3xl text-white mb-2">{selectedAlbum.title}</h2>
               <p className="text-white/80 text-lg mb-6">Featured Album</p>
               
               {/* Music Player Controls */}
-              <div className="flex justify-center items-center space-x-4 mb-6">
+              <div className="flex justify-center items-center space-x-4 mb-2">
                 <Button
                   variant="outline"
                   size="lg"
                   className="bg-white/20 border-white/40 text-white hover:bg-white/30 rounded-full w-12 h-12 p-0"
+                  onClick={() => {
+                    setCurrentTrackIndex((prev) => {
+                      const playable = selectedAlbum.tracks.filter(t => !t.includes("Coming Soon"));
+                      if (playable.length === 0) return null;
+                      const idx = prev === null ? 0 : (prev - 1 + playable.length) % playable.length;
+                      setIsPlaying(true);
+                      return idx;
+                    });
+                  }}
                 >
                   <SkipBack className="w-5 h-5" />
                 </Button>
@@ -187,10 +197,22 @@ const Music = () => {
                   variant="outline"
                   size="lg"
                   className="bg-white/20 border-white/40 text-white hover:bg-white/30 rounded-full w-12 h-12 p-0"
+                  onClick={() => {
+                    setCurrentTrackIndex((prev) => {
+                      const playable = selectedAlbum.tracks.filter(t => !t.includes("Coming Soon"));
+                      if (playable.length === 0) return null;
+                      const idx = prev === null ? 0 : (prev + 1) % playable.length;
+                      setIsPlaying(true);
+                      return idx;
+                    });
+                  }}
                 >
                   <SkipForward className="w-5 h-5" />
                 </Button>
               </div>
+              {currentTrackIndex !== null && (
+                <p className="text-white/80 text-sm mb-4 font-serif">Now playing: {selectedAlbum.tracks.filter(t => !t.includes("Coming Soon"))[currentTrackIndex]}</p>
+              )}
             </div>
           </div>
           
@@ -217,6 +239,26 @@ const Music = () => {
               ))}
             </div>
           </div>
+
+          {/* Singles (click to play) */}
+          <div className="mb-8">
+            <h4 className="font-serif text-2xl text-white mb-4 text-center">Singles</h4>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {selectedAlbum.tracks.filter(t => !t.includes("Coming Soon")).slice(0,4).map((track, idx) => (
+                <button
+                  key={idx}
+                  className={`relative group rounded-lg overflow-hidden border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 ${currentTrackIndex===idx? 'ring-2 ring-white/60':''}`}
+                  onClick={() => { setCurrentTrackIndex(idx); setIsPlaying(true); }}
+                >
+                  <img src={selectedAlbum.cover} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute inset-0 bg-black/40"></div>
+                  <div className="absolute bottom-2 left-2 right-2 text-left">
+                    <span className="text-white text-sm font-serif line-clamp-2">{track}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
           
           {/* Current Album Track Listing */}
           <div className="mb-8">
@@ -229,10 +271,13 @@ const Music = () => {
                   <div 
                     key={index} 
                     className="flex items-center justify-between p-3 bg-black/30 rounded hover:bg-black/40 transition-colors cursor-pointer"
+                    onClick={() => {
+                      if (!track.includes("Coming Soon")) { setCurrentTrackIndex(index); setIsPlaying(true); }
+                    }}
                   >
                     <span className="text-white font-serif">{index + 1}. {track}</span>
                     <div className="text-white/60">
-                      {track.includes("Coming Soon") ? "⏳" : "▶"}
+                      {track.includes("Coming Soon") ? "⏳" : (currentTrackIndex===index ? "⏸" : "▶")}
                     </div>
                   </div>
                 ))}

@@ -46,7 +46,7 @@ export const YoungAdultSlideshow = () => {
 
   return (
     <div className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">
-      <div className="px-16 py-8 md:px-12 lg:px-8">
+      <div className="px-20 py-8 md:px-16 lg:px-12 pb-16">
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${
           book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
         }`}>
@@ -60,7 +60,7 @@ export const YoungAdultSlideshow = () => {
           </div>
           
           {/* Book Info */}
-          <div className={book.layout === "cover-right" ? "lg:col-start-1" : ""}>
+          <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-24 pl-8"} md:pl-24 md:pr-24`}>
             <h3 className="font-serif text-3xl font-bold text-white mb-2">{book.title}</h3>
             {book.subtitle && (
               <h4 className="font-serif text-xl text-yellow-300 mb-4">{book.subtitle}</h4>

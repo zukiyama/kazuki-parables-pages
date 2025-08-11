@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import mangaSketchesBackground from "@/assets/manga-sketches-background.jpg";
-import pencilOverlay from "@/assets/pencil-overlay.png";
+
 import godOfLiesCover from "@/assets/god-of-lies-cover.jpg";
 import soulTiedCover from "@/assets/soul-tied-cover.jpg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
@@ -24,13 +24,6 @@ const Comics = () => {
       </div>
       
       {/* Pencil overlay at bottom */}
-      <div className="fixed bottom-8 right-12 pointer-events-none z-30">
-        <img 
-          src={pencilOverlay} 
-          alt="Pencil" 
-          className="w-32 h-16 opacity-60"
-        />
-      </div>
       
       <main className="container mx-auto px-6 pt-24 pb-12 relative z-10">
         

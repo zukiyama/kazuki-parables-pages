@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
 
 // Character portraits
 import kenjiPortrait from "@/assets/character-kenji-portrait.jpg";
@@ -71,13 +69,13 @@ const characters = [
 export const CharacterSlideshow = () => {
   const [currentCharacter, setCurrentCharacter] = useState(0);
 
-  const nextCharacter = () => {
-    setCurrentCharacter((prev) => (prev + 1) % characters.length);
-  };
-
-  const prevCharacter = () => {
-    setCurrentCharacter((prev) => (prev - 1 + characters.length) % characters.length);
-  };
+  // Autoplay slideshow, advance every 7 seconds
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCurrentCharacter((prev) => (prev + 1) % characters.length);
+    }, 7000);
+    return () => clearInterval(id);
+  }, []);
 
   const character = characters[currentCharacter];
 
@@ -114,27 +112,6 @@ export const CharacterSlideshow = () => {
         </div>
       </div>
       
-      {/* Navigation */}
-      <div className="absolute -left-2 top-1/2 transform -translate-y-1/2 z-20">
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={prevCharacter}
-          className="bg-black/80 border-2 border-white/80 text-white hover:bg-white hover:text-black hover:scale-110 transition-all duration-300 rounded-full w-14 h-14 p-0 backdrop-blur-sm shadow-2xl"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </Button>
-      </div>
-      <div className="absolute -right-2 top-1/2 transform -translate-y-1/2 z-20">
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={nextCharacter}
-          className="bg-black/80 border-2 border-white/80 text-white hover:bg-white hover:text-black hover:scale-110 transition-all duration-300 rounded-full w-14 h-14 p-0 backdrop-blur-sm shadow-2xl"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </Button>
-      </div>
       
       {/* Character Indicator */}
       <div className="absolute bottom-4 left-4 flex space-x-2">
