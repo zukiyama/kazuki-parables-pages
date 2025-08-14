@@ -69,13 +69,21 @@ const characters = [
 export const CharacterSlideshow = () => {
   const [currentCharacter, setCurrentCharacter] = useState(0);
 
-  // Autoplay slideshow, advance every 7 seconds
+  // Autoplay slideshow, advance every 8 seconds
   useEffect(() => {
     const id = setInterval(() => {
       setCurrentCharacter((prev) => (prev + 1) % characters.length);
-    }, 7000);
+    }, 8000);
     return () => clearInterval(id);
   }, []);
+
+  const nextCharacter = () => {
+    setCurrentCharacter((prev) => (prev + 1) % characters.length);
+  };
+
+  const prevCharacter = () => {
+    setCurrentCharacter((prev) => (prev - 1 + characters.length) % characters.length);
+  };
 
   const character = characters[currentCharacter];
 
@@ -112,6 +120,23 @@ export const CharacterSlideshow = () => {
         </div>
       </div>
       
+      
+      {/* Navigation Buttons */}
+      <button 
+        onClick={prevCharacter}
+        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all z-20"
+        aria-label="Previous character"
+      >
+        ←
+      </button>
+      
+      <button 
+        onClick={nextCharacter}
+        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all z-20"
+        aria-label="Next character"
+      >
+        →
+      </button>
       
       {/* Character Indicator */}
       <div className="absolute bottom-4 left-4 flex space-x-2">

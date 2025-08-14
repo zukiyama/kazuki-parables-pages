@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Navigation from "@/components/Navigation";
 import { CharacterSlideshow } from "@/components/CharacterSlideshow";
+import { KaijuGallery } from "@/components/KaijuGallery";
 import { YoungAdultSlideshow } from "@/components/YoungAdultSlideshow";
 
 // Background images
@@ -86,11 +87,7 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <img 
-                    src={kaijuCover} 
-                    alt="KAIJU Book Cover"
-                    className="w-full max-w-md mx-auto aspect-[3/4] object-cover rounded-lg shadow-2xl"
-                  />
+                  <KaijuGallery />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
