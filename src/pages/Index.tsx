@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
+import japaneseMoonlit from "@/assets/japanese-painting-moonlit.jpg";
 import playgroundScene from "@/assets/playground-scene.jpg";
 import officeView from "@/assets/office-window-view.jpg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
@@ -65,21 +66,22 @@ const Index = () => {
       
       {/* Hero Section with Japanese Painting */}
       <section 
-        className={`min-h-screen flex items-center justify-center relative bg-cover bg-center bg-no-repeat transition-all duration-1000 ${moonlitMode ? 'moonlit-scene' : ''}`}
-        style={{ backgroundImage: `url(${japaneseBackground})` }}
+        className="min-h-screen flex items-center justify-center relative bg-cover bg-center bg-no-repeat transition-all duration-1000"
+        style={{ backgroundImage: `url(${moonlitMode ? japaneseMoonlit : japaneseBackground})` }}
       >
-        <div className={`absolute inset-0 transition-all duration-1000 ${moonlitMode ? 'bg-indigo-900/70' : 'bg-black/10'}`}></div>
+        <div className="absolute inset-0 bg-black/5"></div>
         
-        {/* Clickable Moon Area */}
+        {/* Clickable Moon Area - positioned over the moon in the painting */}
         <div 
-          className="absolute top-16 right-20 w-20 h-20 rounded-full cursor-pointer hover:scale-110 transition-transform duration-300 z-20 border-2 border-transparent hover:border-white/30"
+          className="absolute top-32 left-1/3 w-12 h-12 rounded-full cursor-pointer hover:scale-125 transition-transform duration-300 z-20"
           onClick={() => {
             console.log("Moon clicked! Current mode:", moonlitMode);
             setMoonlitMode(!moonlitMode);
           }}
           title="Click the moon"
           style={{ 
-            background: moonlitMode ? 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)'
+            background: 'radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%)',
+            border: '1px solid rgba(255,255,255,0.3)'
           }}
         ></div>
         
