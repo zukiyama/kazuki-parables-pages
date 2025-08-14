@@ -227,7 +227,8 @@
 }
 
 .moonlit-scene {
-  filter: hue-rotate(200deg) saturate(0.8) brightness(0.6);
+  filter: hue-rotate(180deg) saturate(1.2) brightness(0.4) contrast(1.1);
+  transition: filter 1s ease-in-out;
 }
 
 .moonlit-scene::before {
@@ -237,7 +238,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 85% 25%, rgba(220, 220, 255, 0.3) 0%, rgba(30, 40, 80, 0.7) 40%, rgba(10, 15, 40, 0.9) 100%);
+  background: radial-gradient(circle at 80% 20%, rgba(173, 216, 230, 0.4) 0%, rgba(25, 25, 112, 0.8) 30%, rgba(8, 8, 30, 0.95) 70%);
   pointer-events: none;
   z-index: 1;
+  transition: opacity 1s ease-in-out;
 }

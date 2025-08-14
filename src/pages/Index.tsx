@@ -72,9 +72,15 @@ const Index = () => {
         
         {/* Clickable Moon Area */}
         <div 
-          className="absolute top-20 right-32 w-16 h-16 rounded-full cursor-pointer hover:scale-110 transition-transform duration-300 z-20"
-          onClick={() => setMoonlitMode(!moonlitMode)}
+          className="absolute top-16 right-20 w-20 h-20 rounded-full cursor-pointer hover:scale-110 transition-transform duration-300 z-20 border-2 border-transparent hover:border-white/30"
+          onClick={() => {
+            console.log("Moon clicked! Current mode:", moonlitMode);
+            setMoonlitMode(!moonlitMode);
+          }}
           title="Click the moon"
+          style={{ 
+            background: moonlitMode ? 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)'
+          }}
         ></div>
         
         <div className="relative z-10 text-center px-6">
