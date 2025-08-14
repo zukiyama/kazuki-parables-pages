@@ -5,11 +5,13 @@ import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import playgroundScene from "@/assets/playground-scene.jpg";
 import officeView from "@/assets/office-window-view.jpg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
+import childrenHillBackground from "@/assets/children-hill-city-background.jpg";
 
 const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
+  const [showPainting, setShowPainting] = useState(false);
 
   const images = [officeView, playgroundScene, kyotoTvShop];
 
@@ -17,6 +19,15 @@ const Index = () => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
+      
+      // Show painting animation when scrolled to book announcement section
+      const bookSection = document.getElementById('book-announcement');
+      if (bookSection) {
+        const rect = bookSection.getBoundingClientRect();
+        if (rect.top < viewportHeight * 0.8) {
+          setShowPainting(true);
+        }
+      }
       
       // Show magazine when scrolled past 80% of viewport
       if (scrollY > viewportHeight * 0.8) {
@@ -70,8 +81,14 @@ const Index = () => {
       {/* Content Section */}
       <section className="min-h-screen relative bg-background">
         {/* Book Announcement */}
-        <div className="container mx-auto px-6 py-20">
-          <ScrollFadeUp id="book-announcement" className="text-center mb-16">
+        <div className="container mx-auto px-6 py-20 relative">
+          {/* Painting Background Animation */}
+          <div 
+            className={`painting-background ${showPainting ? 'animate' : ''}`}
+            style={{ backgroundImage: `url(${childrenHillBackground})` }}
+          ></div>
+          
+          <ScrollFadeUp id="book-announcement" className="text-center mb-16 relative z-10">
             <h2 className="font-heading text-3xl md:text-5xl mb-4" style={{ color: '#2d1b1b' }}>
               Book One of The Parable Trilogy
             </h2>

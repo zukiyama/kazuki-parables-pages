@@ -184,3 +184,44 @@
   from { clip-path: inset(0 100% 0 0); opacity: 0.2; }
   to { clip-path: inset(0 0 0 0); opacity: 1; }
 }
+
+@keyframes painting-reveal {
+  0% { 
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+    opacity: 0;
+  }
+  20% { 
+    clip-path: polygon(0 0, 30% 0, 25% 100%, 0% 100%);
+    opacity: 0.3;
+  }
+  40% { 
+    clip-path: polygon(0 0, 60% 0, 55% 100%, 0% 100%);
+    opacity: 0.5;
+  }
+  60% { 
+    clip-path: polygon(0 0, 80% 0, 75% 100%, 0% 100%);
+    opacity: 0.7;
+  }
+  80% { 
+    clip-path: polygon(0 0, 95% 0, 90% 100%, 0% 100%);
+    opacity: 0.8;
+  }
+  100% { 
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    opacity: 0.9;
+  }
+}
+
+.painting-background {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+}
+
+.painting-background.animate {
+  animation: painting-reveal 3s ease-out forwards;
+}
