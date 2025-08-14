@@ -2,18 +2,14 @@ import { useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
-import japaneseMoonlit from "@/assets/japanese-painting-moonlit.jpg";
 import playgroundScene from "@/assets/playground-scene.jpg";
 import officeView from "@/assets/office-window-view.jpg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
-import childrenHillBackground from "@/assets/children-hill-city-background.jpg";
 
 const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
-  const [showPainting, setShowPainting] = useState(false);
-  const [moonlitMode, setMoonlitMode] = useState(false);
 
   const images = [officeView, playgroundScene, kyotoTvShop];
 
@@ -21,15 +17,6 @@ const Index = () => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
-      
-      // Show painting animation when scrolled to book announcement section
-      const bookSection = document.getElementById('book-announcement');
-      if (bookSection) {
-        const rect = bookSection.getBoundingClientRect();
-        if (rect.top < viewportHeight * 0.8) {
-          setShowPainting(true);
-        }
-      }
       
       // Show magazine when scrolled past 80% of viewport
       if (scrollY > viewportHeight * 0.8) {
@@ -66,30 +53,15 @@ const Index = () => {
       
       {/* Hero Section with Japanese Painting */}
       <section 
-        className="min-h-screen flex items-center justify-center relative bg-cover bg-center bg-no-repeat transition-all duration-1000"
-        style={{ backgroundImage: `url(${moonlitMode ? japaneseMoonlit : japaneseBackground})` }}
+        className="min-h-screen flex items-center justify-center relative bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${japaneseBackground})` }}
       >
-        <div className="absolute inset-0 bg-black/5"></div>
-        
-        {/* Clickable Moon Area - positioned over the moon in the painting */}
-        <div 
-          className="absolute top-32 left-1/3 w-12 h-12 rounded-full cursor-pointer hover:scale-125 transition-transform duration-300 z-20"
-          onClick={() => {
-            console.log("Moon clicked! Current mode:", moonlitMode);
-            setMoonlitMode(!moonlitMode);
-          }}
-          title="Click the moon"
-          style={{ 
-            background: 'radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%)',
-            border: '1px solid rgba(255,255,255,0.3)'
-          }}
-        ></div>
-        
+        <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-10 text-center px-6">
-          <h1 className={`font-heading text-6xl md:text-8xl font-bold mb-4 tracking-wide drop-shadow-md transition-colors duration-1000 ${moonlitMode ? 'text-blue-100' : 'text-ink-black'}`}>
+          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
             Kazuki Yamakawa
           </h1>
-          <p className={`font-body text-xl md:text-2xl transition-colors duration-1000 ${moonlitMode ? 'text-blue-200/90' : 'text-foreground/80'}`}>
+          <p className="font-body text-xl md:text-2xl text-foreground/80">
             Writer • Musician
           </p>
         </div>
@@ -98,14 +70,8 @@ const Index = () => {
       {/* Content Section */}
       <section className="min-h-screen relative bg-background">
         {/* Book Announcement */}
-        <div className="container mx-auto px-6 py-20 relative">
-          {/* Painting Background Animation */}
-          <div 
-            className={`painting-background ${showPainting ? 'animate' : ''}`}
-            style={{ backgroundImage: `url(${childrenHillBackground})` }}
-          ></div>
-          
-          <ScrollFadeUp id="book-announcement" className="text-center mb-16 relative z-10">
+        <div className="container mx-auto px-6 py-20">
+          <ScrollFadeUp id="book-announcement" className="text-center mb-16">
             <h2 className="font-heading text-3xl md:text-5xl mb-4" style={{ color: '#2d1b1b' }}>
               Book One of The Parable Trilogy
             </h2>
