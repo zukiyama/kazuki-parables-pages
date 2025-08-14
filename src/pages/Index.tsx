@@ -12,6 +12,7 @@ const Index = () => {
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
   const [showPainting, setShowPainting] = useState(false);
+  const [moonlitMode, setMoonlitMode] = useState(false);
 
   const images = [officeView, playgroundScene, kyotoTvShop];
 
@@ -64,15 +65,23 @@ const Index = () => {
       
       {/* Hero Section with Japanese Painting */}
       <section 
-        className="min-h-screen flex items-center justify-center relative bg-cover bg-center bg-no-repeat"
+        className={`min-h-screen flex items-center justify-center relative bg-cover bg-center bg-no-repeat transition-all duration-1000 ${moonlitMode ? 'moonlit-scene' : ''}`}
         style={{ backgroundImage: `url(${japaneseBackground})` }}
       >
-        <div className="absolute inset-0 bg-black/10"></div>
+        <div className={`absolute inset-0 transition-all duration-1000 ${moonlitMode ? 'bg-indigo-900/70' : 'bg-black/10'}`}></div>
+        
+        {/* Clickable Moon Area */}
+        <div 
+          className="absolute top-20 right-32 w-16 h-16 rounded-full cursor-pointer hover:scale-110 transition-transform duration-300 z-20"
+          onClick={() => setMoonlitMode(!moonlitMode)}
+          title="Click the moon"
+        ></div>
+        
         <div className="relative z-10 text-center px-6">
-          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
+          <h1 className={`font-heading text-6xl md:text-8xl font-bold mb-4 tracking-wide drop-shadow-md transition-colors duration-1000 ${moonlitMode ? 'text-blue-100' : 'text-ink-black'}`}>
             Kazuki Yamakawa
           </h1>
-          <p className="font-body text-xl md:text-2xl text-foreground/80">
+          <p className={`font-body text-xl md:text-2xl transition-colors duration-1000 ${moonlitMode ? 'text-blue-200/90' : 'text-foreground/80'}`}>
             Writer • Musician
           </p>
         </div>

@@ -225,3 +225,19 @@
 .painting-background.animate {
   animation: painting-reveal 3s ease-out forwards;
 }
+
+.moonlit-scene {
+  filter: hue-rotate(200deg) saturate(0.8) brightness(0.6);
+}
+
+.moonlit-scene::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 85% 25%, rgba(220, 220, 255, 0.3) 0%, rgba(30, 40, 80, 0.7) 40%, rgba(10, 15, 40, 0.9) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
