@@ -5,14 +5,13 @@ import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import playgroundScene from "@/assets/playground-scene.jpg";
 import officeView from "@/assets/office-window-view.jpg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
-import boyGiantShadow from "@/assets/boy-giant-shadow.jpg";
 
 const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
 
-  const images = [officeView, boyGiantShadow, kyotoTvShop];
+  const images = [officeView, playgroundScene, kyotoTvShop];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,20 +52,16 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-        {/* Background painting animation */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat painting-reveal"
-          style={{ backgroundImage: `url(${japaneseBackground})` }}
-        >
-          <div className="absolute inset-0 bg-black/10"></div>
-        </div>
-        
+      <section 
+        className="min-h-screen flex items-center justify-center relative bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${japaneseBackground})` }}
+      >
+        <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-10 text-center px-6">
-          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md name-appear">
+          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
             Kazuki Yamakawa
           </h1>
-          <p className="font-body text-xl md:text-2xl text-foreground/80 writer-musician-fade">
+          <p className="font-body text-xl md:text-2xl text-foreground/80">
             Writer • Musician
           </p>
         </div>
@@ -83,7 +78,7 @@ const Index = () => {
             <h3 className="font-heading text-4xl md:text-6xl font-bold text-primary">
               KAIJU
             </h3>
-            <p className="font-handwriting text-3xl md:text-4xl text-primary mt-6 inline-block rotate-[-2deg] handwriting-write magical-glimmer">
+            <p className="font-handwriting text-3xl md:text-4xl text-primary mt-6 inline-block rotate-[-2deg] handwriting-write">
               A metaphysical fantasy
             </p>
             <p className="font-body text-xl text-muted-foreground mt-6">
