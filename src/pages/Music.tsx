@@ -20,7 +20,7 @@ import floatingToysAlbum from "@/assets/floating-toys-album.jpg";
 const albums = [
   {
     id: 1,
-    title: "Magical Secret Garden",
+    title: "The Centre of the World",
     cover: magicalGardenAlbumNew,
     background: desertKidsBg,
     theme: "stately-home",
