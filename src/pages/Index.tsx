@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
-import playgroundScene from "@/assets/playground-scene.jpg";
+import officeView from "@/assets/office-window-view.jpg";
 import boysSummerField from "@/assets/boys-summer-field-1970s.jpg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
 
@@ -11,7 +11,7 @@ const Index = () => {
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
 
-  const images = [boysSummerField, playgroundScene, kyotoTvShop];
+  const images = [officeView, boysSummerField, kyotoTvShop];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,7 +53,7 @@ const Index = () => {
       
       {/* Hero Section with Japanese Painting */}
       <section 
-        className="min-h-screen flex items-center justify-center relative bg-center bg-no-repeat"
+        className="h-screen flex items-center justify-center relative bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${japaneseBackground})`, backgroundSize: 'contain', backgroundPosition: 'center center' }}
       >
         <div className="absolute inset-0 bg-black/10"></div>
@@ -102,8 +102,8 @@ const Index = () => {
               </div>
             ))}
             
-            {/* Floating Quote - appears over first two images */}
-            {showQuote && currentImage !== 2 && (
+            {/* Floating Quote - appears over first two images, fades out before third */}
+            {showQuote && currentImage === 0 && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <ScrollFadeUp id="floating-quote" delay={500}>
                   <blockquote className="literary-quote text-3xl md:text-4xl text-white/90 leading-relaxed animate-float animate-quote-expand">
