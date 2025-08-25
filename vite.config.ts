@@ -6,6 +6,10 @@ import { componentTagger } from "lovable-tagger";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   base: mode === 'production' ? '/kazuki-yamakawa-website/' : '/',
+  build: {
+    outDir: mode === 'production' ? '.' : 'dist',
+    emptyOutDir: false,
+  },
   server: {
     host: "::",
     port: 8080,
