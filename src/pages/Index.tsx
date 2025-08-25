@@ -3,7 +3,7 @@ import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import playgroundScene from "@/assets/playground-scene.jpg";
-import officeView from "@/assets/office-window-view.jpg";
+import boysSummerField from "@/assets/boys-summer-field-1970s.jpg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
 
 const Index = () => {
@@ -11,7 +11,7 @@ const Index = () => {
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
 
-  const images = [officeView, playgroundScene, kyotoTvShop];
+  const images = [boysSummerField, playgroundScene, kyotoTvShop];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,8 +53,8 @@ const Index = () => {
       
       {/* Hero Section with Japanese Painting */}
       <section 
-        className="min-h-screen flex items-center justify-center relative bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${japaneseBackground})` }}
+        className="min-h-screen flex items-center justify-center relative bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${japaneseBackground})`, backgroundSize: 'contain', backgroundPosition: 'center center' }}
       >
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-10 text-center px-6">
@@ -106,7 +106,7 @@ const Index = () => {
             {showQuote && currentImage !== 2 && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <ScrollFadeUp id="floating-quote" delay={500}>
-                  <blockquote className="literary-quote text-2xl md:text-3xl text-white/90 leading-relaxed animate-float animate-quote-expand">
+                  <blockquote className="literary-quote text-3xl md:text-4xl text-white/90 leading-relaxed animate-float animate-quote-expand">
                     <span className="font-bold text-3xl">Feelings</span> are the{" "}
                     <span className="font-semibold text-2xl">thoughts</span> of the{" "}
                     <span className="font-bold text-4xl">heart</span>.
