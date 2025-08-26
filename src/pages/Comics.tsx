@@ -72,7 +72,7 @@ const Comics = () => {
           </div>
           
           {/* Soul Tied */}
-          <div className={`mb-16 flex flex-col items-center text-center scroll-slide-left ${visibleElements.has("soul-tied") ? "visible" : ""}`} data-scroll-animation="soul-tied">
+          <div className={`mb-16 flex flex-col items-center text-center scroll-slide-right ${visibleElements.has("soul-tied") ? "visible" : ""}`} data-scroll-animation="soul-tied">
             <div className="relative group mb-6">
               <img 
                 src={soulTiedCover} 

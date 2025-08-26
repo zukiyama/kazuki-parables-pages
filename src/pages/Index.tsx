@@ -52,15 +52,14 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
-      <section className="h-screen flex items-center justify-center relative overflow-hidden bg-background">
+      <section className="h-screen flex items-center justify-center relative overflow-hidden">
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-contain"
         />
-        <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-10 text-center px-6">
-          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md animate-slide-in-from-left">
+          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
             Kazuki Yamakawa
           </h1>
           <p className="font-body text-xl md:text-2xl text-foreground/80 animate-fade-in-delayed">
@@ -104,32 +103,20 @@ const Index = () => {
               </div>
             ))}
             
-            {/* Floating Quote - appears over first image, then drifts apart when fading to second */}
-            {showQuote && currentImage === 0 && (
+            {/* Floating Quote - appears over first image, stays during second, fades during second */}
+            {showQuote && (currentImage === 0 || currentImage === 1) && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <ScrollFadeUp id="floating-quote" delay={500}>
-                  <blockquote className="literary-quote text-white/90 leading-relaxed animate-float animate-quote-expand">
-                     <div className="text-6xl md:text-7xl font-bold mb-2">Feelings</div>
-                     <div className="text-5xl md:text-6xl font-semibold">are the thoughts of the heart.</div>
-                   </blockquote>
-                </ScrollFadeUp>
-              </div>
-            )}
-            
-            {/* Quote drift animation when transitioning to second image */}
-            {showQuote && currentImage === 1 && (
-              <div className="absolute top-1/4 right-1/4 max-w-md">
-                <div className="animate-drift-apart opacity-0">
-                  <blockquote className="literary-quote text-4xl md:text-5xl text-white/90 leading-relaxed">
-                    <span className="font-bold text-4xl animate-drift-1">Feelings</span>{" "}
-                    <span className="font-semibold text-3xl animate-drift-2">are</span>{" "}
-                    <span className="font-semibold text-3xl animate-drift-3">the</span>{" "}
-                    <span className="font-semibold text-3xl animate-drift-4">thoughts</span>{" "}
-                    <span className="font-semibold text-3xl animate-drift-5">of</span>{" "}
-                    <span className="font-semibold text-3xl animate-drift-6">the</span>{" "}
-                    <span className="font-bold text-5xl animate-drift-7">heart</span>.
+                  <blockquote className={`literary-quote text-4xl md:text-5xl text-white/90 leading-relaxed animate-float ${currentImage === 1 ? 'animate-slow-fade-out' : ''}`}>
+                    <span className="font-bold text-4xl">Feelings</span>{" "}
+                    <span className="font-semibold text-3xl">are</span>{" "}
+                    <span className="font-semibold text-3xl">the</span>{" "}
+                    <span className="font-semibold text-3xl">thoughts</span>{" "}
+                    <span className="font-semibold text-3xl">of</span>{" "}
+                    <span className="font-semibold text-3xl">the</span>{" "}
+                    <span className="font-bold text-5xl">heart</span>.
                   </blockquote>
-                </div>
+                </ScrollFadeUp>
               </div>
             )}
             
