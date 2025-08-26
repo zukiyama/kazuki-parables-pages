@@ -41,7 +41,7 @@ const Index = () => {
           const next = (prev + 1) % images.length;
           return next;
         });
-      }, currentImage === 0 ? 18000 : currentImage === 1 ? 12000 : 60000); // First: 18s, Second: 12s, Third: 60s
+      }, currentImage === 0 ? 12600 : currentImage === 1 ? 8400 : 42000); // First: 12.6s, Second: 8.4s, Third: 42s (30% faster)
       
       return () => clearInterval(interval);
     }
@@ -53,14 +53,32 @@ const Index = () => {
       
       {/* Hero Section with Japanese Painting */}
       <section className="h-screen flex items-center justify-center relative overflow-hidden bg-background">
+        {/* Wooden frame top */}
+        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-amber-900 via-amber-700 to-amber-800 shadow-lg z-10" 
+             style={{
+               background: 'linear-gradient(180deg, #8B4513 0%, #A0522D 50%, #654321 100%)',
+               boxShadow: 'inset 0 -4px 8px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.2)'
+             }}>
+          <div className="h-full bg-gradient-to-r from-transparent via-black/10 to-transparent"></div>
+        </div>
+        
+        {/* Wooden frame bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-900 via-amber-700 to-amber-800 shadow-lg z-10"
+             style={{
+               background: 'linear-gradient(0deg, #8B4513 0%, #A0522D 50%, #654321 100%)',
+               boxShadow: 'inset 0 4px 8px rgba(0,0,0,0.3), 0 -4px 8px rgba(0,0,0,0.2)'
+             }}>
+          <div className="h-full bg-gradient-to-r from-transparent via-black/10 to-transparent"></div>
+        </div>
+        
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-contain object-center"
         />
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative z-10 text-center px-6">
-          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md animate-slide-in-from-left">
+        <div className="relative z-20 text-center px-6">
+          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
             Kazuki Yamakawa
           </h1>
           <p className="font-body text-xl md:text-2xl text-foreground/80 animate-fade-in-delayed">
@@ -104,30 +122,13 @@ const Index = () => {
               </div>
             ))}
             
-            {/* Floating Quote - appears over first image, then drifts apart when fading to second */}
-            {showQuote && currentImage === 0 && (
+            {/* Floating Quote - consistent 2-line format throughout first two images */}
+            {showQuote && (currentImage === 0 || currentImage === 1) && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
-                <ScrollFadeUp id="floating-quote" delay={500}>
-                  <blockquote className="literary-quote text-white/90 leading-relaxed animate-float animate-quote-expand">
-                     <div className="text-6xl md:text-7xl font-bold mb-2">Feelings</div>
-                     <div className="text-5xl md:text-6xl font-semibold">are the thoughts of the heart.</div>
-                   </blockquote>
-                </ScrollFadeUp>
-              </div>
-            )}
-            
-            {/* Quote drift animation when transitioning to second image */}
-            {showQuote && currentImage === 1 && (
-              <div className="absolute top-1/4 right-1/4 max-w-md">
-                <div className="animate-drift-apart opacity-0">
-                  <blockquote className="literary-quote text-4xl md:text-5xl text-white/90 leading-relaxed">
-                    <span className="font-bold text-4xl animate-drift-1">Feelings</span>{" "}
-                    <span className="font-semibold text-3xl animate-drift-2">are</span>{" "}
-                    <span className="font-semibold text-3xl animate-drift-3">the</span>{" "}
-                    <span className="font-semibold text-3xl animate-drift-4">thoughts</span>{" "}
-                    <span className="font-semibold text-3xl animate-drift-5">of</span>{" "}
-                    <span className="font-semibold text-3xl animate-drift-6">the</span>{" "}
-                    <span className="font-bold text-5xl animate-drift-7">heart</span>.
+                <div className={`transition-opacity duration-[5000ms] ${currentImage === 0 ? 'opacity-100' : 'opacity-0'}`}>
+                  <blockquote className="literary-quote text-white/90 leading-relaxed">
+                    <div className="text-4xl md:text-5xl font-bold">Feelings</div>
+                    <div className="text-3xl md:text-4xl font-semibold">are the thoughts of the heart.</div>
                   </blockquote>
                 </div>
               </div>

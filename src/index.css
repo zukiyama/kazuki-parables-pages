@@ -288,53 +288,7 @@
   transform: translateX(0);
 }
 
-/* Book cover effects */
-.book-cover-container {
-  position: relative;
-  perspective: 1000px;
-  transform-style: preserve-3d;
-}
-
-.book-cover-effect {
-  position: relative;
-  z-index: 3;
-  transform: rotateY(-10deg) rotateX(5deg);
-  border: 2px solid rgba(255,255,255,0.2);
-}
-
-.book-spine {
-  position: absolute;
-  right: -8px;
-  top: 2px;
-  bottom: 2px;
-  width: 20px;
-  background: linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
-  border-radius: 0 4px 4px 0;
-  z-index: 2;
-  transform: rotateY(-45deg);
-}
-
-.book-pages {
-  position: absolute;
-  right: -6px;
-  top: 4px;
-  bottom: 4px;
-  width: 15px;
-  background: #f8f8f8;
-  border-radius: 0 2px 2px 0;
-  z-index: 1;
-  transform: rotateY(-30deg);
-  box-shadow: inset -2px 0 4px rgba(0,0,0,0.2);
-}
-
-.book-title-overlay {
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
-  right: 8px;
-  z-index: 4;
-  text-align: center;
-}
+/* Animation utilities and effects */
 
 .hand-drawn-text {
   font-family: 'Comic Sans MS', cursive, sans-serif;
