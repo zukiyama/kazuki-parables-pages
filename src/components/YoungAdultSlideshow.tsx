@@ -53,9 +53,11 @@ export const YoungAdultSlideshow = () => {
           {/* Book Cover */}
           <div className={book.layout === "cover-right" ? "lg:col-start-2" : ""}>
             <img 
+              key={`cover-${currentBook}`}
               src={book.cover} 
               alt={book.title}
-              className="w-full max-w-sm mx-auto aspect-[3/4] object-cover rounded-lg shadow-lg"
+              className="w-full max-w-sm mx-auto aspect-[3/4] object-cover rounded-lg shadow-lg transition-opacity duration-200"
+              loading="eager"
             />
           </div>
           

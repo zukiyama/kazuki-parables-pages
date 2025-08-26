@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Navigation from "@/components/Navigation";
 import { CharacterSlideshow } from "@/components/CharacterSlideshow";
 import { YoungAdultSlideshow } from "@/components/YoungAdultSlideshow";
+import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
@@ -119,10 +120,11 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <img 
-                    src={kaijuCover} 
-                    alt="KAIJU Book Cover"
-                    className="w-full max-w-md mx-auto aspect-[3/4] object-cover rounded-lg shadow-2xl"
+                  <BookCoverSlideshow 
+                    covers={[
+                      { image: kaijuCover, alt: "KAIJU Book Cover" }
+                    ]}
+                    title="KAIJU"
                   />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
@@ -153,8 +155,18 @@ const Writing = () => {
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className={`text-white order-2 lg:order-1 transition-all duration-1000 delay-300 ${
+                <div className={`order-1 transition-all duration-1000 delay-300 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
+                }`}>
+                  <BookCoverSlideshow 
+                    covers={[
+                      { image: hoaxCover, alt: "HOAX Book Cover" }
+                    ]}
+                    title="HOAX"
+                  />
+                </div>
+                <div className={`text-white order-2 transition-all duration-1000 delay-500 ${
+                  visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
                     HOAX
@@ -164,15 +176,6 @@ const Writing = () => {
                       A writer named Peter Carlyle wrote a book, then received a mysterious phone call. When he drove to the location, it felt like he was living inside his own story. Set in a strange commune in the Australian outback, where fairy lights drape over entrance arches and secrets hide in the vegetable patches.
                     </p>
                   </div>
-                </div>
-                <div className={`order-1 lg:order-2 transition-all duration-1000 delay-500 ${
-                  visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
-                }`}>
-                  <img 
-                    src={hoaxCover} 
-                    alt="HOAX Book Cover"
-                    className="w-full max-w-md mx-auto aspect-[3/4] object-cover rounded-lg shadow-2xl"
-                  />
                 </div>
               </div>
             </div>
@@ -187,10 +190,11 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('siphons') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <img 
-                    src={siphonsCover} 
-                    alt="SIPHONS Book Cover"
-                    className="w-full max-w-md mx-auto aspect-[3/4] object-cover rounded-lg shadow-2xl"
+                  <BookCoverSlideshow 
+                    covers={[
+                      { image: siphonsCover, alt: "SIPHONS Book Cover" }
+                    ]}
+                    title="SIPHONS"
                   />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
@@ -215,8 +219,18 @@ const Writing = () => {
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className={`text-white order-2 lg:order-1 transition-all duration-1000 delay-300 ${
-                  visibleSections.has('oba') ? 'opacity-100 -translate-x-0' : 'opacity-0 -translate-x-20'
+                <div className={`order-1 transition-all duration-1000 delay-300 ${
+                  visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
+                }`}>
+                  <BookCoverSlideshow 
+                    covers={[
+                      { image: obaCover, alt: "OBA Book Cover" }
+                    ]}
+                    title="OBA"
+                  />
+                </div>
+                <div className={`text-white order-2 transition-all duration-1000 delay-500 ${
+                  visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
                     OBA
@@ -226,15 +240,6 @@ const Writing = () => {
                       Set in Zimbabwe, this story follows a man with an African name who returns to his hometown at the edge of a receding jungle. He's there to teach as a speech therapist, working with a young girl in his home village, but ends up learning more from her than he could ever teach.
                     </p>
                   </div>
-                </div>
-                <div className={`order-1 lg:order-2 transition-all duration-1000 delay-500 ${
-                  visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
-                }`}>
-                  <img 
-                    src={obaCover} 
-                    alt="OBA Book Cover"
-                    className="w-full max-w-md mx-auto aspect-[3/4] object-cover rounded-lg shadow-2xl"
-                  />
                 </div>
               </div>
             </div>

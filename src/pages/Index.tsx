@@ -34,14 +34,14 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Auto-dissolve between images - TV shop stays longer (30 seconds), others 12 seconds
+    // Auto-dissolve between images with proper timing for quote
     if (showMagazine) {
       const interval = setInterval(() => {
         setCurrentImage(prev => {
           const next = (prev + 1) % images.length;
           return next;
         });
-      }, currentImage === 2 ? 30000 : 12000); // TV shop image stays for 30 seconds
+      }, currentImage === 0 ? 8000 : currentImage === 1 ? 4000 : 30000); // First: 8s, Second: 4s, Third: 30s
       
       return () => clearInterval(interval);
     }
@@ -52,7 +52,7 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
-      <section className="h-screen flex items-center justify-center relative overflow-hidden">
+      <section className="h-screen flex items-center justify-center relative overflow-hidden bg-background">
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
@@ -104,16 +104,33 @@ const Index = () => {
               </div>
             ))}
             
-            {/* Floating Quote - appears over first two images, fades out before third */}
+            {/* Floating Quote - appears over first image, then drifts apart when fading to second */}
             {showQuote && currentImage === 0 && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <ScrollFadeUp id="floating-quote" delay={500}>
-                  <blockquote className="literary-quote text-3xl md:text-4xl text-white/90 leading-relaxed animate-float animate-quote-expand">
-                    <span className="font-bold text-3xl">Feelings</span> are the{" "}
-                    <span className="font-semibold text-2xl">thoughts</span> of the{" "}
-                    <span className="font-bold text-4xl">heart</span>.
+                  <blockquote className="literary-quote text-4xl md:text-5xl text-white/90 leading-relaxed animate-float animate-quote-expand">
+                    <span className="font-bold text-4xl">Feelings</span> are the{" "}
+                    <span className="font-semibold text-3xl">thoughts</span> of the{" "}
+                    <span className="font-bold text-5xl">heart</span>.
                   </blockquote>
                 </ScrollFadeUp>
+              </div>
+            )}
+            
+            {/* Quote drift animation when transitioning to second image */}
+            {showQuote && currentImage === 1 && (
+              <div className="absolute top-1/4 right-1/4 max-w-md">
+                <div className="animate-drift-apart opacity-0">
+                  <blockquote className="literary-quote text-4xl md:text-5xl text-white/90 leading-relaxed">
+                    <span className="font-bold text-4xl animate-drift-1">Feelings</span>{" "}
+                    <span className="font-semibold text-3xl animate-drift-2">are</span>{" "}
+                    <span className="font-semibold text-3xl animate-drift-3">the</span>{" "}
+                    <span className="font-semibold text-3xl animate-drift-4">thoughts</span>{" "}
+                    <span className="font-semibold text-3xl animate-drift-5">of</span>{" "}
+                    <span className="font-semibold text-3xl animate-drift-6">the</span>{" "}
+                    <span className="font-bold text-5xl animate-drift-7">heart</span>.
+                  </blockquote>
+                </div>
               </div>
             )}
             

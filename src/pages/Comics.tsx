@@ -59,6 +59,19 @@ const Comics = () => {
             </div>
           </div>
           
+          {/* Division and Coming Soon Text */}
+          <div className="text-center mb-16">
+            <div className="h-px bg-gradient-to-r from-transparent via-muted-foreground to-transparent mb-8"></div>
+            <h2 className="font-heading text-4xl font-bold text-ink-black mb-4" style={{
+              fontFamily: 'serif',
+              textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+              letterSpacing: '0.1em'
+            }}>
+              COMING IN 2026
+            </h2>
+            <div className="h-px bg-gradient-to-r from-transparent via-muted-foreground to-transparent"></div>
+          </div>
+          
           {/* Soul Tied */}
           <div className="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="order-2 lg:order-1">
