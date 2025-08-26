@@ -41,7 +41,7 @@ const Index = () => {
           const next = (prev + 1) % images.length;
           return next;
         });
-      }, currentImage === 0 ? 12000 : currentImage === 1 ? 8000 : 45000); // First: 12s, Second: 8s, Third: 45s
+      }, currentImage === 0 ? 18000 : currentImage === 1 ? 12000 : 60000); // First: 18s, Second: 12s, Third: 60s
       
       return () => clearInterval(interval);
     }
@@ -52,11 +52,11 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
-      <section className="h-screen flex items-center justify-center relative overflow-hidden">
+      <section className="h-screen flex items-center justify-center relative overflow-hidden bg-background">
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-10 text-center px-6">
@@ -108,10 +108,9 @@ const Index = () => {
             {showQuote && currentImage === 0 && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <ScrollFadeUp id="floating-quote" delay={500}>
-                  <blockquote className="literary-quote text-5xl md:text-6xl text-white/90 leading-relaxed animate-float animate-quote-expand">
-                     <span className="font-bold text-5xl">Feelings</span> are the{" "}
-                     <span className="font-semibold text-4xl">thoughts</span> of the{" "}
-                     <span className="font-bold text-6xl">heart</span>.
+                  <blockquote className="literary-quote text-white/90 leading-relaxed animate-float animate-quote-expand">
+                     <div className="text-6xl md:text-7xl font-bold mb-2">Feelings</div>
+                     <div className="text-5xl md:text-6xl font-semibold">are the thoughts of the heart.</div>
                    </blockquote>
                 </ScrollFadeUp>
               </div>

@@ -339,20 +339,26 @@
 .hand-drawn-text {
   font-family: 'Comic Sans MS', cursive, sans-serif;
   transform: rotate(-1deg);
-  text-shadow: 2px 2px 0px rgba(0,0,0,0.8);
-  letter-spacing: 0.05em;
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+  letter-spacing: 0.02em;
   position: relative;
+  filter: blur(0.3px);
+  opacity: 0.9;
 }
 
 .hand-drawn-line {
-  height: 3px;
-  background: repeating-linear-gradient(
+  height: 2px;
+  background: linear-gradient(
     90deg,
-    #2d1b1b 0px,
-    #2d1b1b 10px,
-    transparent 10px,
-    transparent 15px
+    rgba(45, 27, 27, 0.6) 0%,
+    rgba(45, 27, 27, 0.8) 20%,
+    rgba(45, 27, 27, 0.5) 40%,
+    rgba(45, 27, 27, 0.7) 60%,
+    rgba(45, 27, 27, 0.4) 80%,
+    rgba(45, 27, 27, 0.6) 100%
   );
   position: relative;
-  transform: rotate(-0.5deg);
+  transform: rotate(-0.3deg);
+  filter: blur(0.2px);
+  max-width: 80px;
 }
