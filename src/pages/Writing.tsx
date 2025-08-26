@@ -3,6 +3,7 @@ import Navigation from "@/components/Navigation";
 import { CharacterSlideshow } from "@/components/CharacterSlideshow";
 import { YoungAdultSlideshow } from "@/components/YoungAdultSlideshow";
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
+import { ParableImageSelector } from "@/components/ParableImageSelector";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
@@ -120,12 +121,7 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <BookCoverSlideshow 
-                    covers={[
-                      { image: kaijuCover, alt: "KAIJU Book Cover" }
-                    ]}
-                    title="KAIJU"
-                  />
+                  <ParableImageSelector />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'

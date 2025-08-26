@@ -53,28 +53,10 @@ const Index = () => {
       
       {/* Hero Section with Japanese Painting */}
       <section className="h-screen flex items-center justify-center relative overflow-hidden bg-background">
-        {/* Wooden frame top */}
-        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-amber-900 via-amber-700 to-amber-800 shadow-lg z-10" 
-             style={{
-               background: 'linear-gradient(180deg, #8B4513 0%, #A0522D 50%, #654321 100%)',
-               boxShadow: 'inset 0 -4px 8px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.2)'
-             }}>
-          <div className="h-full bg-gradient-to-r from-transparent via-black/10 to-transparent"></div>
-        </div>
-        
-        {/* Wooden frame bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-900 via-amber-700 to-amber-800 shadow-lg z-10"
-             style={{
-               background: 'linear-gradient(0deg, #8B4513 0%, #A0522D 50%, #654321 100%)',
-               boxShadow: 'inset 0 4px 8px rgba(0,0,0,0.3), 0 -4px 8px rgba(0,0,0,0.2)'
-             }}>
-          <div className="h-full bg-gradient-to-r from-transparent via-black/10 to-transparent"></div>
-        </div>
-        
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-contain object-center"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-20 text-center px-6">
@@ -115,17 +97,20 @@ const Index = () => {
                 key={index}
                 className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[7000ms] ease-in-out ${
                   index === currentImage ? "opacity-100" : "opacity-0"
-                } ${index === 1 ? "animate-slow-zoom-to-sky" : "animate-slow-zoom"}`}
+                } ${index === 1 ? "animate-slow-zoom-meteor" : "animate-slow-zoom"}`}
                 style={{ backgroundImage: `url(${image})` }}
               >
                 <div className="absolute inset-0 bg-black/20"></div>
               </div>
             ))}
             
-            {/* Floating Quote - consistent 2-line format throughout first two images */}
+            {/* Floating Quote - stays visible through both first two images */}
             {showQuote && (currentImage === 0 || currentImage === 1) && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
-                <div className={`transition-opacity duration-[5000ms] ${currentImage === 0 ? 'opacity-100' : 'opacity-0'}`}>
+                <div className={`transition-opacity duration-[3000ms] ${
+                  currentImage === 0 ? 'opacity-100' : 
+                  currentImage === 1 ? 'opacity-100' : 'opacity-0'
+                }`}>
                   <blockquote className="literary-quote text-white/90 leading-relaxed">
                     <div className="text-4xl md:text-5xl font-bold">Feelings</div>
                     <div className="text-3xl md:text-4xl font-semibold">are the thoughts of the heart.</div>

@@ -79,8 +79,12 @@ export const CharacterSlideshow = () => {
 
   const character = characters[currentCharacter];
 
+  const nextCharacter = () => {
+    setCurrentCharacter((prev) => (prev + 1) % characters.length);
+  };
+
   return (
-    <div className="relative w-full h-96 rounded-lg overflow-hidden shadow-lg">
+    <div className="relative w-full h-96 rounded-lg overflow-hidden shadow-lg cursor-pointer" onClick={nextCharacter}>
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center"
