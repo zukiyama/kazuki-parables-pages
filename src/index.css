@@ -213,6 +213,31 @@
 @keyframes drift-6 { 0% { transform: translate(0, 0); opacity: 1; } 100% { transform: translate(20px, 15px); opacity: 0; } }
 @keyframes drift-7 { 0% { transform: translate(0, 0); opacity: 1; } 100% { transform: translate(-5px, -25px); opacity: 0; } }
 
+@keyframes slide-in-from-left {
+  0% { transform: translateX(-100px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fade-in-delayed {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slow-zoom-to-sky {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15) translateY(-10px); }
+}
+
+@keyframes slide-in-from-left-scroll {
+  0% { transform: translateX(-100px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-in-from-right-scroll {
+  0% { transform: translateX(100px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
 .animate-quote-expand {
   animation: quote-expand 1s ease-out;
 }
@@ -228,6 +253,40 @@
 .animate-drift-5 { animation: drift-5 2s ease-out 0.4s; }
 .animate-drift-6 { animation: drift-6 2s ease-out 0.5s; }
 .animate-drift-7 { animation: drift-7 2s ease-out 0.6s; }
+
+.animate-slide-in-from-left {
+  animation: slide-in-from-left 1.2s ease-out;
+}
+
+.animate-fade-in-delayed {
+  animation: fade-in-delayed 1.5s ease-out 0.8s both;
+}
+
+.animate-slow-zoom-to-sky {
+  animation: slow-zoom-to-sky 120s ease-out infinite alternate;
+}
+
+.scroll-slide-left {
+  opacity: 0;
+  transform: translateX(-100px);
+  transition: all 0.8s ease-out;
+}
+
+.scroll-slide-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-slide-right {
+  opacity: 0;
+  transform: translateX(100px);
+  transition: all 0.8s ease-out;
+}
+
+.scroll-slide-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
 
 /* Book cover effects */
 .book-cover-container {
@@ -275,4 +334,25 @@
   right: 8px;
   z-index: 4;
   text-align: center;
+}
+
+.hand-drawn-text {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  transform: rotate(-1deg);
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.8);
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+.hand-drawn-line {
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    #2d1b1b 0px,
+    #2d1b1b 10px,
+    transparent 10px,
+    transparent 15px
+  );
+  position: relative;
+  transform: rotate(-0.5deg);
 }

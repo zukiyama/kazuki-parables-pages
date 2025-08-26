@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
+import { useScrollAnimation } from "@/components/ScrollAnimations";
 import mangaSketchesBackground from "@/assets/manga-sketches-background.jpg";
 
 import godOfLiesCover from "@/assets/god-of-lies-cover.jpg";
@@ -7,7 +8,7 @@ import soulTiedCover from "@/assets/soul-tied-cover.jpg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
 
 const Comics = () => {
-  // Removed scroll animation effect
+  const visibleElements = useScrollAnimation();
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -61,56 +62,50 @@ const Comics = () => {
           
           {/* Division and Coming Soon Text */}
           <div className="text-center mb-16">
-            <div className="h-px bg-gradient-to-r from-transparent via-muted-foreground to-transparent mb-8"></div>
-            <h2 className="font-heading text-4xl font-bold text-ink-black mb-4" style={{
-              fontFamily: 'serif',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-              letterSpacing: '0.1em'
-            }}>
-              COMING IN 2026
-            </h2>
-            <div className="h-px bg-gradient-to-r from-transparent via-muted-foreground to-transparent"></div>
+            <div className="flex items-center justify-center gap-6">
+              <div className="hand-drawn-line flex-1"></div>
+              <h2 className="hand-drawn-text text-5xl font-bold text-ink-black">
+                2026
+              </h2>
+              <div className="hand-drawn-line flex-1"></div>
+            </div>
           </div>
           
           {/* Soul Tied */}
-          <div className="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div className="order-2 lg:order-1">
+          <div className="mb-16 flex flex-col items-center text-center scroll-slide-left" data-scroll-animation="soul-tied">
+            <div className="relative group mb-6">
+              <img 
+                src={soulTiedCover} 
+                alt="Soul Tied manga cover"
+                className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
+            </div>
+            <div>
               <h2 className="font-heading text-3xl font-bold text-ink-black mb-4">
                 Soul Tied
               </h2>
-              <p className="font-body text-muted-foreground leading-relaxed">
+              <p className="font-body text-muted-foreground leading-relaxed max-w-2xl">
                 [Placeholder text] Two men, bound by fate yet worlds apart in their choices. One embraces chaos with casual indifference, while the other fights desperately to maintain control. Their intertwined destinies force them to confront what it means to be truly connected to another soul.
               </p>
-            </div>
-            <div className="order-1 lg:order-2">
-              <div className="relative group">
-                <img 
-                  src={soulTiedCover} 
-                  alt="Soul Tied manga cover"
-                  className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
-              </div>
             </div>
           </div>
           
           {/* The Burden */}
-          <div className="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div className="order-1">
-              <div className="relative group">
-                <img 
-                  src={theBurdenCover} 
-                  alt="The Burden manga cover"
-                  className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
-              </div>
+          <div className="mb-16 flex flex-col items-center text-center scroll-slide-right" data-scroll-animation="the-burden">
+            <div className="relative group mb-6">
+              <img 
+                src={theBurdenCover} 
+                alt="The Burden manga cover"
+                className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
             </div>
-            <div className="order-2">
+            <div>
               <h2 className="font-heading text-3xl font-bold text-ink-black mb-4">
                 The Burden
               </h2>
-              <p className="font-body text-muted-foreground leading-relaxed">
+              <p className="font-body text-muted-foreground leading-relaxed max-w-2xl">
                 [Placeholder text] A touching story about a young man who must care for his aging mother, exploring themes of family duty, sacrifice, and the weight of responsibility. As memories float between past and present, both son and mother navigate the delicate balance between independence and care.
               </p>
             </div>
