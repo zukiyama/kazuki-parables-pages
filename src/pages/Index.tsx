@@ -18,13 +18,13 @@ const Index = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
       
-      // Show magazine when scrolled past 80% of viewport
-      if (scrollY > viewportHeight * 0.8) {
+      // Show magazine when scrolled past 60% of viewport
+      if (scrollY > viewportHeight * 0.6) {
         setShowMagazine(true);
       }
       
-      // Show quote quickly when scrolled past 60% of viewport
-      if (scrollY > viewportHeight * 0.6) {
+      // Show quote when scrolled past 50% of viewport
+      if (scrollY > viewportHeight * 0.5) {
         setShowQuote(true);
       }
     };
@@ -34,14 +34,14 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Auto-dissolve between images with proper timing for quote
+    // Auto-dissolve between images with faster timing
     if (showMagazine) {
       const interval = setInterval(() => {
         setCurrentImage(prev => {
           const next = (prev + 1) % images.length;
           return next;
         });
-      }, currentImage === 0 ? 18000 : currentImage === 1 ? 12000 : 60000); // First: 18s, Second: 12s, Third: 60s
+      }, currentImage === 0 ? 12000 : currentImage === 1 ? 8000 : 40000); // First: 12s, Second: 8s, Third: 40s (30% faster)
       
       return () => clearInterval(interval);
     }
@@ -62,7 +62,7 @@ const Index = () => {
           <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
             Kazuki Yamakawa
           </h1>
-          <p className="font-body text-xl md:text-2xl text-foreground/80 animate-fade-in-delayed">
+          <p className="font-body text-xl md:text-2xl text-foreground/80 animate-fade-in">
             Writer • Musician
           </p>
         </div>
@@ -94,7 +94,7 @@ const Index = () => {
             {images.map((image, index) => (
               <div
                 key={index}
-                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[7000ms] ease-in-out ${
+                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[5000ms] ease-in-out ${
                   index === currentImage ? "opacity-100" : "opacity-0"
                 } ${index === 1 ? "animate-slow-zoom-to-sky" : "animate-slow-zoom"}`}
                 style={{ backgroundImage: `url(${image})` }}
@@ -105,18 +105,13 @@ const Index = () => {
             
             {/* Floating Quote - appears over first image, stays during second, fades during second */}
             {showQuote && (currentImage === 0 || currentImage === 1) && (
-              <div className="absolute top-1/4 right-1/4 max-w-md">
-                <ScrollFadeUp id="floating-quote" delay={500}>
-                  <blockquote className={`literary-quote text-4xl md:text-5xl text-white/90 leading-relaxed animate-float ${currentImage === 1 ? 'animate-slow-fade-out' : ''}`}>
-                    <span className="font-bold text-4xl">Feelings</span>{" "}
-                    <span className="font-semibold text-3xl">are</span>{" "}
-                    <span className="font-semibold text-3xl">the</span>{" "}
-                    <span className="font-semibold text-3xl">thoughts</span>{" "}
-                    <span className="font-semibold text-3xl">of</span>{" "}
-                    <span className="font-semibold text-3xl">the</span>{" "}
-                    <span className="font-bold text-5xl">heart</span>.
-                  </blockquote>
-                </ScrollFadeUp>
+              <div className="absolute top-1/4 right-1/4 max-w-lg">
+                <div className={`literary-quote text-3xl md:text-4xl text-white/90 leading-relaxed animate-float transition-opacity duration-[3000ms] ${currentImage === 1 ? 'opacity-30' : 'opacity-100'}`}>
+                  <div className="mb-2">
+                    <span className="font-bold">Feelings</span>{" "}
+                    <span className="font-semibold">are the thoughts of the heart</span>.
+                  </div>
+                </div>
               </div>
             )}
             
