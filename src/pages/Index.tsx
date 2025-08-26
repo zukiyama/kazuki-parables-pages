@@ -52,10 +52,12 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
-      <section 
-        className="h-screen flex items-center justify-center relative bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${japaneseBackground})`, backgroundSize: 'contain', backgroundPosition: 'center center' }}
-      >
+      <section className="h-screen flex items-center justify-center relative overflow-hidden">
+        <img 
+          src={japaneseBackground} 
+          alt="Japanese painting background" 
+          className="absolute inset-0 w-full h-full object-contain"
+        />
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-10 text-center px-6">
           <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
@@ -70,7 +72,7 @@ const Index = () => {
       {/* Content Section */}
       <section className="min-h-screen relative bg-background">
         {/* Book Announcement */}
-        <div className="container mx-auto px-6 py-20">
+        <div className="container mx-auto px-6 py-12">
           <ScrollFadeUp id="book-announcement" className="text-center mb-16">
             <h2 className="font-heading text-3xl md:text-5xl mb-4" style={{ color: '#2d1b1b' }}>
               Book One of The Parable Trilogy

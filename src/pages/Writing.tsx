@@ -17,15 +17,20 @@ import obaCover from "@/assets/oba-cover.jpg";
 
 const Writing = () => {
   const [scrollY, setScrollY] = useState(0);
-  const [currentBackground, setCurrentBackground] = useState(schoolBackground);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+  const [backgroundOpacities, setBackgroundOpacities] = useState({
+    school: 1,
+    hoax: 0,
+    siphons: 0,
+    oba: 0
+  });
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
 
-      // Check which sections are visible and update background
+      // Check which sections are visible
       const sections = document.querySelectorAll('[data-section]');
       const newVisibleSections = new Set<string>();
       
@@ -40,16 +45,25 @@ const Writing = () => {
       
       setVisibleSections(newVisibleSections);
 
-      // Update background based on visible section
+      // Update background opacities based on visible section
+      const newOpacities = {
+        school: 0,
+        hoax: 0,
+        siphons: 0,
+        oba: 0
+      };
+
       if (newVisibleSections.has('oba')) {
-        setCurrentBackground(obaBackground);
+        newOpacities.oba = 1;
       } else if (newVisibleSections.has('siphons')) {
-        setCurrentBackground(siphonsBackground);
+        newOpacities.siphons = 1;
       } else if (newVisibleSections.has('hoax')) {
-        setCurrentBackground(hoaxBackground);
+        newOpacities.hoax = 1;
       } else {
-        setCurrentBackground(schoolBackground);
+        newOpacities.school = 1;
       }
+
+      setBackgroundOpacities(newOpacities);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -58,16 +72,35 @@ const Writing = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background relative">
+    <div className="min-h-screen relative">
       <Navigation />
       
-      {/* Fixed Background Image with Transitions */}
-      <div 
-        className="fixed inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 ease-in-out"
-        style={{ 
-          backgroundImage: `url(${currentBackground})`
-        }}
-      >
+      {/* Stacked Background Images */}
+      <div className="fixed inset-0 z-0">
+        <img 
+          src={schoolBackground} 
+          alt="School background"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.school }}
+        />
+        <img 
+          src={hoaxBackground} 
+          alt="Hoax background"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.hoax }}
+        />
+        <img 
+          src={siphonsBackground} 
+          alt="Siphons background"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.siphons }}
+        />
+        <img 
+          src={obaBackground} 
+          alt="Oba background"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.oba }}
+        />
         <div className="absolute inset-0 bg-black/70"></div>
       </div>
       
