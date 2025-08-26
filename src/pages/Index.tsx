@@ -18,13 +18,13 @@ const Index = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
       
-      // Show magazine when scrolled past 60% of viewport
-      if (scrollY > viewportHeight * 0.6) {
+      // Show magazine when scrolled past 80% of viewport
+      if (scrollY > viewportHeight * 0.8) {
         setShowMagazine(true);
       }
       
-      // Show quote when scrolled past 50% of viewport
-      if (scrollY > viewportHeight * 0.5) {
+      // Show quote quickly when scrolled past 60% of viewport
+      if (scrollY > viewportHeight * 0.6) {
         setShowQuote(true);
       }
     };
@@ -34,14 +34,14 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Auto-dissolve between images with faster timing
+    // Auto-dissolve between images with proper timing for quote
     if (showMagazine) {
       const interval = setInterval(() => {
         setCurrentImage(prev => {
           const next = (prev + 1) % images.length;
           return next;
         });
-      }, currentImage === 0 ? 12000 : currentImage === 1 ? 8000 : 40000); // First: 12s, Second: 8s, Third: 40s (30% faster)
+      }, currentImage === 0 ? 18000 : currentImage === 1 ? 12000 : 60000); // First: 18s, Second: 12s, Third: 60s
       
       return () => clearInterval(interval);
     }
@@ -52,17 +52,18 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
-      <section className="h-screen flex items-center justify-center relative overflow-hidden">
+      <section className="h-screen flex items-center justify-center relative overflow-hidden bg-background">
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-contain"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
+        <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-10 text-center px-6">
-          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
+          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md animate-slide-in-from-left">
             Kazuki Yamakawa
           </h1>
-          <p className="font-body text-xl md:text-2xl text-foreground/80 animate-fade-in">
+          <p className="font-body text-xl md:text-2xl text-foreground/80 animate-fade-in-delayed">
             Writer • Musician
           </p>
         </div>
@@ -94,7 +95,7 @@ const Index = () => {
             {images.map((image, index) => (
               <div
                 key={index}
-                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[5000ms] ease-in-out ${
+                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[7000ms] ease-in-out ${
                   index === currentImage ? "opacity-100" : "opacity-0"
                 } ${index === 1 ? "animate-slow-zoom-to-sky" : "animate-slow-zoom"}`}
                 style={{ backgroundImage: `url(${image})` }}
@@ -103,14 +104,31 @@ const Index = () => {
               </div>
             ))}
             
-            {/* Floating Quote - appears over first image, stays during second, fades during second */}
-            {showQuote && (currentImage === 0 || currentImage === 1) && (
-              <div className="absolute top-1/4 right-1/4 max-w-lg">
-                <div className={`literary-quote text-3xl md:text-4xl text-white/90 leading-relaxed animate-float transition-opacity duration-[3000ms] ${currentImage === 1 ? 'opacity-30' : 'opacity-100'}`}>
-                  <div className="mb-2">
-                    <span className="font-bold">Feelings</span>{" "}
-                    <span className="font-semibold">are the thoughts of the heart</span>.
-                  </div>
+            {/* Floating Quote - appears over first image, then drifts apart when fading to second */}
+            {showQuote && currentImage === 0 && (
+              <div className="absolute top-1/4 right-1/4 max-w-md">
+                <ScrollFadeUp id="floating-quote" delay={500}>
+                  <blockquote className="literary-quote text-white/90 leading-relaxed animate-float animate-quote-expand">
+                     <div className="text-6xl md:text-7xl font-bold mb-2">Feelings</div>
+                     <div className="text-5xl md:text-6xl font-semibold">are the thoughts of the heart.</div>
+                   </blockquote>
+                </ScrollFadeUp>
+              </div>
+            )}
+            
+            {/* Quote drift animation when transitioning to second image */}
+            {showQuote && currentImage === 1 && (
+              <div className="absolute top-1/4 right-1/4 max-w-md">
+                <div className="animate-drift-apart opacity-0">
+                  <blockquote className="literary-quote text-4xl md:text-5xl text-white/90 leading-relaxed">
+                    <span className="font-bold text-4xl animate-drift-1">Feelings</span>{" "}
+                    <span className="font-semibold text-3xl animate-drift-2">are</span>{" "}
+                    <span className="font-semibold text-3xl animate-drift-3">the</span>{" "}
+                    <span className="font-semibold text-3xl animate-drift-4">thoughts</span>{" "}
+                    <span className="font-semibold text-3xl animate-drift-5">of</span>{" "}
+                    <span className="font-semibold text-3xl animate-drift-6">the</span>{" "}
+                    <span className="font-bold text-5xl animate-drift-7">heart</span>.
+                  </blockquote>
                 </div>
               </div>
             )}
