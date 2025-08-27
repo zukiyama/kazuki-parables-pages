@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
 
 // Background images for different themes
@@ -29,7 +30,16 @@ const albums = [
       "Fairy Light Serenade",
       "Whispers in the Willows",
       "Secret Pathways",
-      "Coming Soon..."
+      "Dancing Shadows",
+      "Moonlit Corridors",
+      "Crystal Reflections",
+      "Garden of Mysteries",
+      "Velvet Dreams",
+      "Midnight Waltz",
+      "Ethereal Echoes",
+      "Silver Fountains",
+      "Enchanted Evening",
+      "Beyond the Veil"
     ]
   },
   {
@@ -43,7 +53,16 @@ const albums = [
       "Wax and Memory",
       "Bending Time",
       "Molten Harmonies",
-      "Coming Soon..."
+      "Fluid Emotions",
+      "Dripping Reality",
+      "Soft Dissolution",
+      "Warm Currents",
+      "Flowing Thoughts",
+      "Melted Glass",
+      "Liquid Light",
+      "Streaming Consciousness",
+      "Viscous Visions",
+      "Melting Point"
     ]
   },
   {
@@ -57,7 +76,16 @@ const albums = [
       "Floating Melodies",
       "Sky Orchestra",
       "Weightless Wonder",
-      "Coming Soon..."
+      "Gravity's Absence",
+      "Suspended Animation",
+      "Aerial Ballet",
+      "Drifting Harmonics",
+      "Levitating Dreams",
+      "Atmospheric Pressure",
+      "Cloud Chamber",
+      "Zero Point",
+      "Ascending Notes",
+      "Celestial Dance"
     ]
   },
   {
@@ -71,7 +99,16 @@ const albums = [
       "Collage of Sound",
       "Paper Moon Rising",
       "Cutout Conversations",
-      "Coming Soon..."
+      "Scissors Symphony",
+      "Folded Memories",
+      "Origami Melodies",
+      "Creased Emotions",
+      "Paper Trail",
+      "Layered Stories",
+      "Textured Silence",
+      "Cardboard Dreams",
+      "Pulp Fiction",
+      "Final Cut"
     ]
   },
   {
@@ -85,7 +122,16 @@ const albums = [
       "Wooden Block Percussion",
       "Spinning Top Melody",
       "Childhood Echoes",
-      "Coming Soon..."
+      "Playground Phantoms",
+      "Toy Box Secrets",
+      "Marble Rolling",
+      "Jack-in-the-Box",
+      "Rocking Horse Blues",
+      "Building Block Symphony",
+      "Dollhouse Whispers",
+      "Wind-up Dreams",
+      "Nostalgic Lullaby",
+      "Memory Lane"
     ]
   }
 ];
@@ -161,24 +207,24 @@ const Music = () => {
             <div className="bg-white/10 backdrop-blur-md rounded-lg p-8 border border-white/20 animate-scale-in">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 {/* Album Cover - Left Side */}
-                <div className="text-center lg:text-left">
+                <div className="text-center">
                   <img 
                     src={selectedAlbum.cover} 
                     alt={selectedAlbum.title}
-                    className="w-full max-w-md mx-auto lg:mx-0 rounded-lg shadow-2xl mb-6 transition-all duration-500 hover:scale-105"
+                    className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6 transition-all duration-500 hover:scale-105"
                   />
                   <h2 className="font-serif text-3xl text-white mb-2">{selectedAlbum.title}</h2>
                   <p className="text-white/80 text-lg mb-6">Featured Album</p>
                   
                   {/* Music Player Controls */}
-                  <div className="flex justify-center lg:justify-start items-center space-x-4 mb-2">
+                  <div className="flex justify-center items-center space-x-4 mb-2">
                     <Button
                       variant="outline"
                       size="lg"
                       className="bg-white/20 border-white/40 text-white hover:bg-white/30 rounded-full w-12 h-12 p-0"
                       onClick={() => {
                         setCurrentTrackIndex((prev) => {
-                          const playable = selectedAlbum.tracks.filter(t => !t.includes("Coming Soon"));
+                          const playable = selectedAlbum.tracks;
                           if (playable.length === 0) return null;
                           const idx = prev === null ? 0 : (prev - 1 + playable.length) % playable.length;
                           setIsPlaying(true);
@@ -202,7 +248,7 @@ const Music = () => {
                       className="bg-white/20 border-white/40 text-white hover:bg-white/30 rounded-full w-12 h-12 p-0"
                       onClick={() => {
                         setCurrentTrackIndex((prev) => {
-                          const playable = selectedAlbum.tracks.filter(t => !t.includes("Coming Soon"));
+                          const playable = selectedAlbum.tracks;
                           if (playable.length === 0) return null;
                           const idx = prev === null ? 0 : (prev + 1) % playable.length;
                           setIsPlaying(true);
@@ -214,7 +260,7 @@ const Music = () => {
                     </Button>
                   </div>
                   {currentTrackIndex !== null && (
-                    <p className="text-white/80 text-sm mb-4 font-serif">Now playing: {selectedAlbum.tracks.filter(t => !t.includes("Coming Soon"))[currentTrackIndex]}</p>
+                    <p className="text-white/80 text-sm mb-4 font-serif">Now playing: {selectedAlbum.tracks[currentTrackIndex]}</p>
                   )}
                 </div>
 
@@ -223,22 +269,25 @@ const Music = () => {
                   <h3 className="text-white text-2xl font-bold mb-4 font-serif">
                     Track Listing
                   </h3>
-                  <div className="space-y-3">
-                    {selectedAlbum.tracks.map((track, index) => (
-                      <div 
-                        key={index} 
-                        className="flex items-center justify-between p-3 bg-black/30 rounded hover:bg-black/40 transition-colors cursor-pointer"
-                        onClick={() => {
-                          if (!track.includes("Coming Soon")) { setCurrentTrackIndex(index); setIsPlaying(true); }
-                        }}
-                      >
-                        <span className="text-white font-serif">{index + 1}. {track}</span>
-                        <div className="text-white/60">
-                          {track.includes("Coming Soon") ? "⏳" : (currentTrackIndex===index ? "⏸" : "▶")}
+                  <ScrollArea className="h-80 w-full rounded-md border border-white/20 p-4 bg-black/20">
+                    <div className="space-y-3">
+                      {selectedAlbum.tracks.map((track, index) => (
+                        <div 
+                          key={index} 
+                          className="flex items-center justify-between p-3 bg-black/30 rounded hover:bg-black/40 transition-colors cursor-pointer"
+                          onClick={() => {
+                            setCurrentTrackIndex(index); 
+                            setIsPlaying(true);
+                          }}
+                        >
+                          <span className="text-white font-serif">{index + 1}. {track}</span>
+                          <div className="text-white/60">
+                            {currentTrackIndex === index ? "⏸" : "▶"}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  </ScrollArea>
                 </div>
               </div>
             </div>
@@ -272,7 +321,7 @@ const Music = () => {
           <div className="mb-8">
             <h4 className="font-serif text-2xl text-white mb-4 text-center">Singles</h4>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {selectedAlbum.tracks.filter(t => !t.includes("Coming Soon")).slice(0,4).map((track, idx) => (
+              {selectedAlbum.tracks.slice(0,4).map((track, idx) => (
                 <button
                   key={idx}
                   className={`relative group rounded-lg overflow-hidden border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 ${currentTrackIndex===idx? 'ring-2 ring-white/60':''}`}
