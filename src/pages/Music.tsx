@@ -266,10 +266,10 @@ const Music = () => {
 
                 {/* Track Listing - Right Side */}
                 <div className="lg:pl-4 flex flex-col">
-                  <h3 className="text-white text-2xl font-bold mb-4 font-serif">
+                  <h3 className="text-white text-2xl font-bold mb-4 font-serif text-center">
                     Track Listing
                   </h3>
-                  <ScrollArea className="h-[500px] w-full rounded-md border border-white/20 p-4 bg-black/20">
+                  <ScrollArea className="h-[580px] w-full rounded-md border border-white/20 p-4 bg-black/20">
                     <div className="space-y-3">
                       {selectedAlbum.tracks.map((track, index) => (
                         <div 
