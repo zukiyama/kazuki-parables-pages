@@ -9,20 +9,21 @@ export const useScrollAnimation = () => {
       
       elements.forEach((element) => {
         const rect = element.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight * 0.8;
+        // Only trigger when 25% of element is visible
+        const isVisible = rect.top < window.innerHeight * 0.75;
         const id = element.getAttribute("data-scroll-animation");
         
-        if (isVisible && id) {
+        if (isVisible && id && !visibleElements.has(id)) {
           setVisibleElements(prev => new Set([...prev, id]));
         }
       });
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    // Remove initial check to prevent animations on page load
     
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [visibleElements]);
 
   return visibleElements;
 };

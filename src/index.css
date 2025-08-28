@@ -297,6 +297,23 @@
   transform: translateX(0);
 }
 
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-slide-left,
+  .scroll-slide-right,
+  .scroll-fade-up {
+    transition: opacity 0.3s ease-out;
+    transform: none;
+  }
+  
+  .scroll-slide-left.visible,
+  .scroll-slide-right.visible,
+  .scroll-fade-up.visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Animation utilities and effects */
 
 .hand-drawn-text {
