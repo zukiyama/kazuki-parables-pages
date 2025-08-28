@@ -139,6 +139,7 @@ const albums = [
 const Music = () => {
   const [scrollY, setScrollY] = useState(0);
   const [selectedAlbum, setSelectedAlbum] = useState(albums[0]);
+  const [previousAlbum, setPreviousAlbum] = useState(albums[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -152,13 +153,12 @@ const Music = () => {
   const handleAlbumSelect = (album: typeof albums[0]) => {
     if (album.id === selectedAlbum.id) return;
     
+    setPreviousAlbum(selectedAlbum);
+    setSelectedAlbum(album);
     setIsTransitioning(true);
     setTimeout(() => {
-      setSelectedAlbum(album);
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 100);
-    }, 600);
+      setIsTransitioning(false);
+    }, 1000);
   };
 
   return (
@@ -167,6 +167,14 @@ const Music = () => {
       
       {/* Dynamic Background Based on Selected Album */}
       <div className="fixed inset-0">
+        {/* Previous album background */}
+        <div 
+          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${isTransitioning ? 'opacity-100' : 'opacity-0'}`}
+          style={{ 
+            backgroundImage: `url(${previousAlbum.background})`
+          }}
+        />
+        {/* Current album background */}
         <div 
           className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
           style={{ 
