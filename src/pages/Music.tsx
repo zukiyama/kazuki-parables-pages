@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -141,7 +141,12 @@ const Music = () => {
   const [selectedAlbum, setSelectedAlbum] = useState(albums[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null);
+  
+  // Two-layer crossfade system
+  const [layerA, setLayerA] = useState({ image: albums[0].background, opacity: 1 });
+  const [layerB, setLayerB] = useState({ image: albums[0].background, opacity: 0 });
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const transitionRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -149,31 +154,85 @@ const Music = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Preload images
+  useEffect(() => {
+    albums.forEach(album => {
+      const img = new Image();
+      img.src = album.background;
+    });
+  }, []);
+
   const handleAlbumSelect = (album: typeof albums[0]) => {
-    if (album.id === selectedAlbum.id) return;
+    if (album.id === selectedAlbum.id || isTransitioning) return;
+    
+    // Clear any existing transition
+    if (transitionRef.current) {
+      clearTimeout(transitionRef.current);
+    }
     
     setIsTransitioning(true);
-    setTimeout(() => {
+    
+    // Preload the target image
+    const img = new Image();
+    img.onload = () => {
+      // Determine which layer is currently visible
+      const isLayerAVisible = layerA.opacity === 1;
+      
+      if (isLayerAVisible) {
+        // Layer A is visible, prepare layer B with new image and fade it in
+        setLayerB({ image: album.background, opacity: 0 });
+        
+        // Use requestAnimationFrame to ensure the new image is set before starting transition
+        requestAnimationFrame(() => {
+          setLayerA(prev => ({ ...prev, opacity: 0 }));
+          setLayerB(prev => ({ ...prev, opacity: 1 }));
+        });
+      } else {
+        // Layer B is visible, prepare layer A with new image and fade it in
+        setLayerA({ image: album.background, opacity: 0 });
+        
+        requestAnimationFrame(() => {
+          setLayerB(prev => ({ ...prev, opacity: 0 }));
+          setLayerA(prev => ({ ...prev, opacity: 1 }));
+        });
+      }
+      
+      // Update album immediately as fade begins
       setSelectedAlbum(album);
-      setTimeout(() => {
+      
+      // Clear transition state after animation completes
+      transitionRef.current = setTimeout(() => {
         setIsTransitioning(false);
-      }, 100);
-    }, 600);
+      }, 800); // Match CSS transition duration
+    };
+    
+    img.src = album.background;
   };
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className="min-h-screen bg-slate-900 relative overflow-hidden">
       <Navigation />
       
-      {/* Dynamic Background Based on Selected Album */}
+      {/* Two-Layer Crossfade Background System */}
       <div className="fixed inset-0">
+        {/* Layer A */}
         <div 
-          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+          className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
           style={{ 
-            backgroundImage: `url(${selectedAlbum.background})`
+            backgroundImage: `url(${layerA.image})`,
+            opacity: layerA.opacity
           }}
         />
-        <div className="absolute inset-0 bg-black/50"></div>
+        {/* Layer B */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
+          style={{ 
+            backgroundImage: `url(${layerB.image})`,
+            opacity: layerB.opacity
+          }}
+        />
+        {/* Static overlay for readability - not animated */}
+        <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
       </div>
       
       <main className="container mx-auto px-6 pt-24 pb-12 relative z-10">
