@@ -9,7 +9,8 @@ export const useScrollAnimation = () => {
       
       elements.forEach((element) => {
         const rect = element.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight * 0.8;
+        // Only reveal when 25% of element is visible to prevent early animation
+        const isVisible = rect.top < window.innerHeight * 0.75 && rect.bottom > window.innerHeight * 0.25;
         const id = element.getAttribute("data-scroll-animation");
         
         if (isVisible && id) {
@@ -18,10 +19,23 @@ export const useScrollAnimation = () => {
       });
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    
+    // Only do initial check after a small delay to prevent initial flash
+    // and only if page was scrolled during load
+    const initialCheckTimer = setTimeout(() => {
+      if (window.scrollY > 50) {
+        handleScroll();
+      }
+    }, 100);
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(initialCheckTimer);
+    };
   }, []);
 
   return visibleElements;

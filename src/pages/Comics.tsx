@@ -11,15 +11,16 @@ const Comics = () => {
   const visibleElements = useScrollAnimation();
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: 'hsl(222.2, 84%, 4.9%)' }}>
       <Navigation />
       
-      {/* Pencil sketches background */}
+      {/* Pencil sketches background with preloading */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-30"
           style={{ 
-            backgroundImage: `url(${mangaSketchesBackground})`
+            backgroundImage: `url(${mangaSketchesBackground})`,
+            backgroundColor: 'hsl(222.2, 84%, 4.9%)' // Fallback while loading
           }}
         ></div>
       </div>
@@ -71,13 +72,23 @@ const Comics = () => {
             </div>
           </div>
           
-          {/* Soul Tied */}
-          <div className={`mb-16 flex flex-col items-center text-center scroll-slide-left ${visibleElements.has("soul-tied") ? "visible" : ""}`} data-scroll-animation="soul-tied">
+          {/* Soul Tied - Hidden initially, reveals only on scroll */}
+          <div 
+            className={`mb-16 flex flex-col items-center text-center scroll-slide-left ${visibleElements.has("soul-tied") ? "visible" : ""}`} 
+            data-scroll-animation="soul-tied"
+            style={{ 
+              opacity: visibleElements.has("soul-tied") ? 1 : 0,
+              transform: visibleElements.has("soul-tied") ? 'translateX(0)' : 'translateX(-100px)',
+              transition: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'opacity 0.3s ease-out' : 'all 0.8s ease-out'
+            }}
+          >
             <div className="relative group mb-6">
               <img 
                 src={soulTiedCover} 
                 alt="Soul Tied manga cover"
                 className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+                style={{ backgroundColor: 'hsl(217.2, 32.6%, 17.5%)' }} // Dark placeholder
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
             </div>
@@ -91,13 +102,23 @@ const Comics = () => {
             </div>
           </div>
           
-          {/* The Burden */}
-          <div className={`mb-16 flex flex-col items-center text-center scroll-slide-right ${visibleElements.has("the-burden") ? "visible" : ""}`} data-scroll-animation="the-burden">
+          {/* The Burden - Hidden initially, reveals only on scroll */}
+          <div 
+            className={`mb-16 flex flex-col items-center text-center scroll-slide-right ${visibleElements.has("the-burden") ? "visible" : ""}`} 
+            data-scroll-animation="the-burden"
+            style={{ 
+              opacity: visibleElements.has("the-burden") ? 1 : 0,
+              transform: visibleElements.has("the-burden") ? 'translateX(0)' : 'translateX(100px)',
+              transition: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'opacity 0.3s ease-out' : 'all 0.8s ease-out'
+            }}
+          >
             <div className="relative group mb-6">
               <img 
                 src={theBurdenCover} 
                 alt="The Burden manga cover"
                 className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+                style={{ backgroundColor: 'hsl(217.2, 32.6%, 17.5%)' }} // Dark placeholder
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
             </div>
@@ -113,7 +134,7 @@ const Comics = () => {
         </div>
       </main>
       
-      <footer className="bg-card border-t border-border py-12 mt-20">
+      <footer className="border-t border-border py-12 mt-20" style={{ backgroundColor: 'hsl(217.2, 32.6%, 17.5%)' }}>
         <div className="container mx-auto px-6 text-center">
           <p className="font-body text-muted-foreground">
             Email: contact@kazukiyamakawa.com

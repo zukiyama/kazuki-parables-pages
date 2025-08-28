@@ -48,15 +48,16 @@ const Index = () => {
   }, [showMagazine, images.length, currentImage]);
 
   return (
-    <div className="relative">
+    <div className="relative" style={{ backgroundColor: 'hsl(222.2, 84%, 4.9%)' }}>
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
-      <section className="h-screen flex items-center justify-center relative overflow-hidden bg-background">
+      <section className="h-screen flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: 'hsl(222.2, 84%, 4.9%)' }}>
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
           className="absolute inset-0 w-full h-full object-cover object-center"
+          style={{ backgroundColor: 'hsl(222.2, 84%, 4.9%)' }} // Dark fallback
         />
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-20 text-center px-6">
