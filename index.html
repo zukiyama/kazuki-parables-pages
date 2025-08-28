@@ -15,39 +15,10 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-    
-    <!-- Dark theme meta tags to prevent flashes -->
-    <meta name="theme-color" content="hsl(222.2, 84%, 4.9%)" />
-    <meta name="color-scheme" content="dark light" />
-    
-    <!-- Critical CSS inlined to prevent flash -->
-    <style>
-      html, body, #root {
-        background-color: hsl(222.2, 84%, 4.9%);
-        color: hsl(210, 40%, 98%);
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-      }
-      
-      /* Preload fonts to prevent FOIT */
-      @font-face {
-        font-family: 'Playfair Display';
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'Source Serif Pro';
-        font-display: swap;
-      }
-    </style>
-    
-    <!-- Preload critical images to prevent flash -->
-    <link rel="preload" as="image" href="/src/assets/manga-sketches-background.jpg" />
-    <link rel="preload" as="image" href="/src/assets/magazine-cover-children-final.jpg" />
   </head>
 
-  <body style="background-color: hsl(222.2, 84%, 4.9%); color: hsl(210, 40%, 98%);">
-    <div id="root" style="background-color: hsl(222.2, 84%, 4.9%); min-height: 100vh;"></div>
+  <body>
+    <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

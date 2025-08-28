@@ -114,32 +114,13 @@
     @apply border-border;
   }
 
-  html {
-    background-color: hsl(222.2, 84%, 4.9%);
-    color: hsl(210, 40%, 98%);
-  }
-
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
-    background-color: hsl(222.2, 84%, 4.9%);
-    color: hsl(210, 40%, 98%);
-    /* Remove any global transitions that might cause flashes */
-    transition: none !important;
-  }
-  
-  #root {
-    background-color: hsl(222.2, 84%, 4.9%);
-    min-height: 100vh;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-  }
-  
-  /* Ensure all skeleton/loading components use dark background */
-  .animate-pulse {
-    background-color: hsl(217.2, 32.6%, 17.5%) !important;
   }
 }
 

@@ -74,7 +74,7 @@ const Writing = () => {
   }, []);
 
   return (
-    <div className="min-h-screen relative" style={{ backgroundColor: 'hsl(222.2, 84%, 4.9%)' }}>
+    <div className="min-h-screen relative">
       <Navigation />
       
       {/* Stacked Background Images */}
@@ -83,37 +83,25 @@ const Writing = () => {
           src={schoolBackground} 
           alt="School background"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ 
-            opacity: backgroundOpacities.school,
-            backgroundColor: 'hsl(222.2, 84%, 4.9%)' // Dark fallback
-          }}
+          style={{ opacity: backgroundOpacities.school }}
         />
         <img 
           src={hoaxBackground} 
           alt="Hoax background"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ 
-            opacity: backgroundOpacities.hoax,
-            backgroundColor: 'hsl(222.2, 84%, 4.9%)' // Dark fallback
-          }}
+          style={{ opacity: backgroundOpacities.hoax }}
         />
         <img 
           src={siphonsBackground} 
           alt="Siphons background"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ 
-            opacity: backgroundOpacities.siphons,
-            backgroundColor: 'hsl(222.2, 84%, 4.9%)' // Dark fallback
-          }}
+          style={{ opacity: backgroundOpacities.siphons }}
         />
         <img 
           src={obaBackground} 
           alt="Oba background"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ 
-            opacity: backgroundOpacities.oba,
-            backgroundColor: 'hsl(222.2, 84%, 4.9%)' // Dark fallback
-          }}
+          style={{ opacity: backgroundOpacities.oba }}
         />
         <div className="absolute inset-0 bg-black/70"></div>
       </div>
