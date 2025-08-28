@@ -151,26 +151,28 @@ const Music = () => {
 
   const handleAlbumSelect = (album: typeof albums[0]) => {
     if (album.id === selectedAlbum.id) return;
-    setSelectedAlbum(album);
+    
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setSelectedAlbum(album);
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 100);
+    }, 600);
   };
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
+    <div className="min-h-screen bg-background relative overflow-hidden">
       <Navigation />
       
       {/* Dynamic Background Based on Selected Album */}
       <div className="fixed inset-0">
-        {albums.map((album, index) => (
-          <div 
-            key={album.id}
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${
-              selectedAlbum.id === album.id ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{ 
-              backgroundImage: `url(${album.background})`
-            }}
-          />
-        ))}
+        <div 
+          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+          style={{ 
+            backgroundImage: `url(${selectedAlbum.background})`
+          }}
+        />
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
       
