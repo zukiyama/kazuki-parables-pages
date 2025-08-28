@@ -6,12 +6,13 @@ import mangaSketchesBackground from "@/assets/manga-sketches-background.jpg";
 import godOfLiesCover from "@/assets/god-of-lies-cover.jpg";
 import soulTiedCover from "@/assets/soul-tied-cover.jpg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
+import handDrawn2026 from "@/assets/hand-drawn-2026.png";
 
 const Comics = () => {
   const visibleElements = useScrollAnimation();
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className="min-h-screen bg-black relative overflow-hidden">
       <Navigation />
       
       {/* Pencil sketches background */}
@@ -64,9 +65,11 @@ const Comics = () => {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-6">
               <div className="hand-drawn-line flex-1"></div>
-              <h2 className="hand-drawn-text text-5xl font-bold text-ink-black">
-                2026
-              </h2>
+              <img 
+                src={handDrawn2026} 
+                alt="2026" 
+                className="h-16 w-auto opacity-90"
+              />
               <div className="hand-drawn-line flex-1"></div>
             </div>
           </div>
