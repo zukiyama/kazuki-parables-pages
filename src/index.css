@@ -208,6 +208,15 @@
   }
 }
 
+@keyframes quote-fade-out-delayed {
+  0%, 60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 @keyframes drift-apart {
   0% {
     opacity: 1;
@@ -265,6 +274,10 @@
 
 .animate-quote-fade-out {
   animation: quote-fade-out 4s ease-out;
+}
+
+.animate-quote-fade-out-delayed {
+  animation: quote-fade-out-delayed 6s ease-out;
 }
 
 .animate-drift-apart {
