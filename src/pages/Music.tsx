@@ -147,8 +147,6 @@ const Music = () => {
   const [layerB, setLayerB] = useState({ image: albums[0].background, opacity: 0 });
   const [isTransitioning, setIsTransitioning] = useState(false);
   const transitionRef = useRef<NodeJS.Timeout | null>(null);
-  const transitionRequestId = useRef(0);
-  const lastClickTime = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -164,38 +162,19 @@ const Music = () => {
     });
   }, []);
 
-  const handleAlbumSelect = (album: typeof albums[0], event?: React.MouseEvent | React.KeyboardEvent) => {
-    // Debounce rapid clicks (150ms)
-    const now = Date.now();
-    if (now - lastClickTime.current < 150) return;
-    lastClickTime.current = now;
-    
-    // Ignore if already selected
-    if (album.id === selectedAlbum.id) return;
-    
-    // Prevent default if it's a link
-    if (event) {
-      event.preventDefault();
-    }
-    
-    // Generate unique request ID for this transition
-    const requestId = ++transitionRequestId.current;
-    
-    // IMMEDIATELY commit UI changes (atomic update)
-    setSelectedAlbum(album);
-    setIsTransitioning(true);
+  const handleAlbumSelect = (album: typeof albums[0]) => {
+    if (album.id === selectedAlbum.id || isTransitioning) return;
     
     // Clear any existing transition
     if (transitionRef.current) {
       clearTimeout(transitionRef.current);
     }
     
-    // Start background transition (non-blocking)
+    setIsTransitioning(true);
+    
+    // Preload the target image
     const img = new Image();
     img.onload = () => {
-      // Only proceed if this is still the latest request
-      if (requestId !== transitionRequestId.current) return;
-      
       // Determine which layer is currently visible
       const isLayerAVisible = layerA.opacity === 1;
       
@@ -218,19 +197,13 @@ const Music = () => {
         });
       }
       
+      // Update album immediately as fade begins
+      setSelectedAlbum(album);
+      
       // Clear transition state after animation completes
       transitionRef.current = setTimeout(() => {
-        if (requestId === transitionRequestId.current) {
-          setIsTransitioning(false);
-        }
-      }, 800); // Match CSS transition duration
-    };
-    
-    img.onerror = () => {
-      // Fallback: complete transition even if image fails
-      if (requestId === transitionRequestId.current) {
         setIsTransitioning(false);
-      }
+      }, 800); // Match CSS transition duration
     };
     
     img.src = album.background;
@@ -384,30 +357,21 @@ const Music = () => {
             <h3 className="font-serif text-3xl text-white mb-8 text-center">Choose Your Journey</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
               {albums.map((album, index) => (
-                <button
+                <div
                   key={album.id}
-                  type="button"
-                  data-album-id={album.id}
-                  className={`relative cursor-pointer transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/60 animate-fade-in group ${
+                  className={`cursor-pointer transition-all duration-500 hover:scale-110 animate-fade-in ${
                     selectedAlbum.id === album.id ? 'ring-4 ring-white/60 rounded-lg' : ''
                   }`}
                   style={{ animationDelay: `${index * 100}ms` }}
-                  onClick={(e) => handleAlbumSelect(album, e)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      handleAlbumSelect(album, e);
-                    }
-                  }}
-                  aria-label={`Select ${album.title} album`}
+                  onClick={() => handleAlbumSelect(album)}
                 >
                   <img 
                     src={album.cover} 
                     alt={album.title}
-                    className="w-full aspect-square object-cover rounded-lg shadow-lg transition-transform duration-200 group-hover:scale-105 group-active:scale-95"
+                    className="w-full aspect-square object-cover rounded-lg shadow-lg"
                   />
-                  <p className="text-white text-sm mt-2 text-center font-serif pointer-events-none">{album.title}</p>
-                </button>
+                  <p className="text-white text-sm mt-2 text-center font-serif">{album.title}</p>
+                </div>
               ))}
             </div>
           </div>
