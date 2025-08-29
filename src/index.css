@@ -226,6 +226,21 @@
   100% { transform: scale(1.2) translateY(-10%) translateX(-15%); }
 }
 
+@keyframes quote-fade-in {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes quote-fade-out {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes third-image-text-appear {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes slide-in-from-left-scroll {
   0% { transform: translateX(-100px); opacity: 0; }
   100% { transform: translateX(0); opacity: 1; }
@@ -266,6 +281,18 @@
 
 .animate-slow-zoom-meteor {
   animation: slowZoomMeteor 8.4s ease-out;
+}
+
+.animate-quote-fade-in {
+  animation: quote-fade-in 3s ease-out;
+}
+
+.animate-quote-fade-out {
+  animation: quote-fade-out 4s ease-out;
+}
+
+.animate-third-image-text {
+  animation: third-image-text-appear 1s ease-out;
 }
 
 .scroll-slide-left {
@@ -309,10 +336,16 @@
 
 /* Animation utilities and effects */
 
-/* Ensure Soul T.I.E.D. block starts hidden on page load */
-[data-scroll-animation="soul-tied"] {
+/* Ensure Soul T.I.E.D. and The Burden blocks start hidden on page load */
+[data-scroll-animation="soul-tied"],
+[data-scroll-animation="the-burden"] {
   opacity: 0;
   transform: translateX(-100px);
+}
+
+/* Prevent page flash - ensure background is set immediately */
+body {
+  background-color: hsl(var(--background));
 }
 
 .hand-drawn-text {
