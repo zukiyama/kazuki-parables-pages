@@ -131,6 +131,13 @@
     position: relative;
   }
 
+  .literary-quote::before,
+  .literary-quote::after {
+    content: '"';
+    font-size: 1.5em;
+    opacity: 0.7;
+  }
+
   .scroll-fade-up {
     opacity: 0;
     transform: translateY(30px);
@@ -223,28 +230,7 @@
 
 @keyframes slowZoomMeteor {
   0% { transform: scale(1); }
-  100% { transform: scale(1.3) translateY(-20%) translateX(10%); }
-}
-
-@keyframes quote-fade-in-grow {
-  0% { 
-    opacity: 0; 
-    transform: translateY(20px) scale(0.8); 
-  }
-  100% { 
-    opacity: 1; 
-    transform: translateY(0) scale(1); 
-  }
-}
-
-@keyframes quote-fade-out-delayed {
-  0%, 33% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-@keyframes third-image-text-appear {
-  0% { opacity: 0; transform: translateY(30px); }
-  100% { opacity: 1; transform: translateY(0); }
+  100% { transform: scale(1.2) translateY(-10%) translateX(-15%); }
 }
 
 @keyframes slide-in-from-left-scroll {
@@ -281,24 +267,12 @@
   animation: fade-in-delayed 1.5s ease-out 0.8s both;
 }
 
-.animate-slow-zoom {
-  animation: slow-zoom-to-sky 6s ease-out;
+.animate-slow-zoom-to-sky {
+  animation: slow-zoom-to-sky 120s ease-out infinite alternate;
 }
 
 .animate-slow-zoom-meteor {
-  animation: slowZoomMeteor 6s ease-out;
-}
-
-.animate-quote-fade-in-grow {
-  animation: quote-fade-in-grow 4s ease-out;
-}
-
-.animate-quote-fade-out-delayed {
-  animation: quote-fade-out-delayed 6s ease-out;
-}
-
-.animate-third-image-text {
-  animation: third-image-text-appear 1s ease-out;
+  animation: slowZoomMeteor 8.4s ease-out;
 }
 
 .scroll-slide-left {
@@ -323,36 +297,7 @@
   transform: translateX(0);
 }
 
-/* Respect reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  .scroll-slide-left,
-  .scroll-slide-right,
-  .scroll-fade-up {
-    transition: opacity 0.3s ease-out;
-    transform: none;
-  }
-  
-  .scroll-slide-left.visible,
-  .scroll-slide-right.visible,
-  .scroll-fade-up.visible {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 /* Animation utilities and effects */
-
-/* Ensure Soul T.I.E.D. and The Burden blocks start hidden on page load */
-[data-scroll-animation="soul-tied"],
-[data-scroll-animation="the-burden"] {
-  opacity: 0;
-  transform: translateX(-100px);
-}
-
-/* Prevent page flash - ensure background is set immediately */
-body {
-  background-color: hsl(var(--background));
-}
 
 .hand-drawn-text {
   font-family: 'Comic Sans MS', cursive, sans-serif;

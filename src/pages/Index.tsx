@@ -41,7 +41,7 @@ const Index = () => {
           const next = (prev + 1) % images.length;
           return next;
         });
-      }, currentImage === 0 ? 8000 : currentImage === 1 ? 6000 : 42000); // First: 8s, Second: 6s (quote fades out), Third: 42s
+      }, currentImage === 0 ? 12600 : currentImage === 1 ? 8400 : 42000); // First: 12.6s, Second: 8.4s, Third: 42s (30% faster)
       
       return () => clearInterval(interval);
     }
@@ -104,40 +104,42 @@ const Index = () => {
               </div>
             ))}
             
-            {/* Floating Quote - fades in on first image, stays on second, fades out by third */}
+            {/* Floating Quote - stays visible through both first two images */}
             {showQuote && (currentImage === 0 || currentImage === 1) && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <div className={`transition-opacity duration-[3000ms] ${
-                  currentImage === 0 ? 'animate-quote-fade-in-grow' : 
-                  currentImage === 1 ? 'animate-quote-fade-out-delayed' : 'opacity-0'
+                  currentImage === 0 ? 'opacity-100' : 
+                  currentImage === 1 ? 'opacity-100' : 'opacity-0'
                 }`}>
                   <blockquote className="literary-quote text-white/90 leading-relaxed">
-                    <div className="text-4xl md:text-5xl font-bold"><span className="text-4xl md:text-5xl">'</span> Feelings</div>
-                    <div className="text-3xl md:text-4xl font-semibold">are the thoughts of the heart. <span className="text-3xl md:text-4xl">'</span></div>
+                    <div className="text-4xl md:text-5xl font-bold">Feelings</div>
+                    <div className="text-3xl md:text-4xl font-semibold">are the thoughts of the heart.</div>
                   </blockquote>
                 </div>
               </div>
             )}
             
-            {/* Text overlay for TV shop image - appears with the third image */}
+            {/* Text overlay for TV shop image */}
             {showQuote && currentImage === 2 && (
               <div className="absolute top-1/3 left-1/4 max-w-md">
-                <div className="text-white/90 leading-relaxed animate-third-image-text">
-                  <h2 className="font-heading text-3xl md:text-4xl mb-2">summer 1979</h2>
-                  <h3 className="font-heading text-2xl md:text-3xl mb-4">Kyoto Japan</h3>
-                  <div className="border-t border-white/30 pt-4">
-                    <h4 className="font-heading text-2xl md:text-3xl font-bold mb-2">KAIJU</h4>
-                    <div className="font-body text-sm md:text-base text-white/80">
-                      <span className="italic">noun</span> /ˈkaɪdʒuː/<br/>
-                      <span className="font-medium">mysterious beast</span>
+                <ScrollFadeUp id="tv-shop-text" delay={500}>
+                  <div className="text-white/90 leading-relaxed animate-fade-in">
+                    <h2 className="font-heading text-3xl md:text-4xl mb-2">summer 1979</h2>
+                    <h3 className="font-heading text-2xl md:text-3xl mb-4">Kyoto Japan</h3>
+                    <div className="border-t border-white/30 pt-4">
+                      <h4 className="font-heading text-2xl md:text-3xl font-bold mb-2">KAIJU</h4>
+                      <div className="font-body text-sm md:text-base text-white/80">
+                        <span className="italic">noun</span> /ˈkaɪdʒuː/<br/>
+                        <span className="font-medium">mysterious beast</span>
+                      </div>
+                    </div>
+                    <div className="mt-8 text-center">
+                      <div className="font-mono text-2xl md:text-4xl font-bold text-white animate-pulse tracking-wider">
+                        <span className="filter blur-[0.5px] opacity-90">SOMETHING IS COMING</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="mt-8 text-center">
-                    <div className="font-mono text-2xl md:text-4xl font-bold text-white animate-pulse tracking-wider">
-                      <span className="filter blur-[0.5px] opacity-90">SOMETHING IS COMING</span>
-                    </div>
-                  </div>
-                </div>
+                </ScrollFadeUp>
               </div>
             )}
           </div>
