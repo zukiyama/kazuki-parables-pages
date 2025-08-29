@@ -41,7 +41,7 @@ const Index = () => {
           const next = (prev + 1) % images.length;
           return next;
         });
-      }, currentImage === 0 ? 12600 : currentImage === 1 ? 8400 : 42000); // First: 12.6s, Second: 8.4s, Third: 42s (30% faster)
+      }, currentImage === 0 ? 8000 : currentImage === 1 ? 6000 : 42000); // First: 8s, Second: 6s (quote fades out), Third: 42s
       
       return () => clearInterval(interval);
     }
@@ -112,8 +112,8 @@ const Index = () => {
                   currentImage === 1 ? 'animate-quote-fade-out' : 'opacity-0'
                 }`}>
                   <blockquote className="literary-quote text-white/90 leading-relaxed">
-                    <div className="text-4xl md:text-5xl font-bold">"Feelings</div>
-                    <div className="text-3xl md:text-4xl font-semibold">are the thoughts of the heart."</div>
+                    <div className="text-4xl md:text-5xl font-bold">'Feelings</div>
+                    <div className="text-3xl md:text-4xl font-semibold">are the thoughts of the heart.'</div>
                   </blockquote>
                 </div>
               </div>
