@@ -108,12 +108,12 @@ const Index = () => {
             {showQuote && (currentImage === 0 || currentImage === 1) && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <div className={`transition-opacity duration-[3000ms] ${
-                  currentImage === 0 ? 'animate-quote-fade-in' : 
-                  currentImage === 1 ? 'animate-quote-fade-out' : 'opacity-0'
+                  currentImage === 0 ? 'animate-quote-fade-in-grow' : 
+                  currentImage === 1 ? 'animate-quote-fade-out-delayed' : 'opacity-0'
                 }`}>
                   <blockquote className="literary-quote text-white/90 leading-relaxed">
-                    <div className="text-4xl md:text-5xl font-bold">'Feelings</div>
-                    <div className="text-3xl md:text-4xl font-semibold">are the thoughts of the heart.'</div>
+                    <div className="text-4xl md:text-5xl font-bold"><span className="text-4xl md:text-5xl">'</span> Feelings</div>
+                    <div className="text-3xl md:text-4xl font-semibold">are the thoughts of the heart. <span className="text-3xl md:text-4xl">'</span></div>
                   </blockquote>
                 </div>
               </div>
