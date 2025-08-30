@@ -10,6 +10,7 @@ const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
+  const [quoteShown, setQuoteShown] = useState(false);
 
   const images = [officeView, boysCometPainted, kyotoTvShop];
 
@@ -24,8 +25,9 @@ const Index = () => {
       }
       
       // Show quote quickly when scrolled past 60% of viewport
-      if (scrollY > viewportHeight * 0.6) {
+      if (scrollY > viewportHeight * 0.6 && !quoteShown) {
         setShowQuote(true);
+        setQuoteShown(true);
       }
     };
 
@@ -105,7 +107,7 @@ const Index = () => {
             ))}
             
             {/* Floating Quote - fades in slowly, then stays longer before fading out during second image */}
-            {showQuote && (currentImage === 0 || currentImage === 1) && (
+            {showQuote && quoteShown && (currentImage === 0 || currentImage === 1) && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <div className={`transition-opacity duration-[4000ms] ${
                   currentImage === 0 ? 'opacity-100 animate-quote-fade-in' : 
