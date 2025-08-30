@@ -46,6 +46,10 @@ const Index = () => {
           if (prev === 1 && next === 2) {
             setQuoteCompleted(true);
           }
+          // Reset quote for new cycle when going from image 2 back to image 0
+          if (prev === 2 && next === 0) {
+            setQuoteCompleted(false);
+          }
           return next;
         });
       }, currentImage === 0 ? 12600 : currentImage === 1 ? 8400 : 42000); // First: 12.6s, Second: 8.4s, Third: 42s (30% faster)
