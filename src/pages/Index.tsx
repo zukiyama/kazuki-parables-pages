@@ -11,6 +11,7 @@ const Index = () => {
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
   const [quoteShown, setQuoteShown] = useState(false);
+  const [quoteCompleted, setQuoteCompleted] = useState(false);
 
   const images = [officeView, boysCometPainted, kyotoTvShop];
 
@@ -41,6 +42,10 @@ const Index = () => {
       const interval = setInterval(() => {
         setCurrentImage(prev => {
           const next = (prev + 1) % images.length;
+          // Set quote as completed when moving from image 1 to 2
+          if (prev === 1 && next === 2) {
+            setQuoteCompleted(true);
+          }
           return next;
         });
       }, currentImage === 0 ? 12600 : currentImage === 1 ? 8400 : 42000); // First: 12.6s, Second: 8.4s, Third: 42s (30% faster)
@@ -107,7 +112,7 @@ const Index = () => {
             ))}
             
             {/* Floating Quote - fades in slowly, then stays longer before fading out during second image */}
-            {showQuote && quoteShown && (currentImage === 0 || currentImage === 1) && (
+            {showQuote && quoteShown && (currentImage === 0 || currentImage === 1) && !quoteCompleted && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <div className={`transition-opacity duration-[4000ms] ${
                   currentImage === 0 ? 'opacity-100 animate-quote-fade-in' : 
