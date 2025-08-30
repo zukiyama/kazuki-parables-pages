@@ -10,8 +10,6 @@ const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
-  const [quoteShown, setQuoteShown] = useState(false);
-  const [quoteCompleted, setQuoteCompleted] = useState(false);
 
   const images = [officeView, boysCometPainted, kyotoTvShop];
 
@@ -26,9 +24,8 @@ const Index = () => {
       }
       
       // Show quote quickly when scrolled past 60% of viewport
-      if (scrollY > viewportHeight * 0.6 && !quoteShown) {
+      if (scrollY > viewportHeight * 0.6) {
         setShowQuote(true);
-        setQuoteShown(true);
       }
     };
 
@@ -37,22 +34,11 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Auto-dissolve between images with proper timing for quote
+    // Auto-dissolve between images
     if (showMagazine) {
       const interval = setInterval(() => {
-        setCurrentImage(prev => {
-          const next = (prev + 1) % images.length;
-          // Set quote as completed when moving from image 1 to 2
-          if (prev === 1 && next === 2) {
-            setQuoteCompleted(true);
-          }
-          // Reset quote for new cycle when going from image 2 back to image 0
-          if (prev === 2 && next === 0) {
-            setQuoteCompleted(false);
-          }
-          return next;
-        });
-      }, currentImage === 0 ? 12600 : currentImage === 1 ? 8400 : 42000); // First: 12.6s, Second: 8.4s, Third: 42s (30% faster)
+        setCurrentImage(prev => (prev + 1) % images.length);
+      }, currentImage === 0 ? 12600 : currentImage === 1 ? 8400 : 42000); // First: 12.6s, Second: 8.4s, Third: 42s
       
       return () => clearInterval(interval);
     }
@@ -115,16 +101,15 @@ const Index = () => {
               </div>
             ))}
             
-            {/* Floating Quote - fades in slowly, then stays longer before fading out during second image */}
-            {showQuote && quoteShown && (currentImage === 0 || currentImage === 1) && !quoteCompleted && (
+            {/* Floating Quote - shows during first two images */}
+            {showQuote && (currentImage === 0 || currentImage === 1) && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <div className={`transition-opacity duration-[4000ms] ${
-                  currentImage === 0 ? 'opacity-100 animate-quote-fade-in' : 
-                  currentImage === 1 ? 'opacity-100 animate-quote-fade-out-delayed' : 'opacity-0'
+                  currentImage === 0 ? 'opacity-100' : 
+                  currentImage === 1 ? 'opacity-100' : 'opacity-0'
                 }`}>
                   <blockquote className="literary-quote text-white/90 leading-relaxed">
-                    <div className="text-4xl md:text-5xl font-bold">'Feelings</div>
-                    <div className="text-3xl md:text-4xl font-semibold">are the thoughts of the heart<span className="text-4xl md:text-5xl">'</span></div>
+                    <div className="text-4xl md:text-5xl font-bold">'Feelings are the thoughts of the heart'</div>
                   </blockquote>
                 </div>
               </div>
