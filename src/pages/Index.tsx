@@ -11,6 +11,7 @@ const Index = () => {
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
   const [quoteShown, setQuoteShown] = useState(false);
+  const [quoteCycleComplete, setQuoteCycleComplete] = useState(false);
 
   const images = [officeView, boysCometPainted, kyotoTvShop];
 
@@ -41,6 +42,10 @@ const Index = () => {
       const interval = setInterval(() => {
         setCurrentImage(prev => {
           const next = (prev + 1) % images.length;
+          // Mark quote cycle as complete when transitioning from image 1 to 2
+          if (prev === 1 && next === 2) {
+            setQuoteCycleComplete(true);
+          }
           return next;
         });
       }, currentImage === 0 ? 12600 : currentImage === 1 ? 8400 : 42000); // First: 12.6s, Second: 8.4s, Third: 42s (30% faster)
@@ -107,15 +112,19 @@ const Index = () => {
             ))}
             
             {/* Floating Quote - fades in slowly, then stays longer before fading out during second image */}
-            {showQuote && quoteShown && (currentImage === 0 || currentImage === 1) && (
+            {showQuote && quoteShown && !quoteCycleComplete && (currentImage === 0 || currentImage === 1) && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
                 <div className={`transition-opacity duration-[4000ms] ${
                   currentImage === 0 ? 'opacity-100 animate-quote-fade-in' : 
                   currentImage === 1 ? 'opacity-100 animate-quote-fade-out-delayed' : 'opacity-0'
                 }`}>
                   <blockquote className="literary-quote text-white/90 leading-relaxed">
-                    <div className="text-4xl md:text-5xl font-bold">'Feelings</div>
-                    <div className="text-3xl md:text-4xl font-semibold">are the thoughts of the heart<span className="text-4xl md:text-5xl">'</span></div>
+                    <div className="text-4xl md:text-5xl font-bold">
+                      <span className="text-4xl md:text-5xl">'</span>Feelings
+                    </div>
+                    <div className="text-3xl md:text-4xl font-semibold">
+                      are the thoughts of the heart<span className="text-4xl md:text-5xl">'</span>
+                    </div>
                   </blockquote>
                 </div>
               </div>
