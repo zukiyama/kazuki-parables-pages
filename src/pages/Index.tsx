@@ -52,11 +52,7 @@ const Index = () => {
   // Handle TV text animation timing
   useEffect(() => {
     if (currentImage === 2) {
-      // Delay showing the text to allow the slide-up animation to play
-      const textTimer = setTimeout(() => {
-        setShowTvText(true);
-      }, 300);
-      return () => clearTimeout(textTimer);
+      setShowTvText(true);
     } else {
       setShowTvText(false);
     }

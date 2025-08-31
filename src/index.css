@@ -160,7 +160,7 @@
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.8s ease-out;
-    transition-delay: 500ms;
+    transition-delay: 0ms;
   }
 
   .tv-shop-text-reveal.visible {

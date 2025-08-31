@@ -21,15 +21,9 @@ export const useScrollAnimation = () => {
       });
     };
 
-    // Initial check with delay to catch elements already in view
-    const initialCheck = setTimeout(() => {
-      handleScroll();
-    }, 100);
-
     window.addEventListener("scroll", handleScroll);
     
     return () => {
-      clearTimeout(initialCheck);
       window.removeEventListener("scroll", handleScroll);
       // Reset visible elements when component unmounts
       setVisibleElements(new Set());
