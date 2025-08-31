@@ -118,24 +118,22 @@ const Index = () => {
             {/* Text overlay for TV shop image */}
             {showQuote && currentImage === 2 && (
               <div className="absolute top-1/3 left-1/4 max-w-md">
-                <ScrollFadeUp id="tv-shop-text" delay={500}>
-                  <div className="text-white/90 leading-relaxed animate-fade-in">
-                    <h2 className="font-heading text-3xl md:text-4xl mb-2">summer 1979</h2>
-                    <h3 className="font-heading text-2xl md:text-3xl mb-4">Kyoto Japan</h3>
-                    <div className="border-t border-white/30 pt-4">
-                      <h4 className="font-heading text-2xl md:text-3xl font-bold mb-2">KAIJU</h4>
-                      <div className="font-body text-sm md:text-base text-white/80">
-                        <span className="italic">noun</span> /ˈkaɪdʒuː/<br/>
-                        <span className="font-medium">mysterious beast</span>
-                      </div>
-                    </div>
-                    <div className="mt-8 text-center">
-                      <div className="font-mono text-2xl md:text-4xl font-bold text-white animate-pulse tracking-wider">
-                        <span className="filter blur-[0.5px] opacity-90">SOMETHING IS COMING</span>
-                      </div>
+                <div className="text-white/90 leading-relaxed animate-fade-in" style={{ animationDelay: '500ms' }}>
+                  <h2 className="font-heading text-3xl md:text-4xl mb-2">summer 1979</h2>
+                  <h3 className="font-heading text-2xl md:text-3xl mb-4">Kyoto Japan</h3>
+                  <div className="border-t border-white/30 pt-4">
+                    <h4 className="font-heading text-2xl md:text-3xl font-bold mb-2">KAIJU</h4>
+                    <div className="font-body text-sm md:text-base text-white/80">
+                      <span className="italic">noun</span> /ˈkaɪdʒuː/<br/>
+                      <span className="font-medium">mysterious beast</span>
                     </div>
                   </div>
-                </ScrollFadeUp>
+                  <div className="mt-8 text-center">
+                    <div className="font-mono text-2xl md:text-4xl font-bold text-white animate-pulse tracking-wider">
+                      <span className="filter blur-[0.5px] opacity-90">SOMETHING IS COMING</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
