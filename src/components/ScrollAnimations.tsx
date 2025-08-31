@@ -22,7 +22,11 @@ export const useScrollAnimation = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
+    
+    // Delay initial check to prevent glitchy animations on page load
+    setTimeout(() => {
+      handleScroll();
+    }, 150);
     
     return () => {
       window.removeEventListener("scroll", handleScroll);
