@@ -101,12 +101,12 @@ const Index = () => {
               </div>
             ))}
             
-            {/* Floating Quote - shows during first two images */}
+            {/* Floating Quote - fades in during first image, stays during second, fades out during second */}
             {showQuote && (currentImage === 0 || currentImage === 1) && (
               <div className="absolute top-1/4 right-1/4 max-w-md">
-                <div className={`transition-opacity duration-[4000ms] ${
+                <div className={`transition-opacity duration-[3000ms] ${
                   currentImage === 0 ? 'opacity-100' : 
-                  currentImage === 1 ? 'opacity-100' : 'opacity-0'
+                  currentImage === 1 ? 'opacity-0' : 'opacity-0'
                 }`}>
                   <blockquote className="literary-quote text-white/90 leading-relaxed">
                     <div className="text-4xl md:text-5xl font-bold">'Feelings are the thoughts of the heart'</div>

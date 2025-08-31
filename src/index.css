@@ -310,7 +310,7 @@
 }
 
 .animate-slow-zoom {
-  animation: slowZoom 12.6s ease-out;
+  animation: slowZoom 12.6s ease-out forwards;
 }
 
 .animate-slow-zoom-meteor {
