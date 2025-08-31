@@ -108,7 +108,7 @@ const Writing = () => {
       
       <main className="relative z-10 pt-24">
         {/* KAIJU Section */}
-        <section data-section="kaiju" className="min-h-screen flex items-center justify-center relative">
+        <section data-section="kaiju" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <h1 className={`font-serif text-6xl font-bold text-white mb-12 text-center tracking-wide transition-all duration-1000 ${
@@ -147,7 +147,7 @@ const Writing = () => {
         </section>
 
         {/* HOAX Section */}
-        <section data-section="hoax" className="min-h-screen flex items-center justify-center relative">
+        <section data-section="hoax" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -179,7 +179,7 @@ const Writing = () => {
         </section>
 
         {/* SIPHONS Section */}
-        <section data-section="siphons" className="min-h-screen flex items-center justify-center relative">
+        <section data-section="siphons" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -211,7 +211,7 @@ const Writing = () => {
         </section>
 
         {/* OBA Section */}
-        <section data-section="oba" className="min-h-screen flex items-center justify-center relative">
+        <section data-section="oba" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -243,7 +243,7 @@ const Writing = () => {
         </section>
 
         {/* Young Adult Books Section */}
-        <section data-section="young-adult" className="min-h-screen flex items-center justify-center relative bg-black/80">
+        <section data-section="young-adult" className="min-h-[80vh] flex items-center justify-center relative bg-black/80">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <h2 className={`font-serif text-5xl font-bold text-white mb-4 text-center tracking-wide transition-all duration-1000 ${

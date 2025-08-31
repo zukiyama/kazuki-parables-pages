@@ -155,6 +155,18 @@
   .magazine-slide.visible {
     transform: translateY(0);
   }
+
+  .tv-shop-text-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+    transition-delay: 500ms;
+  }
+
+  .tv-shop-text-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @layer components {

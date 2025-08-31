@@ -163,7 +163,7 @@ const Music = () => {
   }, []);
 
   const handleAlbumSelect = (album: typeof albums[0]) => {
-    if (album.id === selectedAlbum.id || isTransitioning) return;
+    if (album.id === selectedAlbum.id) return;
     
     // Clear any existing transition
     if (transitionRef.current) {
@@ -172,41 +172,35 @@ const Music = () => {
     
     setIsTransitioning(true);
     
-    // Preload the target image
-    const img = new Image();
-    img.onload = () => {
-      // Determine which layer is currently visible
-      const isLayerAVisible = layerA.opacity === 1;
-      
-      if (isLayerAVisible) {
-        // Layer A is visible, prepare layer B with new image and fade it in
-        setLayerB({ image: album.background, opacity: 0 });
-        
-        // Use requestAnimationFrame to ensure the new image is set before starting transition
-        requestAnimationFrame(() => {
-          setLayerA(prev => ({ ...prev, opacity: 0 }));
-          setLayerB(prev => ({ ...prev, opacity: 1 }));
-        });
-      } else {
-        // Layer B is visible, prepare layer A with new image and fade it in
-        setLayerA({ image: album.background, opacity: 0 });
-        
-        requestAnimationFrame(() => {
-          setLayerB(prev => ({ ...prev, opacity: 0 }));
-          setLayerA(prev => ({ ...prev, opacity: 1 }));
-        });
-      }
-      
-      // Update album immediately as fade begins
-      setSelectedAlbum(album);
-      
-      // Clear transition state after animation completes
-      transitionRef.current = setTimeout(() => {
-        setIsTransitioning(false);
-      }, 800); // Match CSS transition duration
-    };
+    // Determine which layer is currently visible
+    const isLayerAVisible = layerA.opacity === 1;
     
-    img.src = album.background;
+    if (isLayerAVisible) {
+      // Layer A is visible, prepare layer B with new image and fade it in
+      setLayerB({ image: album.background, opacity: 0 });
+      
+      // Use requestAnimationFrame to ensure the new image is set before starting transition
+      requestAnimationFrame(() => {
+        setLayerA(prev => ({ ...prev, opacity: 0 }));
+        setLayerB(prev => ({ ...prev, opacity: 1 }));
+      });
+    } else {
+      // Layer B is visible, prepare layer A with new image and fade it in
+      setLayerA({ image: album.background, opacity: 0 });
+      
+      requestAnimationFrame(() => {
+        setLayerB(prev => ({ ...prev, opacity: 0 }));
+        setLayerA(prev => ({ ...prev, opacity: 1 }));
+      });
+    }
+    
+    // Update album immediately as fade begins
+    setSelectedAlbum(album);
+    
+    // Clear transition state after animation completes
+    transitionRef.current = setTimeout(() => {
+      setIsTransitioning(false);
+    }, 800); // Match CSS transition duration
   };
 
   return (
