@@ -4,6 +4,9 @@ export const useScrollAnimation = () => {
   const [visibleElements, setVisibleElements] = useState<Set<string>>(new Set());
 
   useEffect(() => {
+    // Reset visible elements on component mount to allow animations to replay
+    setVisibleElements(new Set());
+    
     const handleScroll = () => {
       const elements = document.querySelectorAll("[data-scroll-animation]");
       
@@ -21,7 +24,11 @@ export const useScrollAnimation = () => {
     window.addEventListener("scroll", handleScroll);
     handleScroll(); // Initial check
     
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      // Reset visible elements when component unmounts
+      setVisibleElements(new Set());
+    };
   }, []);
 
   return visibleElements;

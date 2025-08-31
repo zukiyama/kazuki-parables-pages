@@ -282,7 +282,7 @@
 }
 
 .animate-quote-fade-out-delayed {
-  animation: quote-fade-out-delayed 6s ease-out;
+  animation: quote-fade-out-delayed 8400ms ease-out;
 }
 
 .animate-drift-apart {

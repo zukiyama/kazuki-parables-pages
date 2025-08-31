@@ -15,6 +15,22 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    
+    <!-- Preload CSS to prevent FOUC -->
+    <link rel="preload" href="/src/index.css" as="style" />
+    
+    <!-- Inline critical styles to prevent grey flash -->
+    <style>
+      body {
+        background-color: hsl(var(--background, 0 0% 3%));
+        margin: 0;
+        padding: 0;
+      }
+      #root {
+        background-color: hsl(var(--background, 0 0% 3%));
+        min-height: 100vh;
+      }
+    </style>
   </head>
 
   <body>
