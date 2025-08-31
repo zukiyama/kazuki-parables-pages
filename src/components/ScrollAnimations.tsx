@@ -23,11 +23,6 @@ export const useScrollAnimation = () => {
 
     window.addEventListener("scroll", handleScroll);
     
-    // Delay initial check to prevent glitchy animations on page load
-    setTimeout(() => {
-      handleScroll();
-    }, 150);
-    
     return () => {
       window.removeEventListener("scroll", handleScroll);
       // Reset visible elements when component unmounts
