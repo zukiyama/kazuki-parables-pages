@@ -10,6 +10,7 @@ const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
+  const [showTvText, setShowTvText] = useState(false);
 
   const images = [
     officeView,
@@ -47,6 +48,19 @@ const Index = () => {
       return () => clearInterval(interval);
     }
   }, [showMagazine, images.length, currentImage]);
+
+  // Handle TV text animation timing
+  useEffect(() => {
+    if (currentImage === 2) {
+      // Delay showing the text to allow the slide-up animation to play
+      const textTimer = setTimeout(() => {
+        setShowTvText(true);
+      }, 300);
+      return () => clearTimeout(textTimer);
+    } else {
+      setShowTvText(false);
+    }
+  }, [currentImage]);
 
   return (
     <div className="relative">
@@ -122,7 +136,7 @@ const Index = () => {
             {/* Text overlay for TV shop image */}
             {showQuote && currentImage === 2 && (
               <div className="absolute top-1/3 left-1/4 max-w-md">
-                <div className={`tv-shop-text-reveal ${currentImage === 2 ? 'visible' : ''} text-white/90 leading-relaxed`}>
+                <div className={`tv-shop-text-reveal ${showTvText ? 'visible' : ''} text-white/90 leading-relaxed`}>
                   <h2 className="font-heading text-3xl md:text-4xl mb-2">summer 1979</h2>
                   <h3 className="font-heading text-2xl md:text-3xl mb-4">Kyoto Japan</h3>
                   <div className="border-t border-white/30 pt-4">
