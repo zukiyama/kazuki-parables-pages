@@ -13,7 +13,7 @@ import obaBackground from "@/assets/oba-background.jpg";
 
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
-import hoaxCover from "@/assets/hoax-cover.jpg";
+import hoaxCover from "@/assets/IMG_7715.png";
 import siphonsCover from "@/assets/siphons-cover.jpg";
 import obaCover from "@/assets/oba-cover.jpg";
 
