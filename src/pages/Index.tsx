@@ -3,7 +3,7 @@ import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import officeView from "@/assets/office-window-view.jpg";
-import boysCometUpscaled from "@/assets/boys-comet-upscaled.jpg";
+import boysCometEnhanced from "@/assets/boys-comet-enhanced.jpg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
 
 const Index = () => {
@@ -15,7 +15,7 @@ const Index = () => {
 
   const images = [
     officeView,
-    boysCometUpscaled,
+    boysCometEnhanced,
     kyotoTvShop
   ];
 
@@ -29,8 +29,8 @@ const Index = () => {
         setShowMagazine(true);
       }
       
-      // Show quote quickly when scrolled past 60% of viewport
-      if (scrollY > viewportHeight * 0.6) {
+      // Show quote when slideshow becomes visible
+      if (scrollY > viewportHeight * 0.8) {
         setShowQuote(true);
       }
     };
@@ -130,7 +130,7 @@ const Index = () => {
                   currentImage === 1 ? 'opacity-100 animate-quote-fade-out-delayed' : 'opacity-0'
                 }`}>
                   <blockquote className="literary-quote text-white/90 leading-relaxed">
-                    <div className="text-4xl md:text-5xl font-bold">'Feelings are the thoughts of the heart'</div>
+                    <div className="text-4xl md:text-5xl font-bold">'Feelings are the thoughts of the heart.'</div>
                   </blockquote>
                 </div>
               </div>
