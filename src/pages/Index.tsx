@@ -5,6 +5,7 @@ import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import officeView from "@/assets/office-window-view.jpg";
 import boysCometOilPainting from "@/assets/boys-comet-oil-painting-1970s.jpg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
+import ohioSingleCover from "@/assets/IMG_7765.png";
 
 const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -104,6 +105,22 @@ const Index = () => {
             <p className="font-body text-xl text-muted-foreground mt-6">
               Coming Soon
             </p>
+          </ScrollFadeUp>
+
+          {/* Music Banner */}
+          <ScrollFadeUp id="music-banner" delay={300} className="flex justify-center">
+            <div className="bg-card/80 backdrop-blur-sm border border-border rounded-lg p-4 flex items-center gap-4 max-w-md shadow-lg">
+              <img 
+                src={ohioSingleCover} 
+                alt="Ohio single cover" 
+                className="w-16 h-16 rounded-md object-contain"
+              />
+              <div className="text-left">
+                <p className="font-heading text-lg font-semibold text-foreground">New Single</p>
+                <h4 className="font-heading text-2xl font-bold text-primary">Ohio</h4>
+                <p className="font-body text-sm text-muted-foreground">Available Now</p>
+              </div>
+            </div>
           </ScrollFadeUp>
         </div>
 
