@@ -108,19 +108,41 @@ const Index = () => {
           </ScrollFadeUp>
 
           {/* Music Banner */}
-          <ScrollFadeUp id="music-banner" delay={300} className="flex justify-center">
-            <div className="bg-card/80 backdrop-blur-sm border border-border rounded-lg p-4 flex items-center gap-4 max-w-md shadow-lg">
-              <img 
-                src={ohioSingleCover} 
-                alt="Ohio single cover" 
-                className="w-16 h-16 rounded-md object-contain"
-              />
-              <div className="text-left">
-                <p className="font-heading text-lg font-semibold text-foreground">New Single</p>
-                <h4 className="font-heading text-2xl font-bold text-primary">Ohio</h4>
-                <p className="font-body text-sm text-muted-foreground">Available Now</p>
+          <ScrollFadeUp id="music-banner" delay={300} className="flex justify-center mt-12">
+            <a 
+              href="#/music" 
+              className="group block w-full max-w-2xl hover-scale transition-all duration-300"
+            >
+              <div className="bg-gradient-to-r from-card/90 to-card/70 backdrop-blur-sm border border-border rounded-xl p-8 flex items-center gap-8 shadow-xl hover:shadow-2xl hover:border-primary/30 transition-all duration-300">
+                <div className="relative">
+                  <img 
+                    src={ohioSingleCover} 
+                    alt="Ohio single cover" 
+                    className="w-24 h-24 md:w-32 md:h-32 rounded-lg object-contain shadow-lg group-hover:shadow-xl transition-shadow duration-300"
+                  />
+                  <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                    NEW
+                  </div>
+                </div>
+                <div className="flex-1 text-left">
+                  <p className="font-heading text-sm md:text-base font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                    New Single
+                  </p>
+                  <h4 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+                    Ohio
+                  </h4>
+                  <p className="font-body text-base md:text-lg text-muted-foreground mb-4">
+                    Available Now
+                  </p>
+                  <div className="flex items-center gap-2 text-primary group-hover:gap-4 transition-all duration-300">
+                    <span className="font-body font-medium">Listen Now</span>
+                    <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
               </div>
-            </div>
+            </a>
           </ScrollFadeUp>
         </div>
 
