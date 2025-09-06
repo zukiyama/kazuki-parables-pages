@@ -3,7 +3,7 @@ import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import officeView from "@/assets/office-window-view.jpg";
-import boysCometEnhanced from "@/assets/boys-comet-enhanced.jpg";
+import boysCometHq from "@/assets/boys-comet-hq.jpg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
 
 const Index = () => {
@@ -15,7 +15,7 @@ const Index = () => {
 
   const images = [
     officeView,
-    boysCometEnhanced,
+    boysCometHq,
     kyotoTvShop
   ];
 
