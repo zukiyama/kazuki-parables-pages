@@ -20,7 +20,7 @@ export const BookCoverSlideshow = ({ covers, title, className = "" }: BookCoverS
         <img 
           src={covers[0]?.image} 
           alt={covers[0]?.alt || title}
-          className="w-full max-w-md mx-auto aspect-[3/4] object-cover rounded-lg shadow-2xl"
+          className="w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl"
         />
       </div>
     );
@@ -32,7 +32,7 @@ export const BookCoverSlideshow = ({ covers, title, className = "" }: BookCoverS
         key={`cover-${currentCover}`}
         src={covers[currentCover].image} 
         alt={covers[currentCover].alt}
-        className="w-full max-w-md mx-auto aspect-[3/4] object-cover rounded-lg shadow-2xl transition-opacity duration-300"
+        className="w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl transition-opacity duration-300"
         loading="eager"
       />
       
