@@ -130,7 +130,7 @@ const Index = () => {
                   currentImage === 1 ? 'opacity-100 animate-quote-fade-out-delayed' : 'opacity-0'
                 }`}>
                   <blockquote className="literary-quote text-white/90 leading-relaxed">
-                    <div className="text-4xl md:text-5xl font-bold">'Feelings are the thoughts of the heart'</div>
+                    <div className="text-4xl md:text-5xl font-bold">'Feelings are the thoughts of the heart.'</div>
                   </blockquote>
                 </div>
               </div>
