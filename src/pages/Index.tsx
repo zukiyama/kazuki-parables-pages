@@ -180,7 +180,7 @@ const Index = () => {
               <div className="absolute top-1/3 left-1/4 max-w-md">
                 <div className={`tv-shop-text-reveal ${animateTvText ? 'visible' : ''} text-white/90 leading-relaxed`}>
                   <h2 className="font-heading text-3xl md:text-4xl mb-2">summer 1979</h2>
-                  <h3 className="font-heading text-2xl md:text-3xl mb-4">Kyoto Japan</h3>
+                  <h3 className="font-heading text-2xl md:text-3xl mb-4">Osaka Japan</h3>
                   <div className="border-t border-white/30 pt-4">
                     <h4 className="font-heading text-2xl md:text-3xl font-bold mb-2">KAIJU</h4>
                     <div className="font-body text-sm md:text-base text-white/80">

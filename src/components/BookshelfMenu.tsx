@@ -77,7 +77,12 @@ export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
   const handleBookClick = (book: Book) => {
     const section = document.querySelector(`[data-section="${book.targetSection}"]`);
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      const bannerHeight = 120; // Approximate height of the banner
+      const sectionTop = section.getBoundingClientRect().top + window.scrollY - bannerHeight;
+      window.scrollTo({ 
+        top: sectionTop,
+        behavior: 'smooth' 
+      });
     }
     
     // Call the callback if provided (for handling slideshow navigation)
@@ -87,19 +92,19 @@ export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
   };
 
   return (
-    <div className="sticky top-20 z-20 bg-black/90 backdrop-blur-md border-b border-white/20 py-6">
+    <div className="sticky top-16 z-20 bg-black/90 backdrop-blur-md border-b border-white/20 py-3">
       <div className="container mx-auto px-6">
-        <div className="flex justify-center items-center gap-8 overflow-x-auto pb-2">
+        <div className="flex justify-center items-center gap-6 overflow-x-auto pb-2">
           {books.map((book) => (
             <div
               key={book.id}
-              className="flex flex-col items-center cursor-pointer group min-w-[100px]"
+              className="flex flex-col items-center cursor-pointer group min-w-[80px]"
               onMouseEnter={() => setHoveredBook(book.id)}
               onMouseLeave={() => setHoveredBook(null)}
               onClick={() => handleBookClick(book)}
             >
               {/* Book Title */}
-              <h3 className="font-serif text-sm font-semibold text-white mb-2 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
+              <h3 className="font-serif text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
                 {book.title}
               </h3>
               
@@ -108,7 +113,7 @@ export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
                 <img
                   src={book.cover}
                   alt={book.title}
-                  className={`h-24 w-auto object-contain rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
+                  className={`h-16 w-auto object-contain rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
                     hoveredBook === book.id 
                       ? 'scale-125 shadow-2xl shadow-yellow-300/20' 
                       : 'hover:scale-110'
