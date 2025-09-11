@@ -75,25 +75,37 @@ export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
   const [hoveredBook, setHoveredBook] = useState<string | null>(null);
 
   const handleBookClick = (book: Book) => {
-    // Set slideshow book first if it's a slideshow book to prevent flickering
+    // Set slideshow book IMMEDIATELY if it's a slideshow book to prevent flickering
     if (onBookClick && book.slideToBook !== undefined) {
       onBookClick(book.id, book.slideToBook);
-    }
-    
-    // Then scroll to the section
-    const section = document.querySelector(`[data-section="${book.targetSection}"]`);
-    if (section) {
-      const bannerHeight = 120; // Approximate height of the banner
-      const sectionTop = section.getBoundingClientRect().top + window.scrollY - bannerHeight;
-      window.scrollTo({ 
-        top: sectionTop,
-        behavior: 'smooth' 
+      
+      // Use requestAnimationFrame to ensure the slideshow updates before scrolling
+      requestAnimationFrame(() => {
+        const section = document.querySelector(`[data-section="${book.targetSection}"]`);
+        if (section) {
+          const bannerHeight = 120;
+          const sectionTop = section.getBoundingClientRect().top + window.scrollY - bannerHeight;
+          window.scrollTo({ 
+            top: sectionTop,
+            behavior: 'smooth' 
+          });
+        }
       });
-    }
-    
-    // Call the callback for non-slideshow books
-    if (onBookClick && book.slideToBook === undefined) {
-      onBookClick(book.id, book.slideToBook);
+    } else {
+      // For non-slideshow books, scroll immediately
+      const section = document.querySelector(`[data-section="${book.targetSection}"]`);
+      if (section) {
+        const bannerHeight = 120;
+        const sectionTop = section.getBoundingClientRect().top + window.scrollY - bannerHeight;
+        window.scrollTo({ 
+          top: sectionTop,
+          behavior: 'smooth' 
+        });
+      }
+      
+      if (onBookClick) {
+        onBookClick(book.id, book.slideToBook);
+      }
     }
   };
 

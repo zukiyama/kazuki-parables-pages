@@ -64,7 +64,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef>((props, re
               key={`cover-${currentBook}`}
               src={book.cover} 
               alt={book.title}
-              className="w-full max-w-sm mx-auto aspect-[3/4] object-cover rounded-lg shadow-lg transition-opacity duration-200"
+              className="w-full max-w-sm mx-auto aspect-[3/4] object-cover rounded-lg shadow-lg transition-opacity duration-100"
               loading="eager"
             />
           </div>
