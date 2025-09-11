@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import Navigation from "@/components/Navigation";
 import { CharacterSlideshow } from "@/components/CharacterSlideshow";
-import { YoungAdultSlideshow } from "@/components/YoungAdultSlideshow";
+import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungAdultSlideshow";
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
 import { ParableImageSelector } from "@/components/ParableImageSelector";
+import { BookshelfMenu } from "@/components/BookshelfMenu";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
@@ -26,6 +27,7 @@ const Writing = () => {
     siphons: 0,
     oba: 0
   });
+  const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,9 +75,19 @@ const Writing = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleBookClick = (bookId: string, slideToBook?: number) => {
+    // If it's a young adult book, set the slideshow to show that book
+    if (slideToBook !== undefined && youngAdultSlideshowRef.current) {
+      setTimeout(() => {
+        youngAdultSlideshowRef.current?.setCurrentBook(slideToBook);
+      }, 1000); // Delay to allow scroll to complete
+    }
+  };
+
   return (
     <div className="min-h-screen relative">
       <Navigation />
+      <BookshelfMenu onBookClick={handleBookClick} />
       
       {/* Stacked Background Images */}
       <div className="fixed inset-0 z-0">
@@ -260,7 +272,7 @@ const Writing = () => {
               <div className={`transition-all duration-1000 delay-500 ${
                 visibleSections.has('young-adult') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
-                <YoungAdultSlideshow />
+                <YoungAdultSlideshow ref={youngAdultSlideshowRef} />
               </div>
             </div>
           </div>

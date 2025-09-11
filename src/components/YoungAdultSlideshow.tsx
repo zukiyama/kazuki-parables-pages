@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, forwardRef, useImperativeHandle } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -31,8 +31,16 @@ const books = [
   }
 ];
 
-export const YoungAdultSlideshow = () => {
+export interface YoungAdultSlideshowRef {
+  setCurrentBook: (index: number) => void;
+}
+
+export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef>((props, ref) => {
   const [currentBook, setCurrentBook] = useState(0);
+
+  useImperativeHandle(ref, () => ({
+    setCurrentBook
+  }));
 
   const nextBook = () => {
     setCurrentBook((prev) => (prev + 1) % books.length);
@@ -109,4 +117,6 @@ export const YoungAdultSlideshow = () => {
       </div>
     </div>
   );
-};
+});
+
+YoungAdultSlideshow.displayName = "YoungAdultSlideshow";
