@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Navigation from "@/components/Navigation";
+import { AlbumBanner } from "@/components/AlbumBanner";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
@@ -207,6 +208,15 @@ const Music = () => {
     <div className="min-h-screen bg-slate-900 relative overflow-hidden">
       <Navigation />
       
+      {/* Album Banner */}
+      <AlbumBanner 
+        selectedAlbumId={selectedAlbum.id}
+        onAlbumClick={(albumId) => {
+          const album = albums.find(a => a.id === albumId);
+          if (album) handleAlbumSelect(album);
+        }}
+      />
+      
       {/* Two-Layer Crossfade Background System */}
       <div className="fixed inset-0">
         {/* Layer A */}
@@ -341,55 +351,30 @@ const Music = () => {
                       ))}
                     </div>
                   </ScrollArea>
+                  
+                  {/* Singles section moved here */}
+                  <div className="mt-8">
+                    <h4 className="font-serif text-xl text-white mb-4 text-center">Singles</h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      {selectedAlbum.tracks.slice(0,4).map((track, idx) => (
+                        <button
+                          key={idx}
+                          className={`relative group rounded-lg overflow-hidden border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 ${currentTrackIndex===idx? 'ring-2 ring-white/60':''}`}
+                          onClick={() => { setCurrentTrackIndex(idx); setIsPlaying(true); }}
+                        >
+                          <img src={selectedAlbum.cover} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                          <div className="absolute inset-0 bg-black/40"></div>
+                          <div className="absolute bottom-2 left-2 right-2 text-left">
+                            <span className="text-white text-xs font-serif line-clamp-2">{track}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          
-          {/* Album Selection Grid */}
-          <div className="mb-12">
-            <h3 className="font-serif text-3xl text-white mb-8 text-center">Choose Your Journey</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-              {albums.map((album, index) => (
-                <div
-                  key={album.id}
-                  className={`cursor-pointer transition-all duration-500 hover:scale-110 animate-fade-in ${
-                    selectedAlbum.id === album.id ? 'ring-4 ring-white/60 rounded-lg' : ''
-                  }`}
-                  style={{ animationDelay: `${index * 100}ms` }}
-                  onClick={() => handleAlbumSelect(album)}
-                >
-                  <img 
-                    src={album.cover} 
-                    alt={album.title}
-                    className="w-full aspect-square object-cover rounded-lg shadow-lg"
-                  />
-                  <p className="text-white text-sm mt-2 text-center font-serif">{album.title}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Singles (click to play) */}
-          <div className="mb-8">
-            <h4 className="font-serif text-2xl text-white mb-4 text-center">Singles</h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {selectedAlbum.tracks.slice(0,4).map((track, idx) => (
-                <button
-                  key={idx}
-                  className={`relative group rounded-lg overflow-hidden border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 ${currentTrackIndex===idx? 'ring-2 ring-white/60':''}`}
-                  onClick={() => { setCurrentTrackIndex(idx); setIsPlaying(true); }}
-                >
-                  <img src={selectedAlbum.cover} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
-                  <div className="absolute inset-0 bg-black/40"></div>
-                  <div className="absolute bottom-2 left-2 right-2 text-left">
-                    <span className="text-white text-sm font-serif line-clamp-2">{track}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-          
           
         </div>
       </main>
