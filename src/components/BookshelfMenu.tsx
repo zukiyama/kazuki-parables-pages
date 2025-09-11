@@ -75,6 +75,12 @@ export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
   const [hoveredBook, setHoveredBook] = useState<string | null>(null);
 
   const handleBookClick = (book: Book) => {
+    // Set slideshow book first if it's a slideshow book to prevent flickering
+    if (onBookClick && book.slideToBook !== undefined) {
+      onBookClick(book.id, book.slideToBook);
+    }
+    
+    // Then scroll to the section
     const section = document.querySelector(`[data-section="${book.targetSection}"]`);
     if (section) {
       const bannerHeight = 120; // Approximate height of the banner
@@ -85,8 +91,8 @@ export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
       });
     }
     
-    // Call the callback if provided (for handling slideshow navigation)
-    if (onBookClick) {
+    // Call the callback for non-slideshow books
+    if (onBookClick && book.slideToBook === undefined) {
       onBookClick(book.id, book.slideToBook);
     }
   };
