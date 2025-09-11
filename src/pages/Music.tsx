@@ -208,14 +208,16 @@ const Music = () => {
     <div className="min-h-screen bg-slate-900 relative overflow-hidden">
       <Navigation />
       
-      {/* Album Banner */}
-      <AlbumBanner 
-        selectedAlbumId={selectedAlbum.id}
-        onAlbumClick={(albumId) => {
-          const album = albums.find(a => a.id === albumId);
-          if (album) handleAlbumSelect(album);
-        }}
-      />
+      {/* Album Banner - Fixed at top */}
+      <div className="fixed top-16 left-0 right-0 z-20">
+        <AlbumBanner 
+          selectedAlbumId={selectedAlbum.id}
+          onAlbumClick={(albumId) => {
+            const album = albums.find(a => a.id === albumId);
+            if (album) handleAlbumSelect(album);
+          }}
+        />
+      </div>
       
       {/* Two-Layer Crossfade Background System */}
       <div className="fixed inset-0">
@@ -239,7 +241,7 @@ const Music = () => {
         <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
       </div>
       
-      <main className="container mx-auto px-6 pt-24 pb-12 relative z-10">
+      <main className="container mx-auto px-6 pt-32 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
@@ -351,28 +353,28 @@ const Music = () => {
                       ))}
                     </div>
                   </ScrollArea>
-                  
-                  {/* Singles section moved here */}
-                  <div className="mt-8">
-                    <h4 className="font-serif text-xl text-white mb-4 text-center">Singles</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      {selectedAlbum.tracks.slice(0,4).map((track, idx) => (
-                        <button
-                          key={idx}
-                          className={`relative group rounded-lg overflow-hidden border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 ${currentTrackIndex===idx? 'ring-2 ring-white/60':''}`}
-                          onClick={() => { setCurrentTrackIndex(idx); setIsPlaying(true); }}
-                        >
-                          <img src={selectedAlbum.cover} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
-                          <div className="absolute inset-0 bg-black/40"></div>
-                          <div className="absolute bottom-2 left-2 right-2 text-left">
-                            <span className="text-white text-xs font-serif line-clamp-2">{track}</span>
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
                 </div>
               </div>
+            </div>
+          </div>
+          
+          {/* Singles (click to play) */}
+          <div className="mb-8">
+            <h4 className="font-serif text-2xl text-white mb-4 text-center">Singles</h4>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {selectedAlbum.tracks.slice(0,4).map((track, idx) => (
+                <button
+                  key={idx}
+                  className={`relative group rounded-lg overflow-hidden border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 ${currentTrackIndex===idx? 'ring-2 ring-white/60':''}`}
+                  onClick={() => { setCurrentTrackIndex(idx); setIsPlaying(true); }}
+                >
+                  <img src={selectedAlbum.cover} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute inset-0 bg-black/40"></div>
+                  <div className="absolute bottom-2 left-2 right-2 text-left">
+                    <span className="text-white text-sm font-serif line-clamp-2">{track}</span>
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
           

@@ -56,7 +56,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   };
 
   return (
-    <div className="sticky top-16 z-20 bg-black/90 backdrop-blur-md border-b border-white/20 py-3">
+    <div className="bg-black/90 backdrop-blur-md border-b border-white/20 py-3">
       <div className="container mx-auto px-6">
         <div className="flex justify-center items-center gap-6 overflow-x-auto pb-2">
           {albums.map((album) => (
