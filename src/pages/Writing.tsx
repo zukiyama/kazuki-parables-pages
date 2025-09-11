@@ -76,11 +76,9 @@ const Writing = () => {
   }, []);
 
   const handleBookClick = (bookId: string, slideToBook?: number) => {
-    // If it's a young adult book, set the slideshow to show that book
+    // If it's a young adult book, set the slideshow to show that book IMMEDIATELY
     if (slideToBook !== undefined && youngAdultSlideshowRef.current) {
-      setTimeout(() => {
-        youngAdultSlideshowRef.current?.setCurrentBook(slideToBook);
-      }, 1000); // Delay to allow scroll to complete
+      youngAdultSlideshowRef.current.setCurrentBook(slideToBook);
     }
   };
 
