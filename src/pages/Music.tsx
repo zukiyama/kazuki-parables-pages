@@ -241,7 +241,7 @@ const Music = () => {
         <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
       </div>
       
-      <main className="container mx-auto px-6 pt-24 pb-12 relative z-10">
+      <main className="container mx-auto px-6 pt-48 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
