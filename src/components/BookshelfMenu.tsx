@@ -81,24 +81,38 @@ export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
       
       // Use requestAnimationFrame to ensure the slideshow updates before scrolling
       requestAnimationFrame(() => {
-        const section = document.querySelector(`[data-section="${book.targetSection}"]`);
+        const section = document.querySelector(`[data-section="${book.targetSection}"]`) as HTMLElement;
         if (section) {
-          const bannerHeight = 120;
-          const sectionTop = section.getBoundingClientRect().top + window.scrollY - bannerHeight;
+          // Account for navigation (64px) + bookshelf menu (estimated 80px) + padding
+          const fixedElementsHeight = 160;
+          const viewportHeight = window.innerHeight;
+          const sectionHeight = section.offsetHeight;
+          
+          // Calculate position to center the section in viewport
+          const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+          const centeredPosition = sectionTop - fixedElementsHeight - (viewportHeight - sectionHeight - fixedElementsHeight) / 2;
+          
           window.scrollTo({ 
-            top: sectionTop,
+            top: Math.max(0, centeredPosition),
             behavior: 'smooth' 
           });
         }
       });
     } else {
       // For non-slideshow books, scroll immediately
-      const section = document.querySelector(`[data-section="${book.targetSection}"]`);
+      const section = document.querySelector(`[data-section="${book.targetSection}"]`) as HTMLElement;
       if (section) {
-        const bannerHeight = 120;
-        const sectionTop = section.getBoundingClientRect().top + window.scrollY - bannerHeight;
+        // Account for navigation (64px) + bookshelf menu (estimated 80px) + padding
+        const fixedElementsHeight = 160;
+        const viewportHeight = window.innerHeight;
+        const sectionHeight = section.offsetHeight;
+        
+        // Calculate position to center the section in viewport
+        const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+        const centeredPosition = sectionTop - fixedElementsHeight - (viewportHeight - sectionHeight - fixedElementsHeight) / 2;
+        
         window.scrollTo({ 
-          top: sectionTop,
+          top: Math.max(0, centeredPosition),
           behavior: 'smooth' 
         });
       }
