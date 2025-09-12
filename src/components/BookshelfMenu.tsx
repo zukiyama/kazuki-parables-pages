@@ -2,7 +2,7 @@ import { useState } from "react";
 
 // Main book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
-import hoaxCover from "@/assets/IMG_7715.png";
+import hoaxCover from "@/assets/hoax-cover.jpg";
 import siphonsCover from "@/assets/siphons-cover.jpg";
 import obaCover from "@/assets/oba-cover.jpg";
 
