@@ -52,26 +52,22 @@ interface AlbumBannerProps {
 export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const [centerIndex, setCenterIndex] = useState(2); // Start with middle album centered
 
   useEffect(() => {
     if (!api) return;
 
     setCurrent(api.selectedScrollSnap());
-    setCenterIndex(api.selectedScrollSnap() + 2); // Account for center position
 
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap());
-      setCenterIndex(api.selectedScrollSnap() + 2);
+      
+      // Auto-select the centered album when carousel changes
+      const centeredAlbum = albums[api.selectedScrollSnap()];
+      if (onAlbumClick && centeredAlbum) {
+        onAlbumClick(centeredAlbum.id);
+      }
     });
-  }, [api]);
-
-  useEffect(() => {
-    // Auto-select the centered album
-    if (onAlbumClick && albums[centerIndex - 2]) {
-      onAlbumClick(albums[centerIndex - 2].id);
-    }
-  }, [centerIndex, onAlbumClick]);
+  }, [api, onAlbumClick]);
 
   const handleAlbumClick = (album: Album, index: number) => {
     if (onAlbumClick) {
@@ -80,39 +76,50 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
     
     // Scroll to center this album
     if (api) {
-      api.scrollTo(index - 2);
+      api.scrollTo(index);
     }
   };
 
   // Calculate position relative to center for styling
   const getAlbumStyle = (index: number) => {
-    const distanceFromCenter = Math.abs(index - centerIndex);
-    const isCenter = distanceFromCenter === 0;
-    const isNearCenter = distanceFromCenter <= 1;
-    const isMidDistance = distanceFromCenter <= 2;
+    const distanceFromCenter = Math.abs(index - current);
     
     let scale = 1;
     let opacity = 1;
+    let zIndex = 10;
+    let translateZ = 0;
     
-    if (isCenter) {
-      scale = 1.4;
+    if (distanceFromCenter === 0) {
+      // Center album - largest and fully visible
+      scale = 1.2;
       opacity = 1;
-    } else if (isNearCenter) {
-      scale = 1.1;
-      opacity = 0.8;
-    } else if (isMidDistance) {
+      zIndex = 30;
+      translateZ = 0;
+    } else if (distanceFromCenter === 1) {
+      // Adjacent albums - smaller and slightly behind
       scale = 0.9;
+      opacity = 0.8;
+      zIndex = 20;
+      translateZ = -20;
+    } else if (distanceFromCenter === 2) {
+      // Second tier - even smaller and more behind
+      scale = 0.75;
       opacity = 0.6;
+      zIndex = 15;
+      translateZ = -40;
     } else {
-      scale = 0.7;
+      // Far albums - smallest and most hidden
+      scale = 0.6;
       opacity = 0.3;
+      zIndex = 10;
+      translateZ = -60;
     }
     
-    return { scale, opacity };
+    return { scale, opacity, zIndex, translateZ };
   };
 
   return (
-    <div className="bg-black/90 backdrop-blur-md border-b border-white/20 py-6">
+    <div className="bg-black/90 backdrop-blur-md border-b border-white/20 py-8">
       <div className="container mx-auto px-4">
         <Carousel
           setApi={setApi}
@@ -125,23 +132,27 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
           }}
         >
           <div className="relative">
-            <CarouselContent className="-ml-4">
+            <CarouselContent className="-ml-2 perspective-1000">
               {albums.map((album, index) => {
-                const { scale, opacity } = getAlbumStyle(index);
+                const { scale, opacity, zIndex, translateZ } = getAlbumStyle(index);
                 const isSelected = selectedAlbumId === album.id;
+                const isCentered = index === current;
                 
                 return (
-                  <CarouselItem key={album.id} className="pl-4 basis-1/5 flex justify-center">
+                  <CarouselItem key={album.id} className="pl-2 basis-1/5 flex justify-center">
                     <div
-                      className="flex flex-col items-center cursor-pointer group transition-all duration-500 ease-out"
+                      className="flex flex-col items-center cursor-pointer group transition-all duration-500 ease-out relative"
                       onClick={() => handleAlbumClick(album, index)}
                       style={{
-                        transform: `scale(${scale})`,
-                        opacity
+                        transform: `scale(${scale}) translateZ(${translateZ}px)`,
+                        opacity,
+                        zIndex
                       }}
                     >
                       {/* Album Title */}
-                      <h3 className="font-serif text-xs font-semibold text-white mb-2 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
+                      <h3 className={`font-serif text-sm font-semibold text-white mb-3 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap ${
+                        isCentered ? 'text-yellow-300' : ''
+                      }`}>
                         {album.title}
                       </h3>
                       
@@ -150,8 +161,8 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                         <img
                           src={album.cover}
                           alt={album.title}
-                          className={`h-20 w-auto object-contain rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
-                            isSelected
+                          className={`h-24 w-auto object-contain rounded-lg shadow-lg transition-all duration-500 group-hover:shadow-xl ${
+                            isCentered
                               ? 'ring-2 ring-yellow-300/80 shadow-2xl shadow-yellow-300/30'
                               : 'hover:shadow-2xl hover:shadow-yellow-300/20'
                           }`}
@@ -170,19 +181,19 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             <Button
               variant="ghost"
               size="icon"
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white border border-white/20 h-10 w-10 rounded-full backdrop-blur-sm"
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white border border-white/20 h-12 w-12 rounded-full backdrop-blur-sm z-40"
               onClick={() => api?.scrollPrev()}
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-6 w-6" />
             </Button>
             
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white border border-white/20 h-10 w-10 rounded-full backdrop-blur-sm"
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white border border-white/20 h-12 w-12 rounded-full backdrop-blur-sm z-40"
               onClick={() => api?.scrollNext()}
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="h-6 w-6" />
             </Button>
           </div>
         </Carousel>
