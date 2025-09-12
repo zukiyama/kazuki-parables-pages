@@ -29,6 +29,15 @@ const Writing = () => {
   });
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
 
+  // Preload critical images for better performance
+  useEffect(() => {
+    const preloadImages = [schoolBackground, hoaxBackground, hoaxCover];
+    preloadImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -92,24 +101,28 @@ const Writing = () => {
         <img 
           src={schoolBackground} 
           alt="School background"
+          loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.school }}
         />
         <img 
           src={hoaxBackground} 
           alt="Hoax background"
+          loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.hoax }}
         />
         <img 
           src={siphonsBackground} 
           alt="Siphons background"
+          loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.siphons }}
         />
         <img 
           src={obaBackground} 
           alt="Oba background"
+          loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.oba }}
         />

@@ -74,6 +74,15 @@ interface BookshelfMenuProps {
 export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
   const [hoveredBook, setHoveredBook] = useState<string | null>(null);
 
+  // Preload critical book cover images for better performance
+  useState(() => {
+    const criticalImages = [kaijuCover, hoaxCover];
+    criticalImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  });
+
   const handleBookClick = (book: Book) => {
     const scrollToSection = (retryCount = 0) => {
       const section = document.querySelector(`[data-section="${book.targetSection}"]`) as HTMLElement;
@@ -143,6 +152,7 @@ export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
                 <img
                   src={book.cover}
                   alt={book.title}
+                  loading={book.id === 'kaiju' || book.id === 'hoax' ? 'eager' : 'lazy'}
                   className={`h-16 w-auto object-contain rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
                     hoveredBook === book.id 
                       ? 'scale-125 shadow-2xl shadow-yellow-300/20' 
