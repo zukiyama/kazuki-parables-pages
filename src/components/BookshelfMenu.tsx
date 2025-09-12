@@ -87,25 +87,54 @@ export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
     const scrollToSection = (retryCount = 0) => {
       const section = document.querySelector(`[data-section="${book.targetSection}"]`) as HTMLElement;
       if (section) {
-        // Wait for any layout changes to settle before calculating
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            // Account for navigation (64px) + bookshelf menu (80px) + padding
-            const fixedElementsHeight = 160;
+            const fixedElementsHeight = 160; // navigation + bookshelf menu
             const viewportHeight = window.innerHeight;
-            const sectionHeight = section.offsetHeight;
+            const availableHeight = viewportHeight - fixedElementsHeight;
             
-            // Calculate position to center the section in viewport with better spacing
-            const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-            const availableSpace = viewportHeight - fixedElementsHeight;
-            const centeredPosition = sectionTop - fixedElementsHeight - Math.max(40, (availableSpace - sectionHeight) / 2);
+            let targetScrollPosition;
             
-            window.scrollTo({ 
-              top: Math.max(0, centeredPosition),
-              behavior: 'smooth' 
-            });
+            if (book.targetSection === 'young-adult') {
+              // For slideshow: center the "Young Adult Series" title with equal spacing
+              const titleElement = section.querySelector('h2');
+              if (titleElement) {
+                const titleTop = titleElement.getBoundingClientRect().top + window.scrollY;
+                const slideshowContainer = section.querySelector('.container');
+                const slideshowBottom = slideshowContainer ? 
+                  slideshowContainer.getBoundingClientRect().bottom + window.scrollY : 
+                  section.getBoundingClientRect().bottom + window.scrollY;
+                
+                const slideshowHeight = slideshowBottom - titleTop;
+                const centerOffset = (availableHeight - slideshowHeight) / 2;
+                targetScrollPosition = titleTop - fixedElementsHeight - centerOffset;
+              }
+            } else {
+              // For individual books: center the book cover image with equal spacing
+              const bookCoverImg = section.querySelector('img[alt*="Cover"]');
+              if (bookCoverImg) {
+                const imgRect = bookCoverImg.getBoundingClientRect();
+                const imgTop = imgRect.top + window.scrollY;
+                const imgHeight = imgRect.height;
+                const centerOffset = (availableHeight - imgHeight) / 2;
+                targetScrollPosition = imgTop - fixedElementsHeight - centerOffset;
+              } else {
+                // Fallback: center the section
+                const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+                const sectionHeight = section.offsetHeight;
+                const centerOffset = (availableHeight - sectionHeight) / 2;
+                targetScrollPosition = sectionTop - fixedElementsHeight - Math.max(0, centerOffset);
+              }
+            }
             
-            // If it's the first attempt and we're early in page load, retry once after a short delay
+            if (targetScrollPosition !== undefined) {
+              window.scrollTo({ 
+                top: Math.max(0, targetScrollPosition),
+                behavior: 'smooth' 
+              });
+            }
+            
+            // Retry once if needed during page load
             if (retryCount === 0 && document.readyState !== 'complete') {
               setTimeout(() => scrollToSection(1), 300);
             }
@@ -119,10 +148,10 @@ export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
       onBookClick(book.id, book.slideToBook);
       
       // Allow slideshow to update before scrolling
-      setTimeout(() => scrollToSection(), 50);
+      setTimeout(() => scrollToSection(), 100);
     } else {
       // For non-slideshow books, scroll after a brief delay to ensure layout is ready
-      setTimeout(() => scrollToSection(), 10);
+      setTimeout(() => scrollToSection(), 50);
       
       if (onBookClick) {
         onBookClick(book.id, book.slideToBook);
