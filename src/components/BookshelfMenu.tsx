@@ -3,6 +3,7 @@ import { useState } from "react";
 // Main book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
 import hoaxCover from "@/assets/hoax-cover.jpg";
+import theMarketCover from "@/assets/the-market-cover.jpg";
 import howCover from "@/assets/how-cover.png";
 import obaCover from "@/assets/oba-cover.jpg";
 
@@ -31,6 +32,12 @@ const books: Book[] = [
     title: "HOAX",
     cover: hoaxCover,
     targetSection: "hoax"
+  },
+  {
+    id: "the-market",
+    title: "THE MARKET",
+    cover: theMarketCover,
+    targetSection: "the-market"
   },
   {
     id: "how",
@@ -76,7 +83,7 @@ export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
 
   // Preload critical book cover images for better performance
   useState(() => {
-    const criticalImages = [kaijuCover, hoaxCover];
+    const criticalImages = [kaijuCover, hoaxCover, theMarketCover];
     criticalImages.forEach((src) => {
       const img = new Image();
       img.src = src;

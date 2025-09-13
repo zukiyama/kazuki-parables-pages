@@ -9,12 +9,14 @@ import { BookshelfMenu } from "@/components/BookshelfMenu";
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
 import hoaxBackground from "@/assets/hoax-background.jpg";
+import theMarketBackground from "@/assets/the-market-background.png";
 import howBackground from "@/assets/how-background.png";
 import obaBackground from "@/assets/oba-background.jpg";
 
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
 import hoaxCover from "@/assets/IMG_7715.png";
+import theMarketCover from "@/assets/the-market-cover.jpg";
 import howCover from "@/assets/how-cover.png";
 import obaCover from "@/assets/oba-cover.jpg";
 
@@ -24,6 +26,7 @@ const Writing = () => {
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
+    theMarket: 0,
     how: 0,
     oba: 0
   });
@@ -31,7 +34,7 @@ const Writing = () => {
 
   // Preload critical images for better performance
   useEffect(() => {
-    const preloadImages = [schoolBackground, hoaxBackground, hoaxCover];
+    const preloadImages = [schoolBackground, hoaxBackground, theMarketBackground, hoaxCover, theMarketCover];
     preloadImages.forEach((src) => {
       const img = new Image();
       img.src = src;
@@ -62,6 +65,7 @@ const Writing = () => {
       const newOpacities = {
         school: 0,
         hoax: 0,
+        theMarket: 0,
         how: 0,
         oba: 0
       };
@@ -70,6 +74,8 @@ const Writing = () => {
         newOpacities.oba = 1;
       } else if (newVisibleSections.has('how')) {
         newOpacities.how = 1;
+      } else if (newVisibleSections.has('the-market')) {
+        newOpacities.theMarket = 1;
       } else if (newVisibleSections.has('hoax')) {
         newOpacities.hoax = 1;
       } else {
@@ -111,6 +117,13 @@ const Writing = () => {
           loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.hoax }}
+        />
+        <img 
+          src={theMarketBackground} 
+          alt="The Market background"
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.theMarket }}
         />
         <img 
           src={howBackground} 
@@ -193,6 +206,38 @@ const Writing = () => {
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
                     <p className="font-serif text-lg leading-relaxed text-white">
                       A writer named Peter Carlyle wrote a book, then received a mysterious phone call. When he drove to the location, it felt like he was living inside his own story. Set in a strange commune in the Australian outback, where fairy lights drape over entrance arches and secrets hide in the vegetable patches.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* THE MARKET Section */}
+        <section data-section="the-market" className="min-h-[90vh] flex items-center justify-center relative">
+          <div className="container mx-auto px-6 py-20">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className={`transition-all duration-1000 delay-300 ${
+                  visibleSections.has('the-market') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
+                }`}>
+                  <BookCoverSlideshow 
+                    covers={[
+                      { image: theMarketCover, alt: "THE MARKET Book Cover" }
+                    ]}
+                    title="THE MARKET"
+                  />
+                </div>
+                <div className={`text-white transition-all duration-1000 delay-500 ${
+                  visibleSections.has('the-market') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
+                }`}>
+                  <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
+                    THE MARKET
+                  </h2>
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <p className="font-serif text-lg leading-relaxed text-white">
+                      A man journeys to the first corporate nation on Earth, where towering glass structures pierce the sky and autonomous vehicles glide through pristine streets. But beneath the gleaming facade of this technological paradise, all is not as it seems. Dark secrets lurk in the shadows of progress, and the price of perfection may be higher than anyone imagined.
                     </p>
                   </div>
                 </div>
