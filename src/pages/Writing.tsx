@@ -9,15 +9,15 @@ import { BookshelfMenu } from "@/components/BookshelfMenu";
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
 import hoaxBackground from "@/assets/hoax-background.jpg";
-import theMarketBackground from "@/assets/the-market-background.png";
-import howBackground from "@/assets/how-background.png";
+import theMarketBackground from "@/assets/the-market-background.jpg";
+import howBackground from "@/assets/how-background.jpg";
 import obaBackground from "@/assets/oba-background.jpg";
 
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
-import hoaxCover from "@/assets/IMG_7715.png";
+import hoaxCover from "@/assets/hoax-cover.jpg";
 import theMarketCover from "@/assets/the-market-cover.jpg";
-import howCover from "@/assets/how-cover.png";
+import howCover from "@/assets/how-cover.jpg";
 import obaCover from "@/assets/oba-cover.jpg";
 
 const Writing = () => {
@@ -35,7 +35,17 @@ const Writing = () => {
 
   // Preload critical images for better performance
   useEffect(() => {
-    const preloadImages = [schoolBackground, hoaxBackground, theMarketBackground, hoaxCover, theMarketCover];
+    const preloadImages = [
+      schoolBackground, 
+      hoaxBackground, 
+      theMarketBackground, 
+      howBackground,
+      obaBackground,
+      hoaxCover, 
+      theMarketCover,
+      howCover,
+      obaCover
+    ];
     preloadImages.forEach((src) => {
       const img = new Image();
       img.src = src;
