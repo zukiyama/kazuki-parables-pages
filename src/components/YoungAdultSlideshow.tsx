@@ -7,6 +7,9 @@ import professorBarnabasCover from "@/assets/professor-barnabas-cover.jpg";
 import toFlyCover from "@/assets/to-fly-cover.jpg";
 import landDreamSkyCover from "@/assets/land-dream-sky-cover.jpg";
 
+// Background images
+import wastelandCityBackground from "@/assets/wasteland-city-background.jpg";
+
 const books = [
   {
     title: "Professor Barnabas and Darwin",
@@ -20,7 +23,8 @@ const books = [
     subtitle: "",
     summary: "In a walled city within a great wasteland, a small blind boy with white eyes lives under the rule of his robot father. When a pilgrim arrives, everything the boy believed about his world comes into question, and disaster threatens his city.",
     cover: landDreamSkyCover,
-    layout: "cover-right"
+    layout: "cover-right",
+    background: wastelandCityBackground
   },
   {
     title: "To Fly",
@@ -70,8 +74,18 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
 
   return (
     <div className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">
-      {/* Semi-opaque dark pane overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80"></div>
+      {/* Background Image */}
+      {book.background && (
+        <div className="absolute inset-0">
+          <img
+            key={`background-${currentBook}`}
+            src={book.background}
+            alt=""
+            className="w-full h-full object-cover transition-opacity duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80"></div>
+        </div>
+      )}
       
       <div className="relative px-20 py-8 md:px-16 lg:px-12 pb-16">
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${
