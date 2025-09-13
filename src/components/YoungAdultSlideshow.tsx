@@ -7,6 +7,9 @@ import professorBarnabasCover from "@/assets/professor-barnabas-cover.jpg";
 import toFlyCover from "@/assets/to-fly-cover.jpg";
 import landDreamSkyCover from "@/assets/land-dream-sky-cover.jpg";
 
+// Background images
+import wastelandCityBackground from "@/assets/wasteland-city-background.png";
+
 const books = [
   {
     title: "Professor Barnabas and Darwin",
@@ -20,7 +23,8 @@ const books = [
     subtitle: "",
     summary: "In a walled city within a great wasteland, a small blind boy with white eyes lives under the rule of his robot father. When a pilgrim arrives, everything the boy believed about his world comes into question, and disaster threatens his city.",
     cover: landDreamSkyCover,
-    layout: "cover-right"
+    layout: "cover-right",
+    background: wastelandCityBackground
   },
   {
     title: "To Fly",
@@ -54,7 +58,20 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef>((props, re
 
   return (
     <div className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">
-      <div className="px-20 py-8 md:px-16 lg:px-12 pb-16">
+      {/* Background Image */}
+      {book.background && (
+        <div className="absolute inset-0">
+          <img
+            key={`background-${currentBook}`}
+            src={book.background}
+            alt=""
+            className="w-full h-full object-cover transition-opacity duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80"></div>
+        </div>
+      )}
+      
+      <div className="relative px-20 py-8 md:px-16 lg:px-12 pb-16">
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${
           book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
         }`}>
@@ -71,11 +88,11 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef>((props, re
           
           {/* Book Info */}
           <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-24 pl-8"} md:pl-24 md:pr-24`}>
-            <h3 className="font-serif text-3xl font-bold text-white mb-2">{book.title}</h3>
+            <h3 className="font-serif text-3xl font-bold text-white mb-2 drop-shadow-lg">{book.title}</h3>
             {book.subtitle && (
-              <h4 className="font-serif text-xl text-yellow-300 mb-4">{book.subtitle}</h4>
+              <h4 className="font-serif text-xl text-yellow-300 mb-4 drop-shadow-lg">{book.subtitle}</h4>
             )}
-            <p className="font-serif text-lg leading-relaxed text-white/90">
+            <p className="font-serif text-lg leading-relaxed text-white/90 drop-shadow-md">
               {book.summary}
             </p>
           </div>
