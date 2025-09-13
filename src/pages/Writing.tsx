@@ -167,14 +167,14 @@ const Writing = () => {
                 <div className={`text-white transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 mb-8 border border-primary/20 shadow-lg">
-                    <h2 className="font-serif text-5xl font-bold mb-4 text-primary">
+                  <div className="bg-black/80 backdrop-blur-sm rounded-lg p-6 mb-8 border border-white/20">
+                    <h2 className="font-serif text-5xl font-bold mb-4 text-white">
                       KAIJU
                     </h2>
-                    <h3 className="font-serif text-2xl text-accent mb-6 tracking-wide">
+                    <h3 className="font-serif text-2xl text-yellow-300 mb-6 tracking-wide">
                       Book One of The Parable Trilogy
                     </h3>
-                    <p className="font-serif text-lg leading-relaxed text-foreground">
+                    <p className="font-serif text-lg leading-relaxed text-white">
                       A mystery unfolds in a small Japanese town in summer 1979, where a group of boys discover that no one remembers how they got there. Strange creatures appear in the sky while the children search for answers in their forgotten past.
                     </p>
                   </div>
@@ -208,8 +208,8 @@ const Writing = () => {
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
                     HOAX
                   </h2>
-                  <div className="bg-white/85 backdrop-blur-sm rounded-lg p-6 border border-primary/20 shadow-lg">
-                    <p className="font-serif text-lg leading-relaxed text-foreground">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <p className="font-serif text-lg leading-relaxed text-white">
                       A writer named Peter Carlyle wrote a book, then received a mysterious phone call. When he drove to the location, it felt like he was living inside his own story. Set in a strange commune in the Australian outback, where fairy lights drape over entrance arches and secrets hide in the vegetable patches.
                     </p>
                   </div>
@@ -240,8 +240,8 @@ const Writing = () => {
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
                     THE MARKET
                   </h2>
-                  <div className="bg-white/85 backdrop-blur-sm rounded-lg p-6 border border-primary/20 shadow-lg">
-                    <p className="font-serif text-lg leading-relaxed text-foreground">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <p className="font-serif text-lg leading-relaxed text-white">
                       A man journeys to the first corporate nation on Earth, where towering glass structures pierce the sky and autonomous vehicles glide through pristine streets. But beneath the gleaming facade of this technological paradise, all is not as it seems. Dark secrets lurk in the shadows of progress, and the price of perfection may be higher than anyone imagined.
                     </p>
                   </div>
@@ -272,8 +272,8 @@ const Writing = () => {
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
                     HOW
                   </h2>
-                  <div className="bg-white/85 backdrop-blur-sm rounded-lg p-6 border border-primary/20 shadow-lg">
-                    <p className="font-serif text-lg leading-relaxed text-foreground">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <p className="font-serif text-lg leading-relaxed text-white">
                       A philosophical exploration of understanding and wisdom. Through ancient teachings and modern perspectives, this book delves into the fundamental questions of existence, consciousness, and the path to enlightenment. A journey that bridges Eastern philosophy with contemporary thought.
                     </p>
                   </div>
@@ -304,8 +304,8 @@ const Writing = () => {
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
                     OBA
                   </h2>
-                  <div className="bg-white/85 backdrop-blur-sm rounded-lg p-6 border border-primary/20 shadow-lg">
-                    <p className="font-serif text-lg leading-relaxed text-foreground">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <p className="font-serif text-lg leading-relaxed text-white">
                       Set in Zimbabwe, this story follows a man with an African name who returns to his hometown at the edge of a receding jungle. He's there to teach as a speech therapist, working with a young girl in his home village, but ends up learning more from her than he could ever teach.
                     </p>
                   </div>
