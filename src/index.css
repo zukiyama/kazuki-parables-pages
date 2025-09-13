@@ -379,30 +379,3 @@
   filter: blur(0.2px);
   max-width: 80px;
 }
-
-/* Mondrian-inspired comic panel styles with scroll animation */
-.mondrian-line-scroll-draw {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: top;
-}
-
-.mondrian-line-scroll-draw[style*="height"] {
-  transform-origin: left;
-}
-
-.mondrian-line-scroll-draw::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: inherit;
-  opacity: 0.3;
-  filter: blur(0.5px);
-}
-
-.mondrian-line-scroll-draw::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, transparent 40%, hsl(var(--background)) 80%);
-  pointer-events: none;
-}
