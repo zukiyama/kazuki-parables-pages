@@ -13,6 +13,8 @@ import theMarketBackground from "@/assets/the-market-background.jpg";
 import howBackground from "@/assets/how-background.jpg";
 import obaBackground from "@/assets/oba-background.jpg";
 import wastelandCityBackground from "@/assets/wasteland-city-background.jpg";
+import englishMansionBackground from "@/assets/english-mansion-background.jpg";
+import spaceAcademyBackground from "@/assets/space-academy-background.jpg";
 
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
@@ -30,8 +32,11 @@ const Writing = () => {
     hoax: 0,
     theMarket: 0,
     how: 0,
-    oba: 0
+    oba: 0,
+    youngAdult: 0
   });
+  
+  const [youngAdultBackground, setYoungAdultBackground] = useState(englishMansionBackground);
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
 
   // Preload critical images for better performance
@@ -43,6 +48,8 @@ const Writing = () => {
       howBackground,
       obaBackground,
       wastelandCityBackground,
+      englishMansionBackground,
+      spaceAcademyBackground,
       hoaxCover, 
       theMarketCover,
       howCover,
@@ -80,7 +87,8 @@ const Writing = () => {
         hoax: 0,
         theMarket: 0,
         how: 0,
-        oba: 0
+        oba: 0,
+        youngAdult: 0
       };
 
       if (newVisibleSections.has('oba')) {
@@ -91,6 +99,8 @@ const Writing = () => {
         newOpacities.theMarket = 1;
       } else if (newVisibleSections.has('hoax')) {
         newOpacities.hoax = 1;
+      } else if (newVisibleSections.has('young-adult')) {
+        newOpacities.youngAdult = 1;
       } else {
         newOpacities.school = 1;
       }
@@ -102,6 +112,25 @@ const Writing = () => {
     handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleYoungAdultBookChange = (index: number) => {
+    setCurrentYoungAdultBook(index);
+    
+    // Update the background based on which book is selected
+    switch (index) {
+      case 0: // Professor Barnabas
+        setYoungAdultBackground(englishMansionBackground);
+        break;
+      case 1: // The Land is a Dream of the Sky
+        setYoungAdultBackground(wastelandCityBackground);
+        break;
+      case 2: // To Fly
+        setYoungAdultBackground(spaceAcademyBackground);
+        break;
+      default:
+        setYoungAdultBackground(englishMansionBackground);
+    }
+  };
 
   const handleBookClick = (bookId: string, slideToBook?: number) => {
     // If it's a young adult book, set the slideshow to show that book IMMEDIATELY
@@ -155,6 +184,13 @@ const Writing = () => {
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.oba }}
+        />
+        <img 
+          src={youngAdultBackground} 
+          alt="Young Adult background"
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.youngAdult }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
       </div>
@@ -347,7 +383,7 @@ const Writing = () => {
               }`}>
                 <YoungAdultSlideshow 
                   ref={youngAdultSlideshowRef} 
-                  onBookChange={setCurrentYoungAdultBook}
+                  onBookChange={handleYoungAdultBookChange}
                 />
               </div>
             </div>
