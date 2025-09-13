@@ -21,7 +21,6 @@ import obaCover from "@/assets/oba-cover.jpg";
 const Writing = () => {
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
-  const [selectedBookId, setSelectedBookId] = useState<string>("kaiju"); // Track selected book
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -86,9 +85,6 @@ const Writing = () => {
   }, []);
 
   const handleBookClick = (bookId: string, slideToBook?: number) => {
-    // Update selected book immediately
-    setSelectedBookId(bookId);
-    
     // If it's a young adult book, set the slideshow to show that book IMMEDIATELY
     if (slideToBook !== undefined && youngAdultSlideshowRef.current) {
       youngAdultSlideshowRef.current.setCurrentBook(slideToBook);
@@ -98,7 +94,7 @@ const Writing = () => {
   return (
     <div className="min-h-screen relative">
       <Navigation />
-      <BookshelfMenu onBookClick={handleBookClick} selectedBookId={selectedBookId} />
+      <BookshelfMenu onBookClick={handleBookClick} />
       
       {/* Stacked Background Images */}
       <div className="fixed inset-0 z-0">
