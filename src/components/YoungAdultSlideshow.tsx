@@ -8,7 +8,7 @@ import toFlyCover from "@/assets/to-fly-cover.jpg";
 import landDreamSkyCover from "@/assets/land-dream-sky-cover.jpg";
 
 // Background images
-import wastelandCityBackground from "@/assets/wasteland-city-background.png";
+import wastelandCityBackground from "@/assets/wasteland-city-background.jpg";
 
 const books = [
   {

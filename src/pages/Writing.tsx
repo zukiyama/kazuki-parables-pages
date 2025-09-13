@@ -12,6 +12,7 @@ import hoaxBackground from "@/assets/hoax-background.jpg";
 import theMarketBackground from "@/assets/the-market-background.jpg";
 import howBackground from "@/assets/how-background.jpg";
 import obaBackground from "@/assets/oba-background.jpg";
+import wastelandCityBackground from "@/assets/wasteland-city-background.jpg";
 
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
@@ -41,6 +42,7 @@ const Writing = () => {
       theMarketBackground, 
       howBackground,
       obaBackground,
+      wastelandCityBackground,
       hoaxCover, 
       theMarketCover,
       howCover,
