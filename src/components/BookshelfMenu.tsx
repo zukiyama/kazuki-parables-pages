@@ -4,7 +4,7 @@ import { useState } from "react";
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
 import hoaxCover from "@/assets/hoax-cover.jpg";
 import theMarketCover from "@/assets/the-market-cover.jpg";
-import howCover from "@/assets/how-cover.png";
+import howCover from "@/assets/how-cover.jpg";
 import obaCover from "@/assets/oba-cover.jpg";
 
 // Young adult book covers
