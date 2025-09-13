@@ -1,4 +1,4 @@
-import { useState, forwardRef, useImperativeHandle } from "react";
+import { useState, forwardRef, useImperativeHandle, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -35,23 +35,39 @@ const books = [
   }
 ];
 
+interface YoungAdultSlideshowProps {
+  onBookChange?: (index: number) => void;
+}
+
 export interface YoungAdultSlideshowRef {
   setCurrentBook: (index: number) => void;
 }
 
-export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef>((props, ref) => {
-  const [currentBook, setCurrentBook] = useState(0);
+export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdultSlideshowProps>(({ onBookChange }, ref) => {
+  const [currentBook, setCurrentBookState] = useState(0);
+
+  const setCurrentBook = (index: number) => {
+    setCurrentBookState(index);
+    onBookChange?.(index);
+  };
 
   useImperativeHandle(ref, () => ({
     setCurrentBook
   }));
 
+  // Notify parent of initial book selection
+  useEffect(() => {
+    onBookChange?.(0);
+  }, [onBookChange]);
+
   const nextBook = () => {
-    setCurrentBook((prev) => (prev + 1) % books.length);
+    const newIndex = (currentBook + 1) % books.length;
+    setCurrentBook(newIndex);
   };
 
   const prevBook = () => {
-    setCurrentBook((prev) => (prev - 1 + books.length) % books.length);
+    const newIndex = (currentBook - 1 + books.length) % books.length;
+    setCurrentBook(newIndex);
   };
 
   const book = books[currentBook];

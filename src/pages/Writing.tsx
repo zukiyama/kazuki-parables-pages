@@ -23,6 +23,7 @@ import obaCover from "@/assets/oba-cover.jpg";
 const Writing = () => {
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+  const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -100,7 +101,11 @@ const Writing = () => {
   return (
     <div className="min-h-screen relative">
       <Navigation />
-      <BookshelfMenu onBookClick={handleBookClick} visibleSections={visibleSections} />
+      <BookshelfMenu 
+        onBookClick={handleBookClick} 
+        visibleSections={visibleSections} 
+        currentYoungAdultBook={currentYoungAdultBook}
+      />
       
       {/* Stacked Background Images */}
       <div className="fixed inset-0 z-0">
@@ -328,7 +333,10 @@ const Writing = () => {
               <div className={`transition-all duration-1000 delay-500 ${
                 visibleSections.has('young-adult') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
-                <YoungAdultSlideshow ref={youngAdultSlideshowRef} />
+                <YoungAdultSlideshow 
+                  ref={youngAdultSlideshowRef} 
+                  onBookChange={setCurrentYoungAdultBook}
+                />
               </div>
             </div>
           </div>

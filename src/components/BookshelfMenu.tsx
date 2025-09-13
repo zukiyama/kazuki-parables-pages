@@ -77,9 +77,10 @@ const books: Book[] = [
 interface BookshelfMenuProps {
   onBookClick?: (bookId: string, slideToBook?: number) => void;
   visibleSections?: Set<string>;
+  currentYoungAdultBook?: number;
 }
 
-export const BookshelfMenu = ({ onBookClick, visibleSections }: BookshelfMenuProps) => {
+export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultBook = 0 }: BookshelfMenuProps) => {
   const [hoveredBook, setHoveredBook] = useState<string | null>(null);
   
   // Determine which book should be highlighted based on visible sections
@@ -92,7 +93,11 @@ export const BookshelfMenu = ({ onBookClick, visibleSections }: BookshelfMenuPro
     if (visibleSections.has('the-market')) return 'the-market';
     if (visibleSections.has('hoax')) return 'hoax';
     if (visibleSections.has('kaiju')) return 'kaiju';
-    if (visibleSections.has('young-adult')) return 'professor-barnabas'; // Default to first young adult book
+    if (visibleSections.has('young-adult')) {
+      // Return the currently selected young adult book
+      const youngAdultBooks = ['professor-barnabas', 'land-dream', 'to-fly'];
+      return youngAdultBooks[currentYoungAdultBook] || 'professor-barnabas';
+    }
     
     return 'kaiju'; // Default fallback
   };
