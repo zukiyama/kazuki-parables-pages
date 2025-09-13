@@ -106,7 +106,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
 
   // Preload critical book cover images for better performance
   useState(() => {
-    const criticalImages = [kaijuCover, hoaxCover, theMarketCover];
+    const criticalImages = [kaijuCover, hoaxCover, theMarketCover, howCover, obaCover];
     criticalImages.forEach((src) => {
       const img = new Image();
       img.src = src;
@@ -213,7 +213,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
                 <img
                   src={book.cover}
                   alt={book.title}
-                  loading={book.id === 'kaiju' || book.id === 'hoax' ? 'eager' : 'lazy'}
+                  loading={['kaiju', 'hoax', 'the-market', 'how', 'oba'].includes(book.id) ? 'eager' : 'lazy'}
                   className={`h-16 w-auto object-contain rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
                     activeBook === book.id
                       ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'
