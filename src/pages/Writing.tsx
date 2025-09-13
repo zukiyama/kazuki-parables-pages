@@ -144,7 +144,7 @@ const Writing = () => {
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.oba }}
         />
-        <div className="absolute inset-0 bg-black/70"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
       </div>
       
       <main className="relative z-10 pt-24">
@@ -167,14 +167,14 @@ const Writing = () => {
                 <div className={`text-white transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <div className="bg-black/80 backdrop-blur-sm rounded-lg p-6 mb-8 border border-white/20">
-                    <h2 className="font-serif text-5xl font-bold mb-4 text-white">
+                  <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 mb-8 border border-primary/20 shadow-lg">
+                    <h2 className="font-serif text-5xl font-bold mb-4 text-primary">
                       KAIJU
                     </h2>
-                    <h3 className="font-serif text-2xl text-yellow-300 mb-6 tracking-wide">
+                    <h3 className="font-serif text-2xl text-accent mb-6 tracking-wide">
                       Book One of The Parable Trilogy
                     </h3>
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                    <p className="font-serif text-lg leading-relaxed text-foreground">
                       A mystery unfolds in a small Japanese town in summer 1979, where a group of boys discover that no one remembers how they got there. Strange creatures appear in the sky while the children search for answers in their forgotten past.
                     </p>
                   </div>
@@ -208,8 +208,8 @@ const Writing = () => {
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
                     HOAX
                   </h2>
-                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                  <div className="bg-white/85 backdrop-blur-sm rounded-lg p-6 border border-primary/20 shadow-lg">
+                    <p className="font-serif text-lg leading-relaxed text-foreground">
                       A writer named Peter Carlyle wrote a book, then received a mysterious phone call. When he drove to the location, it felt like he was living inside his own story. Set in a strange commune in the Australian outback, where fairy lights drape over entrance arches and secrets hide in the vegetable patches.
                     </p>
                   </div>
@@ -240,8 +240,8 @@ const Writing = () => {
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
                     THE MARKET
                   </h2>
-                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                  <div className="bg-white/85 backdrop-blur-sm rounded-lg p-6 border border-primary/20 shadow-lg">
+                    <p className="font-serif text-lg leading-relaxed text-foreground">
                       A man journeys to the first corporate nation on Earth, where towering glass structures pierce the sky and autonomous vehicles glide through pristine streets. But beneath the gleaming facade of this technological paradise, all is not as it seems. Dark secrets lurk in the shadows of progress, and the price of perfection may be higher than anyone imagined.
                     </p>
                   </div>
@@ -272,8 +272,8 @@ const Writing = () => {
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
                     HOW
                   </h2>
-                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                  <div className="bg-white/85 backdrop-blur-sm rounded-lg p-6 border border-primary/20 shadow-lg">
+                    <p className="font-serif text-lg leading-relaxed text-foreground">
                       A philosophical exploration of understanding and wisdom. Through ancient teachings and modern perspectives, this book delves into the fundamental questions of existence, consciousness, and the path to enlightenment. A journey that bridges Eastern philosophy with contemporary thought.
                     </p>
                   </div>
@@ -304,8 +304,8 @@ const Writing = () => {
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
                     OBA
                   </h2>
-                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                  <div className="bg-white/85 backdrop-blur-sm rounded-lg p-6 border border-primary/20 shadow-lg">
+                    <p className="font-serif text-lg leading-relaxed text-foreground">
                       Set in Zimbabwe, this story follows a man with an African name who returns to his hometown at the edge of a receding jungle. He's there to teach as a speech therapist, working with a young girl in his home village, but ends up learning more from her than he could ever teach.
                     </p>
                   </div>
@@ -316,7 +316,7 @@ const Writing = () => {
         </section>
 
         {/* Young Adult Books Section */}
-        <section data-section="young-adult" className="min-h-[90vh] flex items-center justify-center relative bg-black/80">
+        <section data-section="young-adult" className="min-h-[90vh] flex items-center justify-center relative bg-gradient-to-br from-primary/20 to-accent/10">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <h2 className={`font-serif text-5xl font-bold text-white mb-4 text-center tracking-wide transition-all duration-1000 ${
