@@ -9,13 +9,13 @@ import { BookshelfMenu } from "@/components/BookshelfMenu";
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
 import hoaxBackground from "@/assets/hoax-background.jpg";
-import siphonsBackground from "@/assets/siphons-background.jpg";
+import howBackground from "@/assets/how-background.png";
 import obaBackground from "@/assets/oba-background.jpg";
 
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
 import hoaxCover from "@/assets/IMG_7715.png";
-import siphonsCover from "@/assets/siphons-cover.jpg";
+import howCover from "@/assets/how-cover.png";
 import obaCover from "@/assets/oba-cover.jpg";
 
 const Writing = () => {
@@ -24,7 +24,7 @@ const Writing = () => {
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
-    siphons: 0,
+    how: 0,
     oba: 0
   });
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
@@ -62,14 +62,14 @@ const Writing = () => {
       const newOpacities = {
         school: 0,
         hoax: 0,
-        siphons: 0,
+        how: 0,
         oba: 0
       };
 
       if (newVisibleSections.has('oba')) {
         newOpacities.oba = 1;
-      } else if (newVisibleSections.has('siphons')) {
-        newOpacities.siphons = 1;
+      } else if (newVisibleSections.has('how')) {
+        newOpacities.how = 1;
       } else if (newVisibleSections.has('hoax')) {
         newOpacities.hoax = 1;
       } else {
@@ -113,11 +113,11 @@ const Writing = () => {
           style={{ opacity: backgroundOpacities.hoax }}
         />
         <img 
-          src={siphonsBackground} 
-          alt="Siphons background"
+          src={howBackground} 
+          alt="HOW background"
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.siphons }}
+          style={{ opacity: backgroundOpacities.how }}
         />
         <img 
           src={obaBackground} 
@@ -201,30 +201,30 @@ const Writing = () => {
           </div>
         </section>
 
-        {/* SIPHONS Section */}
-        <section data-section="siphons" className="min-h-[90vh] flex items-center justify-center relative">
+        {/* HOW Section */}
+        <section data-section="how" className="min-h-[90vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div className={`transition-all duration-1000 delay-300 ${
-                  visibleSections.has('siphons') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
+                  visibleSections.has('how') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
                   <BookCoverSlideshow 
                     covers={[
-                      { image: siphonsCover, alt: "SIPHONS Book Cover" }
+                      { image: howCover, alt: "HOW Book Cover" }
                     ]}
-                    title="SIPHONS"
+                    title="HOW"
                   />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
-                  visibleSections.has('siphons') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
+                  visibleSections.has('how') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
-                    SIPHONS
+                    HOW
                   </h2>
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
                     <p className="font-serif text-lg leading-relaxed text-white">
-                      A man remembers watching a TV show as a kid, but when he tries to find any details about it, it becomes a mystery. The deeper he searches, the stranger the mystery becomes, leading him into a world of bizarre children's shows with otherworldly implications.
+                      A philosophical exploration of understanding and wisdom. Through ancient teachings and modern perspectives, this book delves into the fundamental questions of existence, consciousness, and the path to enlightenment. A journey that bridges Eastern philosophy with contemporary thought.
                     </p>
                   </div>
                 </div>

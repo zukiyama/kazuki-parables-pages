@@ -3,7 +3,7 @@ import { useState } from "react";
 // Main book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
 import hoaxCover from "@/assets/hoax-cover.jpg";
-import siphonsCover from "@/assets/siphons-cover.jpg";
+import howCover from "@/assets/how-cover.png";
 import obaCover from "@/assets/oba-cover.jpg";
 
 // Young adult book covers
@@ -33,10 +33,10 @@ const books: Book[] = [
     targetSection: "hoax"
   },
   {
-    id: "siphons",
-    title: "SIPHONS", 
-    cover: siphonsCover,
-    targetSection: "siphons"
+    id: "how",
+    title: "HOW", 
+    cover: howCover,
+    targetSection: "how"
   },
   {
     id: "oba",
