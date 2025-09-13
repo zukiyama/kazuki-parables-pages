@@ -9,8 +9,6 @@ import landDreamSkyCover from "@/assets/land-dream-sky-cover.jpg";
 
 // Background images
 import wastelandCityBackground from "@/assets/wasteland-city-background.png";
-import spaceBattleBackground from "@/assets/space-battle-background.jpg";
-import englishMansionBackground from "@/assets/english-mansion-background.jpg";
 
 const books = [
   {
@@ -18,8 +16,7 @@ const books = [
     subtitle: "A Congress of Worlds",
     summary: "A Victorian tale of an eccentric professor's mysterious shop filled with strange globes and bizarre telescopes. When young orphan Darwin comes to work there, he discovers the shop holds magical secrets beyond imagination.",
     cover: professorBarnabasCover,
-    layout: "cover-left",
-    background: englishMansionBackground
+    layout: "cover-left"
   },
   {
     title: "The Land is a Dream of the Sky",
@@ -34,8 +31,7 @@ const books = [
     subtitle: "",
     summary: "Isaac can't believe he's been chosen for a prestigious school, but when he arrives, he discovers it's a TestFlight Academy. In a universe where the war is already over and humanity has lost, these boys are test pilots for experimental spaceships - humanity's last hope.",
     cover: toFlyCover,
-    layout: "cover-left",
-    background: spaceBattleBackground
+    layout: "cover-left"
   }
 ];
 
@@ -45,7 +41,6 @@ interface YoungAdultSlideshowProps {
 
 export interface YoungAdultSlideshowRef {
   setCurrentBook: (index: number) => void;
-  getCurrentBackground: () => string | undefined;
 }
 
 export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdultSlideshowProps>(({ onBookChange }, ref) => {
@@ -57,8 +52,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
   };
 
   useImperativeHandle(ref, () => ({
-    setCurrentBook,
-    getCurrentBackground: () => books[currentBook]?.background
+    setCurrentBook
   }));
 
   // Notify parent of initial book selection

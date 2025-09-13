@@ -13,11 +13,6 @@ import theMarketBackground from "@/assets/the-market-background.png";
 import howBackground from "@/assets/how-background.png";
 import obaBackground from "@/assets/oba-background.jpg";
 
-// Young Adult backgrounds
-import wastelandCityBackground from "@/assets/wasteland-city-background.png";
-import spaceBattleBackground from "@/assets/space-battle-background.jpg";
-import englishMansionBackground from "@/assets/english-mansion-background.jpg";
-
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
 import hoaxCover from "@/assets/IMG_7715.png";
@@ -29,14 +24,12 @@ const Writing = () => {
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
-  const [youngAdultBackground, setYoungAdultBackground] = useState<string | undefined>(englishMansionBackground);
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
     theMarket: 0,
     how: 0,
-    oba: 0,
-    youngAdult: 0
+    oba: 0
   });
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
 
@@ -75,13 +68,10 @@ const Writing = () => {
         hoax: 0,
         theMarket: 0,
         how: 0,
-        oba: 0,
-        youngAdult: 0
+        oba: 0
       };
 
-      if (newVisibleSections.has('young-adult')) {
-        newOpacities.youngAdult = 1;
-      } else if (newVisibleSections.has('oba')) {
+      if (newVisibleSections.has('oba')) {
         newOpacities.oba = 1;
       } else if (newVisibleSections.has('how')) {
         newOpacities.how = 1;
@@ -106,14 +96,6 @@ const Writing = () => {
     if (slideToBook !== undefined && youngAdultSlideshowRef.current) {
       youngAdultSlideshowRef.current.setCurrentBook(slideToBook);
     }
-  };
-
-  const handleYoungAdultBookChange = (index: number) => {
-    setCurrentYoungAdultBook(index);
-    
-    // Update the background based on the book
-    const backgrounds = [englishMansionBackground, wastelandCityBackground, spaceBattleBackground];
-    setYoungAdultBackground(backgrounds[index]);
   };
 
   return (
@@ -162,15 +144,6 @@ const Writing = () => {
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.oba }}
         />
-        {youngAdultBackground && (
-          <img 
-            src={youngAdultBackground} 
-            alt="Young Adult background"
-            loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-            style={{ opacity: backgroundOpacities.youngAdult }}
-          />
-        )}
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
       </div>
       
@@ -343,7 +316,7 @@ const Writing = () => {
         </section>
 
         {/* Young Adult Books Section */}
-        <section data-section="young-adult" className="min-h-[90vh] flex items-center justify-center relative">
+        <section data-section="young-adult" className="min-h-[90vh] flex items-center justify-center relative bg-gradient-to-br from-primary/20 to-accent/10">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <h2 className={`font-serif text-5xl font-bold text-white mb-4 text-center tracking-wide transition-all duration-1000 ${
@@ -362,7 +335,7 @@ const Writing = () => {
               }`}>
                 <YoungAdultSlideshow 
                   ref={youngAdultSlideshowRef} 
-                  onBookChange={handleYoungAdultBookChange}
+                  onBookChange={setCurrentYoungAdultBook}
                 />
               </div>
             </div>
