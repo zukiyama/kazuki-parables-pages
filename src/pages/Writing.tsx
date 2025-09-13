@@ -15,7 +15,7 @@ import obaBackground from "@/assets/oba-background.jpg";
 
 // Young Adult backgrounds
 import wastelandCityBackground from "@/assets/wasteland-city-background.png";
-import scifiSetBackground from "@/assets/scifi-set-background.jpg";
+import spaceBattleBackground from "@/assets/space-battle-background.jpg";
 import englishMansionBackground from "@/assets/english-mansion-background.jpg";
 
 // Book covers
@@ -112,7 +112,7 @@ const Writing = () => {
     setCurrentYoungAdultBook(index);
     
     // Update the background based on the book
-    const backgrounds = [englishMansionBackground, wastelandCityBackground, scifiSetBackground];
+    const backgrounds = [englishMansionBackground, wastelandCityBackground, spaceBattleBackground];
     setYoungAdultBackground(backgrounds[index]);
   };
 

@@ -9,7 +9,7 @@ import landDreamSkyCover from "@/assets/land-dream-sky-cover.jpg";
 
 // Background images
 import wastelandCityBackground from "@/assets/wasteland-city-background.png";
-import scifiSetBackground from "@/assets/scifi-set-background.jpg";
+import spaceBattleBackground from "@/assets/space-battle-background.jpg";
 import englishMansionBackground from "@/assets/english-mansion-background.jpg";
 
 const books = [
@@ -35,7 +35,7 @@ const books = [
     summary: "Isaac can't believe he's been chosen for a prestigious school, but when he arrives, he discovers it's a TestFlight Academy. In a universe where the war is already over and humanity has lost, these boys are test pilots for experimental spaceships - humanity's last hope.",
     cover: toFlyCover,
     layout: "cover-left",
-    background: scifiSetBackground
+    background: spaceBattleBackground
   }
 ];
 
@@ -79,7 +79,20 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
   const book = books[currentBook];
 
   return (
-    <div className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">      
+    <div className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">
+      {/* Background Image */}
+      {book.background && (
+        <div className="absolute inset-0">
+          <img
+            key={`background-${currentBook}`}
+            src={book.background}
+            alt=""
+            className="w-full h-full object-cover transition-opacity duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80"></div>
+        </div>
+      )}
+      
       <div className="relative px-20 py-8 md:px-16 lg:px-12 pb-16">
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${
           book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
