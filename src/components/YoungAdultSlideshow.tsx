@@ -9,7 +9,6 @@ import landDreamSkyCover from "@/assets/land-dream-sky-cover.jpg";
 
 // Background images
 import wastelandCityBackground from "@/assets/wasteland-city-background.jpg";
-import victorianLondonBackground from "@/assets/victorian-london-winter-background.jpg";
 
 const books = [
   {
@@ -17,8 +16,7 @@ const books = [
     subtitle: "A Congress of Worlds",
     summary: "A Victorian tale of an eccentric professor's mysterious shop filled with strange globes and bizarre telescopes. When young orphan Darwin comes to work there, he discovers the shop holds magical secrets beyond imagination.",
     cover: professorBarnabasCover,
-    layout: "cover-left",
-    background: victorianLondonBackground
+    layout: "cover-left"
   },
   {
     title: "The Land is a Dream of the Sky",

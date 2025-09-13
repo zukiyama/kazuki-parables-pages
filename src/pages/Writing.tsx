@@ -13,6 +13,7 @@ import theMarketBackground from "@/assets/the-market-background.jpg";
 import howBackground from "@/assets/how-background.jpg";
 import obaBackground from "@/assets/oba-background.jpg";
 import wastelandCityBackground from "@/assets/wasteland-city-background.jpg";
+import victorianLondonBackground from "@/assets/victorian-london-winter-background.jpg";
 
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
@@ -30,7 +31,9 @@ const Writing = () => {
     hoax: 0,
     theMarket: 0,
     how: 0,
-    oba: 0
+    oba: 0,
+    victorianLondon: 0,
+    wasteland: 0
   });
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
 
@@ -42,6 +45,7 @@ const Writing = () => {
       theMarketBackground, 
       howBackground,
       obaBackground,
+      victorianLondonBackground,
       wastelandCityBackground,
       hoaxCover, 
       theMarketCover,
@@ -80,7 +84,9 @@ const Writing = () => {
         hoax: 0,
         theMarket: 0,
         how: 0,
-        oba: 0
+        oba: 0,
+        victorianLondon: 0,
+        wasteland: 0
       };
 
       if (newVisibleSections.has('oba')) {
@@ -91,6 +97,15 @@ const Writing = () => {
         newOpacities.theMarket = 1;
       } else if (newVisibleSections.has('hoax')) {
         newOpacities.hoax = 1;
+      } else if (newVisibleSections.has('young-adult')) {
+        // Show different backgrounds based on current young adult book
+        if (currentYoungAdultBook === 0) {
+          newOpacities.victorianLondon = 1; // Professor Barnabas
+        } else if (currentYoungAdultBook === 1) {
+          newOpacities.wasteland = 1; // The Land is a Dream of the Sky
+        } else {
+          newOpacities.school = 1; // To Fly - default school background
+        }
       } else {
         newOpacities.school = 1;
       }
@@ -101,7 +116,7 @@ const Writing = () => {
     window.addEventListener("scroll", handleScroll);
     handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [currentYoungAdultBook]);
 
   const handleBookClick = (bookId: string, slideToBook?: number) => {
     // If it's a young adult book, set the slideshow to show that book IMMEDIATELY
@@ -155,6 +170,20 @@ const Writing = () => {
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.oba }}
+        />
+        <img 
+          src={victorianLondonBackground} 
+          alt="Victorian London background"
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.victorianLondon }}
+        />
+        <img 
+          src={wastelandCityBackground} 
+          alt="Wasteland City background"
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.wasteland }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
       </div>
