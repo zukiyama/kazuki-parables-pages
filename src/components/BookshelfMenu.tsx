@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 // Main book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
@@ -192,43 +193,55 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   return (
     <div className="sticky top-16 z-20 bg-black/90 backdrop-blur-md border-b border-white/20 py-3">
       <div className="container mx-auto px-6">
-        <div className="flex justify-center items-center gap-6 overflow-x-auto pb-2">
-          {books.map((book) => (
-            <div
-              key={book.id}
-              className="flex flex-col items-center cursor-pointer group min-w-[80px]"
-              onMouseEnter={() => setHoveredBook(book.id)}
-              onMouseLeave={() => setHoveredBook(null)}
-              onClick={() => handleBookClick(book)}
-            >
-              {/* Book Title */}
-              <h3 className={`font-serif text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap ${
-                activeBook === book.id ? 'text-yellow-300' : 'text-white'
-              }`}>
-                {book.title}
-              </h3>
-              
-              {/* Book Cover */}
-              <div className="relative">
-                <img
-                  src={book.cover}
-                  alt={book.title}
-                  loading={book.id === 'kaiju' || book.id === 'hoax' ? 'eager' : 'lazy'}
-                  className={`h-16 w-auto object-contain rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
-                    activeBook === book.id
-                      ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'
-                      : hoveredBook === book.id 
-                        ? 'scale-125 shadow-2xl shadow-yellow-300/20' 
-                        : 'hover:scale-110'
-                  }`}
-                />
-                
-                {/* Subtle bookshelf effect */}
-                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <Carousel
+          opts={{
+            align: "center",
+            loop: false,
+            slidesToScroll: 1,
+          }}
+          className="w-full max-w-5xl mx-auto"
+        >
+          <CarouselContent className="-ml-2 md:-ml-4">
+            {books.map((book) => (
+              <CarouselItem key={book.id} className="pl-2 md:pl-4 basis-auto">
+                <div
+                  className="flex flex-col items-center cursor-pointer group min-w-[80px]"
+                  onMouseEnter={() => setHoveredBook(book.id)}
+                  onMouseLeave={() => setHoveredBook(null)}
+                  onClick={() => handleBookClick(book)}
+                >
+                  {/* Book Title */}
+                  <h3 className={`font-serif text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap ${
+                    activeBook === book.id ? 'text-yellow-300' : 'text-white'
+                  }`}>
+                    {book.title}
+                  </h3>
+                  
+                  {/* Book Cover */}
+                  <div className="relative">
+                    <img
+                      src={book.cover}
+                      alt={book.title}
+                      loading={book.id === 'kaiju' || book.id === 'hoax' ? 'eager' : 'lazy'}
+                      className={`h-16 w-auto object-contain rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
+                        activeBook === book.id
+                          ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'
+                          : hoveredBook === book.id 
+                            ? 'scale-125 shadow-2xl shadow-yellow-300/20' 
+                            : 'hover:scale-110'
+                      }`}
+                    />
+                    
+                    {/* Subtle bookshelf effect */}
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-2 bg-black/50 border-white/20 text-white hover:bg-black/70 hover:text-yellow-300" />
+          <CarouselNext className="right-2 bg-black/50 border-white/20 text-white hover:bg-black/70 hover:text-yellow-300" />
+        </Carousel>
       </div>
     </div>
   );
