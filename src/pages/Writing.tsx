@@ -14,6 +14,7 @@ import howBackground from "@/assets/how-background.jpg";
 import obaBackground from "@/assets/oba-background.jpg";
 import wastelandCityBackground from "@/assets/wasteland-city-background.jpg";
 import victorianLondonBackground from "@/assets/victorian-london-winter-background.jpg";
+import deepSpaceBackground from "@/assets/deep-space-starships-background.jpg";
 
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
@@ -33,7 +34,8 @@ const Writing = () => {
     how: 0,
     oba: 0,
     victorianLondon: 0,
-    wasteland: 0
+    wasteland: 0,
+    deepSpace: 0
   });
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
 
@@ -47,6 +49,7 @@ const Writing = () => {
       obaBackground,
       victorianLondonBackground,
       wastelandCityBackground,
+      deepSpaceBackground,
       hoaxCover, 
       theMarketCover,
       howCover,
@@ -86,7 +89,8 @@ const Writing = () => {
         how: 0,
         oba: 0,
         victorianLondon: 0,
-        wasteland: 0
+        wasteland: 0,
+        deepSpace: 0
       };
 
       if (newVisibleSections.has('oba')) {
@@ -103,8 +107,10 @@ const Writing = () => {
           newOpacities.victorianLondon = 1; // Professor Barnabas
         } else if (currentYoungAdultBook === 1) {
           newOpacities.wasteland = 1; // The Land is a Dream of the Sky
+        } else if (currentYoungAdultBook === 2) {
+          newOpacities.deepSpace = 1; // To Fly
         } else {
-          newOpacities.school = 1; // To Fly - default school background
+          newOpacities.school = 1; // Default school background
         }
       } else {
         newOpacities.school = 1;
@@ -184,6 +190,13 @@ const Writing = () => {
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.wasteland }}
+        />
+        <img 
+          src={deepSpaceBackground} 
+          alt="Deep Space background"
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.deepSpace }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
       </div>
