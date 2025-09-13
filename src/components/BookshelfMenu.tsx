@@ -76,10 +76,28 @@ const books: Book[] = [
 
 interface BookshelfMenuProps {
   onBookClick?: (bookId: string, slideToBook?: number) => void;
+  visibleSections?: Set<string>;
 }
 
-export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
+export const BookshelfMenu = ({ onBookClick, visibleSections }: BookshelfMenuProps) => {
   const [hoveredBook, setHoveredBook] = useState<string | null>(null);
+  
+  // Determine which book should be highlighted based on visible sections
+  const getActiveBook = () => {
+    if (!visibleSections) return null;
+    
+    // Priority order matches the scroll order on the page
+    if (visibleSections.has('oba')) return 'oba';
+    if (visibleSections.has('how')) return 'how';
+    if (visibleSections.has('the-market')) return 'the-market';
+    if (visibleSections.has('hoax')) return 'hoax';
+    if (visibleSections.has('kaiju')) return 'kaiju';
+    if (visibleSections.has('young-adult')) return 'professor-barnabas'; // Default to first young adult book
+    
+    return 'kaiju'; // Default fallback
+  };
+  
+  const activeBook = getActiveBook();
 
   // Preload critical book cover images for better performance
   useState(() => {
@@ -179,7 +197,9 @@ export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
               onClick={() => handleBookClick(book)}
             >
               {/* Book Title */}
-              <h3 className="font-serif text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
+              <h3 className={`font-serif text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap ${
+                activeBook === book.id ? 'text-yellow-300' : 'text-white'
+              }`}>
                 {book.title}
               </h3>
               
@@ -190,9 +210,11 @@ export const BookshelfMenu = ({ onBookClick }: BookshelfMenuProps) => {
                   alt={book.title}
                   loading={book.id === 'kaiju' || book.id === 'hoax' ? 'eager' : 'lazy'}
                   className={`h-16 w-auto object-contain rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
-                    hoveredBook === book.id 
-                      ? 'scale-125 shadow-2xl shadow-yellow-300/20' 
-                      : 'hover:scale-110'
+                    activeBook === book.id
+                      ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'
+                      : hoveredBook === book.id 
+                        ? 'scale-125 shadow-2xl shadow-yellow-300/20' 
+                        : 'hover:scale-110'
                   }`}
                 />
                 

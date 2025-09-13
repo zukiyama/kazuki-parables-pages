@@ -100,7 +100,7 @@ const Writing = () => {
   return (
     <div className="min-h-screen relative">
       <Navigation />
-      <BookshelfMenu onBookClick={handleBookClick} />
+      <BookshelfMenu onBookClick={handleBookClick} visibleSections={visibleSections} />
       
       {/* Stacked Background Images */}
       <div className="fixed inset-0 z-0">
