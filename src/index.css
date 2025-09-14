@@ -318,7 +318,7 @@
 }
 
 .animate-slow-zoom-to-sky {
-  animation: slow-zoom-to-sky 120s ease-out infinite alternate;
+  animation: slow-zoom-to-sky 120s ease-out forwards;
 }
 
 .animate-slow-zoom {
@@ -326,7 +326,7 @@
 }
 
 .animate-slow-zoom-meteor {
-  animation: slowZoomMeteor 8.4s ease-out;
+  animation: slowZoomMeteor 8.4s ease-out forwards;
 }
 
 .scroll-slide-left {
