@@ -80,7 +80,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
               key={`cover-${currentBook}`}
               src={book.cover} 
               alt={book.title}
-              className="w-full max-w-sm mx-auto aspect-[3/4] object-cover rounded-lg shadow-lg transition-opacity duration-100"
+              className="w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100"
               loading="eager"
             />
           </div>
