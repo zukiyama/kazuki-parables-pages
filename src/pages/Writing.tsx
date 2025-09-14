@@ -188,7 +188,7 @@ const Writing = () => {
           src={wastelandCityBackground} 
           alt="Wasteland City background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.wasteland }}
         />
         <img 
