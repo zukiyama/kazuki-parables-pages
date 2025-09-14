@@ -135,7 +135,7 @@ const Writing = () => {
             return newOpacities;
           });
           setIsTransitioning(false);
-        }, 1000); // Match transition duration
+        }, 300); // Match transition duration
       }
     };
 
@@ -185,7 +185,7 @@ const Writing = () => {
             return newOpacities;
           });
           setIsTransitioning(false);
-        }, 1000);
+        }, 300);
       }
     }
   };
@@ -205,56 +205,56 @@ const Writing = () => {
           src={schoolBackground} 
           alt="School background"
           loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
           style={{ opacity: backgroundOpacities.school }}
         />
         <img 
           src={hoaxBackground} 
           alt="Hoax background"
           loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
           style={{ opacity: backgroundOpacities.hoax }}
         />
         <img 
           src={theMarketBackground} 
           alt="The Market background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
           style={{ opacity: backgroundOpacities.theMarket }}
         />
         <img 
           src={howBackground} 
           alt="HOW background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
           style={{ opacity: backgroundOpacities.how }}
         />
         <img 
           src={obaBackground} 
           alt="Oba background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
           style={{ opacity: backgroundOpacities.oba }}
         />
         <img 
           src={victorianLondonBackground} 
           alt="Victorian London background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
           style={{ opacity: backgroundOpacities.victorianLondon }}
         />
         <img 
           src={wastelandCityBackground} 
           alt="Wasteland City background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 ease-in-out"
           style={{ opacity: backgroundOpacities.wasteland }}
         />
         <img 
           src={deepSpaceBackground} 
           alt="Deep Space background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
           style={{ opacity: backgroundOpacities.deepSpace }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
