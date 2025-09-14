@@ -11,6 +11,7 @@ import schoolBackground from "@/assets/school-background-montage.jpg";
 import hoaxBackground from "@/assets/hoax-background.jpg";
 import theMarketBackground from "@/assets/the-market-background.jpg";
 import howBackground from "@/assets/how-background.jpg";
+import viceVersaBackground from "@/assets/vice-versa-background.jpg";
 import obaBackground from "@/assets/oba-background.jpg";
 import wastelandCityBackground from "@/assets/land-dream-sky-background.png";
 import victorianLondonBackground from "@/assets/victorian-london-winter-background.jpg";
@@ -21,6 +22,7 @@ import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
 import hoaxCover from "@/assets/hoax-cover.jpg";
 import theMarketCover from "@/assets/the-market-cover.jpg";
 import howCover from "@/assets/how-cover.jpg";
+import viceVersaCover from "@/assets/vice-versa-cover.jpg";
 import obaCover from "@/assets/oba-cover.jpg";
 
 const Writing = () => {
@@ -32,6 +34,7 @@ const Writing = () => {
     hoax: 0,
     theMarket: 0,
     how: 0,
+    viceVersa: 0,
     oba: 0,
     victorianLondon: 0,
     wasteland: 0,
@@ -46,6 +49,7 @@ const Writing = () => {
       hoaxBackground, 
       theMarketBackground, 
       howBackground,
+      viceVersaBackground,
       obaBackground,
       victorianLondonBackground,
       wastelandCityBackground,
@@ -53,6 +57,7 @@ const Writing = () => {
       hoaxCover, 
       theMarketCover,
       howCover,
+      viceVersaCover,
       obaCover
     ];
     preloadImages.forEach((src) => {
@@ -87,6 +92,7 @@ const Writing = () => {
         hoax: 0,
         theMarket: 0,
         how: 0,
+        viceVersa: 0,
         oba: 0,
         victorianLondon: 0,
         wasteland: 0,
@@ -95,6 +101,8 @@ const Writing = () => {
 
       if (newVisibleSections.has('oba')) {
         newOpacities.oba = 1;
+      } else if (newVisibleSections.has('vice-versa')) {
+        newOpacities.viceVersa = 1;
       } else if (newVisibleSections.has('how')) {
         newOpacities.how = 1;
       } else if (newVisibleSections.has('the-market')) {
@@ -169,6 +177,13 @@ const Writing = () => {
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.how }}
+        />
+        <img 
+          src={viceVersaBackground} 
+          alt="Vice Versa background"
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.viceVersa }}
         />
         <img 
           src={obaBackground} 
@@ -331,6 +346,38 @@ const Writing = () => {
                       A philosophical exploration of understanding and wisdom. Through ancient teachings and modern perspectives, this book delves into the fundamental questions of existence, consciousness, and the path to enlightenment. A journey that bridges Eastern philosophy with contemporary thought.
                     </p>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* VICE VERSA Section */}
+        <section data-section="vice-versa" className="min-h-[90vh] flex items-center justify-center relative">
+          <div className="container mx-auto px-6 py-20">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className={`text-white order-2 lg:order-1 transition-all duration-1000 delay-500 ${
+                  visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
+                }`}>
+                  <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
+                    VICE VERSA
+                  </h2>
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <p className="font-serif text-lg leading-relaxed text-white">
+                      A noir mystery set in the shadowy streets of a retro-futuristic metropolis. When detective Marcus Kane investigates a series of impossible crimes, he discovers that reality itself is not what it seems. In a world where identities can be stolen and memories can be traded, nothing is as it appears.
+                    </p>
+                  </div>
+                </div>
+                <div className={`order-1 lg:order-2 transition-all duration-1000 delay-300 ${
+                  visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
+                }`}>
+                  <BookCoverSlideshow 
+                    covers={[
+                      { image: viceVersaCover, alt: "VICE VERSA Book Cover" }
+                    ]}
+                    title="VICE VERSA"
+                  />
                 </div>
               </div>
             </div>

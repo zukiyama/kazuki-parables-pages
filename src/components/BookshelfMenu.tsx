@@ -5,6 +5,7 @@ import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
 import hoaxCover from "@/assets/hoax-cover.jpg";
 import theMarketCover from "@/assets/the-market-cover.jpg";
 import howCover from "@/assets/how-cover.jpg";
+import viceVersaCover from "@/assets/vice-versa-cover.jpg";
 import obaCover from "@/assets/oba-cover.jpg";
 
 // Young adult book covers
@@ -44,6 +45,12 @@ const books: Book[] = [
     title: "HOW", 
     cover: howCover,
     targetSection: "how"
+  },
+  {
+    id: "vice-versa",
+    title: "VICE VERSA",
+    cover: viceVersaCover,
+    targetSection: "vice-versa"
   },
   {
     id: "oba",
@@ -89,6 +96,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
     
     // Priority order matches the scroll order on the page
     if (visibleSections.has('oba')) return 'oba';
+    if (visibleSections.has('vice-versa')) return 'vice-versa';
     if (visibleSections.has('how')) return 'how';
     if (visibleSections.has('the-market')) return 'the-market';
     if (visibleSections.has('hoax')) return 'hoax';
@@ -106,7 +114,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
 
   // Preload critical book cover images for better performance
   useState(() => {
-    const criticalImages = [kaijuCover, hoaxCover, theMarketCover, howCover, obaCover];
+    const criticalImages = [kaijuCover, hoaxCover, theMarketCover, howCover, viceVersaCover, obaCover];
     criticalImages.forEach((src) => {
       const img = new Image();
       img.src = src;
@@ -213,7 +221,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
                 <img
                   src={book.cover}
                   alt={book.title}
-                  loading={['kaiju', 'hoax', 'the-market', 'how', 'oba'].includes(book.id) ? 'eager' : 'lazy'}
+                  loading={['kaiju', 'hoax', 'the-market', 'how', 'vice-versa', 'oba'].includes(book.id) ? 'eager' : 'lazy'}
                   className={`h-16 w-auto object-contain rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
                     activeBook === book.id
                       ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'
