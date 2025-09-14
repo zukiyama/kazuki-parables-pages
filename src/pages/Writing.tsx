@@ -12,7 +12,7 @@ import hoaxBackground from "@/assets/hoax-background.jpg";
 import theMarketBackground from "@/assets/the-market-background.jpg";
 import howBackground from "@/assets/how-background.jpg";
 import obaBackground from "@/assets/oba-background.jpg";
-import wastelandCityBackground from "@/assets/IMG_7781.jpeg";
+import wastelandCityBackground from "@/assets/land-dream-sky-background.png";
 import victorianLondonBackground from "@/assets/victorian-london-winter-background.jpg";
 import deepSpaceBackground from "@/assets/deep-space-starships-background.jpg";
 
