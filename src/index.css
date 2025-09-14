@@ -281,6 +281,41 @@
   100% { transform: translateX(0); opacity: 1; }
 }
 
+/* Comic Panel Animations */
+@keyframes draw-panel-top {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
+@keyframes draw-panel-right {
+  0% { height: 0; }
+  100% { height: 100%; }
+}
+
+@keyframes draw-panel-bottom {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
+@keyframes draw-panel-left {
+  0% { height: 0; }
+  100% { height: 100%; }
+}
+
+@keyframes fade-out-panel-lines {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes slide-in-panel-content {
+  0% { transform: translateX(-30px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-in-panel-content-right {
+  0% { transform: translateX(30px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+
 .animate-quote-expand {
   animation: quote-expand 1s ease-out;
 }
@@ -349,6 +384,73 @@
 .scroll-slide-right.visible {
   opacity: 1;
   transform: translateX(0);
+}
+
+/* Comic Panel Styles */
+.comic-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.comic-panel::before,
+.comic-panel::after,
+.comic-panel .panel-line-top,
+.comic-panel .panel-line-right,
+.comic-panel .panel-line-bottom,
+.comic-panel .panel-line-left {
+  content: '';
+  position: absolute;
+  background-color: hsl(var(--ink-black));
+  z-index: 10;
+}
+
+.comic-panel .panel-line-top {
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  animation: draw-panel-top 0.6s ease-out forwards,
+             fade-out-panel-lines 0.4s ease-out 1.2s forwards;
+}
+
+.comic-panel .panel-line-right {
+  top: 0;
+  right: 0;
+  width: 3px;
+  height: 0;
+  animation: draw-panel-right 0.6s ease-out 0.6s forwards,
+             fade-out-panel-lines 0.4s ease-out 1.2s forwards;
+}
+
+.comic-panel .panel-line-bottom {
+  bottom: 0;
+  right: 0;
+  height: 3px;
+  width: 0;
+  animation: draw-panel-bottom 0.6s ease-out 1.2s forwards,
+             fade-out-panel-lines 0.4s ease-out 1.2s forwards;
+}
+
+.comic-panel .panel-line-left {
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  height: 0;
+  animation: draw-panel-left 0.6s ease-out 1.8s forwards,
+             fade-out-panel-lines 0.4s ease-out 1.2s forwards;
+}
+
+.comic-panel-content {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.comic-panel.visible .comic-panel-content {
+  animation: slide-in-panel-content 0.8s ease-out 2.4s forwards;
+}
+
+.comic-panel.visible.slide-right .comic-panel-content {
+  animation: slide-in-panel-content-right 0.8s ease-out 2.4s forwards;
 }
 
 /* Animation utilities and effects */

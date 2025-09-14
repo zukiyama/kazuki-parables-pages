@@ -38,25 +38,32 @@ const Comics = () => {
             </p>
           </div>
           
-          {/* God of Lies */}
-          <div className="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div className="order-1">
-              <div className="relative group">
-                <img 
-                  src={godOfLiesCover} 
-                  alt="God of Lies manga cover"
-                  className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
+          {/* God of Lies - Upper Left */}
+          <div className={`mb-32 comic-panel ${visibleElements.has("god-of-lies") ? "visible" : ""}`} data-scroll-animation="god-of-lies">
+            <div className="panel-line-top"></div>
+            <div className="panel-line-right"></div>
+            <div className="panel-line-bottom"></div>
+            <div className="panel-line-left"></div>
+            
+            <div className="comic-panel-content grid grid-cols-1 lg:grid-cols-2 gap-12 items-center p-8">
+              <div className="order-1">
+                <div className="relative group">
+                  <img 
+                    src={godOfLiesCover} 
+                    alt="God of Lies manga cover"
+                    className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
+                </div>
               </div>
-            </div>
-            <div className="order-2">
-              <h2 className="font-heading text-3xl font-bold text-ink-black mb-4">
-                God of Lies
-              </h2>
-              <p className="font-body text-muted-foreground leading-relaxed">
-                [Placeholder text] A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
-              </p>
+              <div className="order-2">
+                <h2 className="font-heading text-3xl font-bold text-ink-black mb-4">
+                  God of Lies
+                </h2>
+                <p className="font-body text-muted-foreground leading-relaxed">
+                  [Placeholder text] A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
+                </p>
+              </div>
             </div>
           </div>
           
@@ -71,43 +78,61 @@ const Comics = () => {
             </div>
           </div>
           
-          {/* Soul Tied */}
-          <div className={`mb-16 flex flex-col items-center text-center scroll-slide-left ${visibleElements.has("soul-tied") ? "visible" : ""}`} data-scroll-animation="soul-tied">
-            <div className="relative group mb-6">
-              <img 
-                src={soulTiedCover} 
-                alt="Soul Tied manga cover"
-                className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
-            </div>
-            <div>
-              <h2 className="font-heading text-3xl font-bold text-ink-black mb-4">
-                Soul Tied
-              </h2>
-              <p className="font-body text-muted-foreground leading-relaxed max-w-2xl">
-                [Placeholder text] Two men, bound by fate yet worlds apart in their choices. One embraces chaos with casual indifference, while the other fights desperately to maintain control. Their intertwined destinies force them to confront what it means to be truly connected to another soul.
-              </p>
+          {/* Soul Tied - Lower Right */}
+          <div className={`mb-32 comic-panel slide-right ${visibleElements.has("soul-tied") ? "visible" : ""}`} data-scroll-animation="soul-tied">
+            <div className="panel-line-top"></div>
+            <div className="panel-line-right"></div>
+            <div className="panel-line-bottom"></div>
+            <div className="panel-line-left"></div>
+            
+            <div className="comic-panel-content grid grid-cols-1 lg:grid-cols-2 gap-12 items-center p-8 ml-auto max-w-5xl">
+              <div className="order-2 lg:order-1">
+                <h2 className="font-heading text-3xl font-bold text-ink-black mb-4">
+                  Soul Tied
+                </h2>
+                <p className="font-body text-muted-foreground leading-relaxed">
+                  [Placeholder text] Two men, bound by fate yet worlds apart in their choices. One embraces chaos with casual indifference, while the other fights desperately to maintain control. Their intertwined destinies force them to confront what it means to be truly connected to another soul.
+                </p>
+              </div>
+              <div className="order-1 lg:order-2">
+                <div className="relative group">
+                  <img 
+                    src={soulTiedCover} 
+                    alt="Soul Tied manga cover"
+                    className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
+                </div>
+              </div>
             </div>
           </div>
           
-          {/* The Burden */}
-          <div className={`mb-16 flex flex-col items-center text-center scroll-slide-right ${visibleElements.has("the-burden") ? "visible" : ""}`} data-scroll-animation="the-burden">
-            <div className="relative group mb-6">
-              <img 
-                src={theBurdenCover} 
-                alt="The Burden manga cover"
-                className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
-            </div>
-            <div>
-              <h2 className="font-heading text-3xl font-bold text-ink-black mb-4">
-                The Burden
-              </h2>
-              <p className="font-body text-muted-foreground leading-relaxed max-w-2xl">
-                [Placeholder text] A touching story about a young man who must care for his aging mother, exploring themes of family duty, sacrifice, and the weight of responsibility. As memories float between past and present, both son and mother navigate the delicate balance between independence and care.
-              </p>
+          {/* The Burden - Upper Left */}
+          <div className={`mb-32 comic-panel ${visibleElements.has("the-burden") ? "visible" : ""}`} data-scroll-animation="the-burden">
+            <div className="panel-line-top"></div>
+            <div className="panel-line-right"></div>
+            <div className="panel-line-bottom"></div>
+            <div className="panel-line-left"></div>
+            
+            <div className="comic-panel-content grid grid-cols-1 lg:grid-cols-2 gap-12 items-center p-8 max-w-5xl">
+              <div className="order-1">
+                <div className="relative group">
+                  <img 
+                    src={theBurdenCover} 
+                    alt="The Burden manga cover"
+                    className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
+                </div>
+              </div>
+              <div className="order-2">
+                <h2 className="font-heading text-3xl font-bold text-ink-black mb-4">
+                  The Burden
+                </h2>
+                <p className="font-body text-muted-foreground leading-relaxed">
+                  [Placeholder text] A touching story about a young man who must care for his aging mother, exploring themes of family duty, sacrifice, and the weight of responsibility. As memories float between past and present, both son and mother navigate the delicate balance between independence and care.
+                </p>
+              </div>
             </div>
           </div>
         </div>
