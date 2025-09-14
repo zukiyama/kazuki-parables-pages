@@ -282,39 +282,27 @@
 }
 
 /* Comic Panel Animations */
-@keyframes draw-panel-top {
-  0% { width: 0; }
-  100% { width: 100%; }
+@keyframes draw-panel-border {
+  0% { 
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  }
+  25% { 
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+  }
+  50% { 
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
+  }
+  75% { 
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  100% { 
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
 }
 
-@keyframes draw-panel-right {
-  0% { height: 0; }
-  100% { height: 100%; }
-}
-
-@keyframes draw-panel-bottom {
-  0% { width: 0; }
-  100% { width: 100%; }
-}
-
-@keyframes draw-panel-left {
-  0% { height: 0; }
-  100% { height: 100%; }
-}
-
-@keyframes fade-out-panel-lines {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-@keyframes slide-in-panel-content {
-  0% { transform: translateX(-30px); opacity: 0; }
-  100% { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes slide-in-panel-content-right {
-  0% { transform: translateX(30px); opacity: 0; }
-  100% { transform: translateX(0); opacity: 1; }
+@keyframes fade-in-cover {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 .animate-quote-expand {
@@ -388,70 +376,34 @@
 }
 
 /* Comic Panel Styles */
-.comic-panel {
+.comic-panel-frame {
   position: relative;
-  overflow: hidden;
+  display: inline-block;
 }
 
-.comic-panel::before,
-.comic-panel::after,
-.comic-panel .panel-line-top,
-.comic-panel .panel-line-right,
-.comic-panel .panel-line-bottom,
-.comic-panel .panel-line-left {
+.comic-panel-frame::before {
   content: '';
   position: absolute;
-  background-color: hsl(var(--ink-black));
-  z-index: 10;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  border: 4px solid hsl(var(--ink-black));
+  z-index: 2;
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
 }
 
-.comic-panel .panel-line-top {
-  top: 0;
-  left: 0;
-  height: 3px;
-  width: 0;
-  animation: draw-panel-top 0.6s ease-out forwards,
-             fade-out-panel-lines 0.4s ease-out 1.2s forwards;
+.comic-panel-frame.visible::before {
+  animation: draw-panel-border 1.2s ease-out forwards;
 }
 
-.comic-panel .panel-line-right {
-  top: 0;
-  right: 0;
-  width: 3px;
-  height: 0;
-  animation: draw-panel-right 0.6s ease-out 0.6s forwards,
-             fade-out-panel-lines 0.4s ease-out 1.2s forwards;
-}
-
-.comic-panel .panel-line-bottom {
-  bottom: 0;
-  right: 0;
-  height: 3px;
-  width: 0;
-  animation: draw-panel-bottom 0.6s ease-out 1.2s forwards,
-             fade-out-panel-lines 0.4s ease-out 1.2s forwards;
-}
-
-.comic-panel .panel-line-left {
-  bottom: 0;
-  left: 0;
-  width: 3px;
-  height: 0;
-  animation: draw-panel-left 0.6s ease-out 1.8s forwards,
-             fade-out-panel-lines 0.4s ease-out 1.2s forwards;
-}
-
-.comic-panel-content {
+.comic-panel-frame img {
   opacity: 0;
-  transform: translateX(-30px);
+  transform: scale(0.95);
 }
 
-.comic-panel.visible .comic-panel-content {
-  animation: slide-in-panel-content 0.8s ease-out 2.4s forwards;
-}
-
-.comic-panel.visible.slide-right .comic-panel-content {
-  animation: slide-in-panel-content-right 0.8s ease-out 2.4s forwards;
+.comic-panel-frame.visible img {
+  animation: fade-in-cover 0.6s ease-out 1.4s forwards;
 }
 
 /* Animation utilities and effects */
