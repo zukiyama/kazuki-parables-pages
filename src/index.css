@@ -315,6 +315,7 @@
 @keyframes slide-in-panel-content-right {
   0% { transform: translateX(30px); opacity: 0; }
   100% { transform: translateX(0); opacity: 1; }
+}
 
 .animate-quote-expand {
   animation: quote-expand 1s ease-out;
