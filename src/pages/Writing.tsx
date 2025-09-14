@@ -14,7 +14,7 @@ import howBackground from "@/assets/how-background.jpg";
 import obaBackground from "@/assets/oba-background.jpg";
 import wastelandCityBackground from "@/assets/land-dream-sky-background.png";
 import victorianLondonBackground from "@/assets/victorian-london-winter-background.jpg";
-import deepSpaceBackground from "@/assets/deep-space-starships-background.jpg";
+import deepSpaceBackground from "@/assets/to-fly-space-battle-background.jpg";
 
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
@@ -193,7 +193,7 @@ const Writing = () => {
         />
         <img 
           src={deepSpaceBackground} 
-          alt="Deep Space background"
+          alt="Space battle background"
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.deepSpace }}

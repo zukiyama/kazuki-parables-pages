@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Book covers
 import professorBarnabasCover from "@/assets/professor-barnabas-cover.jpg";
-import toFlyCover from "@/assets/to-fly-cover.jpg";
+import toFlyCover from "@/assets/to-fly-cover-new.png";
 import landDreamSkyCover from "@/assets/land-dream-sky-cover.jpg";
 
 const books = [
