@@ -27,6 +27,8 @@ const Writing = () => {
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
+  const [currentBackground, setCurrentBackground] = useState('school');
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -81,53 +83,110 @@ const Writing = () => {
       
       setVisibleSections(newVisibleSections);
 
-      // Update background opacities based on visible section
-      const newOpacities = {
-        school: 0,
-        hoax: 0,
-        theMarket: 0,
-        how: 0,
-        oba: 0,
-        victorianLondon: 0,
-        wasteland: 0,
-        deepSpace: 0
-      };
-
+      // Determine which background should be active
+      let targetBackground = 'school';
+      
       if (newVisibleSections.has('oba')) {
-        newOpacities.oba = 1;
+        targetBackground = 'oba';
       } else if (newVisibleSections.has('how')) {
-        newOpacities.how = 1;
+        targetBackground = 'how';
       } else if (newVisibleSections.has('the-market')) {
-        newOpacities.theMarket = 1;
+        targetBackground = 'theMarket';
       } else if (newVisibleSections.has('hoax')) {
-        newOpacities.hoax = 1;
+        targetBackground = 'hoax';
       } else if (newVisibleSections.has('young-adult')) {
         // Show different backgrounds based on current young adult book
         if (currentYoungAdultBook === 0) {
-          newOpacities.victorianLondon = 1; // Professor Barnabas
+          targetBackground = 'victorianLondon'; // Professor Barnabas
         } else if (currentYoungAdultBook === 1) {
-          newOpacities.wasteland = 1; // The Land is a Dream of the Sky
+          targetBackground = 'wasteland'; // The Land is a Dream of the Sky
         } else if (currentYoungAdultBook === 2) {
-          newOpacities.deepSpace = 1; // To Fly
+          targetBackground = 'deepSpace'; // To Fly
         } else {
-          newOpacities.school = 1; // Default school background
+          targetBackground = 'school'; // Default school background
         }
-      } else {
-        newOpacities.school = 1;
       }
 
-      setBackgroundOpacities(newOpacities);
+      // Only transition if the target is different from current
+      if (targetBackground !== currentBackground && !isTransitioning) {
+        setIsTransitioning(true);
+        setCurrentBackground(targetBackground);
+        
+        // Start cross-fade transition
+        setBackgroundOpacities(prev => ({
+          ...prev,
+          [targetBackground]: 1
+        }));
+        
+        // After transition duration, clean up other backgrounds
+        setTimeout(() => {
+          setBackgroundOpacities(prev => {
+            const newOpacities = {
+              school: 0,
+              hoax: 0,
+              theMarket: 0,
+              how: 0,
+              oba: 0,
+              victorianLondon: 0,
+              wasteland: 0,
+              deepSpace: 0
+            };
+            newOpacities[targetBackground as keyof typeof newOpacities] = 1;
+            return newOpacities;
+          });
+          setIsTransitioning(false);
+        }, 1000); // Match transition duration
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
     handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [currentYoungAdultBook]);
+  }, [currentYoungAdultBook, currentBackground, isTransitioning]);
 
   const handleBookClick = (bookId: string, slideToBook?: number) => {
     // If it's a young adult book, set the slideshow to show that book IMMEDIATELY
     if (slideToBook !== undefined && youngAdultSlideshowRef.current) {
       youngAdultSlideshowRef.current.setCurrentBook(slideToBook);
+      
+      // Determine the target background for this young adult book
+      let targetBackground = 'school';
+      if (slideToBook === 0) {
+        targetBackground = 'victorianLondon'; // Professor Barnabas
+      } else if (slideToBook === 1) {
+        targetBackground = 'wasteland'; // The Land is a Dream of the Sky  
+      } else if (slideToBook === 2) {
+        targetBackground = 'deepSpace'; // To Fly
+      }
+      
+      // Trigger immediate cross-fade transition if different from current
+      if (targetBackground !== currentBackground && !isTransitioning) {
+        setIsTransitioning(true);
+        setCurrentBackground(targetBackground);
+        
+        setBackgroundOpacities(prev => ({
+          ...prev,
+          [targetBackground]: 1
+        }));
+        
+        setTimeout(() => {
+          setBackgroundOpacities(prev => {
+            const newOpacities = {
+              school: 0,
+              hoax: 0,
+              theMarket: 0,
+              how: 0,
+              oba: 0,
+              victorianLondon: 0,
+              wasteland: 0,
+              deepSpace: 0
+            };
+            newOpacities[targetBackground as keyof typeof newOpacities] = 1;
+            return newOpacities;
+          });
+          setIsTransitioning(false);
+        }, 1000);
+      }
     }
   };
 
