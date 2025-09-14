@@ -281,17 +281,6 @@
   100% { transform: translateX(0); opacity: 1; }
 }
 
-/* Comic Panel Animations */
-@keyframes draw-pencil-stroke {
-  0% { stroke-dashoffset: 1000; }
-  100% { stroke-dashoffset: 0; }
-}
-
-@keyframes fade-in-cover {
-  0% { opacity: 0; transform: scale(0.95); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
 .animate-quote-expand {
   animation: quote-expand 1s ease-out;
 }
@@ -360,58 +349,6 @@
 .scroll-slide-right.visible {
   opacity: 1;
   transform: translateX(0);
-}
-
-/* Comic Panel Styles */
-.comic-panel-frame {
-  position: relative;
-  display: inline-block;
-}
-
-.comic-panel-frame .pencil-sketch {
-  position: absolute;
-  top: -12px;
-  left: -12px;
-  right: -12px;
-  bottom: -12px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.comic-panel-frame .pencil-sketch path {
-  fill: none;
-  stroke: hsl(var(--ink-black));
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
-  opacity: 0.85;
-}
-
-.comic-panel-frame.visible .pencil-sketch .stroke-1 {
-  animation: draw-pencil-stroke 0.8s ease-out 0s forwards;
-}
-
-.comic-panel-frame.visible .pencil-sketch .stroke-2 {
-  animation: draw-pencil-stroke 0.8s ease-out 0.3s forwards;
-}
-
-.comic-panel-frame.visible .pencil-sketch .stroke-3 {
-  animation: draw-pencil-stroke 0.8s ease-out 0.6s forwards;
-}
-
-.comic-panel-frame.visible .pencil-sketch .stroke-4 {
-  animation: draw-pencil-stroke 0.8s ease-out 0.9s forwards;
-}
-
-.comic-panel-frame img {
-  opacity: 0;
-  transform: scale(0.95);
-}
-
-.comic-panel-frame.visible img {
-  animation: fade-in-cover 0.6s ease-out 1.8s forwards;
 }
 
 /* Animation utilities and effects */

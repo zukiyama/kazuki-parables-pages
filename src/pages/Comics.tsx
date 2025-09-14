@@ -38,21 +38,16 @@ const Comics = () => {
             </p>
           </div>
           
-          {/* God of Lies - Left side */}
-          <div className="mb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* God of Lies */}
+          <div className="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="order-1">
-              <div className={`comic-panel-frame ${visibleElements.has("god-of-lies") ? "visible" : ""}`} data-scroll-animation="god-of-lies">
-                <svg className="pencil-sketch" viewBox="0 0 100 100" preserveAspectRatio="none">
-                  <path className="stroke-1" d="M -2,-2 Q 25,-1.5 50,-1 Q 75,-0.5 102,-2" />
-                  <path className="stroke-2" d="M 102,-2 Q 101.5,25 101,50 Q 100.5,75 102,102" />
-                  <path className="stroke-3" d="M 102,102 Q 75,101.5 50,101 Q 25,100.5 -2,102" />
-                  <path className="stroke-4" d="M -2,102 Q -1.5,75 -1,50 Q -0.5,25 -2,-2" />
-                </svg>
+              <div className="relative group">
                 <img 
                   src={godOfLiesCover} 
                   alt="God of Lies manga cover"
-                  className="w-full max-w-md mx-auto rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
+                  className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
               </div>
             </div>
             <div className="order-2">
@@ -76,55 +71,41 @@ const Comics = () => {
             </div>
           </div>
           
-          {/* Soul Tied - Right side */}
-          <div className="mb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="order-2 lg:order-1">
+          {/* Soul Tied */}
+          <div className={`mb-16 flex flex-col items-center text-center scroll-slide-left ${visibleElements.has("soul-tied") ? "visible" : ""}`} data-scroll-animation="soul-tied">
+            <div className="relative group mb-6">
+              <img 
+                src={soulTiedCover} 
+                alt="Soul Tied manga cover"
+                className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
+            </div>
+            <div>
               <h2 className="font-heading text-3xl font-bold text-ink-black mb-4">
                 Soul Tied
               </h2>
-              <p className="font-body text-muted-foreground leading-relaxed">
+              <p className="font-body text-muted-foreground leading-relaxed max-w-2xl">
                 [Placeholder text] Two men, bound by fate yet worlds apart in their choices. One embraces chaos with casual indifference, while the other fights desperately to maintain control. Their intertwined destinies force them to confront what it means to be truly connected to another soul.
               </p>
             </div>
-            <div className="order-1 lg:order-2">
-              <div className={`comic-panel-frame ${visibleElements.has("soul-tied") ? "visible" : ""}`} data-scroll-animation="soul-tied">
-                <svg className="pencil-sketch" viewBox="0 0 100 100" preserveAspectRatio="none">
-                  <path className="stroke-1" d="M -1,-1.5 Q 24,-2 49,-1.5 Q 74,-1 101,-1.8" />
-                  <path className="stroke-2" d="M 101,-1.8 Q 101.2,24 100.8,49 Q 100.4,74 101.2,101.2" />
-                  <path className="stroke-3" d="M 101.2,101.2 Q 76,100.8 51,101.2 Q 26,101.6 -1,100.8" />
-                  <path className="stroke-4" d="M -1,100.8 Q -1.4,75 -1,50 Q -0.6,25 -1,-1.5" />
-                </svg>
-                <img 
-                  src={soulTiedCover} 
-                  alt="Soul Tied manga cover"
-                  className="w-full max-w-md mx-auto rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-            </div>
           </div>
           
-          {/* The Burden - Left side */}
-          <div className="mb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="order-1">
-              <div className={`comic-panel-frame ${visibleElements.has("the-burden") ? "visible" : ""}`} data-scroll-animation="the-burden">
-                <svg className="pencil-sketch" viewBox="0 0 100 100" preserveAspectRatio="none">
-                  <path className="stroke-1" d="M -1.8,-1 Q 24.5,-1.8 49.5,-1.2 Q 74.5,-0.6 101.8,-1.4" />
-                  <path className="stroke-2" d="M 101.8,-1.4 Q 101,24.2 100.6,49.2 Q 100.2,74.2 101.6,101" />
-                  <path className="stroke-3" d="M 101.6,101 Q 76.3,100.4 51.3,101 Q 26.3,101.6 -1.6,100.2" />
-                  <path className="stroke-4" d="M -1.6,100.2 Q -1,75.5 -0.6,50.5 Q -0.2,25.5 -1.8,-1" />
-                </svg>
-                <img 
-                  src={theBurdenCover} 
-                  alt="The Burden manga cover"
-                  className="w-full max-w-md mx-auto rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
-                />
-              </div>
+          {/* The Burden */}
+          <div className={`mb-16 flex flex-col items-center text-center scroll-slide-right ${visibleElements.has("the-burden") ? "visible" : ""}`} data-scroll-animation="the-burden">
+            <div className="relative group mb-6">
+              <img 
+                src={theBurdenCover} 
+                alt="The Burden manga cover"
+                className="w-full max-w-md mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
             </div>
-            <div className="order-2">
+            <div>
               <h2 className="font-heading text-3xl font-bold text-ink-black mb-4">
                 The Burden
               </h2>
-              <p className="font-body text-muted-foreground leading-relaxed">
+              <p className="font-body text-muted-foreground leading-relaxed max-w-2xl">
                 [Placeholder text] A touching story about a young man who must care for his aging mother, exploring themes of family duty, sacrifice, and the weight of responsibility. As memories float between past and present, both son and mother navigate the delicate balance between independence and care.
               </p>
             </div>
