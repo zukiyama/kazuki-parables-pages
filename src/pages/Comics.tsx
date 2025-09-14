@@ -42,6 +42,10 @@ const Comics = () => {
           <div className="mb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="order-1">
               <div className={`comic-panel-frame ${visibleElements.has("god-of-lies") ? "visible" : ""}`} data-scroll-animation="god-of-lies">
+                <div className="pencil-line pencil-line-top"></div>
+                <div className="pencil-line pencil-line-right"></div>
+                <div className="pencil-line pencil-line-bottom"></div>
+                <div className="pencil-line pencil-line-left"></div>
                 <img 
                   src={godOfLiesCover} 
                   alt="God of Lies manga cover"
@@ -82,6 +86,10 @@ const Comics = () => {
             </div>
             <div className="order-1 lg:order-2">
               <div className={`comic-panel-frame ${visibleElements.has("soul-tied") ? "visible" : ""}`} data-scroll-animation="soul-tied">
+                <div className="pencil-line pencil-line-top"></div>
+                <div className="pencil-line pencil-line-right"></div>
+                <div className="pencil-line pencil-line-bottom"></div>
+                <div className="pencil-line pencil-line-left"></div>
                 <img 
                   src={soulTiedCover} 
                   alt="Soul Tied manga cover"
@@ -95,6 +103,10 @@ const Comics = () => {
           <div className="mb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="order-1">
               <div className={`comic-panel-frame ${visibleElements.has("the-burden") ? "visible" : ""}`} data-scroll-animation="the-burden">
+                <div className="pencil-line pencil-line-top"></div>
+                <div className="pencil-line pencil-line-right"></div>
+                <div className="pencil-line pencil-line-bottom"></div>
+                <div className="pencil-line pencil-line-left"></div>
                 <img 
                   src={theBurdenCover} 
                   alt="The Burden manga cover"
