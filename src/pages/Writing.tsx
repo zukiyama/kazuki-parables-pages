@@ -27,8 +27,6 @@ const Writing = () => {
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
-  const [currentBackground, setCurrentBackground] = useState('school');
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -83,110 +81,53 @@ const Writing = () => {
       
       setVisibleSections(newVisibleSections);
 
-      // Determine which background should be active
-      let targetBackground = 'school';
-      
+      // Update background opacities based on visible section
+      const newOpacities = {
+        school: 0,
+        hoax: 0,
+        theMarket: 0,
+        how: 0,
+        oba: 0,
+        victorianLondon: 0,
+        wasteland: 0,
+        deepSpace: 0
+      };
+
       if (newVisibleSections.has('oba')) {
-        targetBackground = 'oba';
+        newOpacities.oba = 1;
       } else if (newVisibleSections.has('how')) {
-        targetBackground = 'how';
+        newOpacities.how = 1;
       } else if (newVisibleSections.has('the-market')) {
-        targetBackground = 'theMarket';
+        newOpacities.theMarket = 1;
       } else if (newVisibleSections.has('hoax')) {
-        targetBackground = 'hoax';
+        newOpacities.hoax = 1;
       } else if (newVisibleSections.has('young-adult')) {
         // Show different backgrounds based on current young adult book
         if (currentYoungAdultBook === 0) {
-          targetBackground = 'victorianLondon'; // Professor Barnabas
+          newOpacities.victorianLondon = 1; // Professor Barnabas
         } else if (currentYoungAdultBook === 1) {
-          targetBackground = 'wasteland'; // The Land is a Dream of the Sky
+          newOpacities.wasteland = 1; // The Land is a Dream of the Sky
         } else if (currentYoungAdultBook === 2) {
-          targetBackground = 'deepSpace'; // To Fly
+          newOpacities.deepSpace = 1; // To Fly
         } else {
-          targetBackground = 'school'; // Default school background
+          newOpacities.school = 1; // Default school background
         }
+      } else {
+        newOpacities.school = 1;
       }
 
-      // Only transition if the target is different from current
-      if (targetBackground !== currentBackground && !isTransitioning) {
-        setIsTransitioning(true);
-        setCurrentBackground(targetBackground);
-        
-        // Start cross-fade transition
-        setBackgroundOpacities(prev => ({
-          ...prev,
-          [targetBackground]: 1
-        }));
-        
-        // After transition duration, clean up other backgrounds
-        setTimeout(() => {
-          setBackgroundOpacities(prev => {
-            const newOpacities = {
-              school: 0,
-              hoax: 0,
-              theMarket: 0,
-              how: 0,
-              oba: 0,
-              victorianLondon: 0,
-              wasteland: 0,
-              deepSpace: 0
-            };
-            newOpacities[targetBackground as keyof typeof newOpacities] = 1;
-            return newOpacities;
-          });
-          setIsTransitioning(false);
-        }, 300); // Match transition duration
-      }
+      setBackgroundOpacities(newOpacities);
     };
 
     window.addEventListener("scroll", handleScroll);
     handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [currentYoungAdultBook, currentBackground, isTransitioning]);
+  }, [currentYoungAdultBook]);
 
   const handleBookClick = (bookId: string, slideToBook?: number) => {
     // If it's a young adult book, set the slideshow to show that book IMMEDIATELY
     if (slideToBook !== undefined && youngAdultSlideshowRef.current) {
       youngAdultSlideshowRef.current.setCurrentBook(slideToBook);
-      
-      // Determine the target background for this young adult book
-      let targetBackground = 'school';
-      if (slideToBook === 0) {
-        targetBackground = 'victorianLondon'; // Professor Barnabas
-      } else if (slideToBook === 1) {
-        targetBackground = 'wasteland'; // The Land is a Dream of the Sky  
-      } else if (slideToBook === 2) {
-        targetBackground = 'deepSpace'; // To Fly
-      }
-      
-      // Trigger immediate cross-fade transition if different from current
-      if (targetBackground !== currentBackground && !isTransitioning) {
-        setIsTransitioning(true);
-        setCurrentBackground(targetBackground);
-        
-        setBackgroundOpacities(prev => ({
-          ...prev,
-          [targetBackground]: 1
-        }));
-        
-        setTimeout(() => {
-          setBackgroundOpacities(prev => {
-            const newOpacities = {
-              school: 0,
-              hoax: 0,
-              theMarket: 0,
-              how: 0,
-              oba: 0,
-              victorianLondon: 0,
-              wasteland: 0,
-              deepSpace: 0
-            };
-            newOpacities[targetBackground as keyof typeof newOpacities] = 1;
-            return newOpacities;
-          });
-          setIsTransitioning(false);
-        }, 300);
-      }
     }
   };
 
@@ -205,56 +146,56 @@ const Writing = () => {
           src={schoolBackground} 
           alt="School background"
           loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.school }}
         />
         <img 
           src={hoaxBackground} 
           alt="Hoax background"
           loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.hoax }}
         />
         <img 
           src={theMarketBackground} 
           alt="The Market background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.theMarket }}
         />
         <img 
           src={howBackground} 
           alt="HOW background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.how }}
         />
         <img 
           src={obaBackground} 
           alt="Oba background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.oba }}
         />
         <img 
           src={victorianLondonBackground} 
           alt="Victorian London background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.victorianLondon }}
         />
         <img 
           src={wastelandCityBackground} 
           alt="Wasteland City background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.wasteland }}
         />
         <img 
           src={deepSpaceBackground} 
           alt="Deep Space background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.deepSpace }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
