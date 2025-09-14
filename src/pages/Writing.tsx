@@ -189,10 +189,7 @@ const Writing = () => {
           alt="Wasteland City background"
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ 
-            opacity: backgroundOpacities.wasteland,
-            objectPosition: '50% 0%'
-          }}
+          style={{ opacity: backgroundOpacities.wasteland }}
         />
         <img 
           src={deepSpaceBackground} 
