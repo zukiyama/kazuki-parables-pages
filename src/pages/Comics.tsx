@@ -42,10 +42,12 @@ const Comics = () => {
           <div className="mb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="order-1">
               <div className={`comic-panel-frame ${visibleElements.has("god-of-lies") ? "visible" : ""}`} data-scroll-animation="god-of-lies">
-                <div className="pencil-line pencil-line-top"></div>
-                <div className="pencil-line pencil-line-right"></div>
-                <div className="pencil-line pencil-line-bottom"></div>
-                <div className="pencil-line pencil-line-left"></div>
+                <svg className="pencil-sketch" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <path className="stroke-1" d="M -2,-2 Q 25,-1.5 50,-1 Q 75,-0.5 102,-2" />
+                  <path className="stroke-2" d="M 102,-2 Q 101.5,25 101,50 Q 100.5,75 102,102" />
+                  <path className="stroke-3" d="M 102,102 Q 75,101.5 50,101 Q 25,100.5 -2,102" />
+                  <path className="stroke-4" d="M -2,102 Q -1.5,75 -1,50 Q -0.5,25 -2,-2" />
+                </svg>
                 <img 
                   src={godOfLiesCover} 
                   alt="God of Lies manga cover"
@@ -86,10 +88,12 @@ const Comics = () => {
             </div>
             <div className="order-1 lg:order-2">
               <div className={`comic-panel-frame ${visibleElements.has("soul-tied") ? "visible" : ""}`} data-scroll-animation="soul-tied">
-                <div className="pencil-line pencil-line-top"></div>
-                <div className="pencil-line pencil-line-right"></div>
-                <div className="pencil-line pencil-line-bottom"></div>
-                <div className="pencil-line pencil-line-left"></div>
+                <svg className="pencil-sketch" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <path className="stroke-1" d="M -1,-1.5 Q 24,-2 49,-1.5 Q 74,-1 101,-1.8" />
+                  <path className="stroke-2" d="M 101,-1.8 Q 101.2,24 100.8,49 Q 100.4,74 101.2,101.2" />
+                  <path className="stroke-3" d="M 101.2,101.2 Q 76,100.8 51,101.2 Q 26,101.6 -1,100.8" />
+                  <path className="stroke-4" d="M -1,100.8 Q -1.4,75 -1,50 Q -0.6,25 -1,-1.5" />
+                </svg>
                 <img 
                   src={soulTiedCover} 
                   alt="Soul Tied manga cover"
@@ -103,10 +107,12 @@ const Comics = () => {
           <div className="mb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="order-1">
               <div className={`comic-panel-frame ${visibleElements.has("the-burden") ? "visible" : ""}`} data-scroll-animation="the-burden">
-                <div className="pencil-line pencil-line-top"></div>
-                <div className="pencil-line pencil-line-right"></div>
-                <div className="pencil-line pencil-line-bottom"></div>
-                <div className="pencil-line pencil-line-left"></div>
+                <svg className="pencil-sketch" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <path className="stroke-1" d="M -1.8,-1 Q 24.5,-1.8 49.5,-1.2 Q 74.5,-0.6 101.8,-1.4" />
+                  <path className="stroke-2" d="M 101.8,-1.4 Q 101,24.2 100.6,49.2 Q 100.2,74.2 101.6,101" />
+                  <path className="stroke-3" d="M 101.6,101 Q 76.3,100.4 51.3,101 Q 26.3,101.6 -1.6,100.2" />
+                  <path className="stroke-4" d="M -1.6,100.2 Q -1,75.5 -0.6,50.5 Q -0.2,25.5 -1.8,-1" />
+                </svg>
                 <img 
                   src={theBurdenCover} 
                   alt="The Burden manga cover"
