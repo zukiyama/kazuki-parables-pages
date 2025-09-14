@@ -184,12 +184,16 @@ const Writing = () => {
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.victorianLondon }}
         />
-        <img 
-          src={wastelandCityBackground} 
-          alt="Wasteland City background"
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.wasteland }}
+        <div 
+          className="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out"
+          style={{ 
+            backgroundImage: `url(${wastelandCityBackground})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'top center',
+            backgroundRepeat: 'no-repeat',
+            opacity: backgroundOpacities.wasteland 
+          }}
+          aria-label="Wasteland City background"
         />
         <img 
           src={deepSpaceBackground} 
