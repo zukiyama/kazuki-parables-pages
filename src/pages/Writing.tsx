@@ -39,10 +39,26 @@ const Writing = () => {
   });
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
 
-  // Preload only the initial background image for faster loading
+  // Preload critical images for better performance
   useEffect(() => {
-    const img = new Image();
-    img.src = schoolBackground;
+    const preloadImages = [
+      schoolBackground, 
+      hoaxBackground, 
+      theMarketBackground, 
+      howBackground,
+      obaBackground,
+      victorianLondonBackground,
+      wastelandCityBackground,
+      deepSpaceBackground,
+      hoaxCover, 
+      theMarketCover,
+      howCover,
+      obaCover
+    ];
+    preloadImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
   }, []);
 
   useEffect(() => {
@@ -130,56 +146,56 @@ const Writing = () => {
           src={schoolBackground} 
           alt="School background"
           loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.school }}
         />
         <img 
           src={hoaxBackground} 
           alt="Hoax background"
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+          loading="eager"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.hoax }}
         />
         <img 
           src={theMarketBackground} 
           alt="The Market background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.theMarket }}
         />
         <img 
           src={howBackground} 
           alt="HOW background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.how }}
         />
         <img 
           src={obaBackground} 
           alt="Oba background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.oba }}
         />
         <img 
           src={victorianLondonBackground} 
           alt="Victorian London background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.victorianLondon }}
         />
         <img 
           src={wastelandCityBackground} 
           alt="Wasteland City background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.wasteland }}
         />
         <img 
           src={deepSpaceBackground} 
           alt="Deep Space background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.deepSpace }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
