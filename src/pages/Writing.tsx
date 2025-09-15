@@ -91,20 +91,20 @@ const Writing = () => {
         school: 0,
         hoax: 0,
         theMarket: 0,
+        oba: 0,
         how: 0,
         viceVersa: 0,
-        oba: 0,
         victorianLondon: 0,
         wasteland: 0,
         deepSpace: 0
       };
 
-      if (newVisibleSections.has('oba')) {
-        newOpacities.oba = 1;
-      } else if (newVisibleSections.has('vice-versa')) {
+      if (newVisibleSections.has('vice-versa')) {
         newOpacities.viceVersa = 1;
       } else if (newVisibleSections.has('how')) {
         newOpacities.how = 1;
+      } else if (newVisibleSections.has('oba')) {
+        newOpacities.oba = 1;
       } else if (newVisibleSections.has('the-market')) {
         newOpacities.theMarket = 1;
       } else if (newVisibleSections.has('hoax')) {
@@ -187,7 +187,7 @@ const Writing = () => {
         />
         <img 
           src={obaBackground} 
-          alt="Oba background"
+          alt="AMYA background"
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.oba }}
@@ -320,6 +320,38 @@ const Writing = () => {
           </div>
         </section>
 
+        {/* AMYA Section */}
+        <section data-section="oba" className="min-h-[90vh] flex items-center justify-center relative">
+          <div className="container mx-auto px-6 py-20">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className={`order-1 transition-all duration-1000 delay-300 ${
+                  visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
+                }`}>
+                  <BookCoverSlideshow 
+                    covers={[
+                      { image: obaCover, alt: "AMYA Book Cover" }
+                    ]}
+                    title="AMYA"
+                  />
+                </div>
+                <div className={`text-white order-2 transition-all duration-1000 delay-500 ${
+                  visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
+                }`}>
+                  <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
+                    AMYA
+                  </h2>
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <p className="font-serif text-lg leading-relaxed text-white">
+                      A haunting tale of mystery and transformation. In a world where ancient secrets collide with modern reality, a young woman discovers that her destiny is intertwined with forces beyond her understanding. As she navigates through layers of deception and truth, she must choose between the life she knows and the path that calls to her soul.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* HOW Section */}
         <section data-section="how" className="min-h-[90vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
@@ -378,38 +410,6 @@ const Writing = () => {
                     ]}
                     title="VICE VERSA"
                   />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* OBA Section */}
-        <section data-section="oba" className="min-h-[90vh] flex items-center justify-center relative">
-          <div className="container mx-auto px-6 py-20">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className={`order-1 transition-all duration-1000 delay-300 ${
-                  visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
-                }`}>
-                  <BookCoverSlideshow 
-                    covers={[
-                      { image: obaCover, alt: "OBA Book Cover" }
-                    ]}
-                    title="OBA"
-                  />
-                </div>
-                <div className={`text-white order-2 transition-all duration-1000 delay-500 ${
-                  visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
-                }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
-                    OBA
-                  </h2>
-                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white">
-                      Set in Zimbabwe, this story follows a man with an African name who returns to his hometown at the edge of a receding jungle. He's there to teach as a speech therapist, working with a young girl in his home village, but ends up learning more from her than he could ever teach.
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>

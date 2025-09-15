@@ -10,7 +10,7 @@ import obaCover from "@/assets/oba-cover.jpg";
 
 // Young adult book covers
 import professorBarnabasCover from "@/assets/professor-barnabas-cover.jpg";
-import toFlyCover from "@/assets/to-fly-cover.jpg";
+import toFlyCover from "@/assets/to-fly-cover-new.png";
 import landDreamSkyCover from "@/assets/land-dream-sky-cover.jpg";
 
 interface Book {
@@ -41,6 +41,12 @@ const books: Book[] = [
     targetSection: "the-market"
   },
   {
+    id: "oba",
+    title: "AMYA",
+    cover: obaCover,
+    targetSection: "oba"
+  },
+  {
     id: "how",
     title: "HOW", 
     cover: howCover,
@@ -51,12 +57,6 @@ const books: Book[] = [
     title: "VICE VERSA",
     cover: viceVersaCover,
     targetSection: "vice-versa"
-  },
-  {
-    id: "oba",
-    title: "OBA",
-    cover: obaCover,
-    targetSection: "oba"
   },
   {
     id: "professor-barnabas",
@@ -95,9 +95,9 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
     if (!visibleSections) return null;
     
     // Priority order matches the scroll order on the page
-    if (visibleSections.has('oba')) return 'oba';
     if (visibleSections.has('vice-versa')) return 'vice-versa';
     if (visibleSections.has('how')) return 'how';
+    if (visibleSections.has('oba')) return 'oba';
     if (visibleSections.has('the-market')) return 'the-market';
     if (visibleSections.has('hoax')) return 'hoax';
     if (visibleSections.has('kaiju')) return 'kaiju';
