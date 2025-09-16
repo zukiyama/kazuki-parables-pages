@@ -7,6 +7,7 @@ import theMarketCover from "@/assets/the-market-cover.jpg";
 import howCover from "@/assets/how-cover.jpg";
 import viceVersaCover from "@/assets/vice-versa-cover.jpg";
 import obaCover from "@/assets/oba-cover.jpg";
+import statesOfMotionCover from "@/assets/states-of-motion-cover.png";
 
 // Young adult book covers
 import professorBarnabasCover from "@/assets/professor-barnabas-cover.jpg";
@@ -45,6 +46,12 @@ const books: Book[] = [
     title: "AMYA",
     cover: obaCover,
     targetSection: "oba"
+  },
+  {
+    id: "states-of-motion",
+    title: "STATES OF MOTION",
+    cover: statesOfMotionCover,
+    targetSection: "states-of-motion"
   },
   {
     id: "how",
@@ -97,6 +104,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
     // Priority order matches the scroll order on the page
     if (visibleSections.has('vice-versa')) return 'vice-versa';
     if (visibleSections.has('how')) return 'how';
+    if (visibleSections.has('states-of-motion')) return 'states-of-motion';
     if (visibleSections.has('oba')) return 'oba';
     if (visibleSections.has('the-market')) return 'the-market';
     if (visibleSections.has('hoax')) return 'hoax';
@@ -114,7 +122,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
 
   // Preload critical book cover images for better performance
   useState(() => {
-    const criticalImages = [kaijuCover, hoaxCover, theMarketCover, howCover, viceVersaCover, obaCover];
+    const criticalImages = [kaijuCover, hoaxCover, theMarketCover, obaCover, statesOfMotionCover, howCover, viceVersaCover];
     criticalImages.forEach((src) => {
       const img = new Image();
       img.src = src;
@@ -221,7 +229,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
                 <img
                   src={book.cover}
                   alt={book.title}
-                  loading={['kaiju', 'hoax', 'the-market', 'how', 'vice-versa', 'oba'].includes(book.id) ? 'eager' : 'lazy'}
+                  loading={['kaiju', 'hoax', 'the-market', 'oba', 'states-of-motion', 'how', 'vice-versa'].includes(book.id) ? 'eager' : 'lazy'}
                   className={`h-16 w-auto object-contain rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
                     activeBook === book.id
                       ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'

@@ -13,6 +13,7 @@ import theMarketBackground from "@/assets/the-market-background.jpg";
 import howBackground from "@/assets/how-background.jpg";
 import viceVersaBackground from "@/assets/vice-versa-background.jpg";
 import obaBackground from "@/assets/oba-background.jpg";
+import statesOfMotionBackground from "@/assets/states-of-motion-background.png";
 import wastelandCityBackground from "@/assets/land-dream-sky-background.png";
 import victorianLondonBackground from "@/assets/victorian-london-winter-background.jpg";
 import deepSpaceBackground from "@/assets/to-fly-space-battle-background.jpg";
@@ -24,6 +25,7 @@ import theMarketCover from "@/assets/the-market-cover.jpg";
 import howCover from "@/assets/how-cover.jpg";
 import viceVersaCover from "@/assets/vice-versa-cover.jpg";
 import obaCover from "@/assets/oba-cover.jpg";
+import statesOfMotionCover from "@/assets/states-of-motion-cover.png";
 
 const Writing = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -33,9 +35,10 @@ const Writing = () => {
     school: 1,
     hoax: 0,
     theMarket: 0,
+    oba: 0,
+    statesOfMotion: 0,
     how: 0,
     viceVersa: 0,
-    oba: 0,
     victorianLondon: 0,
     wasteland: 0,
     deepSpace: 0
@@ -48,17 +51,19 @@ const Writing = () => {
       schoolBackground, 
       hoaxBackground, 
       theMarketBackground, 
+      obaBackground,
+      statesOfMotionBackground,
       howBackground,
       viceVersaBackground,
-      obaBackground,
       victorianLondonBackground,
       wastelandCityBackground,
       deepSpaceBackground,
       hoaxCover, 
       theMarketCover,
+      obaCover,
+      statesOfMotionCover,
       howCover,
-      viceVersaCover,
-      obaCover
+      viceVersaCover
     ];
     preloadImages.forEach((src) => {
       const img = new Image();
@@ -92,6 +97,7 @@ const Writing = () => {
         hoax: 0,
         theMarket: 0,
         oba: 0,
+        statesOfMotion: 0,
         how: 0,
         viceVersa: 0,
         victorianLondon: 0,
@@ -103,6 +109,8 @@ const Writing = () => {
         newOpacities.viceVersa = 1;
       } else if (newVisibleSections.has('how')) {
         newOpacities.how = 1;
+      } else if (newVisibleSections.has('states-of-motion')) {
+        newOpacities.statesOfMotion = 1;
       } else if (newVisibleSections.has('oba')) {
         newOpacities.oba = 1;
       } else if (newVisibleSections.has('the-market')) {
@@ -191,6 +199,13 @@ const Writing = () => {
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.oba }}
+        />
+        <img 
+          src={statesOfMotionBackground} 
+          alt="States of Motion background"
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.statesOfMotion }}
         />
         <img 
           src={victorianLondonBackground} 
@@ -344,6 +359,38 @@ const Writing = () => {
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
                     <p className="font-serif text-lg leading-relaxed text-white">
                       A haunting tale of mystery and transformation. In a world where ancient secrets collide with modern reality, a young woman discovers that her destiny is intertwined with forces beyond her understanding. As she navigates through layers of deception and truth, she must choose between the life she knows and the path that calls to her soul.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* STATES OF MOTION Section */}
+        <section data-section="states-of-motion" className="min-h-[90vh] flex items-center justify-center relative">
+          <div className="container mx-auto px-6 py-20">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className={`transition-all duration-1000 delay-300 ${
+                  visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
+                }`}>
+                  <BookCoverSlideshow 
+                    covers={[
+                      { image: statesOfMotionCover, alt: "STATES OF MOTION Book Cover" }
+                    ]}
+                    title="STATES OF MOTION"
+                  />
+                </div>
+                <div className={`text-white transition-all duration-1000 delay-500 ${
+                  visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
+                }`}>
+                  <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
+                    STATES OF MOTION
+                  </h2>
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <p className="font-serif text-lg leading-relaxed text-white">
+                      A captivating exploration of movement, momentum, and the forces that shape our world. Through the lens of physics and human emotion, this novel follows characters whose lives intersect in ways as predictable as gravity and as chaotic as quantum mechanics. A story where science and humanity collide in beautiful, unexpected ways.
                     </p>
                   </div>
                 </div>
