@@ -56,7 +56,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   };
 
   return (
-    <div className="bg-black/90 backdrop-blur-md border-b border-white/20 py-3">
+    <div className="bg-black/80 backdrop-blur-md border-b border-white/20 py-3">
       <div className="container mx-auto px-6">
         <div className="flex justify-center items-center gap-6 overflow-x-auto pb-2">
           {albums.map((album) => (
@@ -77,7 +77,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                 <img
                   src={album.cover}
                   alt={album.title}
-                  className={`h-16 w-auto object-contain rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
+                  className={`h-20 w-auto object-contain rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
                     hoveredAlbum === album.id 
                       ? 'scale-125 shadow-2xl shadow-yellow-300/20' 
                       : selectedAlbumId === album.id
