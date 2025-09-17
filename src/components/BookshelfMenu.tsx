@@ -3,7 +3,7 @@ import { useState } from "react";
 // Main book covers
 import kaijuCover from "@/assets/kaiju-cover-new.jpg";
 import hoaxCover from "@/assets/hoax-cover.jpg";
-import theMarketCover from "@/assets/the-market-cover.jpg";
+import theMarketCover from "@/assets/the-market-cover-new.jpg";
 import howCover from "@/assets/how-cover.jpg";
 import viceVersaCover from "@/assets/vice-versa-cover.jpg";
 import obaCover from "@/assets/oba-cover.jpg";
