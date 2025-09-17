@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // Main book covers
-import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
+import kaijuCover from "@/assets/kaiju-cover-new.jpg";
 import hoaxCover from "@/assets/hoax-cover.jpg";
 import theMarketCover from "@/assets/the-market-cover.jpg";
 import howCover from "@/assets/how-cover.jpg";

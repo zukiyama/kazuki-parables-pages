@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import Navigation from "@/components/Navigation";
-import { CharacterSlideshow } from "@/components/CharacterSlideshow";
+
 import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungAdultSlideshow";
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
-import { ParableImageSelector } from "@/components/ParableImageSelector";
 import { BookshelfMenu } from "@/components/BookshelfMenu";
 
 // Background images
@@ -19,7 +18,7 @@ import victorianLondonBackground from "@/assets/victorian-london-winter-backgrou
 import deepSpaceBackground from "@/assets/to-fly-space-battle-background.jpg";
 
 // Book covers
-import kaijuCover from "@/assets/kaiju-cover-shadow-1.jpg";
+import kaijuCover from "@/assets/kaiju-cover-new.jpg";
 import hoaxCover from "@/assets/hoax-cover.jpg";
 import theMarketCover from "@/assets/the-market-cover.jpg";
 import howCover from "@/assets/how-cover.jpg";
@@ -58,7 +57,7 @@ const Writing = () => {
       victorianLondonBackground,
       wastelandCityBackground,
       deepSpaceBackground,
-      hoaxCover, 
+      kaijuCover,
       theMarketCover,
       obaCover,
       statesOfMotionCover,
@@ -232,7 +231,7 @@ const Writing = () => {
       </div>
       
       <main className="relative z-10 pt-24">
-        {/* KAIJU Section */}
+        {/* KAIJU - The Parable Trilogy Section */}
         <section data-section="kaiju" className="min-h-[90vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
@@ -242,11 +241,26 @@ const Writing = () => {
                 Novels
               </h1>
               
+              {/* The Parable Trilogy Introduction */}
+              <div className={`text-center mb-16 transition-all duration-1000 delay-200 ${
+                visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}>
+                <h2 className="font-serif text-4xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>
+                <p className="font-serif text-lg leading-relaxed text-white max-w-4xl mx-auto">
+                  A metaphysical saga spanning 1970s Japan, weaving together childhood wonder and otherworldly encounters. Out of this world adventures await in this compelling trilogy that explores the boundaries between reality and imagination.
+                </p>
+              </div>
+              
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <ParableImageSelector />
+                  <BookCoverSlideshow 
+                    covers={[
+                      { image: kaijuCover, alt: "KAIJU - Book One Cover" }
+                    ]}
+                    title="KAIJU"
+                  />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
@@ -262,9 +276,6 @@ const Writing = () => {
                       A mystery unfolds in a small Japanese town in summer 1979, where a group of boys discover that no one remembers how they got there. Strange creatures appear in the sky while the children search for answers in their forgotten past.
                     </p>
                   </div>
-                  
-                  {/* Character Slideshow */}
-                  <CharacterSlideshow />
                 </div>
               </div>
             </div>
