@@ -120,6 +120,14 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   
   const activeBook = getActiveBook();
 
+  // Preload critical book cover images for better performance
+  useState(() => {
+    const criticalImages = [kaijuCover, hoaxCover, theMarketCover, amyaCover, statesOfMotionCover, howCover, viceVersaCover];
+    criticalImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  });
 
   const handleBookClick = (book: Book) => {
     const scrollToSection = (retryCount = 0) => {
