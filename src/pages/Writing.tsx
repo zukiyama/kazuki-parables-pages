@@ -4,6 +4,8 @@ import Navigation from "@/components/Navigation";
 import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungAdultSlideshow";
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
 import { BookshelfMenu } from "@/components/BookshelfMenu";
+import { useLazyBackgrounds } from "@/hooks/useLazyBackgrounds";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
@@ -31,41 +33,33 @@ const Writing = () => {
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
-  const [backgroundOpacities, setBackgroundOpacities] = useState({
-    school: 1,
-    hoax: 0,
-    theMarket: 0,
-    oba: 0,
-    statesOfMotion: 0,
-    how: 0,
-    viceVersa: 0,
-    victorianLondon: 0,
-    wasteland: 0,
-    deepSpace: 0
-  });
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
 
-  // Preload critical images for better performance
+  // Background images mapping
+  const backgrounds = {
+    school: schoolBackground,
+    hoax: hoaxBackground,
+    theMarket: theMarketBackground,
+    oba: obaBackground,
+    statesOfMotion: statesOfMotionBackground,
+    how: howBackground,
+    viceVersa: viceVersaBackground,
+    victorianLondon: professorBarnabasBackground,
+    wasteland: wastelandCityBackground,
+    deepSpace: deepSpaceBackground
+  };
+
+  // Use lazy background loading hook
+  const { backgroundStates } = useLazyBackgrounds({
+    backgrounds,
+    visibleSections,
+    currentYoungAdultBook
+  });
+
+  // Only preload critical book covers that appear in the banner
   useEffect(() => {
-    const preloadImages = [
-      schoolBackground, 
-      hoaxBackground, 
-      theMarketBackground, 
-      obaBackground,
-      statesOfMotionBackground,
-      howBackground,
-      viceVersaBackground,
-      victorianLondonBackground,
-      wastelandCityBackground,
-      deepSpaceBackground,
-      kaijuCover,
-      theMarketCover,
-      amyaCover,
-      statesOfMotionCover,
-      howCover,
-      viceVersaCover
-    ];
-    preloadImages.forEach((src) => {
+    const criticalBookCovers = [kaijuCover, hoaxCover, theMarketCover];
+    criticalBookCovers.forEach((src) => {
       const img = new Image();
       img.src = src;
     });
@@ -91,48 +85,7 @@ const Writing = () => {
       
       setVisibleSections(newVisibleSections);
 
-      // Update background opacities based on visible section
-      const newOpacities = {
-        school: 0,
-        hoax: 0,
-        theMarket: 0,
-        oba: 0,
-        statesOfMotion: 0,
-        how: 0,
-        viceVersa: 0,
-        victorianLondon: 0,
-        wasteland: 0,
-        deepSpace: 0
-      };
-
-      if (newVisibleSections.has('vice-versa')) {
-        newOpacities.viceVersa = 1;
-      } else if (newVisibleSections.has('how')) {
-        newOpacities.how = 1;
-      } else if (newVisibleSections.has('states-of-motion')) {
-        newOpacities.statesOfMotion = 1;
-      } else if (newVisibleSections.has('oba')) {
-        newOpacities.oba = 1;
-      } else if (newVisibleSections.has('the-market')) {
-        newOpacities.theMarket = 1;
-      } else if (newVisibleSections.has('hoax')) {
-        newOpacities.hoax = 1;
-      } else if (newVisibleSections.has('young-adult')) {
-        // Show different backgrounds based on current young adult book
-        if (currentYoungAdultBook === 0) {
-          newOpacities.victorianLondon = 1; // Professor Barnabas
-        } else if (currentYoungAdultBook === 1) {
-          newOpacities.wasteland = 1; // The Land is a Dream of the Sky
-        } else if (currentYoungAdultBook === 2) {
-          newOpacities.deepSpace = 1; // To Fly
-        } else {
-          newOpacities.school = 1; // Default school background
-        }
-      } else {
-        newOpacities.school = 1;
-      }
-
-      setBackgroundOpacities(newOpacities);
+      // Background management is now handled by useLazyBackgrounds hook
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -156,78 +109,23 @@ const Writing = () => {
         currentYoungAdultBook={currentYoungAdultBook}
       />
       
-      {/* Stacked Background Images */}
+      {/* Optimized Dynamic Background Images */}
       <div className="fixed inset-0 z-0">
-        <img 
-          src={schoolBackground} 
-          alt="School background"
-          loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.school }}
-        />
-        <img 
-          src={hoaxBackground} 
-          alt="Hoax background"
-          loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.hoax }}
-        />
-        <img 
-          src={theMarketBackground} 
-          alt="The Market background"
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.theMarket }}
-        />
-        <img 
-          src={howBackground} 
-          alt="HOW background"
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.how }}
-        />
-        <img 
-          src={viceVersaBackground} 
-          alt="Vice Versa background"
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.viceVersa }}
-        />
-        <img 
-          src={obaBackground} 
-          alt="AMYA background"
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.oba }}
-        />
-        <img 
-          src={statesOfMotionBackground} 
-          alt="States of Motion background"
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.statesOfMotion }}
-        />
-        <img 
-          src={professorBarnabasBackground} 
-          alt="Professor Barnabas background"
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.victorianLondon }}
-        />
-        <img 
-          src={wastelandCityBackground} 
-          alt="Wasteland City background"
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.wasteland }}
-        />
-        <img 
-          src={deepSpaceBackground} 
-          alt="Space battle background"
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.deepSpace }}
-        />
+        {Object.entries(backgrounds).map(([key, src]) => (
+          backgroundStates[key]?.loaded && (
+            <div
+              key={key}
+              className="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out"
+              style={{ 
+                opacity: backgroundStates[key]?.visible ? 1 : 0,
+                backgroundImage: `url(${src})`,
+                backgroundSize: 'cover',
+                backgroundPosition: key === 'wasteland' ? 'center top' : 'center',
+                backgroundRepeat: 'no-repeat'
+              }}
+            />
+          )
+        ))}
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
       </div>
       
@@ -256,11 +154,11 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <BookCoverSlideshow 
-                    covers={[
-                      { image: kaijuCover, alt: "KAIJU - Book One Cover" }
-                    ]}
-                    title="KAIJU"
+                  <OptimizedImage 
+                    src={kaijuCover} 
+                    alt="KAIJU - Book One Cover"
+                    className="w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl"
+                    loading="eager"
                   />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
@@ -291,11 +189,11 @@ const Writing = () => {
                 <div className={`order-1 transition-all duration-1000 delay-300 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <BookCoverSlideshow 
-                    covers={[
-                      { image: hoaxCover, alt: "HOAX Book Cover" }
-                    ]}
-                    title="HOAX"
+                  <OptimizedImage 
+                    src={hoaxCover} 
+                    alt="HOAX Book Cover"
+                    className="w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl"
+                    loading="lazy"
                   />
                 </div>
                 <div className={`text-white order-2 transition-all duration-1000 delay-500 ${
@@ -323,12 +221,11 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('the-market') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <BookCoverSlideshow 
-                    key={`market-${Date.now()}`}
-                    covers={[
-                      { image: theMarketCover, alt: "THE MARKET Book Cover" }
-                    ]}
-                    title="THE MARKET"
+                  <OptimizedImage 
+                    src={theMarketCover} 
+                    alt="THE MARKET Book Cover"
+                    className="w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl"
+                    loading="lazy"
                   />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
@@ -356,11 +253,11 @@ const Writing = () => {
                 <div className={`order-1 transition-all duration-1000 delay-300 ${
                   visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <BookCoverSlideshow 
-                    covers={[
-                      { image: amyaCover, alt: "AMYA Book Cover" }
-                    ]}
-                    title="AMYA"
+                  <OptimizedImage 
+                    src={amyaCover} 
+                    alt="AMYA Book Cover"
+                    className="w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl"
+                    loading="lazy"
                   />
                 </div>
                 <div className={`text-white order-2 transition-all duration-1000 delay-500 ${
@@ -388,11 +285,11 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <BookCoverSlideshow 
-                    covers={[
-                      { image: statesOfMotionCover, alt: "STATES OF MOTION Book Cover" }
-                    ]}
-                    title="STATES OF MOTION"
+                  <OptimizedImage 
+                    src={statesOfMotionCover} 
+                    alt="STATES OF MOTION Book Cover"
+                    className="w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl"
+                    loading="lazy"
                   />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
@@ -420,11 +317,11 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('how') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <BookCoverSlideshow 
-                    covers={[
-                      { image: howCover, alt: "HOW Book Cover" }
-                    ]}
-                    title="HOW"
+                  <OptimizedImage 
+                    src={howCover} 
+                    alt="HOW Book Cover"
+                    className="w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl"
+                    loading="lazy"
                   />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
@@ -464,11 +361,11 @@ const Writing = () => {
                 <div className={`order-1 lg:order-2 transition-all duration-1000 delay-300 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <BookCoverSlideshow 
-                    covers={[
-                      { image: viceVersaCover, alt: "VICE VERSA Book Cover" }
-                    ]}
-                    title="VICE VERSA"
+                  <OptimizedImage 
+                    src={viceVersaCover} 
+                    alt="VICE VERSA Book Cover"
+                    className="w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl"
+                    loading="lazy"
                   />
                 </div>
               </div>
