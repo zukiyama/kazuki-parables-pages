@@ -11,6 +11,7 @@ import hoaxBackground from "@/assets/hoax-background.jpg";
 import theMarketBackground from "@/assets/the-market-background-new.jpg";
 import howBackground from "@/assets/how-background.jpg";
 import viceVersaBackground from "@/assets/vice-versa-background.jpg";
+import shokryptBackground from "@/assets/shokrypt-background.jpg";
 import obaBackground from "@/assets/oba-background.jpg";
 import statesOfMotionBackground from "@/assets/states-of-motion-background.png";
 import wastelandCityBackground from "@/assets/land-dream-sky-background.png";
@@ -23,6 +24,7 @@ import hoaxCover from "@/assets/hoax-cover.jpg";
 import theMarketCover from "@/assets/the-market-cover-new.jpg";
 import howCover from "@/assets/how-cover.jpg";
 import viceVersaCover from "@/assets/vice-versa-cover.jpg";
+import shokryptCover from "@/assets/shokrypt-cover.jpg";
 import obaCover from "@/assets/oba-cover.jpg";
 import statesOfMotionCover from "@/assets/states-of-motion-cover.png";
 
@@ -38,6 +40,7 @@ const Writing = () => {
     statesOfMotion: 0,
     how: 0,
     viceVersa: 0,
+    shokrypt: 0,
     victorianLondon: 0,
     wasteland: 0,
     deepSpace: 0
@@ -99,12 +102,15 @@ const Writing = () => {
         statesOfMotion: 0,
         how: 0,
         viceVersa: 0,
+        shokrypt: 0,
         victorianLondon: 0,
         wasteland: 0,
         deepSpace: 0
       };
 
-      if (newVisibleSections.has('vice-versa')) {
+      if (newVisibleSections.has('shokrypt')) {
+        newOpacities.shokrypt = 1;
+      } else if (newVisibleSections.has('vice-versa')) {
         newOpacities.viceVersa = 1;
       } else if (newVisibleSections.has('how')) {
         newOpacities.how = 1;
@@ -191,6 +197,13 @@ const Writing = () => {
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.viceVersa }}
+        />
+        <img 
+          src={shokryptBackground} 
+          alt="SHOKRYPT background"
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.shokrypt }}
         />
         <img 
           src={obaBackground} 
@@ -468,6 +481,38 @@ const Writing = () => {
                     ]}
                     title="VICE VERSA"
                   />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SHOKRYPT Section */}
+        <section data-section="shokrypt" className="min-h-[90vh] flex items-center justify-center relative">
+          <div className="container mx-auto px-6 py-20">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className={`transition-all duration-1000 delay-300 ${
+                  visibleSections.has('shokrypt') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
+                }`}>
+                  <BookCoverSlideshow 
+                    covers={[
+                      { image: shokryptCover, alt: "SHOKRYPT Book Cover" }
+                    ]}
+                    title="SHOKRYPT"
+                  />
+                </div>
+                <div className={`text-white transition-all duration-1000 delay-500 ${
+                  visibleSections.has('shokrypt') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
+                }`}>
+                  <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
+                    SHOKRYPT
+                  </h2>
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <p className="font-serif text-lg leading-relaxed text-white">
+                      A gripping tale of conspiracy and hidden truths in a world where nothing is as it seems. When cryptographer Elena discovers a pattern in seemingly random data, she uncovers a network of secrets that challenges everything she believed about reality. A techno-thriller that explores the thin line between paranoia and revelation.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
