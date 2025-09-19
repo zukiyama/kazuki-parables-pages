@@ -203,7 +203,10 @@ const Writing = () => {
           alt="SHOKRYPT background"
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.shokrypt }}
+          style={{ 
+            opacity: backgroundOpacities.shokrypt,
+            filter: 'saturate(0.8) brightness(0.9) contrast(1.1) hue-rotate(5deg)'
+          }}
         />
         <img 
           src={obaBackground} 
