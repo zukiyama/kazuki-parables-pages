@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { OptimizedImage } from "./OptimizedImage";
 
 // Main book covers
 import kaijuCover from "@/assets/kaiju-cover-new.jpg";
@@ -121,9 +120,9 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   
   const activeBook = getActiveBook();
 
-  // Only preload the first few critical covers for immediate visibility
+  // Preload critical book cover images for better performance
   useState(() => {
-    const criticalImages = [kaijuCover, hoaxCover];
+    const criticalImages = [kaijuCover, hoaxCover, theMarketCover, amyaCover, statesOfMotionCover, howCover, viceVersaCover];
     criticalImages.forEach((src) => {
       const img = new Image();
       img.src = src;
@@ -227,7 +226,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
               
               {/* Book Cover */}
               <div className="relative">
-                <OptimizedImage
+                <img
                   src={book.cover}
                   alt={book.title}
                   loading={['kaiju', 'hoax', 'the-market', 'oba', 'states-of-motion', 'how', 'vice-versa'].includes(book.id) ? 'eager' : 'lazy'}
