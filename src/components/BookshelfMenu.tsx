@@ -6,7 +6,6 @@ import hoaxCover from "@/assets/hoax-cover.jpg";
 import theMarketCover from "@/assets/the-market-cover-new.jpg";
 import howCover from "@/assets/how-cover.jpg";
 import viceVersaCover from "@/assets/vice-versa-cover.jpg";
-import shokryptCover from "@/assets/shokrypt-cover.jpg";
 import amyaCover from "@/assets/amya-cover.png";
 import statesOfMotionCover from "@/assets/states-of-motion-cover.png";
 
@@ -65,12 +64,6 @@ const books: Book[] = [
     title: "VICE VERSA",
     cover: viceVersaCover,
     targetSection: "vice-versa"
-  },
-  {
-    id: "shokrypt",
-    title: "SHOKRYPT",
-    cover: shokryptCover,
-    targetSection: "shokrypt"
   },
   {
     id: "professor-barnabas",
