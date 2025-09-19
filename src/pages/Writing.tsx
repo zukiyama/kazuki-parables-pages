@@ -324,6 +324,7 @@ const Writing = () => {
                   visibleSections.has('the-market') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
                   <BookCoverSlideshow 
+                    key={`market-${Date.now()}`}
                     covers={[
                       { image: theMarketCover, alt: "THE MARKET Book Cover" }
                     ]}
