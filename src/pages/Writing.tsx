@@ -16,6 +16,7 @@ import statesOfMotionBackground from "@/assets/states-of-motion-background.png";
 import wastelandCityBackground from "@/assets/land-dream-sky-background.png";
 import victorianLondonBackground from "@/assets/victorian-london-winter-background.jpg";
 import deepSpaceBackground from "@/assets/to-fly-space-battle-background.jpg";
+import professorBarnabasBackground from "@/assets/professor-barnabas-background.jpg";
 
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-new.jpg";
@@ -207,8 +208,8 @@ const Writing = () => {
           style={{ opacity: backgroundOpacities.statesOfMotion }}
         />
         <img 
-          src={victorianLondonBackground} 
-          alt="Victorian London background"
+          src={professorBarnabasBackground} 
+          alt="Professor Barnabas background"
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.victorianLondon }}
