@@ -155,9 +155,9 @@ const Music = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Preload images
+  // Optimized image preloading - only preload first 2 albums
   useEffect(() => {
-    albums.forEach(album => {
+    albums.slice(0, 2).forEach(album => {
       const img = new Image();
       img.src = album.background;
     });

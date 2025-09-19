@@ -47,25 +47,13 @@ const Writing = () => {
 
   // Preload critical images for better performance
   useEffect(() => {
-    const preloadImages = [
+    // Optimized preloading - only preload first 3 critical images
+    const criticalImages = [
       schoolBackground, 
       hoaxBackground, 
-      theMarketBackground, 
-      obaBackground,
-      statesOfMotionBackground,
-      howBackground,
-      viceVersaBackground,
-      victorianLondonBackground,
-      wastelandCityBackground,
-      deepSpaceBackground,
-      kaijuCover,
-      theMarketCover,
-      amyaCover,
-      statesOfMotionCover,
-      howCover,
-      viceVersaCover
+      theMarketBackground
     ];
-    preloadImages.forEach((src) => {
+    criticalImages.forEach((src) => {
       const img = new Image();
       img.src = src;
     });

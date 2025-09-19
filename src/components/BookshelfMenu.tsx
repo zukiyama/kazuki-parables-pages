@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { OptimizedImage } from "./OptimizedImage";
 
 // Main book covers
 import kaijuCover from "@/assets/kaiju-cover-new.jpg";
@@ -226,11 +227,13 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
               
               {/* Book Cover */}
               <div className="relative">
-                <img
+                <OptimizedImage
                   src={book.cover}
                   alt={book.title}
+                  height={64}
                   loading={['kaiju', 'hoax', 'the-market', 'oba', 'states-of-motion', 'how', 'vice-versa'].includes(book.id) ? 'eager' : 'lazy'}
-                  className={`h-16 w-auto object-contain rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
+                  priority={['kaiju', 'hoax', 'the-market', 'oba'].includes(book.id)}
+                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
                     activeBook === book.id
                       ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'
                       : hoveredBook === book.id 
