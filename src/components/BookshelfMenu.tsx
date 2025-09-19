@@ -7,7 +7,7 @@ import theMarketCover from "@/assets/the-market-cover-new.jpg";
 import howCover from "@/assets/how-cover.jpg";
 import viceVersaCover from "@/assets/vice-versa-cover.jpg";
 import shokryptCover from "@/assets/shokrypt-cover.jpg";
-import obaCover from "@/assets/oba-cover.jpg";
+import amyaCover from "@/assets/amya-cover.png";
 import statesOfMotionCover from "@/assets/states-of-motion-cover.png";
 
 // Young adult book covers
@@ -45,7 +45,7 @@ const books: Book[] = [
   {
     id: "oba",
     title: "AMYA",
-    cover: obaCover,
+    cover: amyaCover,
     targetSection: "oba"
   },
   {
@@ -129,7 +129,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
 
   // Preload critical book cover images for better performance
   useState(() => {
-    const criticalImages = [kaijuCover, hoaxCover, theMarketCover, obaCover, statesOfMotionCover, howCover, viceVersaCover];
+    const criticalImages = [kaijuCover, hoaxCover, theMarketCover, amyaCover, statesOfMotionCover, howCover, viceVersaCover];
     criticalImages.forEach((src) => {
       const img = new Image();
       img.src = src;

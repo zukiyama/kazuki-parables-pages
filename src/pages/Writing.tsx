@@ -25,7 +25,7 @@ import theMarketCover from "@/assets/the-market-cover-new.jpg";
 import howCover from "@/assets/how-cover.jpg";
 import viceVersaCover from "@/assets/vice-versa-cover.jpg";
 import shokryptCover from "@/assets/shokrypt-cover.jpg";
-import obaCover from "@/assets/oba-cover.jpg";
+import amyaCover from "@/assets/amya-cover.png";
 import statesOfMotionCover from "@/assets/states-of-motion-cover.png";
 
 const Writing = () => {
@@ -62,7 +62,7 @@ const Writing = () => {
       deepSpaceBackground,
       kaijuCover,
       theMarketCover,
-      obaCover,
+      amyaCover,
       statesOfMotionCover,
       howCover,
       viceVersaCover
@@ -372,7 +372,7 @@ const Writing = () => {
                 }`}>
                   <BookCoverSlideshow 
                     covers={[
-                      { image: obaCover, alt: "AMYA Book Cover" }
+                      { image: amyaCover, alt: "AMYA Book Cover" }
                     ]}
                     title="AMYA"
                   />
