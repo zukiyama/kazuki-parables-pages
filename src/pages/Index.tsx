@@ -110,7 +110,7 @@ const Index = () => {
           {/* Music Banner */}
           <ScrollFadeUp id="music-banner" delay={300} className="flex justify-center mt-12">
             <a 
-              href="#/music?ohio=true" 
+              href="#/music" 
               className="group block w-full max-w-2xl hover-scale transition-all duration-300"
             >
               <div className="bg-gradient-to-r from-card/90 to-card/70 backdrop-blur-sm border border-border rounded-xl p-8 flex items-center gap-8 shadow-xl hover:shadow-2xl hover:border-primary/30 transition-all duration-300">

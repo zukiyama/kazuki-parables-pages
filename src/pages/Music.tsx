@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { AlbumBanner } from "@/components/AlbumBanner";
 import { Button } from "@/components/ui/button";
@@ -150,29 +149,12 @@ const Music = () => {
   const [layerB, setLayerB] = useState({ image: albums[0].background, opacity: 0 });
   const [isTransitioning, setIsTransitioning] = useState(false);
   const transitionRef = useRef<NodeJS.Timeout | null>(null);
-  const videoRef = useRef<HTMLDivElement>(null);
-  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Handle OHIO banner navigation
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    if (urlParams.get('ohio') === 'true' && videoRef.current) {
-      setTimeout(() => {
-        const navigationHeight = 64;
-        const offset = videoRef.current!.offsetTop - navigationHeight - 20;
-        window.scrollTo({
-          top: offset,
-          behavior: 'smooth'
-        });
-      }, 100);
-    }
-  }, [location]);
 
   // Optimized image preloading - only preload first 2 albums
   useEffect(() => {
@@ -288,16 +270,13 @@ const Music = () => {
           </div>
           
           {/* Video Player - Moved to top */}
-          <div className="mb-16" ref={videoRef}>
+          <div className="mb-16">
             <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20">
-              <h3 className="text-white text-xl font-bold mb-4 font-serif text-center">
-                🎬 Watch the video for the new single OHIO! 🎬
-              </h3>
+              <h3 className="text-white text-xl font-bold mb-4 font-serif">Music Video</h3>
               <div className="aspect-video bg-black rounded-lg flex items-center justify-center">
                 <div className="text-white/60 text-center">
-                  <div className="text-6xl mb-4 animate-pulse">🎬</div>
-                  <p className="text-2xl font-serif font-bold text-white mb-2">OHIO</p>
-                  <p className="text-lg font-serif">Music Video</p>
+                  <div className="text-6xl mb-4">🎬</div>
+                  <p className="text-lg font-serif">Video for "{selectedAlbum.title}"</p>
                   <p className="text-sm">Coming soon...</p>
                 </div>
               </div>
