@@ -184,7 +184,6 @@ const Comics = () => {
                     src={comic.cover}
                     alt={`${comic.title} comic cover`}
                     className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
-                    style={{ transform: `rotate(${(index - 1) * 2}deg)` }}
                   />
                   <div className="comic-shadow-small" />
                 </div>
@@ -205,7 +204,6 @@ const Comics = () => {
                     src={comic.cover}
                     alt={`${comic.title} comic cover`}
                     className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
-                    style={{ transform: `rotate(${(index - 1) * -2}deg)` }}
                   />
                   <div className="comic-shadow-small" />
                 </div>
