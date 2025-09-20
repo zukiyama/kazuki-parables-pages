@@ -380,36 +380,50 @@
   max-width: 80px;
 }
 
-/* Newsstand-specific animations */
-.newsstand-comic-large {
+/* Newsstand shelf animations */
+.newsstand-comic-shelf {
   opacity: 0;
-  transform: translateY(30px) scale(0.95);
-  transition: all 1s ease-out;
+  transform: translateY(-20px) rotateX(15deg);
+  transition: all 1.2s ease-out;
 }
 
-.newsstand-comic-large.visible {
+.newsstand-comic-shelf.visible {
+  opacity: 1;
+  transform: translateY(0) rotateX(0deg);
+}
+
+.newsstand-comic-small {
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+  transition: all 0.8s ease-out;
+}
+
+.newsstand-comic-small.visible {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
 
-.newsstand-slide-left {
-  opacity: 0;
-  transform: translateX(-60px) rotateY(15deg);
-  transition: all 1s ease-out;
+/* Stagger the animations for each shelf */
+.newsstand-comic-shelf:nth-child(1) {
+  transition-delay: 0s;
 }
 
-.newsstand-slide-left.visible {
-  opacity: 1;
-  transform: translateX(0) rotateY(0deg);
+.newsstand-comic-shelf:nth-child(2) {
+  transition-delay: 0.2s;
 }
 
-.newsstand-slide-right {
-  opacity: 0;
-  transform: translateX(60px) rotateY(-15deg);
-  transition: all 1s ease-out;
+.newsstand-comic-small:nth-child(1) {
+  transition-delay: 0s;
 }
 
-.newsstand-slide-right.visible {
-  opacity: 1;
-  transform: translateX(0) rotateY(0deg);
+.newsstand-comic-small:nth-child(2) {
+  transition-delay: 0.1s;
+}
+
+.newsstand-comic-small:nth-child(3) {
+  transition-delay: 0.2s;
+}
+
+.newsstand-comic-small:nth-child(4) {
+  transition-delay: 0.3s;
 }
