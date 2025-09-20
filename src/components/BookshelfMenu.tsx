@@ -130,61 +130,43 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   });
 
   const handleBookClick = (book: Book) => {
-    const scrollToSection = (retryCount = 0) => {
+    const scrollToSection = () => {
       const section = document.querySelector(`[data-section="${book.targetSection}"]`) as HTMLElement;
-      if (section) {
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            const fixedElementsHeight = 160; // navigation + bookshelf menu
-            const viewportHeight = window.innerHeight;
-            const availableHeight = viewportHeight - fixedElementsHeight;
-            
-            let targetScrollPosition;
-            
-            if (book.targetSection === 'young-adult') {
-              // For slideshow: center the "Young Adult Series" title with equal spacing
-              const titleElement = section.querySelector('h2');
-              if (titleElement) {
-                const titleTop = titleElement.getBoundingClientRect().top + window.scrollY;
-                const slideshowContainer = section.querySelector('.container');
-                const slideshowBottom = slideshowContainer ? 
-                  slideshowContainer.getBoundingClientRect().bottom + window.scrollY : 
-                  section.getBoundingClientRect().bottom + window.scrollY;
-                
-                const slideshowHeight = slideshowBottom - titleTop;
-                const centerOffset = (availableHeight - slideshowHeight) / 2;
-                targetScrollPosition = titleTop - fixedElementsHeight - centerOffset;
-              }
-            } else {
-              // For individual books: center the book cover image with equal spacing
-              const bookCoverImg = section.querySelector('img[alt*="Cover"]');
-              if (bookCoverImg) {
-                const imgRect = bookCoverImg.getBoundingClientRect();
-                const imgTop = imgRect.top + window.scrollY;
-                const imgHeight = imgRect.height;
-                const centerOffset = (availableHeight - imgHeight) / 2;
-                targetScrollPosition = imgTop - fixedElementsHeight - centerOffset;
-              } else {
-                // Fallback: center the section
-                const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-                const sectionHeight = section.offsetHeight;
-                const centerOffset = (availableHeight - sectionHeight) / 2;
-                targetScrollPosition = sectionTop - fixedElementsHeight - Math.max(0, centerOffset);
-              }
-            }
-            
-            if (targetScrollPosition !== undefined) {
-              window.scrollTo({ 
-                top: Math.max(0, targetScrollPosition),
-                behavior: 'smooth' 
-              });
-            }
-            
-            // Retry once if needed during page load
-            if (retryCount === 0 && document.readyState !== 'complete') {
-              setTimeout(() => scrollToSection(1), 300);
-            }
-          });
+      if (!section) return;
+
+      // More accurate fixed elements height calculation
+      const navigation = document.querySelector('nav') as HTMLElement;
+      const bookshelfMenu = document.querySelector('.sticky.top-16') as HTMLElement;
+      const fixedElementsHeight = (navigation?.offsetHeight || 64) + (bookshelfMenu?.offsetHeight || 100) + 20; // Extra padding
+      
+      let targetScrollPosition;
+      
+      if (book.targetSection === 'young-adult') {
+        // For slideshow: position title at top with proper spacing
+        const titleElement = section.querySelector('h2');
+        if (titleElement) {
+          const titleTop = titleElement.getBoundingClientRect().top + window.scrollY;
+          targetScrollPosition = titleTop - fixedElementsHeight;
+        }
+      } else {
+        // For individual books: ensure full book cover is visible
+        const bookCoverImg = section.querySelector('img[alt*="Cover"]');
+        if (bookCoverImg) {
+          const imgRect = bookCoverImg.getBoundingClientRect();
+          const imgTop = imgRect.top + window.scrollY;
+          // Position so the top of the book cover is just below the fixed elements
+          targetScrollPosition = imgTop - fixedElementsHeight;
+        } else {
+          // Fallback: position section top
+          const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+          targetScrollPosition = sectionTop - fixedElementsHeight;
+        }
+      }
+      
+      if (targetScrollPosition !== undefined) {
+        window.scrollTo({ 
+          top: Math.max(0, targetScrollPosition),
+          behavior: 'smooth' 
         });
       }
     };
@@ -194,10 +176,10 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       onBookClick(book.id, book.slideToBook);
       
       // Allow slideshow to update before scrolling
-      setTimeout(() => scrollToSection(), 100);
+      setTimeout(scrollToSection, 100);
     } else {
-      // For non-slideshow books, scroll after a brief delay to ensure layout is ready
-      setTimeout(() => scrollToSection(), 50);
+      // For non-slideshow books, scroll immediately
+      scrollToSection();
       
       if (onBookClick) {
         onBookClick(book.id, book.slideToBook);
@@ -229,9 +211,10 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
                 <img
                   src={book.cover}
                   alt={book.title}
+                  width="64"
                   height="64"
                   loading="eager"
-                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
+                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-cover ${
                     activeBook === book.id
                       ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'
                       : hoveredBook === book.id 
