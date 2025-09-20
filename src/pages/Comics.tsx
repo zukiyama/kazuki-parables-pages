@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
+import koreanComicShopBackground from "@/assets/korean-comic-shop-background.jpg";
 import woodenNewsstandStructure from "@/assets/wooden-newsstand-structure.png";
 import crayonUfoDrawing from "@/assets/crayon-ufo-drawing.png";
 import stationeryItems from "@/assets/stationery-items.png";
@@ -58,7 +59,18 @@ const Comics = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-amber-50 to-amber-100">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Korean Comic Shop Background */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ 
+            backgroundImage: `url(${koreanComicShopBackground})`
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
+      </div>
+      
       <Navigation />
       
       {/* Wooden Newsstand Structure */}
