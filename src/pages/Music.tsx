@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { AlbumBanner } from "@/components/AlbumBanner";
 import { Button } from "@/components/ui/button";
@@ -138,11 +139,13 @@ const albums = [
 ];
 
 const Music = () => {
+  const location = useLocation();
   const [scrollY, setScrollY] = useState(0);
   const [selectedAlbum, setSelectedAlbum] = useState(albums[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null);
   const trackListingRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLDivElement>(null);
   
   // Two-layer crossfade system
   const [layerA, setLayerA] = useState({ image: albums[0].background, opacity: 1 });
@@ -155,6 +158,25 @@ const Music = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Handle Ohio banner navigation - scroll to video player
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    if (searchParams.get('ohio') === 'true' && videoRef.current) {
+      const navigationHeight = 64; // Navigation bar height
+      const bannerHeight = 176; // Banner height
+      const gap = 16; // Gap above video
+      const totalOffset = navigationHeight + bannerHeight + gap;
+      const offset = videoRef.current.offsetTop - totalOffset;
+      
+      setTimeout(() => {
+        window.scrollTo({
+          top: offset,
+          behavior: 'smooth'
+        });
+      }, 100);
+    }
+  }, [location.search]);
 
   // Optimized image preloading - only preload first 2 albums
   useEffect(() => {
@@ -270,13 +292,12 @@ const Music = () => {
           </div>
           
           {/* Video Player - Moved to top */}
-          <div className="mb-16">
+          <div className="mb-16" ref={videoRef}>
             <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20">
-              <h3 className="text-white text-xl font-bold mb-4 font-serif">Music Video</h3>
               <div className="aspect-video bg-black rounded-lg flex items-center justify-center">
                 <div className="text-white/60 text-center">
                   <div className="text-6xl mb-4">🎬</div>
-                  <p className="text-lg font-serif">Video for "{selectedAlbum.title}"</p>
+                  <p className="text-lg font-serif">🎬 Watch the video for the new single OHIO! 🎬</p>
                   <p className="text-sm">Coming soon...</p>
                 </div>
               </div>
