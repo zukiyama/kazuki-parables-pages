@@ -58,11 +58,11 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   return (
     <div className="py-2 bg-black/80 backdrop-blur-sm">
       <div className="container mx-auto px-6">
-        <div className="flex justify-center items-center gap-6 overflow-x-auto pb-2">
+        <div className="flex justify-between items-center pb-2">
           {albums.map((album) => (
             <div
               key={album.id}
-              className="flex flex-col items-center cursor-pointer group min-w-[80px]"
+              className="flex flex-col items-center cursor-pointer group flex-1"
               onMouseEnter={() => setHoveredAlbum(album.id)}
               onMouseLeave={() => setHoveredAlbum(null)}
               onClick={() => handleAlbumClick(album)}
