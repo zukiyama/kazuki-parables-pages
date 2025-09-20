@@ -1,9 +1,7 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import koreanComicShopBackground from "@/assets/korean-comic-shop-background.jpg";
-import woodenNewsstandStructure from "@/assets/wooden-newsstand-structure.png";
-import crayonUfoDrawing from "@/assets/crayon-ufo-drawing.png";
-import stationeryItems from "@/assets/stationery-items.png";
+import fullPageWoodenNewsstand from "@/assets/full-page-wooden-newsstand.png";
 
 import godOfLiesCover from "@/assets/god-of-lies-cover.jpg";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-new.jpg";
@@ -59,7 +57,7 @@ const Comics = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative">
       {/* Korean Comic Shop Background */}
       <div className="fixed inset-0 pointer-events-none">
         <div 
@@ -73,149 +71,114 @@ const Comics = () => {
       
       <Navigation />
       
-      {/* Wooden Newsstand Structure */}
-      <div className="fixed inset-0 pointer-events-none flex items-center justify-center">
-        <img 
-          src={woodenNewsstandStructure}
-          alt=""
-          className="w-full max-w-6xl h-auto object-contain opacity-90"
-        />
-      </div>
-
-      {/* Decorative Elements */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        {/* UFO Crayon Drawing */}
-        <img 
-          src={crayonUfoDrawing}
-          alt=""
-          className="absolute top-1/4 right-1/4 w-16 h-16 opacity-60 rotate-12"
-        />
-        
-        {/* Stationery Items */}
-        <img 
-          src={stationeryItems}
-          alt=""
-          className="absolute top-1/2 left-1/6 w-12 h-12 opacity-50 -rotate-6"
-        />
-        
-        <img 
-          src={stationeryItems}
-          alt=""
-          className="absolute bottom-1/3 right-1/3 w-10 h-10 opacity-40 rotate-45"
-        />
-      </div>
-
-      <main className="relative z-10 pt-20">
-        {/* Page Title */}
-        <div className="text-center py-8 px-6">
-          <h1 className="font-heading text-6xl font-bold text-amber-900 mb-4 drop-shadow-sm">
-            Comics Newsstand
-          </h1>
-          <p className="font-body text-xl text-amber-700">
-            Korean style web comics and manga with original stories and characters
-          </p>
+      <main className="relative z-10">
+        {/* Full Page Wooden Newsstand - Scrolls with content */}
+        <div className="absolute inset-0 pointer-events-none">
+          <img 
+            src={fullPageWoodenNewsstand}
+            alt=""
+            className="w-full h-full object-cover opacity-95"
+          />
         </div>
 
-        {/* Large Top Shelf - God of Lies */}
-        <div className="newsstand-shelf-large mb-8">
-          <div className="container mx-auto px-6 relative">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[60vh]">
-              <div className="relative">
-                <div className="comic-on-shelf">
-                  <img 
-                    src={godOfLiesCover}
-                    alt="God of Lies comic cover"
-                    className="w-full max-w-md mx-auto shadow-2xl transform -rotate-1"
-                  />
-                  <div className="comic-shadow" />
-                </div>
+        {/* Content positioned to align with newsstand shelves */}
+        <div className="relative z-20 pt-20">
+          {/* Page Title */}
+          <div className="text-center py-8 px-6">
+            <h1 className="font-heading text-6xl font-bold text-amber-900 mb-4 drop-shadow-lg">
+              Comics Newsstand
+            </h1>
+            <p className="font-body text-xl text-amber-700 drop-shadow-sm">
+              Korean style web comics and manga with original stories and characters
+            </p>
+          </div>
+
+          {/* Top Shelf - God of Lies */}
+          <div className="container mx-auto px-6 py-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[50vh]">
+              <div className="flex justify-center">
+                <img 
+                  src={godOfLiesCover}
+                  alt="God of Lies comic cover"
+                  className="w-full max-w-sm shadow-2xl transform -rotate-1 hover:scale-105 transition-transform duration-300"
+                />
               </div>
               <div className="lg:pr-12">
-                <h2 className="font-heading text-5xl font-bold text-amber-900 mb-6">
+                <h2 className="font-heading text-5xl font-bold text-amber-900 mb-6 drop-shadow-md">
                   God of Lies
                 </h2>
-                <p className="font-body text-lg text-amber-800 leading-relaxed">
+                <p className="font-body text-lg text-amber-800 leading-relaxed bg-amber-50/80 p-4 rounded-lg shadow-md">
                   A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
                 </p>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Large Second Shelf - Surname Pendragon */}
-        <div className="newsstand-shelf-large mb-12">
-          <div className="container mx-auto px-6 relative">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[60vh]">
-              <div className="lg:order-2 relative">
-                <div className="comic-on-shelf">
-                  <img 
-                    src={surnameProPendragonCoverNew}
-                    alt="Surname Pendragon comic cover"
-                    className="w-full max-w-md mx-auto shadow-2xl transform rotate-1"
-                  />
-                  <div className="comic-shadow" />
-                </div>
+          {/* Second Shelf - Surname Pendragon */}
+          <div className="container mx-auto px-6 py-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[50vh]">
+              <div className="lg:order-2 flex justify-center">
+                <img 
+                  src={surnameProPendragonCoverNew}
+                  alt="Surname Pendragon comic cover"
+                  className="w-full max-w-sm shadow-2xl transform rotate-1 hover:scale-105 transition-transform duration-300"
+                />
               </div>
               <div className="lg:order-1 lg:pl-12">
-                <h2 className="font-heading text-5xl font-bold text-amber-900 mb-6">
+                <h2 className="font-heading text-5xl font-bold text-amber-900 mb-6 drop-shadow-md">
                   Surname Pendragon
                 </h2>
-                <p className="font-body text-lg text-amber-800 leading-relaxed">
+                <p className="font-body text-lg text-amber-800 leading-relaxed bg-amber-50/80 p-4 rounded-lg shadow-md">
                   A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible.
                 </p>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Coming Soon Section */}
-        <div className="text-center py-8 px-6">
-          <div className="flex items-center justify-center gap-6">
-            <div className="hand-drawn-line flex-1"></div>
-            <h2 className="hand-drawn-text text-4xl font-bold text-amber-900">
-              Coming 2026
-            </h2>
-            <div className="hand-drawn-line flex-1"></div>
+          {/* Coming Soon Section */}
+          <div className="text-center py-12 px-6">
+            <div className="flex items-center justify-center gap-6">
+              <div className="hand-drawn-line flex-1"></div>
+              <h2 className="hand-drawn-text text-4xl font-bold text-amber-900 drop-shadow-md">
+                Coming 2026
+              </h2>
+              <div className="hand-drawn-line flex-1"></div>
+            </div>
           </div>
-        </div>
 
-        {/* Smaller Shelves - Two Rows of Three */}
-        <div className="container mx-auto px-6 pb-16">
-          {/* First Small Shelf */}
-          <div className="newsstand-shelf-small mb-8">
+          {/* Third Shelf - First Row of Three */}
+          <div className="container mx-auto px-6 py-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
               {smallShelfComics.slice(0, 3).map((comic, index) => (
                 <div 
                   key={comic.title}
-                  className="comic-on-shelf-small cursor-pointer"
+                  className="cursor-pointer group"
                   onClick={() => handleComicClick(comic)}
                 >
                   <img 
                     src={comic.cover}
                     alt={`${comic.title} comic cover`}
-                    className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
+                    className="w-full max-w-xs shadow-xl transform group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="comic-shadow-small" />
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Second Small Shelf */}
-          <div className="newsstand-shelf-small">
+          {/* Fourth Shelf - Second Row of Three */}
+          <div className="container mx-auto px-6 py-8 pb-20">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
               {smallShelfComics.slice(3, 6).map((comic, index) => (
                 <div 
                   key={comic.title}
-                  className="comic-on-shelf-small cursor-pointer"
+                  className="cursor-pointer group"
                   onClick={() => handleComicClick(comic)}
                 >
                   <img 
                     src={comic.cover}
                     alt={`${comic.title} comic cover`}
-                    className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
+                    className="w-full max-w-xs shadow-xl transform group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="comic-shadow-small" />
                 </div>
               ))}
             </div>
