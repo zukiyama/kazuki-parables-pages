@@ -202,9 +202,11 @@ const Music = () => {
     // Scroll to show entire container with gap from banner
     setTimeout(() => {
       if (trackListingRef.current) {
-        const bannerHeight = 120; // Approximate banner height  
-        const gap = 24; // Small gap between banner and container
-        const offset = trackListingRef.current.offsetTop - bannerHeight - gap;
+        const navigationHeight = 64; // Navigation bar height (h-16)
+        const bannerHeight = 176; // Banner height (from top-16 to pt-60: 240-64=176)
+        const gap = 32; // Gap between banner and container
+        const totalOffset = navigationHeight + bannerHeight + gap;
+        const offset = trackListingRef.current.offsetTop - totalOffset;
         window.scrollTo({
           top: offset,
           behavior: 'smooth'
