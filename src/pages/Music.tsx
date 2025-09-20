@@ -142,6 +142,7 @@ const Music = () => {
   const [selectedAlbum, setSelectedAlbum] = useState(albums[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null);
+  const trackListingRef = useRef<HTMLDivElement>(null);
   
   // Two-layer crossfade system
   const [layerA, setLayerA] = useState({ image: albums[0].background, opacity: 1 });
@@ -197,6 +198,19 @@ const Music = () => {
     
     // Update album immediately as fade begins
     setSelectedAlbum(album);
+    
+    // Scroll to track listing with banner visible above
+    setTimeout(() => {
+      if (trackListingRef.current) {
+        const bannerHeight = 120; // Approximate banner height
+        const gap = 32; // Small gap between banner and content
+        const offset = trackListingRef.current.offsetTop - bannerHeight - gap;
+        window.scrollTo({
+          top: offset,
+          behavior: 'smooth'
+        });
+      }
+    }, 100); // Small delay to ensure DOM update
     
     // Clear transition state after animation completes
     transitionRef.current = setTimeout(() => {
@@ -268,7 +282,7 @@ const Music = () => {
           </div>
           
           {/* Featured Album */}
-          <div className="mb-16">
+          <div className="mb-16" ref={trackListingRef}>
             <div className="bg-white/10 backdrop-blur-md rounded-lg p-8 border border-white/20 animate-scale-in">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 {/* Album Cover - Left Side */}
