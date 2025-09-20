@@ -331,8 +331,8 @@
 
 .scroll-slide-left {
   opacity: 0;
-  transform: translateX(-100px);
-  transition: all 0.8s ease-out;
+  transform: translateX(-80px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .scroll-slide-left.visible {
@@ -342,8 +342,8 @@
 
 .scroll-slide-right {
   opacity: 0;
-  transform: translateX(100px);
-  transition: all 0.8s ease-out;
+  transform: translateX(80px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .scroll-slide-right.visible {
