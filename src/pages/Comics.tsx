@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
-import woodenNewsstandBackground from "@/assets/wooden-newsstand-background.jpg";
+import woodenNewsstandStructure from "@/assets/wooden-newsstand-structure.png";
 import crayonUfoDrawing from "@/assets/crayon-ufo-drawing.png";
 import stationeryItems from "@/assets/stationery-items.png";
 
@@ -61,15 +61,13 @@ const Comics = () => {
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-amber-50 to-amber-100">
       <Navigation />
       
-      {/* Wooden Newsstand Background */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ 
-            backgroundImage: `url(${woodenNewsstandBackground})`
-          }}
+      {/* Wooden Newsstand Structure */}
+      <div className="fixed inset-0 pointer-events-none flex items-center justify-center">
+        <img 
+          src={woodenNewsstandStructure}
+          alt=""
+          className="w-full max-w-6xl h-auto object-contain opacity-90"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-50/30 to-amber-100/50" />
       </div>
 
       {/* Decorative Elements */}
