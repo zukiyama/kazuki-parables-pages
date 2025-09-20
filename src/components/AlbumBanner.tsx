@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { OptimizedImage } from "./OptimizedImage";
 
 // Album covers
 import magicalGardenAlbumNew from "@/assets/magical-garden-album-new.jpg";
@@ -75,12 +74,11 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
               
               {/* Album Cover */}
               <div className="relative">
-                <OptimizedImage
+                <img
                   src={album.cover}
                   alt={album.title}
-                  height={80}
+                  height="80"
                   loading="eager"
-                  priority={album.id <= 3}
                   className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
                     hoveredAlbum === album.id 
                       ? 'scale-125 shadow-2xl shadow-yellow-300/20' 
