@@ -199,11 +199,11 @@ const Music = () => {
     // Update album immediately as fade begins
     setSelectedAlbum(album);
     
-    // Scroll to track listing with banner visible above
+    // Scroll to show entire container with gap from banner
     setTimeout(() => {
       if (trackListingRef.current) {
-        const bannerHeight = 120; // Approximate banner height
-        const gap = 32; // Small gap between banner and content
+        const bannerHeight = 120; // Approximate banner height  
+        const gap = 24; // Small gap between banner and container
         const offset = trackListingRef.current.offsetTop - bannerHeight - gap;
         window.scrollTo({
           top: offset,
