@@ -379,3 +379,37 @@
   filter: blur(0.2px);
   max-width: 80px;
 }
+
+/* Newsstand-specific animations */
+.newsstand-comic-large {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: all 1s ease-out;
+}
+
+.newsstand-comic-large.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.newsstand-slide-left {
+  opacity: 0;
+  transform: translateX(-60px) rotateY(15deg);
+  transition: all 1s ease-out;
+}
+
+.newsstand-slide-left.visible {
+  opacity: 1;
+  transform: translateX(0) rotateY(0deg);
+}
+
+.newsstand-slide-right {
+  opacity: 0;
+  transform: translateX(60px) rotateY(-15deg);
+  transition: all 1s ease-out;
+}
+
+.newsstand-slide-right.visible {
+  opacity: 1;
+  transform: translateX(0) rotateY(0deg);
+}

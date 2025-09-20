@@ -148,66 +148,6 @@ const Comics = () => {
             <div className="w-8 h-4 bg-pink-300 rounded transform -rotate-12 shadow-md"></div>
             <div className="w-6 h-3 bg-white rounded transform rotate-6 shadow-md border border-gray-300"></div>
           </div>
-            
-            {/* God of Lies - Slide from left */}
-            <div className={`mb-16 scroll-slide-left ${visibleElements.has("god-of-lies") ? "visible" : ""}`} data-scroll-animation="god-of-lies">
-              <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-xl">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                  <div className="relative group">
-                    <img 
-                      src={godOfLiesCover} 
-                      alt="God of Lies manga cover"
-                      className="w-full max-w-lg mx-auto rounded-xl shadow-2xl transform group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl" />
-                  </div>
-                  <div>
-                    <h3 className="font-heading text-4xl font-bold text-ink-black mb-6">
-                      God of Lies
-                    </h3>
-                    <p className="font-body text-lg text-muted-foreground leading-relaxed">
-                      A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Surname Pendragon - Slide from right */}
-            <div className={`mb-16 scroll-slide-right ${visibleElements.has("surname-pendragon") ? "visible" : ""}`} data-scroll-animation="surname-pendragon">
-              <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-xl">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                  <div className="lg:order-2 relative group">
-                    <img 
-                      src={surnameProPendragonCover} 
-                      alt="Surname Pendragon manga cover"
-                      className="w-full max-w-lg mx-auto rounded-xl shadow-2xl transform group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl" />
-                  </div>
-                  <div className="lg:order-1">
-                    <h3 className="font-heading text-4xl font-bold text-ink-black mb-6">
-                      Surname Pendragon
-                    </h3>
-                    <p className="font-body text-lg text-muted-foreground leading-relaxed">
-                      A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Coming Soon Section */}
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center gap-6">
-              <div className="hand-drawn-line flex-1"></div>
-              <h2 className="hand-drawn-text text-4xl font-bold text-ink-black">
-                Coming 2026
-              </h2>
-              <div className="hand-drawn-line flex-1"></div>
-            </div>
-          </div>
           
           {/* Other Comics - Smaller shelf items alternating */}
           <div className="space-y-8">
@@ -241,7 +181,150 @@ const Comics = () => {
               </div>
             </div>
 
-            {/* Other comics would continue here with similar structure */}
+            {/* Mr. Miracle - Right */}
+            <div className={`newsstand-slide-right ${visibleElements.has("mr-miracle") ? "visible" : ""}`} data-scroll-animation="mr-miracle">
+              <div className="bg-amber-100/90 border-3 border-amber-700 rounded-xl p-6 shadow-xl">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                  <div className="md:order-2 relative group">
+                    <img 
+                      src={mrMiracleCover} 
+                      alt="Mr. Miracle manhwa cover"
+                      className="w-full rounded-lg shadow-lg border-2 border-amber-600 transform group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-xs font-bold">
+                      ₩3,500
+                    </div>
+                    <div className="absolute top-2 left-2 bg-amber-900 text-white px-1 py-0.5 rounded text-xs">
+                      2026.08
+                    </div>
+                  </div>
+                  <div className="md:order-1 md:col-span-2">
+                    <h3 className="font-heading text-2xl font-bold text-amber-900 mb-3">
+                      Mr. Miracle
+                    </h3>
+                    <p className="font-body text-amber-800 leading-relaxed">
+                      A cheerful 40-year-old man moves into a tight-knit Korean neighborhood where gossiping older ladies are suspicious of the unmarried newcomer with no known background.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Soul Tied - Left */}
+            <div className={`newsstand-slide-left ${visibleElements.has("soul-tied") ? "visible" : ""}`} data-scroll-animation="soul-tied">
+              <div className="bg-amber-100/90 border-3 border-amber-700 rounded-xl p-6 shadow-xl">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                  <div className="relative group">
+                    <img 
+                      src={soulTiedCover} 
+                      alt="Soul Tied manhwa cover"
+                      className="w-full rounded-lg shadow-lg border-2 border-amber-600 transform group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-xs font-bold">
+                      ₩3,800
+                    </div>
+                    <div className="absolute top-2 left-2 bg-amber-900 text-white px-1 py-0.5 rounded text-xs">
+                      2026.09
+                    </div>
+                  </div>
+                  <div className="md:col-span-2">
+                    <h3 className="font-heading text-2xl font-bold text-amber-900 mb-3">
+                      Soul Tied
+                    </h3>
+                    <p className="font-body text-amber-800 leading-relaxed">
+                      Two men, bound by fate yet worlds apart in their choices. One embraces chaos with casual indifference, while the other fights desperately to maintain control.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Gods! - Right */}
+            <div className={`newsstand-slide-right ${visibleElements.has("gods") ? "visible" : ""}`} data-scroll-animation="gods">
+              <div className="bg-amber-100/90 border-3 border-amber-700 rounded-xl p-6 shadow-xl">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                  <div className="md:order-2 relative group">
+                    <img 
+                      src={godsCover} 
+                      alt="Gods! manhwa cover"
+                      className="w-full rounded-lg shadow-lg border-2 border-amber-600 transform group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-xs font-bold">
+                      ₩4,200
+                    </div>
+                    <div className="absolute top-2 left-2 bg-amber-900 text-white px-1 py-0.5 rounded text-xs">
+                      2026.10
+                    </div>
+                  </div>
+                  <div className="md:order-1 md:col-span-2">
+                    <h3 className="font-heading text-2xl font-bold text-amber-900 mb-3">
+                      Gods!
+                    </h3>
+                    <p className="font-body text-amber-800 leading-relaxed">
+                      Set on a cosmic space station where Korean idol-gods from different galaxies meet. When disaster strikes, a cynical female security officer must protect the space idols she despises.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Scripted - Left */}
+            <div className={`newsstand-slide-left ${visibleElements.has("scripted") ? "visible" : ""}`} data-scroll-animation="scripted">
+              <div className="bg-amber-100/90 border-3 border-amber-700 rounded-xl p-6 shadow-xl">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                  <div className="relative group">
+                    <img 
+                      src={scriptedCover} 
+                      alt="Scripted manhwa cover"
+                      className="w-full rounded-lg shadow-lg border-2 border-amber-600 transform group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-xs font-bold">
+                      ₩3,800
+                    </div>
+                    <div className="absolute top-2 left-2 bg-amber-900 text-white px-1 py-0.5 rounded text-xs">
+                      2026.11
+                    </div>
+                  </div>
+                  <div className="md:col-span-2">
+                    <h3 className="font-heading text-2xl font-bold text-amber-900 mb-3">
+                      Scripted
+                    </h3>
+                    <p className="font-body text-amber-800 leading-relaxed">
+                      Korean actors keep being reincarnated in different shows as different characters. When relationships from previous shows start bleeding through, they question reality itself.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Oranges are Made of Gold - Right */}
+            <div className={`newsstand-slide-right ${visibleElements.has("oranges-gold") ? "visible" : ""}`} data-scroll-animation="oranges-gold">
+              <div className="bg-amber-100/90 border-3 border-amber-700 rounded-xl p-6 shadow-xl">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                  <div className="md:order-2 relative group">
+                    <img 
+                      src={orangesGoldCover} 
+                      alt="Oranges are Made of Gold manhwa cover"
+                      className="w-full rounded-lg shadow-lg border-2 border-amber-600 transform group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-xs font-bold">
+                      ₩4,800
+                    </div>
+                    <div className="absolute top-2 left-2 bg-amber-900 text-white px-1 py-0.5 rounded text-xs">
+                      2026.12
+                    </div>
+                  </div>
+                  <div className="md:order-1 md:col-span-2">
+                    <h3 className="font-heading text-2xl font-bold text-amber-900 mb-3">
+                      Oranges are Made of Gold
+                    </h3>
+                    <p className="font-body text-amber-800 leading-relaxed">
+                      A 99-year-old Korean CEO controls a vast orange empire built on rare oranges from Jeju Island. Instead of naming an heir, he forces his two sons to compete for inheritance.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
             
           </div>
         </div>
