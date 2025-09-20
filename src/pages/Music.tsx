@@ -6,133 +6,133 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
 
 // Background images for different themes
-import desertKidsBg from "@/assets/music-bg-desert-kids.jpg";
-import saltKitesBg from "@/assets/music-bg-salt-kites.jpg";
-import pastelRiverBg from "@/assets/music-bg-pastel-river.jpg";
-import cloudPlainBg from "@/assets/music-bg-cloud-plain.jpg";
-import scifiSetBackground from "@/assets/scifi-set-background.jpg";
+import spaceshipBackground from "@/assets/spaceship-background.jpg";
+import floatingInstrumentsBackground from "@/assets/floating-instruments-background.jpg";
+import manOnFilmBackground from "@/assets/man-on-film-background.jpg";
+import toDreamtManBackground from "@/assets/to-the-dreamt-man-background.jpg";
+import centreOfWorldBackground from "@/assets/centre-of-world-background.jpg";
 
 // Album covers
-import magicalGardenAlbumNew from "@/assets/magical-garden-album-new.jpg";
-import meltingDreamsAlbumNew from "@/assets/melting-dreams-album-new.jpg";
-import surrealSymphonyAlbumNew from "@/assets/surreal-symphony-album-new.jpg";
-import paperCutoutAlbumNew from "@/assets/paper-cutout-album-new.jpg";
-import floatingToysAlbum from "@/assets/floating-toys-album.jpg";
+import spaceshipAlbum from "@/assets/spaceship-album.png";
+import floatingInstrumentsAlbum from "@/assets/floating-instruments-album.jpeg";
+import manOnFilmAlbum from "@/assets/man-on-film-album.jpeg";
+import toDreamtManAlbum from "@/assets/to-the-dreamt-man-album.png";
+import centreOfWorldAlbum from "@/assets/centre-of-world-album.png";
 
 const albums = [
   {
     id: 1,
-    title: "The Centre of the World",
-    cover: magicalGardenAlbumNew,
-    background: desertKidsBg,
-    theme: "stately-home",
+    title: "Spaceship",
+    cover: spaceshipAlbum,
+    background: spaceshipBackground,
+    theme: "dreamy-clouds",
     tracks: [
-      "Through the Garden Gate",
-      "Fairy Light Serenade",
-      "Whispers in the Willows",
-      "Secret Pathways",
-      "Dancing Shadows",
-      "Moonlit Corridors",
-      "Crystal Reflections",
-      "Garden of Mysteries",
-      "Velvet Dreams",
-      "Midnight Waltz",
-      "Ethereal Echoes",
-      "Silver Fountains",
-      "Enchanted Evening",
-      "Beyond the Veil"
+      "Piano in the Sky",
+      "Childhood Dreams",
+      "Cloud Walker",
+      "Innocent Wonder",
+      "Keys to Heaven",
+      "Floating Away",
+      "Young Astronaut",
+      "Celestial Melody",
+      "Dreamscape",
+      "Musical Journey",
+      "Spaceship Lullaby",
+      "Beyond the Clouds",
+      "Starlight Sonata",
+      "Infinite Possibilities"
     ]
   },
   {
     id: 2,
-    title: "Melting Dreams",
-    cover: meltingDreamsAlbumNew,
-    background: saltKitesBg,
-    theme: "kabuki-theatre",
+    title: "Floating Instruments",
+    cover: floatingInstrumentsAlbum,
+    background: floatingInstrumentsBackground,
+    theme: "surreal-street",
     tracks: [
-      "Liquid Strings",
-      "Wax and Memory",
-      "Bending Time",
-      "Molten Harmonies",
-      "Fluid Emotions",
-      "Dripping Reality",
-      "Soft Dissolution",
-      "Warm Currents",
-      "Flowing Thoughts",
-      "Melted Glass",
-      "Liquid Light",
-      "Streaming Consciousness",
-      "Viscous Visions",
-      "Melting Point"
+      "Objects in Flight",
+      "Street Symphony",
+      "Gravity Defied",
+      "Musical Parade",
+      "Floating Piano",
+      "Airborne Orchestra",
+      "Levitating Melodies",
+      "City Dreams",
+      "Suspended Sound",
+      "Musical Traffic",
+      "Sky Dance",
+      "Weightless Wonder",
+      "Street Magic",
+      "Flying Notes"
     ]
   },
   {
     id: 3,
-    title: "Surreal Symphony",
-    cover: surrealSymphonyAlbumNew,
-    background: pastelRiverBg,
-    theme: "seaside-scene",
+    title: "Man on Film",
+    cover: manOnFilmAlbum,
+    background: manOnFilmBackground,
+    theme: "cinematic-noir",
     tracks: [
-      "Objects in Flight",
-      "Floating Melodies",
-      "Sky Orchestra",
-      "Weightless Wonder",
-      "Gravity's Absence",
-      "Suspended Animation",
-      "Aerial Ballet",
-      "Drifting Harmonics",
-      "Levitating Dreams",
-      "Atmospheric Pressure",
-      "Cloud Chamber",
-      "Zero Point",
-      "Ascending Notes",
-      "Celestial Dance"
+      "Silent Frames",
+      "Shadow Play",
+      "Walking the Dog",
+      "Minimalist Score",
+      "Black and White",
+      "Final Cut",
+      "Cinematic Journey",
+      "Noir Narrative",
+      "Film Grain",
+      "Director's Vision",
+      "Spotlight Solo",
+      "Fade to Black",
+      "End Credits",
+      "Man and Shadow"
     ]
   },
   {
     id: 4,
-    title: "Paper Cutout Dreams",
-    cover: paperCutoutAlbumNew,
-    background: cloudPlainBg,
-    theme: "mount-fuji",
+    title: "To the Dreamt Man",
+    cover: toDreamtManAlbum,
+    background: toDreamtManBackground,
+    theme: "golden-desert",
     tracks: [
-      "Torn Sheet Music",
-      "Collage of Sound",
-      "Paper Moon Rising",
-      "Cutout Conversations",
-      "Scissors Symphony",
-      "Folded Memories",
-      "Origami Melodies",
-      "Creased Emotions",
-      "Paper Trail",
-      "Layered Stories",
-      "Textured Silence",
-      "Cardboard Dreams",
-      "Pulp Fiction",
-      "Final Cut"
+      "Desert Journey",
+      "Golden Horizon",
+      "Walking with Cats",
+      "Dust and Dreams",
+      "Lonely Traveler",
+      "Sand Dunes",
+      "Mirage Music",
+      "Sunset Serenade",
+      "Wanderer's Song",
+      "Heat Waves",
+      "Distant Thunder",
+      "Oasis Dreams",
+      "Desert Wind",
+      "Journey's End"
     ]
   },
   {
     id: 5,
-    title: "Floating Memories",
-    cover: floatingToysAlbum,
-    background: scifiSetBackground,
-    theme: "scifi-set",
+    title: "The Centre of the World",
+    cover: centreOfWorldAlbum,
+    background: centreOfWorldBackground,
+    theme: "magical-garden",
     tracks: [
-      "Teddy Bear Waltz",
-      "Wooden Block Percussion",
-      "Spinning Top Melody",
-      "Childhood Echoes",
-      "Playground Phantoms",
-      "Toy Box Secrets",
-      "Marble Rolling",
-      "Jack-in-the-Box",
-      "Rocking Horse Blues",
-      "Building Block Symphony",
-      "Dollhouse Whispers",
-      "Wind-up Dreams",
-      "Nostalgic Lullaby",
-      "Memory Lane"
+      "Through the Garden Gate",
+      "Wildflower Symphony",
+      "Secret Garden",
+      "Blooming Melodies",
+      "Wooden Gate",
+      "Nature's Song",
+      "Garden Path",
+      "Flower Power",
+      "Enchanted Portal",
+      "Garden Dreams",
+      "Peaceful Valley",
+      "Nature's Embrace",
+      "Garden of Eden",
+      "Centre of Everything"
     ]
   }
 ];

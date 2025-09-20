@@ -1,11 +1,11 @@
 import { useState } from "react";
 
 // Album covers
-import magicalGardenAlbumNew from "@/assets/magical-garden-album-new.jpg";
-import meltingDreamsAlbumNew from "@/assets/melting-dreams-album-new.jpg";
-import surrealSymphonyAlbumNew from "@/assets/surreal-symphony-album-new.jpg";
-import paperCutoutAlbumNew from "@/assets/paper-cutout-album-new.jpg";
-import floatingToysAlbum from "@/assets/floating-toys-album.jpg";
+import spaceshipAlbum from "@/assets/spaceship-album.png";
+import floatingInstrumentsAlbum from "@/assets/floating-instruments-album.jpeg";
+import manOnFilmAlbum from "@/assets/man-on-film-album.jpeg";
+import toDreamtManAlbum from "@/assets/to-the-dreamt-man-album.png";
+import centreOfWorldAlbum from "@/assets/centre-of-world-album.png";
 
 interface Album {
   id: number;
@@ -16,28 +16,28 @@ interface Album {
 const albums: Album[] = [
   {
     id: 1,
-    title: "The Centre of the World",
-    cover: magicalGardenAlbumNew
+    title: "Spaceship",
+    cover: spaceshipAlbum
   },
   {
     id: 2,
-    title: "Melting Dreams",
-    cover: meltingDreamsAlbumNew
+    title: "Floating Instruments",
+    cover: floatingInstrumentsAlbum
   },
   {
     id: 3,
-    title: "Surreal Symphony",
-    cover: surrealSymphonyAlbumNew
+    title: "Man on Film",
+    cover: manOnFilmAlbum
   },
   {
     id: 4,
-    title: "Paper Cutout Dreams",
-    cover: paperCutoutAlbumNew
+    title: "To the Dreamt Man",
+    cover: toDreamtManAlbum
   },
   {
     id: 5,
-    title: "Floating Memories",
-    cover: floatingToysAlbum
+    title: "The Centre of the World",
+    cover: centreOfWorldAlbum
   }
 ];
 
