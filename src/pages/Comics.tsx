@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Navigation from "@/components/Navigation";
-import { useScrollAnimation } from "@/components/ScrollAnimations";
-import mangaSketchesBackground from "@/assets/manga-sketches-background.jpg";
+import woodenNewsstandBackground from "@/assets/wooden-newsstand-background.jpg";
+import crayonUfoDrawing from "@/assets/crayon-ufo-drawing.png";
+import stationeryItems from "@/assets/stationery-items.png";
 
 import godOfLiesCover from "@/assets/god-of-lies-cover.jpg";
-import surnameProPendragonCover from "@/assets/surname-pendragon-cover.jpg";
+import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-new.jpg";
 import soulTiedCover from "@/assets/soul-tied-cover.jpg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
 import mrMiracleCover from "@/assets/mr-miracle-cover.jpg";
@@ -13,250 +14,245 @@ import scriptedCover from "@/assets/scripted-cover.jpg";
 import orangesGoldCover from "@/assets/oranges-gold-cover.jpg";
 
 const Comics = () => {
-  const visibleElements = useScrollAnimation();
+  const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string} | null>(null);
+
+  const smallShelfComics = [
+    {
+      cover: theBurdenCover,
+      title: "The Burden",
+      description: "A touching story about a young man who must care for his aging mother, exploring themes of family duty, sacrifice, and the weight of responsibility. As memories float between past and present, both son and mother navigate the delicate balance between independence and care."
+    },
+    {
+      cover: mrMiracleCover,
+      title: "Mr. Miracle", 
+      description: "A mysterious 40-year-old man moves into a tight-knit neighborhood where everyone knows everyone's business. Unmarried and with no known background, he becomes the subject of intense gossip among the local ladies. But as the community slowly gets to know him, perceptions begin to change in unexpected ways."
+    },
+    {
+      cover: soulTiedCover,
+      title: "Soul Tied",
+      description: "Two men, bound by fate yet worlds apart in their choices. One embraces chaos with casual indifference, while the other fights desperately to maintain control. Their intertwined destinies force them to confront what it means to be truly connected to another soul."
+    },
+    {
+      cover: godsCover,
+      title: "Gods!",
+      description: "Set on a cosmic space station where idol-gods from different galaxies meet for a rare cosmic gathering. When disaster strikes and invasion threatens, a cynical female security officer who despises space idols and their fanatic followers must protect the very beings she can't stand. It's the worst day of her career."
+    },
+    {
+      cover: scriptedCover,
+      title: "Scripted",
+      description: "A group of actors keep being reincarnated in different shows as different characters with no memory of their past roles. But relationships from previous shows start bleeding through. When they seek help to uncover their past lives, they begin to question reality itself. Are they actors? Or is being actors just another script? And if so... who's watching?"
+    },
+    {
+      cover: orangesGoldCover,
+      title: "Oranges are Made of Gold",
+      description: "A 99-year-old Korean CEO controls a vast orange empire built on rare oranges that grow only on Jeju Island. Instead of naming an heir, he forces his two sons to compete - whoever makes the most profit in one year inherits everything. A tale spanning generations, exploring family legacy, competition, and the price of empire."
+    }
+  ];
+
+  const handleComicClick = (comic: {cover: string; title: string; description: string}) => {
+    setSelectedComic(comic);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedComic(null);
+  };
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-amber-50 to-amber-100">
       <Navigation />
       
-      {/* Pencil sketches background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      {/* Wooden Newsstand Background */}
+      <div className="fixed inset-0 pointer-events-none">
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-30"
+          className="absolute inset-0 bg-cover bg-center"
           style={{ 
-            backgroundImage: `url(${mangaSketchesBackground})`
+            backgroundImage: `url(${woodenNewsstandBackground})`
           }}
-        ></div>
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-50/30 to-amber-100/50" />
       </div>
-      
-      {/* Pencil overlay at bottom */}
-      
-      <main className="container mx-auto px-6 pt-24 pb-12 relative z-10">
+
+      {/* Decorative Elements */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        {/* UFO Crayon Drawing */}
+        <img 
+          src={crayonUfoDrawing}
+          alt=""
+          className="absolute top-1/4 right-1/4 w-16 h-16 opacity-60 rotate-12"
+        />
         
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <h1 className="font-heading text-5xl font-bold text-ink-black mb-4">
-              Comics
-            </h1>
-            <p className="font-body text-xl text-muted-foreground">
-              Korean style web comics and manga with original stories and characters
-            </p>
+        {/* Stationery Items */}
+        <img 
+          src={stationeryItems}
+          alt=""
+          className="absolute top-1/2 left-1/6 w-12 h-12 opacity-50 -rotate-6"
+        />
+        
+        <img 
+          src={stationeryItems}
+          alt=""
+          className="absolute bottom-1/3 right-1/3 w-10 h-10 opacity-40 rotate-45"
+        />
+      </div>
+
+      <main className="relative z-10 pt-20">
+        {/* Page Title */}
+        <div className="text-center py-8 px-6">
+          <h1 className="font-heading text-6xl font-bold text-amber-900 mb-4 drop-shadow-sm">
+            Comics Newsstand
+          </h1>
+          <p className="font-body text-xl text-amber-700">
+            Korean style web comics and manga with original stories and characters
+          </p>
+        </div>
+
+        {/* Large Top Shelf - God of Lies */}
+        <div className="newsstand-shelf-large mb-8">
+          <div className="container mx-auto px-6 relative">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[60vh]">
+              <div className="relative">
+                <div className="comic-on-shelf">
+                  <img 
+                    src={godOfLiesCover}
+                    alt="God of Lies comic cover"
+                    className="w-full max-w-md mx-auto shadow-2xl transform -rotate-1"
+                  />
+                  <div className="comic-shadow" />
+                </div>
+              </div>
+              <div className="lg:pr-12">
+                <h2 className="font-heading text-5xl font-bold text-amber-900 mb-6">
+                  God of Lies
+                </h2>
+                <p className="font-body text-lg text-amber-800 leading-relaxed">
+                  A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
+                </p>
+              </div>
+            </div>
           </div>
-          
-          {/* Featured Comics - Newsstand Style */}
-          <div className="mb-20">
-            <h2 className="font-heading text-4xl font-bold text-ink-black text-center mb-12">
-              Featured
+        </div>
+
+        {/* Large Second Shelf - Surname Pendragon */}
+        <div className="newsstand-shelf-large mb-12">
+          <div className="container mx-auto px-6 relative">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[60vh]">
+              <div className="lg:order-2 relative">
+                <div className="comic-on-shelf">
+                  <img 
+                    src={surnameProPendragonCoverNew}
+                    alt="Surname Pendragon comic cover"
+                    className="w-full max-w-md mx-auto shadow-2xl transform rotate-1"
+                  />
+                  <div className="comic-shadow" />
+                </div>
+              </div>
+              <div className="lg:order-1 lg:pl-12">
+                <h2 className="font-heading text-5xl font-bold text-amber-900 mb-6">
+                  Surname Pendragon
+                </h2>
+                <p className="font-body text-lg text-amber-800 leading-relaxed">
+                  A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Coming Soon Section */}
+        <div className="text-center py-8 px-6">
+          <div className="flex items-center justify-center gap-6">
+            <div className="hand-drawn-line flex-1"></div>
+            <h2 className="hand-drawn-text text-4xl font-bold text-amber-900">
+              Coming 2026
             </h2>
-            
-            {/* God of Lies - Slide from left */}
-            <div className={`mb-16 scroll-slide-left ${visibleElements.has("god-of-lies") ? "visible" : ""}`} data-scroll-animation="god-of-lies">
-              <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-xl">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                  <div className="relative group">
-                    <img 
-                      src={godOfLiesCover} 
-                      alt="God of Lies manga cover"
-                      className="w-full max-w-lg mx-auto rounded-xl shadow-2xl transform group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl" />
-                  </div>
-                  <div>
-                    <h3 className="font-heading text-4xl font-bold text-ink-black mb-6">
-                      God of Lies
-                    </h3>
-                    <p className="font-body text-lg text-muted-foreground leading-relaxed">
-                      A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
-                    </p>
-                  </div>
+            <div className="hand-drawn-line flex-1"></div>
+          </div>
+        </div>
+
+        {/* Smaller Shelves - Two Rows of Three */}
+        <div className="container mx-auto px-6 pb-16">
+          {/* First Small Shelf */}
+          <div className="newsstand-shelf-small mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+              {smallShelfComics.slice(0, 3).map((comic, index) => (
+                <div 
+                  key={comic.title}
+                  className="comic-on-shelf-small cursor-pointer"
+                  onClick={() => handleComicClick(comic)}
+                >
+                  <img 
+                    src={comic.cover}
+                    alt={`${comic.title} comic cover`}
+                    className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
+                    style={{ transform: `rotate(${(index - 1) * 2}deg)` }}
+                  />
+                  <div className="comic-shadow-small" />
                 </div>
-              </div>
-            </div>
-            
-            {/* Surname Pendragon - Slide from right */}
-            <div className={`mb-16 scroll-slide-right ${visibleElements.has("surname-pendragon") ? "visible" : ""}`} data-scroll-animation="surname-pendragon">
-              <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-xl">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                  <div className="lg:order-2 relative group">
-                    <img 
-                      src={surnameProPendragonCover} 
-                      alt="Surname Pendragon manga cover"
-                      className="w-full max-w-lg mx-auto rounded-xl shadow-2xl transform group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl" />
-                  </div>
-                  <div className="lg:order-1">
-                    <h3 className="font-heading text-4xl font-bold text-ink-black mb-6">
-                      Surname Pendragon
-                    </h3>
-                    <p className="font-body text-lg text-muted-foreground leading-relaxed">
-                      A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-          
-          {/* Coming Soon Section */}
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center gap-6">
-              <div className="hand-drawn-line flex-1"></div>
-              <h2 className="hand-drawn-text text-4xl font-bold text-ink-black">
-                Coming 2026
-              </h2>
-              <div className="hand-drawn-line flex-1"></div>
-            </div>
-          </div>
-          
-          {/* Other Comics - Newsstand Style Alternating */}
-          <div className="space-y-12">
-            
-            {/* The Burden - Left image, right text */}
-            <div className={`scroll-slide-left ${visibleElements.has("the-burden") ? "visible" : ""}`} data-scroll-animation="the-burden">
-              <div className="bg-card/60 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                  <div className="relative group">
-                    <img 
-                      src={theBurdenCover} 
-                      alt="The Burden manga cover"
-                      className="w-full max-w-xs mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="font-heading text-2xl font-bold text-ink-black mb-3">
-                      The Burden
-                    </h3>
-                    <p className="font-body text-muted-foreground leading-relaxed">
-                      A touching story about a young man who must care for his aging mother, exploring themes of family duty, sacrifice, and the weight of responsibility. As memories float between past and present, both son and mother navigate the delicate balance between independence and care.
-                    </p>
-                  </div>
+
+          {/* Second Small Shelf */}
+          <div className="newsstand-shelf-small">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+              {smallShelfComics.slice(3, 6).map((comic, index) => (
+                <div 
+                  key={comic.title}
+                  className="comic-on-shelf-small cursor-pointer"
+                  onClick={() => handleComicClick(comic)}
+                >
+                  <img 
+                    src={comic.cover}
+                    alt={`${comic.title} comic cover`}
+                    className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
+                    style={{ transform: `rotate(${(index - 1) * -2}deg)` }}
+                  />
+                  <div className="comic-shadow-small" />
                 </div>
-              </div>
+              ))}
             </div>
-            
-            {/* Mr. Miracle - Right image, left text */}
-            <div className={`scroll-slide-right ${visibleElements.has("mr-miracle") ? "visible" : ""}`} data-scroll-animation="mr-miracle">
-              <div className="bg-card/60 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                  <div className="md:order-2 relative group">
-                    <img 
-                      src={mrMiracleCover} 
-                      alt="Mr. Miracle manga cover"
-                      className="w-full max-w-xs mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="md:order-1">
-                    <h3 className="font-heading text-2xl font-bold text-ink-black mb-3">
-                      Mr. Miracle
-                    </h3>
-                    <p className="font-body text-muted-foreground leading-relaxed">
-                      A mysterious 40-year-old man moves into a tight-knit neighborhood where everyone knows everyone's business. Unmarried and with no known background, he becomes the subject of intense gossip among the local ladies. But as the community slowly gets to know him, perceptions begin to change in unexpected ways.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Soul Tied - Left image, right text */}
-            <div className={`scroll-slide-left ${visibleElements.has("soul-tied") ? "visible" : ""}`} data-scroll-animation="soul-tied">
-              <div className="bg-card/60 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                  <div className="relative group">
-                    <img 
-                      src={soulTiedCover} 
-                      alt="Soul Tied manga cover"
-                      className="w-full max-w-xs mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="font-heading text-2xl font-bold text-ink-black mb-3">
-                      Soul Tied
-                    </h3>
-                    <p className="font-body text-muted-foreground leading-relaxed">
-                      Two men, bound by fate yet worlds apart in their choices. One embraces chaos with casual indifference, while the other fights desperately to maintain control. Their intertwined destinies force them to confront what it means to be truly connected to another soul.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Gods! - Right image, left text */}
-            <div className={`scroll-slide-right ${visibleElements.has("gods") ? "visible" : ""}`} data-scroll-animation="gods">
-              <div className="bg-card/60 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                  <div className="md:order-2 relative group">
-                    <img 
-                      src={godsCover} 
-                      alt="Gods! manga cover"
-                      className="w-full max-w-xs mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="md:order-1">
-                    <h3 className="font-heading text-2xl font-bold text-ink-black mb-3">
-                      Gods!
-                    </h3>
-                    <p className="font-body text-muted-foreground leading-relaxed">
-                      Set on a cosmic space station where idol-gods from different galaxies meet for a rare cosmic gathering. When disaster strikes and invasion threatens, a cynical female security officer who despises space idols and their fanatic followers must protect the very beings she can't stand. It's the worst day of her career.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Scripted - Left image, right text */}
-            <div className={`scroll-slide-left ${visibleElements.has("scripted") ? "visible" : ""}`} data-scroll-animation="scripted">
-              <div className="bg-card/60 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                  <div className="relative group">
-                    <img 
-                      src={scriptedCover} 
-                      alt="Scripted manga cover"
-                      className="w-full max-w-xs mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="font-heading text-2xl font-bold text-ink-black mb-3">
-                      Scripted
-                    </h3>
-                    <p className="font-body text-muted-foreground leading-relaxed">
-                      A group of actors keep being reincarnated in different shows as different characters with no memory of their past roles. But relationships from previous shows start bleeding through. When they seek help to uncover their past lives, they begin to question reality itself. Are they actors? Or is being actors just another script? And if so... who's watching?
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Oranges are Made of Gold - Right image, left text */}
-            <div className={`scroll-slide-right ${visibleElements.has("oranges-gold") ? "visible" : ""}`} data-scroll-animation="oranges-gold">
-              <div className="bg-card/60 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                  <div className="md:order-2 relative group">
-                    <img 
-                      src={orangesGoldCover} 
-                      alt="Oranges are Made of Gold manga cover"
-                      className="w-full max-w-xs mx-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="md:order-1">
-                    <h3 className="font-heading text-2xl font-bold text-ink-black mb-3">
-                      Oranges are Made of Gold
-                    </h3>
-                    <p className="font-body text-muted-foreground leading-relaxed">
-                      A 99-year-old Korean CEO controls a vast orange empire built on rare oranges that grow only on Jeju Island. Instead of naming an heir, he forces his two sons to compete - whoever makes the most profit in one year inherits everything. A tale spanning generations, exploring family legacy, competition, and the price of empire.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
           </div>
         </div>
       </main>
+
+      {/* Comic Detail Modal */}
+      {selectedComic && (
+        <div 
+          className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6"
+          onClick={handleCloseModal}
+        >
+          <div 
+            className="bg-amber-50 rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-center">
+              <img 
+                src={selectedComic.cover}
+                alt={`${selectedComic.title} comic cover`}
+                className="w-full max-w-lg shadow-2xl rounded-xl"
+              />
+            </div>
+            <div className="flex flex-col justify-center">
+              <h3 className="font-heading text-4xl font-bold text-amber-900 mb-6">
+                {selectedComic.title}
+              </h3>
+              <p className="font-body text-lg text-amber-800 leading-relaxed">
+                {selectedComic.description}
+              </p>
+              <button
+                onClick={handleCloseModal}
+                className="mt-6 px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-700 transition-colors self-start"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       
-      <footer className="bg-card border-t border-border py-12 mt-20">
+      <footer className="bg-amber-800/90 backdrop-blur-sm border-t border-amber-700 py-12 mt-20 relative z-10">
         <div className="container mx-auto px-6 text-center">
-          <p className="font-body text-muted-foreground">
+          <p className="font-body text-amber-100">
             Email: contact@kazukiyamakawa.com
           </p>
         </div>
