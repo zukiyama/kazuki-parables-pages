@@ -423,6 +423,9 @@ const Music = () => {
           <p className="font-serif text-white">
             Email: contact@kazukiyamakawa.com
           </p>
+          <p className="font-serif text-white/60 text-xs mt-4">
+            Copyright © 2025 Harper / Yamakawa
+          </p>
         </div>
       </footer>
     </div>
