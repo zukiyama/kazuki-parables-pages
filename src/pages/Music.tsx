@@ -204,7 +204,7 @@ const Music = () => {
       if (trackListingRef.current) {
         const navigationHeight = 64; // Navigation bar height (h-16)
         const bannerHeight = 176; // Banner height (from top-16 to pt-60: 240-64=176)
-        const gap = 32; // Gap between banner and container
+        const gap = 8; // Small gap between banner and container (~5mm)
         const totalOffset = navigationHeight + bannerHeight + gap;
         const offset = trackListingRef.current.offsetTop - totalOffset;
         window.scrollTo({
