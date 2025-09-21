@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import { FeaturedComicsSlideshow } from "@/components/FeaturedComicsSlideshow";
-import woodenDeskBackground from "@/assets/wooden-desk-background.png";
+import mangaDeskBackground from "@/assets/manga-desk-background.png";
 import soulTiedCover from "@/assets/soul-tied-cover.jpg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
 import mrMiracleCover from "@/assets/mr-miracle-cover.jpg";
@@ -60,7 +60,7 @@ const Comics = () => {
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ 
-            backgroundImage: `url(${woodenDeskBackground})`
+            backgroundImage: `url(${mangaDeskBackground})`
           }}
         />
       </div>
@@ -73,17 +73,15 @@ const Comics = () => {
           <h1 className="font-serif text-6xl font-bold text-white mb-4 tracking-wide">
             Comics
           </h1>
-          <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20 max-w-4xl mx-auto">
-            <p className="font-serif text-lg text-white">
-              Korean style web comics and manga with original stories and characters
-            </p>
-          </div>
+          <p className="font-serif text-lg text-white max-w-4xl mx-auto">
+            Korean style web comics and manga with original stories and characters
+          </p>
         </div>
 
         {/* Featured Comics Section */}
         <div className="container mx-auto px-6 mt-12 mb-16">
           <h2 className="font-serif text-5xl font-bold text-white mb-8 text-center">
-            Featured Comics
+            Featured
           </h2>
           <FeaturedComicsSlideshow />
         </div>
@@ -141,7 +139,7 @@ const Comics = () => {
           onClick={handleCloseModal}
         >
           <div 
-            className="bg-black/80 backdrop-blur-sm rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 border border-white/20"
+            className="bg-black/40 backdrop-blur-sm rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 border border-white/20"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-center">

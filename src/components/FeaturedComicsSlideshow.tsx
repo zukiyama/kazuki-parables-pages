@@ -34,7 +34,7 @@ export const FeaturedComicsSlideshow = () => {
   const comic = featuredComics[currentComic];
 
   return (
-    <div className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">
+    <div className="relative w-full bg-black/30 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">
       <div className="relative px-20 py-8 md:px-16 lg:px-12 pb-16">
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[60vh] ${
           comic.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
@@ -52,7 +52,7 @@ export const FeaturedComicsSlideshow = () => {
           
           {/* Comic Info */}
           <div className={`${comic.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-24 pl-8"} md:pl-24 md:pr-24`}>
-            <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+            <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20">
               <h2 className="font-serif text-5xl font-bold text-white mb-6">
                 {comic.title}
               </h2>
