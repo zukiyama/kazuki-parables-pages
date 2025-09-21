@@ -6,7 +6,7 @@ import soulTiedCover from "@/assets/soul-tied-cover.jpg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
 import mrMiracleCover from "@/assets/mr-miracle-cover.jpg";
 import godsCover from "@/assets/gods-cover.jpg";
-import scriptedCover from "@/assets/scripted-cover.jpg";
+import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCover from "@/assets/oranges-gold-cover.jpg";
 
 const Comics = () => {
@@ -70,17 +70,17 @@ const Comics = () => {
       <main className="relative z-10 pt-24">
         {/* Page Title */}
         <div className="text-center py-8 px-6">
-          <h1 className="font-serif text-6xl font-bold text-white mb-4 tracking-wide">
+          <h1 className="font-serif text-6xl font-bold text-yellow-300 mb-4 tracking-wide drop-shadow-lg">
             Comics
           </h1>
-          <p className="font-serif text-lg text-white max-w-4xl mx-auto">
+          <p className="font-serif text-lg text-yellow-100 max-w-4xl mx-auto drop-shadow-md">
             Korean style web comics and manga with original stories and characters
           </p>
         </div>
 
         {/* Featured Comics Section */}
         <div className="container mx-auto px-6 mt-12 mb-16">
-          <h2 className="font-serif text-5xl font-bold text-white mb-8 text-center">
+          <h2 className="font-serif text-5xl font-bold text-yellow-300 mb-8 text-center drop-shadow-lg">
             Featured
           </h2>
           <FeaturedComicsSlideshow />
@@ -88,7 +88,7 @@ const Comics = () => {
 
         {/* Other Works Section */}
         <div className="container mx-auto px-6 pb-16">
-          <h2 className="font-serif text-4xl font-bold text-white mb-12 text-center">
+          <h2 className="font-serif text-4xl font-bold text-yellow-300 mb-12 text-center drop-shadow-lg">
             Other Works
           </h2>
           

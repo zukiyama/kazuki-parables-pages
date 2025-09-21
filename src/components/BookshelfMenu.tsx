@@ -10,9 +10,9 @@ import amyaCover from "@/assets/amya-cover.png";
 import statesOfMotionCover from "@/assets/states-of-motion-cover.png";
 
 // Young adult book covers
-import professorBarnabasCover from "@/assets/professor-barnabas-cover.jpg";
+import professorBarnabasCover from "@/assets/professor-barnabas-cover-new.png";
 import toFlyCover from "@/assets/to-fly-cover-new.png";
-import landDreamSkyCover from "@/assets/land-dream-sky-cover.jpg";
+import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
 
 interface Book {
   id: string;

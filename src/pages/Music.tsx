@@ -187,7 +187,6 @@ const Music = () => {
   }, []);
 
   const handleAlbumSelect = (album: typeof albums[0]) => {
-    if (album.id === selectedAlbum.id) return;
     
     // Clear any existing transition
     if (transitionRef.current) {
@@ -218,15 +217,17 @@ const Music = () => {
       });
     }
     
-    // Update album immediately as fade begins
-    setSelectedAlbum(album);
+    // Update album immediately as fade begins or if same album
+    if (album.id !== selectedAlbum.id) {
+      setSelectedAlbum(album);
+    }
     
     // Scroll to show entire container with gap from banner
     setTimeout(() => {
       if (trackListingRef.current) {
         const navigationHeight = 64; // Navigation bar height (h-16)
         const bannerHeight = 176; // Banner height (from top-16 to pt-60: 240-64=176)
-        const gap = 8; // Small gap between banner and container (~5mm)
+        const gap = 4; // Smaller gap between banner and container (~5mm on iPad 13")
         const totalOffset = navigationHeight + bannerHeight + gap;
         const offset = trackListingRef.current.offsetTop - totalOffset;
         window.scrollTo({
