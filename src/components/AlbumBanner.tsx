@@ -56,13 +56,13 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   };
 
   return (
-    <div className="py-3 bg-black/80 backdrop-blur-sm">
+    <div className="py-2 bg-black/80 backdrop-blur-sm">
       <div className="container mx-auto px-6">
-        <div className="flex justify-center items-center gap-6 pb-2">
+        <div className="flex justify-center items-center gap-8 pb-2">
           {albums.map((album) => (
             <div
               key={album.id}
-              className="flex flex-col items-center cursor-pointer group min-w-[80px]"
+              className="flex flex-col items-center cursor-pointer group"
               onMouseEnter={() => setHoveredAlbum(album.id)}
               onMouseLeave={() => setHoveredAlbum(null)}
               onClick={() => handleAlbumClick(album)}
@@ -77,10 +77,10 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                 <img
                   src={album.cover}
                   alt={album.title}
-                  width="64"
-                  height="64"
+                  width="80"
+                  height="80"
                   loading="eager"
-                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-cover ${
+                  className={`w-20 h-20 object-cover rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
                     selectedAlbumId === album.id
                       ? 'ring-2 ring-yellow-300/60 scale-105'
                       : hoveredAlbum === album.id 
