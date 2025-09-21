@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
-import { FeaturedComicsSlideshow } from "@/components/FeaturedComicsSlideshow";
+import godOfLiesCover from "@/assets/god-of-lies-cover.jpg";
+import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-new.jpg";
 import mangaDeskBackground from "@/assets/manga-desk-background.png";
 import soulTiedCover from "@/assets/soul-tied-cover.jpg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
@@ -83,7 +84,48 @@ const Comics = () => {
           <h2 className="font-serif text-5xl font-bold text-black mb-8 text-center drop-shadow-lg">
             Featured
           </h2>
-          <FeaturedComicsSlideshow />
+          
+          {/* God of Lies - Cover Left */}
+          <div className="mb-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <img 
+                  src={godOfLiesCover}
+                  alt="God of Lies comic cover"
+                  className="w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl"
+                />
+              </div>
+              <div>
+                <h3 className="font-serif text-4xl font-bold text-black mb-6">
+                  God of Lies
+                </h3>
+                <p className="font-serif text-lg text-black leading-relaxed">
+                  A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Surname Pendragon - Cover Right */}
+          <div className="mb-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="lg:order-2">
+                <img 
+                  src={surnameProPendragonCoverNew}
+                  alt="Surname Pendragon comic cover"
+                  className="w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl"
+                />
+              </div>
+              <div className="lg:order-1">
+                <h3 className="font-serif text-4xl font-bold text-black mb-6">
+                  Surname Pendragon
+                </h3>
+                <p className="font-serif text-lg text-black leading-relaxed">
+                  A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Other Works Section */}
