@@ -2,7 +2,7 @@ import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import godOfLiesCover from "@/assets/god-of-lies-cover.jpg";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-new.jpg";
-import woodenDeskBackground from "@/assets/wooden-desk-background-new.png";
+import woodenDeskBackground from "@/assets/wooden-desk-with-stickers.png";
 import soulTiedCover from "@/assets/soul-tied-cover.jpg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
 import mrMiracleCover from "@/assets/mr-miracle-cover.jpg";
