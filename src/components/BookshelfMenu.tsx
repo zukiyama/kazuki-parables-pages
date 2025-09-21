@@ -67,21 +67,21 @@ const books: Book[] = [
   },
   {
     id: "professor-barnabas",
-    title: "Professor Barnabas",
+    title: "PROFESSOR BARNABAS",
     cover: professorBarnabasCover,
     targetSection: "young-adult",
     slideToBook: 0
   },
   {
     id: "land-dream",
-    title: "Land Dream Sky",
+    title: "LAND DREAM SKY",
     cover: landDreamSkyCover,
     targetSection: "young-adult",
     slideToBook: 1
   },
   {
     id: "to-fly",
-    title: "To Fly",
+    title: "TO FLY",
     cover: toFlyCover,
     targetSection: "young-adult", 
     slideToBook: 2
