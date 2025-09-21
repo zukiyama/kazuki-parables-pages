@@ -69,19 +69,21 @@ const Comics = () => {
       
       <Navigation />
 
-      <main className="relative z-10 pt-20">
+      <main className="relative z-10 pt-24">
         {/* Page Title */}
         <div className="text-center py-8 px-6">
-          <h1 className="font-heading text-6xl font-bold text-amber-900 mb-4 drop-shadow-sm">
-            Comics Newsstand
+          <h1 className="font-serif text-6xl font-bold text-white mb-4 tracking-wide">
+            Comics
           </h1>
-          <p className="font-body text-xl text-amber-700">
-            Korean style web comics and manga with original stories and characters
-          </p>
+          <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20 max-w-4xl mx-auto">
+            <p className="font-serif text-lg text-white">
+              Korean style web comics and manga with original stories and characters
+            </p>
+          </div>
         </div>
 
         {/* Large Top Shelf - God of Lies */}
-        <div className="newsstand-shelf-large mb-8">
+        <div className="newsstand-shelf-large mb-8 mt-12">
           <div className="container mx-auto px-6 relative">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[60vh]">
               <div className="relative">
@@ -95,12 +97,14 @@ const Comics = () => {
                 </div>
               </div>
               <div className="lg:pr-12">
-                <h2 className="font-heading text-5xl font-bold text-amber-900 mb-6">
-                  God of Lies
-                </h2>
-                <p className="font-body text-lg text-amber-800 leading-relaxed">
-                  A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
-                </p>
+                <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                  <h2 className="font-serif text-5xl font-bold text-white mb-6">
+                    God of Lies
+                  </h2>
+                  <p className="font-serif text-lg text-white leading-relaxed">
+                    A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -121,12 +125,14 @@ const Comics = () => {
                 </div>
               </div>
               <div className="lg:order-1 lg:pl-12">
-                <h2 className="font-heading text-5xl font-bold text-amber-900 mb-6">
-                  Surname Pendragon
-                </h2>
-                <p className="font-body text-lg text-amber-800 leading-relaxed">
-                  A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible.
-                </p>
+                <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                  <h2 className="font-serif text-5xl font-bold text-white mb-6">
+                    Surname Pendragon
+                  </h2>
+                  <p className="font-serif text-lg text-white leading-relaxed">
+                    A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -136,9 +142,11 @@ const Comics = () => {
         <div className="text-center py-8 px-6">
           <div className="flex items-center justify-center gap-6">
             <div className="hand-drawn-line flex-1"></div>
-            <h2 className="hand-drawn-text text-4xl font-bold text-amber-900">
-              Coming 2026
-            </h2>
+            <div className="bg-black/60 backdrop-blur-sm rounded-lg px-8 py-4 border border-white/20">
+              <h2 className="hand-drawn-text text-4xl font-bold text-white">
+                Coming 2026
+              </h2>
+            </div>
             <div className="hand-drawn-line flex-1"></div>
           </div>
         </div>
@@ -194,7 +202,7 @@ const Comics = () => {
           onClick={handleCloseModal}
         >
           <div 
-            className="bg-amber-50 rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8"
+            className="bg-black/80 backdrop-blur-sm rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 border border-white/20"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-center">
@@ -205,15 +213,15 @@ const Comics = () => {
               />
             </div>
             <div className="flex flex-col justify-center">
-              <h3 className="font-heading text-4xl font-bold text-amber-900 mb-6">
+              <h3 className="font-serif text-4xl font-bold text-white mb-6">
                 {selectedComic.title}
               </h3>
-              <p className="font-body text-lg text-amber-800 leading-relaxed">
+              <p className="font-serif text-lg text-white leading-relaxed">
                 {selectedComic.description}
               </p>
               <button
                 onClick={handleCloseModal}
-                className="mt-6 px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-700 transition-colors self-start"
+                className="mt-6 px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-lg font-semibold hover:bg-white/30 transition-colors self-start border border-white/40"
               >
                 Close
               </button>
@@ -222,9 +230,9 @@ const Comics = () => {
         </div>
       )}
       
-      <footer className="bg-amber-800/90 backdrop-blur-sm border-t border-amber-700 py-12 mt-20 relative z-10">
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-20 relative z-10">
         <div className="container mx-auto px-6 text-center">
-          <p className="font-body text-amber-100">
+          <p className="font-serif text-white">
             Email: contact@kazukiyamakawa.com
           </p>
         </div>

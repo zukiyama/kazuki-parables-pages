@@ -246,7 +246,7 @@ const Music = () => {
     <div className="min-h-screen bg-slate-900 relative overflow-hidden">
       <Navigation />
       
-      {/* Album Banner - Fixed at top */}
+      {/* Album Banner - Fixed at top */}  
       <div className="fixed top-16 left-0 right-0 z-20">
         <AlbumBanner 
           selectedAlbumId={selectedAlbum.id}
