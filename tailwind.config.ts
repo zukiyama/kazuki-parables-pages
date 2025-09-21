@@ -22,6 +22,7 @@ export default {
 				heading: ['Playfair Display', 'serif'],
 				body: ['Source Serif Pro', 'serif'],
 				accent: ['Crimson Text', 'serif'],
+				comic: ['Kalam', 'cursive'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

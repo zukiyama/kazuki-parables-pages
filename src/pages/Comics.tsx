@@ -69,14 +69,25 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative z-10 pt-24">
-        {/* Page Title */}
-        <div className="text-center py-8 px-6">
-          <h1 className="font-serif text-6xl font-bold text-white mb-4 tracking-wide drop-shadow-lg">
-            Comics
-          </h1>
-          <p className="font-serif text-lg text-white max-w-4xl mx-auto drop-shadow-md">
-            Korean style web comics and manga with original stories and characters
-          </p>
+        {/* Comic Panel Title */}
+        <div className="flex justify-center py-8 px-6">
+          <div className="relative bg-white rounded-sm p-8 max-w-2xl mx-auto transform rotate-1 shadow-2xl">
+            {/* Hand-drawn border effect */}
+            <div className="absolute inset-0 border-4 border-black rounded-sm transform -rotate-1" 
+                 style={{
+                   borderStyle: 'solid',
+                   borderImage: 'url("data:image/svg+xml,%3csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3e%3cpath d=\'m0,0 L100,0 L100,100 L0,100 z\' stroke=\'%23000\' stroke-width=\'4\' fill=\'none\' stroke-dasharray=\'2,1\' /%3e%3c/svg%3e") 4'
+                 }}
+            />
+            <div className="relative z-10">
+              <h1 className="font-comic text-5xl font-bold text-black mb-4 text-center tracking-wide">
+                COMICS
+              </h1>
+              <p className="font-comic text-lg text-black text-center leading-relaxed">
+                Korean style web comics and manga with original stories and characters!
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Featured Comics Section */}
