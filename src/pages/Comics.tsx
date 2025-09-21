@@ -2,7 +2,7 @@ import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import godOfLiesCover from "@/assets/god-of-lies-cover.jpg";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-new.jpg";
-import comicsDeskBackground from "@/assets/comics-desk-background.png";
+import comicShelfBackground from "@/assets/comic-shelf-enhanced-background.jpg";
 import soulTiedCover from "@/assets/soul-tied-cover.jpg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
 import mrMiracleCover from "@/assets/mr-miracle-cover.jpg";
@@ -56,12 +56,12 @@ const Comics = () => {
 
   return (
     <div className="min-h-screen relative">
-      {/* Wooden Desk Background */}
-      <div className="fixed inset-0 pointer-events-none">
+      {/* Wooden Shelf Background */}
+      <div className="absolute inset-0 pointer-events-none">
         <div 
-          className="absolute inset-0 bg-cover bg-center"
+          className="min-h-full bg-cover bg-center bg-repeat-y"
           style={{ 
-            backgroundImage: `url(${comicsDeskBackground})`
+            backgroundImage: `url(${comicShelfBackground})`
           }}
         />
       </div>
