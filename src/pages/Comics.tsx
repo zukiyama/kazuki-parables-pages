@@ -71,20 +71,16 @@ const Comics = () => {
       <main className="relative z-10 pt-24">
         {/* Page Title */}
         <div className="text-center py-8 px-6">
-          <h1 className="font-serif text-6xl font-bold text-black mb-4 tracking-wide drop-shadow-lg">
+          <h1 className="font-serif text-6xl font-bold text-white mb-4 tracking-wide drop-shadow-lg">
             Comics
           </h1>
-          <p className="font-serif text-lg text-black max-w-4xl mx-auto drop-shadow-md">
+          <p className="font-serif text-lg text-white max-w-4xl mx-auto drop-shadow-md">
             Korean style web comics and manga with original stories and characters
           </p>
         </div>
 
         {/* Featured Comics Section */}
         <div className="container mx-auto px-6 mt-12 mb-16">
-          <h2 className="font-serif text-5xl font-bold text-black mb-8 text-center drop-shadow-lg">
-            Featured
-          </h2>
-          
           {/* God of Lies - Cover Left */}
           <div className="mb-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -96,19 +92,21 @@ const Comics = () => {
                 />
               </div>
               <div>
-                <h3 className="font-serif text-4xl font-bold text-black mb-6">
-                  God of Lies
-                </h3>
-                <p className="font-serif text-lg text-black leading-relaxed">
-                  A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
-                </p>
+                <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                  <h3 className="font-serif text-4xl font-bold text-white mb-6">
+                    God of Lies
+                  </h3>
+                  <p className="font-serif text-lg text-white leading-relaxed">
+                    A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Surname Pendragon - Cover Right */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div className="lg:order-2">
                 <img 
                   src={surnameProPendragonCoverNew}
@@ -117,12 +115,14 @@ const Comics = () => {
                 />
               </div>
               <div className="lg:order-1">
-                <h3 className="font-serif text-4xl font-bold text-black mb-6">
-                  Surname Pendragon
-                </h3>
-                <p className="font-serif text-lg text-black leading-relaxed">
-                  A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible.
-                </p>
+                <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                  <h3 className="font-serif text-4xl font-bold text-white mb-6">
+                    Surname Pendragon
+                  </h3>
+                  <p className="font-serif text-lg text-white leading-relaxed">
+                    A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -130,7 +130,7 @@ const Comics = () => {
 
         {/* Other Works Section */}
         <div className="container mx-auto px-6 pb-16">
-          <h2 className="font-serif text-4xl font-bold text-black mb-12 text-center drop-shadow-lg">
+          <h2 className="font-serif text-4xl font-bold text-white mb-12 text-center drop-shadow-lg">
             Upcoming
           </h2>
           
