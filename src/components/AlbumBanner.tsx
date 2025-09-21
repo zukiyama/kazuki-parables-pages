@@ -80,7 +80,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                   width="64"
                   height="64"
                   loading="eager"
-                  className={`w-16 h-16 object-cover rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
+                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-cover ${
                     selectedAlbumId === album.id
                       ? 'ring-2 ring-yellow-300/60 scale-105'
                       : hoveredAlbum === album.id 
