@@ -2,7 +2,7 @@ import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import godOfLiesCover from "@/assets/god-of-lies-cover.jpg";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-new.jpg";
-import mangaDeskBackground from "@/assets/manga-desk-background.png";
+import comicsDeskBackground from "@/assets/comics-desk-background.png";
 import soulTiedCover from "@/assets/soul-tied-cover.jpg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
 import mrMiracleCover from "@/assets/mr-miracle-cover.jpg";
@@ -61,7 +61,7 @@ const Comics = () => {
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ 
-            backgroundImage: `url(${mangaDeskBackground})`
+            backgroundImage: `url(${comicsDeskBackground})`
           }}
         />
       </div>
