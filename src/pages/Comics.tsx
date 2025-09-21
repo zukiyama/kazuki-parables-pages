@@ -3,10 +3,6 @@ import Navigation from "@/components/Navigation";
 import godOfLiesCover from "@/assets/god-of-lies-cover.jpg";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-new.jpg";
 import comicsDeskBackground from "@/assets/comics-desk-background.png";
-import woodenDeskStrip from "@/assets/wooden-desk-strip.jpg";
-import whitePaperBackground from "@/assets/white-paper-background.jpg";
-import mangaCharacterSketches from "@/assets/manga-character-sketches.png";
-import pencilAndEraser from "@/assets/pencil-and-eraser.png";
 import soulTiedCover from "@/assets/soul-tied-cover.jpg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
 import mrMiracleCover from "@/assets/mr-miracle-cover.jpg";
@@ -60,42 +56,12 @@ const Comics = () => {
 
   return (
     <div className="min-h-screen relative">
-      {/* Top Wooden Desk Strip */}
-      <div className="fixed top-0 left-0 right-0 h-32 pointer-events-none z-0">
+      {/* Wooden Desk Background */}
+      <div className="fixed inset-0 pointer-events-none">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ 
-            backgroundImage: `url(${woodenDeskStrip})`
-          }}
-        />
-      </div>
-      
-      {/* White Paper Background Layer - starts just above God of Lies */}
-      <div className="fixed left-0 right-0 pointer-events-none z-0" style={{ top: '280px', bottom: '0' }}>
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ 
-            backgroundImage: `url(${whitePaperBackground})`
-          }}
-        />
-      </div>
-      
-      {/* Manga Character Sketches Overlay */}
-      <div className="fixed left-0 right-0 pointer-events-none z-0 opacity-30" style={{ top: '320px', height: '960px' }}>
-        <div 
-          className="absolute inset-0 bg-contain bg-center bg-no-repeat"
-          style={{ 
-            backgroundImage: `url(${mangaCharacterSketches})`
-          }}
-        />
-      </div>
-      
-      {/* Pencil and Eraser at Bottom */}
-      <div className="fixed bottom-8 right-8 w-32 h-16 pointer-events-none z-0 opacity-80">
-        <div 
-          className="absolute inset-0 bg-contain bg-center bg-no-repeat"
-          style={{ 
-            backgroundImage: `url(${pencilAndEraser})`
+            backgroundImage: `url(${comicsDeskBackground})`
           }}
         />
       </div>
