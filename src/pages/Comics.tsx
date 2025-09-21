@@ -1,9 +1,6 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
-import koreanComicShopBackground from "@/assets/korean-comic-shop-background.jpg";
-import woodenNewsstandStructure from "@/assets/wooden-newsstand-structure.png";
-import crayonUfoDrawing from "@/assets/crayon-ufo-drawing.png";
-import stationeryItems from "@/assets/stationery-items.png";
+import woodenDeskBackground from "@/assets/wooden-desk-background.png";
 
 import godOfLiesCover from "@/assets/god-of-lies-cover.jpg";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-new.jpg";
@@ -59,51 +56,18 @@ const Comics = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Korean Comic Shop Background */}
+    <div className="min-h-screen relative">
+      {/* Wooden Desk Background */}
       <div className="fixed inset-0 pointer-events-none">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ 
-            backgroundImage: `url(${koreanComicShopBackground})`
+            backgroundImage: `url(${woodenDeskBackground})`
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
       </div>
       
       <Navigation />
-      
-      {/* Wooden Newsstand Structure */}
-      <div className="fixed inset-0 pointer-events-none flex items-center justify-center">
-        <img 
-          src={woodenNewsstandStructure}
-          alt=""
-          className="w-full max-w-6xl h-auto object-contain opacity-90"
-        />
-      </div>
-
-      {/* Decorative Elements */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        {/* UFO Crayon Drawing */}
-        <img 
-          src={crayonUfoDrawing}
-          alt=""
-          className="absolute top-1/4 right-1/4 w-16 h-16 opacity-60 rotate-12"
-        />
-        
-        {/* Stationery Items */}
-        <img 
-          src={stationeryItems}
-          alt=""
-          className="absolute top-1/2 left-1/6 w-12 h-12 opacity-50 -rotate-6"
-        />
-        
-        <img 
-          src={stationeryItems}
-          alt=""
-          className="absolute bottom-1/3 right-1/3 w-10 h-10 opacity-40 rotate-45"
-        />
-      </div>
 
       <main className="relative z-10 pt-20">
         {/* Page Title */}
