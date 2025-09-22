@@ -71,21 +71,21 @@ const Comics = () => {
       <main className="relative z-10 pt-24">
         {/* Comic Panel Title */}
         <div className="flex justify-center py-8 px-6">
-          <div className="relative bg-neutral-50 rounded-sm p-8 max-w-2xl mx-auto transform rotate-1 shadow-2xl">
+          <div className="relative bg-amber-50 p-8 max-w-2xl mx-auto transform rotate-1 shadow-2xl">
             {/* Hand-drawn continuous border lines */}
             <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ transform: 'rotate(1deg)' }}>
               <path d="M8,8 L calc(100% - 8px),8" stroke="#000" strokeWidth="3" fill="none" 
-                    strokeLinecap="round" style={{ filter: 'url(#roughen)' }} />
+                    strokeLinecap="round" strokeDasharray="1,2" style={{ filter: 'url(#roughen)' }} />
               <path d="M calc(100% - 8px),8 L calc(100% - 8px),calc(100% - 8px)" stroke="#000" strokeWidth="3" fill="none" 
-                    strokeLinecap="round" style={{ filter: 'url(#roughen)' }} />
+                    strokeLinecap="round" strokeDasharray="2,1" style={{ filter: 'url(#roughen)' }} />
               <path d="M calc(100% - 8px),calc(100% - 8px) L 8,calc(100% - 8px)" stroke="#000" strokeWidth="3" fill="none" 
-                    strokeLinecap="round" style={{ filter: 'url(#roughen)' }} />
+                    strokeLinecap="round" strokeDasharray="1,1" style={{ filter: 'url(#roughen)' }} />
               <path d="M 8,calc(100% - 8px) L 8,8" stroke="#000" strokeWidth="3" fill="none" 
-                    strokeLinecap="round" style={{ filter: 'url(#roughen)' }} />
+                    strokeLinecap="round" strokeDasharray="2,2" style={{ filter: 'url(#roughen)' }} />
               <defs>
                 <filter id="roughen">
-                  <feTurbulence baseFrequency="0.04" numOctaves="3" result="noise" seed="1"/>
-                  <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5"/>
+                  <feTurbulence baseFrequency="0.08" numOctaves="4" result="noise" seed="2"/>
+                  <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5"/>
                 </filter>
               </defs>
             </svg>
@@ -104,16 +104,16 @@ const Comics = () => {
         <div className="container mx-auto px-6 mt-12 mb-16">
           {/* God of Lies - Cover Left */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
-              <div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center lg:px-8">
+              <div className="flex justify-start">
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies comic cover"
-                  className="w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl"
+                  className="w-full max-w-md object-contain rounded-lg shadow-2xl"
                 />
               </div>
-              <div>
-                <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+              <div className="flex justify-end">
+                <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/20 max-w-lg w-full">
                   <h3 className="font-serif text-4xl font-bold text-white mb-6">
                     God of Lies
                   </h3>
@@ -127,16 +127,16 @@ const Comics = () => {
 
           {/* Surname Pendragon - Cover Right */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
-              <div className="lg:order-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center lg:px-8">
+              <div className="lg:order-2 flex justify-end">
                 <img 
                   src={surnameProPendragonCoverNew}
                   alt="Surname Pendragon comic cover"
-                  className="w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl"
+                  className="w-full max-w-md object-contain rounded-lg shadow-2xl"
                 />
               </div>
-              <div className="lg:order-1">
-                <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+              <div className="lg:order-1 flex justify-start">
+                <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/20 max-w-lg w-full">
                   <h3 className="font-serif text-4xl font-bold text-white mb-6">
                     Surname Pendragon
                   </h3>
