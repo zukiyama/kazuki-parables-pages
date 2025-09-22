@@ -72,20 +72,26 @@ const Comics = () => {
         {/* Comic Panel Title */}
         <div className="flex justify-center py-8 px-6">
           <div className="relative bg-amber-50 p-8 max-w-2xl mx-auto transform rotate-1 shadow-2xl">
-            {/* Hand-drawn continuous border lines */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ transform: 'rotate(1deg)' }}>
-              <path d="M8,8 L calc(100% - 8px),8" stroke="#000" strokeWidth="3" fill="none" 
-                    strokeLinecap="round" strokeDasharray="1,2" style={{ filter: 'url(#roughen)' }} />
-              <path d="M calc(100% - 8px),8 L calc(100% - 8px),calc(100% - 8px)" stroke="#000" strokeWidth="3" fill="none" 
-                    strokeLinecap="round" strokeDasharray="2,1" style={{ filter: 'url(#roughen)' }} />
-              <path d="M calc(100% - 8px),calc(100% - 8px) L 8,calc(100% - 8px)" stroke="#000" strokeWidth="3" fill="none" 
-                    strokeLinecap="round" strokeDasharray="1,1" style={{ filter: 'url(#roughen)' }} />
-              <path d="M 8,calc(100% - 8px) L 8,8" stroke="#000" strokeWidth="3" fill="none" 
-                    strokeLinecap="round" strokeDasharray="2,2" style={{ filter: 'url(#roughen)' }} />
+            {/* Hand-drawn comic panel border */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path d="M2,3 Q5,1 8,2 L15,3 Q20,2 25,3 L30,2 Q35,3 40,2 L45,3 Q50,1 55,2 L60,3 Q65,2 70,3 L75,2 Q80,3 85,2 L90,3 Q95,2 98,3 
+                       L97,8 Q98,12 97,15 L98,20 Q97,25 98,30 L97,35 Q98,40 97,45 L98,50 Q97,55 98,60 L97,65 Q98,70 97,75 L98,80 Q97,85 98,90 L97,95 Q95,98 90,97
+                       L85,98 Q80,97 75,98 L70,97 Q65,98 60,97 L55,98 Q50,99 45,97 L40,98 Q35,97 30,98 L25,97 Q20,98 15,97 L8,98 Q5,99 2,97
+                       L3,90 Q2,85 3,80 L2,75 Q3,70 2,65 L3,60 Q2,55 3,50 L2,45 Q3,40 2,35 L3,30 Q2,25 3,20 L2,15 Q3,10 2,8 Z" 
+                    stroke="#000" 
+                    strokeWidth="0.8" 
+                    fill="none" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    style={{ 
+                      transform: 'rotate(-1deg)',
+                      filter: 'url(#ink-roughen)' 
+                    }} 
+              />
               <defs>
-                <filter id="roughen">
-                  <feTurbulence baseFrequency="0.08" numOctaves="4" result="noise" seed="2"/>
-                  <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5"/>
+                <filter id="ink-roughen">
+                  <feTurbulence baseFrequency="0.15" numOctaves="3" result="noise" seed="3"/>
+                  <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.8"/>
                 </filter>
               </defs>
             </svg>
@@ -104,16 +110,16 @@ const Comics = () => {
         <div className="container mx-auto px-6 mt-12 mb-16">
           {/* God of Lies - Cover Left */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 items-center lg:px-12">
               <div className="flex justify-start">
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies comic cover"
-                  className="w-full max-w-md object-contain rounded-lg shadow-2xl"
+                  className="w-full max-w-sm object-contain rounded-lg shadow-2xl"
                 />
               </div>
               <div className="flex justify-end">
-                <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/20 max-w-lg w-full">
+                <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/20 max-w-md w-full">
                   <h3 className="font-serif text-4xl font-bold text-white mb-6">
                     God of Lies
                   </h3>
@@ -127,16 +133,16 @@ const Comics = () => {
 
           {/* Surname Pendragon - Cover Right */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 items-center lg:px-12">
               <div className="lg:order-2 flex justify-end">
                 <img 
                   src={surnameProPendragonCoverNew}
                   alt="Surname Pendragon comic cover"
-                  className="w-full max-w-md object-contain rounded-lg shadow-2xl"
+                  className="w-full max-w-sm object-contain rounded-lg shadow-2xl"
                 />
               </div>
               <div className="lg:order-1 flex justify-start">
-                <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/20 max-w-lg w-full">
+                <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/20 max-w-md w-full">
                   <h3 className="font-serif text-4xl font-bold text-white mb-6">
                     Surname Pendragon
                   </h3>
