@@ -71,7 +71,7 @@ const Comics = () => {
       <main className="relative z-10 pt-24">
         {/* Comic Panel Title */}
         <div className="flex justify-center py-8 px-6">
-          <div className="relative bg-stone-50 rounded-sm p-8 max-w-2xl mx-auto transform rotate-1 shadow-2xl">
+          <div className="relative bg-neutral-50 rounded-sm p-8 max-w-2xl mx-auto transform rotate-1 shadow-2xl">
             {/* Hand-drawn continuous border lines */}
             <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ transform: 'rotate(1deg)' }}>
               <path d="M8,8 L calc(100% - 8px),8" stroke="#000" strokeWidth="3" fill="none" 
@@ -104,7 +104,7 @@ const Comics = () => {
         <div className="container mx-auto px-6 mt-12 mb-16">
           {/* God of Lies - Cover Left */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
               <div>
                 <img 
                   src={godOfLiesCover}
@@ -127,7 +127,7 @@ const Comics = () => {
 
           {/* Surname Pendragon - Cover Right */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
               <div className="lg:order-2">
                 <img 
                   src={surnameProPendragonCoverNew}
