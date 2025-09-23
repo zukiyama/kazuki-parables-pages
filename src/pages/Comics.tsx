@@ -1,9 +1,10 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
-import godOfLiesCover from "@/assets/god-of-lies-cover.jpg";
-import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-new.jpg";
-import woodenDeskBackground from "@/assets/wooden-desk-with-stickers.png";
-import soulTiedCover from "@/assets/soul-tied-cover.jpg";
+import { ScrollFadeUp } from "@/components/ScrollAnimations";
+import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
+import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-updated.png";
+import chalkDrawingsBackground from "@/assets/chalk-drawings-background.png";
+import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
 import theBurdenCover from "@/assets/the-burden-cover.jpg";
 import mrMiracleCover from "@/assets/mr-miracle-cover.jpg";
 import godsCover from "@/assets/gods-cover.jpg";
@@ -61,7 +62,7 @@ const Comics = () => {
         <div 
           className="w-full h-full bg-cover bg-center"
           style={{ 
-            backgroundImage: `url(${woodenDeskBackground})`
+            backgroundImage: `url(${chalkDrawingsBackground})`
           }}
         />
       </div>
@@ -69,40 +70,15 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative z-10 pt-24">
-        {/* Comic Panel Title */}
+        {/* Comic Panel Title - Simplified */}
         <div className="flex justify-center py-8 px-6">
-          <div className="relative bg-amber-50 p-8 max-w-2xl mx-auto transform rotate-1 shadow-2xl">
-            {/* Hand-drawn comic panel border */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <path d="M2,3 Q5,1 8,2 L15,3 Q20,2 25,3 L30,2 Q35,3 40,2 L45,3 Q50,1 55,2 L60,3 Q65,2 70,3 L75,2 Q80,3 85,2 L90,3 Q95,2 98,3 
-                       L97,8 Q98,12 97,15 L98,20 Q97,25 98,30 L97,35 Q98,40 97,45 L98,50 Q97,55 98,60 L97,65 Q98,70 97,75 L98,80 Q97,85 98,90 L97,95 Q95,98 90,97
-                       L85,98 Q80,97 75,98 L70,97 Q65,98 60,97 L55,98 Q50,99 45,97 L40,98 Q35,97 30,98 L25,97 Q20,98 15,97 L8,98 Q5,99 2,97
-                       L3,90 Q2,85 3,80 L2,75 Q3,70 2,65 L3,60 Q2,55 3,50 L2,45 Q3,40 2,35 L3,30 Q2,25 3,20 L2,15 Q3,10 2,8 Z" 
-                    stroke="#000" 
-                    strokeWidth="0.8" 
-                    fill="none" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                    style={{ 
-                      transform: 'rotate(-1deg)',
-                      filter: 'url(#ink-roughen)' 
-                    }} 
-              />
-              <defs>
-                <filter id="ink-roughen">
-                  <feTurbulence baseFrequency="0.15" numOctaves="3" result="noise" seed="3"/>
-                  <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.8"/>
-                </filter>
-              </defs>
-            </svg>
-            <div className="relative z-10">
-              <h1 className="font-comic text-5xl font-bold text-black mb-4 text-center tracking-wide">
-                COMICS
-              </h1>
-              <p className="font-comic text-lg text-black text-center leading-relaxed">
-                Korean style web comics and manga with original stories and characters!
-              </p>
-            </div>
+          <div className="text-center">
+            <h1 className="font-serif text-6xl font-bold text-white mb-4 tracking-wide drop-shadow-2xl">
+              COMICS
+            </h1>
+            <p className="font-serif text-xl text-white leading-relaxed drop-shadow-lg">
+              Korean style web comics and manga with original stories and characters!
+            </p>
           </div>
         </div>
 
@@ -110,16 +86,16 @@ const Comics = () => {
         <div className="container mx-auto px-6 mt-12 mb-16">
           {/* God of Lies - Cover Left */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 items-center lg:px-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center lg:px-8">
               <div className="flex justify-start">
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies comic cover"
-                  className="w-full max-w-sm object-contain rounded-lg shadow-2xl"
+                  className="w-full max-w-sm object-contain shadow-2xl"
                 />
               </div>
               <div className="flex justify-end">
-                <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/20 max-w-md w-full">
+                <div className="bg-black/20 backdrop-blur-sm p-6 border border-white/20 max-w-md w-full">
                   <h3 className="font-serif text-4xl font-bold text-white mb-6">
                     God of Lies
                   </h3>
@@ -133,16 +109,16 @@ const Comics = () => {
 
           {/* Surname Pendragon - Cover Right */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 items-center lg:px-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center lg:px-8">
               <div className="lg:order-2 flex justify-end">
                 <img 
                   src={surnameProPendragonCoverNew}
                   alt="Surname Pendragon comic cover"
-                  className="w-full max-w-sm object-contain rounded-lg shadow-2xl"
+                  className="w-full max-w-sm object-contain shadow-2xl"
                 />
               </div>
               <div className="lg:order-1 flex justify-start">
-                <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/20 max-w-md w-full">
+                <div className="bg-black/20 backdrop-blur-sm p-6 border border-white/20 max-w-md w-full">
                   <h3 className="font-serif text-4xl font-bold text-white mb-6">
                     Surname Pendragon
                   </h3>
@@ -165,17 +141,18 @@ const Comics = () => {
           <div className="mb-12">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
               {smallShelfComics.slice(0, 3).map((comic, index) => (
-                <div 
-                  key={comic.title}
-                  className="cursor-pointer group"
-                  onClick={() => handleComicClick(comic)}
-                >
-                  <img 
-                    src={comic.cover}
-                    alt={`${comic.title} comic cover`}
-                    className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 rounded-lg"
-                  />
-                </div>
+                <ScrollFadeUp key={comic.title} id={`comic-${index}`} delay={index * 200}>
+                  <div 
+                    className="cursor-pointer group"
+                    onClick={() => handleComicClick(comic)}
+                  >
+                    <img 
+                      src={comic.cover}
+                      alt={`${comic.title} comic cover`}
+                      className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                </ScrollFadeUp>
               ))}
             </div>
           </div>
@@ -184,17 +161,18 @@ const Comics = () => {
           <div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
               {smallShelfComics.slice(3, 6).map((comic, index) => (
-                <div 
-                  key={comic.title}
-                  className="cursor-pointer group"
-                  onClick={() => handleComicClick(comic)}
-                >
-                  <img 
-                    src={comic.cover}
-                    alt={`${comic.title} comic cover`}
-                    className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 rounded-lg"
-                  />
-                </div>
+                <ScrollFadeUp key={comic.title} id={`comic-${index + 3}`} delay={(index + 3) * 200}>
+                  <div 
+                    className="cursor-pointer group"
+                    onClick={() => handleComicClick(comic)}
+                  >
+                    <img 
+                      src={comic.cover}
+                      alt={`${comic.title} comic cover`}
+                      className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                </ScrollFadeUp>
               ))}
             </div>
           </div>
@@ -215,7 +193,7 @@ const Comics = () => {
               <img 
                 src={selectedComic.cover}
                 alt={`${selectedComic.title} comic cover`}
-                className="w-full max-w-lg shadow-2xl rounded-xl"
+                className="w-full max-w-lg shadow-2xl"
               />
             </div>
             <div className="flex flex-col justify-center">
