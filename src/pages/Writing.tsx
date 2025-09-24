@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import Navigation from "@/components/Navigation";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungAdultSlideshow";
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
@@ -28,27 +27,10 @@ import viceVersaCover from "@/assets/vice-versa-cover.jpg";
 import amyaCover from "@/assets/amya-cover.png";
 import statesOfMotionCover from "@/assets/states-of-motion-cover.png";
 
-// KAIJU Gallery Images
-import schoolMorning from "@/assets/school-morning-1.jpg";
-import schoolFestival from "@/assets/school-festival-1.jpg";
-import schoolPanoramic from "@/assets/school-panoramic-1.jpg";
-import schoolyardGroup from "@/assets/schoolyard-group-1.jpg";
-import boysRunning from "@/assets/boys-running-1.jpg";
-import boysSummerField from "@/assets/boys-summer-field-1970s.jpg";
-import japan1970sBoys from "@/assets/japan-1970s-boys-1.jpg";
-import playgroundScene from "@/assets/playground-scene.jpg";
-import playgroundSunset from "@/assets/playground-sunset-1.jpg";
-import silverEyedGirlPlayground from "@/assets/silver-eyed-girl-playground-1.jpg";
-import residentialAerial from "@/assets/residential-aerial-1.jpg";
-import residentialWide from "@/assets/residential-wide-1.jpg";
-
 const Writing = () => {
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [currentBookCover, setCurrentBookCover] = useState(kaijuCover);
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -145,47 +127,6 @@ const Writing = () => {
     handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
   }, [currentYoungAdultBook]);
-
-  // KAIJU Gallery Images
-  const kaijuGalleryImages = [
-    { src: schoolMorning, alt: "School morning scene" },
-    { src: schoolFestival, alt: "School festival" },
-    { src: schoolPanoramic, alt: "School panoramic view" },
-    { src: schoolyardGroup, alt: "Group in schoolyard" },
-    { src: boysRunning, alt: "Boys running" },
-    { src: boysSummerField, alt: "Boys in summer field 1970s" },
-    { src: japan1970sBoys, alt: "Japan 1970s boys" },
-    { src: playgroundScene, alt: "Playground scene" },
-    { src: playgroundSunset, alt: "Playground at sunset" },
-    { src: silverEyedGirlPlayground, alt: "Silver-eyed girl at playground" },
-    { src: residentialAerial, alt: "Residential area aerial view" },
-    { src: residentialWide, alt: "Residential area wide view" }
-  ];
-
-  const handleGalleryImageClick = (imageSrc: string, index: number) => {
-    setCurrentBookCover(imageSrc);
-  };
-
-  const handleBookCoverClick = () => {
-    setSelectedImage(currentBookCover);
-    setCurrentImageIndex(kaijuGalleryImages.findIndex(img => img.src === currentBookCover) || 0);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedImage(null);
-  };
-
-  const handlePrevImage = () => {
-    const newIndex = currentImageIndex === 0 ? kaijuGalleryImages.length - 1 : currentImageIndex - 1;
-    setCurrentImageIndex(newIndex);
-    setSelectedImage(kaijuGalleryImages[newIndex].src);
-  };
-
-  const handleNextImage = () => {
-    const newIndex = currentImageIndex === kaijuGalleryImages.length - 1 ? 0 : currentImageIndex + 1;
-    setCurrentImageIndex(newIndex);
-    setSelectedImage(kaijuGalleryImages[newIndex].src);
-  };
 
   const handleBookClick = (bookId: string, slideToBook?: number) => {
     // If it's a young adult book, set the slideshow to show that book IMMEDIATELY
@@ -303,18 +244,12 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <div onClick={handleBookCoverClick} className="cursor-pointer">
-                    <div className="relative group">
-                      <div className="aspect-[2/3] bg-black rounded-lg border border-white/30 overflow-hidden">
-                        <img
-                          src={currentBookCover}
-                          alt="KAIJU Book Cover"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                      <h3 className="font-serif text-2xl font-bold text-white text-center mt-4">KAIJU</h3>
-                    </div>
-                  </div>
+                  <BookCoverSlideshow 
+                    covers={[
+                      { image: kaijuCover, alt: "KAIJU - Book One Cover" }
+                    ]}
+                    title="KAIJU"
+                  />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
@@ -329,30 +264,6 @@ const Writing = () => {
                     <p className="font-serif text-lg leading-relaxed text-white">
                       A mystery unfolds in a small Japanese town in summer 1979, where a group of boys discover that no one remembers how they got there. Strange creatures appear in the sky while the children search for answers in their forgotten past.
                     </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* KAIJU Image Gallery Strip */}
-              <div className={`mt-8 flex justify-start transition-all duration-1000 delay-700 ${
-                visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}>
-                <div className="w-full max-w-md">
-                  <div className="flex overflow-x-auto space-x-2 pb-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/20">
-                    {kaijuGalleryImages.map((image, index) => (
-                      <div
-                        key={index}
-                        className="flex-shrink-0 cursor-pointer group"
-                        onClick={() => handleGalleryImageClick(image.src, index)}
-                      >
-                        <img
-                          src={image.src}
-                          alt={image.alt}
-                          className="w-16 h-12 object-cover border border-white/30 rounded transition-all duration-300 group-hover:border-yellow-300 group-hover:scale-105"
-                          loading="lazy"
-                        />
-                      </div>
-                    ))}
                   </div>
                 </div>
               </div>
@@ -581,57 +492,6 @@ const Writing = () => {
           </div>
         </section>
       </main>
-
-      {/* Image Modal */}
-      {selectedImage && (
-        <div 
-          className="fixed inset-0 bg-black/90 flex items-center justify-center z-50"
-          onClick={handleCloseModal}
-        >
-          <div className="relative max-w-4xl max-h-full p-4">
-            <img
-              src={selectedImage}
-              alt="Gallery image"
-              className="max-w-full max-h-full object-contain"
-              onClick={(e) => e.stopPropagation()}
-            />
-            
-            {/* Close button */}
-            <button
-              onClick={handleCloseModal}
-              className="absolute top-4 right-4 text-white hover:text-yellow-300 transition-colors"
-            >
-              <X size={32} />
-            </button>
-            
-            {/* Navigation arrows */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handlePrevImage();
-              }}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-yellow-300 transition-colors"
-            >
-              <ChevronLeft size={48} />
-            </button>
-            
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleNextImage();
-              }}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-yellow-300 transition-colors"
-            >
-              <ChevronRight size={48} />
-            </button>
-            
-            {/* Image counter */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/60 text-white px-3 py-1 rounded">
-              {currentImageIndex + 1} / {kaijuGalleryImages.length}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
