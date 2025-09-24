@@ -48,6 +48,7 @@ const Writing = () => {
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentBookCover, setCurrentBookCover] = useState(kaijuCover);
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -161,9 +162,13 @@ const Writing = () => {
     { src: residentialWide, alt: "Residential area wide view" }
   ];
 
-  const handleImageClick = (imageSrc: string, index: number) => {
-    setSelectedImage(imageSrc);
-    setCurrentImageIndex(index);
+  const handleGalleryImageClick = (imageSrc: string, index: number) => {
+    setCurrentBookCover(imageSrc);
+  };
+
+  const handleBookCoverClick = () => {
+    setSelectedImage(currentBookCover);
+    setCurrentImageIndex(kaijuGalleryImages.findIndex(img => img.src === currentBookCover) || 0);
   };
 
   const handleCloseModal = () => {
@@ -171,13 +176,15 @@ const Writing = () => {
   };
 
   const handlePrevImage = () => {
-    setCurrentImageIndex((prev) => (prev === 0 ? kaijuGalleryImages.length - 1 : prev - 1));
-    setSelectedImage(kaijuGalleryImages[currentImageIndex === 0 ? kaijuGalleryImages.length - 1 : currentImageIndex - 1].src);
+    const newIndex = currentImageIndex === 0 ? kaijuGalleryImages.length - 1 : currentImageIndex - 1;
+    setCurrentImageIndex(newIndex);
+    setSelectedImage(kaijuGalleryImages[newIndex].src);
   };
 
   const handleNextImage = () => {
-    setCurrentImageIndex((prev) => (prev === kaijuGalleryImages.length - 1 ? 0 : prev + 1));
-    setSelectedImage(kaijuGalleryImages[currentImageIndex === kaijuGalleryImages.length - 1 ? 0 : currentImageIndex + 1].src);
+    const newIndex = currentImageIndex === kaijuGalleryImages.length - 1 ? 0 : currentImageIndex + 1;
+    setCurrentImageIndex(newIndex);
+    setSelectedImage(kaijuGalleryImages[newIndex].src);
   };
 
   const handleBookClick = (bookId: string, slideToBook?: number) => {
@@ -296,12 +303,18 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <BookCoverSlideshow 
-                    covers={[
-                      { image: kaijuCover, alt: "KAIJU - Book One Cover" }
-                    ]}
-                    title="KAIJU"
-                  />
+                  <div onClick={handleBookCoverClick} className="cursor-pointer">
+                    <div className="relative group">
+                      <div className="aspect-[2/3] bg-black rounded-lg border border-white/30 overflow-hidden">
+                        <img
+                          src={currentBookCover}
+                          alt="KAIJU Book Cover"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <h3 className="font-serif text-2xl font-bold text-white text-center mt-4">KAIJU</h3>
+                    </div>
+                  </div>
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
@@ -321,22 +334,21 @@ const Writing = () => {
               </div>
 
               {/* KAIJU Image Gallery Strip */}
-              <div className={`mt-12 transition-all duration-1000 delay-700 ${
+              <div className={`mt-8 flex justify-start transition-all duration-1000 delay-700 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
-                <div className="bg-black/40 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                  <h3 className="font-serif text-xl text-yellow-300 mb-4 text-center">Visual Gallery</h3>
-                  <div className="flex overflow-x-auto space-x-4 pb-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/20">
+                <div className="w-full max-w-md">
+                  <div className="flex overflow-x-auto space-x-2 pb-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/20">
                     {kaijuGalleryImages.map((image, index) => (
                       <div
                         key={index}
                         className="flex-shrink-0 cursor-pointer group"
-                        onClick={() => handleImageClick(image.src, index)}
+                        onClick={() => handleGalleryImageClick(image.src, index)}
                       >
                         <img
                           src={image.src}
                           alt={image.alt}
-                          className="w-32 h-20 object-cover border border-white/30 transition-all duration-300 group-hover:border-yellow-300 group-hover:scale-105"
+                          className="w-16 h-12 object-cover border border-white/30 rounded transition-all duration-300 group-hover:border-yellow-300 group-hover:scale-105"
                           loading="lazy"
                         />
                       </div>
