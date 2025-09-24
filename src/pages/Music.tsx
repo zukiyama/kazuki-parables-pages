@@ -292,14 +292,54 @@ const Music = () => {
             </p>
           </div>
           
-          {/* Video Player - Moved to top */}
+          {/* Video Player - Cassette Deck Style */}
           <div className="mb-16" ref={videoRef}>
             <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20">
-              <div className="aspect-video bg-black rounded-lg flex items-center justify-center">
-                <div className="text-white/60 text-center">
-                  <div className="text-6xl mb-4">🎬</div>
-                  <p className="text-lg font-serif">🎬 Watch the video for the new single OHIO! 🎬</p>
-                  <p className="text-sm">Coming soon...</p>
+              <div className="relative aspect-video bg-black rounded-lg overflow-hidden group">
+                <video 
+                  className="w-full h-full object-cover"
+                  poster="/src/assets/ohio-cassette-deck.jpg"
+                  controls={false}
+                  id="ohio-video"
+                >
+                  <source src="" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                
+                {/* Custom Cassette Deck Play Button */}
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-all duration-300">
+                  <button 
+                    className="relative w-20 h-20 bg-gradient-to-b from-gray-300 to-gray-600 rounded-sm shadow-lg border-2 border-gray-400 hover:from-gray-200 hover:to-gray-500 transition-all duration-200 active:scale-95"
+                    onClick={() => {
+                      const video = document.getElementById('ohio-video') as HTMLVideoElement;
+                      if (video) {
+                        if (video.paused) {
+                          video.play();
+                        } else {
+                          video.pause();
+                        }
+                      }
+                    }}
+                  >
+                    {/* Play button inner design - vintage cassette style */}
+                    <div className="absolute inset-1 bg-gradient-to-b from-gray-200 to-gray-400 rounded-sm">
+                      <div className="absolute inset-2 bg-black rounded-sm flex items-center justify-center">
+                        <div className="w-0 h-0 border-l-[8px] border-l-white border-y-[6px] border-y-transparent ml-1"></div>
+                      </div>
+                    </div>
+                    
+                    {/* Button label */}
+                    <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
+                      <span className="text-white/80 text-xs font-mono uppercase tracking-wider">PLAY</span>
+                    </div>
+                  </button>
+                </div>
+                
+                {/* Cassette Deck Info */}
+                <div className="absolute top-4 left-4">
+                  <div className="bg-black/60 backdrop-blur-sm rounded px-3 py-1">
+                    <span className="text-white/90 text-sm font-mono uppercase tracking-wider">OHIO - Single</span>
+                  </div>
                 </div>
               </div>
             </div>
