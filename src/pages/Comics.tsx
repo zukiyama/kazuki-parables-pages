@@ -3,11 +3,11 @@ import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-updated.png";
-import chalkDrawingsBackground from "@/assets/chalk-drawings-background.png";
+import chalkUfoBackground from "@/assets/chalk-ufo-background.jpeg";
 import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
-import theBurdenCover from "@/assets/the-burden-cover.jpg";
-import mrMiracleCover from "@/assets/mr-miracle-cover.jpg";
-import godsCover from "@/assets/gods-cover.jpg";
+import burdenCoverNew from "@/assets/burden-cover-new.png";
+import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
+import spaceIdolCover from "@/assets/space-idol-cover.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCover from "@/assets/oranges-gold-cover.jpg";
 
@@ -16,12 +16,12 @@ const Comics = () => {
 
   const smallShelfComics = [
     {
-      cover: theBurdenCover,
+      cover: burdenCoverNew,
       title: "The Burden",
       description: "A touching story about a young man who must care for his aging mother, exploring themes of family duty, sacrifice, and the weight of responsibility. As memories float between past and present, both son and mother navigate the delicate balance between independence and care."
     },
     {
-      cover: mrMiracleCover,
+      cover: mrMiracleCoverNew,
       title: "Mr. Miracle", 
       description: "A mysterious 40-year-old man moves into a tight-knit neighborhood where everyone knows everyone's business. Unmarried and with no known background, he becomes the subject of intense gossip among the local ladies. But as the community slowly gets to know him, perceptions begin to change in unexpected ways."
     },
@@ -31,8 +31,8 @@ const Comics = () => {
       description: "Two men, bound by fate yet worlds apart in their choices. One embraces chaos with casual indifference, while the other fights desperately to maintain control. Their intertwined destinies force them to confront what it means to be truly connected to another soul."
     },
     {
-      cover: godsCover,
-      title: "Gods!",
+      cover: spaceIdolCover,
+      title: "Space Idol",
       description: "Set on a cosmic space station where idol-gods from different galaxies meet for a rare cosmic gathering. When disaster strikes and invasion threatens, a cynical female security officer who despises space idols and their fanatic followers must protect the very beings she can't stand. It's the worst day of her career."
     },
     {
@@ -62,7 +62,7 @@ const Comics = () => {
         <div 
           className="w-full h-full bg-cover bg-center"
           style={{ 
-            backgroundImage: `url(${chalkDrawingsBackground})`
+            backgroundImage: `url(${chalkUfoBackground})`
           }}
         />
       </div>
@@ -86,15 +86,15 @@ const Comics = () => {
         <div className="container mx-auto px-6 mt-12 mb-16">
           {/* God of Lies - Cover Left */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center lg:px-8">
-              <div className="flex justify-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 items-center lg:px-8">
+              <div className="flex justify-center lg:justify-end lg:pr-3">
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies comic cover"
                   className="w-full max-w-sm object-contain shadow-2xl"
                 />
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-center lg:justify-start lg:pl-3">
                 <div className="bg-black/20 backdrop-blur-sm p-6 border border-white/20 max-w-md w-full">
                   <h3 className="font-serif text-4xl font-bold text-white mb-6">
                     God of Lies
@@ -109,15 +109,15 @@ const Comics = () => {
 
           {/* Surname Pendragon - Cover Right */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center lg:px-8">
-              <div className="lg:order-2 flex justify-end">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 items-center lg:px-8">
+              <div className="lg:order-2 flex justify-center lg:justify-start lg:pl-3">
                 <img 
                   src={surnameProPendragonCoverNew}
                   alt="Surname Pendragon comic cover"
                   className="w-full max-w-sm object-contain shadow-2xl"
                 />
               </div>
-              <div className="lg:order-1 flex justify-start">
+              <div className="lg:order-1 flex justify-center lg:justify-end lg:pr-3">
                 <div className="bg-black/20 backdrop-blur-sm p-6 border border-white/20 max-w-md w-full">
                   <h3 className="font-serif text-4xl font-bold text-white mb-6">
                     Surname Pendragon
