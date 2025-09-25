@@ -464,8 +464,8 @@ const Music = () => {
           <p className="font-serif text-white">
             Email: contact@kazukiyamakawa.com
           </p>
-          <p className="font-serif text-white text-sm mt-1">
-            all music copyright of Harper/Yamakawa
+          <p className="font-serif text-white text-xs mt-3">
+            All music copyright of Harper/Yamakawa
           </p>
         </div>
       </footer>

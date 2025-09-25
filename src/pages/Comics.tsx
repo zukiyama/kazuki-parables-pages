@@ -3,7 +3,7 @@ import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-updated.png";
-import chalkDrawingsBackground from "@/assets/chalk-drawings-background-new.png";
+import chalkFlowersBackground from "@/assets/chalk-flowers-background-new.jpeg";
 import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
 import burdenCoverNew from "@/assets/burden-cover-new.png";
 import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
@@ -62,7 +62,7 @@ const Comics = () => {
         <div 
           className="w-full h-full bg-cover bg-center"
           style={{ 
-            backgroundImage: `url(/src/assets/chalk-flowers-background.jpeg)`
+            backgroundImage: `url(${chalkFlowersBackground})`
           }}
         />
       </div>
@@ -86,15 +86,15 @@ const Comics = () => {
         <div className="container mx-auto px-6 mt-12 mb-16">
           {/* God of Lies - Cover Left */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center lg:px-8">
-              <div className="flex justify-center lg:justify-end lg:pr-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center lg:px-12">
+              <div className="flex justify-center lg:justify-end lg:pr-8">
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies comic cover"
                   className="w-full max-w-sm object-contain shadow-2xl"
                 />
               </div>
-              <div className="flex justify-center lg:justify-start lg:pl-4">
+              <div className="flex justify-center lg:justify-start lg:pl-8">
                 <div className="bg-black/20 backdrop-blur-sm p-6 border border-white/20 max-w-md w-full">
                   <h3 className="font-serif text-4xl font-bold text-white mb-6">
                     God of Lies
@@ -109,15 +109,15 @@ const Comics = () => {
 
           {/* Surname Pendragon - Cover Right */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center lg:px-8">
-              <div className="lg:order-2 flex justify-center lg:justify-start lg:pl-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center lg:px-12">
+              <div className="lg:order-2 flex justify-center lg:justify-start lg:pl-8">
                 <img 
                   src={surnameProPendragonCoverNew}
                   alt="Surname Pendragon comic cover"
                   className="w-full max-w-sm object-contain shadow-2xl"
                 />
               </div>
-              <div className="lg:order-1 flex justify-center lg:justify-end lg:pr-4">
+              <div className="lg:order-1 flex justify-center lg:justify-end lg:pr-8">
                 <div className="bg-black/20 backdrop-blur-sm p-6 border border-white/20 max-w-md w-full">
                   <h3 className="font-serif text-4xl font-bold text-white mb-6">
                     Surname Pendragon
