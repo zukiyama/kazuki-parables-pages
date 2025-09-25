@@ -186,14 +186,14 @@ const Writing = () => {
           src={amyaNewBackground} 
           alt="AMYA background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-125"
           style={{ opacity: backgroundOpacities.oba }}
         />
         <img 
           src={statesOfMotionBackground} 
           alt="States of Motion background"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-110"
           style={{ opacity: backgroundOpacities.statesOfMotion }}
         />
         <img 
