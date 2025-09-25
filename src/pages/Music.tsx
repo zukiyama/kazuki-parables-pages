@@ -459,13 +459,10 @@ const Music = () => {
         </div>
       </main>
       
-      <footer className="bg-card/80 backdrop-blur-md border-t border-border py-12 mt-20 relative z-10">
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-20 relative z-10">
         <div className="container mx-auto px-6 text-center">
           <p className="font-serif text-white">
             Email: contact@kazukiyamakawa.com
-          </p>
-          <p className="font-serif text-white/60 text-xs mt-4">
-            Copyright © 2025 Harper / Yamakawa
           </p>
         </div>
       </footer>

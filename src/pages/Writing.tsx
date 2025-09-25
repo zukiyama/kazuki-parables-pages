@@ -182,7 +182,7 @@ const Writing = () => {
           style={{ opacity: backgroundOpacities.viceVersa }}
         />
         <img 
-          src={amyaVillageBackground} 
+          src={require('@/assets/amya-new-background.png')} 
           alt="AMYA background"
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
@@ -341,7 +341,7 @@ const Writing = () => {
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className={`order-1 transition-all duration-1000 delay-300 ${
+                <div className={`lg:order-2 transition-all duration-1000 delay-300 ${
                   visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
                   <BookCoverSlideshow 
@@ -351,7 +351,7 @@ const Writing = () => {
                     title="AMYA"
                   />
                 </div>
-                <div className={`text-white order-2 transition-all duration-1000 delay-500 ${
+                <div className={`lg:order-1 text-white transition-all duration-1000 delay-500 ${
                   visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   <h2 className="font-serif text-5xl font-bold mb-6 text-shadow-lg">
@@ -492,6 +492,14 @@ const Writing = () => {
           </div>
         </section>
       </main>
+      
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-20 relative z-10">
+        <div className="container mx-auto px-6 text-center">
+          <p className="font-serif text-white">
+            Email: contact@kazukiyamakawa.com
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
