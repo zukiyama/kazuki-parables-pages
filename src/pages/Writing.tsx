@@ -12,6 +12,7 @@ import theMarketBackground from "@/assets/the-market-background-new.jpg";
 import howBackground from "@/assets/how-background.jpg";
 import viceVersaBackground from "@/assets/vice-versa-background.jpg";
 import amyaVillageBackground from "@/assets/amya-village-background.png";
+import amyaNewBackground from "@/assets/amya-new-background.png";
 import statesOfMotionBackground from "@/assets/states-of-motion-background.png";
 import wastelandCityBackground from "@/assets/land-dream-sky-background.png";
 import victorianLondonBackground from "@/assets/victorian-london-winter-background.jpg";
@@ -182,7 +183,7 @@ const Writing = () => {
           style={{ opacity: backgroundOpacities.viceVersa }}
         />
         <img 
-          src={require('@/assets/amya-new-background.png')} 
+          src={amyaNewBackground} 
           alt="AMYA background"
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
