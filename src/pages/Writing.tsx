@@ -272,7 +272,7 @@ const Writing = () => {
           </div>
         </section>
 
-        {/* HOAX Section */}
+        {/* HOAX Section - Fixed require error */}
         <section data-section="hoax" className="min-h-[90vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
