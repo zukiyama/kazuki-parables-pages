@@ -3,7 +3,7 @@ import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-updated.png";
-import chalkFlowersBackground from "@/assets/chalk-flowers-background-new.jpeg";
+import mangaSketchesBackground from "@/assets/manga-character-sketches-background.jpeg";
 import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
 import burdenCoverNew from "@/assets/burden-cover-new.png";
 import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
@@ -57,12 +57,12 @@ const Comics = () => {
 
   return (
     <div className="min-h-screen relative">
-      {/* Wooden Planks Background */}
+      {/* Manga Sketches Background */}
       <div className="fixed inset-0 pointer-events-none">
         <div 
-          className="w-full h-full bg-cover bg-center"
+          className="w-full h-full bg-cover bg-center opacity-80"
           style={{ 
-            backgroundImage: `url(${chalkFlowersBackground})`
+            backgroundImage: `url(${mangaSketchesBackground})`
           }}
         />
       </div>
@@ -71,12 +71,12 @@ const Comics = () => {
 
       <main className="relative z-10 pt-24">
         {/* Comic Panel Title - Simplified */}
-        <div className="flex justify-center py-20 px-6">
+        <div className="flex justify-center py-32 px-6">
           <div className="text-center">
-            <h1 className="font-serif text-6xl font-bold text-white mb-4 tracking-wide drop-shadow-2xl">
+            <h1 className="font-serif text-6xl font-bold text-black mb-4 tracking-wide drop-shadow-lg">
               COMICS
             </h1>
-            <p className="font-serif text-xl text-white leading-relaxed drop-shadow-lg">
+            <p className="font-serif text-xl text-amber-800 leading-relaxed drop-shadow-md">
               Korean style web comics and manga with original stories and characters!
             </p>
           </div>
@@ -86,22 +86,24 @@ const Comics = () => {
         <div className="container mx-auto px-6 mt-12 mb-16">
           {/* God of Lies - Cover Left */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center lg:px-12">
-              <div className="flex justify-center lg:justify-end lg:pr-8">
-                <img 
-                  src={godOfLiesCover}
-                  alt="God of Lies comic cover"
-                  className="w-full max-w-sm object-contain shadow-2xl"
-                />
-              </div>
-              <div className="flex justify-center lg:justify-start lg:pl-8">
-                <div className="bg-black/20 backdrop-blur-sm p-6 border border-white/20 max-w-md w-full">
-                  <h3 className="font-serif text-4xl font-bold text-white mb-6">
-                    God of Lies
-                  </h3>
-                  <p className="font-serif text-lg text-white leading-relaxed">
-                    A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
-                  </p>
+            <div className="max-w-7xl mx-auto px-6 lg:px-16">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+                <div className="flex justify-center lg:justify-start">
+                  <img 
+                    src={godOfLiesCover}
+                    alt="God of Lies comic cover"
+                    className="w-full max-w-sm object-contain shadow-2xl"
+                  />
+                </div>
+                <div className="flex justify-center lg:justify-end">
+                  <div className="max-w-md w-full">
+                    <h3 className="font-serif text-4xl font-bold text-black mb-6">
+                      God of Lies
+                    </h3>
+                    <p className="font-serif text-lg text-amber-800 leading-relaxed">
+                      A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -109,22 +111,24 @@ const Comics = () => {
 
           {/* Surname Pendragon - Cover Right */}
           <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center lg:px-12">
-              <div className="lg:order-2 flex justify-center lg:justify-start lg:pl-8">
-                <img 
-                  src={surnameProPendragonCoverNew}
-                  alt="Surname Pendragon comic cover"
-                  className="w-full max-w-sm object-contain shadow-2xl"
-                />
-              </div>
-              <div className="lg:order-1 flex justify-center lg:justify-end lg:pr-8">
-                <div className="bg-black/20 backdrop-blur-sm p-6 border border-white/20 max-w-md w-full">
-                  <h3 className="font-serif text-4xl font-bold text-white mb-6">
-                    Surname Pendragon
-                  </h3>
-                  <p className="font-serif text-lg text-white leading-relaxed">
-                    A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible.
-                  </p>
+            <div className="max-w-7xl mx-auto px-6 lg:px-16">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+                <div className="lg:order-1 flex justify-center lg:justify-start">
+                  <div className="max-w-md w-full">
+                    <h3 className="font-serif text-4xl font-bold text-black mb-6">
+                      Surname Pendragon
+                    </h3>
+                    <p className="font-serif text-lg text-amber-800 leading-relaxed">
+                      A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible.
+                    </p>
+                  </div>
+                </div>
+                <div className="lg:order-2 flex justify-center lg:justify-end">
+                  <img 
+                    src={surnameProPendragonCoverNew}
+                    alt="Surname Pendragon comic cover"
+                    className="w-full max-w-sm object-contain shadow-2xl"
+                  />
                 </div>
               </div>
             </div>
@@ -133,7 +137,7 @@ const Comics = () => {
 
         {/* Other Works Section */}
         <div className="container mx-auto px-6 pb-16">
-          <h2 className="font-serif text-4xl font-bold text-white mb-12 text-center drop-shadow-lg">
+          <h2 className="font-serif text-4xl font-bold text-black mb-12 text-center drop-shadow-lg">
             Upcoming
           </h2>
           
@@ -186,7 +190,7 @@ const Comics = () => {
           onClick={handleCloseModal}
         >
           <div 
-            className="bg-black/40 backdrop-blur-sm rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 border border-white/20"
+            className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 border border-gray-200"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-center">
@@ -197,15 +201,15 @@ const Comics = () => {
               />
             </div>
             <div className="flex flex-col justify-center">
-              <h3 className="font-serif text-4xl font-bold text-white mb-6">
+              <h3 className="font-serif text-4xl font-bold text-black mb-6">
                 {selectedComic.title}
               </h3>
-              <p className="font-serif text-lg text-white leading-relaxed">
+              <p className="font-serif text-lg text-amber-800 leading-relaxed">
                 {selectedComic.description}
               </p>
               <button
                 onClick={handleCloseModal}
-                className="mt-6 px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-lg font-semibold hover:bg-white/30 transition-colors self-start border border-white/40"
+                className="mt-6 px-6 py-3 bg-amber-800 text-white rounded-lg font-semibold hover:bg-amber-900 transition-colors self-start"
               >
                 Close
               </button>
