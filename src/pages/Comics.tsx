@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
-import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
-import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-updated.png";
+import godOfLiesCover from "@/assets/god-of-lies-wide-cover.png";
+import surnameProPendragonCoverNew from "@/assets/surname-pendragon-wide-cover.png";
 import mangaSketchesBackground from "@/assets/manga-character-sketches-background.jpeg";
 import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
 import burdenCoverNew from "@/assets/burden-cover-new.png";
@@ -84,19 +84,19 @@ const Comics = () => {
 
         {/* Featured Comics Section */}
         <div className="container mx-auto px-6 mt-12 mb-16">
-          {/* God of Lies - Cover Left */}
+          {/* God of Lies - Wide Cover Left, Summary Right */}
           <div className="mb-16">
-            <div className="max-w-7xl mx-auto px-6 lg:px-16">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-                <div className="flex justify-center lg:justify-start">
+            <div className="max-w-7xl mx-auto px-16">
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-center">
+                <div className="lg:col-span-3">
                   <img 
                     src={godOfLiesCover}
                     alt="God of Lies comic cover"
-                    className="w-full max-w-sm object-contain shadow-2xl"
+                    className="w-full object-contain shadow-2xl"
                   />
                 </div>
-                <div className="flex justify-center lg:justify-end">
-                  <div className="max-w-md w-full">
+                <div className="lg:col-span-1">
+                  <div className="w-full">
                     <h3 className="font-serif text-4xl font-bold text-black mb-6">
                       God of Lies
                     </h3>
@@ -109,25 +109,25 @@ const Comics = () => {
             </div>
           </div>
 
-          {/* Surname Pendragon - Cover Right */}
+          {/* Surname Pendragon - Summary Left, Wide Cover Right */}
           <div className="mb-16">
-            <div className="max-w-7xl mx-auto px-6 lg:px-16">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-                <div className="lg:order-1 flex justify-center lg:justify-start">
-                  <div className="max-w-md w-full">
+            <div className="max-w-7xl mx-auto px-16">
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-center">
+                <div className="lg:col-span-1">
+                  <div className="w-full">
                     <h3 className="font-serif text-4xl font-bold text-black mb-6">
                       Surname Pendragon
                     </h3>
                     <p className="font-serif text-lg text-amber-800 leading-relaxed">
-                      A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible.
+                      A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible. When mysterious events begin occurring around him and an ancient sword appears in his mundane life, he's thrust into a world where mythical beings walk among us and the fate of both the magical and mortal realms hangs in the balance. Guided by enigmatic mentors and pursued by dark forces, he must learn to harness powers he never knew he possessed while navigating the complexities of love, friendship, and the weight of an ancient legacy.
                     </p>
                   </div>
                 </div>
-                <div className="lg:order-2 flex justify-center lg:justify-end">
+                <div className="lg:col-span-3">
                   <img 
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"
-                    className="w-full max-w-sm object-contain shadow-2xl"
+                    className="w-full object-contain shadow-2xl"
                   />
                 </div>
               </div>
