@@ -60,7 +60,7 @@ const Comics = () => {
       {/* Manga Sketches Background */}
       <div className="fixed inset-0 pointer-events-none">
         <div 
-          className="w-full h-full bg-cover bg-center opacity-80"
+          className="w-full h-full bg-cover bg-center opacity-60"
           style={{ 
             backgroundImage: `url(${mangaSketchesBackground})`
           }}
