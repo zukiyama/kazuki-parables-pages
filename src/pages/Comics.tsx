@@ -3,7 +3,7 @@ import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-cover-updated.png";
-import chalkFlowersBackground from "@/assets/chalk-flowers-background-new.jpeg";
+import japaneseComicStreetBackground from "@/assets/japanese-comic-street-background.png";
 import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
 import burdenCoverNew from "@/assets/burden-cover-new.png";
 import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
@@ -62,7 +62,7 @@ const Comics = () => {
         <div 
           className="w-full h-full bg-cover bg-center"
           style={{ 
-            backgroundImage: `url(${chalkFlowersBackground})`
+            backgroundImage: `url(${japaneseComicStreetBackground})`
           }}
         />
       </div>
