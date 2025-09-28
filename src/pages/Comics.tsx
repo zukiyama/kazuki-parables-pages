@@ -2,8 +2,8 @@ import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import godOfLiesCover from "@/assets/god-of-lies-wide-cover.png";
-import surnameProPendragonCoverNew from "@/assets/surname-pendragon-wide-cover.png";
 import mangaSketchesBackground from "@/assets/manga-character-sketches-background.jpeg";
+import surnameProPendragonCover from "@/assets/surname-pendragon-cover-updated.png";
 import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
 import burdenCoverNew from "@/assets/burden-cover-new.png";
 import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
@@ -14,36 +14,48 @@ import orangesGoldCover from "@/assets/oranges-gold-cover.jpg";
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string} | null>(null);
 
-  const smallShelfComics = [
+  const forthcomingComics = [
+    {
+      cover: surnameProPendragonCover,
+      title: "Surname Pendragon",
+      description: "A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible.",
+      layout: "image-left"
+    },
     {
       cover: burdenCoverNew,
       title: "The Burden",
-      description: "A touching story about a young man who must care for his aging mother, exploring themes of family duty, sacrifice, and the weight of responsibility. As memories float between past and present, both son and mother navigate the delicate balance between independence and care."
+      description: "A touching story about a young man who must care for his aging mother, exploring themes of family duty, sacrifice, and the weight of responsibility. As memories float between past and present, both son and mother navigate the delicate balance between independence and care.",
+      layout: "text-left"
     },
     {
       cover: mrMiracleCoverNew,
       title: "Mr. Miracle", 
-      description: "A mysterious 40-year-old man moves into a tight-knit neighborhood where everyone knows everyone's business. Unmarried and with no known background, he becomes the subject of intense gossip among the local ladies. But as the community slowly gets to know him, perceptions begin to change in unexpected ways."
+      description: "A mysterious 40-year-old man moves into a tight-knit neighborhood where everyone knows everyone's business. Unmarried and with no known background, he becomes the subject of intense gossip among the local ladies. But as the community slowly gets to know him, perceptions begin to change in unexpected ways.",
+      layout: "image-top"
     },
     {
       cover: soulTiedCover,
       title: "Soul Tied",
-      description: "Two men, bound by fate yet worlds apart in their choices. One embraces chaos with casual indifference, while the other fights desperately to maintain control. Their intertwined destinies force them to confront what it means to be truly connected to another soul."
+      description: "Two men, bound by fate yet worlds apart in their choices. One embraces chaos with casual indifference, while the other fights desperately to maintain control. Their intertwined destinies force them to confront what it means to be truly connected to another soul.",
+      layout: "text-left"
     },
     {
       cover: spaceIdolCover,
       title: "Space Idol",
-      description: "Set on a cosmic space station where idol-gods from different galaxies meet for a rare cosmic gathering. When disaster strikes and invasion threatens, a cynical female security officer who despises space idols and their fanatic followers must protect the very beings she can't stand. It's the worst day of her career."
+      description: "Set on a cosmic space station where idol-gods from different galaxies meet for a rare cosmic gathering. When disaster strikes and invasion threatens, a cynical female security officer who despises space idols and their fanatic followers must protect the very beings she can't stand. It's the worst day of her career.",
+      layout: "image-left"
     },
     {
       cover: scriptedCover,
       title: "Scripted",
-      description: "A group of actors keep being reincarnated in different shows as different characters with no memory of their past roles. But relationships from previous shows start bleeding through. When they seek help to uncover their past lives, they begin to question reality itself. Are they actors? Or is being actors just another script? And if so... who's watching?"
+      description: "A group of actors keep being reincarnated in different shows as different characters with no memory of their past roles. But relationships from previous shows start bleeding through. When they seek help to uncover their past lives, they begin to question reality itself. Are they actors? Or is being actors just another script? And if so... who's watching?",
+      layout: "image-top"
     },
     {
       cover: orangesGoldCover,
       title: "Oranges are Made of Gold",
-      description: "A 99-year-old Korean CEO controls a vast orange empire built on rare oranges that grow only on Jeju Island. Instead of naming an heir, he forces his two sons to compete - whoever makes the most profit in one year inherits everything. A tale spanning generations, exploring family legacy, competition, and the price of empire."
+      description: "A 99-year-old Korean CEO controls a vast orange empire built on rare oranges that grow only on Jeju Island. Instead of naming an heir, he forces his two sons to compete - whoever makes the most profit in one year inherits everything. A tale spanning generations, exploring family legacy, competition, and the price of empire.",
+      layout: "text-left"
     }
   ];
 
@@ -109,76 +121,90 @@ const Comics = () => {
             </div>
           </div>
 
-          {/* Surname Pendragon - Summary Left, Wide Cover Right */}
-          <div className="mb-16">
-            <div className="max-w-7xl mx-auto px-16">
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-center">
-                <div className="lg:col-span-1">
-                  <div className="w-full">
-                    <h3 className="font-serif text-4xl font-bold text-black mb-6">
-                      Surname Pendragon
-                    </h3>
-                    <p className="font-serif text-lg text-amber-800 leading-relaxed">
-                      A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible. When mysterious events begin occurring around him and an ancient sword appears in his mundane life, he's thrust into a world where mythical beings walk among us and the fate of both the magical and mortal realms hangs in the balance. Guided by enigmatic mentors and pursued by dark forces, he must learn to harness powers he never knew he possessed while navigating the complexities of love, friendship, and the weight of an ancient legacy.
-                    </p>
-                  </div>
-                </div>
-                <div className="lg:col-span-3">
-                  <img 
-                    src={surnameProPendragonCoverNew}
-                    alt="Surname Pendragon comic cover"
-                    className="w-full object-contain shadow-2xl"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
-        {/* Other Works Section */}
+        {/* Forthcoming Comics Section - Newspaper Style */}
         <div className="container mx-auto px-6 pb-16">
           <h2 className="font-serif text-4xl font-bold text-black mb-12 text-center drop-shadow-lg">
-            Upcoming
+            Forthcoming
           </h2>
           
-          {/* First Row */}
-          <div className="mb-12">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
-              {smallShelfComics.slice(0, 3).map((comic, index) => (
-                <ScrollFadeUp key={comic.title} id={`comic-${index}`} delay={index * 200}>
-                  <div 
-                    className="cursor-pointer group"
-                    onClick={() => handleComicClick(comic)}
-                  >
-                    <img 
-                      src={comic.cover}
-                      alt={`${comic.title} comic cover`}
-                      className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                </ScrollFadeUp>
-              ))}
-            </div>
-          </div>
-
-          {/* Second Row */}
-          <div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
-              {smallShelfComics.slice(3, 6).map((comic, index) => (
-                <ScrollFadeUp key={comic.title} id={`comic-${index + 3}`} delay={(index + 3) * 200}>
-                  <div 
-                    className="cursor-pointer group"
-                    onClick={() => handleComicClick(comic)}
-                  >
-                    <img 
-                      src={comic.cover}
-                      alt={`${comic.title} comic cover`}
-                      className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                </ScrollFadeUp>
-              ))}
-            </div>
+          <div className="max-w-7xl mx-auto space-y-8">
+            {forthcomingComics.map((comic, index) => {
+              if (comic.layout === "image-left") {
+                return (
+                  <ScrollFadeUp key={comic.title} id={`comic-${index}`} delay={index * 100}>
+                    <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg p-6 mb-6 border border-gray-200">
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                        <div className="lg:col-span-1">
+                          <img 
+                            src={comic.cover}
+                            alt={`${comic.title} comic cover`}
+                            className="w-full max-w-xs mx-auto cursor-pointer shadow-xl transform hover:scale-105 transition-transform duration-300"
+                            onClick={() => handleComicClick(comic)}
+                          />
+                        </div>
+                        <div className="lg:col-span-2">
+                          <h3 className="font-serif text-2xl font-bold text-black mb-4">
+                            {comic.title}
+                          </h3>
+                          <p className="font-serif text-base text-amber-800 leading-relaxed">
+                            {comic.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </ScrollFadeUp>
+                );
+              } else if (comic.layout === "text-left") {
+                return (
+                  <ScrollFadeUp key={comic.title} id={`comic-${index}`} delay={index * 100}>
+                    <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg p-6 mb-6 border border-gray-200">
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                        <div className="lg:col-span-2 lg:order-1">
+                          <h3 className="font-serif text-2xl font-bold text-black mb-4">
+                            {comic.title}
+                          </h3>
+                          <p className="font-serif text-base text-amber-800 leading-relaxed">
+                            {comic.description}
+                          </p>
+                        </div>
+                        <div className="lg:col-span-1 lg:order-2">
+                          <img 
+                            src={comic.cover}
+                            alt={`${comic.title} comic cover`}
+                            className="w-full max-w-xs mx-auto cursor-pointer shadow-xl transform hover:scale-105 transition-transform duration-300"
+                            onClick={() => handleComicClick(comic)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </ScrollFadeUp>
+                );
+              } else {
+                // image-top layout
+                return (
+                  <ScrollFadeUp key={comic.title} id={`comic-${index}`} delay={index * 100}>
+                    <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg p-6 mb-6 border border-gray-200">
+                      <div className="max-w-md mx-auto text-center">
+                        <img 
+                          src={comic.cover}
+                          alt={`${comic.title} comic cover`}
+                          className="w-full max-w-xs mx-auto mb-4 cursor-pointer shadow-xl transform hover:scale-105 transition-transform duration-300"
+                          onClick={() => handleComicClick(comic)}
+                        />
+                        <h3 className="font-serif text-2xl font-bold text-black mb-4">
+                          {comic.title}
+                        </h3>
+                        <p className="font-serif text-base text-amber-800 leading-relaxed text-left">
+                          {comic.description}
+                        </p>
+                      </div>
+                    </div>
+                  </ScrollFadeUp>
+                );
+              }
+            })}
           </div>
         </div>
       </main>
