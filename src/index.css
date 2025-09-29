@@ -50,6 +50,8 @@
     --font-body: 'Source Serif Pro', serif;
     --font-accent: 'Crimson Text', serif;
     --font-handwriting: 'Great Vibes', cursive;
+    --font-medieval-drop: 'Great Vibes', cursive;
+    --font-medieval-body: 'Crimson Text', serif;
 
     --radius: 0.5rem;
 
@@ -458,4 +460,79 @@
   border-radius: 50%;
   filter: blur(6px);
   z-index: -1;
+}
+
+/* Medieval Manuscript Styling */
+.medieval-text-container {
+  position: relative;
+  background: linear-gradient(135deg, 
+    hsl(40, 25%, 95%) 0%, 
+    hsl(40, 20%, 92%) 50%, 
+    hsl(40, 25%, 94%) 100%);
+  border: 1px solid hsl(30, 40%, 65%);
+  padding: 2rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.08);
+}
+
+.medieval-drop-cap::first-letter {
+  font-family: var(--font-medieval-drop);
+  font-size: 4.5rem;
+  line-height: 0.8;
+  float: left;
+  margin-right: 0.5rem;
+  margin-top: 0.15rem;
+  color: hsl(30, 55%, 35%);
+  text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.2);
+}
+
+.medieval-body-text {
+  font-family: var(--font-medieval-body);
+  font-size: 1.0625rem;
+  line-height: 1.9;
+  letter-spacing: 0.015em;
+  color: hsl(30, 20%, 20%);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.medieval-flourish-tl {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  opacity: 0.6;
+}
+
+.medieval-flourish-br {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  opacity: 0.6;
+  transform: rotate(180deg);
+}
+
+.medieval-divider {
+  margin: 1.5rem auto;
+  width: 4rem;
+  height: 1px;
+  background: linear-gradient(to right, 
+    transparent, 
+    hsl(30, 40%, 60%), 
+    transparent);
+  position: relative;
+}
+
+.medieval-divider::after {
+  content: '❦';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: hsl(40, 25%, 94%);
+  padding: 0 0.5rem;
+  color: hsl(30, 40%, 55%);
+  font-size: 0.875rem;
 }
