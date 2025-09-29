@@ -89,7 +89,7 @@ const Comics = () => {
         </div>
 
         {/* Featured Comics Section */}
-        <div className="container mx-auto px-6 mt-12 mb-16">
+        <div className="container mx-auto px-6 mt-6 mb-16">
           {/* God of Lies - Wide Cover Left, Summary Right */}
           <div className="mb-16">
             <div className="max-w-7xl mx-auto px-16">
@@ -131,7 +131,9 @@ const Comics = () => {
                   <img 
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"
-                    className="h-[28rem] object-contain shadow-2xl"
+                    className="h-[36rem] object-contain shadow-2xl"
+                    loading="eager"
+                    decoding="async"
                   />
                 </div>
               </div>
