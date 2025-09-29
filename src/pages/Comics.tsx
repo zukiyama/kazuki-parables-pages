@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
+import { OptimizedImage } from "@/components/OptimizedImage";
 import godOfLiesCover from "@/assets/god-of-lies-wide-cover.png";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-wide-cover.png";
 import mangaSketchesBackground from "@/assets/manga-character-sketches-background.jpeg";
@@ -128,12 +129,14 @@ const Comics = () => {
                   </p>
                 </div>
                 <div className="flex-shrink-0">
-                  <img 
+                  <OptimizedImage 
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"
                     className="h-[36rem] object-contain shadow-2xl"
+                    width={800}
+                    height={1200}
+                    priority={true}
                     loading="eager"
-                    decoding="async"
                   />
                 </div>
               </div>
