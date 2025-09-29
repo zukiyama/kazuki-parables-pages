@@ -132,8 +132,6 @@ const Comics = () => {
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"
                     className="h-[36rem] object-contain shadow-2xl"
-                    width="800"
-                    height="1200"
                     loading="eager"
                     decoding="async"
                   />
