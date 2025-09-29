@@ -127,11 +127,11 @@ const Comics = () => {
                     A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible. When mysterious events begin occurring around him and an ancient sword appears in his mundane life, he's thrust into a world where mythical beings walk among us and the fate of both the magical and mortal realms hangs in the balance. Guided by enigmatic mentors and pursued by dark forces, he must learn to harness powers he never knew he possessed while navigating the complexities of love, friendship, and the weight of an ancient legacy.
                   </p>
                 </div>
-                <div className="lg:col-span-1">
+                <div className="lg:col-span-1 flex items-center justify-center">
                   <img 
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"
-                    className="w-full object-contain shadow-2xl"
+                    className="w-full object-contain shadow-2xl scale-150"
                   />
                 </div>
               </div>
