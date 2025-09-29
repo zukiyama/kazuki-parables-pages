@@ -77,7 +77,7 @@ const Comics = () => {
 
       <main className="relative z-10 pt-24">
         {/* Comic Panel Title - Simplified */}
-        <div className="flex justify-center py-32 px-6">
+        <div className="flex justify-center py-24 px-6">
           <div className="text-center">
             <h1 className="font-serif text-6xl font-bold text-black mb-4 tracking-wide drop-shadow-lg">
               COMICS
@@ -131,7 +131,7 @@ const Comics = () => {
                   <img 
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"
-                    className="h-80 object-contain shadow-2xl"
+                    className="h-[28rem] object-contain shadow-2xl"
                   />
                 </div>
               </div>
@@ -164,7 +164,7 @@ const Comics = () => {
                       alt={`${comic.title} comic cover`}
                       className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
                     />
-                    <p className="font-serif text-sm text-amber-800 italic max-w-xs">
+                    <p className="font-serif text-base text-amber-800 italic max-w-xs">
                       {comic.teaser}
                     </p>
                   </div>
@@ -187,7 +187,7 @@ const Comics = () => {
                       alt={`${comic.title} comic cover`}
                       className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
                     />
-                    <p className="font-serif text-sm text-amber-800 italic max-w-xs">
+                    <p className="font-serif text-base text-amber-800 italic max-w-xs">
                       {comic.teaser}
                     </p>
                   </div>
