@@ -477,13 +477,29 @@
 
 .medieval-drop-cap::first-letter {
   font-family: var(--font-medieval-drop);
-  font-size: 4.5rem;
-  line-height: 0.8;
+  font-size: 7rem;
+  line-height: 0.75;
   float: left;
-  margin-right: 0.5rem;
-  margin-top: 0.15rem;
-  color: hsl(30, 55%, 35%);
-  text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.2);
+  margin-right: 0.75rem;
+  margin-top: 0.1rem;
+  margin-bottom: -0.2rem;
+  padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+  background: linear-gradient(135deg, 
+    hsl(45, 70%, 85%) 0%, 
+    hsl(40, 85%, 70%) 30%,
+    hsl(35, 75%, 55%) 50%,
+    hsl(30, 80%, 45%) 70%,
+    hsl(25, 70%, 35%) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(2px 2px 3px rgba(139, 69, 19, 0.4))
+          drop-shadow(0 0 8px rgba(218, 165, 32, 0.5))
+          drop-shadow(0 0 15px rgba(255, 215, 0, 0.3));
+  position: relative;
+  font-weight: 700;
+  transform: scale(1.1);
 }
 
 .medieval-body-text {
