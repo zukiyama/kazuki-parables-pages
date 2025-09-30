@@ -12,6 +12,7 @@ import floatingInstrumentsBackground from "@/assets/floating-instruments-backgro
 import manOnFilmBackground from "@/assets/man-on-film-background.jpg";
 import toDreamtManBackground from "@/assets/to-the-dreamt-man-background.jpg";
 import centreOfWorldBackground from "@/assets/centre-of-world-background.jpg";
+import ohioCassettePoster from "@/assets/ohio-cassette-poster.png";
 
 // Album covers
 import spaceshipAlbum from "@/assets/spaceship-album.png";
@@ -298,7 +299,7 @@ const Music = () => {
               <div className="relative aspect-video bg-black rounded-lg overflow-hidden group">
                 <video 
                   className="w-full h-full object-cover"
-                  poster="/src/assets/ohio-cassette-deck.jpg"
+                  poster={ohioCassettePoster}
                   controls={false}
                   id="ohio-video"
                 >
@@ -306,10 +307,10 @@ const Music = () => {
                   Your browser does not support the video tag.
                 </video>
                 
-                {/* Custom Cassette Deck Play Button */}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-all duration-300">
+                {/* Simple Play Button Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/5 transition-all duration-300">
                   <button 
-                    className="relative w-20 h-20 bg-gradient-to-b from-gray-300 to-gray-600 rounded-sm shadow-lg border-2 border-gray-400 hover:from-gray-200 hover:to-gray-500 transition-all duration-200 active:scale-95"
+                    className="w-20 h-20 rounded-full bg-white/90 hover:bg-white hover:scale-110 transition-all duration-200 flex items-center justify-center shadow-2xl"
                     onClick={() => {
                       const video = document.getElementById('ohio-video') as HTMLVideoElement;
                       if (video) {
@@ -321,17 +322,7 @@ const Music = () => {
                       }
                     }}
                   >
-                    {/* Play button inner design - vintage cassette style */}
-                    <div className="absolute inset-1 bg-gradient-to-b from-gray-200 to-gray-400 rounded-sm">
-                      <div className="absolute inset-2 bg-black rounded-sm flex items-center justify-center">
-                        <div className="w-0 h-0 border-l-[8px] border-l-white border-y-[6px] border-y-transparent ml-1"></div>
-                      </div>
-                    </div>
-                    
-                    {/* Button label */}
-                    <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
-                      <span className="text-white/80 text-xs font-mono uppercase tracking-wider">PLAY</span>
-                    </div>
+                    <Play className="w-10 h-10 text-slate-900 ml-1" fill="currentColor" />
                   </button>
                 </div>
                 
