@@ -10,6 +10,7 @@ import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
 import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
+import medievalDropCapA from "@/assets/medieval-drop-cap-a.png";
 
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
@@ -133,9 +134,16 @@ const Comics = () => {
                       <path d="M2 2C2 2 8 5 12 12C16 19 15 25 15 25M2 2C2 2 5 8 12 12C19 16 25 15 25 15" stroke="hsl(30, 40%, 55%)" strokeWidth="1.5" strokeLinecap="round"/>
                     </svg>
                     
-                    <p className="medieval-body-text medieval-drop-cap">
-                      A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible. When mysterious events begin occurring around him and an ancient sword appears in his mundane life, he's thrust into a world where mythical beings walk among us and the fate of both the magical and mortal realms hangs in the balance. Guided by enigmatic mentors and pursued by dark forces, he must learn to harness powers he never knew he possessed while navigating the complexities of love, friendship, and the weight of an ancient legacy.
-                    </p>
+                    <div className="relative">
+                      <img 
+                        src={medievalDropCapA} 
+                        alt="Decorative capital A"
+                        className="float-left w-24 h-24 mr-3 mt-1"
+                      />
+                      <p className="medieval-body-text">
+                        modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible. When mysterious events begin occurring around him and an ancient sword appears in his mundane life, he's thrust into a world where mythical beings walk among us and the fate of both the magical and mortal realms hangs in the balance. Guided by enigmatic mentors and pursued by dark forces, he must learn to harness powers he never knew he possessed while navigating the complexities of love, friendship, and the weight of an ancient legacy.
+                      </p>
+                    </div>
                   </div>
                 </div>
                 <div className="lg:col-span-2 flex items-start justify-center">
