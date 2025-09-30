@@ -189,18 +189,18 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
 
   return (
     <div className="sticky top-16 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-3">
-      <div className="container mx-auto px-6">
-        <div className="flex justify-center items-center gap-6 overflow-x-auto pb-2">
+      <div className="container mx-auto px-2 sm:px-4 md:px-6">
+        <div className="flex justify-start md:justify-center items-center gap-3 sm:gap-4 md:gap-6 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
           {books.map((book) => (
             <div
               key={book.id}
-              className="flex flex-col items-center cursor-pointer group min-w-[80px]"
+              className="flex flex-col items-center cursor-pointer group min-w-[70px] sm:min-w-[80px] flex-shrink-0"
               onMouseEnter={() => setHoveredBook(book.id)}
               onMouseLeave={() => setHoveredBook(null)}
               onClick={() => handleBookClick(book)}
             >
               {/* Book Title */}
-              <h3 className={`font-serif text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap ${
+              <h3 className={`font-serif text-[10px] sm:text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap ${
                 activeBook === book.id ? 'text-yellow-300' : 'text-white'
               }`}>
                 {book.title}
@@ -211,14 +211,14 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
                 <img
                   src={book.cover}
                   alt={book.title}
-                  width="64"
-                  height="64"
+                  width="56"
+                  height="56"
                   loading="eager"
-                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-cover ${
+                  className={`w-14 h-14 sm:w-16 sm:h-16 rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-cover ${
                     activeBook === book.id
                       ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'
                       : hoveredBook === book.id 
-                        ? 'scale-125 shadow-2xl shadow-yellow-300/20' 
+                        ? 'scale-110 sm:scale-125 shadow-2xl shadow-yellow-300/20' 
                         : 'hover:scale-110'
                   }`}
                 />

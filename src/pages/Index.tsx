@@ -71,19 +71,22 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
-      <section className="h-screen flex items-center justify-center relative overflow-hidden bg-background">
-        <img 
-          src={japaneseBackground} 
-          alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-cover object-center bg-slate-100"
-          style={{ objectPosition: '50% center' }}
+      <section className="h-screen flex items-center justify-center relative overflow-hidden">
+        {/* Background Image using CSS - ensures no grey bars */}
+        <div 
+          className="absolute inset-0 w-full h-full bg-cover bg-center md:bg-[center_40%]"
+          style={{ 
+            backgroundImage: `url(${japaneseBackground})`,
+            backgroundPosition: 'center center'
+          }}
+          aria-label="Japanese painting background"
         />
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-20 text-center px-6">
-          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
+          <h1 className="font-heading text-5xl sm:text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
             Kazuki Yamakawa
           </h1>
-          <p className="font-body text-xl md:text-2xl text-foreground/80 animate-fade-in-delayed">
+          <p className="font-body text-lg sm:text-xl md:text-2xl text-foreground/80 animate-fade-in-delayed">
             Writer • Musician
           </p>
         </div>
