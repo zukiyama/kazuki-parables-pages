@@ -250,6 +250,7 @@ const Writing = () => {
                       { image: kaijuCover, alt: "KAIJU - Book One Cover" }
                     ]}
                     title="KAIJU"
+                    loading="eager"
                   />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
@@ -285,6 +286,7 @@ const Writing = () => {
                       { image: hoaxCover, alt: "HOAX Book Cover" }
                     ]}
                     title="HOAX"
+                    loading="lazy"
                   />
                 </div>
                 <div className={`text-white order-2 transition-all duration-1000 delay-500 ${
@@ -318,6 +320,7 @@ const Writing = () => {
                       { image: theMarketCover, alt: "THE MARKET Book Cover" }
                     ]}
                     title="THE MARKET"
+                    loading="lazy"
                   />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
@@ -350,6 +353,7 @@ const Writing = () => {
                       { image: amyaCover, alt: "AMYA Book Cover" }
                     ]}
                     title="AMYA"
+                    loading="lazy"
                   />
                 </div>
                 <div className={`lg:order-1 text-white transition-all duration-1000 delay-500 ${
@@ -382,6 +386,7 @@ const Writing = () => {
                       { image: statesOfMotionCover, alt: "STATES OF MOTION Book Cover" }
                     ]}
                     title="STATES OF MOTION"
+                    loading="lazy"
                   />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
@@ -414,6 +419,7 @@ const Writing = () => {
                       { image: howCover, alt: "HOW Book Cover" }
                     ]}
                     title="HOW"
+                    loading="lazy"
                   />
                 </div>
                 <div className={`text-white transition-all duration-1000 delay-500 ${
@@ -458,6 +464,7 @@ const Writing = () => {
                       { image: viceVersaCover, alt: "VICE VERSA Book Cover" }
                     ]}
                     title="VICE VERSA"
+                    loading="lazy"
                   />
                 </div>
               </div>
