@@ -133,7 +133,7 @@ const Comics = () => {
                   <img 
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"
-                    className="w-full object-contain shadow-2xl"
+                    className="w-[70%] object-contain shadow-2xl"
                   />
                 </div>
               </div>
