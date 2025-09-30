@@ -115,21 +115,19 @@ const Comics = () => {
             </div>
           </div>
 
-          {/* Surname Pendragon - Summary Left, Cover Right */}
+          {/* Surname Pendragon - Text Left, Smaller Cover Right */}
           <div className="mb-24">
             <div className="max-w-7xl mx-auto px-16">
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
                 <div className="lg:col-span-3">
-                  <div className="w-full">
-                    <h3 className="font-serif text-4xl font-bold text-black mb-6">
-                      Surname Pendragon
-                    </h3>
-                    <p className="font-serif text-lg text-amber-800 leading-relaxed">
-                      A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible. When mysterious events begin occurring around him and an ancient sword appears in his mundane life, he's thrust into a world where mythical beings walk among us and the fate of both the magical and mortal realms hangs in the balance. Guided by enigmatic mentors and pursued by dark forces, he must learn to harness powers he never knew he possessed while navigating the complexities of love, friendship, and the weight of an ancient legacy.
-                    </p>
-                  </div>
+                  <h3 className="font-serif text-4xl font-bold text-black mb-6">
+                    Surname Pendragon
+                  </h3>
+                  <p className="font-serif text-lg text-amber-800 leading-relaxed">
+                    A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible. When mysterious events begin occurring around him and an ancient sword appears in his mundane life, he's thrust into a world where mythical beings walk among us and the fate of both the magical and mortal realms hangs in the balance. Guided by enigmatic mentors and pursued by dark forces, he must learn to harness powers he never knew he possessed while navigating the complexities of love, friendship, and the weight of an ancient legacy.
+                  </p>
                 </div>
-                <div className="lg:col-span-1 flex items-start justify-end">
+                <div className="lg:col-span-2 flex items-center justify-center">
                   <img 
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"

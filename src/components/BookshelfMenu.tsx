@@ -211,10 +211,10 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
                 <img
                   src={book.cover}
                   alt={book.title}
-                  width="120"
-                  height="120"
+                  width="64"
+                  height="64"
                   loading="eager"
-                  className={`w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-cover ${
+                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-cover ${
                     activeBook === book.id
                       ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'
                       : hoveredBook === book.id 

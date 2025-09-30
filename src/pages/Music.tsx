@@ -19,7 +19,6 @@ import floatingInstrumentsAlbum from "@/assets/floating-instruments-album.jpeg";
 import manOnFilmAlbum from "@/assets/man-on-film-album.jpeg";
 import toDreamtManAlbum from "@/assets/to-the-dreamt-man-album.png";
 import centreOfWorldAlbum from "@/assets/centre-of-world-album.png";
-import ohioCassettePoster from "@/assets/ohio-cassette-poster.jpeg";
 
 const albums = [
   {
@@ -299,7 +298,7 @@ const Music = () => {
               <div className="relative aspect-video bg-black rounded-lg overflow-hidden group">
                 <video 
                   className="w-full h-full object-cover"
-                  poster={ohioCassettePoster}
+                  poster="/src/assets/ohio-cassette-deck.jpg"
                   controls={false}
                   id="ohio-video"
                 >
@@ -307,10 +306,10 @@ const Music = () => {
                   Your browser does not support the video tag.
                 </video>
                 
-                {/* Simple Play Button */}
+                {/* Custom Cassette Deck Play Button */}
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-all duration-300">
                   <button 
-                    className="w-20 h-20 rounded-full bg-white/90 hover:bg-white transition-all duration-200 flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95"
+                    className="relative w-20 h-20 bg-gradient-to-b from-gray-300 to-gray-600 rounded-sm shadow-lg border-2 border-gray-400 hover:from-gray-200 hover:to-gray-500 transition-all duration-200 active:scale-95"
                     onClick={() => {
                       const video = document.getElementById('ohio-video') as HTMLVideoElement;
                       if (video) {
@@ -322,11 +321,21 @@ const Music = () => {
                       }
                     }}
                   >
-                    <Play className="w-10 h-10 text-black ml-1" />
+                    {/* Play button inner design - vintage cassette style */}
+                    <div className="absolute inset-1 bg-gradient-to-b from-gray-200 to-gray-400 rounded-sm">
+                      <div className="absolute inset-2 bg-black rounded-sm flex items-center justify-center">
+                        <div className="w-0 h-0 border-l-[8px] border-l-white border-y-[6px] border-y-transparent ml-1"></div>
+                      </div>
+                    </div>
+                    
+                    {/* Button label */}
+                    <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
+                      <span className="text-white/80 text-xs font-mono uppercase tracking-wider">PLAY</span>
+                    </div>
                   </button>
                 </div>
                 
-                {/* Ohio Single Label */}
+                {/* Cassette Deck Info */}
                 <div className="absolute top-4 left-4">
                   <div className="bg-black/60 backdrop-blur-sm rounded px-3 py-1">
                     <span className="text-white/90 text-sm font-mono uppercase tracking-wider">OHIO - Single</span>
