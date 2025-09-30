@@ -507,7 +507,7 @@
 .medieval-body-text {
   font-family: var(--font-medieval-body);
   font-size: 1.125rem;
-  line-height: 1.9;
+  line-height: 1.8;
   letter-spacing: 0.015em;
   color: hsl(30, 20%, 20%);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
