@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
+import { WebPImage } from "@/components/WebPImage";
 import godOfLiesCover from "@/assets/god-of-lies-wide-cover.png";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-wide-cover.png";
 import mangaSketchesBackground from "@/assets/manga-character-sketches-background.jpeg";
@@ -95,10 +96,12 @@ const Comics = () => {
             <div className="max-w-7xl mx-auto px-16">
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-center">
                 <div className="lg:col-span-3">
-                  <img 
+                  <WebPImage 
                     src={godOfLiesCover}
                     alt="God of Lies comic cover"
                     className="w-full object-contain shadow-2xl"
+                    loading="eager"
+                    priority
                   />
                 </div>
                 <div className="lg:col-span-1">
@@ -128,10 +131,12 @@ const Comics = () => {
                   </p>
                 </div>
                 <div className="lg:col-span-2 flex items-center justify-center">
-                  <img 
+                  <WebPImage 
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"
                     className="w-full object-contain shadow-2xl"
+                    loading="eager"
+                    priority
                   />
                 </div>
               </div>
@@ -159,10 +164,11 @@ const Comics = () => {
                     className="cursor-pointer group text-center"
                     onClick={() => handleComicClick(comic)}
                   >
-                    <img 
+                    <WebPImage 
                       src={comic.cover}
                       alt={`${comic.title} comic cover`}
                       className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
+                      loading="lazy"
                     />
                     <p className="font-serif text-base text-amber-800 italic max-w-xs">
                       {comic.teaser}
@@ -182,10 +188,11 @@ const Comics = () => {
                     className="cursor-pointer group text-center"
                     onClick={() => handleComicClick(comic)}
                   >
-                    <img 
+                    <WebPImage 
                       src={comic.cover}
                       alt={`${comic.title} comic cover`}
                       className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
+                      loading="lazy"
                     />
                     <p className="font-serif text-base text-amber-800 italic max-w-xs">
                       {comic.teaser}
@@ -209,10 +216,11 @@ const Comics = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-center">
-              <img 
+              <WebPImage 
                 src={selectedComic.cover}
                 alt={`${selectedComic.title} comic cover`}
                 className="w-full max-w-lg shadow-2xl"
+                loading="eager"
               />
             </div>
             <div className="flex flex-col justify-center">
