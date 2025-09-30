@@ -155,7 +155,7 @@ const Index = () => {
                 key={index}
                 className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[7000ms] ease-in-out ${
                   index === currentImage ? "opacity-100" : "opacity-0"
-                } ${index === 1 ? "animate-slow-zoom-meteor" : "animate-slow-zoom"}`}
+                } animate-slow-zoom`}
                 style={{ backgroundImage: `url(${image})` }}
               >
                 <div className="absolute inset-0 bg-black/20"></div>
