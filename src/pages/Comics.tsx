@@ -119,7 +119,7 @@ const Comics = () => {
           <div className="mb-24">
             <div className="max-w-7xl mx-auto px-16">
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-                <div className="lg:col-span-2">
+                <div className="lg:col-span-3">
                   <div className="w-full">
                     <h3 className="font-serif text-4xl font-bold text-black mb-6">
                       Surname Pendragon
@@ -129,11 +129,11 @@ const Comics = () => {
                     </p>
                   </div>
                 </div>
-                <div className="lg:col-span-2 flex items-start justify-center">
+                <div className="lg:col-span-1 flex items-start justify-end">
                   <img 
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"
-                    className="w-[70%] object-contain shadow-2xl"
+                    className="w-full object-contain shadow-2xl"
                   />
                 </div>
               </div>
