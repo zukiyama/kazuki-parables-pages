@@ -99,7 +99,6 @@ const Comics = () => {
                     src={godOfLiesCover}
                     alt="God of Lies comic cover"
                     className="w-full object-contain shadow-2xl"
-                    loading="lazy"
                   />
                 </div>
                 <div className="lg:col-span-1">
@@ -133,7 +132,6 @@ const Comics = () => {
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"
                     className="w-full object-contain shadow-2xl"
-                    loading="lazy"
                   />
                 </div>
               </div>
@@ -165,7 +163,6 @@ const Comics = () => {
                       src={comic.cover}
                       alt={`${comic.title} comic cover`}
                       className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
-                      loading="lazy"
                     />
                     <p className="font-serif text-base text-amber-800 italic max-w-xs">
                       {comic.teaser}
@@ -189,7 +186,6 @@ const Comics = () => {
                       src={comic.cover}
                       alt={`${comic.title} comic cover`}
                       className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
-                      loading="lazy"
                     />
                     <p className="font-serif text-base text-amber-800 italic max-w-xs">
                       {comic.teaser}
@@ -217,7 +213,6 @@ const Comics = () => {
                 src={selectedComic.cover}
                 alt={`${selectedComic.title} comic cover`}
                 className="w-full max-w-lg shadow-2xl"
-                loading="eager"
               />
             </div>
             <div className="flex flex-col justify-center">
