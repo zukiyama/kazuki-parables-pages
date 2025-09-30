@@ -477,34 +477,31 @@
 
 .medieval-drop-cap::first-letter {
   font-family: var(--font-medieval-drop);
-  font-size: 7rem;
-  line-height: 0.75;
+  font-size: 5.5rem;
+  line-height: 0.85;
   float: left;
-  margin-right: 0.75rem;
-  margin-top: 0.1rem;
-  margin-bottom: -0.2rem;
-  padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+  margin-right: 0.5rem;
+  margin-top: 0.15rem;
+  margin-bottom: 0;
+  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
   background: linear-gradient(135deg, 
-    hsl(45, 70%, 85%) 0%, 
-    hsl(40, 85%, 70%) 30%,
-    hsl(35, 75%, 55%) 50%,
-    hsl(30, 80%, 45%) 70%,
-    hsl(25, 70%, 35%) 100%);
+    hsl(0, 75%, 65%) 0%, 
+    hsl(0, 80%, 50%) 40%,
+    hsl(0, 70%, 40%) 70%,
+    hsl(0, 65%, 30%) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: none;
-  filter: drop-shadow(2px 2px 3px rgba(139, 69, 19, 0.4))
-          drop-shadow(0 0 8px rgba(218, 165, 32, 0.5))
-          drop-shadow(0 0 15px rgba(255, 215, 0, 0.3));
+  filter: drop-shadow(1px 1px 2px rgba(120, 20, 20, 0.5))
+          drop-shadow(0 0 4px rgba(180, 40, 40, 0.4));
   position: relative;
   font-weight: 700;
-  transform: scale(1.1);
 }
 
 .medieval-body-text {
   font-family: var(--font-medieval-body);
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
   line-height: 1.9;
   letter-spacing: 0.015em;
   color: hsl(30, 20%, 20%);
