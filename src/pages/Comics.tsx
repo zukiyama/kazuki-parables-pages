@@ -163,6 +163,7 @@ const Comics = () => {
                       src={comic.cover}
                       alt={`${comic.title} comic cover`}
                       className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
+                      loading="lazy"
                     />
                     <p className="font-serif text-base text-amber-800 italic max-w-xs">
                       {comic.teaser}
@@ -186,6 +187,7 @@ const Comics = () => {
                       src={comic.cover}
                       alt={`${comic.title} comic cover`}
                       className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
+                      loading="lazy"
                     />
                     <p className="font-serif text-base text-amber-800 italic max-w-xs">
                       {comic.teaser}
