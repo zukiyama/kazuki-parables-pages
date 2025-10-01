@@ -170,7 +170,15 @@ const Index = () => {
                   currentImage === 1 ? 'opacity-100 animate-quote-fade-out-delayed' : 'opacity-0'
                 }`}>
                   <blockquote className="literary-quote text-white/90 leading-relaxed">
-                    <div className="text-4xl md:text-5xl font-bold">'Feelings are the thoughts of the heart.'</div>
+                    <div className="text-4xl md:text-5xl font-bold">
+                      'Feelings are the thoughts of the <span className="inline-block">
+                        <span className="animate-heart-to-earth-h">h</span>
+                        <span className="animate-heart-to-earth-e">e</span>
+                        <span className="animate-heart-to-earth-a">a</span>
+                        <span className="animate-heart-to-earth-r">r</span>
+                        <span className="animate-heart-to-earth-t">t</span>
+                      </span>.'
+                    </div>
                   </blockquote>
                 </div>
               </div>
