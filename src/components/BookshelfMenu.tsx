@@ -137,7 +137,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       // More accurate fixed elements height calculation
       const navigation = document.querySelector('nav') as HTMLElement;
       const bookshelfMenu = document.querySelector('.sticky.top-16') as HTMLElement;
-      const fixedElementsHeight = (navigation?.offsetHeight || 64) + (bookshelfMenu?.offsetHeight || 100) + 20; // Extra padding
+      const fixedElementsHeight = (navigation?.offsetHeight || 64) + (bookshelfMenu?.offsetHeight || 100) + 80; // Extra padding for better spacing
       
       let targetScrollPosition;
       
