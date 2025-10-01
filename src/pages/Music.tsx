@@ -298,6 +298,7 @@ const Music = () => {
             <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20">
               <div className="relative aspect-video bg-black rounded-lg overflow-hidden group">
                 <video 
+                  key={ohioCassettePoster}
                   className="w-full h-full object-cover"
                   poster={ohioCassettePoster}
                   controls={false}

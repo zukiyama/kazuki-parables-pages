@@ -27,6 +27,9 @@ import howCover from "@/assets/how-cover.jpg";
 import viceVersaCover from "@/assets/vice-versa-cover.jpg";
 import amyaCover from "@/assets/amya-cover.png";
 import statesOfMotionCover from "@/assets/states-of-motion-cover.png";
+import professorBarnabasCover from "@/assets/professor-barnabas-cover-new.png";
+import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
+import toFlyCover from "@/assets/to-fly-cover-new.png";
 
 const Writing = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -46,9 +49,10 @@ const Writing = () => {
   });
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
 
-  // Preload all background images at once
+  // Preload all background images and book covers at once
   useEffect(() => {
-    const allBackgrounds = [
+    const allImages = [
+      // Backgrounds
       schoolBackground,
       hoaxBackground,
       theMarketBackground,
@@ -58,12 +62,16 @@ const Writing = () => {
       viceVersaBackground,
       professorBarnabasBackground,
       wastelandCityBackground,
-      deepSpaceBackground
+      deepSpaceBackground,
+      // Young Adult book covers
+      professorBarnabasCover,
+      landDreamSkyCover,
+      toFlyCover
     ];
     
-    allBackgrounds.forEach(bgSrc => {
+    allImages.forEach(imgSrc => {
       const img = new Image();
-      img.src = bgSrc;
+      img.src = imgSrc;
     });
   }, []);
 
