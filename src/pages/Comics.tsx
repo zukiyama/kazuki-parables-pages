@@ -83,7 +83,7 @@ const Comics = () => {
               COMICS & SCRIPTS
             </h1>
             <p className="font-serif text-xl text-amber-800 leading-relaxed drop-shadow-md">
-              Comics, WEBTOONs, manga and scripts with original characters and stories
+              Comics, webtoons, manga and scripts with original characters and stories
             </p>
           </div>
         </div>
