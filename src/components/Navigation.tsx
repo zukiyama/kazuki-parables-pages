@@ -7,7 +7,7 @@ const Navigation = () => {
     { path: "/", label: "Home" },
     { path: "/writing", label: "Writing" },
     { path: "/music", label: "Music" },
-    { path: "/comics", label: "Comics" },
+    { path: "/comics", label: "Comics & Scripts" },
   ];
 
   return (

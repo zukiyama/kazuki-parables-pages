@@ -80,10 +80,10 @@ const Comics = () => {
         <div className="flex justify-center py-24 px-6">
           <div className="text-center">
             <h1 className="font-serif text-6xl font-bold text-black mb-4 tracking-wide drop-shadow-lg">
-              COMICS
+              COMICS & SCRIPTS
             </h1>
             <p className="font-serif text-xl text-amber-800 leading-relaxed drop-shadow-md">
-              Korean style web comics and manga with original stories and characters!
+              Comics, WEBTOONs, manga and scripts with original characters and stories
             </p>
           </div>
         </div>
