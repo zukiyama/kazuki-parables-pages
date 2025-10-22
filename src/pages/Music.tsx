@@ -12,7 +12,7 @@ import floatingInstrumentsBackground from "@/assets/floating-instruments-backgro
 import manOnFilmBackground from "@/assets/man-on-film-background.jpg";
 import toDreamtManBackground from "@/assets/to-the-dreamt-man-background.jpg";
 import centreOfWorldBackground from "@/assets/centre-of-world-background.jpg";
-import ohioCassettePoster from "@/assets/ohio-cassette-poster.png";
+import ohioCassettePoster from "@/assets/circles-single-poster.jpeg";
 
 // Album covers
 import spaceshipAlbum from "@/assets/spaceship-album.png";
@@ -330,7 +330,7 @@ const Music = () => {
                 {/* Cassette Deck Info */}
                 <div className="absolute top-4 left-4">
                   <div className="bg-black/60 backdrop-blur-sm rounded px-3 py-1">
-                    <span className="text-white/90 text-sm font-mono uppercase tracking-wider">OHIO - Single</span>
+                    <span className="text-white/90 text-sm font-mono uppercase tracking-wider">Circles - Single</span>
                   </div>
                 </div>
               </div>
