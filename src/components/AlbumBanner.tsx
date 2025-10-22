@@ -2,10 +2,12 @@ import { useState, useRef, useEffect } from "react";
 
 // Album covers
 import spaceshipAlbum from "@/assets/spaceship-album.png";
-import floatingInstrumentsAlbum from "@/assets/floating-instruments-album.jpeg";
-import manOnFilmAlbum from "@/assets/man-on-film-album.jpeg";
-import toDreamtManAlbum from "@/assets/to-the-dreamt-man-album.png";
-import centreOfWorldAlbum from "@/assets/centre-of-world-album.png";
+import starPeopleRiverAlbum from "@/assets/star-people-river-album.jpeg";
+import manOnFilmAlbum from "@/assets/man-on-film-album-new.jpeg";
+import deathOfLoveAlbum from "@/assets/death-of-love-album.png";
+import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album.png";
+import centreOfWorldAlbum from "@/assets/centre-of-world-album-new.jpeg";
+import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
 
 interface Album {
   id: number;
@@ -21,8 +23,8 @@ const albums: Album[] = [
   },
   {
     id: 2,
-    title: "Floating Instruments",
-    cover: floatingInstrumentsAlbum
+    title: "Star People River",
+    cover: starPeopleRiverAlbum
   },
   {
     id: 3,
@@ -31,13 +33,23 @@ const albums: Album[] = [
   },
   {
     id: 4,
-    title: "To the Dreamt Man",
-    cover: toDreamtManAlbum
+    title: "The Death of Love",
+    cover: deathOfLoveAlbum
   },
   {
     id: 5,
+    title: "Scene of My Restoration",
+    cover: sceneOfMyRestorationAlbum
+  },
+  {
+    id: 6,
     title: "The Centre of the World",
     cover: centreOfWorldAlbum
+  },
+  {
+    id: 7,
+    title: "To the Dreamt Man",
+    cover: toDreamtManAlbum
   }
 ];
 

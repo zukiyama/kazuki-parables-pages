@@ -16,10 +16,12 @@ import ohioCassettePoster from "@/assets/circles-single-poster.jpeg";
 
 // Album covers
 import spaceshipAlbum from "@/assets/spaceship-album.png";
-import floatingInstrumentsAlbum from "@/assets/floating-instruments-album.jpeg";
-import manOnFilmAlbum from "@/assets/man-on-film-album.jpeg";
-import toDreamtManAlbum from "@/assets/to-the-dreamt-man-album.png";
-import centreOfWorldAlbum from "@/assets/centre-of-world-album.png";
+import starPeopleRiverAlbum from "@/assets/star-people-river-album.jpeg";
+import manOnFilmAlbum from "@/assets/man-on-film-album-new.jpeg";
+import deathOfLoveAlbum from "@/assets/death-of-love-album.png";
+import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album.png";
+import centreOfWorldAlbum from "@/assets/centre-of-world-album-new.jpeg";
+import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
 
 const albums = [
   {
@@ -47,8 +49,8 @@ const albums = [
   },
   {
     id: 2,
-    title: "Floating Instruments",
-    cover: floatingInstrumentsAlbum,
+    title: "Star People River",
+    cover: starPeopleRiverAlbum,
     background: floatingInstrumentsBackground,
     theme: "surreal-street",
     tracks: [
@@ -93,29 +95,52 @@ const albums = [
   },
   {
     id: 4,
-    title: "To the Dreamt Man",
-    cover: toDreamtManAlbum,
-    background: toDreamtManBackground,
-    theme: "golden-desert",
+    title: "The Death of Love",
+    cover: deathOfLoveAlbum,
+    background: manOnFilmBackground,
+    theme: "urban-melancholy",
     tracks: [
-      "Desert Journey",
-      "Golden Horizon",
-      "Walking with Cats",
-      "Dust and Dreams",
-      "Lonely Traveler",
-      "Sand Dunes",
-      "Mirage Music",
-      "Sunset Serenade",
-      "Wanderer's Song",
-      "Heat Waves",
-      "Distant Thunder",
-      "Oasis Dreams",
-      "Desert Wind",
-      "Journey's End"
+      "City Lights Fade",
+      "Lost Letters",
+      "Empty Streets",
+      "Rain on Pavement",
+      "Forgotten Words",
+      "Last Embrace",
+      "Streetlamp Solitude",
+      "Fading Memories",
+      "The Final Goodbye",
+      "Urban Requiem",
+      "Silent Tears",
+      "Midnight Reflections",
+      "Love's Echo",
+      "The Death of Love"
     ]
   },
   {
     id: 5,
+    title: "Scene of My Restoration",
+    cover: sceneOfMyRestorationAlbum,
+    background: toDreamtManBackground,
+    theme: "autumn-restoration",
+    tracks: [
+      "Window to the Soul",
+      "Bare Branches",
+      "Autumn's Embrace",
+      "Morning Light",
+      "Restoration Begins",
+      "Golden Hour",
+      "Healing Melodies",
+      "Quiet Reflection",
+      "Renewed Hope",
+      "Building Windows",
+      "Through the Trees",
+      "Solitary Figure",
+      "New Beginnings",
+      "Scene of My Restoration"
+    ]
+  },
+  {
+    id: 6,
     title: "The Centre of the World",
     cover: centreOfWorldAlbum,
     background: centreOfWorldBackground,
@@ -135,6 +160,29 @@ const albums = [
       "Nature's Embrace",
       "Garden of Eden",
       "Centre of Everything"
+    ]
+  },
+  {
+    id: 7,
+    title: "To the Dreamt Man",
+    cover: toDreamtManAlbum,
+    background: toDreamtManBackground,
+    theme: "golden-desert",
+    tracks: [
+      "Desert Journey",
+      "Golden Horizon",
+      "Walking with Cats",
+      "Dust and Dreams",
+      "Lonely Traveler",
+      "Sand Dunes",
+      "Mirage Music",
+      "Sunset Serenade",
+      "Wanderer's Song",
+      "Heat Waves",
+      "Distant Thunder",
+      "Oasis Dreams",
+      "Desert Wind",
+      "Journey's End"
     ]
   }
 ];
