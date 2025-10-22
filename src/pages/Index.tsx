@@ -5,7 +5,7 @@ import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import officeView from "@/assets/office-window-view.jpg";
 import boysCometOilPainting from "@/assets/boys-comet-oil-painting-1970s.jpg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
-import ohioSingleCover from "@/assets/IMG_7765.png";
+import circlesSingleCover from "@/assets/circles-single-cover.png";
 
 const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -117,8 +117,8 @@ const Index = () => {
               <div className="bg-gradient-to-r from-card/90 to-card/70 backdrop-blur-sm border border-border rounded-xl p-8 flex items-center gap-8 shadow-xl hover:shadow-2xl hover:border-primary/30 transition-all duration-300">
                 <div className="relative">
                   <img 
-                    src={ohioSingleCover} 
-                    alt="Ohio single cover" 
+                    src={circlesSingleCover} 
+                    alt="Circles single cover"
                     className="w-24 h-24 md:w-32 md:h-32 rounded-lg object-contain shadow-lg group-hover:shadow-xl transition-shadow duration-300"
                   />
                   <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded-full animate-pulse">
@@ -127,10 +127,10 @@ const Index = () => {
                 </div>
                 <div className="flex-1 text-left">
                   <p className="font-heading text-sm md:text-base font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                    New Single
+                    Debut Single
                   </p>
                   <h4 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
-                    Ohio
+                    CIRCLES
                   </h4>
                   <p className="font-body text-base md:text-lg text-muted-foreground mb-4">
                     Available Now
