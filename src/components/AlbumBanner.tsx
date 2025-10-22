@@ -80,11 +80,11 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
     <div className="py-2 bg-black/80 backdrop-blur-sm">
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center pb-2 relative">
-          {/* Items Container - Centered relative to full banner width */}
-          <div className="absolute left-0 right-0 flex justify-center items-center gap-8 overflow-hidden pointer-events-none">
+          {/* Items Container */}
+          <div className="flex justify-center items-center gap-8 overflow-hidden flex-1">
             <div
               ref={containerRef}
-              className={`flex justify-center items-center gap-8 transition-all duration-500 pointer-events-auto ${
+              className={`flex justify-center items-center gap-8 transition-all duration-500 ${
                 isTransitioning ? 'translate-x-[-100%] opacity-0' : 'translate-x-0 opacity-100'
               }`}
             >
@@ -137,20 +137,20 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
           {/* Toggle Button - Fixed to far right */}
           <button
             onClick={handleToggle}
-            className="flex flex-col items-center gap-1 group hover:scale-105 transition-transform duration-200 flex-shrink-0 relative z-10"
+            className="flex flex-col items-end gap-1 group hover:scale-105 transition-transform duration-200 flex-shrink-0"
             aria-label={showEPs ? "Switch to Albums" : "Switch to EPs"}
           >
-            {/* Label with smooth transition - centered above button */}
-            <div className="relative h-5 mb-1 w-20 flex justify-center">
+            {/* Label with smooth transition - aligned right */}
+            <div className="relative h-5 mb-1 w-16 flex justify-end">
               <span
-                className={`absolute font-serif text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
+                className={`absolute right-0 font-serif text-sm font-semibold text-white group-hover:text-yellow-300 transition-all duration-200 whitespace-nowrap ${
                   showEPs ? 'opacity-100' : 'opacity-0'
                 }`}
               >
                 Albums
               </span>
               <span
-                className={`absolute font-serif text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
+                className={`absolute right-0 font-serif text-sm font-semibold text-white group-hover:text-yellow-300 transition-all duration-200 whitespace-nowrap ${
                   showEPs ? 'opacity-0' : 'opacity-100'
                 }`}
               >
@@ -166,7 +166,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                 viewBox="0 0 48 48" 
                 fill="none" 
                 xmlns="http://www.w3.org/2000/svg"
-                className="text-yellow-300 transition-colors duration-300"
+                className="text-white group-hover:text-yellow-300 transition-colors duration-300"
               >
                 {/* Large right-pointing triangle - main element */}
                 <path 
