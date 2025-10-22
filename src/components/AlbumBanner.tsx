@@ -79,9 +79,9 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   return (
     <div className="py-2 bg-black/80 backdrop-blur-sm">
       <div className="container mx-auto px-6">
-        <div className="flex justify-between items-center pb-2 relative">
+        <div className="flex justify-center items-center pb-2 relative">
           {/* Items Container */}
-          <div className="flex justify-center items-center gap-8 overflow-visible flex-1">
+          <div className="flex justify-center items-center gap-8 overflow-visible">
             <div
               ref={containerRef}
               className={`flex justify-center items-center gap-8 transition-all duration-500 ${
@@ -137,7 +137,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
           {/* Toggle Button - Fixed to far right */}
           <button
             onClick={handleToggle}
-            className="flex flex-col items-end gap-1 group hover:scale-105 transition-transform duration-200 flex-shrink-0"
+            className="absolute right-0 flex flex-col items-end gap-1 group hover:scale-105 transition-transform duration-200"
             aria-label={showEPs ? "Switch to Albums" : "Switch to EPs"}
           >
             {/* Label with smooth transition - centered */}
