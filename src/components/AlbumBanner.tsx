@@ -140,17 +140,17 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             className="flex flex-col items-end gap-1 group hover:scale-105 transition-transform duration-200 flex-shrink-0"
             aria-label={showEPs ? "Switch to Albums" : "Switch to EPs"}
           >
-            {/* Label with smooth transition - aligned right */}
-            <div className="relative h-5 mb-1 w-16 flex justify-end">
+            {/* Label with smooth transition - centered */}
+            <div className="relative h-5 mb-1 w-16 flex justify-center">
               <span
-                className={`absolute right-0 font-serif text-sm font-semibold text-white group-hover:text-yellow-300 transition-all duration-200 whitespace-nowrap ${
+                className={`absolute font-serif text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
                   showEPs ? 'opacity-100' : 'opacity-0'
                 }`}
               >
                 Albums
               </span>
               <span
-                className={`absolute right-0 font-serif text-sm font-semibold text-white group-hover:text-yellow-300 transition-all duration-200 whitespace-nowrap ${
+                className={`absolute font-serif text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
                   showEPs ? 'opacity-0' : 'opacity-100'
                 }`}
               >
@@ -166,7 +166,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                 viewBox="0 0 48 48" 
                 fill="none" 
                 xmlns="http://www.w3.org/2000/svg"
-                className="text-white group-hover:text-yellow-300 transition-colors duration-300"
+                className="text-yellow-300 transition-colors duration-300"
               >
                 {/* Large right-pointing triangle - main element */}
                 <path 
