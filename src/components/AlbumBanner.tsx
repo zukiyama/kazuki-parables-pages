@@ -77,9 +77,9 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   const currentItems = showEPs ? eps : albums;
 
   return (
-    <div className="py-4 bg-black/80 backdrop-blur-sm">
+    <div className="py-2 bg-black/80 backdrop-blur-sm">
       <div className="container mx-auto px-6">
-        <div className="flex justify-between items-center pb-4 relative">
+        <div className="flex justify-between items-center pb-2 relative">
           {/* Items Container */}
           <div className="flex justify-center items-center gap-8 overflow-visible flex-1">
             <div
