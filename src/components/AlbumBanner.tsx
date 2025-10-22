@@ -79,7 +79,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   return (
     <div className="py-2 bg-black/80 backdrop-blur-sm">
       <div className="container mx-auto px-6">
-        <div className="flex justify-between items-center pb-2 relative">
+        <div className="flex justify-end items-center py-6 relative min-h-[160px]">
           {/* Items Container - Centered relative to full banner width */}
           <div className="absolute left-0 right-0 flex justify-center items-center gap-8 overflow-hidden pointer-events-none">
             <div className="pointer-events-auto">
