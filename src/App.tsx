@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import About from "./pages/About";
 import Writing from "./pages/Writing";
 import Music from "./pages/Music";
 import Comics from "./pages/Comics";
@@ -19,6 +20,7 @@ const App = () => (
         <HashRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
             <Route path="/writing" element={<Writing />} />
             <Route path="/music" element={<Music />} />
             <Route path="/comics" element={<Comics />} />
