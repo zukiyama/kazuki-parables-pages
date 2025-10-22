@@ -79,9 +79,9 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   return (
     <div className="py-2 bg-black/80 backdrop-blur-sm">
       <div className="container mx-auto px-6">
-        <div className="flex justify-center items-center gap-4 pb-2 relative">
+        <div className="flex justify-between items-center pb-2 relative">
           {/* Items Container */}
-          <div className="flex justify-center items-center gap-8 overflow-hidden">
+          <div className="flex justify-center items-center gap-8 overflow-hidden flex-1">
             <div
               ref={containerRef}
               className={`flex justify-center items-center gap-8 transition-all duration-500 ${
@@ -134,23 +134,23 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             </div>
           </div>
 
-          {/* Toggle Button */}
+          {/* Toggle Button - Fixed to far right */}
           <button
             onClick={handleToggle}
-            className="flex flex-col items-center gap-1 group hover:scale-105 transition-transform duration-200 ml-4"
+            className="flex flex-col items-end gap-1 group hover:scale-105 transition-transform duration-200 flex-shrink-0"
             aria-label={showEPs ? "Switch to Albums" : "Switch to EPs"}
           >
-            {/* Label with smooth transition */}
-            <div className="relative h-4 mb-1">
+            {/* Label with smooth transition - aligned right */}
+            <div className="relative h-5 mb-1 w-16 flex justify-end">
               <span
-                className={`absolute inset-0 font-serif text-xs font-semibold text-white group-hover:text-yellow-300 transition-all duration-300 whitespace-nowrap ${
+                className={`absolute right-0 font-serif text-sm font-semibold text-white group-hover:text-yellow-300 transition-all duration-200 whitespace-nowrap ${
                   showEPs ? 'opacity-100' : 'opacity-0'
                 }`}
               >
                 Albums
               </span>
               <span
-                className={`absolute inset-0 font-serif text-xs font-semibold text-white group-hover:text-yellow-300 transition-all duration-300 whitespace-nowrap ${
+                className={`absolute right-0 font-serif text-sm font-semibold text-white group-hover:text-yellow-300 transition-all duration-200 whitespace-nowrap ${
                   showEPs ? 'opacity-0' : 'opacity-100'
                 }`}
               >
@@ -158,47 +158,50 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
               </span>
             </div>
             
-            {/* Right-pointing arrow button with rearranged symbol */}
-            <div className="w-10 h-10 flex items-center justify-center">
+            {/* Right-pointing arrow button - larger and redesigned */}
+            <div className="w-14 h-14 flex items-center justify-center">
               <svg 
-                width="32" 
-                height="32" 
-                viewBox="0 0 32 32" 
+                width="48" 
+                height="48" 
+                viewBox="0 0 48 48" 
                 fill="none" 
                 xmlns="http://www.w3.org/2000/svg"
                 className="text-white group-hover:text-yellow-300 transition-colors duration-300"
               >
-                {/* Right-pointing triangle */}
+                {/* Large right-pointing triangle - main element */}
                 <path 
-                  d="M10 6 L24 16 L10 26 Z" 
+                  d="M14 8 L38 24 L14 40 Z" 
                   stroke="currentColor" 
-                  strokeWidth="1.5" 
+                  strokeWidth="2.5" 
                   fill="none" 
+                  strokeLinejoin="round"
                 />
-                {/* Circle */}
+                {/* Circle - slightly overlapping */}
                 <circle 
-                  cx="14" 
-                  cy="12" 
-                  r="3" 
+                  cx="20" 
+                  cy="18" 
+                  r="4.5" 
+                  stroke="currentColor" 
+                  strokeWidth="1.8" 
+                  fill="none" 
+                  opacity="0.65" 
+                />
+                {/* Parallel lines - floating, smaller */}
+                <path 
+                  d="M16 28 L24 30" 
                   stroke="currentColor" 
                   strokeWidth="1.5" 
                   fill="none" 
                   opacity="0.7" 
-                />
-                {/* Parallel lines */}
-                <path 
-                  d="M8 18 C12 16, 18 20, 22 22" 
-                  stroke="currentColor" 
-                  strokeWidth="1.2" 
-                  fill="none" 
-                  opacity="0.8" 
+                  strokeLinecap="round"
                 />
                 <path 
-                  d="M7 20 C11 18, 17 22, 21 24" 
+                  d="M14 32 L22 34" 
                   stroke="currentColor" 
-                  strokeWidth="1.2" 
+                  strokeWidth="1.5" 
                   fill="none" 
                   opacity="0.5" 
+                  strokeLinecap="round"
                 />
               </svg>
             </div>
