@@ -53,10 +53,9 @@ const About = () => {
           </div>
         </div>
 
-        {/* Photo Grid - 4 photos arranged in a rectangular block */}
-        <div className="grid grid-cols-3 gap-4 max-w-5xl mx-auto">
-          {/* Top Left - City view from room (smaller) */}
-          <div className="col-span-1 aspect-[3/4] overflow-hidden">
+        {/* Photo Grid - 4 photos arranged uniformly */}
+        <div className="grid grid-cols-2 gap-4 max-w-6xl mx-auto">
+          <div className="aspect-[4/3] overflow-hidden">
             <OptimizedImage 
               src={windowCity}
               alt="Window overlooking city"
@@ -64,8 +63,7 @@ const About = () => {
             />
           </div>
           
-          {/* Top Right - Man in shop window (larger, prominent) */}
-          <div className="col-span-2 aspect-[4/3] overflow-hidden">
+          <div className="aspect-[4/3] overflow-hidden">
             <OptimizedImage 
               src={shopWindow}
               alt="Shop window"
@@ -73,8 +71,7 @@ const About = () => {
             />
           </div>
           
-          {/* Bottom Left - Stairwell */}
-          <div className="col-span-1 aspect-square overflow-hidden">
+          <div className="aspect-[4/3] overflow-hidden">
             <OptimizedImage 
               src={spiralStairs}
               alt="Spiral staircase"
@@ -82,8 +79,7 @@ const About = () => {
             />
           </div>
           
-          {/* Bottom Right - Two pigeons */}
-          <div className="col-span-2 aspect-[16/9] overflow-hidden">
+          <div className="aspect-[4/3] overflow-hidden">
             <OptimizedImage 
               src={pigeonRiver}
               alt="Pigeon by river"
@@ -95,8 +91,9 @@ const About = () => {
       
       <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-20 relative z-10">
         <div className="container mx-auto px-6 text-center">
+          <p className="font-body text-muted-foreground/60 text-sm mb-1">Contact</p>
           <p className="font-serif text-white">
-            Email: kazuki@kazukiyamakawa.com
+            kazuki@kazukiyamakawa.com
           </p>
         </div>
       </footer>
