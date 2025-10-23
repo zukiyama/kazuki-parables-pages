@@ -3,16 +3,14 @@ import Navigation from "@/components/Navigation";
 import artistPortrait from "@/assets/artist-portrait.png";
 import bannerImage from "@/assets/about-banner-washing-line.jpg";
 import spiralStairs from "@/assets/about-spiral-stairs.png";
-import roomFlag from "@/assets/about-room-flag.png";
-import busyCrossing from "@/assets/about-busy-crossing.jpeg";
+import windowCity from "@/assets/about-window-city.png";
+import aerialStreet from "@/assets/about-aerial-street.jpeg";
 import mirrorCamera from "@/assets/about-mirror-camera.png";
 import cityCrossing from "@/assets/about-city-crossing.png";
 import bicycles from "@/assets/about-bicycles.png";
+import shopWindow from "@/assets/about-shop-window.png";
 import taiChi from "@/assets/about-tai-chi.png";
 import pigeonRiver from "@/assets/about-pigeon-river.jpeg";
-import eiffelPark from "@/assets/about-eiffel-park.jpeg";
-import nightGraffiti from "@/assets/about-night-graffiti.jpeg";
-import toriiGate from "@/assets/about-torii-gate.png";
 
 const About = () => {
   return (
@@ -60,89 +58,76 @@ const About = () => {
           </div>
         </div>
 
-        {/* Photo Grid - Puzzle Layout */}
-        <div className="grid grid-cols-6 gap-3">
-          {/* Row 1: Large left, two small right */}
-          <div className="col-span-4 row-span-2 aspect-[4/3] overflow-hidden">
-            <OptimizedImage 
-              src={roomFlag}
-              alt="Room with city view and flag"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-          <div className="col-span-2 aspect-square overflow-hidden">
+        {/* Photo Grid Section 1 - Three small images in a row */}
+        <div className="grid grid-cols-3 gap-4 mb-12">
+          <div className="aspect-square overflow-hidden">
             <OptimizedImage 
               src={spiralStairs}
               alt="Spiral staircase"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
-          <div className="col-span-2 aspect-square overflow-hidden">
+          <div className="aspect-square overflow-hidden">
             <OptimizedImage 
               src={bicycles}
               alt="Bicycles on street"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
-
-          {/* Row 2: Three equal squares */}
-          <div className="col-span-2 aspect-square overflow-hidden">
+          <div className="aspect-square overflow-hidden">
             <OptimizedImage 
               src={mirrorCamera}
               alt="Mirror reflection"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
-          <div className="col-span-2 aspect-square overflow-hidden">
+        </div>
+
+        {/* Photo Grid Section 2 - Two column layout */}
+        <div className="grid grid-cols-2 gap-6 mb-12">
+          <div className="aspect-[4/3] overflow-hidden">
+            <OptimizedImage 
+              src={windowCity}
+              alt="Window overlooking city"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+          <div className="aspect-[4/3] overflow-hidden">
             <OptimizedImage 
               src={cityCrossing}
               alt="City crossing"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
-          <div className="col-span-2 aspect-square overflow-hidden">
-            <OptimizedImage 
-              src={taiChi}
-              alt="Tai chi in park"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
+        </div>
 
-          {/* Row 3: Four small squares */}
-          <div className="col-span-2 aspect-[3/2] overflow-hidden">
+        {/* Photo Grid Section 3 - Four small images in a row */}
+        <div className="grid grid-cols-4 gap-3 mb-12">
+          <div className="aspect-square overflow-hidden">
             <OptimizedImage 
-              src={busyCrossing}
-              alt="Busy city crossing"
+              src={shopWindow}
+              alt="Shop window"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
-          <div className="col-span-2 aspect-[3/2] overflow-hidden">
+          <div className="aspect-square overflow-hidden">
             <OptimizedImage 
-              src={toriiGate}
-              alt="Torii gate over water"
+              src={aerialStreet}
+              alt="Aerial street view"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
-          <div className="col-span-2 aspect-[3/2] overflow-hidden">
-            <OptimizedImage 
-              src={nightGraffiti}
-              alt="Night street with graffiti"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-
-          {/* Row 4: Two medium rectangles */}
-          <div className="col-span-3 aspect-[3/2] overflow-hidden">
-            <OptimizedImage 
-              src={eiffelPark}
-              alt="Park with Eiffel Tower"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-          <div className="col-span-3 aspect-[3/2] overflow-hidden">
+          <div className="aspect-square overflow-hidden">
             <OptimizedImage 
               src={pigeonRiver}
               alt="Pigeon by river"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+          <div className="aspect-square overflow-hidden">
+            <OptimizedImage 
+              src={taiChi}
+              alt="Tai chi in park"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
