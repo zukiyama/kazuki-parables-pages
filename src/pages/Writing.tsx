@@ -519,9 +519,8 @@ const Writing = () => {
       
       <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-20 relative z-10">
         <div className="container mx-auto px-6 text-center">
-          <p className="font-body text-muted-foreground/60 text-sm mb-1">Contact</p>
           <p className="font-serif text-white">
-            kazuki@kazukiyamakawa.com
+            Email: contact@kazukiyamakawa.com
           </p>
         </div>
       </footer>

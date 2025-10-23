@@ -4,7 +4,12 @@ import artistPortrait from "@/assets/artist-portrait.png";
 import bannerImage from "@/assets/about-banner-washing-line.jpg";
 import spiralStairs from "@/assets/about-spiral-stairs.png";
 import windowCity from "@/assets/about-window-city.png";
+import aerialStreet from "@/assets/about-aerial-street.jpeg";
+import mirrorCamera from "@/assets/about-mirror-camera.png";
+import cityCrossing from "@/assets/about-city-crossing.png";
+import bicycles from "@/assets/about-bicycles.png";
 import shopWindow from "@/assets/about-shop-window.png";
+import taiChi from "@/assets/about-tai-chi.png";
 import pigeonRiver from "@/assets/about-pigeon-river.jpeg";
 
 const About = () => {
@@ -53,8 +58,33 @@ const About = () => {
           </div>
         </div>
 
-        {/* Photo Grid - 4 photos arranged uniformly */}
-        <div className="grid grid-cols-2 gap-4 max-w-6xl mx-auto">
+        {/* Photo Grid Section 1 - Three small images in a row */}
+        <div className="grid grid-cols-3 gap-4 mb-12">
+          <div className="aspect-square overflow-hidden">
+            <OptimizedImage 
+              src={spiralStairs}
+              alt="Spiral staircase"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+          <div className="aspect-square overflow-hidden">
+            <OptimizedImage 
+              src={bicycles}
+              alt="Bicycles on street"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+          <div className="aspect-square overflow-hidden">
+            <OptimizedImage 
+              src={mirrorCamera}
+              alt="Mirror reflection"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+        </div>
+
+        {/* Photo Grid Section 2 - Two column layout */}
+        <div className="grid grid-cols-2 gap-6 mb-12">
           <div className="aspect-[4/3] overflow-hidden">
             <OptimizedImage 
               src={windowCity}
@@ -62,27 +92,42 @@ const About = () => {
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
-          
           <div className="aspect-[4/3] overflow-hidden">
+            <OptimizedImage 
+              src={cityCrossing}
+              alt="City crossing"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+        </div>
+
+        {/* Photo Grid Section 3 - Four small images in a row */}
+        <div className="grid grid-cols-4 gap-3 mb-12">
+          <div className="aspect-square overflow-hidden">
             <OptimizedImage 
               src={shopWindow}
               alt="Shop window"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
-          
-          <div className="aspect-[4/3] overflow-hidden">
+          <div className="aspect-square overflow-hidden">
             <OptimizedImage 
-              src={spiralStairs}
-              alt="Spiral staircase"
+              src={aerialStreet}
+              alt="Aerial street view"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
-          
-          <div className="aspect-[4/3] overflow-hidden">
+          <div className="aspect-square overflow-hidden">
             <OptimizedImage 
               src={pigeonRiver}
               alt="Pigeon by river"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+          <div className="aspect-square overflow-hidden">
+            <OptimizedImage 
+              src={taiChi}
+              alt="Tai chi in park"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
@@ -91,9 +136,8 @@ const About = () => {
       
       <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-20 relative z-10">
         <div className="container mx-auto px-6 text-center">
-          <p className="font-body text-muted-foreground/60 text-sm mb-1">Contact</p>
           <p className="font-serif text-white">
-            kazuki@kazukiyamakawa.com
+            Email: contact@kazukiyamakawa.com
           </p>
         </div>
       </footer>
