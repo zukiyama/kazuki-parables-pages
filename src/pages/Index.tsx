@@ -201,9 +201,15 @@ const Index = () => {
         <div className="container mx-auto px-6 text-center">
           <h3 className="font-heading text-2xl mb-6 text-ink-black">Contact</h3>
           <p className="font-body text-muted-foreground">
-            Email: contact@kazukiyamakawa.com
+            Email: kazuki@kazukiyamakawa.com
           </p>
           <div className="flex justify-center space-x-8 mt-8">
+            <a href="#/" className="font-body text-accent hover:text-accent/80 transition-colors">
+              Home
+            </a>
+            <a href="#/about" className="font-body text-accent hover:text-accent/80 transition-colors">
+              About
+            </a>
             <a href="#/writing" className="font-body text-accent hover:text-accent/80 transition-colors">
               Writing
             </a>
@@ -211,7 +217,7 @@ const Index = () => {
               Music
             </a>
             <a href="#/comics" className="font-body text-accent hover:text-accent/80 transition-colors">
-              Comics
+              Comics & Scripts
             </a>
           </div>
         </div>
