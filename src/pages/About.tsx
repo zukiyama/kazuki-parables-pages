@@ -88,7 +88,7 @@ const About = () => {
         </div>
 
         {/* Photo Grid Section 3 - Four images spanning full width */}
-        <div className="flex gap-2 mb-2 mt-12 relative z-10" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.5rem', paddingRight: '0.5rem' }}>
+        <div className="flex gap-2 mb-[1.5cm] mt-12 relative z-10" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1cm', paddingRight: '1cm' }}>
           <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
               src={shopWindow}
@@ -121,7 +121,7 @@ const About = () => {
       </div>
       </div>
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-3 relative z-10">
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-[0.75rem] relative z-10">
         <div className="container mx-auto px-6 text-center">
           <p className="font-serif text-white">
             Email: contact@kazukiyamakawa.com
