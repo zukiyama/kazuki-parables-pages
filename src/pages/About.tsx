@@ -70,8 +70,8 @@ const About = () => {
         </div>
 
         {/* Photo Grid Section 1 - Single image aligned left */}
-        <div className="relative mb-6">
-          <div className="w-[46%] aspect-square overflow-hidden">
+        <div className="relative mb-12">
+          <div className="w-[40%] aspect-square overflow-hidden">
             <OptimizedImage 
               src={japaneseRoomView}
               alt="Japanese room with city view"
@@ -81,8 +81,8 @@ const About = () => {
         </div>
 
         {/* Photo Grid Section 2 - Single image aligned left */}
-        <div className="relative mb-6">
-          <div className="w-[55%] aspect-[4/3] overflow-hidden">
+        <div className="relative mb-3">
+          <div className="w-[48%] aspect-[4/3] overflow-hidden">
             <OptimizedImage 
               src={photographerWindow}
               alt="Photographer in shop window"
@@ -92,7 +92,7 @@ const About = () => {
         </div>
 
         {/* Photo Grid Section 3 - Four images spanning full width */}
-        <div className="flex gap-3 mb-8">
+        <div className="flex gap-2 mb-2">
           <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
               src={shopWindow}
@@ -125,7 +125,7 @@ const About = () => {
       </div>
       </div>
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-8 relative z-10">
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-3 relative z-10">
         <div className="container mx-auto px-6 text-center">
           <p className="font-serif text-white">
             Email: contact@kazukiyamakawa.com
