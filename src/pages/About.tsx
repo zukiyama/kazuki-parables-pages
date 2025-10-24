@@ -67,9 +67,9 @@ const About = () => {
           />
         </div>
 
-        {/* Photo Grid Section 1 - Single image */}
-        <div className="relative flex justify-center mb-12">
-          <div className="w-1/3 aspect-square overflow-hidden">
+        {/* Photo Grid Section 1 - Single image aligned left */}
+        <div className="relative mb-12">
+          <div className="w-[38%] aspect-square overflow-hidden">
             <OptimizedImage 
               src={mirrorCamera}
               alt="Mirror reflection"
@@ -78,9 +78,9 @@ const About = () => {
           </div>
         </div>
 
-        {/* Photo Grid Section 2 - Single image */}
-        <div className="relative flex justify-center mb-12">
-          <div className="w-1/2 aspect-[4/3] overflow-hidden">
+        {/* Photo Grid Section 2 - Single image aligned left */}
+        <div className="relative mb-12">
+          <div className="w-[55%] aspect-[4/3] overflow-hidden">
             <OptimizedImage 
               src={windowCity}
               alt="Window overlooking city"
@@ -89,30 +89,30 @@ const About = () => {
           </div>
         </div>
 
-        {/* Photo Grid Section 3 - Four small images in a row */}
-        <div className="grid grid-cols-4 gap-3 mb-12">
-          <div className="aspect-square overflow-hidden">
+        {/* Photo Grid Section 3 - Four images spanning full width */}
+        <div className="flex gap-3 mb-12">
+          <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
               src={shopWindow}
               alt="Shop window"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
-          <div className="aspect-square overflow-hidden">
+          <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
               src={aerialStreet}
               alt="Aerial street view"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
-          <div className="aspect-square overflow-hidden">
+          <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
               src={pigeonRiver}
               alt="Pigeon by river"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
-          <div className="aspect-square overflow-hidden">
+          <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
               src={taiChi}
               alt="Tai chi in park"
