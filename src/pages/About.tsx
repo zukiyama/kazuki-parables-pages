@@ -4,10 +4,12 @@ import artistPortrait from "@/assets/artist-portrait.png";
 import bannerImage from "@/assets/about-banner-washing-line.jpg";
 import windowCity from "@/assets/about-window-city.png";
 import aerialStreet from "@/assets/about-aerial-street.jpeg";
-import mirrorCamera from "@/assets/about-mirror-camera.png";
+import japaneseRoomView from "@/assets/about-japanese-room-view.png";
+import photographerWindow from "@/assets/about-photographer-window.jpeg";
 import shopWindow from "@/assets/about-shop-window.png";
 import taiChi from "@/assets/about-tai-chi.png";
-import pigeonRiver from "@/assets/about-pigeon-river.jpeg";
+import pigeonSeine from "@/assets/about-pigeon-seine.jpeg";
+import parisAerial from "@/assets/about-paris-aerial.jpeg";
 import backgroundSphere from "@/assets/about-background-new.jpeg";
 
 const About = () => {
@@ -68,22 +70,22 @@ const About = () => {
         </div>
 
         {/* Photo Grid Section 1 - Single image aligned left */}
-        <div className="relative mb-8">
-          <div className="w-[42%] aspect-square overflow-hidden">
+        <div className="relative mb-6">
+          <div className="w-[46%] aspect-square overflow-hidden">
             <OptimizedImage 
-              src={mirrorCamera}
-              alt="Mirror reflection"
+              src={japaneseRoomView}
+              alt="Japanese room with city view"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
         </div>
 
         {/* Photo Grid Section 2 - Single image aligned left */}
-        <div className="relative mb-8">
+        <div className="relative mb-6">
           <div className="w-[55%] aspect-[4/3] overflow-hidden">
             <OptimizedImage 
-              src={windowCity}
-              alt="Window overlooking city"
+              src={photographerWindow}
+              alt="Photographer in shop window"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
@@ -100,15 +102,15 @@ const About = () => {
           </div>
           <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
-              src={aerialStreet}
-              alt="Aerial street view"
+              src={parisAerial}
+              alt="Paris aerial view"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
           <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
-              src={pigeonRiver}
-              alt="Pigeon by river"
+              src={pigeonSeine}
+              alt="Pigeon by Seine river"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
