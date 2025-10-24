@@ -2,12 +2,9 @@ import { OptimizedImage } from "@/components/OptimizedImage";
 import Navigation from "@/components/Navigation";
 import artistPortrait from "@/assets/artist-portrait.png";
 import bannerImage from "@/assets/about-banner-washing-line.jpg";
-import spiralStairs from "@/assets/about-spiral-stairs.png";
 import windowCity from "@/assets/about-window-city.png";
 import aerialStreet from "@/assets/about-aerial-street.jpeg";
 import mirrorCamera from "@/assets/about-mirror-camera.png";
-import cityCrossing from "@/assets/about-city-crossing.png";
-import bicycles from "@/assets/about-bicycles.png";
 import shopWindow from "@/assets/about-shop-window.png";
 import taiChi from "@/assets/about-tai-chi.png";
 import pigeonRiver from "@/assets/about-pigeon-river.jpeg";
@@ -61,32 +58,18 @@ const About = () => {
 
       {/* Background Image Section */}
       <div className="relative -mx-6">
-        {/* Faded background image - full width */}
-        <div className="absolute inset-x-0 top-0 -left-6 -right-6 pointer-events-none overflow-visible" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)' }}>
+        {/* Faded background image - full width with slim equal borders */}
+        <div className="absolute inset-x-0 top-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
           <OptimizedImage 
             src={backgroundSphere}
             alt=""
-            className="w-full h-auto object-contain opacity-80"
+            className="w-full h-auto object-cover opacity-80"
           />
         </div>
 
-        {/* Photo Grid Section 1 - Three small images in a row */}
-        <div className="relative grid grid-cols-3 gap-4 mb-12">
-          <div className="aspect-square overflow-hidden">
-            <OptimizedImage 
-              src={spiralStairs}
-              alt="Spiral staircase"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-          <div className="aspect-square overflow-hidden">
-            <OptimizedImage 
-              src={bicycles}
-              alt="Bicycles on street"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-          <div className="aspect-square overflow-hidden">
+        {/* Photo Grid Section 1 - Single image */}
+        <div className="relative flex justify-center mb-12">
+          <div className="w-1/3 aspect-square overflow-hidden">
             <OptimizedImage 
               src={mirrorCamera}
               alt="Mirror reflection"
@@ -95,19 +78,12 @@ const About = () => {
           </div>
         </div>
 
-        {/* Photo Grid Section 2 - Two column layout */}
-        <div className="grid grid-cols-2 gap-6 mb-12">
-          <div className="aspect-[4/3] overflow-hidden">
+        {/* Photo Grid Section 2 - Single image */}
+        <div className="relative flex justify-center mb-12">
+          <div className="w-1/2 aspect-[4/3] overflow-hidden">
             <OptimizedImage 
               src={windowCity}
               alt="Window overlooking city"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-          <div className="aspect-[4/3] overflow-hidden">
-            <OptimizedImage 
-              src={cityCrossing}
-              alt="City crossing"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
