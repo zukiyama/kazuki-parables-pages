@@ -60,13 +60,13 @@ const About = () => {
         </div>
 
       {/* Background Image Section */}
-      <div className="relative">
+      <div className="relative -mx-6">
         {/* Faded background image */}
-        <div className="absolute inset-0 -top-32 pointer-events-none">
+        <div className="absolute inset-0 -top-24 pointer-events-none overflow-hidden">
           <OptimizedImage 
             src={backgroundSphere}
             alt=""
-            className="w-full h-full object-cover opacity-20"
+            className="w-full h-auto min-h-full object-cover opacity-50 scale-110"
           />
         </div>
 
