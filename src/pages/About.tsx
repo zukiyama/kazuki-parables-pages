@@ -69,9 +69,16 @@ const About = () => {
           />
         </div>
 
-        {/* Photo Grid Section 1 - Single image aligned left */}
-        <div className="mb-2 mt-32">
-          <div className="w-[40%] aspect-square overflow-hidden">
+        {/* Photo Grid Section - Two images with equal spacing */}
+        <div className="flex gap-[2%] mb-4 mt-32">
+          <div className="w-[48%] aspect-[4/3] overflow-hidden">
+            <OptimizedImage 
+              src={photographerWindow}
+              alt="Photographer in shop window"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+          <div className="w-[48%] aspect-[4/3] overflow-hidden ml-auto">
             <OptimizedImage 
               src={japaneseRoomView}
               alt="Japanese room with city view"
@@ -80,19 +87,8 @@ const About = () => {
           </div>
         </div>
 
-        {/* Photo Grid Section 2 - Single image aligned left */}
-        <div className="relative mb-1.5">
-          <div className="w-[48%] aspect-[4/3] overflow-hidden">
-            <OptimizedImage 
-              src={photographerWindow}
-              alt="Photographer in shop window"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-        </div>
-
         {/* Photo Grid Section 3 - Four images spanning full width */}
-        <div className="flex gap-2 mb-2 mt-2 relative z-10" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
+        <div className="flex gap-2 mb-2 mt-8 relative z-10" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
           <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
               src={shopWindow}
