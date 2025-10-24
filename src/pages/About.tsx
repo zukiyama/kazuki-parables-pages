@@ -11,6 +11,7 @@ import bicycles from "@/assets/about-bicycles.png";
 import shopWindow from "@/assets/about-shop-window.png";
 import taiChi from "@/assets/about-tai-chi.png";
 import pigeonRiver from "@/assets/about-pigeon-river.jpeg";
+import backgroundSphere from "@/assets/about-background-sphere.png";
 
 const About = () => {
   return (
@@ -58,8 +59,19 @@ const About = () => {
           </div>
         </div>
 
+      {/* Background Image Section */}
+      <div className="relative">
+        {/* Faded background image */}
+        <div className="absolute inset-0 -top-32 pointer-events-none">
+          <OptimizedImage 
+            src={backgroundSphere}
+            alt=""
+            className="w-full h-full object-cover opacity-20"
+          />
+        </div>
+
         {/* Photo Grid Section 1 - Three small images in a row */}
-        <div className="grid grid-cols-3 gap-4 mb-12">
+        <div className="relative grid grid-cols-3 gap-4 mb-12">
           <div className="aspect-square overflow-hidden">
             <OptimizedImage 
               src={spiralStairs}
@@ -132,6 +144,7 @@ const About = () => {
             />
           </div>
         </div>
+      </div>
       </div>
       
       <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-20 relative z-10">
