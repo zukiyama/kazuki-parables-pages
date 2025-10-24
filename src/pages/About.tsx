@@ -70,7 +70,7 @@ const About = () => {
         </div>
 
         {/* Photo Grid Section 1 - Single image aligned left */}
-        <div className="relative mb-3">
+        <div className="relative mb-2">
           <div className="w-[40%] aspect-square overflow-hidden">
             <OptimizedImage 
               src={japaneseRoomView}
