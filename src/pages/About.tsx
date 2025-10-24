@@ -11,7 +11,7 @@ import bicycles from "@/assets/about-bicycles.png";
 import shopWindow from "@/assets/about-shop-window.png";
 import taiChi from "@/assets/about-tai-chi.png";
 import pigeonRiver from "@/assets/about-pigeon-river.jpeg";
-import backgroundSphere from "@/assets/about-background-sphere.png";
+import backgroundSphere from "@/assets/about-background-new.jpeg";
 
 const About = () => {
   return (
@@ -61,12 +61,12 @@ const About = () => {
 
       {/* Background Image Section */}
       <div className="relative -mx-6">
-        {/* Faded background image */}
-        <div className="absolute inset-0 -top-24 pointer-events-none overflow-hidden">
+        {/* Faded background image - full width */}
+        <div className="absolute inset-x-0 top-0 -left-6 -right-6 pointer-events-none overflow-visible" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)' }}>
           <OptimizedImage 
             src={backgroundSphere}
             alt=""
-            className="w-full h-auto min-h-full object-cover opacity-50 scale-110"
+            className="w-full h-auto object-contain opacity-80"
           />
         </div>
 
