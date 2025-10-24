@@ -59,9 +59,9 @@ const About = () => {
         </div>
 
       {/* Background Image Section */}
-      <div className="relative -mx-6">
+      <div className="relative -mx-6 pb-16">
         {/* Faded background image - full width with slim equal borders */}
-        <div className="absolute inset-x-0 top-0 left-0 right-0 pointer-events-none overflow-hidden z-0" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
+        <div className="absolute inset-x-0 top-0 left-0 right-0 pointer-events-none overflow-hidden z-0" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem', maxHeight: 'calc(100% - 4rem)' }}>
           <OptimizedImage 
             src={backgroundSphere}
             alt=""
@@ -88,7 +88,7 @@ const About = () => {
         </div>
 
         {/* Photo Grid Section 3 - Four images spanning full width */}
-        <div className="flex gap-2 mb-2 mt-8 relative z-10" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
+        <div className="flex gap-2 mb-2 mt-12 relative z-10" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.5rem', paddingRight: '0.5rem' }}>
           <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
               src={shopWindow}
