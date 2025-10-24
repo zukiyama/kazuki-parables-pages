@@ -70,7 +70,7 @@ const About = () => {
         </div>
 
         {/* Photo Grid Section 1 - Single image aligned left */}
-        <div className="relative mb-2">
+        <div className="relative mb-2 mt-6">
           <div className="w-[40%] aspect-square overflow-hidden">
             <OptimizedImage 
               src={japaneseRoomView}
@@ -92,7 +92,7 @@ const About = () => {
         </div>
 
         {/* Photo Grid Section 3 - Four images spanning full width */}
-        <div className="flex gap-2 mb-2" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
+        <div className="flex gap-2 mb-2 mt-2" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
           <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
               src={shopWindow}
