@@ -14,7 +14,7 @@ import backgroundSphere from "@/assets/about-background-new.jpeg";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-muted/5 to-background">
+    <div className="min-h-screen bg-white">
       <Navigation />
       
       {/* Hero Banner */}
@@ -33,11 +33,11 @@ const About = () => {
         {/* Artist Portrait & Bio Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
           <div className="lg:col-span-1 flex justify-center lg:justify-start">
-            <div className="w-64 h-64 relative">
+            <div className="w-80 h-80 relative">
               <OptimizedImage 
                 src={artistPortrait}
                 alt="Kazuki Yamakawa portrait"
-                className="w-full h-full object-cover grayscale"
+                className="w-full h-full object-cover"
               />
             </div>
           </div>
@@ -70,7 +70,7 @@ const About = () => {
         </div>
 
         {/* Photo Grid Section 1 - Single image aligned left */}
-        <div className="mb-2 mt-16">
+        <div className="mb-2 mt-32">
           <div className="w-[40%] aspect-square overflow-hidden">
             <OptimizedImage 
               src={japaneseRoomView}
