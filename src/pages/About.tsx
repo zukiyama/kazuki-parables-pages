@@ -58,26 +58,26 @@ const About = () => {
           </div>
         </div>
 
-      {/* Background Image Section */}
-      <div className="relative -mx-6 pb-16">
-        {/* Faded background image - full width with slim equal borders */}
-        <div className="absolute inset-x-0 top-0 left-0 right-0 pointer-events-none overflow-hidden z-0" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
-          <OptimizedImage 
-            src={backgroundSphere}
-            alt=""
-            className="w-full h-auto object-cover opacity-80"
-          />
+        {/* Background Image Section */}
+        <div className="relative -mx-6 mb-16">
+          {/* Faded background image - full width with slim equal borders */}
+          <div className="relative pointer-events-none overflow-hidden" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
+            <OptimizedImage 
+              src={backgroundSphere}
+              alt=""
+              className="w-full h-auto object-cover opacity-80"
+            />
+            
+            {/* Single photo positioned at bottom left of background image */}
+            <div className="absolute bottom-[1cm] left-[1cm] w-[48%] max-w-md aspect-[4/3] overflow-hidden z-10 pointer-events-auto">
+              <OptimizedImage 
+                src={photographerWindow}
+                alt="Photographer in shop window"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
+          </div>
         </div>
-
-        {/* Single photo positioned at bottom left */}
-        <div className="absolute bottom-[1cm] left-[1cm] w-80 aspect-[4/3] overflow-hidden z-10">
-          <OptimizedImage 
-            src={photographerWindow}
-            alt="Photographer in shop window"
-            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-          />
-        </div>
-      </div>
       </div>
       
       <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-[2px] relative z-10">
