@@ -70,8 +70,8 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
 
   return (
     <div className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">
-      <div className="relative px-20 py-8 md:px-16 lg:px-12 pb-16">
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${
+      <div className="relative px-20 py-8 md:px-16 lg:px-12 pb-16 max-md:px-4 max-md:py-6">
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 max-md:gap-6 items-center ${
           book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
         }`}>
           {/* Book Cover */}
@@ -80,18 +80,18 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
               key={`cover-${currentBook}`}
               src={book.cover} 
               alt={book.title}
-              className="w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100"
+              className="w-full max-w-xs max-md:max-w-[260px] mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100"
               loading="eager"
             />
           </div>
           
           {/* Book Info */}
-          <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-24 pl-8"} md:pl-24 md:pr-24`}>
-            <h3 className="font-serif text-3xl font-bold text-white mb-2 drop-shadow-lg">{book.title}</h3>
+          <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-24 pl-8"} md:pl-24 md:pr-24 max-md:px-4`}>
+            <h3 className="font-serif text-3xl max-md:text-xl font-bold text-white mb-2 drop-shadow-lg">{book.title}</h3>
             {book.subtitle && (
-              <h4 className="font-serif text-xl text-yellow-300 mb-4 drop-shadow-lg">{book.subtitle}</h4>
+              <h4 className="font-serif text-xl max-md:text-lg text-yellow-300 mb-4 drop-shadow-lg">{book.subtitle}</h4>
             )}
-            <p className="font-serif text-lg leading-relaxed text-white/90 drop-shadow-md">
+            <p className="font-serif text-lg max-md:text-sm leading-relaxed max-md:leading-relaxed text-white/90 drop-shadow-md">
               {book.summary}
             </p>
           </div>
@@ -99,24 +99,24 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
       </div>
       
       {/* Navigation */}
-      <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 max-md:left-2 max-md:bottom-2 max-md:top-auto max-md:translate-y-0">
         <Button
           variant="outline"
           size="lg"
           onClick={prevBook}
-          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl"
+          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 max-md:w-10 max-md:h-10 p-0 backdrop-blur-sm shadow-xl"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-6 h-6 max-md:w-5 max-md:h-5" />
         </Button>
       </div>
-      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+      <div className="absolute right-4 top-1/2 transform -translate-y-1/2 max-md:right-2 max-md:bottom-2 max-md:top-auto max-md:translate-y-0">
         <Button
           variant="outline"
           size="lg"
           onClick={nextBook}
-          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl"
+          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 max-md:w-10 max-md:h-10 p-0 backdrop-blur-sm shadow-xl"
         >
-          <ChevronRight className="w-6 h-6" />
+          <ChevronRight className="w-6 h-6 max-md:w-5 max-md:h-5" />
         </Button>
       </div>
       
