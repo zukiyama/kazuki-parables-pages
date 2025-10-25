@@ -26,7 +26,7 @@ const MobileMenu = () => {
       <Button
         variant="ghost"
         size="icon"
-        className="md:hidden text-foreground"
+        className="sm:hidden text-foreground"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle menu"
       >
@@ -38,12 +38,12 @@ const MobileMenu = () => {
         <>
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 bg-black/60 z-[100] md:hidden backdrop-blur-sm"
+            className="fixed inset-0 bg-black/60 z-[100] sm:hidden backdrop-blur-sm"
             onClick={() => setIsOpen(false)}
           />
           
           {/* Drawer */}
-          <div className="fixed top-0 right-0 bottom-0 w-[280px] bg-background border-l border-border z-[101] md:hidden shadow-2xl">
+          <div className="fixed top-0 right-0 bottom-0 w-[280px] bg-background border-l border-border z-[101] sm:hidden shadow-2xl">
             {/* Close Button */}
             <div className="flex justify-end p-4">
               <Button
