@@ -33,7 +33,7 @@ const Navigation = () => {
                 onClick={() => window.scrollTo(0, 0)}
                 className={`font-body text-sm tracking-wide transition-colors hover:text-accent ${
                   location.pathname === item.path
-                    ? "text-accent font-semibold"
+                    ? "text-brush-brown font-semibold"
                     : "text-foreground"
                 }`}
               >
