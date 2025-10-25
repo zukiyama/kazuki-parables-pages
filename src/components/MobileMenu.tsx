@@ -40,7 +40,7 @@ const MobileMenu = () => {
           />
 
           {/* Drawer */}
-          <div className="fixed top-16 right-0 bottom-0 w-64 bg-background border-l border-border z-[101] sm:hidden overflow-y-auto">
+          <div className="fixed top-16 right-0 bottom-0 w-64 bg-white border-l border-gray-200 z-[101] sm:hidden overflow-y-auto shadow-2xl">
             <nav className="flex flex-col p-6 space-y-4">
               {navItems.map((item) => (
                 <Link
@@ -50,7 +50,7 @@ const MobileMenu = () => {
                   className={`font-body text-lg tracking-wide transition-colors hover:text-accent py-2 ${
                     location.pathname === item.path
                       ? 'text-accent font-semibold border-l-4 border-accent pl-4'
-                      : 'text-foreground pl-4'
+                      : 'text-ink-black pl-4'
                   }`}
                 >
                   {item.label}
