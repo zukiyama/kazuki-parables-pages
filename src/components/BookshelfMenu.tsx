@@ -188,7 +188,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   };
 
   return (
-    <div className="sticky top-16 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-3 max-sm:py-2">
+    <div className="sticky top-16 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-3 max-sm:pt-4 max-sm:pb-2">
       <div className="container mx-auto px-6 max-sm:px-4">
         <div className="flex justify-center items-center gap-6 overflow-x-auto pb-2 max-sm:gap-4 max-sm:pb-1 max-sm:justify-start">
           {books.map((book) => (
@@ -212,9 +212,9 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
                   src={book.cover}
                   alt={book.title}
                   width="64"
-                  height="64"
+                  height="96"
                   loading="eager"
-                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-cover max-sm:w-12 max-sm:h-12 ${
+                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-contain w-16 h-auto max-sm:w-10 ${
                     activeBook === book.id
                       ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'
                       : hoveredBook === book.id 
