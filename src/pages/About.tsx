@@ -59,7 +59,7 @@ const About = () => {
         </div>
 
         {/* Background Image Section */}
-        <div className="relative -mx-6 mb-16">
+        <div className="relative -mx-6 mb-3">
           {/* Faded background image - full width with slim equal borders */}
           <div className="relative pointer-events-none overflow-hidden" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
             <OptimizedImage 
