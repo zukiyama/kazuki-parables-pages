@@ -21,7 +21,7 @@ const About = () => {
       <Navigation />
       
       {/* Hero Banner */}
-      <div className="w-full h-[25vh] sm:h-[30vh] md:h-[40vh] relative overflow-hidden mt-20 md:mt-16">
+      <div className="w-full h-[40vh] relative overflow-hidden mt-16 max-md:h-[25vh] max-md:mt-20">
         <OptimizedImage 
           src={bannerImage}
           alt="Vintage Japanese cityscape"
@@ -34,9 +34,9 @@ const About = () => {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-16 max-w-6xl">
         {/* Artist Portrait & Bio Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12 mb-12 md:mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20 max-md:gap-8 max-md:mb-12">
           <div className="lg:col-span-1 flex justify-center lg:justify-start">
-            <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 relative">
+            <div className="w-80 h-80 relative max-md:w-64 max-md:h-64">
               <OptimizedImage 
                 src={artistPortrait}
                 alt="Kazuki Yamakawa portrait"
@@ -46,11 +46,11 @@ const About = () => {
           </div>
           
           <div className="lg:col-span-2 flex items-center">
-            <div className="space-y-4 md:space-y-6">
-              <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight text-foreground">
+            <div className="space-y-6 max-md:space-y-4">
+              <h1 className="font-heading text-5xl tracking-tight text-foreground max-md:text-3xl">
                 Kazuki Yamakawa
               </h1>
-              <p className="font-body text-sm sm:text-base lg:text-lg leading-relaxed text-foreground/80 max-w-2xl">
+              <p className="font-body text-lg leading-relaxed text-foreground/80 max-w-2xl max-md:text-sm">
                 This is the website of Kazuki Yamakawa. Very little is known aside from the 
                 impressions we have drawn from the writing and music. A writer and composer, 
                 this is the website where his work is displayed. It is not even known if this 
@@ -86,8 +86,8 @@ const About = () => {
             />
             
             {/* Overlaid text and signature - Desktop only */}
-            <div className="hidden md:block absolute top-[10%] lg:top-[15%] left-[5%] lg:left-[8%] max-w-sm lg:max-w-md pointer-events-auto bg-white/80 lg:bg-transparent p-4 lg:p-0 rounded-lg lg:rounded-none">
-              <p className="font-body text-base lg:text-lg leading-relaxed text-foreground/90 mb-4 lg:mb-6 italic">
+            <div className="hidden md:block absolute top-[15%] left-[8%] max-w-md pointer-events-auto">
+              <p className="font-body text-lg leading-relaxed text-foreground/90 mb-6 italic">
                 I have always preferred to withdraw from society, finding solace in quiet observation 
                 rather than participation. The world moves too quickly for meaningful reflection, and 
                 in my solitude, I discover the stories worth telling.
@@ -95,7 +95,7 @@ const About = () => {
               <OptimizedImage 
                 src={signatureYamakawa}
                 alt="Yamakawa signature"
-                className="w-28 lg:w-32 h-auto opacity-90"
+                className="w-32 h-auto opacity-90"
               />
             </div>
           </div>
@@ -129,10 +129,10 @@ const About = () => {
         </div>
       </div>
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-0 md:-mt-[117px] relative z-10">
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 -mt-[117px] relative z-10 max-md:mt-0">
         <div className="container mx-auto px-6 text-center">
-          <h3 className="font-heading text-xl md:text-2xl mb-4 text-white">Contact</h3>
-          <p className="font-serif text-sm md:text-base text-white">
+          <h3 className="font-heading text-2xl mb-4 text-white max-md:text-xl">Contact</h3>
+          <p className="font-serif text-base text-white max-md:text-sm">
             kazuki@kazukiyamakawa.com
           </p>
         </div>

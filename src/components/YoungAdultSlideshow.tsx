@@ -70,8 +70,8 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
 
   return (
     <div className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">
-      <div className="relative px-4 py-6 sm:px-8 sm:py-8 md:px-16 lg:px-12 pb-20 md:pb-16">
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center ${
+      <div className="relative px-20 py-8 md:px-16 lg:px-12 pb-20 md:pb-16 max-md:px-4 max-md:py-6">
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${
           book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
         }`}>
           {/* Book Cover */}
@@ -80,18 +80,18 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
               key={`cover-${currentBook}`}
               src={book.cover} 
               alt={book.title}
-              className="w-full max-w-[260px] sm:max-w-xs mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100"
+              className="w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100 max-md:max-w-[260px]"
               loading="eager"
             />
           </div>
           
           {/* Book Info */}
-          <div className="px-0 sm:px-4 md:px-8 lg:px-12">
-            <h3 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 drop-shadow-lg">{book.title}</h3>
+          <div className="pr-24 pl-8 max-md:px-0">
+            <h3 className="font-serif text-3xl font-bold text-white mb-2 drop-shadow-lg max-md:text-xl">{book.title}</h3>
             {book.subtitle && (
-              <h4 className="font-serif text-lg sm:text-xl md:text-xl text-yellow-300 mb-3 md:mb-4 drop-shadow-lg">{book.subtitle}</h4>
+              <h4 className="font-serif text-xl text-yellow-300 mb-4 drop-shadow-lg max-md:text-lg max-md:mb-3">{book.subtitle}</h4>
             )}
-            <p className="font-serif text-sm sm:text-base md:text-lg leading-relaxed text-white/90 drop-shadow-md max-w-full">
+            <p className="font-serif text-lg leading-relaxed text-white/90 drop-shadow-md max-md:text-sm max-md:max-w-full">
               {book.summary}
             </p>
           </div>
