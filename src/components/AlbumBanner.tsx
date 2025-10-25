@@ -89,11 +89,15 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   const currentItems = showEPs ? eps : albums;
 
   return (
-    <div className="py-2 max-sm:pt-4 max-sm:pb-2 bg-black/80 backdrop-blur-sm max-sm:overflow-x-auto max-sm:scrollbar-hide">
-      <div className="container mx-auto px-6">
-        <div className="flex justify-center items-center pb-2 relative max-sm:pr-20">
+    <div className="py-3 max-sm:pt-4 max-sm:pb-4 bg-black/80 backdrop-blur-sm overflow-visible relative">
+      {/* Fade overlays on mobile */}
+      <div className="hidden max-sm:block absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-black/80 to-transparent z-10 pointer-events-none"></div>
+      <div className="hidden max-sm:block absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black/80 to-transparent z-10 pointer-events-none"></div>
+      
+      <div className="container mx-auto px-6 max-sm:px-2">
+        <div className="flex justify-center items-center pb-2 relative max-sm:pr-24">
           {/* Items Container */}
-          <div className="flex justify-center items-center gap-8 overflow-visible max-sm:gap-4 max-sm:overflow-x-auto max-sm:flex-1">
+          <div className="flex justify-center items-center gap-8 overflow-visible max-sm:gap-3 max-sm:overflow-x-auto max-sm:flex-1 max-sm:scrollbar-hide max-sm:overflow-y-visible">
             <div
               ref={containerRef}
               className={`flex justify-center items-center gap-8 transition-all duration-500 ${
@@ -109,7 +113,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                   onClick={() => item.cover && handleAlbumClick(item)}
                 >
                   {/* Title */}
-                  <h3 className="font-serif text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
+                  <h3 className="font-serif text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] max-sm:mb-0.5">
                     {item.title}
                   </h3>
                   
@@ -123,9 +127,9 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                           width="96"
                           height="96"
                           loading="eager"
-                          className={`w-24 h-24 object-cover rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
+                          className={`w-24 h-24 object-cover rounded shadow-lg transition-all duration-300 group-hover:shadow-xl max-sm:w-16 max-sm:h-16 ${
                             selectedAlbumId === item.id
-                              ? 'ring-2 ring-yellow-300/60 scale-105'
+                              ? 'ring-2 ring-yellow-300/60 scale-105 max-sm:scale-110'
                               : hoveredAlbum === item.id 
                               ? 'scale-105 shadow-2xl shadow-yellow-300/20' 
                               : ''
@@ -149,11 +153,11 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
           {/* Toggle Button - Fixed to far right */}
           <button
             onClick={handleToggle}
-            className="absolute right-0 flex flex-col items-end gap-1 group hover:scale-105 transition-transform duration-200"
+            className="absolute right-0 max-sm:right-2 flex flex-col items-end gap-1 group hover:scale-105 transition-transform duration-200"
             aria-label={showEPs ? "Switch to Albums" : "Switch to EPs"}
           >
             {/* Label with smooth transition - centered */}
-            <div className="relative h-5 mb-1 w-16 flex justify-center">
+            <div className="relative h-5 mb-1 w-16 flex justify-center max-sm:mb-0">
               <span
                 className={`absolute font-serif text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
                   showEPs ? 'opacity-100' : 'opacity-0'

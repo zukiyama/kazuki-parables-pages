@@ -184,6 +184,14 @@ const albums = [
       "Desert Wind",
       "Journey's End"
     ]
+  },
+  {
+    id: 8,
+    title: "Coming Soon",
+    cover: "",
+    background: manOnFilmBackground,
+    theme: "coming-soon",
+    tracks: []
   }
 ];
 
@@ -235,7 +243,9 @@ const Music = () => {
     });
   }, []);
 
-  const handleAlbumSelect = (album: typeof albums[0]) => {
+  const handleAlbumSelect = (albumId: number) => {
+    const album = albums.find(a => a.id === albumId);
+    if (!album) return;
     
     // Clear any existing transition
     if (transitionRef.current) {
@@ -300,10 +310,7 @@ const Music = () => {
       <div className="fixed top-16 left-0 right-0 z-20">
         <AlbumBanner 
           selectedAlbumId={selectedAlbum.id}
-          onAlbumClick={(albumId) => {
-            const album = albums.find(a => a.id === albumId);
-            if (album) handleAlbumSelect(album);
-          }}
+          onAlbumClick={handleAlbumSelect}
         />
       </div>
       
@@ -390,11 +397,17 @@ const Music = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 {/* Album Cover - Left Side */}
                 <div className="text-center">
-                  <img 
-                    src={selectedAlbum.cover} 
-                    alt={selectedAlbum.title}
-                    className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6 transition-all duration-500 hover:scale-105"
-                  />
+                  {selectedAlbum.cover ? (
+                    <img 
+                      src={selectedAlbum.cover} 
+                      alt={selectedAlbum.title}
+                      className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6 transition-all duration-500 hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6 bg-black/40 border border-white/20 flex items-center justify-center aspect-square">
+                      <span className="text-white/60 text-2xl font-semibold">Coming Soon</span>
+                    </div>
+                  )}
                   <h2 className="font-serif text-3xl text-white mb-2">{selectedAlbum.title}</h2>
                   <p className="text-white/80 text-lg mb-6">Featured Album</p>
                   
@@ -452,23 +465,29 @@ const Music = () => {
                     Track Listing
                   </h3>
                   <ScrollArea className="h-[580px] w-full rounded-md border border-white/20 p-4 bg-black/20 max-sm:h-[300px]">
-                    <div className="space-y-3">
-                      {selectedAlbum.tracks.map((track, index) => (
-                        <div 
-                          key={index} 
-                          className="flex items-center justify-between p-3 bg-black/30 rounded hover:bg-black/40 transition-colors cursor-pointer"
-                          onClick={() => {
-                            setCurrentTrackIndex(index); 
-                            setIsPlaying(true);
-                          }}
-                        >
-                          <span className="text-white font-serif">{index + 1}. {track}</span>
-                          <div className="text-white/60">
-                            {currentTrackIndex === index ? "⏸" : "▶"}
+                    {selectedAlbum.tracks.length > 0 ? (
+                      <div className="space-y-3">
+                        {selectedAlbum.tracks.map((track, index) => (
+                          <div 
+                            key={index} 
+                            className="flex items-center justify-between p-3 bg-black/30 rounded hover:bg-black/40 transition-colors cursor-pointer"
+                            onClick={() => {
+                              setCurrentTrackIndex(index); 
+                              setIsPlaying(true);
+                            }}
+                          >
+                            <span className="text-white font-serif">{index + 1}. {track}</span>
+                            <div className="text-white/60">
+                              {currentTrackIndex === index ? "⏸" : "▶"}
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center h-full">
+                        <span className="text-white/60 text-lg font-serif">No tracks available yet</span>
+                      </div>
+                    )}
                   </ScrollArea>
                 </div>
               </div>
@@ -478,27 +497,31 @@ const Music = () => {
           {/* Singles (click to play) */}
           <div className="mb-8">
             <h4 className="font-serif text-2xl text-white mb-4 text-center max-sm:text-xl">Singles</h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-sm:gap-2">
-              {selectedAlbum.tracks.slice(0,4).map((track, idx) => (
-                <button
-                  key={idx}
-                  className={`relative group rounded-lg overflow-hidden border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 ${currentTrackIndex===idx? 'ring-2 ring-white/60':''}`}
-                  onClick={() => { setCurrentTrackIndex(idx); setIsPlaying(true); }}
-                >
-                  <img src={selectedAlbum.cover} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
-                  <div className="absolute inset-0 bg-black/40"></div>
-                  <div className="absolute bottom-2 left-2 right-2 text-left">
-                    <span className="text-white text-sm font-serif line-clamp-2">{track}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
+            {selectedAlbum.tracks.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-sm:gap-2">
+                {selectedAlbum.tracks.slice(0,4).map((track, idx) => (
+                  <button
+                    key={idx}
+                    className={`relative group rounded-lg overflow-hidden border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 ${currentTrackIndex===idx? 'ring-2 ring-white/60':''}`}
+                    onClick={() => { setCurrentTrackIndex(idx); setIsPlaying(true); }}
+                  >
+                    <img src={selectedAlbum.cover} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-0 bg-black/40"></div>
+                    <div className="absolute bottom-2 left-2 right-2 text-left">
+                      <span className="text-white text-sm font-serif line-clamp-2">{track}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center text-white/60 font-serif">No singles available yet</div>
+            )}
           </div>
           
         </div>
       </main>
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-20 relative z-10">
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-8 max-sm:mt-6 relative z-10">
         <div className="container mx-auto px-6 text-center">
           <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
           <p className="font-serif text-white">

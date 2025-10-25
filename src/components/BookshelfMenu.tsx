@@ -188,7 +188,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   };
 
   return (
-    <div className="sticky top-16 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-4 max-sm:pt-5 max-sm:pb-6">
+    <div className="sticky top-16 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-4 max-sm:pt-5 max-sm:pb-6 max-sm:fixed max-sm:left-0 max-sm:right-0">
       <div className="container mx-auto px-6 max-sm:px-4">
         <div className="flex justify-center items-center gap-6 overflow-x-auto overflow-y-visible pb-2 max-sm:gap-4 max-sm:pb-1 max-sm:justify-start max-sm:overflow-x-scroll max-sm:overflow-y-visible scrollbar-hide">
           {books.map((book) => (
