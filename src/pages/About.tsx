@@ -87,26 +87,19 @@ const About = () => {
           </div>
         </div>
 
-        {/* Photo Grid Section 3 - Four images spanning full width */}
-        <div className="flex gap-2 mt-12 relative z-10" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1cm', paddingRight: '1cm' }}>
+        {/* Photo Grid Section 3 - Three images with equal spacing */}
+        <div className="flex gap-4 mt-12 mb-[0.5cm] relative z-10" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1cm', paddingRight: '1cm' }}>
           <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
-              src={shopWindow}
-              alt="Shop window"
+              src={photographerWindow}
+              alt="Photographer in shop window"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
           <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
-              src={parisAerial}
-              alt="Paris aerial view"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-          <div className="flex-1 aspect-square overflow-hidden">
-            <OptimizedImage 
-              src={pigeonSeine}
-              alt="Pigeon by Seine river"
+              src={japaneseRoomView}
+              alt="Japanese room with city view"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
