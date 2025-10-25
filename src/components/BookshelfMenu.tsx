@@ -115,7 +115,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       return youngAdultBooks[currentYoungAdultBook] || 'professor-barnabas';
     }
     
-    return 'kaiju'; // Default fallback
+    return null; // No default - only highlight when actually visible
   };
   
   const activeBook = getActiveBook();
@@ -188,9 +188,9 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   };
 
   return (
-    <div className="sticky top-16 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-3 max-sm:pt-4 max-sm:pb-2">
+    <div className="sticky top-16 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-4 max-sm:pt-5 max-sm:pb-4">
       <div className="container mx-auto px-6 max-sm:px-4">
-        <div className="flex justify-center items-center gap-6 overflow-x-auto pb-2 max-sm:gap-4 max-sm:pb-1 max-sm:justify-start">
+        <div className="flex justify-center items-center gap-6 overflow-x-auto pb-2 max-sm:gap-4 max-sm:pb-1 max-sm:justify-start max-sm:overflow-x-scroll">
           {books.map((book) => (
             <div
               key={book.id}
@@ -200,7 +200,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
               onClick={() => handleBookClick(book)}
             >
               {/* Book Title */}
-              <h3 className={`font-serif text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] max-sm:whitespace-normal max-sm:leading-tight max-sm:min-h-[32px] ${
+              <h3 className={`font-serif text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] max-sm:whitespace-normal max-sm:leading-tight max-sm:min-h-[32px] max-sm:flex max-sm:items-center max-sm:justify-center ${
                 activeBook === book.id ? 'text-yellow-300' : 'text-white'
               }`}>
                 {book.title}
