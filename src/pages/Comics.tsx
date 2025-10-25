@@ -94,14 +94,14 @@ const Comics = () => {
           <div className="mb-16">
             <div className="max-w-7xl mx-auto px-16 max-sm:px-4">
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-center max-sm:gap-4">
-                <div className="lg:col-span-3 max-sm:order-2">
+                <div className="lg:col-span-3 max-sm:order-1">
                   <img 
                     src={godOfLiesCover}
                     alt="God of Lies comic cover"
                     className="w-full object-contain shadow-2xl"
                   />
                 </div>
-                <div className="lg:col-span-1 max-sm:order-1 max-sm:text-center">
+                <div className="lg:col-span-1 max-sm:order-2 max-sm:text-center">
                   <div className="w-full max-sm:max-w-full">
                     <h3 className="font-serif text-4xl font-bold text-black mb-6 max-sm:text-3xl max-sm:mb-3">
                       God of Lies

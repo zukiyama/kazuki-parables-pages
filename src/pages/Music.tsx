@@ -297,7 +297,7 @@ const Music = () => {
       <Navigation />
       
       {/* Album Banner - Fixed at top */}  
-      <div className="fixed top-16 left-0 right-0 z-20 max-sm:overflow-x-auto max-sm:scrollbar-hide">
+      <div className="fixed top-16 left-0 right-0 z-20">
         <AlbumBanner 
           selectedAlbumId={selectedAlbum.id}
           onAlbumClick={(albumId) => {
@@ -346,7 +346,6 @@ const Music = () => {
             <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20 max-sm:p-2">
               <div className="relative aspect-video bg-black rounded-lg overflow-hidden group">
                 <video 
-                  key={`${ohioCassettePoster}-${Date.now()}`}
                   className="w-full h-full object-cover"
                   poster={ohioCassettePoster}
                   controls={false}

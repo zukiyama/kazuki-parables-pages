@@ -35,12 +35,12 @@ const MobileMenu = () => {
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 sm:hidden"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] sm:hidden"
             onClick={() => setIsOpen(false)}
           />
 
           {/* Drawer */}
-          <div className="fixed top-16 right-0 bottom-0 w-64 bg-background border-l border-border z-50 sm:hidden overflow-y-auto">
+          <div className="fixed top-16 right-0 bottom-0 w-64 bg-background border-l border-border z-[101] sm:hidden overflow-y-auto">
             <nav className="flex flex-col p-6 space-y-4">
               {navItems.map((item) => (
                 <Link
