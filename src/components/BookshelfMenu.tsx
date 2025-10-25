@@ -188,19 +188,19 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   };
 
   return (
-    <div className="sticky top-16 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-3">
-      <div className="container mx-auto px-6">
-        <div className="flex justify-center items-center gap-6 overflow-x-auto pb-2">
+    <div className="sticky top-16 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-3 max-sm:py-2">
+      <div className="container mx-auto px-6 max-sm:px-4">
+        <div className="flex justify-center items-center gap-6 overflow-x-auto pb-2 max-sm:gap-4 max-sm:pb-1 max-sm:justify-start">
           {books.map((book) => (
             <div
               key={book.id}
-              className="flex flex-col items-center cursor-pointer group min-w-[80px]"
+              className="flex flex-col items-center cursor-pointer group min-w-[80px] max-sm:min-w-[64px]"
               onMouseEnter={() => setHoveredBook(book.id)}
               onMouseLeave={() => setHoveredBook(null)}
               onClick={() => handleBookClick(book)}
             >
               {/* Book Title */}
-              <h3 className={`font-serif text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap ${
+              <h3 className={`font-serif text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] ${
                 activeBook === book.id ? 'text-yellow-300' : 'text-white'
               }`}>
                 {book.title}
@@ -214,7 +214,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
                   width="64"
                   height="64"
                   loading="eager"
-                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-cover ${
+                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-cover max-sm:w-12 max-sm:h-12 ${
                     activeBook === book.id
                       ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'
                       : hoveredBook === book.id 
