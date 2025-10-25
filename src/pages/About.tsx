@@ -13,6 +13,7 @@ import parisAerial from "@/assets/about-paris-aerial.jpeg";
 import backgroundSphere from "@/assets/about-background-new.jpeg";
 import japaneseRoom from "@/assets/about-japanese-room.png";
 import taiChiPark from "@/assets/about-tai-chi-park.png";
+import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
 
 const About = () => {
   return (
@@ -69,6 +70,20 @@ const About = () => {
               alt=""
               className="w-full h-auto object-cover opacity-80"
             />
+            
+            {/* Overlaid text and signature */}
+            <div className="absolute top-[15%] left-[8%] max-w-md pointer-events-auto">
+              <p className="font-body text-base lg:text-lg leading-relaxed text-foreground/90 mb-6 italic">
+                I have always preferred to withdraw from society, finding solace in quiet observation 
+                rather than participation. The world moves too quickly for meaningful reflection, and 
+                in my solitude, I discover the stories worth telling.
+              </p>
+              <OptimizedImage 
+                src={signatureYamakawa}
+                alt="Yamakawa signature"
+                className="w-32 h-auto opacity-90"
+              />
+            </div>
           </div>
         </div>
 
