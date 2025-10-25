@@ -69,54 +69,13 @@ const About = () => {
           />
         </div>
 
-        {/* Photo Grid Section - Two images with equal spacing */}
-        <div className="flex gap-[2%] mb-4 mt-32">
-          <div className="w-[48%] aspect-[4/3] overflow-hidden">
-            <OptimizedImage 
-              src={photographerWindow}
-              alt="Photographer in shop window"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-          <div className="w-[48%] aspect-[4/3] overflow-hidden ml-auto">
-            <OptimizedImage 
-              src={japaneseRoomView}
-              alt="Japanese room with city view"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-        </div>
-
-        {/* Photo Grid Section 3 - Four images spanning full width */}
-        <div className="flex gap-2 mt-12 relative z-10" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1cm', paddingRight: '1cm' }}>
-          <div className="flex-1 aspect-square overflow-hidden">
-            <OptimizedImage 
-              src={shopWindow}
-              alt="Shop window"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-          <div className="flex-1 aspect-square overflow-hidden">
-            <OptimizedImage 
-              src={parisAerial}
-              alt="Paris aerial view"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-          <div className="flex-1 aspect-square overflow-hidden">
-            <OptimizedImage 
-              src={pigeonSeine}
-              alt="Pigeon by Seine river"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-          <div className="flex-1 aspect-square overflow-hidden">
-            <OptimizedImage 
-              src={taiChi}
-              alt="Tai chi in park"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
+        {/* Single photo positioned at bottom left */}
+        <div className="absolute bottom-[1cm] left-[1cm] w-80 aspect-[4/3] overflow-hidden z-10">
+          <OptimizedImage 
+            src={photographerWindow}
+            alt="Photographer in shop window"
+            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+          />
         </div>
       </div>
       </div>
