@@ -14,7 +14,7 @@ import backgroundSphere from "@/assets/about-background-new.jpeg";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-b from-background via-muted/5 to-background">
       <Navigation />
       
       {/* Hero Banner */}
@@ -33,11 +33,11 @@ const About = () => {
         {/* Artist Portrait & Bio Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
           <div className="lg:col-span-1 flex justify-center lg:justify-start">
-            <div className="w-80 h-80 relative">
+            <div className="w-64 h-64 relative">
               <OptimizedImage 
                 src={artistPortrait}
                 alt="Kazuki Yamakawa portrait"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover grayscale"
               />
             </div>
           </div>
@@ -61,7 +61,7 @@ const About = () => {
       {/* Background Image Section */}
       <div className="relative -mx-6">
         {/* Faded background image - full width with slim equal borders */}
-        <div className="absolute inset-x-0 top-0 left-0 right-0 pointer-events-none overflow-hidden z-0" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem', maxHeight: 'calc(100% - 4rem)' }}>
+        <div className="absolute inset-x-0 top-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
           <OptimizedImage 
             src={backgroundSphere}
             alt=""
@@ -69,16 +69,9 @@ const About = () => {
           />
         </div>
 
-        {/* Photo Grid Section - Two images with equal spacing */}
-        <div className="flex gap-[2%] mb-4 mt-32">
-          <div className="w-[48%] aspect-[4/3] overflow-hidden">
-            <OptimizedImage 
-              src={photographerWindow}
-              alt="Photographer in shop window"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-          <div className="w-[48%] aspect-[4/3] overflow-hidden ml-auto">
+        {/* Photo Grid Section 1 - Single image aligned left */}
+        <div className="relative mb-2">
+          <div className="w-[40%] aspect-square overflow-hidden">
             <OptimizedImage 
               src={japaneseRoomView}
               alt="Japanese room with city view"
@@ -87,8 +80,19 @@ const About = () => {
           </div>
         </div>
 
+        {/* Photo Grid Section 2 - Single image aligned left */}
+        <div className="relative mb-1.5">
+          <div className="w-[48%] aspect-[4/3] overflow-hidden">
+            <OptimizedImage 
+              src={photographerWindow}
+              alt="Photographer in shop window"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+        </div>
+
         {/* Photo Grid Section 3 - Four images spanning full width */}
-        <div className="flex gap-2 mt-12 relative z-10" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1cm', paddingRight: '1cm' }}>
+        <div className="flex gap-2 mb-2" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
           <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
               src={shopWindow}
@@ -121,7 +125,7 @@ const About = () => {
       </div>
       </div>
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-[0.75rem] relative z-10">
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-3 relative z-10">
         <div className="container mx-auto px-6 text-center">
           <p className="font-serif text-white">
             Email: contact@kazukiyamakawa.com
