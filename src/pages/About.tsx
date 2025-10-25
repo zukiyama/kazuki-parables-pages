@@ -59,7 +59,7 @@ const About = () => {
         </div>
 
       {/* Background Image Section */}
-      <div className="relative -mx-6 mb-3">
+      <div className="relative -mx-6">
         {/* Faded background image - full width with slim equal borders */}
         <div className="absolute inset-x-0 top-0 left-0 right-0 pointer-events-none overflow-hidden z-0" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem', maxHeight: 'calc(100% - 4rem)' }}>
           <OptimizedImage 
@@ -70,7 +70,7 @@ const About = () => {
         </div>
 
         {/* Photo Grid Section - Two images with equal spacing */}
-        <div className="flex gap-[2%] mt-48">
+        <div className="flex gap-[2%] mb-4 mt-32">
           <div className="w-[48%] aspect-[4/3] overflow-hidden">
             <OptimizedImage 
               src={photographerWindow}
@@ -87,10 +87,41 @@ const About = () => {
           </div>
         </div>
 
+        {/* Photo Grid Section 3 - Four images spanning full width */}
+        <div className="flex gap-2 mt-12 relative z-10" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1cm', paddingRight: '1cm' }}>
+          <div className="flex-1 aspect-square overflow-hidden">
+            <OptimizedImage 
+              src={shopWindow}
+              alt="Shop window"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+          <div className="flex-1 aspect-square overflow-hidden">
+            <OptimizedImage 
+              src={parisAerial}
+              alt="Paris aerial view"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+          <div className="flex-1 aspect-square overflow-hidden">
+            <OptimizedImage 
+              src={pigeonSeine}
+              alt="Pigeon by Seine river"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+          <div className="flex-1 aspect-square overflow-hidden">
+            <OptimizedImage 
+              src={taiChi}
+              alt="Tai chi in park"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+        </div>
       </div>
       </div>
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 relative z-10">
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-[0.75rem] relative z-10">
         <div className="container mx-auto px-6 text-center">
           <p className="font-serif text-white">
             Email: contact@kazukiyamakawa.com
