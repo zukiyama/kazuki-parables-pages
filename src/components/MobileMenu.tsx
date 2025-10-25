@@ -20,47 +20,38 @@ const MobileMenu = () => {
   };
 
   return (
-    <>
-      {/* Hamburger Button - Only visible on mobile */}
+    <div className="relative sm:hidden">
+      {/* Hamburger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="sm:hidden p-2 text-ink-black hover:text-accent transition-colors z-50 relative"
+        className="p-2 text-ink-black hover:text-accent transition-colors"
         aria-label="Toggle menu"
       >
         {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>
 
-      {/* Mobile Menu Drawer */}
+      {/* Simple Dropdown Menu */}
       {isOpen && (
-        <>
-          {/* Backdrop */}
-          <div
-            className="fixed top-16 left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm z-40 sm:hidden"
-            onClick={() => setIsOpen(false)}
-          />
-
-          {/* Drawer */}
-          <div className="fixed top-16 right-0 bottom-0 w-64 bg-white border-l-2 border-gray-300 shadow-2xl z-45 sm:hidden overflow-y-auto">
-            <nav className="flex flex-col p-6 space-y-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={handleLinkClick}
-                  className={`font-body text-lg tracking-wide transition-colors hover:text-accent py-2 ${
-                    location.pathname === item.path
-                      ? 'text-accent font-semibold border-l-4 border-accent pl-4'
-                      : 'text-ink-black pl-4'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
-        </>
+        <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-gray-200 shadow-lg rounded-lg z-50">
+          <nav className="flex flex-col py-2">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={handleLinkClick}
+                className={`font-body text-base px-4 py-3 transition-colors hover:bg-gray-50 ${
+                  location.pathname === item.path
+                    ? 'text-accent font-semibold bg-gray-50'
+                    : 'text-ink-black'
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 
