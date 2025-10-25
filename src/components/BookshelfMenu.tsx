@@ -188,9 +188,9 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   };
 
   return (
-    <div className="sticky top-16 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-4 max-sm:pt-5 max-sm:pb-4">
+    <div className="sticky top-16 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-4 max-sm:pt-5 max-sm:pb-6">
       <div className="container mx-auto px-6 max-sm:px-4">
-        <div className="flex justify-center items-center gap-6 overflow-x-auto pb-2 max-sm:gap-4 max-sm:pb-1 max-sm:justify-start max-sm:overflow-x-scroll">
+        <div className="flex justify-center items-center gap-6 overflow-x-auto overflow-y-visible pb-2 max-sm:gap-4 max-sm:pb-1 max-sm:justify-start max-sm:overflow-x-scroll max-sm:overflow-y-visible scrollbar-hide">
           {books.map((book) => (
             <div
               key={book.id}
@@ -207,14 +207,14 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
               </h3>
               
               {/* Book Cover */}
-              <div className="relative">
+              <div className="relative max-sm:mb-1">
                 <img
                   src={book.cover}
                   alt={book.title}
                   width="64"
                   height="96"
                   loading="eager"
-                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-contain w-16 h-auto max-sm:w-10 ${
+                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-contain w-16 h-auto max-sm:w-10 max-sm:max-h-none ${
                     activeBook === book.id
                       ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'
                       : hoveredBook === book.id 
