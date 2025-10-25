@@ -74,7 +74,7 @@ const About = () => {
 
         {/* Three Photos Row - positioned 30px above footer */}
         <div className="relative mb-[30px] -mx-6">
-          <div className="flex gap-4 justify-between" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1cm', paddingRight: '1cm' }}>
+          <div className="flex gap-[14px] justify-between" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
             <div className="flex-1 aspect-[4/3] overflow-hidden">
               <OptimizedImage 
                 src={photographerWindow}
