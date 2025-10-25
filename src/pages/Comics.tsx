@@ -92,21 +92,21 @@ const Comics = () => {
         <div className="container mx-auto px-6 mt-12 mb-16">
           {/* God of Lies - Wide Cover Left, Summary Right */}
           <div className="mb-16">
-            <div className="max-w-7xl mx-auto px-16">
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-center">
-                <div className="lg:col-span-3">
+            <div className="max-w-7xl mx-auto px-16 max-sm:px-4">
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-center max-sm:gap-4">
+                <div className="lg:col-span-3 max-sm:order-2">
                   <img 
                     src={godOfLiesCover}
                     alt="God of Lies comic cover"
                     className="w-full object-contain shadow-2xl"
                   />
                 </div>
-                <div className="lg:col-span-1">
-                  <div className="w-full">
-                    <h3 className="font-serif text-4xl font-bold text-black mb-6">
+                <div className="lg:col-span-1 max-sm:order-1 max-sm:text-center">
+                  <div className="w-full max-sm:max-w-full">
+                    <h3 className="font-serif text-4xl font-bold text-black mb-6 max-sm:text-3xl max-sm:mb-3">
                       God of Lies
                     </h3>
-                    <p className="font-serif text-lg text-amber-800 leading-relaxed">
+                    <p className="font-serif text-lg text-amber-800 leading-relaxed max-sm:text-base max-sm:px-2">
                       A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
                     </p>
                   </div>
@@ -117,17 +117,17 @@ const Comics = () => {
 
           {/* Surname Pendragon - Text Left, Smaller Cover Right */}
           <div className="mb-24">
-            <div className="max-w-7xl mx-auto px-16">
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
-                <div className="lg:col-span-3">
-                  <h3 className="font-serif text-4xl font-bold text-black mb-6">
+            <div className="max-w-7xl mx-auto px-16 max-sm:px-4">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center max-sm:gap-4 max-sm:flex max-sm:flex-col">
+                <div className="lg:col-span-3 max-sm:order-2 max-sm:text-center">
+                  <h3 className="font-serif text-4xl font-bold text-black mb-6 max-sm:text-3xl max-sm:mb-3">
                     Surname Pendragon
                   </h3>
-                  <p className="font-serif text-lg text-amber-800 leading-relaxed">
+                  <p className="font-serif text-lg text-amber-800 leading-relaxed max-sm:text-base max-sm:px-2">
                     A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible. When mysterious events begin occurring around him and an ancient sword appears in his mundane life, he's thrust into a world where mythical beings walk among us and the fate of both the magical and mortal realms hangs in the balance. Guided by enigmatic mentors and pursued by dark forces, he must learn to harness powers he never knew he possessed while navigating the complexities of love, friendship, and the weight of an ancient legacy.
                   </p>
                 </div>
-                <div className="lg:col-span-2 flex items-center justify-center">
+                <div className="lg:col-span-2 flex items-center justify-center max-sm:order-1">
                   <img 
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"
@@ -203,30 +203,30 @@ const Comics = () => {
       {/* Comic Detail Modal */}
       {selectedComic && (
         <div 
-          className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6"
+          className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6 max-sm:p-4"
           onClick={handleCloseModal}
         >
           <div 
-            className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 border border-gray-200"
+            className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 border border-gray-200 max-sm:p-4 max-sm:gap-4 max-sm:max-h-[90vh] max-sm:overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center max-sm:max-h-[40vh]">
               <img 
                 src={selectedComic.cover}
                 alt={`${selectedComic.title} comic cover`}
-                className="w-full max-w-lg shadow-2xl"
+                className="w-full max-w-lg shadow-2xl max-sm:max-h-full max-sm:object-contain"
               />
             </div>
             <div className="flex flex-col justify-center">
-              <h3 className="font-serif text-4xl font-bold text-black mb-6">
+              <h3 className="font-serif text-4xl font-bold text-black mb-6 max-sm:text-2xl max-sm:mb-3">
                 {selectedComic.title}
               </h3>
-              <p className="font-serif text-lg text-amber-800 leading-relaxed">
+              <p className="font-serif text-lg text-amber-800 leading-relaxed max-sm:text-sm">
                 {selectedComic.description}
               </p>
               <button
                 onClick={handleCloseModal}
-                className="mt-6 px-6 py-3 bg-amber-800 text-white rounded-lg font-semibold hover:bg-amber-900 transition-colors self-start"
+                className="mt-6 px-6 py-3 bg-amber-800 text-white rounded-lg font-semibold hover:bg-amber-900 transition-colors self-start max-sm:mt-4 max-sm:w-full max-sm:py-2"
               >
                 Close
               </button>

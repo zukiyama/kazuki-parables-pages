@@ -200,7 +200,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
               onClick={() => handleBookClick(book)}
             >
               {/* Book Title */}
-              <h3 className={`font-serif text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] ${
+              <h3 className={`font-serif text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] max-sm:whitespace-normal max-sm:leading-tight max-sm:min-h-[32px] ${
                 activeBook === book.id ? 'text-yellow-300' : 'text-white'
               }`}>
                 {book.title}

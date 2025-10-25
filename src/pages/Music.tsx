@@ -297,7 +297,7 @@ const Music = () => {
       <Navigation />
       
       {/* Album Banner - Fixed at top */}  
-      <div className="fixed top-16 left-0 right-0 z-20">
+      <div className="fixed top-16 left-0 right-0 z-20 max-sm:overflow-x-auto max-sm:scrollbar-hide">
         <AlbumBanner 
           selectedAlbumId={selectedAlbum.id}
           onAlbumClick={(albumId) => {
@@ -343,7 +343,7 @@ const Music = () => {
           
           {/* Video Player - Cassette Deck Style */}
           <div className="mb-16" ref={videoRef}>
-            <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20">
+            <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20 max-sm:p-2">
               <div className="relative aspect-video bg-black rounded-lg overflow-hidden group">
                 <video 
                   key={`${ohioCassettePoster}-${Date.now()}`}
@@ -452,7 +452,7 @@ const Music = () => {
                   <h3 className="text-white text-2xl font-bold mb-4 font-serif text-center">
                     Track Listing
                   </h3>
-                  <ScrollArea className="h-[580px] w-full rounded-md border border-white/20 p-4 bg-black/20">
+                  <ScrollArea className="h-[580px] w-full rounded-md border border-white/20 p-4 bg-black/20 max-sm:h-[300px]">
                     <div className="space-y-3">
                       {selectedAlbum.tracks.map((track, index) => (
                         <div 
@@ -478,8 +478,8 @@ const Music = () => {
           
           {/* Singles (click to play) */}
           <div className="mb-8">
-            <h4 className="font-serif text-2xl text-white mb-4 text-center">Singles</h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <h4 className="font-serif text-2xl text-white mb-4 text-center max-sm:text-xl">Singles</h4>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-sm:gap-2">
               {selectedAlbum.tracks.slice(0,4).map((track, idx) => (
                 <button
                   key={idx}

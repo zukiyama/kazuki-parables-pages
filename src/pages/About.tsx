@@ -86,13 +86,10 @@ const About = () => {
             </div>
             
             {/* Mobile text - shown only on mobile */}
-            <div className="hidden max-sm:block absolute inset-0 bg-black/60 pointer-events-auto">
-              <div className="flex flex-col items-center justify-center h-full px-6 text-center">
-                <h2 className="font-heading text-3xl font-bold text-white mb-4 tracking-wide drop-shadow-lg">
-                  Kazuki Yamakawa
-                </h2>
-                <p className="font-body text-base text-white/90 leading-relaxed max-w-sm drop-shadow-md">
-                  Creating worlds between imagination and memory
+            <div className="hidden max-sm:block absolute inset-0 bg-black/40 pointer-events-auto">
+              <div className="flex items-center justify-center h-full px-6 text-center">
+                <p className="font-body text-xl text-white leading-relaxed max-w-md drop-shadow-lg">
+                  A writer and composer exploring the spaces between memory and imagination
                 </p>
               </div>
             </div>

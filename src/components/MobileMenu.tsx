@@ -11,7 +11,7 @@ const MobileMenu = () => {
     { path: '/about', label: 'About' },
     { path: '/writing', label: 'Writing' },
     { path: '/music', label: 'Music' },
-    { path: '/comics', label: 'Comics' },
+    { path: '/comics', label: 'Comics & Scripts' },
   ];
 
   const handleLinkClick = () => {
@@ -24,7 +24,7 @@ const MobileMenu = () => {
       {/* Hamburger Button - Only visible on mobile */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="sm:hidden p-2 text-foreground hover:text-accent transition-colors z-50 relative"
+        className="sm:hidden p-2 text-ink-black hover:text-accent transition-colors z-50 relative"
         aria-label="Toggle menu"
       >
         {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
