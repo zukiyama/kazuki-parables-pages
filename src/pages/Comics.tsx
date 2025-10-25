@@ -237,8 +237,9 @@ const Comics = () => {
       
       <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-20 relative z-10">
         <div className="container mx-auto px-6 text-center">
+          <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
           <p className="font-serif text-white">
-            Email: contact@kazukiyamakawa.com
+            kazuki@kazukiyamakawa.com
           </p>
         </div>
       </footer>
