@@ -29,7 +29,7 @@ const About = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-16 max-w-6xl bg-white">
+      <div className="container mx-auto px-6 py-16 max-w-6xl">
         {/* Artist Portrait & Bio Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
           <div className="lg:col-span-1 flex justify-center lg:justify-start">
@@ -69,12 +69,34 @@ const About = () => {
           />
         </div>
 
-        {/* Photo Grid Section - Four images spanning full width */}
-        <div className="flex gap-2 mb-2" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
-          <div className="flex-1 aspect-square overflow-hidden">
+        {/* Photo Grid Section 1 - Single image aligned left */}
+        <div className="relative mb-2">
+          <div className="w-[40%] aspect-square overflow-hidden">
+            <OptimizedImage 
+              src={japaneseRoomView}
+              alt="Japanese room with city view"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+        </div>
+
+        {/* Photo Grid Section 2 - Single image aligned left */}
+        <div className="relative mb-1.5">
+          <div className="w-[48%] aspect-[4/3] overflow-hidden">
             <OptimizedImage 
               src={photographerWindow}
               alt="Photographer in shop window"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
+        </div>
+
+        {/* Photo Grid Section 3 - Four images spanning full width */}
+        <div className="flex gap-2 mb-2" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
+          <div className="flex-1 aspect-square overflow-hidden">
+            <OptimizedImage 
+              src={shopWindow}
+              alt="Shop window"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
@@ -87,8 +109,8 @@ const About = () => {
           </div>
           <div className="flex-1 aspect-square overflow-hidden">
             <OptimizedImage 
-              src={japaneseRoomView}
-              alt="Japanese room with city view"
+              src={pigeonSeine}
+              alt="Pigeon by Seine river"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
