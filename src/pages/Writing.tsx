@@ -272,7 +272,7 @@ const Writing = () => {
                 <div className={`text-white transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <div className="bg-white/20 backdrop-blur-sm rounded-lg p-6 mb-8 border border-white/20">
+                  <div className="bg-black/80 backdrop-blur-sm rounded-lg p-6 mb-8 border border-white/20">
                     <h2 className="font-serif text-5xl font-bold mb-4 text-white">
                       KAIJU
                     </h2>
