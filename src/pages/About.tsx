@@ -11,6 +11,8 @@ import taiChi from "@/assets/about-tai-chi.png";
 import pigeonSeine from "@/assets/about-pigeon-seine.jpeg";
 import parisAerial from "@/assets/about-paris-aerial.jpeg";
 import backgroundSphere from "@/assets/about-background-new.jpeg";
+import japaneseRoom from "@/assets/about-japanese-room.png";
+import taiChiPark from "@/assets/about-tai-chi-park.png";
 
 const About = () => {
   return (
@@ -67,12 +69,30 @@ const About = () => {
               alt=""
               className="w-full h-auto object-cover opacity-80"
             />
-            
-            {/* Single photo positioned at bottom left of background image */}
-            <div className="absolute bottom-[1cm] left-[1cm] w-[48%] max-w-md aspect-[4/3] overflow-hidden z-10 pointer-events-auto">
+          </div>
+        </div>
+
+        {/* Three Photos Row - positioned 30px above footer */}
+        <div className="relative mb-[30px] -mx-6">
+          <div className="flex gap-4 justify-between" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1cm', paddingRight: '1cm' }}>
+            <div className="flex-1 aspect-[4/3] overflow-hidden">
               <OptimizedImage 
                 src={photographerWindow}
                 alt="Photographer in shop window"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
+            <div className="flex-1 aspect-[4/3] overflow-hidden">
+              <OptimizedImage 
+                src={japaneseRoom}
+                alt="Japanese room with city view"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
+            <div className="flex-1 aspect-[4/3] overflow-hidden">
+              <OptimizedImage 
+                src={taiChiPark}
+                alt="Tai chi practice in park"
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
               />
             </div>
