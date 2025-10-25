@@ -114,12 +114,12 @@ const Index = () => {
               href="#/music?ohio=true" 
               className="group block w-full max-w-2xl hover-scale transition-all duration-300"
             >
-              <div className="bg-gradient-to-r from-card/90 to-card/70 backdrop-blur-sm border border-border rounded-xl p-8 max-sm:p-4 flex flex-row max-sm:flex-col items-center gap-8 max-sm:gap-4 shadow-xl hover:shadow-2xl hover:border-primary/30 transition-all duration-300">
-                <div className="relative max-sm:mb-2">
+              <div className="bg-gradient-to-r from-card/90 to-card/70 backdrop-blur-sm border border-border rounded-xl p-8 flex items-center gap-8 shadow-xl hover:shadow-2xl hover:border-primary/30 transition-all duration-300">
+                <div className="relative">
                   <img 
                     src={circlesSingleCover} 
                     alt="Circles single cover"
-                    className="w-24 h-24 md:w-32 md:h-32 max-sm:w-20 max-sm:h-20 rounded-lg object-contain shadow-lg group-hover:shadow-xl transition-shadow duration-300"
+                    className="w-24 h-24 md:w-32 md:h-32 rounded-lg object-contain shadow-lg group-hover:shadow-xl transition-shadow duration-300"
                   />
                   <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded-full animate-pulse">
                     NEW
@@ -164,16 +164,16 @@ const Index = () => {
             
             {/* Floating Quote - static display */}
             {showQuote && (currentImage === 0 || currentImage === 1) && (
-              <div className="absolute top-1/4 right-1/4 max-sm:left-4 max-sm:right-4 max-sm:top-1/4 max-w-md max-sm:max-w-[280px]">
+              <div className="absolute top-1/4 right-1/4 max-w-md">
                 <blockquote className="literary-quote text-white/90 leading-relaxed">
-                  <div className="text-4xl md:text-5xl max-sm:text-2xl font-bold">'Feelings are the thoughts of the heart.'</div>
+                  <div className="text-4xl md:text-5xl font-bold">'Feelings are the thoughts of the heart.'</div>
                 </blockquote>
               </div>
             )}
             
             {/* Text overlay for TV shop image */}
             {showQuote && currentImage === 2 && (
-              <div className="absolute top-1/3 left-1/4 max-sm:left-4 max-sm:right-4 max-w-md max-sm:max-w-full">
+              <div className="absolute top-1/3 left-1/4 max-w-md">
                 <div className={`tv-shop-text-reveal ${animateTvText ? 'visible' : ''} text-white/90 leading-relaxed`}>
                   <h2 className="font-heading text-3xl md:text-4xl mb-2">summer 1979</h2>
                   <h3 className="font-heading text-2xl md:text-3xl mb-4">Osaka Japan</h3>

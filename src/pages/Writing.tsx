@@ -152,7 +152,7 @@ const Writing = () => {
   };
 
   return (
-    <div className="min-h-screen relative max-sm:overflow-x-hidden">
+    <div className="min-h-screen relative">
       <Navigation />
       <BookshelfMenu 
         onBookClick={handleBookClick} 
