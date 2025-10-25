@@ -31,7 +31,7 @@ const Navigation = () => {
                 key={item.path}
                 to={item.path}
                 onClick={() => window.scrollTo(0, 0)}
-                className={`font-body text-sm tracking-wide transition-colors hover:text-accent ${
+                className={`font-body text-sm tracking-wide transition-colors hover:text-brush-brown ${
                   location.pathname === item.path
                     ? "text-brush-brown font-semibold"
                     : "text-foreground"
