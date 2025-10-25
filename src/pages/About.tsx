@@ -13,7 +13,6 @@ import parisAerial from "@/assets/about-paris-aerial.jpeg";
 import backgroundSphere from "@/assets/about-background-new.jpeg";
 import japaneseRoom from "@/assets/about-japanese-room.png";
 import taiChiPark from "@/assets/about-tai-chi-park.png";
-import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
 
 const About = () => {
   return (
@@ -58,23 +57,6 @@ const About = () => {
                 with that name.
               </p>
             </div>
-          </div>
-        </div>
-
-        {/* Withdrawal Statement Section */}
-        <div className="max-w-2xl mx-auto mb-12 px-4">
-          <p className="font-body text-base lg:text-lg leading-relaxed text-foreground/70 text-center italic mb-8">
-            I have always preferred to withdraw from society, to observe from a distance rather than 
-            participate in its endless noise. In solitude, I find clarity—the space to create without 
-            the burden of expectation. The world moves too quickly for contemplation, and I have chosen 
-            the quiet margins where art can breathe freely.
-          </p>
-          <div className="flex justify-center">
-            <OptimizedImage 
-              src={signatureYamakawa}
-              alt="Yamakawa signature"
-              className="w-32 h-auto opacity-80"
-            />
           </div>
         </div>
 
