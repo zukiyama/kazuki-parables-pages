@@ -21,11 +21,11 @@ const About = () => {
       <Navigation />
       
       {/* Hero Banner */}
-      <div className="w-full h-[40vh] relative overflow-hidden mt-16 max-sm:h-[25vh]">
+      <div className="w-full h-[40vh] relative overflow-hidden mt-16 max-sm:h-[30vh]">
         <OptimizedImage 
           src={bannerImage}
           alt="Vintage Japanese cityscape"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover max-sm:object-[center_30%] max-sm:scale-110"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
