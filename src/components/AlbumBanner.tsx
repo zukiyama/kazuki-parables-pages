@@ -89,7 +89,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   const currentItems = showEPs ? eps : albums;
 
   return (
-    <div className="py-3 max-sm:py-4 bg-black/80 backdrop-blur-sm overflow-visible relative">
+    <div className="py-3 max-sm:py-6 bg-black/80 backdrop-blur-sm overflow-visible relative">
       {/* Fade overlays on mobile */}
       <div className="hidden max-sm:block absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-black/80 to-transparent z-10 pointer-events-none"></div>
       <div className="hidden max-sm:block absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-black/80 to-transparent z-10 pointer-events-none"></div>
@@ -97,7 +97,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
       <div className="container mx-auto px-6 max-sm:px-2">
         <div className="flex justify-center items-center pb-2 relative">
           {/* Items Container */}
-          <div className="flex justify-center items-center gap-8 overflow-visible max-sm:gap-3 max-sm:overflow-x-auto max-sm:flex-1 max-sm:scrollbar-hide max-sm:overflow-y-visible">
+          <div className="flex justify-center items-center gap-8 overflow-visible max-sm:gap-3 max-sm:overflow-x-auto max-sm:flex-1 max-sm:scrollbar-hide max-sm:pb-2">
             {/* Desktop view - with transitions */}
             <div
               ref={containerRef}
@@ -181,10 +181,53 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
 
               {/* EPs Label Separator */}
               <div className="flex flex-col items-center justify-center px-1">
-                <h3 className="font-serif text-[10px] font-semibold text-yellow-300 whitespace-nowrap mb-0.5">
+                <h3 className="font-serif text-[10px] font-semibold text-yellow-300 whitespace-nowrap mb-1">
                   EPs
                 </h3>
-                <div className="w-16 h-16"></div>
+                <svg 
+                  width="32" 
+                  height="32" 
+                  viewBox="0 0 48 48" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="text-yellow-300"
+                >
+                  {/* Large right-pointing triangle - main element */}
+                  <path 
+                    d="M14 8 L38 24 L14 40 Z" 
+                    stroke="currentColor" 
+                    strokeWidth="2.5" 
+                    fill="none" 
+                    strokeLinejoin="round"
+                  />
+                  {/* Circle - slightly overlapping */}
+                  <circle 
+                    cx="20" 
+                    cy="18" 
+                    r="4.5" 
+                    stroke="currentColor" 
+                    strokeWidth="1.8" 
+                    fill="none" 
+                    opacity="0.65" 
+                  />
+                  {/* Parallel lines - floating, smaller */}
+                  <path 
+                    d="M16 28 L24 30" 
+                    stroke="currentColor" 
+                    strokeWidth="1.5" 
+                    fill="none" 
+                    opacity="0.7" 
+                    strokeLinecap="round"
+                  />
+                  <path 
+                    d="M14 32 L22 34" 
+                    stroke="currentColor" 
+                    strokeWidth="1.5" 
+                    fill="none" 
+                    opacity="0.5" 
+                    strokeLinecap="round"
+                  />
+                </svg>
               </div>
 
               {/* EPs */}
