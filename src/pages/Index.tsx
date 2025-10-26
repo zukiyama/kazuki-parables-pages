@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
@@ -204,18 +205,18 @@ const Index = () => {
             kazuki@kazukiyamakawa.com
           </p>
           <div className="flex justify-center space-x-8 mt-8">
-            <a href="#/about" className="font-body text-ink-black hover:text-ink-black/80 transition-colors">
+            <Link to="/about" onClick={() => window.scrollTo(0, 0)} className="font-body text-ink-black hover:text-ink-black/80 transition-colors">
               About
-            </a>
-            <a href="#/writing" className="font-body text-ink-black hover:text-ink-black/80 transition-colors">
+            </Link>
+            <Link to="/writing" onClick={() => window.scrollTo(0, 0)} className="font-body text-ink-black hover:text-ink-black/80 transition-colors">
               Writing
-            </a>
-            <a href="#/music" className="font-body text-ink-black hover:text-ink-black/80 transition-colors">
+            </Link>
+            <Link to="/music" onClick={() => window.scrollTo(0, 0)} className="font-body text-ink-black hover:text-ink-black/80 transition-colors">
               Music
-            </a>
-            <a href="#/comics" className="font-body text-ink-black hover:text-ink-black/80 transition-colors">
+            </Link>
+            <Link to="/comics" onClick={() => window.scrollTo(0, 0)} className="font-body text-ink-black hover:text-ink-black/80 transition-colors">
               Comics & Scripts
-            </a>
+            </Link>
           </div>
         </div>
       </footer>
