@@ -55,7 +55,7 @@ const albums: Album[] = [
 
 const eps: Album[] = [
   {
-    id: 1,
+    id: 8,
     title: "Coming Soon",
     cover: ""
   }
@@ -89,18 +89,19 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   const currentItems = showEPs ? eps : albums;
 
   return (
-    <div className="py-3 max-sm:pt-4 max-sm:pb-4 bg-black/80 backdrop-blur-sm overflow-visible relative">
+    <div className="py-3 max-sm:py-4 bg-black/80 backdrop-blur-sm overflow-visible relative">
       {/* Fade overlays on mobile */}
       <div className="hidden max-sm:block absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-black/80 to-transparent z-10 pointer-events-none"></div>
-      <div className="hidden max-sm:block absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black/80 to-transparent z-10 pointer-events-none"></div>
+      <div className="hidden max-sm:block absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-black/80 to-transparent z-10 pointer-events-none"></div>
       
       <div className="container mx-auto px-6 max-sm:px-2">
-        <div className="flex justify-center items-center pb-2 relative max-sm:pr-24">
+        <div className="flex justify-center items-center pb-2 relative">
           {/* Items Container */}
           <div className="flex justify-center items-center gap-8 overflow-visible max-sm:gap-3 max-sm:overflow-x-auto max-sm:flex-1 max-sm:scrollbar-hide max-sm:overflow-y-visible">
+            {/* Desktop view - with transitions */}
             <div
               ref={containerRef}
-              className={`flex justify-center items-center gap-8 transition-all duration-500 ${
+              className={`hidden sm:flex justify-center items-center gap-8 transition-all duration-500 ${
                 isTransitioning ? 'translate-x-[-100%] opacity-0' : 'translate-x-0 opacity-100'
               }`}
             >
@@ -112,12 +113,10 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                   onMouseLeave={() => setHoveredAlbum(null)}
                   onClick={() => item.cover && handleAlbumClick(item)}
                 >
-                  {/* Title */}
-                  <h3 className="font-serif text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] max-sm:mb-0.5">
+                  <h3 className="font-serif text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
                     {item.title}
                   </h3>
                   
-                  {/* Cover or Placeholder */}
                   <div className="relative">
                     {item.cover ? (
                       <>
@@ -127,9 +126,9 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                           width="96"
                           height="96"
                           loading="eager"
-                          className={`w-24 h-24 object-cover rounded shadow-lg transition-all duration-300 group-hover:shadow-xl max-sm:w-16 max-sm:h-16 ${
+                          className={`w-24 h-24 object-cover rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
                             selectedAlbumId === item.id
-                              ? 'ring-2 ring-yellow-300/60 scale-105 max-sm:scale-110'
+                              ? 'ring-2 ring-yellow-300/60 scale-105'
                               : hoveredAlbum === item.id 
                               ? 'scale-105 shadow-2xl shadow-yellow-300/20' 
                               : ''
@@ -148,16 +147,95 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                 </div>
               ))}
             </div>
+
+            {/* Mobile view - all albums + EPs label + EPs */}
+            <div className="flex sm:hidden justify-start items-center gap-3">
+              {/* Albums */}
+              {albums.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex flex-col items-center cursor-pointer group"
+                  onClick={() => item.cover && handleAlbumClick(item)}
+                >
+                  <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
+                    {item.title}
+                  </h3>
+                  
+                  <div className="relative">
+                    <img
+                      src={item.cover}
+                      alt={item.title}
+                      width="64"
+                      height="64"
+                      loading="eager"
+                      className={`w-16 h-16 object-cover rounded shadow-lg transition-all duration-300 ${
+                        selectedAlbumId === item.id
+                          ? 'ring-2 ring-yellow-300/60 scale-110'
+                          : ''
+                      }`}
+                    />
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                  </div>
+                </div>
+              ))}
+
+              {/* EPs Label Separator */}
+              <div className="flex flex-col items-center justify-center px-1">
+                <h3 className="font-serif text-[10px] font-semibold text-yellow-300 whitespace-nowrap mb-0.5">
+                  EPs
+                </h3>
+                <div className="w-16 h-16"></div>
+              </div>
+
+              {/* EPs */}
+              {eps.map((item) => (
+                <div
+                  key={`ep-${item.id}`}
+                  className="flex flex-col items-center cursor-pointer group"
+                  onClick={() => item.cover && handleAlbumClick(item)}
+                >
+                  <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
+                    {item.title}
+                  </h3>
+                  
+                  <div className="relative">
+                    {item.cover ? (
+                      <>
+                        <img
+                          src={item.cover}
+                          alt={item.title}
+                          width="64"
+                          height="64"
+                          loading="eager"
+                          className={`w-16 h-16 object-cover rounded shadow-lg transition-all duration-300 ${
+                            selectedAlbumId === item.id
+                              ? 'ring-2 ring-yellow-300/60 scale-110'
+                              : ''
+                          }`}
+                        />
+                        <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                      </>
+                    ) : (
+                      <div className="w-16 h-16 rounded shadow-lg bg-black/40 border border-white/20 flex items-center justify-center">
+                        <span className="text-white/60 text-[10px] font-semibold text-center px-2">
+                          Coming<br/>Soon
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Toggle Button - Fixed to far right */}
+          {/* Toggle Button - Desktop only */}
           <button
             onClick={handleToggle}
-            className="absolute right-0 max-sm:right-2 flex flex-col items-end gap-1 group hover:scale-105 transition-transform duration-200"
+            className="hidden sm:flex absolute right-0 flex-col items-end gap-1 group hover:scale-105 transition-transform duration-200"
             aria-label={showEPs ? "Switch to Albums" : "Switch to EPs"}
           >
             {/* Label with smooth transition - centered */}
-            <div className="relative h-5 mb-1 w-16 flex justify-center max-sm:mb-0">
+            <div className="relative h-5 mb-1 w-16 flex justify-center">
               <span
                 className={`absolute font-serif text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
                   showEPs ? 'opacity-100' : 'opacity-0'
