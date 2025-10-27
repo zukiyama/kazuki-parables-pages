@@ -95,7 +95,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
       <div className="hidden max-sm:block absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-black/80 to-transparent z-10 pointer-events-none"></div>
       
       <div className="container mx-auto px-6 max-sm:px-2">
-        <div className="flex justify-center items-center pb-2 relative overflow-y-visible">
+        <div className="flex justify-center items-center pb-6 relative overflow-y-visible">
           {/* Items Container */}
           <div className="flex justify-center items-center gap-8 overflow-visible max-sm:gap-3 max-sm:overflow-x-auto max-sm:overflow-y-visible max-sm:justify-start max-sm:flex-1 max-sm:scrollbar-hide max-sm:pb-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {/* Desktop view - with transitions */}
