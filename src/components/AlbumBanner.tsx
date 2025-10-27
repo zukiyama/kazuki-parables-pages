@@ -145,36 +145,49 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             </div>
 
           {/* Mobile view - all albums + EPs label + EPs */}
-          <div className="flex sm:hidden justify-start items-start gap-[72px] pl-4 pr-4">
+          <div className="flex sm:hidden justify-start items-start pl-4 pr-4">
               {/* Albums */}
-              {albums.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex flex-col items-center cursor-pointer group flex-shrink-0"
-                  onClick={() => item.cover && handleAlbumClick(item)}
-                  style={{ width: '64px' }}
-                >
-                  <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap overflow-visible">
-                    {item.title}
-                  </h3>
-                  
-                  <div className="relative w-16 h-16 flex-shrink-0" style={{ aspectRatio: '1 / 1' }}>
-                    <img
-                      src={item.cover}
-                      alt={item.title}
-                      width="64"
-                      height="64"
-                      loading="eager"
-                      className={`w-full h-full object-cover rounded transition-all duration-300 ${
-                        selectedAlbumId === item.id
-                          ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
-                          : 'shadow-lg'
-                      }`}
-                    />
-                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+              {albums.map((item, index) => {
+                // Variable spacing for visual balance
+                const spacingMap: Record<number, string> = {
+                  0: '36px',  // Spaceship → Star People River
+                  1: '40px',  // Star People River → Man on Film
+                  2: '44px',  // Man on Film → The Death of Love
+                  3: '56px',  // The Death of Love → Scene of My Restoration
+                  4: '72px',  // Scene of My Restoration → The Centre of the World
+                  5: '60px',  // The Centre of the World → To the Dreamt Man
+                  6: '48px',  // To the Dreamt Man → EPs label
+                };
+                
+                return (
+                  <div
+                    key={item.id}
+                    className="flex flex-col items-center cursor-pointer group flex-shrink-0"
+                    onClick={() => item.cover && handleAlbumClick(item)}
+                    style={{ width: '64px', marginRight: spacingMap[index] || '0px' }}
+                  >
+                    <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap overflow-visible">
+                      {item.title}
+                    </h3>
+                    
+                    <div className="relative w-16 h-16 flex-shrink-0" style={{ aspectRatio: '1 / 1' }}>
+                      <img
+                        src={item.cover}
+                        alt={item.title}
+                        width="64"
+                        height="64"
+                        loading="eager"
+                        className={`w-full h-full object-cover rounded transition-all duration-300 ${
+                          selectedAlbumId === item.id
+                            ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
+                            : 'shadow-lg'
+                        }`}
+                      />
+                      <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
 
               {/* EPs Label Separator */}
               <div className="flex items-center justify-center px-1 h-16 mt-5">
