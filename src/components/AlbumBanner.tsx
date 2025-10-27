@@ -89,7 +89,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   const currentItems = showEPs ? eps : albums;
 
   return (
-    <div className="py-3 max-sm:py-4 bg-black/80 backdrop-blur-sm overflow-visible relative">
+    <div className="py-3 max-sm:py-6 bg-black/80 backdrop-blur-sm overflow-visible relative">
       {/* Fade overlays on mobile */}
       <div className="hidden max-sm:block absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-black/80 to-transparent z-10 pointer-events-none"></div>
       <div className="hidden max-sm:block absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-black/80 to-transparent z-10 pointer-events-none"></div>
@@ -149,7 +149,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             </div>
 
           {/* Mobile view - all albums + EPs label + EPs */}
-          <div className="flex sm:hidden justify-start items-center gap-3 pl-16 pr-16">
+          <div className="flex sm:hidden justify-start items-center gap-3 pl-24 pr-24">
               {/* Albums */}
               {albums.map((item) => (
                 <div
