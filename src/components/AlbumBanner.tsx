@@ -107,7 +107,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                   className="flex flex-col items-center cursor-pointer group"
                   onMouseEnter={() => setHoveredAlbum(item.id)}
                   onMouseLeave={() => setHoveredAlbum(null)}
-                  onClick={() => item.cover && handleAlbumClick(item)}
+                  onClick={() => handleAlbumClick(item)}
                 >
                   <h3 className="font-serif text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
                     {item.title}
@@ -188,7 +188,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                 <div
                   key={`ep-${item.id}`}
                   className="flex flex-col items-center cursor-pointer group flex-shrink-0"
-                  onClick={() => item.cover && handleAlbumClick(item)}
+                  onClick={() => handleAlbumClick(item)}
                   style={{ width: '64px' }}
                 >
                   <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap overflow-visible">

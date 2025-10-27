@@ -187,11 +187,11 @@ const albums = [
   },
   {
     id: 8,
-    title: "Coming Soon",
+    title: "-",
     cover: "",
     background: manOnFilmBackground,
     theme: "coming-soon",
-    tracks: ["Circles"]
+    tracks: ["-", "-", "-", "-", "-", "-", "-"]
   }
 ];
 
@@ -408,7 +408,7 @@ const Music = () => {
                       <span className="text-white/60 text-2xl font-semibold">Coming Soon</span>
                     </div>
                   )}
-                  <h2 className="font-serif text-3xl text-white mb-2">{selectedAlbum.title === "Coming Soon" ? "" : selectedAlbum.title}</h2>
+                  <h2 className="font-serif text-3xl text-white mb-2">{selectedAlbum.title}</h2>
                   <p className="text-white/80 text-lg mb-6">{selectedAlbum.id === 8 ? "Featured EP" : "Featured Album"}</p>
                   
                   {/* Music Player Controls */}
