@@ -59,7 +59,7 @@ export const OptimizedImage = ({
   }
 
   return (
-    <div className="relative">
+    <div className={cn("relative", className)}>
       {/* Skeleton placeholder */}
       {!isLoaded && (
         <div 
