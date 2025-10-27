@@ -145,7 +145,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             </div>
 
           {/* Mobile view - all albums + EPs label + EPs */}
-          <div className="flex sm:hidden justify-start items-start gap-3 pl-4 pr-4">
+          <div className="flex sm:hidden justify-start items-start gap-36 pl-4 pr-4">
               {/* Albums */}
               {albums.map((item) => (
                 <div
