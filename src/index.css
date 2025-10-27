@@ -4,16 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Hide scrollbar for mobile banner */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
 /* KAZUKIYAMAKAWA Website Design System - Japanese Literary Aesthetic */
 
 @layer base {
