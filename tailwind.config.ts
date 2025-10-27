@@ -18,6 +18,9 @@ export default {
 			}
 		},
 		extend: {
+			screens: {
+				'sm': '1150px',
+			},
 			fontFamily: {
 				heading: ['Playfair Display', 'serif'],
 				body: ['Source Serif Pro', 'serif'],
