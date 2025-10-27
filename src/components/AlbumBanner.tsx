@@ -202,7 +202,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                   key={`ep-${item.id}`}
                   className="flex flex-col items-center cursor-pointer group flex-shrink-0"
                   onClick={() => handleAlbumClick(item)}
-                  style={{ width: '64px' }}
+                  style={{ width: '64px', marginLeft: '32px' }}
                 >
                   <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap overflow-visible">
                     {item.title}
@@ -226,7 +226,11 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                         <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
                       </>
                     ) : (
-                      <div className="w-16 h-16 rounded shadow-lg bg-black/40 border border-white/20 flex items-center justify-center">
+                      <div className={`w-16 h-16 rounded bg-black/40 border border-white/20 flex items-center justify-center transition-all duration-300 ${
+                        selectedAlbumId === item.id
+                          ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
+                          : 'shadow-lg'
+                      }`}>
                         <span className="text-white/60 text-[10px] font-semibold text-center px-2">
                           Coming<br/>Soon
                         </span>
