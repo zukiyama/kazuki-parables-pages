@@ -74,7 +74,7 @@ const books: Book[] = [
   },
   {
     id: "land-dream",
-    title: "Land Dream Sky",
+    title: "The Waste Trilogy",
     cover: landDreamSkyCover,
     targetSection: "young-adult",
     slideToBook: 1

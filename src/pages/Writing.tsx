@@ -236,7 +236,7 @@ const Writing = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
       </div>
       
-      <main className="relative z-10 pt-32 max-sm:pt-28">
+      <main className="relative z-10 pt-32 max-sm:pt-48">
         {/* KAIJU - The Parable Trilogy Section */}
         <section data-section="kaiju" className="min-h-[90vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">

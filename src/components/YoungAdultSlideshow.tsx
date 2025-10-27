@@ -16,7 +16,7 @@ const books = [
     layout: "cover-left"
   },
   {
-    title: "The Waste Trilogy",
+    title: "The Land is a Dream of the Sky",
     subtitle: "",
     summary: "In a walled city within a great wasteland, a small blind boy with white eyes lives under the rule of his robot father. When a pilgrim arrives, everything the boy believed about his world comes into question, and disaster threatens his city.",
     cover: landDreamSkyCover,
