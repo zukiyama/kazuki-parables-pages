@@ -145,15 +145,16 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             </div>
 
           {/* Mobile view - all albums + EPs label + EPs */}
-          <div className="flex sm:hidden justify-start items-center gap-6 pl-4 pr-4">
+          <div className="flex sm:hidden justify-start items-start gap-3 pl-4 pr-4">
               {/* Albums */}
               {albums.map((item) => (
                 <div
                   key={item.id}
                   className="flex flex-col items-center cursor-pointer group flex-shrink-0"
                   onClick={() => item.cover && handleAlbumClick(item)}
+                  style={{ width: '64px' }}
                 >
-                  <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
+                  <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap overflow-visible">
                     {item.title}
                   </h3>
                   
@@ -176,54 +177,10 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
               ))}
 
               {/* EPs Label Separator */}
-              <div className="flex flex-col items-center justify-center px-1">
-                <h3 className="font-serif text-[10px] font-semibold text-yellow-300 whitespace-nowrap mb-1">
+              <div className="flex items-center justify-center px-1 h-16 mt-5">
+                <h3 className="font-serif text-[10px] font-semibold text-yellow-300 whitespace-nowrap">
                   EPs
                 </h3>
-                <svg 
-                  width="32" 
-                  height="32" 
-                  viewBox="0 0 48 48" 
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="text-yellow-300"
-                >
-                  {/* Large right-pointing triangle - main element */}
-                  <path 
-                    d="M14 8 L38 24 L14 40 Z" 
-                    stroke="currentColor" 
-                    strokeWidth="2.5" 
-                    fill="none" 
-                    strokeLinejoin="round"
-                  />
-                  {/* Circle - slightly overlapping */}
-                  <circle 
-                    cx="20" 
-                    cy="18" 
-                    r="4.5" 
-                    stroke="currentColor" 
-                    strokeWidth="1.8" 
-                    fill="none" 
-                    opacity="0.65" 
-                  />
-                  {/* Parallel lines - floating, smaller */}
-                  <path 
-                    d="M16 28 L24 30" 
-                    stroke="currentColor" 
-                    strokeWidth="1.5" 
-                    fill="none" 
-                    opacity="0.7" 
-                    strokeLinecap="round"
-                  />
-                  <path 
-                    d="M14 32 L22 34" 
-                    stroke="currentColor" 
-                    strokeWidth="1.5" 
-                    fill="none" 
-                    opacity="0.5" 
-                    strokeLinecap="round"
-                  />
-                </svg>
               </div>
 
               {/* EPs */}
@@ -232,8 +189,9 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                   key={`ep-${item.id}`}
                   className="flex flex-col items-center cursor-pointer group flex-shrink-0"
                   onClick={() => item.cover && handleAlbumClick(item)}
+                  style={{ width: '64px' }}
                 >
-                  <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
+                  <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap overflow-visible">
                     {item.title}
                   </h3>
                   
