@@ -87,8 +87,7 @@ export const OptimizedImage = ({
         )}
         style={{
           maxWidth: width ? `${width}px` : undefined,
-          maxHeight: height ? `${height}px` : undefined,
-          objectFit: 'contain'
+          maxHeight: height ? `${height}px` : undefined
         }}
       />
     </div>
