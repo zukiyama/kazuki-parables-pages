@@ -166,7 +166,9 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                     onClick={() => item.cover && handleAlbumClick(item)}
                     style={{ width: '64px', marginRight: spacingMap[index] || '0px' }}
                   >
-                    <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap overflow-visible">
+                    <h3 className={`font-serif text-[10px] font-semibold mb-0.5 text-center transition-colors duration-300 whitespace-nowrap overflow-visible ${
+                      selectedAlbumId === item.id ? 'text-yellow-300' : 'text-white group-active:text-yellow-300'
+                    }`}>
                       {item.title}
                     </h3>
                     
@@ -204,7 +206,9 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                   onClick={() => handleAlbumClick(item)}
                   style={{ width: '64px', marginLeft: '32px' }}
                 >
-                  <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap overflow-visible">
+                  <h3 className={`font-serif text-[10px] font-semibold mb-0.5 text-center transition-colors duration-300 whitespace-nowrap overflow-visible ${
+                    selectedAlbumId === item.id ? 'text-yellow-300' : 'text-white group-active:text-yellow-300'
+                  }`}>
                     {item.title}
                   </h3>
                   
