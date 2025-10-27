@@ -236,12 +236,12 @@ const Writing = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
       </div>
       
-      <main className="relative z-10 pt-24">
+      <main className="relative z-10 pt-32 max-sm:pt-28">
         {/* KAIJU - The Parable Trilogy Section */}
         <section data-section="kaiju" className="min-h-[90vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
-              <h1 className={`font-serif text-6xl font-bold text-white mb-12 text-center tracking-wide transition-all duration-1000 ${
+              <h1 className={`font-serif text-6xl font-bold text-white mb-20 max-sm:mb-16 text-center tracking-wide transition-all duration-1000 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
               }`}>
                 Novels
