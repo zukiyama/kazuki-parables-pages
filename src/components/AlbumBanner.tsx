@@ -90,10 +90,6 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
 
   return (
     <div className="py-3 max-sm:py-4 bg-black/80 backdrop-blur-sm overflow-visible relative">
-      {/* Fade overlays on mobile */}
-      <div className="hidden max-sm:block absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-black/80 to-transparent z-10 pointer-events-none"></div>
-      <div className="hidden max-sm:block absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-black/80 to-transparent z-10 pointer-events-none"></div>
-      
       <div className="container mx-auto px-6 max-sm:px-2">
         <div className="flex justify-center items-center pb-2 relative overflow-y-visible">
           {/* Items Container */}
@@ -154,21 +150,21 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
               {albums.map((item) => (
                 <div
                   key={item.id}
-                  className="flex flex-col items-center cursor-pointer group"
+                  className="flex flex-col items-center cursor-pointer group flex-shrink-0"
                   onClick={() => item.cover && handleAlbumClick(item)}
                 >
                   <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
                     {item.title}
                   </h3>
                   
-                  <div className="relative">
+                  <div className="relative w-16 h-16 flex-shrink-0" style={{ aspectRatio: '1 / 1' }}>
                     <img
                       src={item.cover}
                       alt={item.title}
                       width="64"
                       height="64"
                       loading="eager"
-                      className={`w-16 h-16 object-cover rounded transition-all duration-300 ${
+                      className={`w-full h-full object-cover rounded transition-all duration-300 ${
                         selectedAlbumId === item.id
                           ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
                           : 'shadow-lg'
@@ -234,14 +230,14 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
               {eps.map((item) => (
                 <div
                   key={`ep-${item.id}`}
-                  className="flex flex-col items-center cursor-pointer group"
+                  className="flex flex-col items-center cursor-pointer group flex-shrink-0"
                   onClick={() => item.cover && handleAlbumClick(item)}
                 >
                   <h3 className="font-serif text-[10px] font-semibold text-white mb-0.5 text-center group-active:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
                     {item.title}
                   </h3>
                   
-                  <div className="relative">
+                  <div className="relative w-16 h-16 flex-shrink-0" style={{ aspectRatio: '1 / 1' }}>
                     {item.cover ? (
                       <>
                         <img
@@ -250,7 +246,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                           width="64"
                           height="64"
                           loading="eager"
-                          className={`w-16 h-16 object-cover rounded transition-all duration-300 ${
+                          className={`w-full h-full object-cover rounded transition-all duration-300 ${
                             selectedAlbumId === item.id
                               ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
                               : 'shadow-lg'
