@@ -168,10 +168,10 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                       width="64"
                       height="64"
                       loading="eager"
-                      className={`w-16 h-16 object-cover rounded shadow-lg transition-all duration-300 ${
+                      className={`w-16 h-16 object-cover rounded transition-all duration-300 ${
                         selectedAlbumId === item.id
-                          ? 'ring-2 ring-yellow-300/60 scale-110'
-                          : ''
+                          ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
+                          : 'shadow-lg'
                       }`}
                     />
                     <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
@@ -250,10 +250,10 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                           width="64"
                           height="64"
                           loading="eager"
-                          className={`w-16 h-16 object-cover rounded shadow-lg transition-all duration-300 ${
+                          className={`w-16 h-16 object-cover rounded transition-all duration-300 ${
                             selectedAlbumId === item.id
-                              ? 'ring-2 ring-yellow-300/60 scale-110'
-                              : ''
+                              ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
+                              : 'shadow-lg'
                           }`}
                         />
                         <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
