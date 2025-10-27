@@ -89,11 +89,11 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   const currentItems = showEPs ? eps : albums;
 
   return (
-    <div className="py-3 max-sm:py-6 bg-black/80 backdrop-blur-sm overflow-visible relative">
+    <div className="py-3 max-sm:py-4 bg-black/80 backdrop-blur-sm overflow-visible relative">
       <div className="container mx-auto px-6 max-sm:px-2">
         <div className="flex justify-center items-center pb-2 relative">
           {/* Items Container */}
-          <div className="flex justify-center items-center gap-8 overflow-visible max-sm:gap-3 max-sm:overflow-x-auto max-sm:justify-start max-sm:flex-1 max-sm:scrollbar-hide max-sm:pb-3">
+          <div className="flex justify-center items-center gap-8 overflow-visible max-sm:gap-3 max-sm:overflow-x-auto max-sm:overflow-y-visible max-sm:justify-start max-sm:flex-1 max-sm:scrollbar-hide max-sm:pb-6" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {/* Desktop view - with transitions */}
             <div
               ref={containerRef}
@@ -145,7 +145,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             </div>
 
           {/* Mobile view - all albums + EPs label + EPs */}
-          <div className="flex sm:hidden justify-start items-center gap-3">
+          <div className="flex sm:hidden justify-start items-center gap-6 pl-4 pr-4">
               {/* Albums */}
               {albums.map((item) => (
                 <div
@@ -164,7 +164,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                       width="64"
                       height="64"
                       loading="eager"
-                      className={`w-16 h-16 object-contain rounded shadow-lg transition-all duration-300 ${
+                      className={`w-16 h-16 object-cover rounded shadow-lg transition-all duration-300 ${
                         selectedAlbumId === item.id
                           ? 'ring-2 ring-yellow-300/60 scale-110'
                           : ''
@@ -176,7 +176,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
               ))}
 
               {/* EPs Label Separator */}
-              <div className="flex flex-col items-center justify-center px-1">
+              <div className="flex flex-col items-center justify-center px-0.5">
                 <h3 className="font-serif text-[10px] font-semibold text-yellow-300 whitespace-nowrap mb-1">
                   EPs
                 </h3>
@@ -208,7 +208,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                           width="64"
                           height="64"
                           loading="eager"
-                          className={`w-16 h-16 object-contain rounded shadow-lg transition-all duration-300 ${
+                          className={`w-16 h-16 object-cover rounded shadow-lg transition-all duration-300 ${
                             selectedAlbumId === item.id
                               ? 'ring-2 ring-yellow-300/60 scale-110'
                               : ''
