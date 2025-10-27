@@ -21,7 +21,7 @@ const About = () => {
       <Navigation />
       
       {/* Hero Banner */}
-      <div className="w-full h-[40vh] relative overflow-hidden mt-16 max-sm:h-[30vh]">
+      <div className="w-full h-[40vh] relative overflow-hidden mt-16 max-sm:h-[20vh]">
         <OptimizedImage 
           src={bannerImage}
           alt="Vintage Japanese cityscape"
