@@ -25,7 +25,7 @@ const About = () => {
         <OptimizedImage 
           src={bannerImage}
           alt="Vintage Japanese cityscape"
-          className="w-full h-full object-cover max-sm:object-[center_30%] max-sm:scale-110"
+          className="w-full h-full object-cover max-sm:scale-[2.5] max-sm:object-center"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
