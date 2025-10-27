@@ -32,7 +32,7 @@ const MobileMenu = () => {
 
       {/* Simple Dropdown Menu */}
       {isOpen && (
-        <div className="fixed right-0 top-16 w-56 bg-background/90 backdrop-blur-sm border-t border-border shadow-lg z-50">
+        <div className="fixed right-0 top-[73px] w-56 bg-background/90 backdrop-blur-sm border-t border-border shadow-lg z-50">
           <nav className="flex flex-col py-2">
             {navItems.map((item) => (
               <Link
