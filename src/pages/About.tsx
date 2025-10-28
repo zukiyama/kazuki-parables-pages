@@ -96,8 +96,8 @@ const About = () => {
           </div>
         </div>
 
-        {/* Three Photos Row - positioned 30px above footer */}
-        <div className="relative mb-[30px] -mx-6">
+        {/* Three Photos Row */}
+        <div className="relative mb-3 -mx-6">
           <div className="flex gap-[14px] justify-between max-sm:gap-2" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
             <div className="flex-1 aspect-[4/3] overflow-hidden">
               <OptimizedImage 
@@ -124,7 +124,7 @@ const About = () => {
         </div>
       </div>
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 -mt-[117px] relative z-10 max-sm:py-8 max-sm:-mt-[80px]">
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 relative z-10 max-sm:py-8">
         <div className="container mx-auto px-6 text-center">
           <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
           <p className="font-serif text-white">
