@@ -70,6 +70,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   const [hoveredAlbum, setHoveredAlbum] = useState<number | null>(null);
   const [showEPs, setShowEPs] = useState(true); // Default to showing EPs
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isRotating, setIsRotating] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleAlbumClick = (album: Album) => {
@@ -79,11 +80,13 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   };
 
   const handleToggle = () => {
+    setIsRotating(true);
     setIsTransitioning(true);
     setTimeout(() => {
       setShowEPs(!showEPs);
       setTimeout(() => setIsTransitioning(false), 50);
     }, 400);
+    setTimeout(() => setIsRotating(false), 400);
   };
 
   const currentItems = showEPs ? eps : albums;
@@ -284,7 +287,9 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                 viewBox="0 0 48 48" 
                 fill="none" 
                 xmlns="http://www.w3.org/2000/svg"
-                className="text-yellow-300 transition-colors duration-300"
+                className={`text-yellow-300 transition-all duration-400 ${
+                  isRotating ? 'rotate-[360deg]' : 'rotate-0'
+                }`}
               >
                 {/* Large right-pointing triangle - main element */}
                 <path 
