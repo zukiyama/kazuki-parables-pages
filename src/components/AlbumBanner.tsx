@@ -86,7 +86,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
       setShowEPs(!showEPs);
       setTimeout(() => setIsTransitioning(false), 50);
     }, 400);
-    setTimeout(() => setIsRotating(false), 400);
+    setTimeout(() => setIsRotating(false), 800);
   };
 
   const currentItems = showEPs ? eps : albums;
@@ -287,8 +287,8 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                 viewBox="0 0 48 48" 
                 fill="none" 
                 xmlns="http://www.w3.org/2000/svg"
-                className={`text-yellow-300 transition-all duration-400 ${
-                  isRotating ? 'rotate-[360deg]' : 'rotate-0'
+                className={`text-yellow-300 ${
+                  isRotating ? 'animate-[spin-forward_0.8s_ease-in-out]' : ''
                 }`}
               >
                 {/* Large right-pointing triangle - main element */}
