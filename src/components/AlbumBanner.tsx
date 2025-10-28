@@ -133,7 +133,13 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                         <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
                       </>
                     ) : (
-                      <div className="w-24 h-24 rounded shadow-lg bg-black/40 border border-white/20 flex items-center justify-center">
+                      <div className={`w-24 h-24 rounded shadow-lg bg-black/40 border border-white/20 flex items-center justify-center transition-all duration-300 ${
+                        selectedAlbumId === item.id
+                          ? 'ring-2 ring-yellow-300/60 scale-105'
+                          : hoveredAlbum === item.id 
+                          ? 'scale-105 shadow-2xl shadow-yellow-300/20' 
+                          : ''
+                      }`}>
                         <span className="text-white/60 text-xs font-semibold text-center px-2">
                           Coming<br/>Soon
                         </span>
