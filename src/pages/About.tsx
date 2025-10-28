@@ -95,31 +95,31 @@ const About = () => {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Three Photos Row */}
-      <div className="relative mb-3">
-        <div className="flex gap-[14px] justify-between max-sm:gap-2" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
-          <div className="flex-1 aspect-[4/3] overflow-hidden">
-            <OptimizedImage 
-              src={photographerWindow}
-              alt="Photographer in shop window"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-          <div className="flex-1 aspect-[4/3] overflow-hidden">
-            <OptimizedImage 
-              src={japaneseRoom}
-              alt="Japanese room with city view"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
-          <div className="flex-1 aspect-[4/3] overflow-hidden">
-            <OptimizedImage 
-              src={taiChiPark}
-              alt="Tai chi practice in park"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
+        {/* Three Photos Row */}
+        <div className="relative mb-3 -mx-6">
+          <div className="flex gap-[14px] justify-between max-sm:gap-2" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
+            <div className="flex-1 aspect-[4/3] overflow-hidden">
+              <OptimizedImage 
+                src={photographerWindow}
+                alt="Photographer in shop window"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
+            <div className="flex-1 aspect-[4/3] overflow-hidden">
+              <OptimizedImage 
+                src={japaneseRoom}
+                alt="Japanese room with city view"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
+            <div className="flex-1 aspect-[4/3] overflow-hidden">
+              <OptimizedImage 
+                src={taiChiPark}
+                alt="Tai chi practice in park"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
           </div>
         </div>
       </div>
