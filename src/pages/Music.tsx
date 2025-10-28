@@ -198,15 +198,15 @@ const albums = [
 const Music = () => {
   const location = useLocation();
   const [scrollY, setScrollY] = useState(0);
-  const [selectedAlbum, setSelectedAlbum] = useState(albums[0]);
+  const [selectedAlbum, setSelectedAlbum] = useState(albums[7]); // Default to Coming Soon EP
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null);
   const trackListingRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
   
   // Two-layer crossfade system
-  const [layerA, setLayerA] = useState({ image: albums[0].background, opacity: 1 });
-  const [layerB, setLayerB] = useState({ image: albums[0].background, opacity: 0 });
+  const [layerA, setLayerA] = useState({ image: albums[7].background, opacity: 1 }); // Default to Coming Soon EP background
+  const [layerB, setLayerB] = useState({ image: albums[7].background, opacity: 0 });
   const [isTransitioning, setIsTransitioning] = useState(false);
   const transitionRef = useRef<NodeJS.Timeout | null>(null);
 

@@ -68,7 +68,7 @@ interface AlbumBannerProps {
 
 export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps) => {
   const [hoveredAlbum, setHoveredAlbum] = useState<number | null>(null);
-  const [showEPs, setShowEPs] = useState(false);
+  const [showEPs, setShowEPs] = useState(true); // Default to showing EPs
   const [isTransitioning, setIsTransitioning] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
