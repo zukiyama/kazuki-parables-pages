@@ -90,12 +90,11 @@ const books: Book[] = [
 
 interface BookshelfMenuProps {
   onBookClick?: (bookId: string, slideToBook?: number) => void;
-  onScrollStart?: () => void;
   visibleSections?: Set<string>;
   currentYoungAdultBook?: number;
 }
 
-export const BookshelfMenu = ({ onBookClick, onScrollStart, visibleSections, currentYoungAdultBook = 0 }: BookshelfMenuProps) => {
+export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultBook = 0 }: BookshelfMenuProps) => {
   const [hoveredBook, setHoveredBook] = useState<string | null>(null);
   
   // Determine which book should be highlighted based on visible sections
@@ -131,11 +130,6 @@ export const BookshelfMenu = ({ onBookClick, onScrollStart, visibleSections, cur
   });
 
   const handleBookClick = (book: Book) => {
-    // Notify parent that auto-scroll is starting
-    if (onScrollStart) {
-      onScrollStart();
-    }
-
     const scrollToSection = () => {
       const section = document.querySelector(`[data-section="${book.targetSection}"]`) as HTMLElement;
       if (!section) return;

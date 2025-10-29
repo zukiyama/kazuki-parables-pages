@@ -35,8 +35,6 @@ const Writing = () => {
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
-  const isAutoScrolling = useRef(false);
-  const autoScrollTimeout = useRef<NodeJS.Timeout>();
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -82,12 +80,7 @@ const Writing = () => {
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
 
-      // Skip section updates during programmatic scroll (from banner clicks)
-      if (isAutoScrolling.current) {
-        return;
-      }
-
-      // Check which sections are visible (only during manual scrolling)
+      // Check which sections are visible
       const sections = document.querySelectorAll('[data-section]');
       const newVisibleSections = new Set<string>();
       
@@ -148,44 +141,8 @@ const Writing = () => {
 
     window.addEventListener("scroll", handleScroll);
     handleScroll(); // Initial check
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      // Clean up timeout on unmount
-      if (autoScrollTimeout.current) {
-        clearTimeout(autoScrollTimeout.current);
-      }
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [currentYoungAdultBook]);
-
-  const handleScrollStart = () => {
-    // Set flag to pause section visibility updates during auto-scroll
-    isAutoScrolling.current = true;
-    
-    // Clear any existing timeout
-    if (autoScrollTimeout.current) {
-      clearTimeout(autoScrollTimeout.current);
-    }
-    
-    // Re-enable section updates after scroll completes (1.5s should be enough for smooth scroll)
-    autoScrollTimeout.current = setTimeout(() => {
-      isAutoScrolling.current = false;
-      
-      // Manually trigger a visibility check after auto-scroll completes
-      const sections = document.querySelectorAll('[data-section]');
-      const newVisibleSections = new Set<string>();
-      
-      sections.forEach((section) => {
-        const rect = section.getBoundingClientRect();
-        const sectionId = section.getAttribute('data-section');
-        
-        if (rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) {
-          if (sectionId) newVisibleSections.add(sectionId);
-        }
-      });
-      
-      setVisibleSections(newVisibleSections);
-    }, 1500);
-  };
 
   const handleBookClick = (bookId: string, slideToBook?: number) => {
     // If it's a young adult book, set the slideshow to show that book IMMEDIATELY
@@ -199,7 +156,6 @@ const Writing = () => {
       <Navigation />
       <BookshelfMenu 
         onBookClick={handleBookClick} 
-        onScrollStart={handleScrollStart}
         visibleSections={visibleSections} 
         currentYoungAdultBook={currentYoungAdultBook}
       />
