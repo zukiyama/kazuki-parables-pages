@@ -10,7 +10,7 @@ import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
 const books = [
   {
     title: "Professor Barnabas and Darwin",
-    subtitle: "A Congress of Worlds",
+    subtitle: "The Congress of Worlds",
     summary: "A Victorian tale of an eccentric professor's mysterious shop filled with strange globes and bizarre telescopes. When young orphan Darwin comes to work there, he discovers the shop holds magical secrets beyond imagination.",
     cover: professorBarnabasCover,
     layout: "cover-left"
