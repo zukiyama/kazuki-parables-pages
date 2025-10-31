@@ -64,12 +64,11 @@ const Comics = () => {
   return (
     <div className="min-h-screen relative">
       {/* Manga Sketches Background */}
-      <div className="fixed inset-0 pointer-events-none" style={{ transform: 'translateZ(0)', willChange: 'transform' }}>
+      <div className="fixed inset-0 pointer-events-none">
         <div 
           className="w-full h-full bg-cover bg-center opacity-60"
           style={{ 
-            backgroundImage: `url(${mangaSketchesBackground})`,
-            transform: 'translateZ(0)'
+            backgroundImage: `url(${mangaSketchesBackground})`
           }}
         />
       </div>
