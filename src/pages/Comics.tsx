@@ -68,7 +68,8 @@ const Comics = () => {
         <div 
           className="w-full h-full bg-cover bg-center opacity-60"
           style={{ 
-            backgroundImage: `url(${mangaSketchesBackground})`
+            backgroundImage: `url(${mangaSketchesBackground})`,
+            transform: 'translateZ(0)'
           }}
         />
       </div>

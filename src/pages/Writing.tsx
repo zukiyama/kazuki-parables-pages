@@ -167,70 +167,70 @@ const Writing = () => {
           alt="School background"
           loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.school }}
+          style={{ opacity: backgroundOpacities.school, transform: 'translateZ(0)' }}
         />
         <img 
           src={hoaxBackground} 
           alt="Hoax background"
           loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.hoax }}
+          style={{ opacity: backgroundOpacities.hoax, transform: 'translateZ(0)' }}
         />
         <img 
           src={theMarketBackground} 
           alt="The Market background"
           loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.theMarket }}
+          style={{ opacity: backgroundOpacities.theMarket, transform: 'translateZ(0)' }}
         />
         <img 
           src={howBackground} 
           alt="HOW background"
           loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.how }}
+          style={{ opacity: backgroundOpacities.how, transform: 'translateZ(0)' }}
         />
         <img 
           src={viceVersaBackground} 
           alt="Vice Versa background"
           loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.viceVersa }}
+          style={{ opacity: backgroundOpacities.viceVersa, transform: 'translateZ(0)' }}
         />
         <img 
           src={amyaNewBackground} 
           alt="AMYA background"
           loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-150"
-          style={{ opacity: backgroundOpacities.oba }}
+          style={{ opacity: backgroundOpacities.oba, transform: 'translateZ(0)' }}
         />
         <img 
           src={statesOfMotionBackground} 
           alt="States of Motion background"
           loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-125"
-          style={{ opacity: backgroundOpacities.statesOfMotion }}
+          style={{ opacity: backgroundOpacities.statesOfMotion, transform: 'translateZ(0)' }}
         />
         <img 
           src={professorBarnabasBackground} 
           alt="Professor Barnabas background"
           loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.victorianLondon }}
+          style={{ opacity: backgroundOpacities.victorianLondon, transform: 'translateZ(0)' }}
         />
         <img 
           src={wastelandCityBackground} 
           alt="Wasteland City background"
           loading="eager"
           className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.wasteland }}
+          style={{ opacity: backgroundOpacities.wasteland, transform: 'translateZ(0)' }}
         />
         <img 
           src={deepSpaceBackground} 
           alt="Space battle background"
           loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.deepSpace }}
+          style={{ opacity: backgroundOpacities.deepSpace, transform: 'translateZ(0)' }}
         />
         
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>

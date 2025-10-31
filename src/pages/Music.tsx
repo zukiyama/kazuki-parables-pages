@@ -321,7 +321,8 @@ const Music = () => {
           className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
           style={{ 
             backgroundImage: `url(${layerA.image})`,
-            opacity: layerA.opacity
+            opacity: layerA.opacity,
+            transform: 'translateZ(0)'
           }}
         />
         {/* Layer B */}
@@ -329,7 +330,8 @@ const Music = () => {
           className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
           style={{ 
             backgroundImage: `url(${layerB.image})`,
-            opacity: layerB.opacity
+            opacity: layerB.opacity,
+            transform: 'translateZ(0)'
           }}
         />
         {/* Static overlay for readability - not animated */}
