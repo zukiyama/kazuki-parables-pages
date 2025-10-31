@@ -161,12 +161,12 @@ const Writing = () => {
       />
       
       {/* Stacked Background Images - All preloaded */}
-      <div className="fixed top-0 left-0 z-0" style={{ height: '100svh', width: '100vw' }}>
+      <div className="fixed top-0 left-0 z-0" style={{ height: '100vh', width: '100vw' }}>
         <img 
           src={schoolBackground} 
           alt="School background"
           loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.school }}
         />
         <img 
