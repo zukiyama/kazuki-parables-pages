@@ -489,7 +489,7 @@ const Writing = () => {
 
 
         {/* Young Adult Books Section */}
-        <section data-section="young-adult" className="min-h-[90vh] flex items-center justify-center relative bg-gradient-to-br from-primary/20 to-accent/10">
+        <section data-section="young-adult" className="min-h-[90vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <h2 className={`font-serif text-5xl font-bold text-white mb-4 text-center tracking-wide transition-all duration-1000 ${
