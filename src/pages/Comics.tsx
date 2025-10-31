@@ -64,7 +64,7 @@ const Comics = () => {
   return (
     <div className="min-h-screen relative">
       {/* Manga Sketches Background */}
-      <div className="fixed inset-0 pointer-events-none">
+      <div className="md:fixed absolute inset-0 pointer-events-none transform-gpu">
         <div 
           className="w-full h-full bg-cover bg-center opacity-60"
           style={{ 
