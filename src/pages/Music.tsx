@@ -315,23 +315,21 @@ const Music = () => {
       </div>
       
       {/* Two-Layer Crossfade Background System */}
-      <div className="md:fixed absolute inset-0">
+      <div className="fixed inset-0">
         {/* Layer A */}
         <div 
-          className="md:fixed absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
+          className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
           style={{ 
             backgroundImage: `url(${layerA.image})`,
-            opacity: layerA.opacity,
-            transform: 'scale(1)'
+            opacity: layerA.opacity
           }}
         />
         {/* Layer B */}
         <div 
-          className="md:fixed absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
+          className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
           style={{ 
             backgroundImage: `url(${layerB.image})`,
-            opacity: layerB.opacity,
-            transform: 'scale(1)'
+            opacity: layerB.opacity
           }}
         />
         {/* Static overlay for readability - not animated */}

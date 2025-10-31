@@ -35,6 +35,8 @@ const Writing = () => {
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
+  const isAutoScrolling = useRef(false);
+  const autoScrollTimeout = useRef<NodeJS.Timeout>();
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -80,7 +82,12 @@ const Writing = () => {
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
 
-      // Check which sections are visible
+      // Skip section updates during programmatic scroll (from banner clicks)
+      if (isAutoScrolling.current) {
+        return;
+      }
+
+      // Check which sections are visible (only during manual scrolling)
       const sections = document.querySelectorAll('[data-section]');
       const newVisibleSections = new Set<string>();
       
@@ -141,8 +148,44 @@ const Writing = () => {
 
     window.addEventListener("scroll", handleScroll);
     handleScroll(); // Initial check
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      // Clean up timeout on unmount
+      if (autoScrollTimeout.current) {
+        clearTimeout(autoScrollTimeout.current);
+      }
+    };
   }, [currentYoungAdultBook]);
+
+  const handleScrollStart = () => {
+    // Set flag to pause section visibility updates during auto-scroll
+    isAutoScrolling.current = true;
+    
+    // Clear any existing timeout
+    if (autoScrollTimeout.current) {
+      clearTimeout(autoScrollTimeout.current);
+    }
+    
+    // Re-enable section updates after scroll completes (1.5s should be enough for smooth scroll)
+    autoScrollTimeout.current = setTimeout(() => {
+      isAutoScrolling.current = false;
+      
+      // Manually trigger a visibility check after auto-scroll completes
+      const sections = document.querySelectorAll('[data-section]');
+      const newVisibleSections = new Set<string>();
+      
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const sectionId = section.getAttribute('data-section');
+        
+        if (rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) {
+          if (sectionId) newVisibleSections.add(sectionId);
+        }
+      });
+      
+      setVisibleSections(newVisibleSections);
+    }, 1500);
+  };
 
   const handleBookClick = (bookId: string, slideToBook?: number) => {
     // If it's a young adult book, set the slideshow to show that book IMMEDIATELY
@@ -156,81 +199,82 @@ const Writing = () => {
       <Navigation />
       <BookshelfMenu 
         onBookClick={handleBookClick} 
+        onScrollStart={handleScrollStart}
         visibleSections={visibleSections} 
         currentYoungAdultBook={currentYoungAdultBook}
       />
       
       {/* Stacked Background Images - All preloaded */}
-      <div className="md:fixed absolute inset-0 z-0">
+      <div className="fixed inset-0 z-0">
         <img 
           src={schoolBackground} 
           alt="School background"
           loading="eager"
-          className="md:fixed absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out will-change-opacity"
-          style={{ opacity: backgroundOpacities.school, transform: 'scale(1)' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.school }}
         />
         <img 
           src={hoaxBackground} 
           alt="Hoax background"
           loading="eager"
-          className="md:fixed absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out will-change-opacity"
-          style={{ opacity: backgroundOpacities.hoax, transform: 'scale(1)' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.hoax }}
         />
         <img 
           src={theMarketBackground} 
           alt="The Market background"
           loading="eager"
-          className="md:fixed absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out will-change-opacity"
-          style={{ opacity: backgroundOpacities.theMarket, transform: 'scale(1)' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.theMarket }}
         />
         <img 
           src={howBackground} 
           alt="HOW background"
           loading="eager"
-          className="md:fixed absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out will-change-opacity"
-          style={{ opacity: backgroundOpacities.how, transform: 'scale(1)' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.how }}
         />
         <img 
           src={viceVersaBackground} 
           alt="Vice Versa background"
           loading="eager"
-          className="md:fixed absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out will-change-opacity"
-          style={{ opacity: backgroundOpacities.viceVersa, transform: 'scale(1)' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.viceVersa }}
         />
         <img 
           src={amyaNewBackground} 
           alt="AMYA background"
           loading="eager"
-          className="md:fixed absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-150 will-change-opacity"
-          style={{ opacity: backgroundOpacities.oba, transform: 'scale(1)' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-150"
+          style={{ opacity: backgroundOpacities.oba }}
         />
         <img 
           src={statesOfMotionBackground} 
           alt="States of Motion background"
           loading="eager"
-          className="md:fixed absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-125 will-change-opacity"
-          style={{ opacity: backgroundOpacities.statesOfMotion, transform: 'scale(1)' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-125"
+          style={{ opacity: backgroundOpacities.statesOfMotion }}
         />
         <img 
           src={professorBarnabasBackground} 
           alt="Professor Barnabas background"
           loading="eager"
-          className="md:fixed absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out will-change-opacity"
-          style={{ opacity: backgroundOpacities.victorianLondon, transform: 'scale(1)' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.victorianLondon }}
         />
         <img 
           src={wastelandCityBackground} 
           alt="Wasteland City background"
           loading="eager"
-          className="md:fixed absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out will-change-opacity"
-          style={{ opacity: backgroundOpacities.wasteland, transform: 'scale(1)' }}
+          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.wasteland }}
         />
         <img 
           src={deepSpaceBackground} 
           alt="Space battle background"
           loading="eager"
-          className="md:fixed absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out will-change-opacity"
-          style={{ opacity: backgroundOpacities.deepSpace, transform: 'scale(1)' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.deepSpace }}
         />
         
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
