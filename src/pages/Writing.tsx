@@ -161,7 +161,7 @@ const Writing = () => {
       />
       
       {/* Stacked Background Images - All preloaded */}
-      <div className="fixed inset-0 z-0">
+      <div className="fixed top-0 left-0 z-0" style={{ height: '100svh', width: '100vw' }}>
         <img 
           src={schoolBackground} 
           alt="School background"
