@@ -315,7 +315,7 @@ const Music = () => {
       </div>
       
       {/* Two-Layer Crossfade Background System */}
-      <div className="fixed inset-0">
+      <div className="fixed inset-0" style={{ transform: 'translateZ(0)', willChange: 'transform' }}>
         {/* Layer A */}
         <div 
           className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
