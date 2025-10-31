@@ -157,7 +157,7 @@ const Index = () => {
                 className={`absolute top-0 left-0 bg-cover bg-top transition-opacity duration-[7000ms] ease-in-out ${
                   index === currentImage ? "opacity-100" : "opacity-0"
                 } ${index === 1 ? "animate-slow-zoom-meteor" : "animate-slow-zoom"}`}
-                style={{ backgroundImage: `url(${image})`, height: '100vh', width: '100vw' }}
+                style={{ backgroundImage: `url(${image})`, height: '110dvh', width: '100vw', minHeight: '110dvh' }}
               >
                 <div className="absolute inset-0 bg-black/20"></div>
               </div>

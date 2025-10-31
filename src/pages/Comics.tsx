@@ -64,13 +64,14 @@ const Comics = () => {
   return (
     <div className="min-h-screen relative">
       {/* Manga Sketches Background */}
-      <div className="fixed top-0 left-0 pointer-events-none" style={{ height: '100vh', width: '100vw' }}>
+      <div className="fixed top-0 left-0 pointer-events-none" style={{ height: '110dvh', width: '100vw', minHeight: '110dvh' }}>
         <div 
           className="w-full h-full bg-cover bg-top opacity-60"
           style={{ 
             backgroundImage: `url(${mangaSketchesBackground})`,
-            height: '100vh',
-            width: '100vw'
+            height: '110dvh',
+            width: '100vw',
+            minHeight: '110dvh'
           }}
         />
       </div>
