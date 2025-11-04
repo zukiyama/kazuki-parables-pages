@@ -123,20 +123,19 @@ const albums = [
     background: toDreamtManBackground,
     theme: "autumn-restoration",
     tracks: [
-      "Window to the Soul",
-      "Bare Branches",
-      "Autumn's Embrace",
-      "Morning Light",
-      "Restoration Begins",
-      "Golden Hour",
-      "Healing Melodies",
-      "Quiet Reflection",
-      "Renewed Hope",
-      "Building Windows",
-      "Through the Trees",
-      "Solitary Figure",
-      "New Beginnings",
-      "Scene of My Restoration"
+      "Josephine",
+      "A better man",
+      "Intuition",
+      "Voice inside of me",
+      "Someone I'm not",
+      "Is Enlightenment In Fashion Today?",
+      "Interlude",
+      "Flight of the Dragon",
+      "Major's Army",
+      "Alabaster Generals",
+      "Finest Hour",
+      "Ten Mississippi St",
+      "I know that you know"
     ]
   },
   {
@@ -462,25 +461,47 @@ const Music = () => {
                 {/* Track Listing - Right Side */}
                 <div className="lg:pl-4 flex flex-col">
                   <h3 className="text-white text-2xl font-bold mb-4 font-serif text-center">
-                    Track Listing
+                    {selectedAlbum.id === 5 ? "Order of Batting" : "Track Listing"}
                   </h3>
                   <ScrollArea className="h-[580px] w-full rounded-md border border-white/20 p-4 bg-black/20 max-sm:h-[300px]">
                     {selectedAlbum.tracks.length > 0 ? (
-                      <div className="space-y-3">
+                      <div className={selectedAlbum.id === 5 ? "space-y-2" : "space-y-3"}>
                         {selectedAlbum.tracks.map((track, index) => (
-                          <div 
-                            key={index} 
-                            className="flex items-center justify-between p-3 bg-black/30 rounded hover:bg-black/40 transition-colors cursor-pointer"
-                            onClick={() => {
-                              setCurrentTrackIndex(index); 
-                              setIsPlaying(true);
-                            }}
-                          >
-                            <span className="text-white font-serif">{index + 1}. {track}</span>
-                            <div className="text-white/60">
-                              {currentTrackIndex === index ? "⏸" : "▶"}
+                          selectedAlbum.id === 5 ? (
+                            // Cricket scorecard style for Scene of My Restoration
+                            <div 
+                              key={index} 
+                              className="flex items-center justify-between py-2 px-3 border-b border-white/10 hover:bg-black/20 transition-colors cursor-pointer"
+                              style={{ fontFamily: 'Palatino, serif', fontSize: '13px' }}
+                              onClick={() => {
+                                setCurrentTrackIndex(index); 
+                                setIsPlaying(true);
+                              }}
+                            >
+                              <div className="flex items-center gap-4">
+                                <span className="text-white/70 w-6 text-right">{index + 1}</span>
+                                <span className="text-white">{track}</span>
+                              </div>
+                              <div className="text-white/60 text-xs">
+                                {currentTrackIndex === index ? "⏸" : "▶"}
+                              </div>
                             </div>
-                          </div>
+                          ) : (
+                            // Regular style for other albums
+                            <div 
+                              key={index} 
+                              className="flex items-center justify-between p-3 bg-black/30 rounded hover:bg-black/40 transition-colors cursor-pointer"
+                              onClick={() => {
+                                setCurrentTrackIndex(index); 
+                                setIsPlaying(true);
+                              }}
+                            >
+                              <span className="text-white font-serif">{index + 1}. {track}</span>
+                              <div className="text-white/60">
+                                {currentTrackIndex === index ? "⏸" : "▶"}
+                              </div>
+                            </div>
+                          )
                         ))}
                       </div>
                     ) : (
