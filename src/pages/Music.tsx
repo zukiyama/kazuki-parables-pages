@@ -13,6 +13,7 @@ import manOnFilmBackground from "@/assets/man-on-film-background.jpg";
 import toDreamtManBackground from "@/assets/to-the-dreamt-man-background.jpg";
 import centreOfWorldBackground from "@/assets/centre-of-world-background.jpg";
 import ohioCassettePoster from "@/assets/circles-single-poster.jpeg";
+import cricketScoreboardBackground from "@/assets/cricket-scoreboard-background.jpg";
 
 // Album covers
 import spaceshipAlbum from "@/assets/spaceship-album.png";
@@ -463,26 +464,46 @@ const Music = () => {
                   <h3 className="text-white text-2xl font-bold mb-4 font-serif text-center">
                     {selectedAlbum.id === 5 ? "Order of Batting" : "Track Listing"}
                   </h3>
-                  <ScrollArea className="h-[580px] w-full rounded-md border border-white/20 p-4 bg-black/20 max-sm:h-[300px]">
+                  <ScrollArea className="h-[580px] w-full rounded-md border border-white/20 p-4 max-sm:h-[300px]" 
+                    style={selectedAlbum.id === 5 ? {
+                      backgroundImage: `url(${cricketScoreboardBackground})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundColor: '#1a1a1a'
+                    } : { backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
                     {selectedAlbum.tracks.length > 0 ? (
-                      <div className={selectedAlbum.id === 5 ? "space-y-2" : "space-y-3"}>
+                      <div className={selectedAlbum.id === 5 ? "space-y-1 pt-2" : "space-y-3"}>
                         {selectedAlbum.tracks.map((track, index) => (
                           selectedAlbum.id === 5 ? (
                             // Cricket scorecard style for Scene of My Restoration
                             <div 
                               key={index} 
-                              className="flex items-center justify-between py-2 px-3 border-b border-white/10 hover:bg-black/20 transition-colors cursor-pointer"
-                              style={{ fontFamily: 'Palatino, serif', fontSize: '13px' }}
+                              className="flex items-center justify-between py-3 px-4 hover:bg-white/5 transition-colors cursor-pointer group"
                               onClick={() => {
                                 setCurrentTrackIndex(index); 
                                 setIsPlaying(true);
                               }}
                             >
-                              <div className="flex items-center gap-4">
-                                <span className="text-white/70 w-6 text-right">{index + 1}</span>
-                                <span className="text-white">{track}</span>
+                              <div className="flex items-center gap-6">
+                                <span className="text-white font-bold text-2xl w-8" 
+                                  style={{ 
+                                    fontFamily: 'Impact, sans-serif',
+                                    textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+                                  }}>
+                                  {index + 1}
+                                </span>
+                                <span className="text-white font-bold text-lg tracking-wide"
+                                  style={{ 
+                                    fontFamily: 'Arial Black, sans-serif',
+                                    textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em'
+                                  }}>
+                                  {track}
+                                </span>
                               </div>
-                              <div className="text-white/60 text-xs">
+                              <div className="text-white text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity"
+                                style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.8)' }}>
                                 {currentTrackIndex === index ? "⏸" : "▶"}
                               </div>
                             </div>
