@@ -472,8 +472,8 @@ const Music = () => {
                           return (
                             <div key={index}>
                               {showActHeader && (
-                                <div className="text-white/90 font-bold text-xl mb-2 mt-4 first:mt-0 font-serif">
-                                  Act {actNumber}
+                                <div className="text-white/90 font-bold text-xl mb-3 mt-6 first:mt-0 font-serif text-center">
+                                  ACT {actNumber}
                                 </div>
                               )}
                               <div 
