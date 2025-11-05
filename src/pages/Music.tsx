@@ -100,17 +100,14 @@ const albums = [
     background: manOnFilmBackground,
     theme: "urban-melancholy",
     tracks: [
-      "Act I",
       "In the morning",
       "I thought I could hold on",
       "I don't wanna be your lover",
       "Kingdom Come",
-      "Act II",
       "Superficial",
       "I don't want to be the one",
       "Give me a sign",
       "Guilty",
-      "Act III",
       "G, A Minor, C",
       "Would it make any difference?",
       "Sick",
@@ -468,21 +465,32 @@ const Music = () => {
                   <ScrollArea className="h-[580px] w-full rounded-md border border-white/20 p-4 bg-black/20 max-sm:h-[300px]">
                     {selectedAlbum.tracks.length > 0 ? (
                       <div className="space-y-3">
-                        {selectedAlbum.tracks.map((track, index) => (
-                          <div 
-                            key={index} 
-                            className="flex items-center justify-between p-3 bg-black/30 rounded hover:bg-black/40 transition-colors cursor-pointer"
-                            onClick={() => {
-                              setCurrentTrackIndex(index); 
-                              setIsPlaying(true);
-                            }}
-                          >
-                            <span className="text-white font-serif">{index + 1}. {track}</span>
-                            <div className="text-white/60">
-                              {currentTrackIndex === index ? "⏸" : "▶"}
+                        {selectedAlbum.tracks.map((track, index) => {
+                          const showActHeader = selectedAlbum.id === 4 && (index === 0 || index === 4 || index === 8);
+                          const actNumber = index === 0 ? "I" : index === 4 ? "II" : "III";
+                          
+                          return (
+                            <div key={index}>
+                              {showActHeader && (
+                                <div className="text-white/90 font-bold text-xl mb-2 mt-4 first:mt-0 font-serif">
+                                  Act {actNumber}
+                                </div>
+                              )}
+                              <div 
+                                className="flex items-center justify-between p-3 bg-black/30 rounded hover:bg-black/40 transition-colors cursor-pointer"
+                                onClick={() => {
+                                  setCurrentTrackIndex(index); 
+                                  setIsPlaying(true);
+                                }}
+                              >
+                                <span className="text-white font-serif">{index + 1}. {track}</span>
+                                <div className="text-white/60">
+                                  {currentTrackIndex === index ? "⏸" : "▶"}
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     ) : (
                       <div className="flex items-center justify-center h-full">
