@@ -100,18 +100,18 @@ const albums = [
     background: manOnFilmBackground,
     theme: "urban-melancholy",
     tracks: [
-      "In the morning",
-      "I thought I could hold on",
-      "I don't wanna be your lover",
+      "In the Morning",
+      "I Thought I Could Hold On",
+      "I Don't Wanna Be Your Lover",
       "Kingdom Come",
       "Superficial",
-      "I don't want to be the one",
-      "Give me a sign",
+      "I Don't Want to Be the One",
+      "Give Me a Sign",
       "Guilty",
       "G, A Minor, C",
-      "Would it make any difference?",
+      "Would It Make Any Difference?",
       "Sick",
-      "In the beginning"
+      "In the Beginning"
     ]
   },
   {
