@@ -21,13 +21,12 @@ export default {
 			screens: {
 				'sm': '1150px',
 			},
-		fontFamily: {
-			heading: ['Playfair Display', 'serif'],
-			body: ['Source Serif Pro', 'serif'],
-			accent: ['Crimson Text', 'serif'],
-			comic: ['Kalam', 'cursive'],
-			palatino: ['Palatino', 'Palatino Linotype', 'serif'],
-		},
+			fontFamily: {
+				heading: ['Playfair Display', 'serif'],
+				body: ['Source Serif Pro', 'serif'],
+				accent: ['Crimson Text', 'serif'],
+				comic: ['Kalam', 'cursive'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',

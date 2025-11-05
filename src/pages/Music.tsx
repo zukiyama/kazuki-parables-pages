@@ -476,7 +476,7 @@ const Music = () => {
                               setIsPlaying(true);
                             }}
                           >
-                            <span className="text-white font-palatino text-base">{index + 1}. {track}</span>
+                            <span className="text-white font-serif">{index + 1}. {track}</span>
                             <div className="text-white/60">
                               {currentTrackIndex === index ? "⏸" : "▶"}
                             </div>
