@@ -462,29 +462,40 @@ const Music = () => {
                   <h3 className="text-white text-2xl font-bold mb-4 font-serif text-center">
                     Track Listing
                   </h3>
-                  <ScrollArea className="h-[580px] w-full rounded-md border border-white/20 p-4 bg-black/20 max-sm:h-[300px]">
+                  <ScrollArea className={`h-[580px] w-full rounded-md p-4 max-sm:h-[300px] ${
+                    selectedAlbum.id === 4 
+                      ? 'bg-amber-50 border-2 border-amber-200 shadow-lg' 
+                      : 'border border-white/20 bg-black/20'
+                  }`}>
                     {selectedAlbum.tracks.length > 0 ? (
                       <div className="space-y-3">
                         {selectedAlbum.tracks.map((track, index) => {
                           const showActHeader = selectedAlbum.id === 4 && (index === 0 || index === 4 || index === 8);
                           const actNumber = index === 0 ? "I" : index === 4 ? "II" : "III";
+                          const isPlaybill = selectedAlbum.id === 4;
                           
                           return (
                             <div key={index}>
                               {showActHeader && (
-                                <div className="text-white/90 font-bold text-xl mb-3 mt-6 first:mt-0 font-serif text-center">
+                                <div className="text-slate-800 font-bold text-xl mb-3 mt-6 first:mt-0 font-serif text-center tracking-wider border-b-2 border-slate-400 pb-2">
                                   ACT {actNumber}
                                 </div>
                               )}
                               <div 
-                                className="flex items-center justify-between p-3 bg-black/30 rounded hover:bg-black/40 transition-colors cursor-pointer"
+                                className={`flex items-center justify-between p-3 rounded transition-colors cursor-pointer ${
+                                  isPlaybill 
+                                    ? 'bg-amber-100/50 hover:bg-amber-200/60 border border-amber-300/50' 
+                                    : 'bg-black/30 hover:bg-black/40'
+                                }`}
                                 onClick={() => {
                                   setCurrentTrackIndex(index); 
                                   setIsPlaying(true);
                                 }}
                               >
-                                <span className="text-white font-serif">{index + 1}. {track}</span>
-                                <div className="text-white/60">
+                                <span className={`font-serif ${isPlaybill ? 'text-slate-800' : 'text-white'}`}>
+                                  {index + 1}. {track}
+                                </span>
+                                <div className={isPlaybill ? 'text-slate-600' : 'text-white/60'}>
                                   {currentTrackIndex === index ? "⏸" : "▶"}
                                 </div>
                               </div>
