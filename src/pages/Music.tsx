@@ -512,7 +512,7 @@ const Music = () => {
                                 </div>
                               )}
                               {showPartHeader && (
-                                <div className="text-white/90 font-bold text-xl mb-10 mt-10 first:mt-0 font-palatino text-center">
+                                <div className="text-white/90 font-bold text-xl mb-4 mt-10 first:mt-0 font-palatino text-center">
                                   Part {partNumber}
                                 </div>
                               )}
