@@ -23,6 +23,7 @@ import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album.pn
 import centreOfWorldAlbum from "@/assets/centre-of-world-album-new.jpeg";
 import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
 import flowerEpCover from "@/assets/flower-ep-cover.png";
+import circlesSingleCover from "@/assets/circles-single-cover.png";
 
 const albums = [
   {
@@ -208,7 +209,8 @@ const albums = [
     cover: flowerEpCover,
     background: manOnFilmBackground,
     theme: "coming-soon",
-    tracks: ["Circles", "", "", "", "", ""]
+    tracks: ["Circles", "", "", "", "", ""],
+    singleCovers: { "Circles": circlesSingleCover }
   }
 ];
 
@@ -555,7 +557,7 @@ const Music = () => {
                     className={`relative group rounded-lg overflow-hidden border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 ${currentTrackIndex===idx? 'ring-2 ring-white/60':''}`}
                     onClick={() => { setCurrentTrackIndex(idx); setIsPlaying(true); }}
                   >
-                    <img src={selectedAlbum.cover} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                    <img src={(selectedAlbum as any).singleCovers?.[track] || selectedAlbum.cover} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
                     <div className="absolute inset-0 bg-black/40"></div>
                     <div className="absolute bottom-2 left-2 right-2 text-left">
                       <span className="text-white text-sm font-palatino line-clamp-2">{track}</span>
