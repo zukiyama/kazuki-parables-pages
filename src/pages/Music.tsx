@@ -138,20 +138,19 @@ const albums = [
     background: toDreamtManBackground,
     theme: "autumn-restoration",
     tracks: [
-      "Window to the Soul",
-      "Bare Branches",
-      "Autumn's Embrace",
-      "Morning Light",
-      "Restoration Begins",
-      "Golden Hour",
-      "Healing Melodies",
-      "Quiet Reflection",
-      "Renewed Hope",
-      "Building Windows",
-      "Through the Trees",
-      "Solitary Figure",
-      "New Beginnings",
-      "Scene of My Restoration"
+      "Josephine",
+      "A Better Man",
+      "Intuition",
+      "Voice Inside of Me",
+      "Someone I'm Not",
+      "Is Enlightenment In Fashion Today?",
+      "A Brief Interlude",
+      "Human Flight",
+      "Life on the Inside",
+      "Leading Man",
+      "Finest Hour",
+      "Ten Mississippi Street",
+      "I Know That You Know"
     ]
   },
   {
