@@ -22,6 +22,7 @@ import deathOfLoveAlbum from "@/assets/death-of-love-album.png";
 import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album.png";
 import centreOfWorldAlbum from "@/assets/centre-of-world-album-new.jpeg";
 import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
+import flowerEpCover from "@/assets/flower-ep-cover.png";
 
 const albums = [
   {
@@ -203,11 +204,11 @@ const albums = [
   },
   {
     id: 8,
-    title: "-",
-    cover: "",
+    title: "Flower",
+    cover: flowerEpCover,
     background: manOnFilmBackground,
     theme: "coming-soon",
-    tracks: ["-", "-", "-", "-", "-", "-", "-"]
+    tracks: ["Circles", "", "", "", "", ""]
   }
 ];
 
