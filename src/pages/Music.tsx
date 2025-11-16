@@ -209,7 +209,7 @@ const albums = [
     cover: flowerEpCover,
     background: manOnFilmBackground,
     theme: "coming-soon",
-    tracks: ["Circles", "", "", "", "", ""],
+    tracks: ["Circles", "--", "--", "--", "", ""],
     singleCovers: { "Circles": circlesSingleCover }
   }
 ];
