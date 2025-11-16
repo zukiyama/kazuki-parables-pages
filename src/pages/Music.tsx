@@ -31,20 +31,35 @@ const albums = [
     background: spaceshipBackground,
     theme: "dreamy-clouds",
     tracks: [
-      "Piano in the Sky",
-      "Childhood Dreams",
-      "Cloud Walker",
-      "Innocent Wonder",
-      "Keys to Heaven",
-      "Floating Away",
-      "Young Astronaut",
-      "Celestial Melody",
-      "Dreamscape",
-      "Musical Journey",
-      "Spaceship Lullaby",
-      "Beyond the Clouds",
-      "Starlight Sonata",
-      "Infinite Possibilities"
+      "A Crashed Spaceship",
+      "Sensational",
+      "Magic Radio",
+      "A Silver Bullet",
+      "Sister",
+      "By Design or Fault",
+      "She Can't Break Me",
+      "Make Believe Man",
+      "There Will Be Time",
+      "Justice",
+      "Maybe",
+      "Walking in Japan",
+      "My Favourite Lie",
+      "In a Factory",
+      "Catch Your Tears (at the Bardo)",
+      "Morning Stories",
+      "Live for Today",
+      "Come On, Come On",
+      "The Trial",
+      "I Know Someone*",
+      "Oranges",
+      "All I Said Was",
+      "Perfect Circles",
+      "An Unimportant Man",
+      "This Girl",
+      "Heavenly Creatures",
+      "We're All Afraid",
+      "All of Your Letters",
+      "Even When I Was on My Own"
     ]
   },
   {
@@ -470,6 +485,9 @@ const Music = () => {
                           const showActHeader = selectedAlbum.id === 4 && (index === 0 || index === 4 || index === 8);
                           const actNumber = index === 0 ? "I" : index === 4 ? "II" : "III";
                           
+                          const showPartHeader = selectedAlbum.id === 1 && (index === 0 || index === 15);
+                          const partNumber = index === 0 ? "I" : "II";
+                          
                           return (
                             <div key={index}>
                               {showActHeader && (
@@ -477,7 +495,12 @@ const Music = () => {
                                   ACT {actNumber}
                                 </div>
                               )}
-                              <div 
+                              {showPartHeader && (
+                                <div className="text-white/90 font-bold text-xl mb-3 mt-6 first:mt-0 font-serif text-center">
+                                  PART {partNumber}
+                                </div>
+                              )}
+                              <div
                                 className="flex items-center justify-between p-3 bg-black/30 rounded hover:bg-black/40 transition-colors cursor-pointer"
                                 onClick={() => {
                                   setCurrentTrackIndex(index); 
