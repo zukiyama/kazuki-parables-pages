@@ -490,16 +490,19 @@ const Music = () => {
                           const showPartHeader = selectedAlbum.id === 1 && (index === 0 || index === 15);
                           const partNumber = index === 0 ? "I" : "II";
                           
+                          const isLastTrackOfAlbum7 = selectedAlbum.id === 7 && index === selectedAlbum.tracks.length - 1;
+                          const trackNumber = isLastTrackOfAlbum7 ? "-" : `${index + 1}`;
+                          
                           return (
                             <div key={index}>
                               {showActHeader && (
                                 <div className="text-white/90 font-bold text-xl mb-3 mt-6 first:mt-0 font-serif text-center">
-                                  ACT {actNumber}
+                                  Act {actNumber}
                                 </div>
                               )}
                               {showPartHeader && (
                                 <div className="text-white/90 font-bold text-xl mb-3 mt-6 first:mt-0 font-serif text-center">
-                                  PART {partNumber}
+                                  Part {partNumber}
                                 </div>
                               )}
                               <div
@@ -509,7 +512,7 @@ const Music = () => {
                                   setIsPlaying(true);
                                 }}
                               >
-                                <span className="text-white font-serif">{index + 1}. {track}</span>
+                                <span className="text-white font-serif">{trackNumber}. {track}</span>
                                 <div className="text-white/60">
                                   {currentTrackIndex === index ? "⏸" : "▶"}
                                 </div>
