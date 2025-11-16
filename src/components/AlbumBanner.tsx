@@ -8,6 +8,7 @@ import deathOfLoveAlbum from "@/assets/death-of-love-album.png";
 import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album.png";
 import centreOfWorldAlbum from "@/assets/centre-of-world-album-new.jpeg";
 import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
+import flowerEpCover from "@/assets/flower-ep-cover.png";
 
 interface Album {
   id: number;
@@ -56,8 +57,8 @@ const albums: Album[] = [
 const eps: Album[] = [
   {
     id: 8,
-    title: "Coming Soon",
-    cover: ""
+    title: "Flower",
+    cover: flowerEpCover
   }
 ];
 
