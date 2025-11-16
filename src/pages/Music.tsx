@@ -219,6 +219,7 @@ const Music = () => {
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null);
   const trackListingRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
   
   // Two-layer crossfade system
   const [layerA, setLayerA] = useState({ image: albums[7].background, opacity: 1 }); // Default to Coming Soon EP background
@@ -258,6 +259,16 @@ const Music = () => {
       img.src = album.background;
     });
   }, []);
+
+  // Reset scroll position when album changes
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (viewport) {
+        viewport.scrollTop = 0;
+      }
+    }
+  }, [selectedAlbum.id]);
 
   const handleAlbumSelect = (albumId: number) => {
     const album = albums.find(a => a.id === albumId);
@@ -480,7 +491,7 @@ const Music = () => {
                   <h3 className="text-white text-2xl font-bold mb-4 font-serif text-center">
                     Track Listing
                   </h3>
-                  <ScrollArea className="h-[580px] w-full rounded-md border border-white/20 p-4 bg-black/20 max-sm:h-[300px]">
+                  <ScrollArea ref={scrollAreaRef} className="h-[580px] w-full rounded-md border border-white/20 p-4 bg-black/20 max-sm:h-[300px]">
                     {selectedAlbum.tracks.length > 0 ? (
                       <div className="space-y-3">
                         {selectedAlbum.tracks.map((track, index) => {
