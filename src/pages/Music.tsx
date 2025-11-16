@@ -435,7 +435,7 @@ const Music = () => {
                       <span className="text-white/60 text-2xl font-semibold">Coming Soon</span>
                     </div>
                   )}
-                  <h2 className="font-serif text-3xl text-white mb-2">{selectedAlbum.title}</h2>
+                  <h2 className="font-palatino text-3xl text-white mb-2">{selectedAlbum.title}</h2>
                   <p className="text-white/80 text-lg mb-6">{selectedAlbum.id === 8 ? "Featured EP" : "Featured Album"}</p>
                   
                   {/* Music Player Controls */}
@@ -488,7 +488,7 @@ const Music = () => {
 
                 {/* Track Listing - Right Side */}
                 <div className="lg:pl-4 flex flex-col">
-                  <h3 className="text-white text-2xl font-bold mb-4 font-serif text-center">
+                  <h3 className="text-white text-2xl font-bold mb-4 font-palatino text-center">
                     Track Listing
                   </h3>
                   <ScrollArea ref={scrollAreaRef} className="h-[580px] w-full rounded-md border border-white/20 p-4 bg-black/20 max-sm:h-[300px]">
@@ -507,12 +507,12 @@ const Music = () => {
                           return (
                             <div key={index}>
                               {showActHeader && (
-                                <div className="text-white/90 font-bold text-xl mb-3 mt-6 first:mt-0 font-serif text-center">
+                                <div className="text-white/90 font-bold text-xl mb-3 mt-6 first:mt-0 font-palatino text-center">
                                   Act {actNumber}
                                 </div>
                               )}
                               {showPartHeader && (
-                                <div className="text-white/90 font-bold text-xl mb-10 mt-10 first:mt-0 font-serif text-center">
+                                <div className="text-white/90 font-bold text-xl mb-10 mt-10 first:mt-0 font-palatino text-center">
                                   Part {partNumber}
                                 </div>
                               )}
@@ -523,7 +523,7 @@ const Music = () => {
                                   setIsPlaying(true);
                                 }}
                               >
-                                <span className="text-white font-serif">{trackNumber}. {track}</span>
+                                <span className="text-white font-palatino">{trackNumber}. {track}</span>
                                 <div className="text-white/60">
                                   {currentTrackIndex === index ? "⏸" : "▶"}
                                 </div>
@@ -557,7 +557,7 @@ const Music = () => {
                     <img src={selectedAlbum.cover} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
                     <div className="absolute inset-0 bg-black/40"></div>
                     <div className="absolute bottom-2 left-2 right-2 text-left">
-                      <span className="text-white text-sm font-serif line-clamp-2">{track}</span>
+                      <span className="text-white text-sm font-palatino line-clamp-2">{track}</span>
                     </div>
                   </button>
                 ))}
