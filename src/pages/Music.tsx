@@ -51,7 +51,7 @@ const albums = [
       "Live for Today",
       "Come On, Come On",
       "The Trial",
-      "I Know Someone*",
+      "I Know Someone",
       "Oranges",
       "All I Said Was",
       "Perfect Circles",
