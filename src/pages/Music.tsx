@@ -437,7 +437,7 @@ const Music = () => {
                     </div>
                   )}
                   <h2 className="font-palatino text-3xl text-white mb-2">{selectedAlbum.title}</h2>
-                  <p className="text-white/80 text-lg mb-6">{selectedAlbum.id === 8 ? "Featured EP" : "Featured Album"}</p>
+                  <p className="text-white/80 text-lg mb-6">{selectedAlbum.id === 8 ? "Coming Soon" : "Featured Album"}</p>
                   
                   {/* Music Player Controls */}
                   <div className="flex justify-center items-center space-x-4 mb-2">
