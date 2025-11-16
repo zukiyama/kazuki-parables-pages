@@ -112,7 +112,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                   onMouseLeave={() => setHoveredAlbum(null)}
                   onClick={() => handleAlbumClick(item)}
                 >
-                  <h3 className="font-palatino text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
+                  <h3 className="font-serif text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
                     {item.title}
                   </h3>
                   

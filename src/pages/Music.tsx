@@ -367,10 +367,10 @@ const Music = () => {
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
-            <h1 className="font-palatino text-6xl font-bold text-white mb-4 tracking-wide animate-fade-in">
+            <h1 className="font-serif text-6xl font-bold text-white mb-4 tracking-wide animate-fade-in">
               Music
             </h1>
-            <p className="text-white/80 text-xl font-palatino">
+            <p className="text-white/80 text-xl font-serif">
               A collection of surreal soundscapes and magical melodies
             </p>
           </div>
@@ -411,7 +411,7 @@ const Music = () => {
                 {/* Cassette Deck Info */}
                 <div className="absolute top-4 left-4">
                   <div className="bg-black/60 backdrop-blur-sm rounded px-3 py-1">
-                    <span className="text-white/90 text-sm font-palatino uppercase tracking-wider">Circles - Single</span>
+                    <span className="text-white/90 text-sm font-mono uppercase tracking-wider">Circles - Single</span>
                   </div>
                 </div>
               </div>
@@ -432,11 +432,11 @@ const Music = () => {
                     />
                   ) : (
                     <div className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6 bg-black/40 border border-white/20 flex items-center justify-center aspect-square">
-                      <span className="text-white/60 text-2xl font-semibold font-palatino">Coming Soon</span>
+                      <span className="text-white/60 text-2xl font-semibold">Coming Soon</span>
                     </div>
                   )}
                   <h2 className="font-palatino text-3xl text-white mb-2">{selectedAlbum.title}</h2>
-                  <p className="text-white/80 text-lg mb-6 font-palatino">{selectedAlbum.id === 8 ? "Featured EP" : "Featured Album"}</p>
+                  <p className="text-white/80 text-lg mb-6">{selectedAlbum.id === 8 ? "Featured EP" : "Featured Album"}</p>
                   
                   {/* Music Player Controls */}
                   <div className="flex justify-center items-center space-x-4 mb-2">
@@ -482,7 +482,7 @@ const Music = () => {
                     </Button>
                   </div>
                   {currentTrackIndex !== null && (
-                    <p className="text-white/80 text-sm mb-4 font-palatino">Now playing: {selectedAlbum.tracks[currentTrackIndex]}</p>
+                    <p className="text-white/80 text-sm mb-4 font-serif">Now playing: {selectedAlbum.tracks[currentTrackIndex]}</p>
                   )}
                 </div>
 
@@ -534,7 +534,7 @@ const Music = () => {
                       </div>
                     ) : (
                       <div className="flex items-center justify-center h-full">
-                        <span className="text-white/60 text-lg font-palatino">No tracks available yet</span>
+                        <span className="text-white/60 text-lg font-serif">No tracks available yet</span>
                       </div>
                     )}
                   </ScrollArea>
@@ -545,7 +545,7 @@ const Music = () => {
           
           {/* Singles (click to play) */}
           <div className="mb-8">
-            <h4 className="font-palatino text-2xl text-white mb-4 text-center max-sm:text-xl">Singles</h4>
+            <h4 className="font-serif text-2xl text-white mb-4 text-center max-sm:text-xl">Singles</h4>
             {selectedAlbum.tracks.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-sm:gap-2">
                 {selectedAlbum.tracks.slice(0,4).map((track, idx) => (
@@ -563,7 +563,7 @@ const Music = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center text-white/60 font-palatino">No singles available yet</div>
+              <div className="text-center text-white/60 font-serif">No singles available yet</div>
             )}
           </div>
           
@@ -572,11 +572,11 @@ const Music = () => {
       
       <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-8 max-sm:mt-6 relative z-10">
         <div className="container mx-auto px-6 text-center">
-          <h3 className="font-palatino text-2xl mb-4 text-white">Contact</h3>
-          <p className="font-palatino text-white">
+          <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
+          <p className="font-serif text-white">
             kazuki@kazukiyamakawa.com
           </p>
-          <p className="font-palatino text-white text-xs mt-3">
+          <p className="font-serif text-white text-xs mt-3">
             All music copyright of Harper/Yamakawa
           </p>
         </div>
