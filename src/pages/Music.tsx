@@ -562,7 +562,6 @@ const Music = () => {
                   {(selectedAlbum as any).singleCovers?.[track] ? (
                     <>
                       <img src={(selectedAlbum as any).singleCovers[track]} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
-                      <div className="absolute inset-0 bg-black/40"></div>
                       <div className="absolute bottom-2 left-2 right-2 text-left">
                         <span className="text-white text-sm font-palatino line-clamp-2">{track}</span>
                       </div>
