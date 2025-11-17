@@ -20,7 +20,7 @@ import spaceshipAlbum from "@/assets/spaceship-album.png";
 import starPeopleRiverAlbum from "@/assets/star-people-river-album.jpeg";
 import manOnFilmAlbum from "@/assets/man-on-film-album-new.jpeg";
 import deathOfLoveAlbum from "@/assets/death-of-love-album.png";
-import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album.png";
+import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album-new.jpeg";
 import centreOfWorldAlbum from "@/assets/centre-of-world-album-new.jpeg";
 import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
 import flowerEpCover from "@/assets/flower-ep-cover.png";
@@ -138,7 +138,7 @@ const albums = [
     id: 5,
     title: "Scene of My Restoration",
     cover: sceneOfMyRestorationAlbum,
-    background: toDreamtManBackground,
+    background: sceneOfMyRestorationAlbum,
     theme: "autumn-restoration",
     tracks: [
       "Josephine",
