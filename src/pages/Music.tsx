@@ -11,7 +11,7 @@ import spaceshipBackground from "@/assets/spaceship-background.jpg";
 import floatingInstrumentsBackground from "@/assets/floating-instruments-background.jpg";
 import manOnFilmBackground from "@/assets/man-on-film-background-new.png";
 import toDreamtManBackground from "@/assets/to-the-dreamt-man-background.jpg";
-import centreOfWorldBackground from "@/assets/centre-of-world-background.jpg";
+import centreOfWorldBackground from "@/assets/centre-of-world-background-new.png";
 import ohioCassettePoster from "@/assets/circles-single-poster.jpeg";
 import flowerEpBackground from "@/assets/flower-ep-background.png";
 import starPeopleRiverBackground from "@/assets/star-people-river-background.png";
