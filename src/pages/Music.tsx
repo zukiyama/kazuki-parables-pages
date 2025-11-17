@@ -14,6 +14,7 @@ import toDreamtManBackground from "@/assets/to-the-dreamt-man-background.jpg";
 import centreOfWorldBackground from "@/assets/centre-of-world-background.jpg";
 import ohioCassettePoster from "@/assets/circles-single-poster.jpeg";
 import flowerEpBackground from "@/assets/flower-ep-background.png";
+import starPeopleRiverBackground from "@/assets/star-people-river-background.png";
 
 // Album covers
 import spaceshipAlbum from "@/assets/spaceship-album.png";
@@ -69,7 +70,7 @@ const albums = [
     id: 2,
     title: "Star People River",
     cover: starPeopleRiverAlbum,
-    background: floatingInstrumentsBackground,
+    background: starPeopleRiverBackground,
     theme: "surreal-street",
     tracks: [
       "Say, Hey You",
