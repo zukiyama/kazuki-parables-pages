@@ -553,17 +553,25 @@ const Music = () => {
             {selectedAlbum.tracks.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-sm:gap-2">
                 {selectedAlbum.tracks.slice(0,4).map((track, idx) => (
-                  <button
-                    key={idx}
-                    className={`relative group rounded-lg overflow-hidden border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 ${currentTrackIndex===idx? 'ring-2 ring-white/60':''}`}
-                    onClick={() => { setCurrentTrackIndex(idx); setIsPlaying(true); }}
-                  >
-                    <img src={(selectedAlbum as any).singleCovers?.[track] || selectedAlbum.cover} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
-                    <div className="absolute inset-0 bg-black/40"></div>
-                    <div className="absolute bottom-2 left-2 right-2 text-left">
-                      <span className="text-white text-sm font-palatino line-clamp-2">{track}</span>
+                <button
+                  key={idx}
+                  className={`relative group rounded-lg overflow-hidden border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 ${currentTrackIndex===idx? 'ring-2 ring-white/60':''}`}
+                  onClick={() => { setCurrentTrackIndex(idx); setIsPlaying(true); }}
+                >
+                  {(selectedAlbum as any).singleCovers?.[track] ? (
+                    <>
+                      <img src={(selectedAlbum as any).singleCovers[track]} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                      <div className="absolute inset-0 bg-black/40"></div>
+                      <div className="absolute bottom-2 left-2 right-2 text-left">
+                        <span className="text-white text-sm font-palatino line-clamp-2">{track}</span>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="w-full aspect-square bg-black/60 flex items-center justify-center">
+                      <span className="text-white/40 text-2xl font-palatino">--</span>
                     </div>
-                  </button>
+                  )}
+                </button>
                 ))}
               </div>
             ) : (
