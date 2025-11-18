@@ -10,7 +10,7 @@ import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
 import spaceshipBackground from "@/assets/spaceship-background.jpg";
 import floatingInstrumentsBackground from "@/assets/floating-instruments-background.jpg";
 import manOnFilmBackground from "@/assets/man-on-film-background-film-reels.png";
-import toDreamtManBackground from "@/assets/to-the-dreamt-man-background-new.png";
+import toDreamtManBackground from "@/assets/to-the-dreamt-man-background-updated.png";
 import centreOfWorldBackground from "@/assets/centre-of-world-background-new.png";
 import ohioCassettePoster from "@/assets/circles-single-poster.jpeg";
 import flowerEpBackground from "@/assets/flower-ep-background.png";
