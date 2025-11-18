@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 // Album covers
 import spaceshipAlbum from "@/assets/spaceship-album.png";
 import starPeopleRiverAlbum from "@/assets/star-people-river-album.jpeg";
-import manOnFilmAlbum from "@/assets/man-on-film-album-new.jpeg";
+import manOnFilmAlbum from "@/assets/man-on-film-album-updated.png";
 import deathOfLoveAlbum from "@/assets/death-of-love-album.png";
 import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album.png";
 import centreOfWorldAlbum from "@/assets/last-city-on-earth-album.jpeg";
