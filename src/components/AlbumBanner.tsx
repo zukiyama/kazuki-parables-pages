@@ -113,7 +113,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                   onMouseLeave={() => setHoveredAlbum(null)}
                   onClick={() => handleAlbumClick(item)}
                 >
-                  <h3 className="font-serif text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
+                  <h3 className="font-palatino text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
                     {item.title}
                   </h3>
                   
@@ -176,11 +176,11 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                     onClick={() => item.cover && handleAlbumClick(item)}
                     style={{ width: '64px', marginRight: spacingMap[index] || '0px' }}
                   >
-                    <h3 className={`font-serif text-[10px] font-semibold mb-0.5 text-center transition-colors duration-300 whitespace-nowrap overflow-visible ${
-                      selectedAlbumId === item.id ? 'text-yellow-300' : 'text-white group-active:text-yellow-300'
-                    }`}>
-                      {item.title}
-                    </h3>
+                  <h3 className={`font-palatino text-[10px] font-semibold mb-0.5 text-center transition-colors duration-300 whitespace-nowrap overflow-visible ${
+                    selectedAlbumId === item.id ? 'text-yellow-300' : 'text-white group-active:text-yellow-300'
+                  }`}>
+                    {item.title}
+                  </h3>
                     
                     <div className="relative w-16 h-16 flex-shrink-0" style={{ aspectRatio: '1 / 1' }}>
                       <img
@@ -203,7 +203,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
 
               {/* EPs Label Separator */}
               <div className="flex items-center justify-center px-1 h-16 mt-5">
-                <h3 className="font-serif text-[10px] font-semibold text-yellow-300 whitespace-nowrap">
+                <h3 className="font-palatino text-[10px] font-semibold text-yellow-300 whitespace-nowrap">
                   EPs
                 </h3>
               </div>
@@ -216,7 +216,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                   onClick={() => handleAlbumClick(item)}
                   style={{ width: '64px', marginLeft: '32px' }}
                 >
-                  <h3 className={`font-serif text-[10px] font-semibold mb-0.5 text-center transition-colors duration-300 whitespace-nowrap overflow-visible ${
+                  <h3 className={`font-palatino text-[10px] font-semibold mb-0.5 text-center transition-colors duration-300 whitespace-nowrap overflow-visible ${
                     selectedAlbumId === item.id ? 'text-yellow-300' : 'text-white group-active:text-yellow-300'
                   }`}>
                     {item.title}
@@ -265,14 +265,14 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             {/* Label with smooth transition - centered */}
             <div className="relative h-5 mb-1 w-16 flex justify-center">
               <span
-                className={`absolute font-serif text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
+                className={`absolute font-palatino text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
                   showEPs ? 'opacity-100' : 'opacity-0'
                 }`}
               >
                 Albums
               </span>
               <span
-                className={`absolute font-serif text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
+                className={`absolute font-palatino text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
                   showEPs ? 'opacity-0' : 'opacity-100'
                 }`}
               >
