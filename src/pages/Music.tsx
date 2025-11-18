@@ -15,6 +15,7 @@ import centreOfWorldBackground from "@/assets/centre-of-world-background-new.png
 import ohioCassettePoster from "@/assets/circles-single-poster.jpeg";
 import flowerEpBackground from "@/assets/flower-ep-background.png";
 import starPeopleRiverBackground from "@/assets/star-people-river-background.png";
+import deathOfLoveBackground from "@/assets/death-of-love-background.png";
 
 // Album covers
 import spaceshipAlbum from "@/assets/spaceship-album.png";
@@ -118,7 +119,7 @@ const albums = [
     id: 4,
     title: "The Death of Love",
     cover: deathOfLoveAlbum,
-    background: manOnFilmBackground,
+    background: deathOfLoveBackground,
     theme: "urban-melancholy",
     tracks: [
       "In the Morning",
