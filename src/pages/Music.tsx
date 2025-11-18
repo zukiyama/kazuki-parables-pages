@@ -22,7 +22,7 @@ import starPeopleRiverAlbum from "@/assets/star-people-river-album.jpeg";
 import manOnFilmAlbum from "@/assets/man-on-film-album-new.jpeg";
 import deathOfLoveAlbum from "@/assets/death-of-love-album.png";
 import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album-new.jpeg";
-import centreOfWorldAlbum from "@/assets/centre-of-world-album-new.jpeg";
+import centreOfWorldAlbum from "@/assets/last-city-on-earth-album.jpeg";
 import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
 import flowerEpCover from "@/assets/flower-ep-cover.png";
 import circlesSingleCover from "@/assets/circles-single-cover.png";
@@ -159,7 +159,7 @@ const albums = [
   },
   {
     id: 6,
-    title: "The Centre of the World",
+    title: "The Last City on Earth",
     cover: centreOfWorldAlbum,
     background: centreOfWorldBackground,
     theme: "magical-garden",
