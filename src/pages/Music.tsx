@@ -258,9 +258,9 @@ const Music = () => {
     }
   }, [location.search]);
 
-  // Optimized image preloading - only preload first 2 albums
+  // Preload all album backgrounds for smooth transitions
   useEffect(() => {
-    albums.slice(0, 2).forEach(album => {
+    albums.forEach(album => {
       const img = new Image();
       img.src = album.background;
     });
