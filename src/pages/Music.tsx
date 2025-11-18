@@ -16,6 +16,7 @@ import ohioCassettePoster from "@/assets/circles-single-poster.jpeg";
 import flowerEpBackground from "@/assets/flower-ep-background-stars.png";
 import starPeopleRiverBackground from "@/assets/star-people-river-background.png";
 import deathOfLoveBackground from "@/assets/death-of-love-background.png";
+import sceneOfMyRestorationBackground from "@/assets/scene-of-my-restoration-background.png";
 
 // Album covers
 import spaceshipAlbum from "@/assets/spaceship-album.png";
@@ -140,7 +141,7 @@ const albums = [
     id: 5,
     title: "Scene of My Restoration",
     cover: sceneOfMyRestorationAlbum,
-    background: sceneOfMyRestorationAlbum,
+    background: sceneOfMyRestorationBackground,
     theme: "autumn-restoration",
     tracks: [
       "Josephine",
