@@ -25,43 +25,43 @@ interface Book {
 const books: Book[] = [
   {
     id: "kaiju",
-    title: "KAIJU",
+    title: "Kaiju",
     cover: kaijuCover,
     targetSection: "kaiju"
   },
   {
     id: "hoax", 
-    title: "HOAX",
+    title: "Hoax",
     cover: hoaxCover,
     targetSection: "hoax"
   },
   {
     id: "the-market",
-    title: "THE MARKET",
+    title: "The Market",
     cover: theMarketCover,
     targetSection: "the-market"
   },
   {
     id: "oba",
-    title: "AMYA",
+    title: "Amya",
     cover: amyaCover,
     targetSection: "oba"
   },
   {
     id: "states-of-motion",
-    title: "STATES OF MOTION",
+    title: "States of Motion",
     cover: statesOfMotionCover,
     targetSection: "states-of-motion"
   },
   {
     id: "how",
-    title: "HOW", 
+    title: "How", 
     cover: howCover,
     targetSection: "how"
   },
   {
     id: "vice-versa",
-    title: "VICE VERSA",
+    title: "Vice Versa",
     cover: viceVersaCover,
     targetSection: "vice-versa"
   },
@@ -200,7 +200,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
               onClick={() => handleBookClick(book)}
             >
               {/* Book Title */}
-              <h3 className={`font-serif text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] max-sm:whitespace-normal max-sm:leading-tight max-sm:min-h-[32px] max-sm:flex max-sm:items-center max-sm:justify-center ${
+              <h3 className={`font-palatino text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] max-sm:whitespace-normal max-sm:leading-tight max-sm:min-h-[32px] max-sm:flex max-sm:items-center max-sm:justify-center ${
                 activeBook === book.id ? 'text-yellow-300' : 'text-white'
               }`}>
                 {book.title}
