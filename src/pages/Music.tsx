@@ -259,12 +259,28 @@ const Music = () => {
     }
   }, [location.search]);
 
-  // Preload all album backgrounds for smooth transitions
+  // Preload and decode all album backgrounds for smooth transitions
   useEffect(() => {
-    albums.forEach(album => {
-      const img = new Image();
-      img.src = album.background;
-    });
+    const preloadImages = async () => {
+      const promises = albums.map(album => {
+        return new Promise<void>((resolve) => {
+          const img = new Image();
+          img.src = album.background;
+          img.onload = async () => {
+            try {
+              await img.decode();
+              resolve();
+            } catch (error) {
+              console.error('Error decoding image:', error);
+              resolve(); // Resolve anyway to not block
+            }
+          };
+          img.onerror = () => resolve(); // Resolve even on error
+        });
+      });
+      await Promise.all(promises);
+    };
+    preloadImages();
   }, []);
 
   // Reset scroll position when album changes
@@ -277,7 +293,7 @@ const Music = () => {
     }
   }, [selectedAlbum.id]);
 
-  const handleAlbumSelect = (albumId: number) => {
+  const handleAlbumSelect = async (albumId: number) => {
     const album = albums.find(a => a.id === albumId);
     if (!album) return;
     
@@ -288,6 +304,24 @@ const Music = () => {
     
     setIsTransitioning(true);
     
+    // Ensure image is fully loaded and decoded before transition
+    const img = new Image();
+    img.src = album.background;
+    
+    try {
+      // Wait for image to load and decode
+      await new Promise<void>((resolve, reject) => {
+        if (img.complete) {
+          img.decode().then(() => resolve()).catch(reject);
+        } else {
+          img.onload = () => img.decode().then(() => resolve()).catch(reject);
+          img.onerror = reject;
+        }
+      });
+    } catch (error) {
+      console.error('Error loading background image:', error);
+    }
+    
     // Determine which layer is currently visible
     const isLayerAVisible = layerA.opacity === 1;
     
@@ -297,16 +331,20 @@ const Music = () => {
       
       // Use requestAnimationFrame to ensure the new image is set before starting transition
       requestAnimationFrame(() => {
-        setLayerA(prev => ({ ...prev, opacity: 0 }));
-        setLayerB(prev => ({ ...prev, opacity: 1 }));
+        requestAnimationFrame(() => {
+          setLayerA(prev => ({ ...prev, opacity: 0 }));
+          setLayerB(prev => ({ ...prev, opacity: 1 }));
+        });
       });
     } else {
       // Layer B is visible, prepare layer A with new image and fade it in
       setLayerA({ image: album.background, opacity: 0 });
       
       requestAnimationFrame(() => {
-        setLayerB(prev => ({ ...prev, opacity: 0 }));
-        setLayerA(prev => ({ ...prev, opacity: 1 }));
+        requestAnimationFrame(() => {
+          setLayerB(prev => ({ ...prev, opacity: 0 }));
+          setLayerA(prev => ({ ...prev, opacity: 1 }));
+        });
       });
     }
     
