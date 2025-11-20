@@ -103,6 +103,16 @@ const About = () => {
                 </p>
               </div>
             </div>
+            
+            {/* Desktop text at bottom right - hidden on mobile */}
+            <div 
+              data-scroll-animation="bottom-right-text"
+              className={`absolute bottom-[12%] right-[8%] max-w-xs pointer-events-auto max-sm:hidden scroll-slide-right ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
+            >
+              <p className="font-body text-2xl lg:text-3xl leading-relaxed text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                The eye closes reality appears
+              </p>
+            </div>
           </div>
         </div>
 
