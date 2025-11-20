@@ -14,16 +14,6 @@ import backgroundSphere from "@/assets/about-background-new.jpeg";
 import japaneseRoom from "@/assets/about-japanese-room.png";
 import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
-import filmCellFogFigure from "@/assets/film-cell-fog-figure.png";
-import filmCellStreetDusk from "@/assets/film-cell-street-dusk.png";
-import filmCellDreamscape from "@/assets/film-cell-dreamscape.png";
-import filmCellSilhouette from "@/assets/film-cell-silhouette.png";
-import filmCellRoomLight from "@/assets/film-cell-room-light.png";
-import filmCellReflection from "@/assets/film-cell-reflection.png";
-import filmCellStaircase from "@/assets/film-cell-staircase.png";
-import filmCellAlleyway from "@/assets/film-cell-alleyway.png";
-import filmCellClouds from "@/assets/film-cell-clouds.png";
-import filmCellBicycle from "@/assets/film-cell-bicycle.png";
 
 const About = () => {
   return (
@@ -42,7 +32,7 @@ const About = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-16 max-w-6xl relative">
+      <div className="container mx-auto px-6 py-16 max-w-6xl">
         {/* Artist Portrait & Bio Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
           <div className="lg:col-span-1 flex justify-center lg:justify-start">
@@ -129,80 +119,6 @@ const About = () => {
                 alt="Tai chi practice in park"
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
               />
-            </div>
-          </div>
-        </div>
-
-        {/* Film Strip Overlays - Hidden on mobile */}
-        <div className="max-sm:hidden">
-          {/* Top Film Strip - Crosses upper section diagonally */}
-          <div 
-            className="film-strip" 
-            style={{
-              top: '5%',
-              left: '-2%',
-              transform: 'rotate(15deg)',
-            }}
-          >
-            <div className="film-cell">
-              <img src={filmCellFogFigure} alt="" />
-            </div>
-            <div className="film-cell">
-              <img src={filmCellStreetDusk} alt="" />
-            </div>
-            <div className="film-cell">
-              <img src={filmCellDreamscape} alt="" />
-            </div>
-            <div className="film-cell">
-              <img src={filmCellSilhouette} alt="" />
-            </div>
-            <div className="film-cell">
-              <img src={filmCellRoomLight} alt="" />
-            </div>
-          </div>
-
-          {/* Middle Film Strip - Crosses sphere background with empty cells */}
-          <div 
-            className="film-strip" 
-            style={{
-              top: '42%',
-              right: '-3%',
-              transform: 'rotate(-12deg)',
-            }}
-          >
-            <div className="film-cell">
-              <img src={filmCellReflection} alt="" />
-            </div>
-            <div className="film-cell-empty" />
-            <div className="film-cell-empty" />
-            <div className="film-cell">
-              <img src={filmCellStaircase} alt="" />
-            </div>
-            <div className="film-cell">
-              <img src={filmCellAlleyway} alt="" />
-            </div>
-          </div>
-
-          {/* Bottom Film Strip - Fills bottom right area */}
-          <div 
-            className="film-strip" 
-            style={{
-              bottom: '12%',
-              right: '3%',
-              transform: 'rotate(8deg)',
-            }}
-          >
-            <div className="film-cell">
-              <img src={filmCellClouds} alt="" />
-            </div>
-            <div className="film-cell">
-              <img src={filmCellBicycle} alt="" />
-            </div>
-            <div className="film-cell">
-              <img src={filmCellDreamscape} alt="" />
-            </div>
-            <div className="film-cell">
-              <img src={filmCellReflection} alt="" />
             </div>
           </div>
         </div>
