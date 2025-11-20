@@ -14,34 +14,11 @@ import backgroundSphere from "@/assets/about-background-new.jpeg";
 import japaneseRoom from "@/assets/about-japanese-room.png";
 import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
-import filmStripTop from "@/assets/film-strip-top.png";
-import filmStripBottom from "@/assets/film-strip-bottom.png";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-white relative">
+    <div className="min-h-screen bg-white">
       <Navigation />
-      
-      {/* Film Strip Overlays - Decorative Layer */}
-      <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
-        {/* Top Film Strip */}
-        <div className="absolute -top-8 left-0 w-full max-h-[300px] overflow-hidden">
-          <OptimizedImage 
-            src={filmStripTop}
-            alt=""
-            className="w-full h-auto opacity-70 mix-blend-screen transform -rotate-2"
-          />
-        </div>
-        
-        {/* Bottom Film Strip */}
-        <div className="absolute -bottom-12 left-0 w-full max-h-[300px] overflow-hidden">
-          <OptimizedImage 
-            src={filmStripBottom}
-            alt=""
-            className="w-full h-auto opacity-60 mix-blend-screen transform rotate-1"
-          />
-        </div>
-      </div>
       
       {/* Hero Banner */}
       <div className="w-full h-[40vh] relative overflow-hidden mt-16 max-sm:h-[20vh]">
