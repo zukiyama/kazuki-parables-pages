@@ -234,6 +234,9 @@ const Music = () => {
   const [layerB, setLayerB] = useState({ image: albums[7].background, opacity: 0 });
   const [isTransitioning, setIsTransitioning] = useState(false);
   const transitionRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Zoom dialog for album covers
+  const [isZoomDialogOpen, setIsZoomDialogOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -635,6 +638,17 @@ const Music = () => {
           </p>
         </div>
       </footer>
+      
+      {/* Album Cover Zoom Dialog */}
+      <Dialog open={isZoomDialogOpen} onOpenChange={setIsZoomDialogOpen}>
+        <DialogContent className="max-w-4xl w-full p-0 bg-transparent border-none">
+          <img 
+            src={selectedAlbum.cover} 
+            alt={selectedAlbum.title}
+            className="w-full h-auto rounded-lg"
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
