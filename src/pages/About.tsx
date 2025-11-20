@@ -1,5 +1,6 @@
 import { OptimizedImage } from "@/components/OptimizedImage";
 import Navigation from "@/components/Navigation";
+import { useScrollAnimation } from "@/components/ScrollAnimations";
 import artistPortrait from "@/assets/artist-portrait.png";
 import bannerImage from "@/assets/about-banner-washing-line.jpg";
 import windowCity from "@/assets/about-window-city.png";
@@ -16,6 +17,8 @@ import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
 
 const About = () => {
+  const visibleElements = useScrollAnimation();
+  
   return (
     <div className="min-h-screen bg-white">
       <Navigation />
@@ -34,7 +37,10 @@ const About = () => {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-16 max-w-6xl">
         {/* Artist Portrait & Bio Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
+        <div 
+          data-scroll-animation="artist-section"
+          className={`grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20 scroll-slide-right ${visibleElements.has("artist-section") ? "visible" : ""}`}
+        >
           <div className="lg:col-span-1 flex justify-center lg:justify-start">
             <div className="w-80 h-80 relative">
               <OptimizedImage 
@@ -64,15 +70,22 @@ const About = () => {
         {/* Background Image Section */}
         <div className="relative -mx-6 mb-3">
           {/* Faded background image - full width with slim equal borders */}
-          <div className="relative pointer-events-none overflow-hidden" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
-            <OptimizedImage 
+          <div 
+            data-scroll-animation="background-image"
+            className={`relative pointer-events-none overflow-hidden scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
+            style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}
+          >
+            <OptimizedImage
               src={backgroundSphere}
               alt=""
               className="w-full h-auto object-cover opacity-80"
             />
             
             {/* Desktop text and signature - hidden on mobile */}
-            <div className="absolute top-[15%] left-[8%] max-w-md pointer-events-auto max-sm:hidden">
+            <div 
+              data-scroll-animation="quote-text"
+              className={`absolute top-[15%] left-[8%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-left ${visibleElements.has("quote-text") ? "visible" : ""}`}
+            >
               <p className="font-body text-base lg:text-lg leading-relaxed text-foreground/90 mb-6 italic">
                 I have always preferred to withdraw from society, finding solace in quiet observation 
                 rather than participation. The world moves too quickly for meaningful reflection, and 
@@ -98,7 +111,11 @@ const About = () => {
 
         {/* Three Photos Row */}
         <div className="relative mb-3 -mx-6">
-          <div className="flex gap-[14px] justify-between max-sm:gap-2" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}>
+          <div 
+            data-scroll-animation="bottom-images"
+            className={`flex gap-[14px] justify-between max-sm:gap-2 scroll-fade-up ${visibleElements.has("bottom-images") ? "visible" : ""}`}
+            style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}
+          >
             <div className="flex-1 aspect-[4/3] overflow-hidden">
               <OptimizedImage 
                 src={photographerWindow}
