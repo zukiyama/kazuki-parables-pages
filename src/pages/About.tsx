@@ -14,6 +14,8 @@ import backgroundSphere from "@/assets/about-background-new.jpeg";
 import japaneseRoom from "@/assets/about-japanese-room.png";
 import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
+import filmStripDiagonal from "@/assets/film-strip-diagonal.png";
+import filmStripCurved from "@/assets/film-strip-curved.png";
 
 const About = () => {
   return (
@@ -31,8 +33,41 @@ const About = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
       </div>
 
+      {/* Film Strip Overlays */}
+      <div className="fixed inset-0 pointer-events-none z-20 overflow-hidden">
+        {/* Diagonal strip overlapping artist picture */}
+        <div 
+          className="absolute top-0 left-0 w-[120%] opacity-70 mix-blend-screen"
+          style={{ 
+            transform: 'rotate(-15deg) translateX(-10%) translateY(-5%)',
+            transformOrigin: 'center',
+          }}
+        >
+          <OptimizedImage 
+            src={filmStripDiagonal}
+            alt=""
+            className="w-full h-auto"
+          />
+        </div>
+        
+        {/* Curved strip for bottom right rocky area */}
+        <div 
+          className="absolute bottom-0 right-0 w-[60%] opacity-60 mix-blend-screen max-sm:w-[80%]"
+          style={{ 
+            transform: 'rotate(-8deg) translateX(10%) translateY(15%)',
+            transformOrigin: 'bottom right',
+          }}
+        >
+          <OptimizedImage 
+            src={filmStripCurved}
+            alt=""
+            className="w-full h-auto"
+          />
+        </div>
+      </div>
+
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-16 max-w-6xl">
+      <div className="container mx-auto px-6 py-16 max-w-6xl relative z-10">
         {/* Artist Portrait & Bio Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
           <div className="lg:col-span-1 flex justify-center lg:justify-start">
