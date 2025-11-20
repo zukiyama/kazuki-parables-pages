@@ -37,10 +37,7 @@ const About = () => {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-16 max-w-6xl">
         {/* Artist Portrait & Bio Section */}
-        <div 
-          data-scroll-animation="artist-section"
-          className={`grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20 scroll-slide-right ${visibleElements.has("artist-section") ? "visible" : ""}`}
-        >
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
           <div className="lg:col-span-1 flex justify-center lg:justify-start">
             <div className="w-80 h-80 relative">
               <OptimizedImage 
@@ -112,8 +109,8 @@ const About = () => {
         {/* Three Photos Row */}
         <div className="relative mb-3 -mx-6">
           <div 
-            data-scroll-animation="bottom-images"
-            className={`flex gap-[14px] justify-between max-sm:gap-2 scroll-fade-up ${visibleElements.has("bottom-images") ? "visible" : ""}`}
+            data-scroll-animation="background-image"
+            className={`flex gap-[14px] justify-between max-sm:gap-2 scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
             style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}
           >
             <div className="flex-1 aspect-[4/3] overflow-hidden">
