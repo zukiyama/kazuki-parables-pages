@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation";
 import { AlbumBanner } from "@/components/AlbumBanner";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
 
 // Background images for different themes
@@ -473,7 +474,8 @@ const Music = () => {
                     <img 
                       src={selectedAlbum.cover} 
                       alt={selectedAlbum.title}
-                      className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6 transition-all duration-500 hover:scale-105"
+                      className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6 transition-all duration-500 hover:scale-105 cursor-pointer"
+                      onClick={() => setIsZoomDialogOpen(true)}
                     />
                   ) : (
                     <div className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6 bg-black/40 border border-white/20 flex items-center justify-center aspect-square">
