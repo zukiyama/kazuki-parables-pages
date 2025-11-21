@@ -200,17 +200,22 @@ const Index = () => {
         </div>
 
         {/* Magazine Cover Section */}
-        <div className={`magazine-slide ${showMagazine ? "visible" : ""} relative`}>
-          <div className="overflow-hidden" ref={emblaRef}>
-            <div className="flex">
+        <div className={`magazine-slide ${showMagazine ? "visible" : ""} relative w-full h-screen overflow-hidden`}>
+          <div className="w-full h-full overflow-hidden" ref={emblaRef}>
+            <div className="flex h-full">
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="flex-[0_0_100%] min-w-0 relative"
+                  className="flex-[0_0_100%] min-w-0 relative h-screen"
+                  style={{ flexShrink: 0 }}
                 >
                   <div
-                    className={`bg-cover bg-top ${index === 1 ? "animate-slow-zoom-meteor" : "animate-slow-zoom"}`}
-                    style={{ backgroundImage: `url(${image})`, height: '100vh', width: '100vw' }}
+                    className={`absolute inset-0 bg-cover bg-center ${index === 1 ? "animate-slow-zoom-meteor" : "animate-slow-zoom"}`}
+                    style={{ 
+                      backgroundImage: `url(${image})`, 
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}
                   >
                     <div className="absolute inset-0 bg-black/20"></div>
                     
@@ -237,10 +242,10 @@ const Index = () => {
                     
                     {/* Text overlay for TV shop image */}
                     {showQuote && index === 2 && (
-                      <div className="absolute top-1/3 left-1/4 max-w-md max-sm:left-[5%] max-sm:max-w-[80%]">
+                      <div className="absolute top-1/3 left-1/4 max-w-md max-sm:left-[8%] max-sm:max-w-[80%]">
                         <div className={`tv-shop-text-reveal ${animateTvText ? 'visible' : ''} text-white/90 leading-relaxed max-sm:text-sm`}>
-                          <h2 className="font-heading text-3xl md:text-4xl mb-2">summer 1979</h2>
-                          <h3 className="font-heading text-2xl md:text-3xl mb-4">Osaka Japan</h3>
+                          <h2 className="font-heading text-3xl md:text-4xl mb-2 max-sm:text-2xl">summer 1979</h2>
+                          <h3 className="font-heading text-2xl md:text-3xl mb-4 max-sm:text-xl">Osaka Japan</h3>
                           <div className="border-t border-white/30 pt-4">
                             <h4 className="font-heading text-2xl md:text-3xl font-bold mb-2">KAIJU</h4>
                             <div className="font-body text-sm md:text-base text-white/80">
