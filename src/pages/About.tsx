@@ -107,10 +107,10 @@ const About = () => {
             {/* Desktop text at bottom right - hidden on mobile */}
             <div 
               data-scroll-animation="bottom-right-text"
-              className={`absolute bottom-[16%] right-[8%] max-w-xs pointer-events-auto max-sm:hidden scroll-slide-right ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
+              className={`absolute bottom-[24%] right-[12%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-right ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
             >
-              <p className="font-body text-2xl lg:text-3xl leading-loose bg-gradient-to-br from-gray-200 via-gray-400 to-gray-300 bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(255,255,255,0.5)]" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                The eye closes<br/>Reality appears
+              <p className="font-body text-2xl lg:text-3xl text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] italic">
+                The eye closes,<br/><span className="inline-block pl-8 mt-6">Reality appears</span>
               </p>
             </div>
           </div>
