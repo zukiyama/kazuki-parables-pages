@@ -15,6 +15,7 @@ import backgroundSphere from "@/assets/about-background-new.jpeg";
 import japaneseRoom from "@/assets/about-japanese-room.png";
 import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
+import skyVideo from "@/assets/about-sky-video.mp4";
 
 const About = () => {
   const visibleElements = useScrollAnimation();
@@ -72,10 +73,21 @@ const About = () => {
             className={`relative pointer-events-none overflow-hidden scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
             style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}
           >
+            {/* Video background - desktop only, behind the image */}
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover opacity-40 max-sm:hidden"
+            >
+              <source src={skyVideo} type="video/mp4" />
+            </video>
+            
             <OptimizedImage
               src={backgroundSphere}
               alt=""
-              className="w-full h-auto object-cover opacity-80"
+              className="w-full h-auto object-cover opacity-80 relative z-10"
             />
             
             {/* Desktop text and signature - hidden on mobile */}
