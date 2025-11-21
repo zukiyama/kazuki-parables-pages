@@ -104,7 +104,7 @@ const About = () => {
             <OptimizedImage
               src={backgroundSphere}
               alt=""
-              className="relative w-full h-auto object-cover opacity-80 pointer-events-none z-10"
+              className="relative w-full h-auto object-cover pointer-events-none z-10"
             />
             
             {/* Desktop text and signature - hidden on mobile */}
