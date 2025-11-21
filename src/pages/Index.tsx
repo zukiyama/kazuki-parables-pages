@@ -4,9 +4,10 @@ import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import officeView from "@/assets/office-window-view.jpg";
-import boysCometOilPainting from "@/assets/boys-comet-oil-painting-1970s.jpg";
+import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
 import circlesSingleCover from "@/assets/circles-single-cover.png";
+import useEmblaCarousel from 'embla-carousel-react';
 
 const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -17,9 +18,14 @@ const Index = () => {
 
   const images = [
     officeView,
-    boysCometOilPainting,
+    boysTowerBlocks,
     kyotoTvShop
   ];
+  
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    loop: true,
+    duration: 30
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,16 +47,25 @@ const Index = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Sync embla with currentImage state
+  useEffect(() => {
+    if (!emblaApi) return;
+    
+    emblaApi.on('select', () => {
+      setCurrentImage(emblaApi.selectedScrollSnap());
+    });
+  }, [emblaApi]);
+
   useEffect(() => {
     // Auto-dissolve between images
-    if (showMagazine) {
+    if (showMagazine && emblaApi) {
       const interval = setInterval(() => {
-        setCurrentImage(prev => (prev + 1) % images.length);
+        emblaApi.scrollNext();
       }, currentImage === 0 ? 12600 : currentImage === 1 ? 8400 : 42000); // First: 12.6s, Second: 8.4s, Third: 42s
       
       return () => clearInterval(interval);
     }
-  }, [showMagazine, images.length, currentImage]);
+  }, [showMagazine, emblaApi, currentImage]);
 
   // Handle TV text animation timing
   useEffect(() => {
@@ -150,49 +165,53 @@ const Index = () => {
 
         {/* Magazine Cover Section */}
         <div className={`magazine-slide ${showMagazine ? "visible" : ""} relative`}>
-          <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className={`absolute top-0 left-0 bg-cover bg-top transition-opacity duration-[7000ms] ease-in-out ${
-                  index === currentImage ? "opacity-100" : "opacity-0"
-                } ${index === 1 ? "animate-slow-zoom-meteor" : "animate-slow-zoom"}`}
-                style={{ backgroundImage: `url(${image})`, height: '100vh', width: '100vw' }}
-              >
-                <div className="absolute inset-0 bg-black/20"></div>
-              </div>
-            ))}
-            
-            {/* Floating Quote - static display */}
-            {showQuote && (currentImage === 0 || currentImage === 1) && (
-              <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%]">
-                <blockquote className="literary-quote text-white/90 leading-relaxed">
-                  <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
-                </blockquote>
-              </div>
-            )}
-            
-            {/* Text overlay for TV shop image */}
-            {showQuote && currentImage === 2 && (
-              <div className="absolute top-1/3 left-1/4 max-w-md max-sm:left-[5%] max-sm:max-w-[80%]">
-                <div className={`tv-shop-text-reveal ${animateTvText ? 'visible' : ''} text-white/90 leading-relaxed max-sm:text-sm`}>
-                  <h2 className="font-heading text-3xl md:text-4xl mb-2">summer 1979</h2>
-                  <h3 className="font-heading text-2xl md:text-3xl mb-4">Osaka Japan</h3>
-                  <div className="border-t border-white/30 pt-4">
-                    <h4 className="font-heading text-2xl md:text-3xl font-bold mb-2">KAIJU</h4>
-                    <div className="font-body text-sm md:text-base text-white/80">
-                      <span className="italic">noun</span> /ˈkaɪdʒuː/<br/>
-                      <span className="font-medium">mysterious beast</span>
-                    </div>
-                  </div>
-                  <div className="mt-8 text-center">
-                    <div className="font-mono text-2xl md:text-4xl font-bold text-white animate-pulse tracking-wider">
-                      <span className="filter blur-[0.5px] opacity-90">SOMETHING IS COMING</span>
-                    </div>
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex">
+              {images.map((image, index) => (
+                <div
+                  key={index}
+                  className="flex-[0_0_100%] min-w-0 relative"
+                >
+                  <div
+                    className={`bg-cover bg-top ${index === 1 ? "animate-slow-zoom-meteor" : "animate-slow-zoom"}`}
+                    style={{ backgroundImage: `url(${image})`, height: '100vh', width: '100vw' }}
+                  >
+                    <div className="absolute inset-0 bg-black/20"></div>
+                    
+                    {/* Floating Quote - attached to slide 2 */}
+                    {showQuote && (index === 0 || index === 1) && (
+                      <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%]">
+                        <blockquote className="literary-quote text-white/90 leading-relaxed">
+                          <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
+                        </blockquote>
+                      </div>
+                    )}
+                    
+                    {/* Text overlay for TV shop image */}
+                    {showQuote && index === 2 && (
+                      <div className="absolute top-1/3 left-1/4 max-w-md max-sm:left-[5%] max-sm:max-w-[80%]">
+                        <div className={`tv-shop-text-reveal ${animateTvText ? 'visible' : ''} text-white/90 leading-relaxed max-sm:text-sm`}>
+                          <h2 className="font-heading text-3xl md:text-4xl mb-2">summer 1979</h2>
+                          <h3 className="font-heading text-2xl md:text-3xl mb-4">Osaka Japan</h3>
+                          <div className="border-t border-white/30 pt-4">
+                            <h4 className="font-heading text-2xl md:text-3xl font-bold mb-2">KAIJU</h4>
+                            <div className="font-body text-sm md:text-base text-white/80">
+                              <span className="italic">noun</span> /ˈkaɪdʒuː/<br/>
+                              <span className="font-medium">mysterious beast</span>
+                            </div>
+                          </div>
+                          <div className="mt-8 text-center">
+                            <div className="font-mono text-2xl md:text-4xl font-bold text-white animate-pulse tracking-wider">
+                              <span className="filter blur-[0.5px] opacity-90">SOMETHING IS COMING</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
         </div>
       </section>
