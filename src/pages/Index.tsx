@@ -200,23 +200,18 @@ const Index = () => {
         </div>
 
         {/* Magazine Cover Section */}
-        <div className={`magazine-slide ${showMagazine ? "visible" : ""} relative w-full h-screen overflow-hidden`}>
-          <div className="w-full h-full overflow-hidden" ref={emblaRef}>
-            <div className="flex h-full">
+        <div className={`magazine-slide ${showMagazine ? "visible" : ""} embla`}>
+          <div className="embla__viewport" ref={emblaRef}>
+            <div className="embla__container">
               {images.map((image, index) => (
-                <div
-                  key={index}
-                  className="flex-[0_0_100%] min-w-0 relative h-screen"
-                  style={{ flexShrink: 0 }}
-                >
-                  <div
-                    className={`absolute inset-0 bg-cover bg-center ${index === 1 ? "animate-slow-zoom-meteor" : "animate-slow-zoom"}`}
-                    style={{ 
-                      backgroundImage: `url(${image})`, 
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center'
-                    }}
-                  >
+                <div key={index} className="embla__slide">
+                  <div className="relative w-screen h-screen overflow-hidden">
+                    <img 
+                      src={image}
+                      alt={`Slide ${index + 1}`}
+                      className={`absolute inset-0 w-full h-full object-cover ${index === 1 ? "animate-slow-zoom-meteor" : "animate-slow-zoom"}`}
+                      style={{ objectPosition: 'center' }}
+                    />
                     <div className="absolute inset-0 bg-black/20"></div>
                     
                     {/* Floating Quote - only shows on current slide during manual drag */}
