@@ -37,7 +37,7 @@ const About = () => {
           className="w-full h-full object-cover object-center"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white" />
       </div>
 
       {/* Main Content */}
