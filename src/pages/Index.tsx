@@ -209,7 +209,7 @@ const Index = () => {
                     <img 
                       src={image}
                       alt={`Slide ${index + 1}`}
-                      className={`absolute inset-0 w-full h-full object-cover ${index === 1 ? "animate-slow-zoom-meteor" : "animate-slow-zoom"}`}
+                      className={`absolute inset-0 w-full h-full object-cover ${index === currentImage ? (index === 1 ? "animate-slow-zoom-meteor" : "animate-slow-zoom") : ""}`}
                       style={{ objectPosition: 'center' }}
                     />
                     <div className="absolute inset-0 bg-black/20"></div>
