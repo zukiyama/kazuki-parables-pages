@@ -21,10 +21,17 @@ const About = () => {
   
   return (
     <div className="min-h-screen relative">
-      {/* Video Background Layer - Add your video here */}
+      {/* Video Background Layer */}
       <div className="fixed inset-0 -z-10">
-        {/* Placeholder for video - replace with actual video element */}
-        <div className="w-full h-full bg-white" />
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src="/kazuki-parables-pages/about-background-video.mp4" type="video/mp4" />
+        </video>
       </div>
       
       <Navigation />
