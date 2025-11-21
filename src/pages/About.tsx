@@ -20,7 +20,7 @@ const About = () => {
   const visibleElements = useScrollAnimation();
   
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative bg-transparent">
       {/* Video Background Layer */}
       <div className="fixed inset-0 -z-10">
         <video 
