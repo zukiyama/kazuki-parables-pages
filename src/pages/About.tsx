@@ -20,20 +20,7 @@ const About = () => {
   const visibleElements = useScrollAnimation();
   
   return (
-    <div className="min-h-screen relative bg-transparent">
-      {/* Video Background Layer */}
-      <div className="fixed inset-0 -z-10">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          className="w-full h-full object-cover"
-        >
-          <source src="/kazuki-parables-pages/about-background-video.mp4" type="video/mp4" />
-        </video>
-      </div>
-      
+    <div className="min-h-screen bg-white">
       <Navigation />
       
       {/* Hero Banner */}
@@ -44,24 +31,13 @@ const About = () => {
           className="w-full h-full object-cover object-center"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
       </div>
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-16 max-w-6xl">
         {/* Artist Portrait & Bio Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20 relative overflow-hidden rounded-lg">
-          {/* Pop Art Background */}
-          <div className="absolute inset-0 -z-10 bg-gradient-to-br from-pink-400/30 via-purple-300/20 to-yellow-300/25" 
-               style={{
-                 backgroundImage: `
-                   linear-gradient(135deg, transparent 25%, rgba(236, 72, 153, 0.15) 25%, rgba(236, 72, 153, 0.15) 50%, transparent 50%, transparent 75%, rgba(236, 72, 153, 0.15) 75%),
-                   linear-gradient(45deg, transparent 25%, rgba(168, 85, 247, 0.1) 25%, rgba(168, 85, 247, 0.1) 50%, transparent 50%, transparent 75%, rgba(168, 85, 247, 0.1) 75%)
-                 `,
-                 backgroundSize: '60px 60px, 40px 40px',
-                 backgroundPosition: '0 0, 30px 30px'
-               }}
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
           <div className="lg:col-span-1 flex justify-center lg:justify-start">
             <div className="w-80 h-80 relative">
               <OptimizedImage 
