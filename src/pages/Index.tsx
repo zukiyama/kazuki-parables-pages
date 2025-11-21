@@ -163,9 +163,13 @@ const Index = () => {
               </div>
             ))}
             
-            {/* Floating Quote - static display */}
-            {showQuote && (currentImage === 0 || currentImage === 1) && (
-              <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%]">
+            {/* Floating Quote - fade in slowly on first image, fade out on second */}
+            {showQuote && currentImage <= 1 && (
+              <div 
+                className={`absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%] transition-opacity duration-[3000ms] ease-in-out ${
+                  currentImage === 0 ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
                 <blockquote className="literary-quote text-white/90 leading-relaxed">
                   <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
                 </blockquote>
