@@ -20,7 +20,13 @@ const About = () => {
   const visibleElements = useScrollAnimation();
   
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen relative">
+      {/* Video Background Layer - Add your video here */}
+      <div className="fixed inset-0 -z-10">
+        {/* Placeholder for video - replace with actual video element */}
+        <div className="w-full h-full bg-white" />
+      </div>
+      
       <Navigation />
       
       {/* Hero Banner */}
