@@ -79,7 +79,7 @@ const About = () => {
               loop
               muted
               playsInline
-              className="absolute inset-0 w-full h-full object-cover opacity-40 max-sm:hidden"
+              className="absolute inset-0 w-full h-full object-cover opacity-40 max-sm:hidden z-0"
             >
               <source src={skyVideo} type="video/mp4" />
             </video>
@@ -93,7 +93,7 @@ const About = () => {
             {/* Desktop text and signature - hidden on mobile */}
             <div 
               data-scroll-animation="quote-text"
-              className={`absolute top-[15%] left-[8%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-left ${visibleElements.has("quote-text") ? "visible" : ""}`}
+              className={`absolute top-[15%] left-[8%] max-w-md pointer-events-auto max-sm:hidden z-20 scroll-slide-left ${visibleElements.has("quote-text") ? "visible" : ""}`}
             >
               <p className="font-body text-base lg:text-lg leading-relaxed text-foreground/90 mb-6 italic">
                 I have always preferred to withdraw from society, finding solace in quiet observation 
@@ -119,7 +119,7 @@ const About = () => {
             {/* Desktop text at bottom right - hidden on mobile */}
             <div 
               data-scroll-animation="bottom-right-text"
-              className={`absolute bottom-[24%] right-[12%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-right ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
+              className={`absolute bottom-[24%] right-[12%] max-w-md pointer-events-auto max-sm:hidden z-20 scroll-slide-right ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
             >
               <p className="font-body text-2xl lg:text-3xl text-white italic">
                 The eye closes,<br/><span className="inline-block pl-8 mt-6">Reality appears</span>
