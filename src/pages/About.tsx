@@ -109,7 +109,7 @@ const About = () => {
               data-scroll-animation="bottom-right-text"
               className={`absolute bottom-[24%] right-[12%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-right ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
             >
-              <p className="font-body text-2xl lg:text-3xl text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] italic">
+              <p className="font-body text-2xl lg:text-3xl text-white italic">
                 The eye closes,<br/><span className="inline-block pl-8 mt-6">Reality appears</span>
               </p>
             </div>
