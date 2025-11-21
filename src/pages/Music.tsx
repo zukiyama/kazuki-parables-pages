@@ -308,24 +308,6 @@ const Music = () => {
     
     setIsTransitioning(true);
     
-    // Ensure image is fully loaded and decoded before transition
-    const img = new Image();
-    img.src = album.background;
-    
-    try {
-      // Wait for image to load and decode
-      await new Promise<void>((resolve, reject) => {
-        if (img.complete) {
-          img.decode().then(() => resolve()).catch(reject);
-        } else {
-          img.onload = () => img.decode().then(() => resolve()).catch(reject);
-          img.onerror = reject;
-        }
-      });
-    } catch (error) {
-      console.error('Error loading background image:', error);
-    }
-    
     // Determine which layer is currently visible
     const isLayerAVisible = layerA.opacity === 1;
     
