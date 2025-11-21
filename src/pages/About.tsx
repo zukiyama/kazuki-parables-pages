@@ -6,7 +6,14 @@ import bannerImage from "@/assets/about-banner-washing-line.jpg";
 import windowCity from "@/assets/about-window-city.png";
 import aerialStreet from "@/assets/about-aerial-street.jpeg";
 import japaneseRoomView from "@/assets/about-japanese-room-view.png";
+import photographerWindow from "@/assets/about-photographer-window.jpeg";
+import shopWindow from "@/assets/about-shop-window.png";
+import taiChi from "@/assets/about-tai-chi.png";
+import pigeonSeine from "@/assets/about-pigeon-seine.jpeg";
+import parisAerial from "@/assets/about-paris-aerial.jpeg";
 import backgroundSphere from "@/assets/about-background-new.jpeg";
+import japaneseRoom from "@/assets/about-japanese-room.png";
+import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
 
 const About = () => {
@@ -74,7 +81,7 @@ const About = () => {
             {/* Desktop text and signature - hidden on mobile */}
             <div 
               data-scroll-animation="quote-text"
-              className={`absolute top-[15%] left-[8%] max-w-md pointer-events-auto max-sm:hidden z-20 scroll-slide-left ${visibleElements.has("quote-text") ? "visible" : ""}`}
+              className={`absolute top-[15%] left-[8%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-left ${visibleElements.has("quote-text") ? "visible" : ""}`}
             >
               <p className="font-body text-base lg:text-lg leading-relaxed text-foreground/90 mb-6 italic">
                 I have always preferred to withdraw from society, finding solace in quiet observation 
@@ -100,7 +107,7 @@ const About = () => {
             {/* Desktop text at bottom right - hidden on mobile */}
             <div 
               data-scroll-animation="bottom-right-text"
-              className={`absolute bottom-[24%] right-[12%] max-w-md pointer-events-auto max-sm:hidden z-20 scroll-slide-right ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
+              className={`absolute bottom-[24%] right-[12%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-right ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
             >
               <p className="font-body text-2xl lg:text-3xl text-white italic">
                 The eye closes,<br/><span className="inline-block pl-8 mt-6">Reality appears</span>
@@ -109,10 +116,39 @@ const About = () => {
           </div>
         </div>
 
+        {/* Three Photos Row */}
+        <div className="relative mb-3 -mx-6">
+          <div 
+            data-scroll-animation="background-image"
+            className={`flex gap-[14px] justify-between max-sm:gap-2 scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
+            style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}
+          >
+            <div className="flex-1 aspect-[4/3] overflow-hidden">
+              <OptimizedImage 
+                src={photographerWindow}
+                alt="Photographer in shop window"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
+            <div className="flex-1 aspect-[4/3] overflow-hidden">
+              <OptimizedImage 
+                src={japaneseRoom}
+                alt="Japanese room with city view"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
+            <div className="flex-1 aspect-[4/3] overflow-hidden">
+              <OptimizedImage 
+                src={taiChiPark}
+                alt="Tai chi practice in park"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
+          </div>
+        </div>
       </div>
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 relative z-10 max-sm:py-8 mt-3"
-        style={{ marginTop: '0.75rem' }}>
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 relative z-10 max-sm:py-8 -mt-[65px]">
         <div className="container mx-auto px-6 text-center">
           <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
           <p className="font-serif text-white">

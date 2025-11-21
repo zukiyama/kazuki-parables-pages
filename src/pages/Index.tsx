@@ -12,7 +12,6 @@ const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
-  const [quoteFadingOut, setQuoteFadingOut] = useState(false);
   const [showTvText, setShowTvText] = useState(false);
   const [animateTvText, setAnimateTvText] = useState(false);
 
@@ -52,26 +51,6 @@ const Index = () => {
       return () => clearInterval(interval);
     }
   }, [showMagazine, images.length, currentImage]);
-
-  // Handle quote fade timing
-  useEffect(() => {
-    if (currentImage === 0 && showQuote) {
-      // Fade in slowly on first image (after a short delay)
-      const fadeInTimer = setTimeout(() => {
-        setQuoteFadingOut(false);
-      }, 500);
-      return () => clearTimeout(fadeInTimer);
-    } else if (currentImage === 1 && showQuote) {
-      // Wait 2 seconds on second image, then start fading out
-      const fadeOutTimer = setTimeout(() => {
-        setQuoteFadingOut(true);
-      }, 2000);
-      return () => clearTimeout(fadeOutTimer);
-    } else if (currentImage >= 2) {
-      // Ensure quote is completely hidden by third image
-      setQuoteFadingOut(true);
-    }
-  }, [currentImage, showQuote]);
 
   // Handle TV text animation timing
   useEffect(() => {
@@ -184,13 +163,9 @@ const Index = () => {
               </div>
             ))}
             
-            {/* Floating Quote - fade in slowly on first image, fade out during second */}
-            {showQuote && currentImage <= 1 && (
-              <div 
-                className={`absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%] transition-opacity duration-[4000ms] ease-in-out ${
-                  quoteFadingOut ? 'opacity-0' : 'opacity-100'
-                }`}
-              >
+            {/* Floating Quote - static display */}
+            {showQuote && (currentImage === 0 || currentImage === 1) && (
+              <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%]">
                 <blockquote className="literary-quote text-white/90 leading-relaxed">
                   <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
                 </blockquote>
