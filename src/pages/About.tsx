@@ -11,7 +11,7 @@ import shopWindow from "@/assets/about-shop-window.png";
 import taiChi from "@/assets/about-tai-chi.png";
 import pigeonSeine from "@/assets/about-pigeon-seine.jpeg";
 import parisAerial from "@/assets/about-paris-aerial.jpeg";
-import backgroundSphere from "@/assets/about-background-new.jpeg";
+import backgroundSphere from "@/assets/about-background-new.png";
 import japaneseRoom from "@/assets/about-japanese-room.png";
 import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
