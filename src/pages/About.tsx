@@ -1,9 +1,7 @@
 import { OptimizedImage } from "@/components/OptimizedImage";
 import Navigation from "@/components/Navigation";
 import { useScrollAnimation } from "@/components/ScrollAnimations";
-import { useEffect, useRef } from "react";
 import artistPortrait from "@/assets/artist-portrait.png";
-import backgroundVideo from "@/assets/about-background-video.mov";
 import bannerImage from "@/assets/about-banner-washing-line.jpg";
 import windowCity from "@/assets/about-window-city.png";
 import aerialStreet from "@/assets/about-aerial-street.jpeg";
@@ -20,23 +18,6 @@ import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
 
 const About = () => {
   const visibleElements = useScrollAnimation();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight;
-      const pageHeight = document.documentElement.scrollHeight;
-      const distanceFromBottom = pageHeight - scrollPosition;
-      
-      // Start playing video when within 400px of bottom
-      if (distanceFromBottom <= 400 && videoRef.current) {
-        videoRef.current.play();
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
   
   return (
     <div className="min-h-screen bg-white">
@@ -88,23 +69,13 @@ const About = () => {
           {/* Faded background image - full width with slim equal borders */}
           <div 
             data-scroll-animation="background-image"
-            className={`relative overflow-hidden scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
+            className={`relative pointer-events-none overflow-hidden scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
             style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}
           >
-            {/* Video layer behind everything */}
-            <video
-              ref={videoRef}
-              src={backgroundVideo}
-              className="absolute inset-0 w-full h-full object-cover z-0"
-              muted
-              loop
-              playsInline
-            />
-            
             <OptimizedImage
               src={backgroundSphere}
               alt=""
-              className="relative w-full h-auto object-cover pointer-events-none z-10"
+              className="w-full h-auto object-cover opacity-80"
             />
             
             {/* Desktop text and signature - hidden on mobile */}
