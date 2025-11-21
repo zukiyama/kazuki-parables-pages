@@ -15,6 +15,8 @@ const Index = () => {
   const [showQuote, setShowQuote] = useState(false);
   const [showTvText, setShowTvText] = useState(false);
   const [animateTvText, setAnimateTvText] = useState(false);
+  const [isManualDrag, setIsManualDrag] = useState(false);
+  const [quoteFadeOut, setQuoteFadeOut] = useState(false);
 
   const images = [
     officeView,
@@ -47,25 +49,59 @@ const Index = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Sync embla with currentImage state
+  // Sync embla with currentImage state and track manual dragging
   useEffect(() => {
     if (!emblaApi) return;
+    
+    const onPointerDown = () => {
+      setIsManualDrag(true);
+    };
+    
+    const onSettle = () => {
+      setIsManualDrag(false);
+    };
     
     emblaApi.on('select', () => {
       setCurrentImage(emblaApi.selectedScrollSnap());
     });
+    
+    emblaApi.on('pointerDown', onPointerDown);
+    emblaApi.on('settle', onSettle);
+    
+    return () => {
+      emblaApi.off('pointerDown', onPointerDown);
+      emblaApi.off('settle', onSettle);
+    };
   }, [emblaApi]);
 
   useEffect(() => {
     // Auto-dissolve between images
-    if (showMagazine && emblaApi) {
+    if (showMagazine && emblaApi && !isManualDrag) {
       const interval = setInterval(() => {
+        setIsManualDrag(false); // Ensure we know this is automatic
         emblaApi.scrollNext();
       }, currentImage === 0 ? 12600 : currentImage === 1 ? 8400 : 42000); // First: 12.6s, Second: 8.4s, Third: 42s
       
       return () => clearInterval(interval);
     }
-  }, [showMagazine, emblaApi, currentImage]);
+  }, [showMagazine, emblaApi, currentImage, isManualDrag]);
+  
+  // Handle quote fade out on second image (automatic transitions only)
+  useEffect(() => {
+    if (currentImage === 1 && showQuote && !isManualDrag) {
+      // Start fading out halfway through second image duration (8.4s / 2 = 4.2s)
+      const fadeTimer = setTimeout(() => {
+        setQuoteFadeOut(true);
+      }, 4200);
+      
+      return () => {
+        clearTimeout(fadeTimer);
+        setQuoteFadeOut(false);
+      };
+    } else if (currentImage !== 1) {
+      setQuoteFadeOut(false);
+    }
+  }, [currentImage, showQuote, isManualDrag]);
 
   // Handle TV text animation timing
   useEffect(() => {
@@ -178,13 +214,25 @@ const Index = () => {
                   >
                     <div className="absolute inset-0 bg-black/20"></div>
                     
-                    {/* Floating Quote - attached to slide 2 */}
+                    {/* Floating Quote - only shows on current slide during manual drag */}
                     {showQuote && (index === 0 || index === 1) && (
-                      <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%]">
-                        <blockquote className="literary-quote text-white/90 leading-relaxed">
-                          <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
-                        </blockquote>
-                      </div>
+                      isManualDrag ? (
+                        // During manual drag, only show on current slide
+                        index === currentImage && (
+                          <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%]">
+                            <blockquote className="literary-quote text-white/90 leading-relaxed">
+                              <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
+                            </blockquote>
+                          </div>
+                        )
+                      ) : (
+                        // During automatic transition, show on both first and second images with fade
+                        <div className={`absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%] transition-opacity duration-[2000ms] ${quoteFadeOut && index === 1 ? 'opacity-0' : 'opacity-100'}`}>
+                          <blockquote className="literary-quote text-white/90 leading-relaxed">
+                            <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
+                          </blockquote>
+                        </div>
+                      )
                     )}
                     
                     {/* Text overlay for TV shop image */}
