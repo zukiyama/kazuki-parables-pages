@@ -75,7 +75,7 @@ const Index = () => {
 
   useEffect(() => {
     // Auto-dissolve between images
-    if (emblaApi && !isManualDrag) {
+    if (showMagazine && emblaApi && !isManualDrag) {
       const interval = setInterval(() => {
         setIsManualDrag(false); // Ensure we know this is automatic
         emblaApi.scrollNext();
@@ -83,7 +83,7 @@ const Index = () => {
       
       return () => clearInterval(interval);
     }
-  }, [emblaApi, currentImage, isManualDrag]);
+  }, [showMagazine, emblaApi, currentImage, isManualDrag]);
 
   // Handle TV text animation timing
   useEffect(() => {
