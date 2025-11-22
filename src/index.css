@@ -360,19 +360,9 @@
   transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-  .scroll-slide-right.visible {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  /* Cityscape fade-in animation */
-.cityscape-fade-in {
-  opacity: 0;
-  transition: opacity 10s ease-out;
-}
-
-.cityscape-fade-in.visible {
-  opacity: 0.5;
+.scroll-slide-right.visible {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Animation utilities and effects */
