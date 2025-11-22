@@ -110,10 +110,10 @@ const Index = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          setIsCarouselVisible(entry.isIntersecting && entry.intersectionRatio > 0.7);
+          setIsCarouselVisible(entry.isIntersecting && entry.intersectionRatio > 0.01);
         });
       },
-      { threshold: [0.7] }
+      { threshold: [0.01] }
     );
 
     observer.observe(carouselContainerRef.current);
