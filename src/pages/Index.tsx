@@ -209,16 +209,16 @@ const Index = () => {
                     <img 
                       src={image}
                       alt={`Slide ${index + 1}`}
-                      className={`absolute inset-0 w-full h-full object-cover ${index === currentImage ? (index === 1 ? "animate-slow-zoom-meteor" : "animate-slow-zoom") : ""}`}
+                      className={`absolute inset-0 w-full h-full object-cover ${index === 0 && currentImage === 0 ? "animate-slow-zoom" : ""}`}
                       style={{ objectPosition: 'center' }}
                     />
                     <div className="absolute inset-0 bg-black/20"></div>
                     
-                    {/* Floating Quote - only shows on current slide during manual drag */}
+                    {/* Floating Quote - slides with first image on manual drag, fades on auto */}
                     {showQuote && (index === 0 || index === 1) && (
                       isManualDrag ? (
-                        // During manual drag, only show on current slide
-                        index === currentImage && (
+                        // During manual drag, only show on first slide (index 0) so it slides away
+                        index === 0 && (
                           <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%]">
                             <blockquote className="literary-quote text-white/90 leading-relaxed">
                               <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
