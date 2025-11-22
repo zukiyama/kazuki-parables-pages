@@ -36,9 +36,21 @@ const About = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-16 max-w-6xl">
+      <div className="container mx-auto px-6 py-16 max-w-6xl relative">
+        {/* Desktop: Cityscape layer behind everything */}
+        <div 
+          data-scroll-animation="cityscape-layer"
+          className={`absolute inset-0 -top-16 max-sm:hidden cityscape-fade-in ${visibleElements.has("cityscape-layer") ? "visible" : ""}`}
+          style={{ zIndex: 0, filter: 'brightness(0.9)' }}
+        >
+          <OptimizedImage
+            src={cityBackground}
+            alt=""
+            className="w-full h-full object-cover object-top"
+          />
+        </div>
         {/* Artist Portrait & Bio Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20 bg-transparent">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20 bg-transparent relative" style={{ zIndex: 1 }}>
           <div className="lg:col-span-1 flex justify-center lg:justify-start bg-transparent">
             <div className="w-80 h-80 relative">
               <OptimizedImage 
@@ -66,26 +78,13 @@ const About = () => {
         </div>
 
         {/* Background Image Section */}
-        <div className="relative -mx-6 mb-3">
+        <div className="relative -mx-6 mb-3" style={{ zIndex: 1 }}>
           {/* Faded background image - full width with slim equal borders */}
           <div 
             data-scroll-animation="background-image"
             className={`relative pointer-events-none overflow-hidden scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
             style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}
           >
-            {/* Desktop: Cityscape layer behind background PNG */}
-            <div 
-              data-scroll-animation="cityscape-layer"
-              className={`absolute inset-0 max-sm:hidden cityscape-fade-in ${visibleElements.has("cityscape-layer") ? "visible" : ""}`}
-              style={{ zIndex: 0, filter: 'brightness(0.9)' }}
-            >
-              <OptimizedImage
-                src={cityBackground}
-                alt=""
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-
             {/* Mobile: Child portrait as background */}
             <OptimizedImage
               src={childPortrait}
@@ -118,11 +117,13 @@ const About = () => {
                 rather than participation. The world moves too quickly for meaningful reflection, and 
                 in my solitude, I discover the stories worth telling.
               </p>
-              <OptimizedImage 
-                src={signatureYamakawa}
-                alt="Yamakawa signature"
-                className="w-32 h-auto opacity-90 mix-blend-multiply"
-              />
+              <div className="bg-transparent">
+                <OptimizedImage 
+                  src={signatureYamakawa}
+                  alt="Yamakawa signature"
+                  className="w-32 h-auto opacity-90 mix-blend-multiply bg-transparent"
+                />
+              </div>
             </div>
             
             {/* Mobile text - shown only on mobile */}
