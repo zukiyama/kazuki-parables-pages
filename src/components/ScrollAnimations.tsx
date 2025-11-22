@@ -16,14 +16,7 @@ export const useScrollAnimation = () => {
         const id = element.getAttribute("data-scroll-animation");
         
         if (isVisible && id) {
-          // Special case: cityscape background triggers 5-6 seconds after background-image
-          if (id === "cityscape-background" && visibleElements.has("background-image")) {
-            setTimeout(() => {
-              setVisibleElements(prev => new Set([...prev, id]));
-            }, 5000);
-          } else if (id !== "cityscape-background") {
-            setVisibleElements(prev => new Set([...prev, id]));
-          }
+          setVisibleElements(prev => new Set([...prev, id]));
         }
       });
     };
