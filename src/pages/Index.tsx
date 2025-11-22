@@ -16,6 +16,9 @@ const Index = () => {
   const [showTvText, setShowTvText] = useState(false);
   const [animateTvText, setAnimateTvText] = useState(false);
   const [isManualDrag, setIsManualDrag] = useState(false);
+  const [previousImage, setPreviousImage] = useState(0);
+  const [quoteFadeOut, setQuoteFadeOut] = useState(false);
+  const [quoteSlideAway, setQuoteSlideAway] = useState(false);
 
   const images = [
     officeView,
@@ -60,9 +63,17 @@ const Index = () => {
       setIsManualDrag(false);
     };
     
-    emblaApi.on('select', () => {
-      setCurrentImage(emblaApi.selectedScrollSnap());
-    });
+      emblaApi.on('select', () => {
+        const newIndex = emblaApi.selectedScrollSnap();
+        setPreviousImage(currentImage);
+        setCurrentImage(newIndex);
+        
+        // Reset quote states when changing slides
+        if (newIndex === 0) {
+          setQuoteFadeOut(false);
+          setQuoteSlideAway(false);
+        }
+      });
     
     emblaApi.on('pointerDown', onPointerDown);
     emblaApi.on('settle', onSettle);
@@ -84,6 +95,28 @@ const Index = () => {
       return () => clearInterval(interval);
     }
   }, [showMagazine, emblaApi, currentImage, isManualDrag]);
+
+  // Handle quote transitions
+  useEffect(() => {
+    // Manual drag from slide 1 to slide 2
+    if (isManualDrag && currentImage === 2 && previousImage === 1) {
+      setQuoteSlideAway(true);
+    } else if (currentImage !== 2) {
+      setQuoteSlideAway(false);
+    }
+
+    // Automatic transition from slide 1: fade out after delay
+    if (currentImage === 1 && !isManualDrag) {
+      setQuoteFadeOut(false);
+      const fadeTimer = setTimeout(() => {
+        setQuoteFadeOut(true);
+      }, 2000); // Wait 2 seconds before starting fade
+      
+      return () => clearTimeout(fadeTimer);
+    } else if (currentImage !== 1 || isManualDrag) {
+      setQuoteFadeOut(false);
+    }
+  }, [currentImage, previousImage, isManualDrag]);
 
   // Handle TV text animation timing
   useEffect(() => {
@@ -196,15 +229,6 @@ const Index = () => {
                     />
                     <div className="absolute inset-0 bg-black/20"></div>
                     
-                    {/* Floating Quote - only appears on first image */}
-                    {showQuote && index === 0 && (
-                      <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%]">
-                        <blockquote className="literary-quote text-white/90 leading-relaxed">
-                          <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
-                        </blockquote>
-                      </div>
-                    )}
-                    
                     {/* Text overlay for TV shop image */}
                     {showQuote && index === 2 && (
                       <div className="absolute top-1/3 left-1/4 max-w-md max-sm:left-[8%] max-sm:max-w-[80%]">
@@ -229,10 +253,26 @@ const Index = () => {
                   </div>
                 </div>
               ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+
+          {/* Floating Quote - Separate layer that stays in place */}
+          {showQuote && (currentImage === 0 || currentImage === 1) && (
+            <div 
+              className={`absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%] z-20 transition-all duration-[600ms] ${
+                quoteSlideAway ? '-translate-x-[100vw]' : 'translate-x-0'
+              } ${
+                quoteFadeOut ? 'opacity-0' : 'opacity-100'
+              }`}
+              style={{ transitionProperty: 'transform, opacity' }}
+            >
+              <blockquote className="literary-quote text-white/90 leading-relaxed">
+                <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
+              </blockquote>
+            </div>
+          )}
+        </section>
 
       {/* Footer/Contact */}
       <footer className="bg-card border-t border-border py-12">
