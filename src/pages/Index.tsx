@@ -17,6 +17,7 @@ const Index = () => {
   const [animateTvText, setAnimateTvText] = useState(false);
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
+  const [animationKey, setAnimationKey] = useState(0);
 
   const images = [
     officeView,
@@ -87,6 +88,7 @@ const Index = () => {
   useEffect(() => {
     if (showMagazine && emblaApi) {
       setIsCarouselReady(false); // Reset ready state
+      setAnimationKey(prev => prev + 1); // Force animation reset
       emblaApi.reInit(); // This will trigger the 'reInit' event
     }
   }, [showMagazine, emblaApi]);
@@ -207,6 +209,7 @@ const Index = () => {
                 <div key={index} className="embla__slide">
                   <div className="relative w-screen h-screen overflow-hidden">
                     <img 
+                      key={`slide-${index}-${animationKey}`}
                       src={image}
                       alt={`Slide ${index + 1}`}
                       className={`absolute inset-0 w-full h-full object-cover ${index === 0 && currentImage === 0 && isCarouselReady ? "animate-slow-zoom" : ""} ${index === 1 && currentImage === 1 && isCarouselReady ? "animate-slow-zoom-out" : ""}`}
