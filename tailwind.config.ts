@@ -19,7 +19,7 @@ export default {
 		},
 		extend: {
 			screens: {
-				'sm': '1150px',
+				'sm': '950px',
 			},
 		fontFamily: {
 			heading: ['Playfair Display', 'serif'],
