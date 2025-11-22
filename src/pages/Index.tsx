@@ -253,7 +253,6 @@ const Index = () => {
                   </div>
                 </div>
               ))}
-              </div>
             </div>
           </div>
 
@@ -272,7 +271,8 @@ const Index = () => {
               </blockquote>
             </div>
           )}
-        </section>
+        </div>
+      </section>
 
       {/* Footer/Contact */}
       <footer className="bg-card border-t border-border py-12">
