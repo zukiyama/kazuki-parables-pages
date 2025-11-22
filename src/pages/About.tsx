@@ -16,6 +16,7 @@ import japaneseRoom from "@/assets/about-japanese-room.png";
 import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
+import cityscapeBackground from "@/assets/about-cityscape-background.png";
 
 const About = () => {
   const visibleElements = useScrollAnimation();
@@ -32,11 +33,11 @@ const About = () => {
           className="w-full h-full object-cover object-center"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white max-sm:to-background" />
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-16 max-w-6xl">
+      <div className="container mx-auto px-6 py-16 max-w-6xl max-sm:bg-white">
         {/* Artist Portrait & Bio Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
           <div className="lg:col-span-1 flex justify-center lg:justify-start">
@@ -67,6 +68,19 @@ const About = () => {
 
         {/* Background Image Section */}
         <div className="relative -mx-6 mb-3">
+          {/* Cityscape background - only visible on desktop, fades in after scroll */}
+          <div 
+            data-scroll-animation="cityscape-background"
+            className={`absolute inset-0 pointer-events-none max-sm:hidden transition-opacity duration-[10000ms] ${visibleElements.has("cityscape-background") ? "opacity-75" : "opacity-0"}`}
+            style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}
+          >
+            <OptimizedImage
+              src={cityscapeBackground}
+              alt=""
+              className="w-full h-auto object-cover"
+            />
+          </div>
+          
           {/* Faded background image - full width with slim equal borders */}
           <div 
             data-scroll-animation="background-image"
@@ -84,7 +98,7 @@ const About = () => {
             <OptimizedImage
               src={backgroundSphere}
               alt=""
-              className="w-full h-auto object-cover opacity-80 max-sm:hidden"
+              className="w-full h-auto object-cover max-sm:hidden"
             />
             
             {/* Desktop text and signature - hidden on mobile */}
