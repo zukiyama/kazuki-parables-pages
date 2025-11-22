@@ -16,6 +16,7 @@ const Index = () => {
   const [showTvText, setShowTvText] = useState(false);
   const [animateTvText, setAnimateTvText] = useState(false);
   const [isManualDrag, setIsManualDrag] = useState(false);
+  const [isCarouselReady, setIsCarouselReady] = useState(false);
 
   const images = [
     officeView,
@@ -67,15 +68,29 @@ const Index = () => {
     emblaApi.on('pointerDown', onPointerDown);
     emblaApi.on('settle', onSettle);
     
+    // If carousel is initialized and slideshow is visible, mark as ready
+    if (showMagazine) {
+      emblaApi.reInit();
+      setIsCarouselReady(true);
+    }
+    
     return () => {
       emblaApi.off('pointerDown', onPointerDown);
       emblaApi.off('settle', onSettle);
     };
-  }, [emblaApi]);
+  }, [emblaApi, showMagazine]);
+
+  // Ensure carousel is ready when slideshow becomes visible
+  useEffect(() => {
+    if (showMagazine && emblaApi) {
+      emblaApi.reInit();
+      setIsCarouselReady(true);
+    }
+  }, [showMagazine, emblaApi]);
 
   useEffect(() => {
     // Auto-dissolve between images
-    if (showMagazine && emblaApi && !isManualDrag) {
+    if (isCarouselReady && emblaApi && !isManualDrag) {
       const interval = setInterval(() => {
         setIsManualDrag(false); // Ensure we know this is automatic
         emblaApi.scrollNext();
@@ -83,7 +98,7 @@ const Index = () => {
       
       return () => clearInterval(interval);
     }
-  }, [showMagazine, emblaApi, currentImage, isManualDrag]);
+  }, [isCarouselReady, emblaApi, currentImage, isManualDrag]);
 
   // Handle TV text animation timing
   useEffect(() => {
