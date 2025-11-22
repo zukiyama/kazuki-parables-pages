@@ -16,7 +16,6 @@ import japaneseRoom from "@/assets/about-japanese-room.png";
 import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
-import handFigure from "@/assets/about-hand-figure.jpeg";
 
 const About = () => {
   const visibleElements = useScrollAnimation();
@@ -81,23 +80,11 @@ const About = () => {
               className="w-full h-auto object-cover sm:hidden"
             />
             
-            {/* Desktop: Hand figure layer (behind PNG, fades in slowly) */}
-            <div 
-              data-scroll-animation="hand-figure"
-              className={`absolute inset-0 max-sm:hidden transition-opacity duration-[8000ms] ${visibleElements.has("hand-figure") ? "opacity-80" : "opacity-0"}`}
-            >
-              <OptimizedImage
-                src={handFigure}
-                alt=""
-                className="w-full h-auto object-cover"
-              />
-            </div>
-            
-            {/* Desktop: PNG overlay with transparent areas (now 100% opacity) */}
+            {/* Desktop: PNG overlay with transparent areas */}
             <OptimizedImage
               src={backgroundSphere}
               alt=""
-              className="w-full h-auto object-cover max-sm:hidden"
+              className="w-full h-auto object-cover opacity-80 max-sm:hidden"
             />
             
             {/* Desktop text and signature - hidden on mobile */}

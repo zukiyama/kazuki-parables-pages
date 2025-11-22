@@ -12,11 +12,8 @@ export const useScrollAnimation = () => {
       
       elements.forEach((element) => {
         const rect = element.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight * 0.8;
         const id = element.getAttribute("data-scroll-animation");
-        
-        // Special delayed trigger for hand-figure - needs more scroll
-        const threshold = id === "hand-figure" ? 0.5 : 0.8;
-        const isVisible = rect.top < window.innerHeight * threshold;
         
         if (isVisible && id) {
           setVisibleElements(prev => new Set([...prev, id]));
