@@ -1,3 +1,4 @@
+import React from "react";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import Navigation from "@/components/Navigation";
 import { useScrollAnimation } from "@/components/ScrollAnimations";
@@ -20,6 +21,17 @@ import cityBackground from "@/assets/about-city-background.png";
 
 const About = () => {
   const visibleElements = useScrollAnimation();
+  const [showCityscape, setShowCityscape] = React.useState(false);
+
+  // Delay cityscape fade-in by 10 seconds after background image appears
+  React.useEffect(() => {
+    if (visibleElements.has("background-image")) {
+      const timer = setTimeout(() => {
+        setShowCityscape(true);
+      }, 10000); // 10 second delay
+      return () => clearTimeout(timer);
+    }
+  }, [visibleElements]);
   
   return (
     <div className="min-h-screen bg-white">
@@ -37,11 +49,19 @@ const About = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-16 max-w-6xl relative">
-        {/* Desktop: Cityscape layer behind everything */}
+        {/* Desktop: Cityscape layer positioned exactly like background PNG */}
         <div 
-          data-scroll-animation="cityscape-layer"
-          className={`absolute inset-0 -top-16 max-sm:hidden cityscape-fade-in ${visibleElements.has("cityscape-layer") ? "visible" : ""}`}
-          style={{ zIndex: 0, filter: 'brightness(0.9)' }}
+          className={`absolute -mx-6 mb-3 max-sm:hidden cityscape-fade-in ${showCityscape ? "visible" : ""}`}
+          style={{ 
+            zIndex: 0, 
+            filter: 'brightness(0.9)',
+            width: '100vw', 
+            marginLeft: 'calc(-50vw + 50%)', 
+            paddingLeft: '0.75rem', 
+            paddingRight: '0.75rem',
+            top: '-40vh',
+            height: 'calc(40vh + 100%)'
+          }}
         >
           <OptimizedImage
             src={cityBackground}
@@ -117,11 +137,11 @@ const About = () => {
                 rather than participation. The world moves too quickly for meaningful reflection, and 
                 in my solitude, I discover the stories worth telling.
               </p>
-              <div className="bg-transparent">
+              <div style={{ mixBlendMode: 'multiply' }}>
                 <OptimizedImage 
                   src={signatureYamakawa}
                   alt="Yamakawa signature"
-                  className="w-32 h-auto opacity-90 mix-blend-multiply bg-transparent"
+                  className="w-32 h-auto opacity-90"
                 />
               </div>
             </div>
