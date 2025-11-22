@@ -48,6 +48,9 @@ const Index = () => {
       }
     };
 
+    // Check on mount in case page loads already scrolled
+    handleScroll();
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
