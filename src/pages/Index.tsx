@@ -61,30 +61,33 @@ const Index = () => {
       setIsManualDrag(false);
     };
     
+    const onReInit = () => {
+      // Only set ready after reInit completes
+      if (showMagazine) {
+        setIsCarouselReady(true);
+      }
+    };
+    
     emblaApi.on('select', () => {
       setCurrentImage(emblaApi.selectedScrollSnap());
     });
     
     emblaApi.on('pointerDown', onPointerDown);
     emblaApi.on('settle', onSettle);
-    
-    // If carousel is initialized and slideshow is visible, mark as ready
-    if (showMagazine) {
-      emblaApi.reInit();
-      setIsCarouselReady(true);
-    }
+    emblaApi.on('reInit', onReInit);
     
     return () => {
       emblaApi.off('pointerDown', onPointerDown);
       emblaApi.off('settle', onSettle);
+      emblaApi.off('reInit', onReInit);
     };
   }, [emblaApi, showMagazine]);
 
   // Ensure carousel is ready when slideshow becomes visible
   useEffect(() => {
     if (showMagazine && emblaApi) {
-      emblaApi.reInit();
-      setIsCarouselReady(true);
+      setIsCarouselReady(false); // Reset ready state
+      emblaApi.reInit(); // This will trigger the 'reInit' event
     }
   }, [showMagazine, emblaApi]);
 
