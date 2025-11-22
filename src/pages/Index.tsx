@@ -89,14 +89,16 @@ const Index = () => {
     if (showMagazine && emblaApi) {
       console.log('[Carousel] Slideshow became visible, resetting...');
       setIsCarouselReady(false); // Reset ready state
+      setIsManualDrag(false); // Reset manual drag state
       setAnimationKey(prev => prev + 1); // Force animation reset
       emblaApi.reInit(); // Reinitialize carousel
       
       // Use timeout instead of reInit event for more reliable mobile behavior
       const readyTimer = setTimeout(() => {
-        console.log('[Carousel] Setting carousel ready');
+        console.log('[Carousel] Setting carousel ready and clearing manual drag');
+        setIsManualDrag(false); // Ensure manual drag is false when ready
         setIsCarouselReady(true);
-      }, 100);
+      }, 150);
       
       return () => clearTimeout(readyTimer);
     }
