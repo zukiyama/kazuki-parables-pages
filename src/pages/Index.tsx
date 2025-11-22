@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
@@ -17,6 +17,7 @@ const Index = () => {
   const [animateTvText, setAnimateTvText] = useState(false);
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
+  const showMagazineRef = useRef(false);
 
   const images = [
     officeView,
@@ -37,6 +38,7 @@ const Index = () => {
       // Show magazine when scrolled past 80% of viewport
       if (scrollY > viewportHeight * 0.8) {
         setShowMagazine(true);
+        showMagazineRef.current = true;
       }
       
       // Show quote quickly when scrolled past 60% of viewport
@@ -63,7 +65,8 @@ const Index = () => {
     
     const onReInit = () => {
       // Only set ready after reInit completes
-      if (showMagazine) {
+      // Use ref to avoid stale closure
+      if (showMagazineRef.current) {
         setIsCarouselReady(true);
       }
     };
@@ -81,7 +84,7 @@ const Index = () => {
       emblaApi.off('settle', onSettle);
       emblaApi.off('reInit', onReInit);
     };
-  }, [emblaApi, showMagazine]);
+  }, [emblaApi]); // Removed showMagazine dependency to prevent race condition
 
   // Ensure carousel is ready when slideshow becomes visible
   useEffect(() => {
