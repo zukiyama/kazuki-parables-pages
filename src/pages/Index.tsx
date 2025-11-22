@@ -110,10 +110,10 @@ const Index = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          setIsCarouselVisible(entry.isIntersecting && entry.intersectionRatio > 0.5);
+          setIsCarouselVisible(entry.isIntersecting && entry.intersectionRatio > 0.7);
         });
       },
-      { threshold: [0.5] }
+      { threshold: [0.7] }
     );
 
     observer.observe(carouselContainerRef.current);
@@ -245,7 +245,7 @@ const Index = () => {
                     <img 
                       src={image}
                       alt={`Slide ${index + 1}`}
-                      className={`absolute inset-0 w-full h-full object-cover ${index === 0 && currentImage === 0 && isCarouselReady && isCarouselVisible ? "animate-slow-zoom" : ""} ${index === 1 && currentImage === 1 && isCarouselReady && isCarouselVisible ? "animate-slow-zoom-out" : ""}`}
+                      className={`absolute inset-0 w-full h-full object-cover ${index === 0 && currentImage === 0 && isCarouselReady ? "animate-slow-zoom" : ""} ${index === 1 && currentImage === 1 && isCarouselReady ? "animate-slow-zoom-out" : ""}`}
                       style={{ objectPosition: 'center' }}
                     />
                     <div className="absolute inset-0 bg-black/20"></div>
