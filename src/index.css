@@ -276,6 +276,11 @@
   100% { transform: scale(1.2); }
 }
 
+@keyframes slowZoomOut {
+  0% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
 @keyframes slide-in-from-left-scroll {
   0% { transform: translateX(-100px); opacity: 0; }
   100% { transform: translateX(0); opacity: 1; }
@@ -332,6 +337,10 @@
 
 .animate-slow-zoom-meteor {
   animation: slowZoomMeteor 8.4s ease-out;
+}
+
+.animate-slow-zoom-out {
+  animation: slowZoomOut 11.4s ease-out forwards;
 }
 
 .scroll-slide-left {
