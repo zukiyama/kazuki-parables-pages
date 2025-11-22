@@ -73,10 +73,10 @@ const About = () => {
             className={`relative pointer-events-none overflow-hidden scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
             style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}
           >
-            {/* Child portrait layer behind the PNG - shows through transparent areas (mobile only) */}
+            {/* Child portrait layer behind the PNG - shows through transparent areas */}
             <div 
               data-scroll-animation="child-portrait"
-              className={`absolute inset-0 z-0 transition-opacity duration-[2000ms] sm:hidden ${visibleElements.has("child-portrait") ? "opacity-100" : "opacity-0"}`}
+              className={`absolute inset-0 z-0 transition-opacity duration-[2000ms] ${visibleElements.has("child-portrait") ? "opacity-100" : "opacity-0"}`}
             >
               <OptimizedImage
                 src={childPortrait}
@@ -85,11 +85,11 @@ const About = () => {
               />
             </div>
             
-            {/* PNG overlay with transparent areas (desktop only) */}
+            {/* PNG overlay with transparent areas */}
             <OptimizedImage
               src={backgroundSphere}
               alt=""
-              className="w-full h-auto object-cover opacity-80 relative z-10 max-sm:hidden"
+              className="w-full h-auto object-cover opacity-80 relative z-10"
             />
             
             {/* Desktop text and signature - hidden on mobile */}
