@@ -38,8 +38,8 @@ const About = () => {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-16 max-w-6xl">
         {/* Artist Portrait & Bio Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
-          <div className="lg:col-span-1 flex justify-center lg:justify-start">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20 bg-transparent">
+          <div className="lg:col-span-1 flex justify-center lg:justify-start bg-transparent">
             <div className="w-80 h-80 relative">
               <OptimizedImage 
                 src={artistPortrait}
@@ -49,8 +49,8 @@ const About = () => {
             </div>
           </div>
           
-          <div className="lg:col-span-2 flex items-center">
-            <div className="space-y-6">
+          <div className="lg:col-span-2 flex items-center bg-transparent">
+            <div className="space-y-6 bg-transparent">
               <h1 className="font-heading text-4xl lg:text-5xl tracking-tight text-foreground">
                 Kazuki Yamakawa
               </h1>
@@ -121,7 +121,7 @@ const About = () => {
               <OptimizedImage 
                 src={signatureYamakawa}
                 alt="Yamakawa signature"
-                className="w-32 h-auto opacity-90"
+                className="w-32 h-auto opacity-90 mix-blend-multiply"
               />
             </div>
             
