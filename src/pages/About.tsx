@@ -16,6 +16,7 @@ import japaneseRoom from "@/assets/about-japanese-room.png";
 import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
+import cityBackground from "@/assets/about-city-background.png";
 
 const About = () => {
   const visibleElements = useScrollAnimation();
@@ -32,7 +33,6 @@ const About = () => {
           className="w-full h-full object-cover object-center"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
       </div>
 
       {/* Main Content */}
@@ -73,6 +73,19 @@ const About = () => {
             className={`relative pointer-events-none overflow-hidden scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
             style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}
           >
+            {/* Desktop: Cityscape layer behind background PNG */}
+            <div 
+              data-scroll-animation="cityscape-layer"
+              className={`absolute inset-0 max-sm:hidden cityscape-fade-in ${visibleElements.has("cityscape-layer") ? "visible" : ""}`}
+              style={{ zIndex: 0, filter: 'brightness(0.9)' }}
+            >
+              <OptimizedImage
+                src={cityBackground}
+                alt=""
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+
             {/* Mobile: Child portrait as background */}
             <OptimizedImage
               src={childPortrait}
@@ -81,11 +94,19 @@ const About = () => {
             />
             
             {/* Desktop: PNG overlay with transparent areas */}
-            <OptimizedImage
-              src={backgroundSphere}
-              alt=""
-              className="w-full h-auto object-cover opacity-80 max-sm:hidden"
-            />
+            <div 
+              className="relative max-sm:hidden"
+              style={{ 
+                zIndex: 1,
+                filter: 'brightness(0.95) saturate(0.9)'
+              }}
+            >
+              <OptimizedImage
+                src={backgroundSphere}
+                alt=""
+                className="w-full h-auto object-cover"
+              />
+            </div>
             
             {/* Desktop text and signature - hidden on mobile */}
             <div 
