@@ -87,21 +87,37 @@ const Index = () => {
   // Ensure carousel is ready when slideshow becomes visible
   useEffect(() => {
     if (showMagazine && emblaApi) {
+      console.log('[Carousel] Slideshow became visible, resetting...');
       setIsCarouselReady(false); // Reset ready state
       setAnimationKey(prev => prev + 1); // Force animation reset
-      emblaApi.reInit(); // This will trigger the 'reInit' event
+      emblaApi.reInit(); // Reinitialize carousel
+      
+      // Use timeout instead of reInit event for more reliable mobile behavior
+      const readyTimer = setTimeout(() => {
+        console.log('[Carousel] Setting carousel ready');
+        setIsCarouselReady(true);
+      }, 100);
+      
+      return () => clearTimeout(readyTimer);
     }
   }, [showMagazine, emblaApi]);
 
   useEffect(() => {
     // Auto-dissolve between images
     if (isCarouselReady && emblaApi && !isManualDrag) {
+      console.log(`[Carousel] Starting auto-advance timer for image ${currentImage}`);
       const interval = setInterval(() => {
+        console.log('[Carousel] Auto-advancing to next slide');
         setIsManualDrag(false); // Ensure we know this is automatic
         emblaApi.scrollNext();
       }, currentImage === 0 ? 12600 : currentImage === 1 ? 11400 : 42000); // First: 12.6s, Second: 11.4s, Third: 42s
       
-      return () => clearInterval(interval);
+      return () => {
+        console.log('[Carousel] Clearing auto-advance timer');
+        clearInterval(interval);
+      };
+    } else {
+      console.log(`[Carousel] Auto-advance blocked - ready: ${isCarouselReady}, embla: ${!!emblaApi}, manualDrag: ${isManualDrag}`);
     }
   }, [isCarouselReady, emblaApi, currentImage, isManualDrag]);
 
