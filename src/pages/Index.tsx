@@ -80,7 +80,7 @@ const Index = () => {
       const interval = setInterval(() => {
         setIsManualDrag(false); // Ensure we know this is automatic
         emblaApi.scrollNext();
-      }, currentImage === 0 ? 12600 : currentImage === 1 ? 8400 : 42000); // First: 12.6s, Second: 8.4s, Third: 42s
+      }, currentImage === 0 ? 12600 : currentImage === 1 ? 11400 : 42000); // First: 12.6s, Second: 11.4s, Third: 42s
       
       return () => clearInterval(interval);
     }
@@ -88,13 +88,15 @@ const Index = () => {
 
   // Handle quote fade-out timing on first image
   useEffect(() => {
-    if (currentImage === 0 && showQuote && !isManualDrag) {
+    if (currentImage === 0 && showQuote) {
       setQuoteFadingOut(false);
-      // Start fading after 7 seconds
-      const fadeTimer = setTimeout(() => {
-        setQuoteFadingOut(true);
-      }, 7000);
-      return () => clearTimeout(fadeTimer);
+      if (!isManualDrag) {
+        // Start fading after 7 seconds
+        const fadeTimer = setTimeout(() => {
+          setQuoteFadingOut(true);
+        }, 7000);
+        return () => clearTimeout(fadeTimer);
+      }
     }
   }, [currentImage, showQuote, isManualDrag]);
 
@@ -204,14 +206,14 @@ const Index = () => {
                     <img 
                       src={image}
                       alt={`Slide ${index + 1}`}
-                      className={`absolute inset-0 w-full h-full object-cover ${index === 0 && currentImage === 0 ? "animate-slow-zoom" : ""}`}
+                      className={`absolute inset-0 w-full h-full object-cover ${index === 0 && currentImage === 0 ? "animate-slow-zoom" : ""} ${index === 1 && currentImage === 1 ? "animate-slow-zoom-out" : ""}`}
                       style={{ objectPosition: 'center' }}
                     />
                     <div className="absolute inset-0 bg-black/20"></div>
                     
                     {/* Floating Quote - only appears on first image */}
                     {showQuote && index === 0 && (
-                      <div className={`absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%] transition-opacity duration-[3000ms] ${quoteFadingOut ? 'opacity-0' : 'opacity-100'}`}>
+                      <div className={`absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%] transition-opacity duration-[9000ms] ${quoteFadingOut ? 'opacity-0' : 'opacity-100'}`}>
                         <blockquote className="literary-quote text-white/90 leading-relaxed">
                           <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
                         </blockquote>
