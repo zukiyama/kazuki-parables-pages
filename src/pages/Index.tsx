@@ -37,6 +37,7 @@ const Index = () => {
       
       // Show magazine when scrolled past 80% of viewport
       if (scrollY > viewportHeight * 0.8) {
+        console.log('[SLIDESHOW] Setting showMagazine to true');
         setShowMagazine(true);
         showMagazineRef.current = true;
       }
@@ -66,7 +67,9 @@ const Index = () => {
     const onReInit = () => {
       // Only set ready after reInit completes
       // Use ref to avoid stale closure
+      console.log('[SLIDESHOW] onReInit fired, showMagazineRef.current:', showMagazineRef.current);
       if (showMagazineRef.current) {
+        console.log('[SLIDESHOW] Setting isCarouselReady to true');
         setIsCarouselReady(true);
       }
     };
@@ -89,6 +92,7 @@ const Index = () => {
   // Ensure carousel is ready when slideshow becomes visible
   useEffect(() => {
     if (showMagazine && emblaApi) {
+      console.log('[SLIDESHOW] Calling reInit, resetting isCarouselReady');
       setIsCarouselReady(false); // Reset ready state
       emblaApi.reInit(); // This will trigger the 'reInit' event
     }
@@ -97,12 +101,19 @@ const Index = () => {
   useEffect(() => {
     // Auto-dissolve between images
     if (isCarouselReady && emblaApi && !isManualDrag) {
+      console.log('[SLIDESHOW] Starting auto-advance interval for image:', currentImage);
       const interval = setInterval(() => {
+        console.log('[SLIDESHOW] Auto-advancing from image:', currentImage);
         setIsManualDrag(false); // Ensure we know this is automatic
         emblaApi.scrollNext();
       }, currentImage === 0 ? 12600 : currentImage === 1 ? 11400 : 42000); // First: 12.6s, Second: 11.4s, Third: 42s
       
-      return () => clearInterval(interval);
+      return () => {
+        console.log('[SLIDESHOW] Clearing interval for image:', currentImage);
+        clearInterval(interval);
+      };
+    } else {
+      console.log('[SLIDESHOW] NOT starting interval - isCarouselReady:', isCarouselReady, 'emblaApi:', !!emblaApi, 'isManualDrag:', isManualDrag);
     }
   }, [isCarouselReady, emblaApi, currentImage, isManualDrag]);
 
