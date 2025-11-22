@@ -372,7 +372,7 @@
 }
 
 .cityscape-fade-in.visible {
-  opacity: 0.2;
+  opacity: 0.5;
 }
 
 /* Animation utilities and effects */
