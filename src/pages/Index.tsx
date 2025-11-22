@@ -26,7 +26,7 @@ const Index = () => {
   
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     loop: true,
-    duration: 30
+    duration: 40
   });
 
   useEffect(() => {
@@ -210,15 +210,8 @@ const Index = () => {
                     <div className="absolute inset-0 bg-black/20"></div>
                     
                     {/* Floating Quote - only appears on first image */}
-                    {showQuote && index === 0 && !quoteFadingOut && (
-                      <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%] transition-opacity duration-[4000ms] opacity-100 animate-fade-out-quote">
-                        <blockquote className="literary-quote text-white/90 leading-relaxed">
-                          <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
-                        </blockquote>
-                      </div>
-                    )}
-                    {showQuote && index === 0 && quoteFadingOut && (
-                      <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%] transition-opacity duration-[4000ms] opacity-0">
+                    {showQuote && index === 0 && (
+                      <div className={`absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%] transition-opacity duration-[4000ms] ${quoteFadingOut ? 'opacity-0' : 'opacity-100'}`}>
                         <blockquote className="literary-quote text-white/90 leading-relaxed">
                           <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
                         </blockquote>
