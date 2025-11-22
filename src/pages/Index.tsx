@@ -17,7 +17,6 @@ const Index = () => {
   const [animateTvText, setAnimateTvText] = useState(false);
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
-  const [animationKey, setAnimationKey] = useState(0);
 
   const images = [
     officeView,
@@ -87,39 +86,20 @@ const Index = () => {
   // Ensure carousel is ready when slideshow becomes visible
   useEffect(() => {
     if (showMagazine && emblaApi) {
-      console.log('[Carousel] Slideshow became visible, resetting...');
       setIsCarouselReady(false); // Reset ready state
-      setIsManualDrag(false); // Reset manual drag state
-      setAnimationKey(prev => prev + 1); // Force animation reset
-      emblaApi.reInit(); // Reinitialize carousel
-      
-      // Use timeout instead of reInit event for more reliable mobile behavior
-      const readyTimer = setTimeout(() => {
-        console.log('[Carousel] Setting carousel ready and clearing manual drag');
-        setIsManualDrag(false); // Ensure manual drag is false when ready
-        setIsCarouselReady(true);
-      }, 150);
-      
-      return () => clearTimeout(readyTimer);
+      emblaApi.reInit(); // This will trigger the 'reInit' event
     }
   }, [showMagazine, emblaApi]);
 
   useEffect(() => {
     // Auto-dissolve between images
     if (isCarouselReady && emblaApi && !isManualDrag) {
-      console.log(`[Carousel] Starting auto-advance timer for image ${currentImage}`);
       const interval = setInterval(() => {
-        console.log('[Carousel] Auto-advancing to next slide');
         setIsManualDrag(false); // Ensure we know this is automatic
         emblaApi.scrollNext();
       }, currentImage === 0 ? 12600 : currentImage === 1 ? 11400 : 42000); // First: 12.6s, Second: 11.4s, Third: 42s
       
-      return () => {
-        console.log('[Carousel] Clearing auto-advance timer');
-        clearInterval(interval);
-      };
-    } else {
-      console.log(`[Carousel] Auto-advance blocked - ready: ${isCarouselReady}, embla: ${!!emblaApi}, manualDrag: ${isManualDrag}`);
+      return () => clearInterval(interval);
     }
   }, [isCarouselReady, emblaApi, currentImage, isManualDrag]);
 
@@ -227,7 +207,6 @@ const Index = () => {
                 <div key={index} className="embla__slide">
                   <div className="relative w-screen h-screen overflow-hidden">
                     <img 
-                      key={`slide-${index}-${animationKey}`}
                       src={image}
                       alt={`Slide ${index + 1}`}
                       className={`absolute inset-0 w-full h-full object-cover ${index === 0 && currentImage === 0 && isCarouselReady ? "animate-slow-zoom" : ""} ${index === 1 && currentImage === 1 && isCarouselReady ? "animate-slow-zoom-out" : ""}`}
