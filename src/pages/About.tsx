@@ -16,12 +16,6 @@ import japaneseRoom from "@/assets/about-japanese-room.png";
 import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
-import paintSplatterPink from "@/assets/paint-splatter-pink.png";
-import paintSplatterCyan from "@/assets/paint-splatter-cyan.png";
-import paintSplatterYellow from "@/assets/paint-splatter-yellow.png";
-import paintSplatterOrange from "@/assets/paint-splatter-orange.png";
-import paintSplatterPurple from "@/assets/paint-splatter-purple.png";
-import paintSplatterGreen from "@/assets/paint-splatter-green.png";
 
 const About = () => {
   const visibleElements = useScrollAnimation();
@@ -131,51 +125,6 @@ const About = () => {
           </div>
         </div>
 
-      </div>
-      
-      {/* Paint Splatter Overlay - Decorative elements on top of all content */}
-      <div className="fixed inset-0 pointer-events-none z-50" aria-hidden="true">
-        {/* Pink splatter - top right of bio section */}
-        <OptimizedImage 
-          src={paintSplatterPink}
-          alt=""
-          className="absolute top-[22%] right-[8%] w-24 h-24 opacity-80 max-sm:hidden"
-        />
-        
-        {/* Cyan splatter - left side near artist portrait */}
-        <OptimizedImage 
-          src={paintSplatterCyan}
-          alt=""
-          className="absolute top-[28%] left-[12%] w-20 h-20 opacity-75 max-sm:w-16 max-sm:h-16 max-sm:top-[32%] max-sm:left-[8%]"
-        />
-        
-        {/* Yellow splatter - bottom right of portrait section */}
-        <OptimizedImage 
-          src={paintSplatterYellow}
-          alt=""
-          className="absolute top-[45%] right-[15%] w-28 h-28 opacity-85 max-sm:hidden"
-        />
-        
-        {/* Orange splatter - upper area near background image */}
-        <OptimizedImage 
-          src={paintSplatterOrange}
-          alt=""
-          className="absolute top-[52%] left-[6%] w-22 h-22 opacity-70 max-sm:top-[60%] max-sm:w-14 max-sm:h-14"
-        />
-        
-        {/* Purple splatter - between text overlays */}
-        <OptimizedImage 
-          src={paintSplatterPurple}
-          alt=""
-          className="absolute top-[68%] right-[25%] w-26 h-26 opacity-80 max-sm:hidden"
-        />
-        
-        {/* Green splatter - near footer area */}
-        <OptimizedImage 
-          src={paintSplatterGreen}
-          alt=""
-          className="absolute top-[78%] left-[18%] w-24 h-24 opacity-75 max-sm:top-[85%] max-sm:left-[10%] max-sm:w-16 max-sm:h-16"
-        />
       </div>
       
       <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 relative z-10 max-sm:py-8 -mt-[63px]">
