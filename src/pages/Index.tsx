@@ -17,7 +17,9 @@ const Index = () => {
   const [animateTvText, setAnimateTvText] = useState(false);
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
+  const [isCarouselVisible, setIsCarouselVisible] = useState(false);
   const showMagazineRef = useRef(false);
+  const carouselContainerRef = useRef<HTMLDivElement>(null);
 
   const images = [
     officeView,
@@ -101,9 +103,26 @@ const Index = () => {
     }
   }, [showMagazine, emblaApi]);
 
+  // Intersection Observer to detect when slideshow is visible
   useEffect(() => {
-    // Auto-dissolve between images
-    if (isCarouselReady && emblaApi && !isManualDrag) {
+    if (!carouselContainerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsCarouselVisible(entry.isIntersecting && entry.intersectionRatio > 0.5);
+        });
+      },
+      { threshold: [0.5] }
+    );
+
+    observer.observe(carouselContainerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    // Auto-dissolve between images - only when carousel is ready AND visible
+    if (isCarouselReady && isCarouselVisible && emblaApi && !isManualDrag) {
       console.log('[SLIDESHOW] Starting auto-advance interval for image:', currentImage);
       const interval = setInterval(() => {
         console.log('[SLIDESHOW] Auto-advancing from image:', currentImage);
@@ -116,9 +135,9 @@ const Index = () => {
         clearInterval(interval);
       };
     } else {
-      console.log('[SLIDESHOW] NOT starting interval - isCarouselReady:', isCarouselReady, 'emblaApi:', !!emblaApi, 'isManualDrag:', isManualDrag);
+      console.log('[SLIDESHOW] NOT starting interval - isCarouselReady:', isCarouselReady, 'isCarouselVisible:', isCarouselVisible, 'emblaApi:', !!emblaApi, 'isManualDrag:', isManualDrag);
     }
-  }, [isCarouselReady, emblaApi, currentImage, isManualDrag]);
+  }, [isCarouselReady, isCarouselVisible, emblaApi, currentImage, isManualDrag]);
 
   // Handle TV text animation timing
   useEffect(() => {
@@ -217,7 +236,7 @@ const Index = () => {
         </div>
 
         {/* Magazine Cover Section */}
-        <div className={`magazine-slide ${showMagazine ? "visible" : ""} embla`}>
+        <div ref={carouselContainerRef} className={`magazine-slide ${showMagazine ? "visible" : ""} embla`}>
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container">
               {images.map((image, index) => (
