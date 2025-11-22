@@ -59,8 +59,12 @@ const Index = () => {
   useEffect(() => {
     if (!emblaApi) return;
     
-    const onPointerDown = () => {
-      setIsManualDrag(true);
+    const onPointerDown = (evt: any) => {
+      // Only set manual drag if user is actually dragging on the carousel
+      // Ignore if it's just a scroll gesture
+      if (evt && evt.type === 'pointerdown') {
+        setIsManualDrag(true);
+      }
     };
     
     const onSettle = () => {
@@ -95,8 +99,7 @@ const Index = () => {
   // Ensure carousel is ready when slideshow becomes visible
   useEffect(() => {
     if (showMagazine && emblaApi) {
-      console.log('[SLIDESHOW] Calling reInit, resetting isCarouselReady');
-      setIsCarouselReady(false); // Reset ready state
+      console.log('[SLIDESHOW] Calling reInit');
       emblaApi.reInit(); // This will trigger the 'reInit' event
     }
   }, [showMagazine, emblaApi]);
@@ -105,21 +108,28 @@ const Index = () => {
   useEffect(() => {
     // Auto-dissolve between images - starts immediately when carousel is ready
     if (isCarouselReady && emblaApi && !isManualDrag) {
-      console.log('[SLIDESHOW] Starting auto-advance interval for image:', currentImage);
+      // Read current slide index dynamically to avoid stale closure
+      const currentSlide = emblaApi.selectedScrollSnap();
+      console.log('[SLIDESHOW] Starting auto-advance interval for image:', currentSlide);
+      
+      // Calculate duration based on current slide
+      const duration = currentSlide === 0 ? 12600 : currentSlide === 1 ? 11400 : 42000;
+      
       const interval = setInterval(() => {
-        console.log('[SLIDESHOW] Auto-advancing from image:', currentImage);
+        const slideBeforeAdvance = emblaApi.selectedScrollSnap();
+        console.log('[SLIDESHOW] Auto-advancing from image:', slideBeforeAdvance);
         setIsManualDrag(false); // Ensure we know this is automatic
         emblaApi.scrollNext();
-      }, currentImage === 0 ? 12600 : currentImage === 1 ? 11400 : 42000); // First: 12.6s, Second: 11.4s, Third: 42s
+      }, duration);
       
       return () => {
-        console.log('[SLIDESHOW] Clearing interval for image:', currentImage);
+        console.log('[SLIDESHOW] Clearing interval');
         clearInterval(interval);
       };
     } else {
       console.log('[SLIDESHOW] NOT starting interval - isCarouselReady:', isCarouselReady, 'emblaApi:', !!emblaApi, 'isManualDrag:', isManualDrag);
     }
-  }, [isCarouselReady, emblaApi, currentImage, isManualDrag]);
+  }, [isCarouselReady, emblaApi, isManualDrag]);
 
   // Handle TV text animation timing
   useEffect(() => {
