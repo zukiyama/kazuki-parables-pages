@@ -13,6 +13,7 @@ const Index = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
+  const [quoteFadingOut, setQuoteFadingOut] = useState(false);
   const [showTvText, setShowTvText] = useState(false);
   const [animateTvText, setAnimateTvText] = useState(false);
   const [isManualDrag, setIsManualDrag] = useState(false);
@@ -84,6 +85,20 @@ const Index = () => {
       return () => clearInterval(interval);
     }
   }, [showMagazine, emblaApi, currentImage, isManualDrag]);
+
+  // Handle quote fade-out timing on first image
+  useEffect(() => {
+    if (currentImage === 0 && showQuote && !isManualDrag) {
+      setQuoteFadingOut(false);
+      // Start fading after 6 seconds
+      const fadeTimer = setTimeout(() => {
+        setQuoteFadingOut(true);
+      }, 6000);
+      return () => clearTimeout(fadeTimer);
+    } else if (currentImage !== 0) {
+      setQuoteFadingOut(false);
+    }
+  }, [currentImage, showQuote, isManualDrag]);
 
   // Handle TV text animation timing
   useEffect(() => {
@@ -198,7 +213,7 @@ const Index = () => {
                     
                     {/* Floating Quote - only appears on first image */}
                     {showQuote && index === 0 && (
-                      <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%]">
+                      <div className={`absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%] transition-opacity duration-[3000ms] ${quoteFadingOut ? 'opacity-0' : 'opacity-100'}`}>
                         <blockquote className="literary-quote text-white/90 leading-relaxed">
                           <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
                         </blockquote>
