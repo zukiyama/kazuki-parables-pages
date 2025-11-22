@@ -211,7 +211,7 @@ const Index = () => {
                     
                     {/* Floating Quote - only appears on first image */}
                     {showQuote && index === 0 && (
-                      <div className={`absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%] transition-opacity duration-[4000ms] ${quoteFadingOut ? 'opacity-0' : 'opacity-100'}`}>
+                      <div className={`absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%] transition-opacity duration-[3000ms] ${quoteFadingOut ? 'opacity-0' : 'opacity-100'}`}>
                         <blockquote className="literary-quote text-white/90 leading-relaxed">
                           <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
                         </blockquote>
