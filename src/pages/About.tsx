@@ -1,3 +1,4 @@
+import React from "react";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import Navigation from "@/components/Navigation";
 import { useScrollAnimation } from "@/components/ScrollAnimations";
@@ -16,9 +17,29 @@ import japaneseRoom from "@/assets/about-japanese-room.png";
 import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
+import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
 
 const About = () => {
   const visibleElements = useScrollAnimation();
+  const [showCityscape, setShowCityscape] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercentage = scrollPosition / pageHeight;
+      
+      // Trigger cityscape fade-in a few seconds after scrolling 2/3 down the page
+      if (scrollPercentage >= 0.66 && !showCityscape) {
+        setTimeout(() => {
+          setShowCityscape(true);
+        }, 3000); // 3 second delay after reaching 2/3 scroll
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [showCityscape]);
   
   return (
     <div className="min-h-screen bg-white">
@@ -73,6 +94,17 @@ const About = () => {
             className={`relative pointer-events-none overflow-hidden scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
             style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}
           >
+            {/* Cityscape layer behind everything - desktop only */}
+            <div className={`absolute inset-0 max-sm:hidden transition-opacity duration-[10000ms] ${showCityscape ? 'opacity-75' : 'opacity-0'}`}>
+              <OptimizedImage
+                src={cityscapeAerial}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+              {/* White gradient at top of cityscape */}
+              <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent pointer-events-none" />
+            </div>
+            
             {/* Mobile: Child portrait as background */}
             <OptimizedImage
               src={childPortrait}
@@ -84,11 +116,11 @@ const About = () => {
             <OptimizedImage
               src={backgroundSphere}
               alt=""
-              className="w-full h-auto object-cover max-sm:hidden"
+              className="w-full h-auto object-cover max-sm:hidden relative z-10"
             />
             
-            {/* White overlay to replicate 80% opacity faded effect */}
-            <div className="absolute inset-0 bg-white/20 max-sm:hidden pointer-events-none" />
+            {/* White overlay to replicate 80% opacity faded effect - affects both cityscape and background */}
+            <div className="absolute inset-0 bg-white/20 max-sm:hidden pointer-events-none z-20" />
             
             {/* Desktop text and signature - hidden on mobile */}
             <div 
