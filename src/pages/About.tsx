@@ -95,7 +95,10 @@ const About = () => {
             style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '0.75rem', paddingRight: '0.75rem' }}
           >
             {/* Cityscape layer behind everything - desktop only */}
-            <div className={`absolute inset-0 max-sm:hidden transition-opacity duration-[10000ms] ${showCityscape ? 'opacity-75' : 'opacity-0'}`}>
+            <div 
+              className={`absolute inset-0 max-sm:hidden z-0 ${showCityscape ? 'animate-cityscape-fade-in' : 'opacity-0'}`}
+              style={{ animationDuration: '10s', animationFillMode: 'forwards' }}
+            >
               <OptimizedImage
                 src={cityscapeAerial}
                 alt=""
@@ -112,12 +115,20 @@ const About = () => {
               className="w-full h-auto object-cover sm:hidden"
             />
             
-            {/* Desktop: PNG overlay with transparent areas */}
-            <OptimizedImage
-              src={backgroundSphere}
-              alt=""
-              className="w-full h-auto object-cover max-sm:hidden relative z-10"
-            />
+            {/* Desktop: PNG overlay with transparent areas - slightly enlarged to cover edges */}
+            <div 
+              className="relative z-10 max-sm:hidden" 
+              style={{ 
+                transform: 'scale(1.02)',
+                transformOrigin: 'center bottom'
+              }}
+            >
+              <OptimizedImage
+                src={backgroundSphere}
+                alt=""
+                className="w-full h-auto object-cover"
+              />
+            </div>
             
             {/* White overlay to replicate 80% opacity faded effect - affects both cityscape and background */}
             <div className="absolute inset-0 bg-white/20 max-sm:hidden pointer-events-none z-20" />
@@ -151,10 +162,10 @@ const About = () => {
             {/* Desktop text at bottom right - hidden on mobile */}
             <div 
               data-scroll-animation="bottom-right-text"
-              className={`absolute bottom-[24%] right-[12%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-right ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
+              className={`absolute bottom-[24%] right-[12%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-right z-30 ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
             >
               <p className="font-body text-2xl lg:text-3xl text-white italic">
-                The eye closes,<br/><span className="inline-block pl-8 mt-6">Reality appears</span>
+                the eye closes,<br/><span className="inline-block pl-8 mt-6">reality appears</span>
               </p>
             </div>
           </div>
