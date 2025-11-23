@@ -146,7 +146,7 @@ const About = () => {
               <OptimizedImage 
                 src={signatureYamakawa}
                 alt="Yamakawa signature"
-                className="w-32 h-auto ml-3"
+                className="w-32 h-auto ml-3 opacity-90"
               />
             </div>
             
