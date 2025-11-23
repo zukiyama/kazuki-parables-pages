@@ -131,7 +131,7 @@ const About = () => {
             </div>
             
             {/* White overlay to replicate 80% opacity faded effect - affects both cityscape and background */}
-            <div className="absolute inset-0 bg-white/40 max-sm:hidden pointer-events-none z-20" />
+            <div className="absolute inset-0 bg-white/30 max-sm:hidden pointer-events-none z-20" />
             
             {/* Desktop text and signature - hidden on mobile */}
             <div 
