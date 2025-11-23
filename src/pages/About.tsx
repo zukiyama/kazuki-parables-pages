@@ -87,8 +87,8 @@ const About = () => {
               className="w-full h-auto object-cover max-sm:hidden"
             />
             
-            {/* Dark overlay for faded effect */}
-            <div className="absolute inset-0 bg-black/20 max-sm:hidden pointer-events-none" />
+            {/* White overlay to replicate 80% opacity faded effect */}
+            <div className="absolute inset-0 bg-white/20 max-sm:hidden pointer-events-none" />
             
             {/* Desktop text and signature - hidden on mobile */}
             <div 
