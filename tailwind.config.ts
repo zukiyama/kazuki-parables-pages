@@ -139,6 +139,14 @@ export default {
 						transform: 'scale(1)',
 						opacity: '0'
 					}
+				},
+				'cityscape-fade-in': {
+					'0%': {
+						opacity: '0'
+					},
+					'100%': {
+						opacity: '0.6'
+					}
 				}
 			},
 			animation: {
@@ -146,7 +154,8 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'float': 'float 3s ease-out forwards',
 				'slow-zoom': 'slow-zoom 30s ease-in-out infinite',
-				'quote-expand': 'quote-expand 30s ease-in-out infinite'
+				'quote-expand': 'quote-expand 30s ease-in-out infinite',
+				'cityscape-fade-in': 'cityscape-fade-in 10s ease-out forwards'
 			}
 		}
 	},
