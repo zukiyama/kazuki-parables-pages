@@ -15,7 +15,7 @@ import parisAerial from "@/assets/about-paris-aerial.jpeg";
 import backgroundSphere from "@/assets/about-background-new.png";
 import japaneseRoom from "@/assets/about-japanese-room.png";
 import taiChiPark from "@/assets/about-tai-chi-park.png";
-import signatureYamakawa from "@/assets/signature-yamakawa.jpeg";
+import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
 
@@ -146,7 +146,7 @@ const About = () => {
               <OptimizedImage 
                 src={signatureYamakawa}
                 alt="Yamakawa signature"
-                className="w-32 h-auto opacity-90"
+                className="w-32 h-auto opacity-90 ml-3"
               />
             </div>
             
