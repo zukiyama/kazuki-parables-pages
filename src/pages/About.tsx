@@ -136,9 +136,9 @@ const About = () => {
             {/* Desktop text and signature - hidden on mobile */}
             <div 
               data-scroll-animation="quote-text"
-              className={`absolute top-[15%] left-[8%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-left ${visibleElements.has("quote-text") ? "visible" : ""}`}
+              className={`absolute top-[15%] left-[8%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-left z-30 ${visibleElements.has("quote-text") ? "visible" : ""}`}
             >
-              <p className="font-body text-base lg:text-lg leading-relaxed text-foreground/90 mb-6 italic">
+              <p className="font-body text-base lg:text-lg leading-relaxed text-foreground mb-6 italic">
                 I have always preferred to withdraw from society, finding solace in quiet observation 
                 rather than participation. The world moves too quickly for meaningful reflection, and 
                 in my solitude, I discover the stories worth telling.
@@ -146,7 +146,7 @@ const About = () => {
               <OptimizedImage 
                 src={signatureYamakawa}
                 alt="Yamakawa signature"
-                className="w-32 h-auto opacity-90 ml-3"
+                className="w-32 h-auto ml-3"
               />
             </div>
             
