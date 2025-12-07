@@ -272,25 +272,25 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  {/* Japanese newspaper clipping style */}
+                  {/* Japanese newspaper clipping style - semi-transparent */}
                   <div className="relative">
-                    <div className="bg-amber-50 p-6 shadow-xl rounded" style={{
-                      background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fef3c7 100%)'
+                    <div className="p-6 shadow-xl rounded backdrop-blur-sm" style={{
+                      background: 'linear-gradient(135deg, rgba(254, 243, 199, 0.85) 0%, rgba(253, 230, 138, 0.85) 50%, rgba(254, 243, 199, 0.85) 100%)'
                     }}>
                       <div className="border-b-2 border-amber-900/30 pb-3 mb-4">
-                        <span className="text-amber-900/60 text-xs tracking-widest font-mono">夏 1979 • SUMMER CHRONICLE</span>
+                        <span className="text-amber-900/80 text-xs tracking-widest font-mono">夏 1979 • SUMMER CHRONICLE</span>
                       </div>
                       <h2 className="font-serif text-5xl font-bold mb-2 text-amber-900">
                         KAIJU
                       </h2>
-                      <h3 className="font-serif text-xl text-amber-700 mb-4 tracking-wide border-b border-amber-900/20 pb-3">
+                      <h3 className="font-serif text-xl text-amber-800 mb-4 tracking-wide border-b border-amber-900/20 pb-3">
                         Book One of The Parable Trilogy
                       </h3>
-                      <p className="font-serif text-base leading-relaxed text-amber-900/90">
+                      <p className="font-serif text-base leading-relaxed text-amber-900">
                         A mystery unfolds in a small Japanese town in summer 1979, where a group of boys discover that no one remembers how they got there. Strange creatures appear in the sky while the children search for answers in their forgotten past.
                       </p>
                       <div className="mt-4 flex justify-end">
-                        <span className="text-amber-800/50 text-xs font-mono">第一巻</span>
+                        <span className="text-amber-800/60 text-xs font-mono">第一巻</span>
                       </div>
                     </div>
                   </div>
@@ -319,19 +319,18 @@ const Writing = () => {
                 <div className={`order-2 transition-all duration-1000 delay-500 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  {/* Pale newspaper style */}
+                  {/* Beige newspaper style - semi-transparent, matching KAIJU */}
                   <div className="relative">
-                    <div className="p-6 border border-stone-200/60 rounded" style={{
-                      background: 'linear-gradient(145deg, #fafafa 0%, #f5f5f4 50%, #fafafa 100%)',
-                      boxShadow: '4px 4px 15px rgba(0,0,0,0.1)'
+                    <div className="p-6 shadow-xl rounded backdrop-blur-sm" style={{
+                      background: 'linear-gradient(145deg, rgba(254, 243, 199, 0.85) 0%, rgba(253, 230, 138, 0.85) 50%, rgba(254, 243, 199, 0.85) 100%)'
                     }}>
-                      <div className="border-b border-stone-300/40 pb-2 mb-4">
-                        <span className="text-stone-500 text-xs" style={{ fontFamily: 'serif' }}>Literary Fiction</span>
+                      <div className="border-b border-amber-900/30 pb-2 mb-4">
+                        <span className="text-amber-900/80 text-xs" style={{ fontFamily: 'serif' }}>Literary Fiction</span>
                       </div>
-                      <h2 className="text-4xl font-bold mb-4 text-stone-800" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                      <h2 className="text-4xl font-bold mb-4 text-amber-900" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
                         HOAX
                       </h2>
-                      <p className="text-base leading-relaxed text-stone-700" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.7' }}>
+                      <p className="text-base leading-relaxed text-amber-900" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.7' }}>
                         A writer named Peter Carlyle wrote a book, then received a mysterious phone call. When he drove to the location, it felt like he was living inside his own story. Set in a strange commune in the Australian outback, where fairy lights drape over entrance arches and secrets hide in the vegetable patches.
                       </p>
                     </div>
