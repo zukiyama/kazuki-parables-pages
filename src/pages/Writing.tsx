@@ -272,27 +272,16 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  {/* Japanese newspaper clipping style - semi-transparent */}
-                  <div className="relative">
-                    <div className="p-6 shadow-xl rounded backdrop-blur-sm" style={{
-                      background: 'linear-gradient(135deg, rgba(254, 243, 199, 0.85) 0%, rgba(253, 230, 138, 0.85) 50%, rgba(254, 243, 199, 0.85) 100%)'
-                    }}>
-                      <div className="border-b-2 border-amber-900/30 pb-3 mb-4">
-                        <span className="text-amber-900/80 text-xs tracking-widest font-mono">夏 1979 • SUMMER CHRONICLE</span>
-                      </div>
-                      <h2 className="font-serif text-5xl font-bold mb-2 text-amber-900">
-                        KAIJU
-                      </h2>
-                      <h3 className="font-serif text-xl text-amber-800 mb-4 tracking-wide border-b border-amber-900/20 pb-3">
-                        Book One of The Parable Trilogy
-                      </h3>
-                      <p className="font-serif text-base leading-relaxed text-amber-900">
-                        A mystery unfolds in a small Japanese town in summer 1979, where a group of boys discover that no one remembers how they got there. Strange creatures appear in the sky while the children search for answers in their forgotten past.
-                      </p>
-                      <div className="mt-4 flex justify-end">
-                        <span className="text-amber-800/60 text-xs font-mono">第一巻</span>
-                      </div>
-                    </div>
+                  <div className="bg-gray-400/90 backdrop-blur-sm p-6 rounded shadow-xl">
+                    <h2 className="font-serif text-5xl font-bold mb-2 text-white">
+                      KAIJU
+                    </h2>
+                    <h3 className="font-serif text-xl text-white/90 mb-4 tracking-wide">
+                      Book One of The Parable Trilogy
+                    </h3>
+                    <p className="font-serif text-base leading-relaxed text-white">
+                      A mystery unfolds in a small Japanese town in summer 1979, where a group of boys discover that no one remembers how they got there. Strange creatures appear in the sky while the children search for answers in their forgotten past.
+                    </p>
                   </div>
                 </div>
               </div>
