@@ -76,10 +76,7 @@ const About = () => {
                 Kazuki Yamakawa
               </h1>
               <p className="font-body text-base lg:text-lg leading-relaxed text-foreground/80 max-w-2xl">
-                Kazuki Yamakawa is a multi-disciplinary artist creating immersive worlds through literature, music and visual storytelling. He has lived in various countries but calls England home. Having spent his early years in bands, and feeling similarly unfulfilled as a writer in the games industry, he decided in the 2010's to pursue the work that had been his lifelong vocation. Combining an interest in metaphysics with an unusual invention, his literary works explore what it is to be real while remaining above all things, deeply human.
-              </p>
-              <p className="font-body text-base lg:text-lg leading-relaxed text-foreground/80 max-w-2xl mt-4">
-                The best way to get to know his music is to head over to the music page where samples are available as well as links to Spotify/Bandcamp et al.
+                Kazuki Yamakawa is a multi-disciplinary artist working in literature, music and visual storytelling. He has lived in various countries but calls England home. Having spent his early years in music, and feeling similarly unfulfilled as a writer in the games industry, he decided in the 2010's to pursue the work that had been his lifelong vocation. Combining an interest in metaphysics with an unusual invention and lightness in tone, his literary works explore what it is to be real while remaining above all things, deeply human. The best way to get to know his music is to head over to the music page where samples are available as well as links to Spotify/Bandcamp et al.
               </p>
             </div>
           </div>
@@ -135,13 +132,13 @@ const About = () => {
             {/* Desktop text and signature - hidden on mobile */}
             <div 
               data-scroll-animation="quote-text"
-              className={`absolute top-[15%] left-[8%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-left z-30 ${visibleElements.has("quote-text") ? "visible" : ""}`}
+              className={`absolute top-[calc(15%-12px)] left-[8%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-left z-30 ${visibleElements.has("quote-text") ? "visible" : ""}`}
             >
               <p className="font-body text-base lg:text-lg leading-relaxed text-foreground mb-6 italic">
-                I have always had the flaw of describing myself through my interests, because I suppose that I don't feel I can be seen any other way. And so: if it weren't for the hours I had wasted burying action figures and reading Tintin behind the computer monitor on my desk; if I had spent the summer revising rather than learning to hold an open A major on an old half size acoustic guitar - in short, if I hadn't have traded what I should be doing for what I love, achievement, elevation, and success for erring, curiosity, and wonder I should never have found this hapless grove so populated as it is with the bright things that still sustain me.
+                I have always had the flaw of describing myself through my interests, because I suppose that I don't feel I can be seen any other way. And so: if it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk; if I had spent the summer revising rather than learning to hold an open A major on an old half size acoustic guitar - in short, if I hadn't have traded what I should be doing for what I love, achievement, elevation, and success for erring, curiosity, and wonder, I should never have found this hapless grove in which I am so brightly sustained.
               </p>
               <p className="font-body text-base lg:text-lg leading-relaxed text-foreground mb-6 italic">
-                Because gardens appear whether you mean them to or not, and these many years later my action figures have grown taller than me.
+                Gardens appear whether you mean them to or not, and these many years later my action figures have grown taller than the boy that buried them.
               </p>
               <OptimizedImage 
                 src={signatureYamakawa}
