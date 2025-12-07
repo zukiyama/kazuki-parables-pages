@@ -289,13 +289,46 @@ const Writing = () => {
           </div>
         </section>
 
-        {/* HOAX Section - Fixed require error */}
+        {/* HOAX Section - Memo style */}
         <section data-section="hoax" className="min-h-[90vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className={`order-1 transition-all duration-1000 delay-300 ${
+                <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
+                }`}>
+                  {/* Memo sheet taped to page */}
+                  <div className="relative">
+                    {/* Tape corners */}
+                    <div className="absolute -top-2 -left-2 w-10 h-6 bg-amber-100/80 rotate-[-15deg] shadow-sm" style={{ 
+                      background: 'linear-gradient(135deg, rgba(254, 249, 195, 0.9) 0%, rgba(253, 224, 71, 0.6) 100%)'
+                    }}></div>
+                    <div className="absolute -top-2 -right-2 w-10 h-6 bg-amber-100/80 rotate-[12deg] shadow-sm" style={{ 
+                      background: 'linear-gradient(135deg, rgba(254, 249, 195, 0.9) 0%, rgba(253, 224, 71, 0.6) 100%)'
+                    }}></div>
+                    <div className="absolute -bottom-2 -left-2 w-10 h-6 bg-amber-100/80 rotate-[10deg] shadow-sm" style={{ 
+                      background: 'linear-gradient(135deg, rgba(254, 249, 195, 0.9) 0%, rgba(253, 224, 71, 0.6) 100%)'
+                    }}></div>
+                    <div className="absolute -bottom-2 -right-2 w-10 h-6 bg-amber-100/80 rotate-[-8deg] shadow-sm" style={{ 
+                      background: 'linear-gradient(135deg, rgba(254, 249, 195, 0.9) 0%, rgba(253, 224, 71, 0.6) 100%)'
+                    }}></div>
+                    
+                    {/* Memo paper */}
+                    <div className="p-8 shadow-lg" style={{
+                      background: 'linear-gradient(180deg, #fffef5 0%, #fefce8 50%, #fef9c3 100%)',
+                      boxShadow: '2px 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)'
+                    }}>
+                      <h2 className="text-3xl font-normal mb-5 text-stone-700 tracking-wide" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
+                        HOAX
+                      </h2>
+                      <p className="text-base leading-loose text-stone-600" style={{ fontFamily: 'Georgia, Times New Roman, serif', lineHeight: '1.9' }}>
+                        A writer named Peter Carlyle wrote a book, then received a mysterious phone call. When he drove to the location, it felt like he was living inside his own story. Set in a strange commune in the Australian outback, where fairy lights drape over entrance arches and secrets hide in the vegetable patches.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className={`order-1 lg:order-2 transition-all duration-1000 delay-300 ${
+                  visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   <BookCoverSlideshow 
                     covers={[
@@ -304,26 +337,6 @@ const Writing = () => {
                     title="HOAX"
                     loading="lazy"
                   />
-                </div>
-                <div className={`order-2 transition-all duration-1000 delay-500 ${
-                  visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
-                }`}>
-                  {/* Beige newspaper style - semi-transparent, matching KAIJU */}
-                  <div className="relative">
-                    <div className="p-6 shadow-xl rounded backdrop-blur-sm" style={{
-                      background: 'linear-gradient(145deg, rgba(254, 243, 199, 0.85) 0%, rgba(253, 230, 138, 0.85) 50%, rgba(254, 243, 199, 0.85) 100%)'
-                    }}>
-                      <div className="border-b border-amber-900/30 pb-2 mb-4">
-                        <span className="text-amber-900/80 text-xs" style={{ fontFamily: 'serif' }}>Literary Fiction</span>
-                      </div>
-                      <h2 className="text-4xl font-bold mb-4 text-amber-900" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
-                        HOAX
-                      </h2>
-                      <p className="text-base leading-relaxed text-amber-900" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.7' }}>
-                        A writer named Peter Carlyle wrote a book, then received a mysterious phone call. When he drove to the location, it felt like he was living inside his own story. Set in a strange commune in the Australian outback, where fairy lights drape over entrance arches and secrets hide in the vegetable patches.
-                      </p>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
