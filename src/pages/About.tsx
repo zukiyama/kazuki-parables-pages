@@ -64,11 +64,11 @@ const About = () => {
         {/* Artist Portrait & Bio Section */}
         <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
           {/* Paint streak overlays behind content */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
             <img 
               src={paintSplatterPink} 
               alt="" 
-              className="absolute left-1/3 -top-8 w-40 h-auto opacity-60 rotate-[25deg]"
+              className="absolute left-1/3 top-0 w-40 h-auto opacity-60 rotate-[25deg]"
             />
             <img 
               src={paintSplatterYellow} 
