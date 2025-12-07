@@ -19,7 +19,7 @@ import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
 import paintSplatterPink from "@/assets/paint-splatter-pink.png";
-import paintSplatterCyan from "@/assets/paint-splatter-cyan.png";
+
 import paintSplatterYellow from "@/assets/paint-splatter-yellow.png";
 import paintSplatterOrange from "@/assets/paint-splatter-orange.png";
 const About = () => {
@@ -68,12 +68,7 @@ const About = () => {
             <img 
               src={paintSplatterPink} 
               alt="" 
-              className="absolute -left-10 top-1/4 w-40 h-auto opacity-60 rotate-[-15deg]"
-            />
-            <img 
-              src={paintSplatterCyan} 
-              alt="" 
-              className="absolute left-1/3 -top-8 w-36 h-auto opacity-50 rotate-[25deg]"
+              className="absolute left-1/3 -top-8 w-40 h-auto opacity-60 rotate-[25deg]"
             />
             <img 
               src={paintSplatterYellow} 
