@@ -242,6 +242,21 @@ const Index = () => {
                     />
                     <div className="absolute inset-0 bg-black/20"></div>
                     
+                    {/* PARABLE falling text - only on second image */}
+                    {index === 1 && currentImage === 1 && isCarouselReady && (
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div className="flex gap-2 md:gap-4 text-white font-bold tracking-wider" style={{ fontFamily: 'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif' }}>
+                          <span className="text-6xl md:text-9xl animate-letter-fall-1 opacity-0">P</span>
+                          <span className="text-6xl md:text-9xl animate-letter-fall-4 opacity-0">A</span>
+                          <span className="text-6xl md:text-9xl animate-letter-fall-2 opacity-0">R</span>
+                          <span className="text-6xl md:text-9xl animate-letter-fall-6 opacity-0">A</span>
+                          <span className="text-6xl md:text-9xl animate-letter-fall-3 opacity-0">B</span>
+                          <span className="text-6xl md:text-9xl animate-letter-fall-5 opacity-0">L</span>
+                          <span className="text-6xl md:text-9xl animate-letter-fall-7 opacity-0">E</span>
+                        </div>
+                      </div>
+                    )}
+                    
                     {/* Floating Quote - only appears on first image */}
                     {showQuote && index === 0 && (
                       <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%]">
