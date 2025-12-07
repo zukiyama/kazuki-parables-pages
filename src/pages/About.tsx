@@ -19,9 +19,9 @@ import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
 import paintSplatterPink from "@/assets/paint-splatter-pink.png";
-
 import paintSplatterYellow from "@/assets/paint-splatter-yellow.png";
-import paintSplatterOrange from "@/assets/paint-splatter-orange.png";
+import paintSplatterGreen from "@/assets/paint-splatter-green.png";
+import paintSplatterPurple from "@/assets/paint-splatter-purple.png";
 const About = () => {
   const visibleElements = useScrollAnimation();
   const [showCityscape, setShowCityscape] = React.useState(false);
@@ -76,9 +76,9 @@ const About = () => {
               className="absolute right-1/4 top-1/2 w-44 h-auto opacity-55 rotate-[10deg]"
             />
             <img 
-              src={paintSplatterOrange} 
+              src={paintSplatterGreen} 
               alt="" 
-              className="absolute -right-5 bottom-0 w-32 h-auto opacity-50 rotate-[-20deg]"
+              className="absolute right-0 -top-4 w-36 h-auto opacity-55 rotate-[-10deg]"
             />
           </div>
           
@@ -187,6 +187,13 @@ const About = () => {
                 The eye closes,<br/><span className="inline-block pl-8 mt-6">Reality appears</span>
               </p>
             </div>
+            
+            {/* Paint splash at bottom right over the image */}
+            <img 
+              src={paintSplatterPurple} 
+              alt="" 
+              className="absolute bottom-[8%] right-[5%] w-48 h-auto opacity-60 rotate-[15deg] z-40 max-sm:hidden"
+            />
           </div>
         </div>
 
