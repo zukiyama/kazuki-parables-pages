@@ -18,7 +18,10 @@ import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
-
+import paintSplatterPink from "@/assets/paint-splatter-pink.png";
+import paintSplatterCyan from "@/assets/paint-splatter-cyan.png";
+import paintSplatterYellow from "@/assets/paint-splatter-yellow.png";
+import paintSplatterOrange from "@/assets/paint-splatter-orange.png";
 const About = () => {
   const visibleElements = useScrollAnimation();
   const [showCityscape, setShowCityscape] = React.useState(false);
@@ -59,8 +62,32 @@ const About = () => {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-16 max-w-6xl">
         {/* Artist Portrait & Bio Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
-          <div className="lg:col-span-1 flex justify-center lg:justify-start">
+        <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
+          {/* Paint streak overlays behind content */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+            <img 
+              src={paintSplatterPink} 
+              alt="" 
+              className="absolute -left-10 top-1/4 w-40 h-auto opacity-60 rotate-[-15deg]"
+            />
+            <img 
+              src={paintSplatterCyan} 
+              alt="" 
+              className="absolute left-1/3 -top-8 w-36 h-auto opacity-50 rotate-[25deg]"
+            />
+            <img 
+              src={paintSplatterYellow} 
+              alt="" 
+              className="absolute right-1/4 top-1/2 w-44 h-auto opacity-55 rotate-[10deg]"
+            />
+            <img 
+              src={paintSplatterOrange} 
+              alt="" 
+              className="absolute -right-5 bottom-0 w-32 h-auto opacity-50 rotate-[-20deg]"
+            />
+          </div>
+          
+          <div className="lg:col-span-1 flex justify-center lg:justify-start relative z-10">
             <div className="w-80 h-80 relative">
               <OptimizedImage 
                 src={artistPortrait}
@@ -70,7 +97,7 @@ const About = () => {
             </div>
           </div>
           
-          <div className="lg:col-span-2 flex items-center">
+          <div className="lg:col-span-2 flex items-center relative z-10">
             <div className="space-y-6">
               <h1 className="font-heading text-4xl lg:text-5xl tracking-tight text-foreground">
                 Kazuki Yamakawa
