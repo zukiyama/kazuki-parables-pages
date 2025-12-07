@@ -320,23 +320,22 @@ const Writing = () => {
                 <div className={`order-2 transition-all duration-1000 delay-500 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  {/* Post-it note taped to screen */}
-                  <div className="relative transform -rotate-2">
-                    {/* Tape strips */}
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-amber-100/70 transform rotate-3 shadow-sm" style={{ backdropFilter: 'blur(1px)' }}></div>
-                    <div className="bg-yellow-200 p-6 shadow-lg transform" style={{
-                      background: 'linear-gradient(180deg, #fef08a 0%, #fde047 100%)',
-                      boxShadow: '4px 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.5)'
+                  {/* Japanese newspaper clipping style - matching KAIJU */}
+                  <div className="relative transform rotate-1">
+                    <div className="bg-amber-50 p-6 border border-amber-200/60" style={{
+                      background: 'linear-gradient(145deg, #fef3c7 0%, #fde68a 50%, #fef3c7 100%)',
+                      boxShadow: '4px 4px 15px rgba(0,0,0,0.2)',
+                      borderRadius: '2px'
                     }}>
-                      <h2 className="font-serif text-4xl font-bold mb-4 text-amber-900" style={{ fontFamily: 'Georgia, serif' }}>
+                      <div className="border-b border-amber-400/40 pb-2 mb-4">
+                        <span className="text-amber-700/80 text-xs" style={{ fontFamily: 'serif' }}>Literary Fiction</span>
+                      </div>
+                      <h2 className="text-4xl font-bold mb-4 text-amber-900" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
                         HOAX
                       </h2>
-                      <p className="text-lg leading-relaxed text-amber-900/90" style={{ fontFamily: 'Georgia, serif' }}>
+                      <p className="text-base leading-relaxed text-amber-900/85" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.7' }}>
                         A writer named Peter Carlyle wrote a book, then received a mysterious phone call. When he drove to the location, it felt like he was living inside his own story. Set in a strange commune in the Australian outback, where fairy lights drape over entrance arches and secrets hide in the vegetable patches.
                       </p>
-                      <div className="mt-4 text-right">
-                        <span className="text-amber-700/60 text-sm italic">— read this one</span>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -411,26 +410,14 @@ const Writing = () => {
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  {/* Aged parchment letter style */}
-                  <div className="relative transform rotate-1">
-                    <div className="bg-stone-100 p-8 shadow-xl" style={{
-                      background: 'linear-gradient(145deg, #f5f0e6 0%, #e8dfd0 50%, #f5f0e6 100%)',
-                      boxShadow: '6px 6px 20px rgba(0,0,0,0.3)',
-                      borderRadius: '2px'
-                    }}>
-                      <div className="border-b border-stone-400/40 pb-2 mb-4">
-                        <span className="text-stone-500 text-sm italic" style={{ fontFamily: 'Georgia, serif' }}>From the journals of a wanderer...</span>
-                      </div>
-                      <h2 className="text-5xl font-bold mb-4 text-stone-800" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
-                        AMYA
-                      </h2>
-                      <p className="text-base leading-relaxed text-stone-700" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.8' }}>
-                        A haunting tale of mystery and transformation. In a world where ancient secrets collide with modern reality, a young woman discovers that her destiny is intertwined with forces beyond her understanding. As she navigates through layers of deception and truth, she must choose between the life she knows and the path that calls to her soul.
-                      </p>
-                      <div className="mt-6 flex justify-end">
-                        <span className="text-stone-500 italic text-sm" style={{ fontFamily: 'Brush Script MT, cursive' }}>~ a story waiting to be told</span>
-                      </div>
-                    </div>
+                  {/* Original dark overlay style */}
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                      AMYA
+                    </h2>
+                    <p className="font-serif text-lg leading-relaxed text-white" style={{ fontFamily: 'Georgia, serif' }}>
+                      A haunting tale of mystery and transformation. In a world where ancient secrets collide with modern reality, a young woman discovers that her destiny is intertwined with forces beyond her understanding. As she navigates through layers of deception and truth, she must choose between the life she knows and the path that calls to her soul.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -457,29 +444,25 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  {/* Blueprint / technical diagram style */}
+                  {/* Half-typed manuscript style */}
                   <div className="relative">
-                    <div className="bg-blue-950 p-6 border-2 border-blue-400/50" style={{
-                      background: 'linear-gradient(180deg, #172554 0%, #1e3a5f 100%)',
-                      boxShadow: 'inset 0 0 60px rgba(59, 130, 246, 0.1)'
+                    <div className="p-6" style={{
+                      background: 'linear-gradient(180deg, rgba(245, 240, 230, 0.85) 0%, rgba(235, 225, 210, 0.9) 100%)',
+                      boxShadow: '4px 4px 15px rgba(0,0,0,0.15)',
+                      borderRadius: '2px'
                     }}>
-                      {/* Grid overlay */}
-                      <div className="absolute inset-0 opacity-10" style={{
-                        backgroundImage: 'linear-gradient(rgba(147, 197, 253, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(147, 197, 253, 0.3) 1px, transparent 1px)',
-                        backgroundSize: '20px 20px'
-                      }}></div>
                       <div className="relative">
-                        <div className="flex items-center gap-3 mb-4 pb-3 border-b border-blue-400/30">
-                          <span className="text-blue-300/70 text-xs font-mono">SPEC // REV.03</span>
-                          <div className="flex-1 border-t border-dashed border-blue-400/30"></div>
+                        <div className="flex items-center gap-3 mb-4 pb-3 border-b border-stone-400/30">
+                          <span className="text-stone-500/70 text-xs font-mono">MANUSCRIPT — DRAFT 3</span>
+                          <div className="flex-1 border-t border-dashed border-stone-400/30"></div>
                         </div>
-                        <h2 className="font-mono text-4xl font-bold mb-4 text-blue-200 tracking-wide">
+                        <h2 className="font-mono text-4xl font-bold mb-4 text-stone-800 tracking-wide">
                           STATES OF MOTION
                         </h2>
-                        <p className="font-mono text-sm leading-relaxed text-blue-100/80">
+                        <p className="font-mono text-sm leading-relaxed text-stone-700">
                           A captivating exploration of movement, momentum, and the forces that shape our world. Through the lens of physics and human emotion, this novel follows characters whose lives intersect in ways as predictable as gravity and as chaotic as quantum mechanics. A story where science and humanity collide in beautiful, unexpected ways.
                         </p>
-                        <div className="mt-4 flex gap-4 text-blue-400/60 text-xs font-mono">
+                        <div className="mt-4 flex gap-4 text-stone-500/60 text-xs font-mono">
                           <span>v = Δx/Δt</span>
                           <span>•</span>
                           <span>F = ma</span>
@@ -514,26 +497,26 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('how') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  {/* Zen scroll / meditation card */}
+                  {/* Zen scroll / meditation card - softer background */}
                   <div className="relative">
-                    <div className="bg-stone-50 p-8 text-center" style={{
-                      background: 'linear-gradient(180deg, #fafaf9 0%, #f5f5f4 100%)',
-                      boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
-                      borderTop: '4px solid #78716c',
-                      borderBottom: '4px solid #78716c'
+                    <div className="p-8 text-center" style={{
+                      background: 'linear-gradient(180deg, rgba(250, 250, 249, 0.75) 0%, rgba(245, 245, 244, 0.8) 100%)',
+                      boxShadow: '0 10px 40px rgba(0,0,0,0.15)',
+                      borderTop: '3px solid rgba(120, 113, 108, 0.6)',
+                      borderBottom: '3px solid rgba(120, 113, 108, 0.6)'
                     }}>
                       <div className="mb-6">
-                        <span className="text-stone-400 text-2xl">道</span>
+                        <span className="text-stone-500 text-2xl">道</span>
                       </div>
                       <h2 className="text-6xl font-light mb-6 text-stone-700 tracking-widest" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
                         HOW
                       </h2>
-                      <div className="w-16 h-px bg-stone-300 mx-auto mb-6"></div>
+                      <div className="w-16 h-px bg-stone-400/50 mx-auto mb-6"></div>
                       <p className="text-base leading-loose text-stone-600 max-w-md mx-auto" style={{ fontFamily: 'Georgia, serif' }}>
                         A philosophical exploration of understanding and wisdom. Through ancient teachings and modern perspectives, this book delves into the fundamental questions of existence, consciousness, and the path to enlightenment.
                       </p>
                       <div className="mt-8">
-                        <span className="text-stone-400 text-sm italic">A journey that bridges East and West</span>
+                        <span className="text-stone-500 text-sm italic">A journey that bridges East and West</span>
                       </div>
                     </div>
                   </div>
@@ -551,31 +534,14 @@ const Writing = () => {
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  {/* Noir detective case file / manila folder */}
-                  <div className="relative transform -rotate-1">
-                    {/* Red CLASSIFIED stamp */}
-                    <div className="absolute -top-2 -right-2 z-10 transform rotate-12">
-                      <span className="text-red-600 font-bold text-sm tracking-widest border-2 border-red-600 px-2 py-1 bg-amber-50/90" style={{ fontFamily: 'Impact, sans-serif' }}>CLASSIFIED</span>
-                    </div>
-                    <div className="bg-amber-100 p-6 shadow-lg" style={{
-                      background: 'linear-gradient(135deg, #d4a574 0%, #c9a66b 20%, #e8d5b7 100%)',
-                      boxShadow: '4px 4px 15px rgba(0,0,0,0.4)'
-                    }}>
-                      <div className="border-b border-amber-800/30 pb-2 mb-4 flex justify-between items-center">
-                        <span className="text-amber-900/60 text-xs font-mono">CASE FILE #VV-1947</span>
-                        <span className="text-red-700/70 text-xs font-bold">UNSOLVED</span>
-                      </div>
-                      <h2 className="font-serif text-4xl font-bold mb-4 text-amber-950" style={{ fontFamily: 'Courier New, monospace' }}>
-                        VICE VERSA
-                      </h2>
-                      <p className="text-base leading-relaxed text-amber-900/90" style={{ fontFamily: 'Courier New, monospace' }}>
-                        A noir mystery set in the shadowy streets of a retro-futuristic metropolis. When detective Marcus Kane investigates a series of impossible crimes, he discovers that reality itself is not what it seems. In a world where identities can be stolen and memories can be traded, nothing is as it appears.
-                      </p>
-                      <div className="mt-4 pt-3 border-t border-amber-800/20 flex justify-between">
-                        <span className="text-amber-800/50 text-xs font-mono">DETECTIVE: M. KANE</span>
-                        <span className="text-amber-800/50 text-xs font-mono">STATUS: ACTIVE</span>
-                      </div>
-                    </div>
+                  {/* Original dark overlay style */}
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                      VICE VERSA
+                    </h2>
+                    <p className="font-serif text-lg leading-relaxed text-white" style={{ fontFamily: 'Georgia, serif' }}>
+                      A noir mystery set in the shadowy streets of a retro-futuristic metropolis. When detective Marcus Kane investigates a series of impossible crimes, he discovers that reality itself is not what it seems. In a world where identities can be stolen and memories can be traded, nothing is as it appears.
+                    </p>
                   </div>
                 </div>
                 <div className={`order-1 lg:order-2 transition-all duration-1000 delay-300 ${
