@@ -21,7 +21,6 @@ import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
 import paintSplatterPink from "@/assets/paint-splatter-pink.png";
 import paintSplatterYellow from "@/assets/paint-splatter-yellow.png";
 import paintSplatterGreen from "@/assets/paint-splatter-green.png";
-import paintSplatterPurple from "@/assets/paint-splatter-purple.png";
 const About = () => {
   const visibleElements = useScrollAnimation();
   const [showCityscape, setShowCityscape] = React.useState(false);
@@ -188,12 +187,6 @@ const About = () => {
               </p>
             </div>
             
-            {/* Paint splash at bottom right over the image */}
-            <img 
-              src={paintSplatterPurple} 
-              alt="" 
-              className="absolute bottom-[8%] right-[5%] w-48 h-auto opacity-60 rotate-[15deg] z-40 max-sm:hidden"
-            />
           </div>
         </div>
 
