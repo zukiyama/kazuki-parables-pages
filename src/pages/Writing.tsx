@@ -21,7 +21,7 @@ import professorBarnabasBackground from "@/assets/professor-barnabas-background.
 
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-new.jpg";
-import hoaxCover from "@/assets/hoax-cover.jpg";
+import hoaxCover from "@/assets/hoax-cover-new.png";
 import theMarketCover from "@/assets/the-market-cover-new.jpg";
 import howCover from "@/assets/how-cover.jpg";
 import viceVersaCover from "@/assets/vice-versa-cover.jpg";
