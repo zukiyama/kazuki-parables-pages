@@ -7,7 +7,7 @@ import { BookshelfMenu } from "@/components/BookshelfMenu";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
-import hoaxBackground from "@/assets/hoax-background-new.jpeg";
+import hoaxBackground from "@/assets/hoax-background-new.png";
 import theMarketBackground from "@/assets/the-market-background-new.jpg";
 import howBackground from "@/assets/how-background.jpg";
 import viceVersaBackground from "@/assets/vice-versa-background.jpg";
@@ -446,30 +446,11 @@ const Writing = () => {
                   <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
                     STATES OF MOTION
                   </h2>
-                  {/* Half-typed manuscript style */}
-                  <div className="relative">
-                    <div className="p-6" style={{
-                      background: 'linear-gradient(180deg, rgba(245, 240, 230, 0.85) 0%, rgba(235, 225, 210, 0.9) 100%)',
-                      boxShadow: '4px 4px 15px rgba(0,0,0,0.15)',
-                      borderRadius: '2px'
-                    }}>
-                      <div className="relative">
-                        <div className="flex items-center gap-3 mb-4 pb-3 border-b border-stone-400/30">
-                          <span className="text-stone-500/70 text-xs font-mono">MANUSCRIPT — DRAFT 3</span>
-                          <div className="flex-1 border-t border-dashed border-stone-400/30"></div>
-                        </div>
-                        <p className="font-mono text-sm leading-relaxed text-stone-700">
-                          A captivating exploration of movement, momentum, and the forces that shape our world. Through the lens of physics and human emotion, this novel follows characters whose lives intersect in ways as predictable as gravity and as chaotic as quantum mechanics. A story where science and humanity collide in beautiful, unexpected ways.
-                        </p>
-                        <div className="mt-4 flex gap-4 text-stone-500/60 text-xs font-mono">
-                          <span>v = Δx/Δt</span>
-                          <span>•</span>
-                          <span>F = ma</span>
-                          <span>•</span>
-                          <span>E = mc²</span>
-                        </div>
-                      </div>
-                    </div>
+                  {/* Dark overlay style matching AMYA */}
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <p className="font-serif text-lg leading-relaxed text-white" style={{ fontFamily: 'Georgia, serif' }}>
+                      A captivating exploration of movement, momentum, and the forces that shape our world. Through the lens of physics and human emotion, this novel follows characters whose lives intersect in ways as predictable as gravity and as chaotic as quantum mechanics. A story where science and humanity collide in beautiful, unexpected ways.
+                    </p>
                   </div>
                 </div>
               </div>
