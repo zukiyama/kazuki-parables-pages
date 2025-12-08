@@ -107,6 +107,7 @@ const Index = () => {
 
   useEffect(() => {
     // Auto-dissolve between images - starts immediately when carousel is ready
+    // Adding currentImage to dependencies ensures timer resets after manual slide changes
     if (isCarouselReady && emblaApi && !isManualDrag) {
       // Read current slide index dynamically to avoid stale closure
       const currentSlide = emblaApi.selectedScrollSnap();
@@ -129,7 +130,7 @@ const Index = () => {
     } else {
       console.log('[SLIDESHOW] NOT starting interval - isCarouselReady:', isCarouselReady, 'emblaApi:', !!emblaApi, 'isManualDrag:', isManualDrag);
     }
-  }, [isCarouselReady, emblaApi, isManualDrag]);
+  }, [isCarouselReady, emblaApi, isManualDrag, currentImage]);
 
   // Handle TV text animation timing
   useEffect(() => {
