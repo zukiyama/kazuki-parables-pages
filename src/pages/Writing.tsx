@@ -7,7 +7,7 @@ import { BookshelfMenu } from "@/components/BookshelfMenu";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
-import hoaxBackground from "@/assets/hoax-background-new.jpeg";
+import hoaxBackground from "@/assets/hoax-background.jpg";
 import theMarketBackground from "@/assets/the-market-background-new.jpg";
 import howBackground from "@/assets/how-background.jpg";
 import viceVersaBackground from "@/assets/vice-versa-background.jpg";
@@ -21,7 +21,7 @@ import professorBarnabasBackground from "@/assets/professor-barnabas-background.
 
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-new.jpg";
-import hoaxCover from "@/assets/hoax-cover-new.png";
+import hoaxCover from "@/assets/hoax-cover.jpg";
 import theMarketCover from "@/assets/the-market-cover-new.jpg";
 import howCover from "@/assets/how-cover.jpg";
 import viceVersaCover from "@/assets/vice-versa-cover.jpg";
