@@ -273,13 +273,13 @@ const Writing = () => {
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   <div className="bg-gray-500/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                    <h2 className="font-heading text-5xl font-bold mb-4 text-white">
                       KAIJU
                     </h2>
-                    <h3 className="font-serif text-xl text-yellow-300 mb-4 tracking-wide" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                    <h3 className="font-heading text-xl text-yellow-300 mb-4 tracking-wide">
                       Book One of The Parable Trilogy
                     </h3>
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                    <p className="font-body text-lg leading-relaxed text-white">
                       A mystery unfolds in a small Japanese town in summer 1979, where a group of boys discover that no one remembers how they got there. Strange creatures appear in the sky while the children search for answers in their forgotten past.
                     </p>
                   </div>
@@ -298,7 +298,7 @@ const Writing = () => {
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
                 {/* Title above the memo */}
-                  <h2 className="text-5xl font-bold mb-6 text-white tracking-wide drop-shadow-lg" style={{ fontFamily: 'Palatino, Palatino Linotype, Book Antiqua, Georgia, serif' }}>
+                  <h2 className="font-heading text-5xl font-bold mb-6 text-white tracking-wide drop-shadow-lg">
                     HOAX
                   </h2>
                   
@@ -323,7 +323,7 @@ const Writing = () => {
                       background: 'linear-gradient(180deg, #fffef5 0%, #fefce8 50%, #fef9c3 100%)',
                       boxShadow: '2px 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)'
                     }}>
-                      <p className="text-base leading-loose text-stone-600" style={{ fontFamily: 'Georgia, Times New Roman, serif', lineHeight: '1.9' }}>
+                      <p className="font-body text-base leading-loose text-stone-600" style={{ lineHeight: '1.9' }}>
                         A writer named Peter Carlyle wrote a book, then received a mysterious phone call. When he drove to the location, it felt like he was living inside his own story. Set in a strange commune in the Australian outback, where fairy lights drape over entrance arches and secrets hide in the vegetable patches.
                       </p>
                     </div>
@@ -411,12 +411,12 @@ const Writing = () => {
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                  <h2 className="font-heading text-5xl font-bold mb-4 text-white">
                     AMYA
                   </h2>
                   {/* Original dark overlay style */}
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                    <p className="font-body text-lg leading-relaxed text-white">
                       A haunting tale of mystery and transformation. In a world where ancient secrets collide with modern reality, a young woman discovers that her destiny is intertwined with forces beyond her understanding. As she navigates through layers of deception and truth, she must choose between the life she knows and the path that calls to her soul.
                     </p>
                   </div>
@@ -445,12 +445,12 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                  <h2 className="font-heading text-5xl font-bold mb-4 text-white">
                     STATES OF MOTION
                   </h2>
                   {/* Original dark overlay style - same as AMYA */}
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                    <p className="font-body text-lg leading-relaxed text-white">
                       A captivating exploration of movement, momentum, and the forces that shape our world. Through the lens of physics and human emotion, this novel follows characters whose lives intersect in ways as predictable as gravity and as chaotic as quantum mechanics. A story where science and humanity collide in beautiful, unexpected ways.
                     </p>
                   </div>
@@ -516,12 +516,12 @@ const Writing = () => {
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                  <h2 className="font-heading text-5xl font-bold mb-4 text-white">
                     VICE VERSA
                   </h2>
                   {/* Original dark overlay style */}
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                    <p className="font-body text-lg leading-relaxed text-white">
                       A noir mystery set in the shadowy streets of a retro-futuristic metropolis. When detective Marcus Kane investigates a series of impossible crimes, he discovers that reality itself is not what it seems. In a world where identities can be stolen and memories can be traded, nothing is as it appears.
                     </p>
                   </div>
