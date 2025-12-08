@@ -7,7 +7,7 @@ import { BookshelfMenu } from "@/components/BookshelfMenu";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
-import hoaxBackground from "@/assets/hoax-background-desert-road.jpeg";
+import hoaxBackground from "@/assets/hoax-background-new.jpeg";
 import theMarketBackground from "@/assets/the-market-background-new.jpg";
 import howBackground from "@/assets/how-background.jpg";
 import viceVersaBackground from "@/assets/vice-versa-background.jpg";
@@ -272,10 +272,10 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <div className="bg-gray-500/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <h2 className="font-serif text-5xl font-bold mb-4 text-white">
-                      KAIJU
-                    </h2>
+                  <h2 className="font-serif text-5xl font-bold mb-4 text-white">
+                    KAIJU
+                  </h2>
+                  <div className="bg-gray-600/70 backdrop-blur-sm rounded-lg p-6 border border-white/20">
                     <h3 className="font-serif text-yellow-300 mb-4 tracking-wide" style={{ fontSize: 'calc(1.125rem + 3pt)' }}>
                       Book One of The Parable Trilogy
                     </h3>
@@ -294,8 +294,19 @@ const Writing = () => {
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
+                <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
+                }`}>
+                  <BookCoverSlideshow 
+                    covers={[
+                      { image: hoaxCover, alt: "HOAX Book Cover" }
+                    ]}
+                    title="HOAX"
+                    loading="lazy"
+                  />
+                </div>
+                <div className={`transition-all duration-1000 delay-500 ${
+                  visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                 {/* Title above the memo */}
                   <h2 className="font-serif text-5xl font-bold mb-6 text-white tracking-wide drop-shadow-lg">
@@ -328,17 +339,6 @@ const Writing = () => {
                       </p>
                     </div>
                   </div>
-                </div>
-                <div className={`order-1 lg:order-2 transition-all duration-1000 delay-300 ${
-                  visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
-                }`}>
-                  <BookCoverSlideshow 
-                    covers={[
-                      { image: hoaxCover, alt: "HOAX Book Cover" }
-                    ]}
-                    title="HOAX"
-                    loading="lazy"
-                  />
                 </div>
               </div>
             </div>
