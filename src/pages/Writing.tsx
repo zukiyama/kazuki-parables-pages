@@ -273,10 +273,10 @@ const Writing = () => {
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   <div className="bg-gray-500/75 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <h2 className="font-serif font-bold mb-4 text-white" style={{ fontSize: 'calc(3rem + 2pt)' }}>
+                    <h2 className="font-serif font-bold mb-4 text-white" style={{ fontSize: '3rem' }}>
                       KAIJU
                     </h2>
-                    <h3 className="font-serif text-yellow-300 mb-4 tracking-wide" style={{ fontSize: 'calc(1.125rem + 3pt)' }}>
+                    <h3 className="font-serif text-yellow-300 mb-4 tracking-wide" style={{ fontSize: 'calc(1.125rem + 7pt)' }}>
                       Book One of The Parable Trilogy
                     </h3>
                     <p className="font-serif text-lg leading-relaxed text-white">
