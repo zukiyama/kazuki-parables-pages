@@ -257,7 +257,7 @@ const Writing = () => {
                 </p>
               </div>
               
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-8 items-center lg:px-4">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -272,7 +272,7 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <div className="bg-black/75 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                  <div className="bg-black/75 backdrop-blur-sm rounded-lg px-6 pt-4 pb-6 border border-white/20">
                     <h2 className="font-serif font-bold mb-1 text-white" style={{ fontSize: '3rem' }}>
                       KAIJU
                     </h2>
