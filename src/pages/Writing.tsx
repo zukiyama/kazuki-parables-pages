@@ -272,7 +272,7 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <div className="bg-gray-500/75 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
                     <h2 className="font-serif font-bold mb-4 text-white" style={{ fontSize: '3rem' }}>
                       KAIJU
                     </h2>
