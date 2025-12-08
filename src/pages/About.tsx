@@ -19,8 +19,7 @@ import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
 
-import paintSplatterYellow from "@/assets/paint-splatter-yellow.png";
-import paintSplatterGreen from "@/assets/paint-splatter-green.png";
+import paintSplatterPink from "@/assets/paint-splatter-pink.png";
 const About = () => {
   const visibleElements = useScrollAnimation();
   const [showCityscape, setShowCityscape] = React.useState(false);
@@ -65,12 +64,7 @@ const About = () => {
           {/* Paint streak overlays behind content */}
           <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
             <img 
-              src={paintSplatterYellow} 
-              alt="" 
-              className="absolute right-1/4 top-1/2 w-44 h-auto opacity-55 rotate-[10deg]"
-            />
-            <img 
-              src={paintSplatterGreen} 
+              src={paintSplatterPink} 
               alt="" 
               className="absolute right-0 -top-4 w-36 h-auto opacity-55 rotate-[-10deg] hidden sm:block"
             />
