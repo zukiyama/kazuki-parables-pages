@@ -72,7 +72,7 @@ const About = () => {
             <img 
               src={paintSplatterGreen} 
               alt="" 
-              className="absolute right-0 -top-4 w-36 h-auto opacity-55 rotate-[-10deg]"
+              className="absolute right-0 -top-4 w-36 h-auto opacity-55 rotate-[-10deg] hidden sm:block"
             />
           </div>
           
