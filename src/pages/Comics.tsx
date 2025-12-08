@@ -79,7 +79,7 @@ const Comics = () => {
 
       <main className="relative z-10 pt-24">
         {/* Comic Panel Title - Simplified */}
-        <div className="flex justify-center py-24 px-6">
+        <div className="flex justify-center py-12 px-6">
           <div className="text-center">
             <h1 className="font-serif text-6xl font-bold text-black mb-4 tracking-wide drop-shadow-lg">
               Comics & Scripts
@@ -91,7 +91,7 @@ const Comics = () => {
         </div>
 
         {/* Featured Comics Section */}
-        <div className="container mx-auto px-6 mt-12 mb-16">
+        <div className="container mx-auto px-6 mt-4 mb-16">
           {/* God of Lies - Wide Cover Left, Script Right */}
           <div className="mb-16">
             <div className="max-w-7xl mx-auto px-16 max-sm:px-4">
@@ -104,36 +104,22 @@ const Comics = () => {
                   />
                 </div>
                 <div className="lg:col-span-1 max-sm:order-2">
-                  {/* Manga-style speech bubble container */}
-                  <div className="relative">
-                    {/* Main speech bubble */}
-                    <div 
-                      className="relative bg-white rounded-3xl p-6 max-sm:p-4 shadow-xl border-2 border-black"
-                      style={{ 
-                        fontFamily: '"CC Wild Words", "Anime Ace", "Komika Text", "Bangers", "Comic Sans MS", cursive'
-                      }}
-                    >
-                      {/* Speech bubble tail */}
-                      <div 
-                        className="absolute -left-4 top-8 w-8 h-6 bg-white border-l-2 border-b-2 border-black"
-                        style={{ 
-                          clipPath: 'polygon(100% 0, 100% 100%, 0 50%)',
-                          transform: 'rotate(-10deg)'
-                        }}
-                      />
-                      
-                      <h3 className="text-2xl font-bold text-black uppercase tracking-wide mb-4 max-sm:text-xl text-center">
-                        GOD OF LIES
-                      </h3>
-                      
-                      <p className="text-sm text-gray-800 leading-relaxed mb-4 max-sm:text-xs">
-                        A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
-                      </p>
-                      
-                      <p className="text-sm text-gray-800 leading-relaxed max-sm:text-xs">
-                        A psychological thriller exploring the price of dishonesty, where deception becomes truth and reality dissolves into fiction.
-                      </p>
-                    </div>
+                  {/* Manga/Webtoon caption box */}
+                  <div 
+                    className="bg-white p-6 max-sm:p-4 shadow-lg border-4 border-black"
+                    style={{ fontFamily: 'Bangers, cursive' }}
+                  >
+                    <h3 className="text-3xl text-black uppercase tracking-wider mb-4 max-sm:text-2xl text-center">
+                      GOD OF LIES
+                    </h3>
+                    
+                    <p className="text-lg text-gray-800 leading-relaxed mb-3 max-sm:text-base" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
+                      A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
+                    </p>
+                    
+                    <p className="text-lg text-gray-800 leading-relaxed max-sm:text-base" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
+                      A psychological thriller exploring the price of dishonesty, where deception becomes truth and reality dissolves into fiction.
+                    </p>
                   </div>
                 </div>
               </div>
