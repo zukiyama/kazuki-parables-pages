@@ -409,11 +409,11 @@ const Writing = () => {
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
+                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                    AMYA
+                  </h2>
                   {/* Original dark overlay style */}
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
-                      AMYA
-                    </h2>
                     <p className="font-serif text-lg leading-relaxed text-white" style={{ fontFamily: 'Georgia, serif' }}>
                       A haunting tale of mystery and transformation. In a world where ancient secrets collide with modern reality, a young woman discovers that her destiny is intertwined with forces beyond her understanding. As she navigates through layers of deception and truth, she must choose between the life she knows and the path that calls to her soul.
                     </p>
@@ -443,11 +443,11 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
+                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                    STATES OF MOTION
+                  </h2>
                   {/* Original dark overlay style - same as AMYA */}
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
-                      States of Motion
-                    </h2>
                     <p className="font-serif text-lg leading-relaxed text-white" style={{ fontFamily: 'Georgia, serif' }}>
                       A captivating exploration of movement, momentum, and the forces that shape our world. Through the lens of physics and human emotion, this novel follows characters whose lives intersect in ways as predictable as gravity and as chaotic as quantum mechanics. A story where science and humanity collide in beautiful, unexpected ways.
                     </p>
@@ -514,11 +514,11 @@ const Writing = () => {
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
+                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                    VICE VERSA
+                  </h2>
                   {/* Original dark overlay style */}
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
-                      VICE VERSA
-                    </h2>
                     <p className="font-serif text-lg leading-relaxed text-white" style={{ fontFamily: 'Georgia, serif' }}>
                       A noir mystery set in the shadowy streets of a retro-futuristic metropolis. When detective Marcus Kane investigates a series of impossible crimes, he discovers that reality itself is not what it seems. In a world where identities can be stolen and memories can be traded, nothing is as it appears.
                     </p>
