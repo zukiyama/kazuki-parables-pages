@@ -238,7 +238,7 @@ const Writing = () => {
       
       <main className="relative z-10 pt-32 max-sm:pt-48">
         {/* KAIJU - The Parable Trilogy Section */}
-        <section data-section="kaiju" className="min-h-[90vh] flex items-center justify-center relative">
+        <section data-section="kaiju" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <h1 className={`font-serif text-6xl font-bold text-white mb-20 max-sm:mb-16 text-center tracking-wide transition-all duration-1000 ${
@@ -290,7 +290,7 @@ const Writing = () => {
         </section>
 
         {/* HOAX Section - Memo style */}
-        <section data-section="hoax" className="min-h-[90vh] flex items-center justify-center relative">
+        <section data-section="hoax" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -344,7 +344,7 @@ const Writing = () => {
         </section>
 
         {/* THE MARKET Section */}
-        <section data-section="the-market" className="min-h-[90vh] flex items-center justify-center relative">
+        <section data-section="the-market" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -391,7 +391,7 @@ const Writing = () => {
         </section>
 
         {/* AMYA Section */}
-        <section data-section="oba" className="min-h-[90vh] flex items-center justify-center relative">
+        <section data-section="oba" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -425,7 +425,7 @@ const Writing = () => {
         </section>
 
         {/* STATES OF MOTION Section */}
-        <section data-section="states-of-motion" className="min-h-[90vh] flex items-center justify-center relative">
+        <section data-section="states-of-motion" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -459,7 +459,7 @@ const Writing = () => {
         </section>
 
         {/* HOW Section */}
-        <section data-section="how" className="min-h-[90vh] flex items-center justify-center relative">
+        <section data-section="how" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -507,7 +507,7 @@ const Writing = () => {
         </section>
 
         {/* VICE VERSA Section */}
-        <section data-section="vice-versa" className="min-h-[90vh] flex items-center justify-center relative">
+        <section data-section="vice-versa" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -542,7 +542,7 @@ const Writing = () => {
 
 
         {/* Young Adult Books Section */}
-        <section data-section="young-adult" className="min-h-[90vh] flex items-center justify-center relative">
+        <section data-section="young-adult" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <h2 className={`font-serif text-5xl font-bold text-white mb-4 text-center tracking-wide transition-all duration-1000 ${
