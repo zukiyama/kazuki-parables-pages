@@ -7,7 +7,7 @@ import { BookshelfMenu } from "@/components/BookshelfMenu";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
-import hoaxBackground from "@/assets/hoax-background-new.png";
+import hoaxBackground from "@/assets/hoax-background-new.jpeg";
 import theMarketBackground from "@/assets/the-market-background-new.jpg";
 import howBackground from "@/assets/how-background.jpg";
 import viceVersaBackground from "@/assets/vice-versa-background.jpg";
@@ -297,9 +297,6 @@ const Writing = () => {
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
-                    HOAX
-                  </h2>
                   {/* Memo sheet taped to page */}
                   <div className="relative">
                     {/* Tape corners */}
@@ -321,6 +318,9 @@ const Writing = () => {
                       background: 'linear-gradient(180deg, #fffef5 0%, #fefce8 50%, #fef9c3 100%)',
                       boxShadow: '2px 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)'
                     }}>
+                      <h2 className="text-3xl font-normal mb-5 text-stone-700 tracking-wide" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
+                        HOAX
+                      </h2>
                       <p className="text-base leading-loose text-stone-600" style={{ fontFamily: 'Georgia, Times New Roman, serif', lineHeight: '1.9' }}>
                         A writer named Peter Carlyle wrote a book, then received a mysterious phone call. When he drove to the location, it felt like he was living inside his own story. Set in a strange commune in the Australian outback, where fairy lights drape over entrance arches and secrets hide in the vegetable patches.
                       </p>
@@ -362,9 +362,6 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('the-market') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
-                    THE MARKET
-                  </h2>
                   {/* Futuristic holographic display */}
                   <div className="relative">
                     <div className="absolute inset-0 bg-cyan-400/20 blur-xl rounded-lg"></div>
@@ -375,6 +372,9 @@ const Writing = () => {
                         <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
                         <span className="text-cyan-400/80 text-xs font-mono tracking-widest">CORP_NATION_01 // CLASSIFIED</span>
                       </div>
+                      <h2 className="font-mono text-4xl font-bold mb-4 text-cyan-300 tracking-tight">
+                        THE MARKET
+                      </h2>
                       <p className="font-sans text-base leading-relaxed text-cyan-100/90">
                         A man journeys to the first corporate nation on Earth, where towering glass structures pierce the sky and autonomous vehicles glide through pristine streets. But beneath the gleaming facade of this technological paradise, all is not as it seems. Dark secrets lurk in the shadows of progress, and the price of perfection may be higher than anyone imagined.
                       </p>
@@ -443,14 +443,33 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
-                    STATES OF MOTION
-                  </h2>
-                  {/* Dark overlay style matching AMYA */}
-                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white" style={{ fontFamily: 'Georgia, serif' }}>
-                      A captivating exploration of movement, momentum, and the forces that shape our world. Through the lens of physics and human emotion, this novel follows characters whose lives intersect in ways as predictable as gravity and as chaotic as quantum mechanics. A story where science and humanity collide in beautiful, unexpected ways.
-                    </p>
+                  {/* Half-typed manuscript style */}
+                  <div className="relative">
+                    <div className="p-6" style={{
+                      background: 'linear-gradient(180deg, rgba(245, 240, 230, 0.85) 0%, rgba(235, 225, 210, 0.9) 100%)',
+                      boxShadow: '4px 4px 15px rgba(0,0,0,0.15)',
+                      borderRadius: '2px'
+                    }}>
+                      <div className="relative">
+                        <div className="flex items-center gap-3 mb-4 pb-3 border-b border-stone-400/30">
+                          <span className="text-stone-500/70 text-xs font-mono">MANUSCRIPT — DRAFT 3</span>
+                          <div className="flex-1 border-t border-dashed border-stone-400/30"></div>
+                        </div>
+                        <h2 className="font-mono text-4xl font-bold mb-4 text-stone-800 tracking-wide">
+                          STATES OF MOTION
+                        </h2>
+                        <p className="font-mono text-sm leading-relaxed text-stone-700">
+                          A captivating exploration of movement, momentum, and the forces that shape our world. Through the lens of physics and human emotion, this novel follows characters whose lives intersect in ways as predictable as gravity and as chaotic as quantum mechanics. A story where science and humanity collide in beautiful, unexpected ways.
+                        </p>
+                        <div className="mt-4 flex gap-4 text-stone-500/60 text-xs font-mono">
+                          <span>v = Δx/Δt</span>
+                          <span>•</span>
+                          <span>F = ma</span>
+                          <span>•</span>
+                          <span>E = mc²</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -477,9 +496,6 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('how') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
-                    HOW
-                  </h2>
                   {/* Zen scroll / meditation card - softer background */}
                   <div className="relative">
                     <div className="p-8 text-center" style={{
@@ -491,6 +507,9 @@ const Writing = () => {
                       <div className="mb-6">
                         <span className="text-stone-500 text-2xl">道</span>
                       </div>
+                      <h2 className="text-6xl font-light mb-6 text-stone-700 tracking-widest" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                        HOW
+                      </h2>
                       <div className="w-16 h-px bg-stone-400/50 mx-auto mb-6"></div>
                       <p className="text-base leading-loose text-stone-600 max-w-md mx-auto" style={{ fontFamily: 'Georgia, serif' }}>
                         A philosophical exploration of understanding and wisdom. Through ancient teachings and modern perspectives, this book delves into the fundamental questions of existence, consciousness, and the path to enlightenment.
@@ -514,11 +533,11 @@ const Writing = () => {
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
-                    VICE VERSA
-                  </h2>
                   {/* Original dark overlay style */}
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                      VICE VERSA
+                    </h2>
                     <p className="font-serif text-lg leading-relaxed text-white" style={{ fontFamily: 'Georgia, serif' }}>
                       A noir mystery set in the shadowy streets of a retro-futuristic metropolis. When detective Marcus Kane investigates a series of impossible crimes, he discovers that reality itself is not what it seems. In a world where identities can be stolen and memories can be traded, nothing is as it appears.
                     </p>
