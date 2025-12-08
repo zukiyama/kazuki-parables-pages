@@ -27,7 +27,7 @@ export default {
 			accent: ['Crimson Text', 'serif'],
 			comic: ['Kalam', 'cursive'],
 			palatino: ['Palatino', 'Palatino Linotype', 'Book Antiqua', 'Georgia', 'serif'],
-			'new-york': ['"New York"', '"Iowan Old Style"', 'Georgia', 'serif'],
+			'new-york': ['".New York"', '"Iowan Old Style"', 'Georgia', 'serif'],
 		},
 			colors: {
 				border: 'hsl(var(--border))',
