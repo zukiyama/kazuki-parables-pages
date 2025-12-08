@@ -18,7 +18,7 @@ import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
-import paintSplatterPink from "@/assets/paint-splatter-pink.png";
+
 import paintSplatterYellow from "@/assets/paint-splatter-yellow.png";
 import paintSplatterGreen from "@/assets/paint-splatter-green.png";
 const About = () => {
@@ -64,11 +64,6 @@ const About = () => {
         <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
           {/* Paint streak overlays behind content */}
           <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
-            <img 
-              src={paintSplatterPink} 
-              alt="" 
-              className="absolute left-1/3 top-0 w-40 h-auto opacity-60 rotate-[25deg]"
-            />
             <img 
               src={paintSplatterYellow} 
               alt="" 
