@@ -297,6 +297,11 @@ const Writing = () => {
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
+                {/* Title above the memo */}
+                  <h2 className="text-5xl font-bold mb-6 text-white tracking-wide drop-shadow-lg" style={{ fontFamily: 'Palatino, Palatino Linotype, Book Antiqua, Georgia, serif' }}>
+                    HOAX
+                  </h2>
+                  
                   {/* Memo sheet taped to page */}
                   <div className="relative">
                     {/* Tape corners */}
@@ -318,9 +323,6 @@ const Writing = () => {
                       background: 'linear-gradient(180deg, #fffef5 0%, #fefce8 50%, #fef9c3 100%)',
                       boxShadow: '2px 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)'
                     }}>
-                      <h2 className="text-3xl font-normal mb-5 text-stone-700 tracking-wide" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
-                        HOAX
-                      </h2>
                       <p className="text-base leading-loose text-stone-600" style={{ fontFamily: 'Georgia, Times New Roman, serif', lineHeight: '1.9' }}>
                         A writer named Peter Carlyle wrote a book, then received a mysterious phone call. When he drove to the location, it felt like he was living inside his own story. Set in a strange commune in the Australian outback, where fairy lights drape over entrance arches and secrets hide in the vegetable patches.
                       </p>
