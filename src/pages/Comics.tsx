@@ -104,42 +104,36 @@ const Comics = () => {
                   />
                 </div>
                 <div className="lg:col-span-1 max-sm:order-2">
-                  <div className="bg-white shadow-lg border border-gray-300 p-6 max-sm:p-4" style={{ fontFamily: 'Courier New, Courier, monospace' }}>
-                    {/* Script header */}
-                    <div className="text-center border-b border-gray-400 pb-4 mb-4">
-                      <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">Original Script</p>
-                      <h3 className="text-2xl font-bold text-black uppercase tracking-wide max-sm:text-xl">
+                  {/* Manga-style speech bubble container */}
+                  <div className="relative">
+                    {/* Main speech bubble */}
+                    <div 
+                      className="relative bg-white rounded-3xl p-6 max-sm:p-4 shadow-xl border-2 border-black"
+                      style={{ 
+                        fontFamily: '"CC Wild Words", "Anime Ace", "Komika Text", "Bangers", "Comic Sans MS", cursive'
+                      }}
+                    >
+                      {/* Speech bubble tail */}
+                      <div 
+                        className="absolute -left-4 top-8 w-8 h-6 bg-white border-l-2 border-b-2 border-black"
+                        style={{ 
+                          clipPath: 'polygon(100% 0, 100% 100%, 0 50%)',
+                          transform: 'rotate(-10deg)'
+                        }}
+                      />
+                      
+                      <h3 className="text-2xl font-bold text-black uppercase tracking-wide mb-4 max-sm:text-xl text-center">
                         GOD OF LIES
                       </h3>
-                      <p className="text-xs text-gray-500 mt-1">Written by Kazuki Yamakawa</p>
+                      
+                      <p className="text-sm text-gray-800 leading-relaxed mb-4 max-sm:text-xs">
+                        A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
+                      </p>
+                      
+                      <p className="text-sm text-gray-800 leading-relaxed max-sm:text-xs">
+                        A psychological thriller exploring the price of dishonesty, where deception becomes truth and reality dissolves into fiction.
+                      </p>
                     </div>
-                    
-                    {/* Scene heading */}
-                    <p className="text-xs font-bold text-black uppercase mb-3">
-                      FADE IN:
-                    </p>
-                    
-                    {/* Scene description */}
-                    <p className="text-xs font-bold text-black uppercase mb-2">
-                      INT. CITY APARTMENT - NIGHT
-                    </p>
-                    
-                    <p className="text-xs text-gray-700 mb-4 leading-relaxed">
-                      A con man sits alone, shadows dancing across his face. Behind him, something inhuman stirs.
-                    </p>
-                    
-                    {/* Character dialogue */}
-                    <p className="text-center text-xs font-bold text-black uppercase mb-1">
-                      THE DEMON
-                    </p>
-                    <p className="text-center text-xs text-gray-700 italic mb-4 px-4">
-                      Every lie you speak... I make real.
-                    </p>
-                    
-                    {/* Action line */}
-                    <p className="text-xs text-gray-700 leading-relaxed">
-                      A psychological thriller exploring the price of dishonesty—where deception becomes reality and truth dissolves into fiction.
-                    </p>
                   </div>
                 </div>
               </div>
