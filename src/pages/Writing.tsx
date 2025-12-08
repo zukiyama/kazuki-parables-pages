@@ -257,7 +257,7 @@ const Writing = () => {
                 </p>
               </div>
               
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -273,10 +273,10 @@ const Writing = () => {
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   <div className="bg-black/75 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <h2 className="font-serif font-bold mb-4 text-white" style={{ fontSize: '3rem' }}>
+                    <h2 className="font-serif font-bold mb-2 text-white" style={{ fontSize: '3rem' }}>
                       KAIJU
                     </h2>
-                    <h3 className="font-serif text-yellow-300 mb-4 tracking-wide" style={{ fontSize: 'calc(1.125rem + 7pt)' }}>
+                    <h3 className="font-serif text-yellow-300 mb-4 tracking-wide" style={{ fontSize: 'calc(1.125rem + 5pt)' }}>
                       Book One of The Parable Trilogy
                     </h3>
                     <p className="font-serif text-lg leading-relaxed text-white">
@@ -293,7 +293,7 @@ const Writing = () => {
         <section data-section="hoax" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:px-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -349,7 +349,7 @@ const Writing = () => {
         <section data-section="the-market" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:px-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('the-market') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -396,7 +396,7 @@ const Writing = () => {
         <section data-section="oba" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:px-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`lg:order-2 transition-all duration-1000 delay-300 ${
                   visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -430,7 +430,7 @@ const Writing = () => {
         <section data-section="states-of-motion" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:px-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -464,7 +464,7 @@ const Writing = () => {
         <section data-section="how" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:px-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('how') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -512,7 +512,7 @@ const Writing = () => {
         <section data-section="vice-versa" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:px-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
