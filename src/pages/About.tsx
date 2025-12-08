@@ -19,7 +19,7 @@ import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
 
-import paintSplatterPink from "@/assets/paint-splatter-pink.png";
+
 const About = () => {
   const visibleElements = useScrollAnimation();
   const [showCityscape, setShowCityscape] = React.useState(false);
@@ -61,14 +61,6 @@ const About = () => {
       <div className="container mx-auto px-6 py-16 max-w-6xl">
         {/* Artist Portrait & Bio Section */}
         <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
-          {/* Paint streak overlays behind content */}
-          <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
-            <img 
-              src={paintSplatterPink} 
-              alt="" 
-              className="absolute right-0 -top-4 w-36 h-auto opacity-55 rotate-[-10deg] hidden sm:block"
-            />
-          </div>
           
           <div className="lg:col-span-1 flex justify-center lg:justify-start relative z-10">
             <div className="w-80 h-80 relative">
