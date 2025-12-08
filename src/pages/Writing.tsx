@@ -276,7 +276,7 @@ const Writing = () => {
                     <h2 className="font-serif text-5xl font-bold mb-4 text-white">
                       KAIJU
                     </h2>
-                    <h3 className="font-serif text-xl text-yellow-300 mb-4 tracking-wide">
+                    <h3 className="font-serif text-yellow-300 mb-4 tracking-wide" style={{ fontSize: '13pt' }}>
                       Book One of The Parable Trilogy
                     </h3>
                     <p className="font-serif text-lg leading-relaxed text-white">
