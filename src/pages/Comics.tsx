@@ -92,7 +92,7 @@ const Comics = () => {
 
         {/* Featured Comics Section */}
         <div className="container mx-auto px-6 mt-12 mb-16">
-          {/* God of Lies - Wide Cover Left, Summary Right */}
+          {/* God of Lies - Wide Cover Left, Script Right */}
           <div className="mb-16">
             <div className="max-w-7xl mx-auto px-16 max-sm:px-4">
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-center max-sm:gap-4">
@@ -103,13 +103,42 @@ const Comics = () => {
                     className="w-full object-contain shadow-2xl"
                   />
                 </div>
-                <div className="lg:col-span-1 max-sm:order-2 max-sm:text-center">
-                  <div className="w-full max-sm:max-w-full">
-                    <h3 className="font-serif text-4xl font-bold text-black mb-6 max-sm:text-3xl max-sm:mb-3">
-                      God of Lies
-                    </h3>
-                    <p className="font-serif text-lg text-amber-800 leading-relaxed max-sm:text-base max-sm:px-2">
-                      A gripping tale of deception and supernatural forces, following a cunning con man whose lies manifest into reality through his mysterious demonic companion. Set against the backdrop of modern urban life, this psychological thriller explores the price of dishonesty and the thin line between truth and fiction.
+                <div className="lg:col-span-1 max-sm:order-2">
+                  <div className="bg-white shadow-lg border border-gray-300 p-6 max-sm:p-4" style={{ fontFamily: 'Courier New, Courier, monospace' }}>
+                    {/* Script header */}
+                    <div className="text-center border-b border-gray-400 pb-4 mb-4">
+                      <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">Original Script</p>
+                      <h3 className="text-2xl font-bold text-black uppercase tracking-wide max-sm:text-xl">
+                        GOD OF LIES
+                      </h3>
+                      <p className="text-xs text-gray-500 mt-1">Written by Kazuki Yamakawa</p>
+                    </div>
+                    
+                    {/* Scene heading */}
+                    <p className="text-xs font-bold text-black uppercase mb-3">
+                      FADE IN:
+                    </p>
+                    
+                    {/* Scene description */}
+                    <p className="text-xs font-bold text-black uppercase mb-2">
+                      INT. CITY APARTMENT - NIGHT
+                    </p>
+                    
+                    <p className="text-xs text-gray-700 mb-4 leading-relaxed">
+                      A con man sits alone, shadows dancing across his face. Behind him, something inhuman stirs.
+                    </p>
+                    
+                    {/* Character dialogue */}
+                    <p className="text-center text-xs font-bold text-black uppercase mb-1">
+                      THE DEMON
+                    </p>
+                    <p className="text-center text-xs text-gray-700 italic mb-4 px-4">
+                      Every lie you speak... I make real.
+                    </p>
+                    
+                    {/* Action line */}
+                    <p className="text-xs text-gray-700 leading-relaxed">
+                      A psychological thriller exploring the price of dishonesty—where deception becomes reality and truth dissolves into fiction.
                     </p>
                   </div>
                 </div>
@@ -117,17 +146,62 @@ const Comics = () => {
             </div>
           </div>
 
-          {/* Surname Pendragon - Text Left, Smaller Cover Right */}
+          {/* Surname Pendragon - Script Left, Cover Right */}
           <div className="mb-24">
             <div className="max-w-7xl mx-auto px-16 max-sm:px-4">
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center max-sm:gap-4 max-sm:flex max-sm:flex-col">
-                <div className="lg:col-span-3 max-sm:order-2 max-sm:text-center">
-                  <h3 className="font-serif text-4xl font-bold text-black mb-6 max-sm:text-3xl max-sm:mb-3">
-                    Surname Pendragon
-                  </h3>
-                  <p className="font-serif text-lg text-amber-800 leading-relaxed max-sm:text-base max-sm:px-2">
-                    A modern retelling of the King Arthur stories set in contemporary times. Follow a young office worker who unknowingly carries the bloodline of the legendary king. As ancient powers awaken in the modern world, he must discover his true heritage and embrace a destiny he never imagined possible. When mysterious events begin occurring around him and an ancient sword appears in his mundane life, he's thrust into a world where mythical beings walk among us and the fate of both the magical and mortal realms hangs in the balance. Guided by enigmatic mentors and pursued by dark forces, he must learn to harness powers he never knew he possessed while navigating the complexities of love, friendship, and the weight of an ancient legacy.
-                  </p>
+                <div className="lg:col-span-3 max-sm:order-2">
+                  <div className="bg-white shadow-lg border border-gray-300 p-8 max-sm:p-4" style={{ fontFamily: 'Courier New, Courier, monospace' }}>
+                    {/* Script header */}
+                    <div className="text-center border-b border-gray-400 pb-4 mb-4">
+                      <p className="text-sm text-gray-500 uppercase tracking-widest mb-1">Original Script</p>
+                      <h3 className="text-3xl font-bold text-black uppercase tracking-wide max-sm:text-xl">
+                        SURNAME PENDRAGON
+                      </h3>
+                      <p className="text-sm text-gray-500 mt-1">Written by Kazuki Yamakawa</p>
+                    </div>
+                    
+                    {/* Scene heading */}
+                    <p className="text-sm font-bold text-black uppercase mb-3">
+                      FADE IN:
+                    </p>
+                    
+                    <p className="text-sm font-bold text-black uppercase mb-2">
+                      INT. OFFICE BUILDING - DAY
+                    </p>
+                    
+                    <p className="text-sm text-gray-700 mb-4 leading-relaxed">
+                      Fluorescent lights hum. ARTHUR PENN (28), unremarkable in every way, stares at spreadsheets. He doesn't know what's coming.
+                    </p>
+                    
+                    {/* Character dialogue */}
+                    <p className="text-center text-sm font-bold text-black uppercase mb-1">
+                      MYSTERIOUS VOICE (V.O.)
+                    </p>
+                    <p className="text-center text-sm text-gray-700 italic mb-4 px-8">
+                      The sword chooses. The blood remembers.
+                    </p>
+                    
+                    <p className="text-sm font-bold text-black uppercase mb-2">
+                      EXT. LONDON STREETS - CONTINUOUS
+                    </p>
+                    
+                    <p className="text-sm text-gray-700 mb-4 leading-relaxed">
+                      Arthur walks home. The city pulses around him—but something ancient stirs beneath the concrete. A SWORD materializes in his path, embedded in stone.
+                    </p>
+                    
+                    <p className="text-center text-sm font-bold text-black uppercase mb-1">
+                      ARTHUR
+                    </p>
+                    <p className="text-center text-sm text-gray-700 italic mb-4 px-8">
+                      This can't be happening...
+                    </p>
+                    
+                    {/* Final action line */}
+                    <p className="text-sm text-gray-700 leading-relaxed border-t border-gray-300 pt-4 mt-4">
+                      A modern retelling where mythical beings walk among us. Where an ordinary man discovers an extraordinary destiny. Where the fate of both realms hangs in the balance.
+                    </p>
+                  </div>
                 </div>
                 <div className="lg:col-span-2 flex items-center justify-center max-sm:order-1">
                   <img 
