@@ -291,11 +291,11 @@ const Writing = () => {
 
         {/* HOAX Section - Memo style */}
         <section data-section="hoax" className="min-h-[80vh] flex items-center justify-center relative">
-          <div className="container mx-auto px-6 py-20">
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
-                <div className={`transition-all duration-1000 delay-300 ${
-                  visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
+                <div className={`lg:order-2 transition-all duration-1000 delay-300 ${
+                  visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   <BookCoverSlideshow 
                     covers={[
@@ -305,8 +305,8 @@ const Writing = () => {
                     loading="lazy"
                   />
                 </div>
-                <div className={`transition-all duration-1000 delay-500 ${
-                  visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
+                <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
+                  visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
                 {/* Title above the memo */}
                   <h2 className="font-serif text-5xl font-bold mb-6 text-white tracking-wide drop-shadow-lg">
@@ -347,7 +347,7 @@ const Writing = () => {
 
         {/* THE MARKET Section */}
         <section data-section="the-market" className="min-h-[80vh] flex items-center justify-center relative">
-          <div className="container mx-auto px-6 py-20">
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
@@ -394,7 +394,7 @@ const Writing = () => {
 
         {/* AMYA Section */}
         <section data-section="oba" className="min-h-[80vh] flex items-center justify-center relative">
-          <div className="container mx-auto px-6 py-20">
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`lg:order-2 transition-all duration-1000 delay-300 ${
@@ -428,7 +428,7 @@ const Writing = () => {
 
         {/* STATES OF MOTION Section */}
         <section data-section="states-of-motion" className="min-h-[80vh] flex items-center justify-center relative">
-          <div className="container mx-auto px-6 py-20">
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
@@ -462,7 +462,7 @@ const Writing = () => {
 
         {/* HOW Section */}
         <section data-section="how" className="min-h-[80vh] flex items-center justify-center relative">
-          <div className="container mx-auto px-6 py-20">
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
@@ -510,7 +510,7 @@ const Writing = () => {
 
         {/* VICE VERSA Section */}
         <section data-section="vice-versa" className="min-h-[80vh] flex items-center justify-center relative">
-          <div className="container mx-auto px-6 py-20">
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
@@ -545,7 +545,7 @@ const Writing = () => {
 
         {/* Young Adult Books Section */}
         <section data-section="young-adult" className="min-h-[80vh] flex items-center justify-center relative">
-          <div className="container mx-auto px-6 py-20">
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <h2 className={`font-serif text-5xl font-bold text-white mb-4 text-center tracking-wide transition-all duration-1000 ${
                 visibleSections.has('young-adult') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
