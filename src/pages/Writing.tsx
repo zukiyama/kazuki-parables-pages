@@ -273,13 +273,13 @@ const Writing = () => {
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   <div className="bg-gray-500/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                    <h2 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                       KAIJU
                     </h2>
-                    <h3 className="font-serif text-xl text-yellow-300 mb-4 tracking-wide" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                    <h3 className="text-xl text-yellow-300 mb-4 tracking-wide" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                       Book One of The Parable Trilogy
                     </h3>
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                    <p className="text-lg leading-relaxed text-white italic" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                       A mystery unfolds in a small Japanese town in summer 1979, where a group of boys discover that no one remembers how they got there. Strange creatures appear in the sky while the children search for answers in their forgotten past.
                     </p>
                   </div>
@@ -298,7 +298,7 @@ const Writing = () => {
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
                 {/* Title above the memo */}
-                  <h2 className="text-5xl font-bold mb-6 text-white tracking-wide drop-shadow-lg" style={{ fontFamily: 'Palatino, Palatino Linotype, Book Antiqua, Georgia, serif' }}>
+                  <h2 className="text-5xl font-bold mb-6 text-white tracking-wide drop-shadow-lg" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                     HOAX
                   </h2>
                   
@@ -411,12 +411,12 @@ const Writing = () => {
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                  <h2 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                     AMYA
                   </h2>
                   {/* Original dark overlay style */}
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                    <p className="text-lg leading-relaxed text-white italic" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                       A haunting tale of mystery and transformation. In a world where ancient secrets collide with modern reality, a young woman discovers that her destiny is intertwined with forces beyond her understanding. As she navigates through layers of deception and truth, she must choose between the life she knows and the path that calls to her soul.
                     </p>
                   </div>
@@ -445,12 +445,12 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                  <h2 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                     STATES OF MOTION
                   </h2>
                   {/* Original dark overlay style - same as AMYA */}
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                    <p className="text-lg leading-relaxed text-white italic" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                       A captivating exploration of movement, momentum, and the forces that shape our world. Through the lens of physics and human emotion, this novel follows characters whose lives intersect in ways as predictable as gravity and as chaotic as quantum mechanics. A story where science and humanity collide in beautiful, unexpected ways.
                     </p>
                   </div>
@@ -516,12 +516,12 @@ const Writing = () => {
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                  <h2 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                     VICE VERSA
                   </h2>
                   {/* Original dark overlay style */}
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                    <p className="text-lg leading-relaxed text-white italic" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                       A noir mystery set in the shadowy streets of a retro-futuristic metropolis. When detective Marcus Kane investigates a series of impossible crimes, he discovers that reality itself is not what it seems. In a world where identities can be stolen and memories can be traded, nothing is as it appears.
                     </p>
                   </div>
