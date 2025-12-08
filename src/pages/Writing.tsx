@@ -7,7 +7,7 @@ import { BookshelfMenu } from "@/components/BookshelfMenu";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
-import hoaxBackground from "@/assets/hoax-background-new.jpeg";
+import hoaxBackground from "@/assets/hoax-background.jpg";
 import theMarketBackground from "@/assets/the-market-background-new.jpg";
 import howBackground from "@/assets/how-background.jpg";
 import viceVersaBackground from "@/assets/vice-versa-background.jpg";
