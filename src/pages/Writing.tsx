@@ -304,8 +304,8 @@ const Writing = () => {
         {/* HOAX Section - Memo style */}
         <section data-section="hoax" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-24">
-            <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`lg:order-2 transition-all duration-1000 delay-300 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
@@ -360,8 +360,8 @@ const Writing = () => {
         {/* THE MARKET Section */}
         <section data-section="the-market" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-24">
-            <div className="max-w-7xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('the-market') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -407,8 +407,8 @@ const Writing = () => {
         {/* AMYA Section */}
         <section data-section="oba" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-24">
-            <div className="max-w-7xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`lg:order-2 transition-all duration-1000 delay-300 ${
                   visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -441,8 +441,8 @@ const Writing = () => {
         {/* STATES OF MOTION Section */}
         <section data-section="states-of-motion" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-24">
-            <div className="max-w-7xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -475,8 +475,8 @@ const Writing = () => {
         {/* HOW Section */}
         <section data-section="how" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-24">
-            <div className="max-w-7xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('how') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -523,8 +523,8 @@ const Writing = () => {
         {/* VICE VERSA Section */}
         <section data-section="vice-versa" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-24">
-            <div className="max-w-7xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
