@@ -279,8 +279,20 @@ const Writing = () => {
                     <h3 className="font-serif text-yellow-300 mb-6 tracking-wide" style={{ fontSize: 'calc(1.125rem + 3pt)' }}>
                       Book One of The Parable Trilogy
                     </h3>
-                    <p className="font-serif text-lg leading-relaxed text-white">
-                      A mystery unfolds in a small Japanese town in summer 1979, where a group of boys discover that no one remembers how they got there. Strange creatures appear in the sky while the children search for answers in their forgotten past.
+                    <p className="font-serif text-base leading-relaxed text-white mb-3">
+                      <span className="text-yellow-300 font-semibold">Osaka, Japan. 1979.</span>
+                    </p>
+                    <p className="font-serif text-base leading-relaxed text-white mb-3">
+                      When an unforecasted meteor shower illuminates the sky in Osaka, news ratings are barely altered… until a week later a foreign object crashes into the city and a strange figure appears in the smoke of the impact site. Shigemitsu, former psychiatrist of a local office worker somehow connected to the being is enlisted by the military, who have been mobilised to deal with the unfolding crisis, and must draw on what he remembers of a man he hasn't thought of in twenty years.
+                    </p>
+                    <p className="font-serif text-base leading-relaxed text-white mb-3">
+                      For Kenji, new to the nearby Nakamura Memorial School, all that matters is not being the only kid sitting alone in class. And that means keeping anyone from finding out that he's different. He soon finds himself allied to Masako and Kubo, and when they meet Emiko and her blind sister, and the conspiracy obsessed Hideo, among others, the gang of misfits realise that they each share a secret, and begin to suspect their town is not all it seems. With none of the adults seemingly able to remember how they first came to be there and shadowy figures closing in on Emiko and her sister, they set out to uncover the truth for themselves.
+                    </p>
+                    <p className="font-serif text-base leading-relaxed text-white mb-3">
+                      Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, has resigned herself to an uneventful career. But when a seemingly minor disappearance leads her into a web of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
+                    </p>
+                    <p className="font-serif text-base leading-relaxed text-white italic">
+                      Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people during one extraordinary summer in a 1979 that never happened to those who weren't there.
                     </p>
                   </div>
                 </div>
