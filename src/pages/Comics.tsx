@@ -215,6 +215,7 @@ const Comics = () => {
               className="absolute inset-0 bg-cover bg-center"
               style={{ 
                 backgroundImage: `url(${brickWallBackground})`,
+                filter: 'brightness(0.7) saturate(0.8)',
                 maskImage: 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)',
                 WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)',
                 maskComposite: 'intersect',
