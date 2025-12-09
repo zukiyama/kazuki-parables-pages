@@ -104,20 +104,16 @@ const Comics = () => {
                   />
                 </div>
                 <div className="lg:col-span-1 max-sm:order-2">
-                  {/* Manga/Webtoon caption box */}
-                  <div 
-                    className="bg-white p-6 max-sm:p-4 shadow-lg border-4 border-black"
-                    style={{ fontFamily: 'Bangers, cursive' }}
-                  >
-                    <h3 className="text-3xl text-black uppercase tracking-wider mb-4 max-sm:text-2xl text-center">
+                  <div style={{ fontFamily: 'Bangers, cursive' }}>
+                    <h3 className="text-3xl text-white uppercase tracking-wider mb-4 max-sm:text-2xl text-center drop-shadow-lg">
                       GOD OF LIES
                     </h3>
                     
-                    <p className="text-lg text-gray-800 leading-relaxed mb-3 max-sm:text-base" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
+                    <p className="text-lg text-white leading-relaxed mb-3 max-sm:text-base drop-shadow-md" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
                       A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
                     </p>
                     
-                    <p className="text-lg text-gray-800 leading-relaxed max-sm:text-base" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
+                    <p className="text-lg text-white leading-relaxed max-sm:text-base drop-shadow-md" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
                       A psychological thriller exploring the price of dishonesty, where deception becomes truth and reality dissolves into fiction.
                     </p>
                   </div>
