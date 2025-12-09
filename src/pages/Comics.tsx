@@ -10,7 +10,7 @@ import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
 import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
-
+import brickWallBackground from "@/assets/brick-wall-background.jpg";
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
 
@@ -196,61 +196,81 @@ const Comics = () => {
         </div>
 
         {/* Forthcoming Section */}
-        <div className="container mx-auto px-6 pb-16">
+        <div className="pb-16">
           {/* FORTHCOMING Title with decorative lines */}
-          <div className="flex items-center justify-center mb-12">
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent to-amber-800"></div>
-            <h2 className="font-serif text-4xl font-bold text-black mx-8 drop-shadow-lg">
-              FORTHCOMING
-            </h2>
-            <div className="flex-1 h-px bg-gradient-to-l from-transparent to-amber-800"></div>
-          </div>
-          
-          {/* First Row */}
-          <div className="mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
-              {smallShelfComics.slice(0, 3).map((comic, index) => (
-                <ScrollFadeUp key={comic.title} id={`comic-${index}`} delay={index * 200}>
-                  <div 
-                    className="cursor-pointer group text-center"
-                    onClick={() => handleComicClick(comic)}
-                  >
-                    <img 
-                      src={comic.cover}
-                      alt={`${comic.title} comic cover`}
-                      className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
-                      loading="lazy"
-                    />
-                    <p className="font-serif text-base text-amber-800 italic max-w-xs">
-                      {comic.teaser}
-                    </p>
-                  </div>
-                </ScrollFadeUp>
-              ))}
+          <div className="container mx-auto px-6">
+            <div className="flex items-center justify-center mb-12">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent to-amber-800"></div>
+              <h2 className="font-serif text-4xl font-bold text-black mx-8 drop-shadow-lg">
+                FORTHCOMING
+              </h2>
+              <div className="flex-1 h-px bg-gradient-to-l from-transparent to-amber-800"></div>
             </div>
           </div>
+          
+          {/* Brick Wall Background Section */}
+          <div className="relative">
+            {/* Brick wall background with fade effects */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ 
+                backgroundImage: `url(${brickWallBackground})`,
+                maskImage: 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)',
+                maskComposite: 'intersect',
+                WebkitMaskComposite: 'source-in'
+              }}
+            />
+            
+            {/* Content on top of brick wall */}
+            <div className="relative z-10 container mx-auto px-6 py-12">
+              {/* First Row */}
+              <div className="mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
+                  {smallShelfComics.slice(0, 3).map((comic, index) => (
+                    <ScrollFadeUp key={comic.title} id={`comic-${index}`} delay={index * 200}>
+                      <div 
+                        className="cursor-pointer group text-center"
+                        onClick={() => handleComicClick(comic)}
+                      >
+                        <img 
+                          src={comic.cover}
+                          alt={`${comic.title} comic cover`}
+                          className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
+                          loading="lazy"
+                        />
+                        <p className="font-serif text-base text-white italic max-w-xs drop-shadow-lg">
+                          {comic.teaser}
+                        </p>
+                      </div>
+                    </ScrollFadeUp>
+                  ))}
+                </div>
+              </div>
 
-          {/* Second Row */}
-          <div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
-              {smallShelfComics.slice(3, 6).map((comic, index) => (
-                <ScrollFadeUp key={comic.title} id={`comic-${index + 3}`} delay={(index + 3) * 200}>
-                  <div 
-                    className="cursor-pointer group text-center"
-                    onClick={() => handleComicClick(comic)}
-                  >
-                    <img 
-                      src={comic.cover}
-                      alt={`${comic.title} comic cover`}
-                      className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
-                      loading="lazy"
-                    />
-                    <p className="font-serif text-base text-amber-800 italic max-w-xs">
-                      {comic.teaser}
-                    </p>
-                  </div>
-                </ScrollFadeUp>
-              ))}
+              {/* Second Row */}
+              <div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
+                  {smallShelfComics.slice(3, 6).map((comic, index) => (
+                    <ScrollFadeUp key={comic.title} id={`comic-${index + 3}`} delay={(index + 3) * 200}>
+                      <div 
+                        className="cursor-pointer group text-center"
+                        onClick={() => handleComicClick(comic)}
+                      >
+                        <img 
+                          src={comic.cover}
+                          alt={`${comic.title} comic cover`}
+                          className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
+                          loading="lazy"
+                        />
+                        <p className="font-serif text-base text-white italic max-w-xs drop-shadow-lg">
+                          {comic.teaser}
+                        </p>
+                      </div>
+                    </ScrollFadeUp>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
