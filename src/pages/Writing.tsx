@@ -257,7 +257,7 @@ const Writing = () => {
                 </p>
               </div>
               
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -276,24 +276,26 @@ const Writing = () => {
                     <h2 className="font-serif font-bold mb-1 text-white" style={{ fontSize: '3rem' }}>
                       KAIJU
                     </h2>
-                    <h3 className="font-serif text-yellow-300 mb-6 tracking-wide" style={{ fontSize: 'calc(1.125rem + 3pt)' }}>
+                    <h3 className="font-serif text-yellow-300 mb-6 tracking-wide" style={{ fontSize: 'calc(1rem + 2pt)' }}>
                       Book One of The Parable Trilogy
                     </h3>
                     <p className="font-serif text-base leading-relaxed text-white mb-3">
-                      When a foreign object crashes from the sky in Osaka, Japan, and a strange figure appears at the impact site, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
+                      When a foreign object crashes from the sky in Osaka, Japan, and a strange figure appears in the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                     </p>
                     <p className="font-serif text-base leading-relaxed text-white mb-3">
                       For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
                     </p>
-                    <p className="font-serif text-base leading-relaxed text-white mb-3">
+                    <p className="font-serif text-base leading-relaxed text-white">
                       Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and more dangerous — than she ever imagined.
-                    </p>
-                    <p className="font-serif text-base leading-relaxed text-white italic">
-                      Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people, in a 1979 that only happened to those who were there.
                     </p>
                   </div>
                 </div>
               </div>
+              <p className={`font-serif text-lg leading-relaxed text-white italic text-center mt-10 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
+                visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}>
+                Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people, in a 1979 that only happened to those who were there.
+              </p>
             </div>
           </div>
         </section>
