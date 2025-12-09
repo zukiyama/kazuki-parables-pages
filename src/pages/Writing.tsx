@@ -280,13 +280,10 @@ const Writing = () => {
                       Book One of The Parable Trilogy
                     </h3>
                     <p className="font-serif text-base leading-relaxed text-white mb-3">
-                      <span className="text-yellow-300 font-semibold">Osaka, Japan. 1979.</span>
+                      When a foreign object crashes from the sky in Osaka, Japan, and a strange figure appears at the impact site, Shigemitsu, former psychiatrist of a local office worker somehow connected to events, is enlisted by the military and must draw on what he remembers of a man he hasn't thought of in twenty years.
                     </p>
                     <p className="font-serif text-base leading-relaxed text-white mb-3">
-                      A foreign object crashes from the sky in Osaka and a strange figure steps from the smoke of the impact site. Shigemitsu, former psychiatrist of a local office worker somehow connected to the being, is enlisted by the military and must draw on what he remembers of a man he hasn't thought of in twenty years.
-                    </p>
-                    <p className="font-serif text-base leading-relaxed text-white mb-3">
-                      For Kenji, new to nearby Nakamura Danchi, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako and Kubo, and when they meet Emiko, the conspiracy obsessed Hideo and others, the gang of misfits realise that they each share a secret, and begin to suspect the town is not all it seems.
+                      For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
                     </p>
                     <p className="font-serif text-base leading-relaxed text-white mb-3">
                       Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, has resigned herself to an uneventful career. But when a seemingly minor disappearance leads her into a web of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
