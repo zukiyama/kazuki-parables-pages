@@ -283,16 +283,16 @@ const Writing = () => {
                       <span className="text-yellow-300 font-semibold">Osaka, Japan. 1979.</span>
                     </p>
                     <p className="font-serif text-base leading-relaxed text-white mb-3">
-                      When an unforecasted meteor shower illuminates the sky in Osaka, news ratings are barely altered… until a week later a foreign object crashes into the city and a strange figure appears in the smoke of the impact site. Shigemitsu, former psychiatrist of a local office worker somehow connected to the being is enlisted by the military, who have been mobilised to deal with the unfolding crisis, and must draw on what he remembers of a man he hasn't thought of in twenty years.
+                      A foreign object crashes from the sky in Osaka and a strange figure steps from the smoke of the impact site. Shigemitsu, former psychiatrist of a local office worker somehow connected to the being, is enlisted by the military and must draw on what he remembers of a man he hasn't thought of in twenty years.
                     </p>
                     <p className="font-serif text-base leading-relaxed text-white mb-3">
-                      For Kenji, new to the nearby Nakamura Memorial School, all that matters is not being the only kid sitting alone in class. And that means keeping anyone from finding out that he's different. He soon finds himself allied to Masako and Kubo, and when they meet Emiko and her blind sister, and the conspiracy obsessed Hideo, among others, the gang of misfits realise that they each share a secret, and begin to suspect their town is not all it seems. With none of the adults seemingly able to remember how they first came to be there and shadowy figures closing in on Emiko and her sister, they set out to uncover the truth for themselves.
+                      For Kenji, new to nearby Nakamura Danchi, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako and Kubo, and when they meet Emiko, the conspiracy obsessed Hideo and others, the gang of misfits realise that they each share a secret, and begin to suspect the town is not all it seems.
                     </p>
                     <p className="font-serif text-base leading-relaxed text-white mb-3">
                       Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, has resigned herself to an uneventful career. But when a seemingly minor disappearance leads her into a web of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
                     </p>
                     <p className="font-serif text-base leading-relaxed text-white italic">
-                      Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people during one extraordinary summer in a 1979 that never happened to those who weren't there.
+                      Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people, in a 1979 that only happened to those who were there.
                     </p>
                   </div>
                 </div>
