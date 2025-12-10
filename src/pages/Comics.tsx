@@ -214,12 +214,9 @@ const Comics = () => {
                     <img 
                       src={comic.cover}
                       alt={`${comic.title} comic cover`}
-                      className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
+                      className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
                       loading="lazy"
                     />
-                    <p className="font-serif text-base text-amber-800 italic max-w-xs">
-                      {comic.teaser}
-                    </p>
                   </div>
                 </ScrollFadeUp>
               ))}
@@ -238,12 +235,9 @@ const Comics = () => {
                     <img 
                       src={comic.cover}
                       alt={`${comic.title} comic cover`}
-                      className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300 mb-3"
+                      className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
                       loading="lazy"
                     />
-                    <p className="font-serif text-base text-amber-800 italic max-w-xs">
-                      {comic.teaser}
-                    </p>
                   </div>
                 </ScrollFadeUp>
               ))}
