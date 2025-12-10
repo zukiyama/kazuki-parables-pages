@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 export const useScrollAnimation = () => {
   const [visibleElements, setVisibleElements] = useState<Set<string>>(new Set());
@@ -38,16 +38,26 @@ interface ScrollFadeUpProps {
   id: string;
   delay?: number;
   className?: string;
+  onVisible?: () => void;
 }
 
 export const ScrollFadeUp: React.FC<ScrollFadeUpProps> = ({ 
   children, 
   id, 
   delay = 0, 
-  className = "" 
+  className = "",
+  onVisible 
 }) => {
   const visibleElements = useScrollAnimation();
   const isVisible = visibleElements.has(id);
+  const hasTriggeredRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (isVisible && onVisible && !hasTriggeredRef.current) {
+      hasTriggeredRef.current = true;
+      onVisible();
+    }
+  }, [isVisible, onVisible]);
 
   return (
     <div

@@ -567,3 +567,13 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+  
+  /* Parable background zoom animation */
+  @keyframes parable-zoom {
+    0% {
+      transform: scale(0.7);
+    }
+    100% {
+      transform: scale(2.5);
+    }
+  }
