@@ -7,7 +7,6 @@ import officeView from "@/assets/office-window-view.jpg";
 import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
 import circlesSingleCover from "@/assets/circles-single-cover.png";
-import parableBackground from "@/assets/parable-background-figure.jpeg";
 import useEmblaCarousel from 'embla-carousel-react';
 
 const Index = () => {
@@ -18,7 +17,6 @@ const Index = () => {
   const [animateTvText, setAnimateTvText] = useState(false);
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
-  const [showParableBackground, setShowParableBackground] = useState(false);
   const showMagazineRef = useRef(false);
 
   const images = [
@@ -173,28 +171,10 @@ const Index = () => {
       </section>
 
       {/* Content Section */}
-      <section className="min-h-screen relative bg-background overflow-hidden">
-        {/* Animated background image */}
-        <div 
-          className={`absolute inset-0 flex items-center justify-center transition-opacity duration-[3000ms] ease-out ${showParableBackground ? 'opacity-75' : 'opacity-0'}`}
-          style={{
-            animation: showParableBackground ? 'parable-zoom 20s ease-out forwards' : 'none',
-          }}
-        >
-          <img 
-            src={parableBackground} 
-            alt=""
-            className="w-full h-full object-contain"
-            style={{ 
-              minWidth: '100%',
-              minHeight: '100%',
-            }}
-          />
-        </div>
-        
+      <section className="min-h-screen relative bg-background">
         {/* Book Announcement */}
-        <div className="container mx-auto px-6 py-12 relative z-10">
-          <ScrollFadeUp id="book-announcement" className="text-center mb-16" onVisible={() => setShowParableBackground(true)}>
+        <div className="container mx-auto px-6 py-12">
+          <ScrollFadeUp id="book-announcement" className="text-center mb-16">
             <h2 className="font-heading text-3xl md:text-5xl mb-4" style={{ color: '#2d1b1b' }}>
               Book One of The Parable Trilogy
             </h2>
