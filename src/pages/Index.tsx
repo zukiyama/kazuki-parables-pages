@@ -189,43 +189,40 @@ const Index = () => {
             </p>
           </ScrollFadeUp>
 
-          {/* Music Banner - Full Width Strip */}
-          <ScrollFadeUp id="music-banner" delay={300} className="w-full mt-4">
-            <a 
-              href="#/music?ohio=true" 
-              className="group block w-full"
-            >
-              <div className="w-full bg-gradient-to-r from-primary/10 via-card/95 to-primary/10 border-y border-border/50 py-4 px-6 flex items-center justify-center gap-8 hover:from-primary/15 hover:to-primary/15 transition-all duration-300 max-sm:gap-4 max-sm:px-4">
-                <div className="relative flex-shrink-0">
-                  <img 
-                    src={circlesSingleCover} 
-                    alt="Circles single cover"
-                    className="w-20 h-20 md:w-24 md:h-24 rounded-md object-contain shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300"
-                  />
-                  <div className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold px-1.5 py-0.5 rounded-full animate-pulse">
-                    NEW
-                  </div>
-                </div>
-                <div className="flex items-center gap-6 max-sm:gap-3 max-sm:flex-col max-sm:items-start">
-                  <div>
-                    <p className="font-heading text-xs md:text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                      Debut Single
-                    </p>
-                    <h4 className="font-heading text-2xl md:text-3xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
-                      CIRCLES
-                    </h4>
-                  </div>
-                  <div className="flex items-center gap-2 text-primary font-body font-medium group-hover:gap-3 transition-all duration-300 max-sm:text-sm">
-                    <span>Listen Now</span>
-                    <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
+        </div>
+        
+        {/* Music Banner - Full Width Strip */}
+        <ScrollFadeUp id="music-banner" delay={300} className="w-screen -ml-[50vw] left-1/2 relative mt-4">
+          <a 
+            href="#/music?ohio=true" 
+            className="group block w-full"
+          >
+            <div className="w-full bg-gradient-to-r from-card via-primary/5 to-card py-6 flex items-center justify-center gap-12 hover:via-primary/10 transition-all duration-300 max-sm:gap-6 max-sm:py-4">
+              <div className="flex-shrink-0">
+                <img 
+                  src={circlesSingleCover} 
+                  alt="Circles single cover"
+                  className="w-32 h-32 md:w-40 md:h-40 rounded-lg object-contain shadow-2xl group-hover:shadow-primary/30 group-hover:scale-105 transition-all duration-300 max-sm:w-24 max-sm:h-24"
+                />
+              </div>
+              <div className="flex flex-col items-start max-sm:items-start">
+                <p className="font-heading text-2xl md:text-3xl font-bold text-primary uppercase tracking-wider mb-1 max-sm:text-xl">
+                  NEW SINGLE
+                </p>
+                <h4 className="font-heading text-4xl md:text-5xl font-bold text-foreground group-hover:text-primary transition-colors duration-300 max-sm:text-3xl">
+                  CIRCLES
+                </h4>
+                <div className="flex items-center gap-2 text-muted-foreground font-body mt-2 group-hover:text-primary group-hover:gap-3 transition-all duration-300">
+                  <span>Listen Now</span>
+                  <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
                 </div>
               </div>
-            </a>
-          </ScrollFadeUp>
-        </div>
+            </div>
+          </a>
+        </ScrollFadeUp>
+        
 
         {/* Magazine Cover Section */}
         <div 
