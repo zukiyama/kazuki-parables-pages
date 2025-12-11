@@ -189,35 +189,34 @@ const Index = () => {
             </p>
           </ScrollFadeUp>
 
-          {/* Music Banner */}
-          <ScrollFadeUp id="music-banner" delay={300} className="flex justify-center mt-4">
+          {/* Music Banner - Full Width Strip */}
+          <ScrollFadeUp id="music-banner" delay={300} className="w-full mt-4">
             <a 
               href="#/music?ohio=true" 
-              className="group inline-block hover-scale transition-all duration-300"
+              className="group block w-full"
             >
-              <div className="bg-gradient-to-r from-card/90 to-card/70 backdrop-blur-sm border border-border rounded-xl p-6 flex items-center gap-6 shadow-xl hover:shadow-2xl hover:border-primary/30 transition-all duration-300 max-sm:p-4 max-sm:gap-4 max-sm:flex-col max-sm:text-center">
-                <div className="relative">
+              <div className="w-full bg-gradient-to-r from-primary/10 via-card/95 to-primary/10 border-y border-border/50 py-4 px-6 flex items-center justify-center gap-8 hover:from-primary/15 hover:to-primary/15 transition-all duration-300 max-sm:gap-4 max-sm:px-4">
+                <div className="relative flex-shrink-0">
                   <img 
                     src={circlesSingleCover} 
                     alt="Circles single cover"
-                    className="w-32 h-32 md:w-40 md:h-40 rounded-lg object-contain shadow-lg group-hover:shadow-xl transition-shadow duration-300 max-sm:w-28 max-sm:h-28"
+                    className="w-20 h-20 md:w-24 md:h-24 rounded-md object-contain shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300"
                   />
-                  <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                  <div className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold px-1.5 py-0.5 rounded-full animate-pulse">
                     NEW
                   </div>
                 </div>
-                <div className="text-left max-sm:text-center">
-                  <p className="font-heading text-sm md:text-base font-semibold text-muted-foreground uppercase tracking-wider mb-1 max-sm:text-xs">
-                    Debut Single
-                  </p>
-                  <h4 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300 max-sm:text-2xl">
-                    CIRCLES
-                  </h4>
-                  <p className="font-body text-base md:text-lg text-muted-foreground mb-3">
-                    Available Now
-                  </p>
-                  <div className="flex items-center gap-2 text-primary group-hover:gap-3 transition-all duration-300 text-base max-sm:justify-center">
-                    <span className="font-body font-medium">Listen Now</span>
+                <div className="flex items-center gap-6 max-sm:gap-3 max-sm:flex-col max-sm:items-start">
+                  <div>
+                    <p className="font-heading text-xs md:text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                      Debut Single
+                    </p>
+                    <h4 className="font-heading text-2xl md:text-3xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                      CIRCLES
+                    </h4>
+                  </div>
+                  <div className="flex items-center gap-2 text-primary font-body font-medium group-hover:gap-3 transition-all duration-300 max-sm:text-sm">
+                    <span>Listen Now</span>
                     <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
