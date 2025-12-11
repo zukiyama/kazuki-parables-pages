@@ -231,7 +231,7 @@ const Index = () => {
         {/* Magazine Cover Section */}
         <div 
           className={`magazine-slide ${showMagazine ? "visible" : ""} embla cursor-pointer`}
-          onClick={() => window.location.href = '#/writing#kaiju'}
+          onClick={() => window.location.href = '#/writing'}
         >
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container">
