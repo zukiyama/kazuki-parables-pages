@@ -189,45 +189,49 @@ const Index = () => {
             </p>
           </ScrollFadeUp>
 
-        </div>
-        
-        {/* Music Banner - Full Width Strip */}
-        <ScrollFadeUp id="music-banner" delay={300} className="w-screen -ml-[50vw] left-1/2 relative mt-4">
-          <a 
-            href="#/music?ohio=true" 
-            className="group block w-full"
-          >
-            <div className="w-full bg-gradient-to-r from-card via-primary/5 to-card py-6 flex items-center justify-center gap-12 hover:via-primary/10 transition-all duration-300 max-sm:gap-6 max-sm:py-4">
-              <div className="flex-shrink-0">
-                <img 
-                  src={circlesSingleCover} 
-                  alt="Circles single cover"
-                  className="w-32 h-32 md:w-40 md:h-40 rounded-lg object-contain shadow-2xl group-hover:shadow-primary/30 group-hover:scale-105 transition-all duration-300 max-sm:w-24 max-sm:h-24"
-                />
-              </div>
-              <div className="flex flex-col items-start max-sm:items-start">
-                <p className="font-heading text-2xl md:text-3xl font-bold text-primary uppercase tracking-wider mb-1 max-sm:text-xl">
-                  NEW SINGLE
-                </p>
-                <h4 className="font-heading text-4xl md:text-5xl font-bold text-foreground group-hover:text-primary transition-colors duration-300 max-sm:text-3xl">
-                  CIRCLES
-                </h4>
-                <div className="flex items-center gap-2 text-muted-foreground font-body mt-2 group-hover:text-primary group-hover:gap-3 transition-all duration-300">
-                  <span>Listen Now</span>
-                  <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+          {/* Music Banner */}
+          <ScrollFadeUp id="music-banner" delay={300} className="flex justify-center mt-12">
+            <a 
+              href="#/music?ohio=true" 
+              className="group block w-full max-w-4xl hover-scale transition-all duration-300"
+            >
+              <div className="bg-gradient-to-r from-card/90 to-card/70 backdrop-blur-sm border border-border rounded-xl p-10 flex items-center gap-10 shadow-xl hover:shadow-2xl hover:border-primary/30 transition-all duration-300 max-sm:p-5 max-sm:gap-5 max-sm:flex-col max-sm:text-center">
+                <div className="relative">
+                  <img 
+                    src={circlesSingleCover} 
+                    alt="Circles single cover"
+                    className="w-40 h-40 md:w-48 md:h-48 rounded-lg object-contain shadow-lg group-hover:shadow-xl transition-shadow duration-300 max-sm:w-32 max-sm:h-32"
+                  />
+                  <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                    NEW
+                  </div>
+                </div>
+                <div className="flex-1 text-left max-sm:text-center">
+                  <p className="font-heading text-base md:text-lg font-semibold text-muted-foreground uppercase tracking-wider mb-2 max-sm:text-sm">
+                    Debut Single
+                  </p>
+                  <h4 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300 max-sm:text-3xl">
+                    CIRCLES
+                  </h4>
+                  <p className="font-body text-lg md:text-xl text-muted-foreground mb-5">
+                    Available Now
+                  </p>
+                  <div className="flex items-center gap-2 text-primary group-hover:gap-4 transition-all duration-300 text-lg">
+                    <span className="font-body font-medium">Listen Now</span>
+                    <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
                 </div>
               </div>
-            </div>
-          </a>
-        </ScrollFadeUp>
-        
+            </a>
+          </ScrollFadeUp>
+        </div>
 
         {/* Magazine Cover Section */}
         <div 
           className={`magazine-slide ${showMagazine ? "visible" : ""} embla cursor-pointer`}
-          onClick={() => window.location.href = '#/writing'}
+          onClick={() => window.location.href = '#/writing#kaiju'}
         >
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container">
