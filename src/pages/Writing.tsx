@@ -49,16 +49,6 @@ const Writing = () => {
   });
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
 
-  // Scroll to Parable Trilogy section on page load
-  useEffect(() => {
-    const parableSection = document.getElementById('parable-trilogy');
-    if (parableSection) {
-      const yOffset = -80; // Account for navigation
-      const y = parableSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'instant' });
-    }
-  }, []);
-
   // Preload all background images and book covers at once
   useEffect(() => {
     const allImages = [
@@ -251,14 +241,14 @@ const Writing = () => {
         <section data-section="kaiju" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
-              <h1 className={`font-serif text-6xl font-bold text-white mb-14 max-sm:mb-12 text-center tracking-wide transition-all duration-1000 ${
+              <h1 className={`font-serif text-6xl font-bold text-white mb-20 max-sm:mb-16 text-center tracking-wide transition-all duration-1000 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
               }`}>
                 Novels
               </h1>
               
               {/* The Parable Trilogy Introduction */}
-              <div id="parable-trilogy" className={`text-center mb-16 transition-all duration-1000 delay-200 ${
+              <div className={`text-center mb-16 transition-all duration-1000 delay-200 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 <h2 className="font-serif text-4xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>
