@@ -346,13 +346,13 @@ const Writing = () => {
                       boxShadow: '2px 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)'
                     }}>
                       <p className="font-serif text-base leading-loose text-stone-600 mb-4" style={{ lineHeight: '1.9' }}>
-                        Peter Mayhew had hit rock bottom when he wrote Hoax, a pseudo-spiritual guide intended as his letter of resignation, a final insult to the industry that had rejected him… and worst of all an overnight bestseller. He had finally made his name. And could never use it again.
+                        Peter Mayhew had hit rock bottom when he wrote Hoax, a pseudo-spiritual parody intended as his sign-off, a final insult to an industry he had grown to despise… and worst of all an overnight bestseller. He had finally made his name. And could never use it again.
                       </p>
                       <p className="font-serif text-base leading-loose text-stone-600 mb-4" style={{ lineHeight: '1.9' }}>
-                        A year later, hiding out in an Australian motel, with writers block and no offers beside those to write a sequel to his loathed book, he receives a phone call. A commune has been established in which people are living as set out by his guide.
+                        A year later, fleeing his reputation in an Australian motel, paralysed by writers' block, with his only opportunities those to write a sequel, he receives a phone call from someone who claims there is a cult modelled on his book.
                       </p>
                       <p className="font-serif text-base leading-loose text-stone-600 mb-4" style={{ lineHeight: '1.9' }}>
-                        Walking into what feels like his own work come to life, Peter must convince the group it was all a hoax—but in doing so, he begins to question where his book truly came from.
+                        Walking into what feels like his own work come to life, Peter must convince a community it was all a hoax—but in doing so, he begins to question where his book truly came from.
                       </p>
                       <p className="font-serif text-base leading-loose text-stone-600 italic" style={{ lineHeight: '1.9' }}>
                         A mind bending tale of literary fiction.
