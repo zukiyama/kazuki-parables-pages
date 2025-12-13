@@ -392,13 +392,16 @@ const Writing = () => {
                     }}>
                       <div className="flex items-center gap-2 mb-4 pb-3 border-b border-cyan-400/30">
                         <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
-                        <span className="text-cyan-400/80 text-xs font-mono tracking-widest">CORP_NATION_01 // CLASSIFIED</span>
+                        <span className="text-cyan-400/80 text-xs font-mono tracking-widest">CORP_01 // CLASSIFIED</span>
                       </div>
                       <h2 className="font-mono text-4xl font-bold mb-4 text-cyan-300 tracking-tight">
                         THE MARKET
                       </h2>
-                      <p className="font-sans text-base leading-relaxed text-cyan-100/90">
-                        A man journeys to the first corporate nation on Earth, where towering glass structures pierce the sky and autonomous vehicles glide through pristine streets. But beneath the gleaming facade of this technological paradise, all is not as it seems. Dark secrets lurk in the shadows of progress, and the price of perfection may be higher than anyone imagined.
+                      <p className="font-sans text-base leading-relaxed text-cyan-100/90 mb-3">
+                        James Tarreden's new life on Island—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. Under the wing of its charismatic young CEO, he is inducted into higher and higher levels of secrets behind his company's new technology. With his perceptions of reality unravelling, James finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of Island, one that gives an entirely new meaning to corporate survival.
+                      </p>
+                      <p className="font-sans text-sm italic text-cyan-200/80">
+                        An existential psychological thriller.
                       </p>
                       <div className="mt-4 flex justify-between items-center text-cyan-400/50 text-xs font-mono">
                         <span>ACCESS: LEVEL-7</span>
