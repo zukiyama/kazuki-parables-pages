@@ -443,10 +443,10 @@ const Writing = () => {
                   {/* Original dark overlay style */}
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
                     <p className="font-serif text-lg leading-relaxed text-white mb-3">
-                      Set in Nairobi, Kenya. A linguist specialising in rare languages is seconded, reluctantly, to a village where there have been reports of an ancient undiscovered language still being spoken. The village, existing on the fringes of the forest, brings back memories of a childhood he has tried to hide in his urban adult life. While there he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive and awakens something that has lain silent in him for longer than he can remember.
+                      Set in Nairobi, Kenya. A linguist specialising in rare languages is seconded, reluctantly, to a village where there have been reports of an ancient language still being spoken. The village, existing on the fringes of the forest, brings back memories of a childhood he has tried to hide in his urban adult life. While there he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive and awakens something that has lain silent in him for longer than he can remember.
                     </p>
                     <p className="font-serif text-lg leading-relaxed text-white">
-                      Memories of the past interweave with the present as in his attempts to help the young girl communicate, the linguist learns that he may have as much to learn from her as she from him.
+                      Memories of the past interweave with the present as in his attempts to help the young girl communicate, he discovers that he may have as much to learn from her as she from him.
                     </p>
                   </div>
                 </div>
