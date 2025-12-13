@@ -398,7 +398,7 @@ const Writing = () => {
                         THE MARKET
                       </h2>
                       <p className="font-sans text-base leading-relaxed text-cyan-100/90 mb-3">
-                        James Tarreden's new life on Island—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. Under the wing of a charismatic young CEO, he is inducted into higher and higher levels of secrets behind his company's new technology. With his perceptions of reality unravelling, James finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of Island, one that gives an entirely new meaning to corporate survival.
+                        James Tarreden's new life on Island—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. Under the wing of a charismatic young CEO, he is inducted into the secrets behind his company's new technology, and with his perception of reality unravelling, James finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of Island, one that gives an entirely new meaning to corporate survival.
                       </p>
                       <p className="font-sans text-sm italic text-cyan-200/80">
                         An existential psychological thriller.
