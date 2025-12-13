@@ -495,10 +495,10 @@ const Writing = () => {
                       A man unable to distinguish truth from fiction, whose words are so dangerous they can alter reality itself.
                     </p>
                     <p className="font-serif text-lg leading-relaxed text-white mb-3">
-                      A secret cabal of plumbers employed in an age old scheme that has evolved in the waste beneath the cities they connect.
+                      A secret cabal of plumbers employed in an age old scheme that has evolved in the wastes beneath the cities they connect.
                     </p>
                     <p className="font-serif text-lg leading-relaxed text-white italic">
-                      A novel of multitudes and convergences; a sequel to a story that doesn't exist; a portrait of time and place; all these and more describe this nation that can only be seen at its margins.
+                      A novel of multitudes and convergences; a sequel to a story that doesn't exist; a portrait of time and place; all these and more describe this nation that can be seen only at its margins.
                     </p>
                   </div>
                 </div>
