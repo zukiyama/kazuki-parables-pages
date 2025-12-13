@@ -486,7 +486,7 @@ const Writing = () => {
                       There is an America between Americas, an idea that every now and then is touched in the course of one life or another before fading, leaving behind a trace of itself and a sense of the unreality of that which touched it.
                     </p>
                     <p className="font-serif text-base leading-relaxed text-white mb-2">
-                      A physicist on his way to a conference on a tropical island, carrying in his head a theory too precious to document; as enemy agents close in, is it paranoia, or is paranoia how they operate?
+                      A physicist on his way to a conference, carrying in his head a theory too precious to document; as enemy agents close in, is it paranoia, or is paranoia how they operate?
                     </p>
                     <p className="font-serif text-base leading-relaxed text-white mb-2">
                       A pianist haunted by a melody from childhood, a song he has been chasing his entire life.
