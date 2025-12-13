@@ -401,7 +401,7 @@ const Writing = () => {
                         James Tarreden's new life on Island—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. In fact, everything is falling into place a little too easily…
                       </p>
                       <p className="font-sans text-base leading-relaxed text-cyan-100/90 mb-3">
-                        Under the wing of a charismatic young CEO, James begins to learn the secret behind his company's new technology. With everything he knows about reality unravelling, he finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of Island, one that gives an entirely new meaning to corporate survival.
+                        Under the wing of a charismatic young CEO, he learns the secret behind his company's new technology, and with everything he knew about reality unravelling, James finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of Island, one that gives an entirely new meaning to corporate survival.
                       </p>
                       <p className="font-sans text-sm italic text-cyan-200/80">
                         An existential psychological thriller.
