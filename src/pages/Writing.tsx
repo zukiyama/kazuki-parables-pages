@@ -479,8 +479,26 @@ const Writing = () => {
                   </h2>
                   {/* Original dark overlay style - same as AMYA */}
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white">
-                      A captivating exploration of movement, momentum, and the forces that shape our world. Through the lens of physics and human emotion, this novel follows characters whose lives intersect in ways as predictable as gravity and as chaotic as quantum mechanics. A story where science and humanity collide in beautiful, unexpected ways.
+                    <p className="font-serif text-lg leading-relaxed text-white italic mb-4">
+                      "…the city was not the arrangement of many things but the shifting posture of one…"
+                    </p>
+                    <p className="font-serif text-lg leading-relaxed text-white mb-3">
+                      There is an America between Americas, an idea that every now and then is touched in the course of one life or another before fading, leaving behind a trace of itself and a sense of the unreality of that which touched it.
+                    </p>
+                    <p className="font-serif text-lg leading-relaxed text-white mb-3">
+                      A physicist on his way to a conference on a tropical island, carrying in his head a theory too precious to document; as enemy agents close in, is it paranoia, or is paranoia how they operate?
+                    </p>
+                    <p className="font-serif text-lg leading-relaxed text-white mb-3">
+                      A pianist haunted by a melody from childhood, a song he has been chasing his entire life.
+                    </p>
+                    <p className="font-serif text-lg leading-relaxed text-white mb-3">
+                      A man unable to distinguish truth from fiction, whose words are so dangerous they can alter reality itself.
+                    </p>
+                    <p className="font-serif text-lg leading-relaxed text-white mb-3">
+                      A secret cabal of plumbers employed in an age old scheme that has evolved in the waste beneath the cities they connect.
+                    </p>
+                    <p className="font-serif text-lg leading-relaxed text-white italic">
+                      A novel of multitudes and convergences; a sequel to a story that doesn't exist; a portrait of time and place; all these and more describe this nation that can only be seen at its margins.
                     </p>
                   </div>
                 </div>
