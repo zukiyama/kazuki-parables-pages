@@ -349,7 +349,7 @@ const Writing = () => {
                         Peter Mayhew had hit rock bottom when he wrote Hoax, a pseudo-spiritual parody intended as his sign-off, a final insult to an industry he had grown to despise… and worst of all an overnight bestseller. He had finally made his name — and could never use it again.
                       </p>
                       <p className="font-serif text-base leading-loose text-stone-600 mb-4" style={{ lineHeight: '1.9' }}>
-                        A year later, fleeing his reputation in an Australian motel, paralysed by writer's block, with his only opportunities those to write a sequel, he receives a phone call from someone who claims there is a cult modelled on his book.
+                        A year later, fleeing his reputation in an Australian motel, paralysed by writer's block, with his only opportunities those to write a sequel, he receives a phone call from someone who claims to be a part of a cult modelled on his book.
                       </p>
                       <p className="font-serif text-base leading-loose text-stone-600 mb-4" style={{ lineHeight: '1.9' }}>
                         Walking into what feels like his own work come to life, Peter must convince a community it was all a hoax—but in doing so, he begins to question where his book truly came from.
