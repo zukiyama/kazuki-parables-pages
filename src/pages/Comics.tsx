@@ -303,11 +303,11 @@ const Comics = () => {
         </section>
       </main>
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-8 relative z-10">
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 relative z-10 max-sm:py-8">
         <div className="container mx-auto px-6 text-center">
           <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
-          <p className="text-white/80">
-            For inquiries about comics, scripts, or collaborations, please reach out.
+          <p className="font-serif text-white">
+            kazuki@kazukiyamakawa.com
           </p>
         </div>
       </footer>
