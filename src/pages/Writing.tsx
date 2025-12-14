@@ -483,7 +483,7 @@ const Writing = () => {
                       "…the city was not the arrangement of many things but the shifting posture of one…"
                     </p>
                     <p className="font-serif text-base leading-relaxed text-white mb-2">
-                      There is an America between Americas, an idea that every now and then is touched in the course of one life or another before fading, leaving behind a trace of itself and a sense of the unreality of that which touched it.
+                      There is an America between Americas, an idea that every now and then is touched in the course of one life or another before fading, leaving behind a trace of itself and a sense of its own unreality on that which touched it.
                     </p>
                     <p className="font-serif text-base leading-relaxed text-white mb-2">
                       A physicist on his way to a conference, carrying in his head a theory too precious to document; as enemy agents close in, is this paranoia, or is paranoia how they operate?
