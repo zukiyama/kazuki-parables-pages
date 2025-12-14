@@ -74,10 +74,10 @@ const Comics = () => {
       <main className="relative z-10 pt-32 pb-20">
         {/* Title Section */}
         <section className="text-center px-6 mb-16">
-          <h1 className="font-serif text-5xl md:text-6xl font-bold text-black mb-4 tracking-wide drop-shadow-lg">
+          <h1 className="font-serif text-6xl md:text-7xl font-bold text-black mb-4 tracking-wide drop-shadow-lg">
             Comics & Scripts
           </h1>
-          <p className="font-serif text-lg md:text-xl text-amber-800 leading-relaxed drop-shadow-md max-w-2xl mx-auto">
+          <p className="font-serif text-xl md:text-2xl text-amber-800 leading-relaxed drop-shadow-md max-w-2xl mx-auto">
             Comics, webtoons, manga and scripts with original characters and stories
           </p>
         </section>

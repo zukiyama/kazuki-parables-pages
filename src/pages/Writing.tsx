@@ -291,7 +291,7 @@ const Writing = () => {
                   </div>
                 </div>
               </div>
-              <p className={`font-serif text-lg leading-relaxed text-white italic text-center mt-10 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
+              <p className={`font-serif text-xl leading-relaxed text-white italic text-center mt-10 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people in a 1979 that happened only for those who were there.
