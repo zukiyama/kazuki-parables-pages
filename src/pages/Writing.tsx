@@ -253,7 +253,7 @@ const Writing = () => {
               }`}>
                 <h2 className="font-serif text-4xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>
                 <p className="font-serif text-lg leading-relaxed text-white max-w-4xl mx-auto">
-                  A metaphysical saga spanning 1970s Japan, weaving together childhood wonder and otherworldly encounters. Out of this world adventures await in this compelling trilogy that explores the boundaries between reality and imagination.
+                  A metaphysical saga that takes the reader from mysterious towns and underground film sets in an alternate 1970s Japan, to anonymous cities in Cold War era Eastern Europe, into space and beyond. With a cast as varied as its setting, childhood wonder, philosophy and fantasy collide in this compelling trilogy that explores the boundaries between truth and fiction.
                 </p>
               </div>
               
@@ -398,10 +398,10 @@ const Writing = () => {
                         THE MARKET
                       </h2>
                       <p className="font-sans text-base leading-relaxed text-cyan-100/90 mb-3">
-                        James Tarreden's new life on Island—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. In fact, everything is falling into place a little too easily…
+                        James Tarreden's new life on Island—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life <em>is</em> going disconcertingly well. In fact, everything <em>is</em> falling into place a little too easily…
                       </p>
                       <p className="font-sans text-base leading-relaxed text-cyan-100/90 mb-3">
-                        Under the wing of an enigmatic young CEO, James is inducted into the secrets behind his company's new technology, and with everything he knew about reality unravelling, he finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of Island, one that gives an entirely new meaning to corporate survival.
+                        Under the wing of an enigmatic young CEO, James is inducted into the secrets behind his company's new technology, and with everything he knew about reality unravelling, finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of Island, one that gives an entirely new meaning to corporate survival.
                       </p>
                       <p className="font-sans text-sm italic text-cyan-200/80">
                         An existential psychological thriller.
