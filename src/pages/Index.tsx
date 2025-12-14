@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
@@ -10,6 +10,7 @@ import circlesSingleCover from "@/assets/circles-single-cover.png";
 import useEmblaCarousel from 'embla-carousel-react';
 
 const Index = () => {
+  const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
@@ -229,7 +230,10 @@ const Index = () => {
         </div>
 
         {/* Magazine Cover Section */}
-        <div className={`magazine-slide ${showMagazine ? "visible" : ""} embla`}>
+        <div 
+          className={`magazine-slide ${showMagazine ? "visible" : ""} embla cursor-pointer`}
+          onClick={() => navigate('/writing#kaiju')}
+        >
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container">
               {images.map((image, index) => (
