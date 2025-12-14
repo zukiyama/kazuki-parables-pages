@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollScale } from "@/components/ScrollAnimations";
 import godOfLiesCover from "@/assets/god-of-lies-wide-cover.png";
@@ -13,6 +13,30 @@ import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
+  const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
+  const row1Ref = useRef<HTMLDivElement>(null);
+  const row2Ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const rowId = entry.target.getAttribute('data-row');
+            if (rowId) {
+              setVisibleRows((prev) => new Set(prev).add(rowId));
+            }
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    if (row1Ref.current) observer.observe(row1Ref.current);
+    if (row2Ref.current) observer.observe(row2Ref.current);
+
+    return () => observer.disconnect();
+  }, []);
 
   const smallShelfComics = [
     {
@@ -116,7 +140,7 @@ const Comics = () => {
         </section>
 
         {/* Pull Quote Section - KEPT */}
-        <section className="relative py-20 md:py-32 overflow-hidden">
+        <section className="relative py-10 md:py-16 overflow-hidden">
           <div className="container mx-auto px-6">
             <ScrollScale 
               initialScale={1.15} 
@@ -133,7 +157,7 @@ const Comics = () => {
         </section>
 
         {/* Surname Pendragon Section */}
-        <section className="py-12 md:py-16 px-6">
+        <section className="py-8 md:py-12 px-6">
           <div className="container mx-auto max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
               {/* Script Panel - Left side on desktop */}
@@ -219,12 +243,21 @@ const Comics = () => {
             </div>
             
             {/* First Row */}
-            <div className="mb-12">
+            <div 
+              ref={row1Ref}
+              data-row="row1"
+              className={`mb-12 transition-all duration-700 ${
+                visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 justify-items-center max-w-6xl mx-auto">
-                {smallShelfComics.slice(0, 3).map((comic) => (
+                {smallShelfComics.slice(0, 3).map((comic, index) => (
                   <div 
                     key={comic.title} 
-                    className="w-full max-w-xs cursor-pointer transition-transform duration-300 hover:scale-105"
+                    className={`w-full max-w-xs cursor-pointer transition-all duration-500 hover:scale-105 ${
+                      visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                    }`}
+                    style={{ transitionDelay: visibleRows.has('row1') ? `${index * 150}ms` : '0ms' }}
                     onClick={() => handleComicClick(comic)}
                   >
                     <img 
@@ -239,12 +272,21 @@ const Comics = () => {
             </div>
 
             {/* Second Row */}
-            <div>
+            <div
+              ref={row2Ref}
+              data-row="row2"
+              className={`transition-all duration-700 ${
+                visibleRows.has('row2') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 justify-items-center max-w-6xl mx-auto">
-                {smallShelfComics.slice(3, 6).map((comic) => (
+                {smallShelfComics.slice(3, 6).map((comic, index) => (
                   <div 
                     key={comic.title} 
-                    className="w-full max-w-xs cursor-pointer transition-transform duration-300 hover:scale-105"
+                    className={`w-full max-w-xs cursor-pointer transition-all duration-500 hover:scale-105 ${
+                      visibleRows.has('row2') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                    }`}
+                    style={{ transitionDelay: visibleRows.has('row2') ? `${index * 150}ms` : '0ms' }}
                     onClick={() => handleComicClick(comic)}
                   >
                     <img 
