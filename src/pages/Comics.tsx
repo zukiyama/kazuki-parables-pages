@@ -15,10 +15,8 @@ const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [hasZoomed, setHasZoomed] = useState(false);
-  const [godOfLiesScrollProgress, setGodOfLiesScrollProgress] = useState(0);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
-  const godOfLiesSectionRef = useRef<HTMLElement>(null);
 
   // One-way background zoom effect on initial scroll
   useEffect(() => {
@@ -31,37 +29,6 @@ const Comics = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [hasZoomed]);
-
-  // God of Lies parallax scroll effect
-  useEffect(() => {
-    const handleScroll = () => {
-      if (godOfLiesSectionRef.current) {
-        const rect = godOfLiesSectionRef.current.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-        
-        // Calculate progress from 0 to 1 as user scrolls through the section
-        const sectionTop = rect.top;
-        const sectionHeight = rect.height;
-        
-        // Start animation when section enters viewport, complete when it's centered
-        const startPoint = windowHeight;
-        const endPoint = windowHeight * 0.3;
-        
-        if (sectionTop <= startPoint && sectionTop >= -sectionHeight) {
-          const progress = Math.min(1, Math.max(0, (startPoint - sectionTop) / (startPoint - endPoint)));
-          setGodOfLiesScrollProgress(progress);
-        } else if (sectionTop > startPoint) {
-          setGodOfLiesScrollProgress(0);
-        } else {
-          setGodOfLiesScrollProgress(1);
-        }
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial call
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -155,69 +122,34 @@ const Comics = () => {
           </p>
         </section>
 
-        {/* God of Lies Section - Full-width parallax comic style */}
-        <section 
-          ref={godOfLiesSectionRef}
-          className="relative min-h-[80vh] md:min-h-screen overflow-hidden"
-        >
-          {/* White title over the image */}
-          <div 
-            className="absolute z-20 top-1/4 left-8 md:left-16 lg:left-24"
-            style={{
-              transform: `translateX(${-15 + godOfLiesScrollProgress * 15}px)`,
-              transition: 'transform 0.3s ease-out'
-            }}
-          >
-            <h3 
-              className="text-5xl md:text-6xl lg:text-7xl text-white uppercase tracking-wider drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]"
-              style={{ fontFamily: 'Bangers, cursive' }}
-            >
-              GOD OF LIES
-            </h3>
-          </div>
-
-          {/* Large cover image - tilted and positioned left */}
-          <div 
-            className="absolute inset-0 flex items-center justify-start p-4 md:p-8 pl-4 md:pl-12 lg:pl-20"
-            style={{
-              transform: `translateX(${-20 + godOfLiesScrollProgress * 20}px)`,
-              transition: 'transform 0.3s ease-out'
-            }}
-          >
-            <img 
-              src={godOfLiesCover}
-              alt="God of Lies comic cover"
-              className="h-[70vh] md:h-[80vh] object-contain drop-shadow-2xl"
-              style={{
-                transform: 'rotate(-2deg)'
-              }}
-            />
-          </div>
-          
-          {/* Comic panel with black border - blurb only */}
-          <div 
-            className="absolute inset-0 flex items-center justify-end pointer-events-none pr-4 md:pr-12 lg:pr-20"
-            style={{
-              transform: `translateX(${20 - godOfLiesScrollProgress * 20}px)`,
-              transition: 'transform 0.3s ease-out'
-            }}
-          >
-            <div 
-              className="bg-white shadow-2xl p-6 md:p-8 max-w-sm md:max-w-md pointer-events-auto border-4 border-black"
-              style={{
-                // Slightly angled panel like a comic book
-                clipPath: 'polygon(3% 0%, 100% 2%, 98% 100%, 0% 97%)',
-                transform: 'rotate(1deg)'
-              }}
-            >
-              <div style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
-                <p className="text-base md:text-lg lg:text-xl text-black leading-relaxed mb-3 md:mb-4">
-                  A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
-                </p>
-                
-                <p className="text-base md:text-lg lg:text-xl text-black leading-relaxed">
-                  A psychological thriller exploring the price of dishonesty, where deception becomes truth and reality dissolves into fiction.
-                </p>
+        {/* God of Lies Section */}
+        <section className="py-12 md:py-16 px-6">
+          <div className="container mx-auto max-w-7xl">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
+              {/* Cover Image */}
+              <div className="lg:col-span-3">
+                <img 
+                  src={godOfLiesCover}
+                  alt="God of Lies comic cover"
+                  className="w-full object-contain shadow-2xl rounded-sm transform -rotate-1"
+                />
+              </div>
+              
+              {/* Text Panel */}
+              <div className="lg:col-span-2">
+                <div style={{ fontFamily: 'Bangers, cursive' }}>
+                  <h3 className="text-5xl md:text-6xl text-black uppercase tracking-wider mb-6 drop-shadow-lg">
+                    GOD OF LIES
+                  </h3>
+                  
+                  <p className="text-lg md:text-xl text-black leading-relaxed mb-4" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
+                    A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
+                  </p>
+                  
+                  <p className="text-lg md:text-xl text-black leading-relaxed" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
+                    A psychological thriller exploring the price of dishonesty, where deception becomes truth and reality dissolves into fiction.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
