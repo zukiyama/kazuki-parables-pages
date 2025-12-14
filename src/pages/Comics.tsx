@@ -14,8 +14,21 @@ import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
+  const [hasZoomed, setHasZoomed] = useState(false);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
+
+  // One-way background zoom effect on initial scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!hasZoomed && window.scrollY > 50) {
+        setHasZoomed(true);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasZoomed]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -89,8 +102,11 @@ const Comics = () => {
     <div className="min-h-screen relative">
       {/* Manga Sketches Background */}
       <div 
-        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-50 pointer-events-none"
-        style={{ backgroundImage: `url(${mangaSketchesBackground})` }}
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-50 pointer-events-none transition-transform duration-700 ease-out"
+        style={{ 
+          backgroundImage: `url(${mangaSketchesBackground})`,
+          transform: hasZoomed ? 'scale(1.02)' : 'scale(1)'
+        }}
       />
       
       <Navigation />
