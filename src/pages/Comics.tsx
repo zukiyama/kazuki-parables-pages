@@ -160,46 +160,62 @@ const Comics = () => {
           ref={godOfLiesSectionRef}
           className="relative min-h-[80vh] md:min-h-screen overflow-hidden"
         >
-          {/* Large cover image - fills most of the screen */}
-          <div className="absolute inset-0 flex items-center justify-center p-4 md:p-8">
+          {/* White title over the image */}
+          <div 
+            className="absolute z-20 top-1/4 left-8 md:left-16 lg:left-24"
+            style={{
+              transform: `translateX(${-15 + godOfLiesScrollProgress * 15}px)`,
+              transition: 'transform 0.3s ease-out'
+            }}
+          >
+            <h3 
+              className="text-5xl md:text-6xl lg:text-7xl text-white uppercase tracking-wider drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]"
+              style={{ fontFamily: 'Bangers, cursive' }}
+            >
+              GOD OF LIES
+            </h3>
+          </div>
+
+          {/* Large cover image - tilted and positioned left */}
+          <div 
+            className="absolute inset-0 flex items-center justify-start p-4 md:p-8 pl-4 md:pl-12 lg:pl-20"
+            style={{
+              transform: `translateX(${-20 + godOfLiesScrollProgress * 20}px)`,
+              transition: 'transform 0.3s ease-out'
+            }}
+          >
             <img 
               src={godOfLiesCover}
               alt="God of Lies comic cover"
-              className="w-full h-full object-contain max-w-5xl drop-shadow-2xl"
+              className="h-[70vh] md:h-[80vh] object-contain drop-shadow-2xl"
               style={{
-                transform: `scale(${1 + godOfLiesScrollProgress * 0.05})`,
-                transition: 'transform 0.1s ease-out'
+                transform: 'rotate(-2deg)'
               }}
             />
           </div>
           
-          {/* Sliding comic panel with text */}
+          {/* Comic panel with black border - blurb only */}
           <div 
-            className="absolute inset-0 flex items-center justify-end pointer-events-none"
+            className="absolute inset-0 flex items-center justify-end pointer-events-none pr-4 md:pr-12 lg:pr-20"
             style={{
-              transform: `translateX(${100 - godOfLiesScrollProgress * 100}%)`,
-              opacity: godOfLiesScrollProgress,
-              transition: 'transform 0.1s ease-out, opacity 0.1s ease-out'
+              transform: `translateX(${20 - godOfLiesScrollProgress * 20}px)`,
+              transition: 'transform 0.3s ease-out'
             }}
           >
             <div 
-              className="bg-white shadow-2xl p-6 md:p-10 mr-4 md:mr-12 max-w-md md:max-w-lg pointer-events-auto"
+              className="bg-white shadow-2xl p-6 md:p-8 max-w-sm md:max-w-md pointer-events-auto border-4 border-black"
               style={{
                 // Slightly angled panel like a comic book
-                clipPath: 'polygon(5% 0%, 100% 3%, 97% 100%, 0% 95%)',
-                transform: 'rotate(-1deg)'
+                clipPath: 'polygon(3% 0%, 100% 2%, 98% 100%, 0% 97%)',
+                transform: 'rotate(1deg)'
               }}
             >
-              <div style={{ fontFamily: 'Bangers, cursive' }}>
-                <h3 className="text-4xl md:text-5xl lg:text-6xl text-black uppercase tracking-wider mb-4 md:mb-6">
-                  GOD OF LIES
-                </h3>
-                
-                <p className="text-base md:text-lg lg:text-xl text-black leading-relaxed mb-3 md:mb-4" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
+              <div style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
+                <p className="text-base md:text-lg lg:text-xl text-black leading-relaxed mb-3 md:mb-4">
                   A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
                 </p>
                 
-                <p className="text-base md:text-lg lg:text-xl text-black leading-relaxed" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
+                <p className="text-base md:text-lg lg:text-xl text-black leading-relaxed">
                   A psychological thriller exploring the price of dishonesty, where deception becomes truth and reality dissolves into fiction.
                 </p>
               </div>
