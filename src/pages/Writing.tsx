@@ -253,7 +253,7 @@ const Writing = () => {
               }`}>
                 <h2 className="font-serif text-4xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>
                 <p className="font-serif text-lg leading-relaxed text-white max-w-4xl mx-auto">
-                  A metaphysical saga spanning mysterious towns and underground film sets in an alternate 1970s Japan, anonymous cities in Cold War era Eastern Europe, and bases on the moon. With a cast as varied as its setting, childhood wonder, memory and fantasy collide in this compelling trilogy that explores the boundaries between truth and fiction.
+                  A metaphysical saga spanning abandoned towns and underground film sets in an alternate 1970s Japan, Cold War era Eastern Europe, and research facilities beyond the limits of this world. With a cast as varied as its setting, childhood wonder, memory and fantasy collide in this compelling trilogy that explores the boundaries between truth and fiction.
                 </p>
               </div>
               
