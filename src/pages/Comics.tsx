@@ -15,8 +15,10 @@ const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [hasZoomed, setHasZoomed] = useState(false);
+  const [pendragonVisible, setPendragonVisible] = useState(false);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
+  const pendragonRef = useRef<HTMLDivElement>(null);
 
   // One-way background zoom effect on initial scroll
   useEffect(() => {
@@ -47,6 +49,24 @@ const Comics = () => {
 
     if (row1Ref.current) observer.observe(row1Ref.current);
     if (row2Ref.current) observer.observe(row2Ref.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Pendragon section slide-in observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setPendragonVisible(true);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    if (pendragonRef.current) observer.observe(pendragonRef.current);
 
     return () => observer.disconnect();
   }, []);
@@ -173,11 +193,16 @@ const Comics = () => {
         </section>
 
         {/* Surname Pendragon Section */}
-        <section className="py-8 md:py-12 px-6">
+        <section className="py-8 md:py-12 px-6 overflow-hidden">
           <div className="container mx-auto max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
               {/* Script Panel - Left side on desktop */}
-              <div className="lg:col-span-3 order-2 lg:order-1">
+              <div 
+                ref={pendragonRef}
+                className={`lg:col-span-3 order-2 lg:order-1 transition-all duration-700 ease-out ${
+                  pendragonVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-16'
+                }`}
+              >
                 <div 
                   className="bg-white shadow-xl border border-gray-200 p-6 md:p-8 rounded-lg" 
                   style={{ fontFamily: 'Courier New, Courier, monospace' }}
