@@ -111,7 +111,7 @@ const Comics = () => {
       
       <Navigation />
 
-      <main className="relative z-10 pt-32 pb-20">
+      <main className="relative z-10 pt-40 pb-20">
         {/* Title Section */}
         <section className="text-center px-6 mb-16">
           <h1 className="font-serif text-6xl md:text-7xl font-bold text-black mb-4 tracking-wide drop-shadow-lg">
@@ -250,7 +250,7 @@ const Comics = () => {
         <section className="py-16 md:py-24 px-6">
           <div className="container mx-auto">
             {/* FORTHCOMING Title with decorative lines */}
-            <div className="flex items-center justify-center mb-16">
+            <div className="flex items-center justify-center mb-20">
               <div className="flex-1 h-px bg-gradient-to-r from-transparent to-amber-800 max-w-xs"></div>
               <h2 className="font-bangers text-5xl md:text-6xl text-black mx-8 drop-shadow-lg tracking-wide">
                 FORTHCOMING
@@ -319,7 +319,7 @@ const Comics = () => {
         </section>
       </main>
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 relative z-10 max-sm:py-8">
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 relative z-10 max-sm:py-8 -mt-8">
         <div className="container mx-auto px-6 text-center">
           <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
           <p className="font-serif text-white">
