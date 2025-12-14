@@ -236,7 +236,7 @@ const Comics = () => {
             {/* FORTHCOMING Title with decorative lines */}
             <div className="flex items-center justify-center mb-16">
               <div className="flex-1 h-px bg-gradient-to-r from-transparent to-amber-800 max-w-xs"></div>
-              <h2 className="font-serif text-4xl md:text-5xl font-bold text-black mx-8 drop-shadow-lg">
+              <h2 className="font-bangers text-5xl md:text-6xl text-black mx-8 drop-shadow-lg tracking-wide">
                 FORTHCOMING
               </h2>
               <div className="flex-1 h-px bg-gradient-to-l from-transparent to-amber-800 max-w-xs"></div>
