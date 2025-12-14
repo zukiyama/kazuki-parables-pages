@@ -18,6 +18,7 @@ import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
+import photoPileBackground from "@/assets/photo-pile-background.png";
 
 
 const About = () => {
@@ -64,10 +65,20 @@ const About = () => {
           
           <div className="lg:col-span-1 flex justify-center lg:justify-start relative z-10">
             <div className="w-80 h-80 relative">
+              {/* Photo pile background behind portrait */}
+              <div 
+                className="absolute -inset-20 z-0"
+                style={{ 
+                  backgroundImage: `url(${photoPileBackground})`,
+                  backgroundSize: 'contain',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              />
               <OptimizedImage 
                 src={artistPortrait}
                 alt="Kazuki Yamakawa portrait"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover relative z-10"
               />
             </div>
           </div>
