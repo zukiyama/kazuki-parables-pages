@@ -164,7 +164,7 @@ const About = () => {
               className={`absolute bottom-[24%] right-[12%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-right z-30 ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
             >
               <p className="font-body text-2xl lg:text-3xl text-white italic">
-                The eye closes,<br/><span className="inline-block pl-8 mt-6">Reality appears</span>
+                The eye closes,<br/><span className="inline-block pl-8 mt-6">Truth appears</span>
               </p>
             </div>
             
