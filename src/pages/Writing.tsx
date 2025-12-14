@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 
 import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungAdultSlideshow";
@@ -48,6 +49,24 @@ const Writing = () => {
     deepSpace: 0
   });
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
+
+  const location = useLocation();
+
+  // Handle hash navigation to scroll to KAIJU section
+  useEffect(() => {
+    if (location.hash === '#kaiju') {
+      // Small delay to ensure DOM is rendered
+      setTimeout(() => {
+        const kaijuSection = document.querySelector('[data-section="kaiju"]');
+        if (kaijuSection) {
+          kaijuSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    } else {
+      // Scroll to top for non-hash navigation
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
 
   // Preload all background images and book covers at once
   useEffect(() => {
