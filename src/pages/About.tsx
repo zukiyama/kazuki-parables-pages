@@ -83,7 +83,7 @@ const About = () => {
             </div>
           </div>
           
-          <div className="lg:col-span-2 flex items-center relative z-10">
+          <div className="lg:col-span-2 flex items-center relative z-10 lg:pl-8">
             <div className="space-y-6">
               <h1 className="font-heading text-4xl lg:text-5xl tracking-tight text-foreground">
                 Kazuki Yamakawa
