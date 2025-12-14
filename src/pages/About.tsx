@@ -67,12 +67,13 @@ const About = () => {
             <div className="w-80 h-80 relative">
               {/* Photo pile background behind portrait */}
               <div 
-                className="absolute -inset-20 z-0"
+                className="absolute -inset-16 z-0"
                 style={{ 
                   backgroundImage: `url(${photoPileBackground})`,
                   backgroundSize: 'contain',
                   backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat'
+                  backgroundRepeat: 'no-repeat',
+                  mixBlendMode: 'multiply'
                 }}
               />
               <OptimizedImage 
