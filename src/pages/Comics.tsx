@@ -131,7 +131,7 @@ const Comics = () => {
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies comic cover"
-                  className="w-full object-contain shadow-2xl rounded-sm"
+                  className="w-full object-contain shadow-2xl rounded-sm transform -rotate-1"
                 />
               </div>
               
@@ -239,7 +239,7 @@ const Comics = () => {
                 <img 
                   src={surnameProPendragonCoverNew}
                   alt="Surname Pendragon comic cover"
-                  className="w-full max-w-md object-contain shadow-2xl rounded-sm"
+                  className="w-full max-w-md object-contain shadow-2xl rounded-sm transform rotate-1"
                 />
               </div>
             </div>
