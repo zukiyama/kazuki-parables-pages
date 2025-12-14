@@ -1,6 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
-import { ScrollFadeUp } from "@/components/ScrollAnimations";
+import { 
+  ScrollSlideUp, 
+  Card3D, 
+  ScrollScale,
+  useInView,
+  useParallax
+} from "@/components/ScrollAnimations";
 import godOfLiesCover from "@/assets/god-of-lies-wide-cover.png";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-wide-cover.png";
 import mangaSketchesBackground from "@/assets/manga-character-sketches-background.jpeg";
@@ -13,6 +19,10 @@ import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
+  const scrollY = useParallax();
+  
+  // Track footer visibility
+  const footerInView = useInView(0.3);
 
   const smallShelfComics = [
     {
@@ -61,15 +71,25 @@ const Comics = () => {
     setSelectedComic(null);
   };
 
+  // Parallax offset for background
+  const bgOffset = scrollY * 0.3;
+
   return (
-    <div className="min-h-screen relative">
-      {/* Manga Sketches Background */}
-      <div className="fixed top-0 left-0 pointer-events-none" style={{ height: '100vh', width: '100vw' }}>
+    <div className="min-h-screen relative overflow-x-hidden">
+      {/* Manga Sketches Background with Parallax */}
+      <div 
+        className="fixed top-0 left-0 pointer-events-none bg-subtle-zoom" 
+        style={{ 
+          height: '120vh', 
+          width: '100vw',
+          transform: `translateY(${-bgOffset}px)`
+        }}
+      >
         <div 
-          className="w-full h-full bg-cover bg-top opacity-60"
+          className="w-full h-full bg-cover bg-top opacity-50"
           style={{ 
             backgroundImage: `url(${mangaSketchesBackground})`,
-            height: '100vh',
+            height: '120vh',
             width: '100vw'
           }}
         />
@@ -77,61 +97,134 @@ const Comics = () => {
       
       <Navigation />
 
-      <main className="relative z-10 pt-24">
-        {/* Comic Panel Title - Simplified */}
-        <div className="flex justify-center py-12 px-6">
-          <div className="text-center">
-            <h1 className="font-serif text-6xl font-bold text-black mb-4 tracking-wide drop-shadow-lg">
+      <main className="relative z-10">
+        {/* Hero Section with Diagonal Divider */}
+        <section className="relative min-h-[50vh] flex items-center justify-center diagonal-divider-bottom pb-20">
+          <div className="text-center px-6 pt-32">
+            <h1 className="font-serif text-6xl md:text-7xl font-bold text-black mb-6 tracking-wide drop-shadow-lg animate-hero-rise">
               Comics & Scripts
             </h1>
-            <p className="font-serif text-xl text-amber-800 leading-relaxed drop-shadow-md">
+            <p className="font-serif text-xl md:text-2xl text-amber-800 leading-relaxed drop-shadow-md animate-hero-rise-delayed max-w-2xl mx-auto">
               Comics, webtoons, manga and scripts with original characters and stories
             </p>
           </div>
-        </div>
+          
+          {/* Decorative diagonal edge overlay */}
+          <div 
+            className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-white/30 pointer-events-none"
+            style={{ clipPath: 'polygon(0 60%, 100% 0, 100% 100%, 0 100%)' }}
+          />
+        </section>
 
-        {/* Featured Comics Section */}
-        <div className="container mx-auto px-6 mt-4 mb-16">
-          {/* God of Lies - Wide Cover Left, Script Right */}
-          <div className="mb-16">
-            <div className="max-w-7xl mx-auto px-16 max-sm:px-4">
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-center max-sm:gap-4">
-                <div className="lg:col-span-3 max-sm:order-1">
-                  <img 
-                    src={godOfLiesCover}
-                    alt="God of Lies comic cover"
-                    className="w-full object-contain shadow-2xl"
-                  />
+        {/* God of Lies - Full Width Parallax Section */}
+        <section className="relative py-16 md:py-24">
+          {/* Background cover image */}
+          <div 
+            className="absolute inset-0 z-0 overflow-hidden"
+            style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+          >
+            <div 
+              className="absolute inset-0 bg-cover bg-center opacity-20"
+              style={{ 
+                backgroundImage: `url(${godOfLiesCover})`,
+                transform: 'scale(1.1)'
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
+          </div>
+
+          <div className="relative z-10 container mx-auto px-6">
+            <ScrollSlideUp className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
+                {/* Cover Image with 3D tilt */}
+                <div className="lg:col-span-3 card-3d-container">
+                  <div className="card-3d">
+                    <img 
+                      src={godOfLiesCover}
+                      alt="God of Lies comic cover"
+                      className="w-full object-contain shadow-2xl rounded-sm"
+                    />
+                  </div>
                 </div>
-                <div className="lg:col-span-1 max-sm:order-2">
-                  <div style={{ fontFamily: 'Bangers, cursive' }}>
-                    <h3 className="text-6xl text-black uppercase tracking-wider mb-4 max-sm:text-4xl text-center drop-shadow-lg">
-                      GOD OF LIES
-                    </h3>
-                    
-                    <p className="text-xl text-black leading-relaxed mb-3 max-sm:text-lg drop-shadow-md" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
-                      A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
-                    </p>
-                    
-                    <p className="text-xl text-black leading-relaxed max-sm:text-lg drop-shadow-md" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
-                      A psychological thriller exploring the price of dishonesty, where deception becomes truth and reality dissolves into fiction.
-                    </p>
+                
+                {/* Floating Text Panel */}
+                <div className="lg:col-span-2">
+                  <div 
+                    className="floating-panel glass-panel p-8 rounded-lg"
+                    style={{ 
+                      clipPath: 'polygon(0 0, 100% 5%, 100% 100%, 0 95%)'
+                    }}
+                  >
+                    <div style={{ fontFamily: 'Bangers, cursive' }}>
+                      <h3 className="text-5xl md:text-6xl text-black uppercase tracking-wider mb-6 drop-shadow-lg">
+                        GOD OF LIES
+                      </h3>
+                      
+                      <p className="text-lg md:text-xl text-black leading-relaxed mb-4" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
+                        A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
+                      </p>
+                      
+                      <p className="text-lg md:text-xl text-black leading-relaxed" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
+                        A psychological thriller exploring the price of dishonesty, where deception becomes truth and reality dissolves into fiction.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </ScrollSlideUp>
+          </div>
+        </section>
+
+        {/* Pull Quote Section */}
+        <section className="relative py-20 md:py-32 overflow-hidden">
+          <div className="container mx-auto px-6">
+            <ScrollScale 
+              initialScale={1.15} 
+              finalScale={1} 
+              initialBlur={3}
+              className="text-center"
+            >
+              <blockquote className="font-serif text-3xl md:text-5xl lg:text-6xl text-black/80 italic leading-tight max-w-4xl mx-auto">
+                "Stories waiting to be told..."
+              </blockquote>
+              <div className="mt-6 w-24 h-1 bg-amber-800 mx-auto rounded-full" />
+            </ScrollScale>
+          </div>
+        </section>
+
+        {/* Surname Pendragon - Reversed Layout */}
+        <section className="relative py-16 md:py-24">
+          {/* Subtle background */}
+          <div 
+            className="absolute inset-0 z-0 overflow-hidden"
+            style={{ transform: `translateY(${scrollY * 0.05}px)` }}
+          >
+            <div 
+              className="absolute inset-0 bg-cover bg-center opacity-10"
+              style={{ 
+                backgroundImage: `url(${surnameProPendragonCoverNew})`,
+                transform: 'scale(1.1)'
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-l from-white via-white/80 to-transparent" />
           </div>
 
-          {/* Surname Pendragon - Script Left, Cover Right */}
-          <div className="mb-24">
-            <div className="max-w-7xl mx-auto px-16 max-sm:px-4">
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center max-sm:gap-4 max-sm:flex max-sm:flex-col">
-                <div className="lg:col-span-3 max-sm:order-2">
-                  <div className="bg-white shadow-lg border border-gray-300 p-8 max-sm:p-4" style={{ fontFamily: 'Courier New, Courier, monospace' }}>
+          <div className="relative z-10 container mx-auto px-6">
+            <ScrollSlideUp delay={100} className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
+                {/* Script Panel - Left side on desktop */}
+                <div className="lg:col-span-3 order-2 lg:order-1">
+                  <div 
+                    className="floating-panel bg-white shadow-xl border border-gray-200 p-6 md:p-8 rounded-lg" 
+                    style={{ 
+                      fontFamily: 'Courier New, Courier, monospace',
+                      clipPath: 'polygon(0 3%, 100% 0, 100% 97%, 0 100%)'
+                    }}
+                  >
                     {/* Script header */}
                     <div className="text-center border-b border-gray-400 pb-4 mb-4">
                       <p className="text-sm text-gray-500 uppercase tracking-widest mb-1">Original Script</p>
-                      <h3 className="text-3xl font-bold text-black uppercase tracking-wide max-sm:text-xl">
+                      <h3 className="text-2xl md:text-3xl font-bold text-black uppercase tracking-wide">
                         SURNAME PENDRAGON
                       </h3>
                       <p className="text-sm text-gray-500 mt-1">Written by Kazuki Yamakawa</p>
@@ -179,88 +272,105 @@ const Comics = () => {
                     </p>
                   </div>
                 </div>
-                <div className="lg:col-span-2 flex items-center justify-center max-sm:order-1">
-                  <img 
-                    src={surnameProPendragonCoverNew}
-                    alt="Surname Pendragon comic cover"
-                    className="w-full object-contain shadow-2xl"
-                  />
+                
+                {/* Cover Image - Right side on desktop */}
+                <div className="lg:col-span-2 flex items-center justify-center order-1 lg:order-2 card-3d-container">
+                  <div className="card-3d">
+                    <img 
+                      src={surnameProPendragonCoverNew}
+                      alt="Surname Pendragon comic cover"
+                      className="w-full max-w-md object-contain shadow-2xl rounded-sm"
+                    />
+                  </div>
                 </div>
+              </div>
+            </ScrollSlideUp>
+          </div>
+        </section>
+
+        {/* Forthcoming Section with 3D Cards */}
+        <section className="relative py-16 md:py-24 diagonal-divider-top">
+          {/* Section background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/50 via-amber-50/30 to-white/50 pointer-events-none" />
+          
+          <div className="relative z-10 container mx-auto px-6">
+            {/* FORTHCOMING Title with decorative lines */}
+            <ScrollSlideUp className="flex items-center justify-center mb-16">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent to-amber-800 max-w-xs"></div>
+              <h2 className="font-serif text-4xl md:text-5xl font-bold text-black mx-8 drop-shadow-lg">
+                FORTHCOMING
+              </h2>
+              <div className="flex-1 h-px bg-gradient-to-l from-transparent to-amber-800 max-w-xs"></div>
+            </ScrollSlideUp>
+            
+            {/* First Row - 3D Cards */}
+            <div className="mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 justify-items-center max-w-6xl mx-auto">
+                {smallShelfComics.slice(0, 3).map((comic, index) => (
+                  <Card3D 
+                    key={comic.title} 
+                    delay={index * 150}
+                    className="w-full max-w-xs"
+                  >
+                    <div 
+                      className="cursor-pointer group text-center"
+                      onClick={() => handleComicClick(comic)}
+                    >
+                      <img 
+                        src={comic.cover}
+                        alt={`${comic.title} comic cover`}
+                        className="w-full shadow-xl rounded-sm"
+                        loading="lazy"
+                      />
+                    </div>
+                  </Card3D>
+                ))}
+              </div>
+            </div>
+
+            {/* Second Row - 3D Cards */}
+            <div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 justify-items-center max-w-6xl mx-auto">
+                {smallShelfComics.slice(3, 6).map((comic, index) => (
+                  <Card3D 
+                    key={comic.title} 
+                    delay={(index + 3) * 150}
+                    className="w-full max-w-xs"
+                  >
+                    <div 
+                      className="cursor-pointer group text-center"
+                      onClick={() => handleComicClick(comic)}
+                    >
+                      <img 
+                        src={comic.cover}
+                        alt={`${comic.title} comic cover`}
+                        className="w-full shadow-xl rounded-sm"
+                        loading="lazy"
+                      />
+                    </div>
+                  </Card3D>
+                ))}
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Forthcoming Section */}
-        <div className="container mx-auto px-6 pb-16">
-          {/* FORTHCOMING Title with decorative lines */}
-          <div className="flex items-center justify-center mb-12">
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent to-amber-800"></div>
-            <h2 className="font-serif text-4xl font-bold text-black mx-8 drop-shadow-lg">
-              FORTHCOMING
-            </h2>
-            <div className="flex-1 h-px bg-gradient-to-l from-transparent to-amber-800"></div>
-          </div>
-          
-          {/* First Row */}
-          <div className="mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
-              {smallShelfComics.slice(0, 3).map((comic, index) => (
-                <ScrollFadeUp key={comic.title} id={`comic-${index}`} delay={index * 200}>
-                  <div 
-                    className="cursor-pointer group text-center"
-                    onClick={() => handleComicClick(comic)}
-                  >
-                    <img 
-                      src={comic.cover}
-                      alt={`${comic.title} comic cover`}
-                      className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
-                      loading="lazy"
-                    />
-                  </div>
-                </ScrollFadeUp>
-              ))}
-            </div>
-          </div>
-
-          {/* Second Row */}
-          <div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
-              {smallShelfComics.slice(3, 6).map((comic, index) => (
-                <ScrollFadeUp key={comic.title} id={`comic-${index + 3}`} delay={(index + 3) * 200}>
-                  <div 
-                    className="cursor-pointer group text-center"
-                    onClick={() => handleComicClick(comic)}
-                  >
-                    <img 
-                      src={comic.cover}
-                      alt={`${comic.title} comic cover`}
-                      className="w-full max-w-xs shadow-xl transform hover:scale-105 transition-transform duration-300"
-                      loading="lazy"
-                    />
-                  </div>
-                </ScrollFadeUp>
-              ))}
-            </div>
-          </div>
-        </div>
+        </section>
       </main>
 
-      {/* Comic Detail Modal */}
+      {/* Comic Detail Modal with Zoom Animation */}
       {selectedComic && (
         <div 
-          className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6 max-sm:p-4"
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-6 max-sm:p-4"
           onClick={handleCloseModal}
         >
           <div 
-            className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 border border-gray-200 max-sm:p-4 max-sm:gap-4 max-sm:max-h-[90vh] max-sm:overflow-y-auto"
+            className="modal-zoom-in bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 border border-gray-200 max-sm:p-4 max-sm:gap-4 max-sm:max-h-[90vh] max-sm:overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-center max-sm:max-h-[40vh]">
               <img 
                 src={selectedComic.cover}
                 alt={`${selectedComic.title} comic cover`}
-                className="w-full max-w-lg shadow-2xl max-sm:max-h-full max-sm:object-contain"
+                className="w-full max-w-lg shadow-2xl rounded-sm max-sm:max-h-full max-sm:object-contain"
               />
             </div>
             <div className="flex flex-col justify-center">
@@ -272,7 +382,7 @@ const Comics = () => {
               </p>
               <button
                 onClick={handleCloseModal}
-                className="mt-6 px-6 py-3 bg-amber-800 text-white rounded-lg font-semibold hover:bg-amber-900 transition-colors self-start max-sm:mt-4 max-sm:w-full max-sm:py-2"
+                className="mt-6 px-6 py-3 bg-amber-800 text-white rounded-lg font-semibold hover:bg-amber-900 transition-all hover:scale-105 self-start max-sm:mt-4 max-sm:w-full max-sm:py-2"
               >
                 Close
               </button>
@@ -281,7 +391,11 @@ const Comics = () => {
         </div>
       )}
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-20 relative z-10">
+      {/* Footer with Slide Up Animation */}
+      <footer 
+        ref={footerInView.ref}
+        className={`bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-20 relative z-10 footer-slide-up ${footerInView.isInView ? 'visible' : ''}`}
+      >
         <div className="container mx-auto px-6 text-center">
           <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
           <p className="font-serif text-white">
