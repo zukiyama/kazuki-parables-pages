@@ -236,12 +236,12 @@ const Writing = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
       </div>
       
-      <main className="relative z-10 pt-32 max-sm:pt-48">
+      <main className="relative z-10 pt-24 max-sm:pt-40">
         {/* KAIJU - The Parable Trilogy Section */}
         <section data-section="kaiju" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
-              <h1 className={`font-serif text-6xl font-bold text-white mb-20 max-sm:mb-16 text-center tracking-wide transition-all duration-1000 ${
+              <h1 className={`font-serif text-6xl font-bold text-white mb-16 max-sm:mb-12 text-center tracking-wide transition-all duration-1000 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
               }`}>
                 Novels
@@ -253,7 +253,7 @@ const Writing = () => {
               }`}>
                 <h2 className="font-serif text-4xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>
                 <p className="font-serif text-lg leading-relaxed text-white max-w-4xl mx-auto">
-                  A metaphysical saga spanning abandoned towns and underground film sets in an alternate 1970s Japan, Cold War era Eastern Europe, and research facilities beyond this world. With a cast as varied as its setting, childhood wonder, memory and fantasy collide in this compelling trilogy that explores the boundaries between truth and fiction.
+                  A metaphysical saga that takes the reader from mysterious towns and underground film sets in an alternate 1970s Japan, to Cold War era Eastern Europe, and secret off-world research facilities. With a cast as varied as its setting, childhood wonder, philosophy and fantasy collide in this compelling trilogy that explores the boundaries between truth and fiction.
                 </p>
               </div>
               
