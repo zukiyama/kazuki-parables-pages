@@ -197,31 +197,31 @@ const Index = () => {
             href="#/music" 
             className="group block w-full"
           >
-            <div className="relative w-full overflow-hidden bg-gradient-to-r from-rose-600 via-rose-500 to-rose-600 py-5 md:py-6">
+            <div className="relative w-full overflow-hidden bg-background border-t border-border py-10 md:py-14">
               {/* Shine effect on hover */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
               
               {/* Main content */}
-              <div className="relative z-10 flex items-center justify-center gap-5 md:gap-8 px-4">
+              <div className="relative z-10 flex items-center justify-center gap-8 md:gap-12 px-4">
                 {/* Album art */}
                 <img 
                   src={circlesSingleCover} 
                   alt="Circles single cover"
-                  className="w-14 h-14 md:w-20 md:h-20 rounded object-cover shadow-xl group-hover:scale-105 transition-transform duration-300"
+                  className="w-24 h-24 md:w-36 md:h-36 rounded object-cover shadow-xl group-hover:scale-105 transition-transform duration-300"
                 />
 
                 {/* Text */}
-                <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-6">
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
                   <div>
-                    <p className="text-xs md:text-sm font-bold uppercase tracking-widest text-white/90 mb-0.5">
+                    <p className="text-sm md:text-base font-bold uppercase tracking-widest text-muted-foreground mb-1">
                       New Single
                     </p>
-                    <h4 className="font-heading text-2xl md:text-4xl font-black text-white tracking-tight">
+                    <h4 className="font-heading text-3xl md:text-5xl font-black text-foreground tracking-tight group-hover:text-primary transition-colors duration-300">
                       CIRCLES
                     </h4>
                   </div>
-                  <div className="flex items-center gap-2 text-white font-semibold">
-                    <span className="text-sm md:text-lg uppercase tracking-wider">Out Now →</span>
+                  <div className="flex items-center gap-2 text-foreground font-semibold group-hover:text-primary transition-colors">
+                    <span className="text-base md:text-xl uppercase tracking-wider">Out Now →</span>
                   </div>
                 </div>
               </div>
