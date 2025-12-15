@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollScale } from "@/components/ScrollAnimations";
-import godOfLiesCover from "@/assets/god-of-lies-wide-cover.png";
+import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-wide-cover.png";
 import mangaSketchesBackground from "@/assets/manga-character-sketches-background.jpeg";
 import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
