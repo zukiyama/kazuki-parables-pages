@@ -329,8 +329,8 @@ const Index = () => {
                   />
                 </div>
 
-                {/* Text - shifted right */}
-                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8 ml-2 md:ml-4">
+                {/* Text - shifted right, centered vertically */}
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8 ml-2 md:ml-4 -mt-2 md:-mt-3">
                   <div>
                     <p className="text-sm md:text-base font-bold uppercase tracking-widest text-rose-600/80 mb-1">
                       New Single
