@@ -281,7 +281,7 @@ const Comics = () => {
         </section>
 
         {/* Forthcoming Section */}
-        <section className="py-16 md:py-24 px-6">
+        <section className="pt-16 pb-8 md:pt-24 md:pb-12 px-6">
           <div className="container mx-auto">
             {/* FORTHCOMING Title with decorative lines */}
             <div className="flex items-center justify-center mb-20">
