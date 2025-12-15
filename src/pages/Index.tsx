@@ -197,7 +197,7 @@ const Index = () => {
             href="#/music" 
             className="group block w-full"
           >
-            <div className="relative w-full overflow-hidden border-t border-amber-200/50 py-10 md:py-14" style={{ backgroundColor: '#FDF6E8' }}>
+            <div className="relative w-full overflow-hidden border-t border-amber-200/50 py-10 md:py-14 bg-[#FDF6E8]">
               {/* Decorative bokeh circles - warm cream/coral palette matching single cover */}
               <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 {/* Extra large partial circles extending off edges */}
