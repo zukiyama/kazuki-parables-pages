@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
-import CirclesBokehBackground from "@/components/CirclesBokehBackground";
+
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import officeView from "@/assets/office-window-view.jpg";
 import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
@@ -20,7 +20,7 @@ const Index = () => {
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
   const showMagazineRef = useRef(false);
-  const circlesBannerRef = useRef<HTMLDivElement | null>(null);
+  
 
   const images = [
     officeView,
@@ -195,10 +195,43 @@ const Index = () => {
 
         {/* Music Banner - Full Width Edge to Edge - background isolated from interactive state to prevent flashing */}
         <div
-          ref={circlesBannerRef}
           className="relative w-full overflow-hidden border-t border-amber-200/50 bg-[#FDF6E8]"
         >
-          <CirclesBokehBackground targetRef={circlesBannerRef} />
+          {/* Bokeh circles background - rendered directly, no portal */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* Large circles at edges */}
+            <div className="absolute -left-24 top-[10%] w-56 h-56 rounded-full bg-[hsl(15,70%,75%,0.35)] bokeh-blur animate-drift-1"></div>
+            <div className="absolute -left-16 bottom-[5%] w-44 h-44 rounded-full bg-[hsl(25,65%,70%,0.30)] bokeh-blur animate-drift-4"></div>
+            <div className="absolute left-[2%] top-[60%] w-36 h-36 rounded-full bg-[hsl(10,75%,78%,0.32)] bokeh-blur animate-drift-7"></div>
+            
+            <div className="absolute -right-20 top-[20%] w-52 h-52 rounded-full bg-[hsl(20,68%,72%,0.33)] bokeh-blur animate-drift-2"></div>
+            <div className="absolute -right-28 bottom-[15%] w-60 h-60 rounded-full bg-[hsl(30,60%,68%,0.28)] bokeh-blur animate-drift-5"></div>
+            <div className="absolute right-[3%] top-[5%] w-40 h-40 rounded-full bg-[hsl(18,72%,74%,0.30)] bokeh-blur animate-drift-8"></div>
+            
+            {/* Top edge circles */}
+            <div className="absolute left-[15%] -top-16 w-48 h-48 rounded-full bg-[hsl(22,66%,73%,0.32)] bokeh-blur animate-drift-3"></div>
+            <div className="absolute right-[25%] -top-12 w-40 h-40 rounded-full bg-[hsl(12,70%,76%,0.28)] bokeh-blur animate-drift-6"></div>
+            
+            {/* Bottom edge circles */}
+            <div className="absolute left-[20%] -bottom-20 w-52 h-52 rounded-full bg-[hsl(28,62%,70%,0.30)] bokeh-blur animate-drift-1"></div>
+            <div className="absolute right-[18%] -bottom-16 w-44 h-44 rounded-full bg-[hsl(16,74%,75%,0.32)] bokeh-blur animate-drift-4"></div>
+            
+            {/* Medium circles at corners */}
+            <div className="absolute left-[8%] top-[25%] w-28 h-28 rounded-full bg-[hsl(14,68%,77%,0.35)] bokeh-blur animate-drift-5"></div>
+            <div className="absolute right-[6%] bottom-[40%] w-32 h-32 rounded-full bg-[hsl(24,64%,71%,0.33)] bokeh-blur animate-drift-2"></div>
+            <div className="absolute left-[5%] bottom-[30%] w-24 h-24 rounded-full bg-[hsl(20,70%,74%,0.30)] bokeh-blur animate-drift-8"></div>
+            <div className="absolute right-[8%] top-[55%] w-28 h-28 rounded-full bg-[hsl(18,66%,76%,0.32)] bokeh-blur animate-drift-3"></div>
+            
+            {/* Small accent circles */}
+            <div className="absolute left-[3%] top-[40%] w-20 h-20 rounded-full bg-[hsl(26,60%,72%,0.38)] bokeh-blur animate-drift-6"></div>
+            <div className="absolute right-[4%] top-[35%] w-20 h-20 rounded-full bg-[hsl(12,72%,78%,0.35)] bokeh-blur animate-drift-7"></div>
+            <div className="absolute left-[10%] bottom-[8%] w-16 h-16 rounded-full bg-[hsl(22,68%,73%,0.36)] bokeh-blur animate-drift-1"></div>
+            <div className="absolute right-[12%] bottom-[5%] w-20 h-20 rounded-full bg-[hsl(16,70%,75%,0.34)] bokeh-blur animate-drift-4"></div>
+            
+            {/* Far corner circles */}
+            <div className="absolute -left-10 top-[45%] w-32 h-32 rounded-full bg-[hsl(30,55%,70%,0.25)] bokeh-blur animate-drift-2"></div>
+            <div className="absolute -right-14 top-[65%] w-36 h-36 rounded-full bg-[hsl(8,75%,80%,0.28)] bokeh-blur animate-drift-5"></div>
+          </div>
 
           <Link to="/music" className="group relative z-10 block w-full py-10 md:py-14">
             {/* Shine effect on hover */}
