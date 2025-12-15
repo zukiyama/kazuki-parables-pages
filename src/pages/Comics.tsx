@@ -202,7 +202,7 @@ const Comics = () => {
         </section>
 
         {/* Surname Pendragon Section */}
-        <section className="py-8 md:py-12 px-6 overflow-hidden">
+        <section className="py-8 md:py-12 px-6 max-[480px]:px-0 overflow-hidden">
           <div className="container mx-auto max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
               {/* Script Panel - Left side on desktop */}
@@ -213,7 +213,7 @@ const Comics = () => {
                 }`}
               >
                 <div 
-                  className="bg-white shadow-xl border border-gray-200 p-6 md:p-8 rounded-lg max-sm:max-w-[85vw] max-sm:mx-auto" 
+                  className="bg-white shadow-xl border border-gray-200 p-6 md:p-8 rounded-lg max-sm:max-w-[85vw] max-sm:mx-auto max-[480px]:max-w-full max-[480px]:rounded-none max-[480px]:border-x-0" 
                   style={{ fontFamily: 'Courier New, Courier, monospace' }}
                 >
                   {/* Script header */}
@@ -285,11 +285,11 @@ const Comics = () => {
           <div className="container mx-auto">
             {/* FORTHCOMING Title with decorative lines */}
             <div className="flex items-center justify-center mb-20">
-              <div className="flex-1 h-px bg-amber-800 max-w-xs max-sm:max-w-[40px]"></div>
-              <h2 className="font-bangers text-5xl md:text-6xl max-sm:text-3xl text-black mx-8 max-sm:mx-3 drop-shadow-lg tracking-wide">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent to-amber-800 max-w-xs max-sm:max-w-[60px] max-[480px]:max-w-[30px]"></div>
+              <h2 className="font-bangers text-5xl md:text-6xl max-sm:text-3xl text-black mx-8 max-sm:mx-4 max-[480px]:mx-2 drop-shadow-lg tracking-wide">
                 FORTHCOMING
               </h2>
-              <div className="flex-1 h-px bg-amber-800 max-w-xs max-sm:max-w-[40px]"></div>
+              <div className="flex-1 h-px bg-gradient-to-l from-transparent to-amber-800 max-w-xs max-sm:max-w-[60px] max-[480px]:max-w-[30px]"></div>
             </div>
             
             {/* First Row */}
