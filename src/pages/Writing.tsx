@@ -52,14 +52,14 @@ const Writing = () => {
 
   const location = useLocation();
 
-  // Handle hash navigation to scroll to KAIJU section
+  // Handle hash navigation to scroll to Parable Trilogy section
   useEffect(() => {
     if (location.hash === '#kaiju') {
       // Small delay to ensure DOM is rendered
       setTimeout(() => {
         const kaijuSection = document.querySelector('[data-section="kaiju"]');
         if (kaijuSection) {
-          kaijuSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          kaijuSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }, 100);
     } else {
@@ -272,7 +272,7 @@ const Writing = () => {
               }`}>
                 <h2 className="font-serif text-4xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>
                 <p className="font-serif text-lg md:text-xl leading-relaxed text-white max-w-4xl mx-auto">
-                  A metaphysical saga set against the shifting decades of an alternate 20th-century Japan, taking the reader from mysterious towns and abandoned film sets to mountain temples and secret research facilities far from this world. With a cast as varied as its setting, childhood wonder collides with philosophy and fantasy in this compelling trilogy that explores the boundaries between truth and fiction.
+                  A metaphysical saga unfolding across the shifting decades of an alternate 20th-century Japan, taking the reader from mysterious towns and abandoned film sets to mountain temples and secret research facilities far from this world. With a cast as varied as its setting, childhood wonder collides with philosophy and fantasy in this compelling trilogy that explores the boundaries between truth and fiction.
                 </p>
               </div>
               
