@@ -14,6 +14,7 @@ const Index = () => {
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
+  const [showCirclesBanner, setShowCirclesBanner] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
   const [showTvText, setShowTvText] = useState(false);
   const [animateTvText, setAnimateTvText] = useState(false);
@@ -37,6 +38,11 @@ const Index = () => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
+      
+      // Show Circles banner when scrolled past 50% of viewport
+      if (scrollY > viewportHeight * 0.5) {
+        setShowCirclesBanner(true);
+      }
       
       // Show magazine when scrolled past 80% of viewport
       if (scrollY > viewportHeight * 0.8) {
@@ -193,9 +199,9 @@ const Index = () => {
           </ScrollFadeUp>
         </div>
 
-        {/* Music Banner - Full Width Edge to Edge - background isolated from interactive state to prevent flashing */}
+        {/* Music Banner - Full Width Edge to Edge - slide in on scroll */}
         <div
-          className="relative w-full overflow-hidden border-t border-amber-200/50 bg-[#FDF6E8]"
+          className={`relative w-full overflow-hidden border-t border-amber-200/50 bg-[#FDF6E8] magazine-slide ${showCirclesBanner ? "visible" : ""}`}
         >
           {/* Bokeh circles background - rendered directly, no portal */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
