@@ -133,7 +133,7 @@ const Comics = () => {
 
       <main className="relative z-10 pt-40 pb-20">
         {/* Title Section */}
-        <section className="text-center px-6 mb-16">
+        <section className="text-center px-6 mb-16 max-sm:mb-6">
           <h1 className="font-serif text-6xl md:text-7xl font-bold text-black mb-4 tracking-wide drop-shadow-lg">
             Comics & Scripts
           </h1>
@@ -285,11 +285,11 @@ const Comics = () => {
           <div className="container mx-auto">
             {/* FORTHCOMING Title with decorative lines */}
             <div className="flex items-center justify-center mb-20">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent to-amber-800 max-w-xs max-sm:max-w-[60px]"></div>
-              <h2 className="font-bangers text-5xl md:text-6xl max-sm:text-3xl text-black mx-8 max-sm:mx-4 drop-shadow-lg tracking-wide">
+              <div className="flex-1 h-px bg-amber-800 max-w-xs max-sm:max-w-[40px]"></div>
+              <h2 className="font-bangers text-5xl md:text-6xl max-sm:text-3xl text-black mx-8 max-sm:mx-3 drop-shadow-lg tracking-wide">
                 FORTHCOMING
               </h2>
-              <div className="flex-1 h-px bg-gradient-to-l from-transparent to-amber-800 max-w-xs max-sm:max-w-[60px]"></div>
+              <div className="flex-1 h-px bg-amber-800 max-w-xs max-sm:max-w-[40px]"></div>
             </div>
             
             {/* First Row */}
