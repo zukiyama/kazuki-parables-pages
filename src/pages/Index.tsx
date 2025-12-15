@@ -190,40 +190,74 @@ const Index = () => {
             </p>
           </ScrollFadeUp>
 
-          {/* Music Banner */}
-          <ScrollFadeUp id="music-banner" delay={300} className="flex justify-center mt-12">
+          {/* Music Banner - Full Width */}
+          <ScrollFadeUp id="music-banner" delay={300} className="w-full mt-16">
             <a 
-              href="#/music?ohio=true" 
-              className="group block w-full max-w-2xl hover-scale transition-all duration-300"
+              href="#/music" 
+              className="group block w-full"
             >
-              <div className="bg-gradient-to-r from-card/90 to-card/70 backdrop-blur-sm border border-border rounded-xl p-8 flex items-center gap-8 shadow-xl hover:shadow-2xl hover:border-primary/30 transition-all duration-300 max-sm:p-4 max-sm:gap-4 max-sm:flex-col max-sm:text-center">
-                <div className="relative">
-                  <img 
-                    src={circlesSingleCover} 
-                    alt="Circles single cover"
-                    className="w-24 h-24 md:w-32 md:h-32 rounded-lg object-contain shadow-lg group-hover:shadow-xl transition-shadow duration-300 max-sm:w-20 max-sm:h-20"
-                  />
-                  <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded-full animate-pulse">
-                    NEW
+              <div className="relative w-full overflow-hidden bg-gradient-to-r from-black via-zinc-900 to-black py-6 md:py-8">
+                {/* Animated background effect */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                {/* Sound wave decoration */}
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-30 group-hover:opacity-60 transition-opacity">
+                  {[...Array(8)].map((_, i) => (
+                    <div 
+                      key={i} 
+                      className="w-1 bg-primary rounded-full animate-pulse"
+                      style={{ 
+                        height: `${20 + Math.sin(i * 0.8) * 15}px`,
+                        animationDelay: `${i * 0.1}s`
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-30 group-hover:opacity-60 transition-opacity">
+                  {[...Array(8)].map((_, i) => (
+                    <div 
+                      key={i} 
+                      className="w-1 bg-primary rounded-full animate-pulse"
+                      style={{ 
+                        height: `${20 + Math.sin(i * 0.8) * 15}px`,
+                        animationDelay: `${i * 0.1}s`
+                      }}
+                    />
+                  ))}
+                </div>
+
+                {/* Main content */}
+                <div className="relative z-10 flex items-center justify-center gap-6 md:gap-10 px-4">
+                  {/* Album art */}
+                  <div className="relative shrink-0">
+                    <img 
+                      src={circlesSingleCover} 
+                      alt="Circles single cover"
+                      className="w-16 h-16 md:w-24 md:h-24 rounded-md object-cover shadow-2xl group-hover:scale-105 transition-transform duration-300 ring-2 ring-white/10"
+                    />
+                  </div>
+
+                  {/* Text */}
+                  <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
+                    <div>
+                      <p className="text-xs md:text-sm font-bold uppercase tracking-[0.3em] text-primary mb-1">
+                        New Single
+                      </p>
+                      <h4 className="font-heading text-2xl md:text-4xl font-black text-white tracking-tight group-hover:text-primary transition-colors duration-300">
+                        CIRCLES
+                      </h4>
+                    </div>
+                    <div className="flex items-center gap-2 text-white/80 group-hover:text-white transition-colors">
+                      <span className="text-sm md:text-base font-medium uppercase tracking-wider">Out Now</span>
+                      <svg className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
-                <div className="flex-1 text-left max-sm:text-center">
-                  <p className="font-heading text-sm md:text-base font-semibold text-muted-foreground uppercase tracking-wider mb-2 max-sm:text-xs">
-                    Debut Single
-                  </p>
-                  <h4 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300 max-sm:text-2xl">
-                    CIRCLES
-                  </h4>
-                  <p className="font-body text-base md:text-lg text-muted-foreground mb-4">
-                    Available Now
-                  </p>
-                  <div className="flex items-center gap-2 text-primary group-hover:gap-4 transition-all duration-300">
-                    <span className="font-body font-medium">Listen Now</span>
-                    <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
+
+                {/* Bottom accent line */}
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div>
               </div>
             </a>
           </ScrollFadeUp>
