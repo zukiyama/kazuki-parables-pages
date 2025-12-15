@@ -760,3 +760,83 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* Bokeh pulse animations - each with unique timing, duration, and blur range */
+@keyframes bokeh-pulse-1 {
+  0%, 100% { filter: blur(12px); }
+  50% { filter: blur(2px); }
+}
+
+@keyframes bokeh-pulse-2 {
+  0%, 100% { filter: blur(8px); }
+  50% { filter: blur(0px); }
+}
+
+@keyframes bokeh-pulse-3 {
+  0%, 100% { filter: blur(14px); }
+  50% { filter: blur(4px); }
+}
+
+@keyframes bokeh-pulse-4 {
+  0%, 100% { filter: blur(6px); }
+  50% { filter: blur(1px); }
+}
+
+@keyframes bokeh-pulse-5 {
+  0%, 100% { filter: blur(10px); }
+  50% { filter: blur(2px); }
+}
+
+@keyframes bokeh-pulse-6 {
+  0%, 100% { filter: blur(16px); }
+  50% { filter: blur(3px); }
+}
+
+@keyframes bokeh-pulse-7 {
+  0%, 100% { filter: blur(5px); }
+  50% { filter: blur(0px); }
+}
+
+@keyframes bokeh-pulse-8 {
+  0%, 100% { filter: blur(11px); }
+  50% { filter: blur(1px); }
+}
+
+.animate-bokeh-pulse-1 {
+  animation: bokeh-pulse-1 8s ease-in-out infinite;
+}
+
+.animate-bokeh-pulse-2 {
+  animation: bokeh-pulse-2 6s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+.animate-bokeh-pulse-3 {
+  animation: bokeh-pulse-3 10s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
+.animate-bokeh-pulse-4 {
+  animation: bokeh-pulse-4 5s ease-in-out infinite;
+  animation-delay: 2.2s;
+}
+
+.animate-bokeh-pulse-5 {
+  animation: bokeh-pulse-5 7s ease-in-out infinite;
+  animation-delay: 3.5s;
+}
+
+.animate-bokeh-pulse-6 {
+  animation: bokeh-pulse-6 12s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animate-bokeh-pulse-7 {
+  animation: bokeh-pulse-7 4.5s ease-in-out infinite;
+  animation-delay: 2.8s;
+}
+
+.animate-bokeh-pulse-8 {
+  animation: bokeh-pulse-8 9s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
