@@ -240,8 +240,6 @@ const Index = () => {
           </div>
 
           <Link to="/music" className="group relative z-10 block w-full py-10 md:py-14">
-            {/* Shine effect on hover */}
-            <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
 
             {/* Main content */}
             <div className="relative z-10 flex items-center justify-center gap-8 md:gap-12 px-4">
