@@ -18,9 +18,7 @@ const Index = () => {
   const [animateTvText, setAnimateTvText] = useState(false);
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
-  const [bokehScrollOffset, setBokehScrollOffset] = useState(0);
   const showMagazineRef = useRef(false);
-  const bokehContainerRef = useRef<HTMLDivElement>(null);
 
   const images = [
     officeView,
@@ -33,25 +31,10 @@ const Index = () => {
     duration: 40
   });
 
-  // Track last scroll position for scroll direction detection
-  const lastScrollY = useRef(0);
-
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
-      
-      // Calculate scroll delta for bokeh parallax effect
-      const scrollDelta = scrollY - lastScrollY.current;
-      setBokehScrollOffset(prev => {
-        // Apply scroll influence (clamped to prevent extreme values)
-        const newOffset = prev + scrollDelta * 0.3;
-        return Math.max(-50, Math.min(50, newOffset));
-      });
-      lastScrollY.current = scrollY;
-      
-      // Gradually decay the offset back to 0 when not scrolling
-      // This is handled by the transition in CSS
       
       // Show magazine when scrolled past 80% of viewport
       if (scrollY > viewportHeight * 0.8) {
@@ -65,26 +48,12 @@ const Index = () => {
         setShowQuote(true);
       }
     };
-    
-    // Decay the scroll offset back to 0 when not scrolling
-    let decayTimeout: ReturnType<typeof setTimeout>;
-    const handleScrollEnd = () => {
-      clearTimeout(decayTimeout);
-      decayTimeout = setTimeout(() => {
-        setBokehScrollOffset(0);
-      }, 150);
-    };
 
     // Check on mount in case page loads already scrolled
     handleScroll();
 
     window.addEventListener("scroll", handleScroll);
-    window.addEventListener("scroll", handleScrollEnd);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("scroll", handleScrollEnd);
-      clearTimeout(decayTimeout);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Sync embla with currentImage state and track manual dragging
@@ -230,11 +199,7 @@ const Index = () => {
           >
             <div className="relative w-full overflow-hidden border-t border-amber-200/50 py-10 md:py-14" style={{ backgroundColor: '#FDF6E8' }}>
               {/* Decorative bokeh circles - warm cream/coral palette matching single cover */}
-              <div 
-                ref={bokehContainerRef}
-                className="absolute inset-0 overflow-hidden pointer-events-none bokeh-scroll-container"
-                style={{ transform: `translateY(${bokehScrollOffset}px)` }}
-              >
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 {/* Extra large partial circles extending off edges */}
                 <div className="absolute -right-28 -bottom-32 w-72 h-72 rounded-full bg-rose-400/35 animate-bokeh-pulse-1 animate-drift-1"></div>
                 <div className="absolute -left-24 -top-22 w-60 h-60 rounded-full bg-amber-400/30 animate-bokeh-pulse-3 animate-drift-2"></div>

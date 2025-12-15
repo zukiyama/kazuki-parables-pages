@@ -812,198 +812,195 @@
   100% { filter: blur(2px); }
 }
 
-/* Combined bokeh + drift animations - each has unique timing so they're never in sync */
+/* Combined bokeh + drift - half normal direction, half reverse, all unique timings */
+/* Group A: Normal direction (blur increasing then decreasing) */
 .animate-bokeh-pulse-1.animate-drift-1 {
-  animation: bokeh-pulse-1 45s ease-in-out infinite alternate, drift-1 20s ease-in-out infinite alternate;
+  animation: bokeh-pulse-1 55s ease-in-out infinite alternate, drift-1 20s ease-in-out infinite alternate;
 }
 .animate-bokeh-pulse-1.animate-drift-2 {
-  animation: bokeh-pulse-1 52s ease-in-out infinite alternate 8s, drift-2 24s ease-in-out infinite alternate 2s;
+  animation: bokeh-pulse-1 72s ease-in-out infinite alternate-reverse 18s, drift-2 24s ease-in-out infinite alternate 2s;
 }
 .animate-bokeh-pulse-1.animate-drift-3 {
-  animation: bokeh-pulse-1 38s ease-in-out infinite alternate 3s, drift-3 18s ease-in-out infinite alternate 4s;
+  animation: bokeh-pulse-1 48s ease-in-out infinite alternate 6s, drift-3 18s ease-in-out infinite alternate 4s;
 }
 .animate-bokeh-pulse-1.animate-drift-4 {
-  animation: bokeh-pulse-1 60s ease-in-out infinite alternate 12s, drift-4 28s ease-in-out infinite alternate 1s;
+  animation: bokeh-pulse-1 85s ease-in-out infinite alternate-reverse 32s, drift-4 28s ease-in-out infinite alternate 1s;
 }
 .animate-bokeh-pulse-1.animate-drift-5 {
-  animation: bokeh-pulse-1 48s ease-in-out infinite alternate 5s, drift-5 22s ease-in-out infinite alternate 3s;
+  animation: bokeh-pulse-1 62s ease-in-out infinite alternate 12s, drift-5 22s ease-in-out infinite alternate 3s;
 }
 .animate-bokeh-pulse-1.animate-drift-6 {
-  animation: bokeh-pulse-1 55s ease-in-out infinite alternate 15s, drift-6 26s ease-in-out infinite alternate 5s;
+  animation: bokeh-pulse-1 78s ease-in-out infinite alternate-reverse 45s, drift-6 26s ease-in-out infinite alternate 5s;
 }
 
+/* Group B: Reverse direction starts (blur decreasing first) */
 .animate-bokeh-pulse-2.animate-drift-1 {
-  animation: bokeh-pulse-2 58s ease-in-out infinite alternate 7s, drift-1 20s ease-in-out infinite alternate;
+  animation: bokeh-pulse-2 68s ease-in-out infinite alternate-reverse 8s, drift-1 20s ease-in-out infinite alternate;
 }
 .animate-bokeh-pulse-2.animate-drift-2 {
-  animation: bokeh-pulse-2 42s ease-in-out infinite alternate 18s, drift-2 24s ease-in-out infinite alternate 2s;
+  animation: bokeh-pulse-2 52s ease-in-out infinite alternate 28s, drift-2 24s ease-in-out infinite alternate 2s;
 }
 .animate-bokeh-pulse-2.animate-drift-3 {
-  animation: bokeh-pulse-2 65s ease-in-out infinite alternate 4s, drift-3 18s ease-in-out infinite alternate 4s;
+  animation: bokeh-pulse-2 90s ease-in-out infinite alternate-reverse 3s, drift-3 18s ease-in-out infinite alternate 4s;
 }
 .animate-bokeh-pulse-2.animate-drift-4 {
-  animation: bokeh-pulse-2 50s ease-in-out infinite alternate 22s, drift-4 28s ease-in-out infinite alternate 1s;
+  animation: bokeh-pulse-2 58s ease-in-out infinite alternate 42s, drift-4 28s ease-in-out infinite alternate 1s;
 }
 .animate-bokeh-pulse-2.animate-drift-5 {
-  animation: bokeh-pulse-2 40s ease-in-out infinite alternate 11s, drift-5 22s ease-in-out infinite alternate 3s;
+  animation: bokeh-pulse-2 75s ease-in-out infinite alternate-reverse 15s, drift-5 22s ease-in-out infinite alternate 3s;
 }
 .animate-bokeh-pulse-2.animate-drift-6 {
-  animation: bokeh-pulse-2 62s ease-in-out infinite alternate 2s, drift-6 26s ease-in-out infinite alternate 5s;
+  animation: bokeh-pulse-2 45s ease-in-out infinite alternate 55s, drift-6 26s ease-in-out infinite alternate 5s;
 }
 
 .animate-bokeh-pulse-3.animate-drift-1 {
-  animation: bokeh-pulse-3 48s ease-in-out infinite alternate 14s, drift-1 20s ease-in-out infinite alternate;
+  animation: bokeh-pulse-3 82s ease-in-out infinite alternate 22s, drift-1 20s ease-in-out infinite alternate;
 }
 .animate-bokeh-pulse-3.animate-drift-2 {
-  animation: bokeh-pulse-3 55s ease-in-out infinite alternate 6s, drift-2 24s ease-in-out infinite alternate 2s;
+  animation: bokeh-pulse-3 48s ease-in-out infinite alternate-reverse 38s, drift-2 24s ease-in-out infinite alternate 2s;
 }
 .animate-bokeh-pulse-3.animate-drift-3 {
-  animation: bokeh-pulse-3 70s ease-in-out infinite alternate 1s, drift-3 18s ease-in-out infinite alternate 4s;
+  animation: bokeh-pulse-3 65s ease-in-out infinite alternate 5s, drift-3 18s ease-in-out infinite alternate 4s;
 }
 .animate-bokeh-pulse-3.animate-drift-4 {
-  animation: bokeh-pulse-3 44s ease-in-out infinite alternate 20s, drift-4 28s ease-in-out infinite alternate 1s;
+  animation: bokeh-pulse-3 55s ease-in-out infinite alternate-reverse 48s, drift-4 28s ease-in-out infinite alternate 1s;
 }
 .animate-bokeh-pulse-3.animate-drift-5 {
-  animation: bokeh-pulse-3 60s ease-in-out infinite alternate 9s, drift-5 22s ease-in-out infinite alternate 3s;
+  animation: bokeh-pulse-3 88s ease-in-out infinite alternate 11s, drift-5 22s ease-in-out infinite alternate 3s;
 }
 .animate-bokeh-pulse-3.animate-drift-6 {
-  animation: bokeh-pulse-3 38s ease-in-out infinite alternate 25s, drift-6 26s ease-in-out infinite alternate 5s;
+  animation: bokeh-pulse-3 42s ease-in-out infinite alternate-reverse 62s, drift-6 26s ease-in-out infinite alternate 5s;
 }
 
 .animate-bokeh-pulse-4.animate-drift-1 {
-  animation: bokeh-pulse-4 52s ease-in-out infinite alternate 16s, drift-1 20s ease-in-out infinite alternate;
+  animation: bokeh-pulse-4 70s ease-in-out infinite alternate-reverse 35s, drift-1 20s ease-in-out infinite alternate;
 }
 .animate-bokeh-pulse-4.animate-drift-2 {
-  animation: bokeh-pulse-4 45s ease-in-out infinite alternate 3s, drift-2 24s ease-in-out infinite alternate 2s;
+  animation: bokeh-pulse-4 56s ease-in-out infinite alternate 2s, drift-2 24s ease-in-out infinite alternate 2s;
 }
 .animate-bokeh-pulse-4.animate-drift-3 {
-  animation: bokeh-pulse-4 68s ease-in-out infinite alternate 10s, drift-3 18s ease-in-out infinite alternate 4s;
+  animation: bokeh-pulse-4 95s ease-in-out infinite alternate-reverse 25s, drift-3 18s ease-in-out infinite alternate 4s;
 }
 .animate-bokeh-pulse-4.animate-drift-4 {
-  animation: bokeh-pulse-4 40s ease-in-out infinite alternate 19s, drift-4 28s ease-in-out infinite alternate 1s;
+  animation: bokeh-pulse-4 50s ease-in-out infinite alternate 52s, drift-4 28s ease-in-out infinite alternate 1s;
 }
 .animate-bokeh-pulse-4.animate-drift-5 {
-  animation: bokeh-pulse-4 58s ease-in-out infinite alternate 7s, drift-5 22s ease-in-out infinite alternate 3s;
+  animation: bokeh-pulse-4 78s ease-in-out infinite alternate-reverse 8s, drift-5 22s ease-in-out infinite alternate 3s;
 }
 .animate-bokeh-pulse-4.animate-drift-6 {
-  animation: bokeh-pulse-4 72s ease-in-out infinite alternate 1s, drift-6 26s ease-in-out infinite alternate 5s;
+  animation: bokeh-pulse-4 62s ease-in-out infinite alternate 68s, drift-6 26s ease-in-out infinite alternate 5s;
 }
 
 .animate-bokeh-pulse-5.animate-drift-1 {
-  animation: bokeh-pulse-5 62s ease-in-out infinite alternate 8s, drift-1 20s ease-in-out infinite alternate;
+  animation: bokeh-pulse-5 85s ease-in-out infinite alternate 15s, drift-1 20s ease-in-out infinite alternate;
 }
 .animate-bokeh-pulse-5.animate-drift-2 {
-  animation: bokeh-pulse-5 48s ease-in-out infinite alternate 21s, drift-2 24s ease-in-out infinite alternate 2s;
+  animation: bokeh-pulse-5 52s ease-in-out infinite alternate-reverse 42s, drift-2 24s ease-in-out infinite alternate 2s;
 }
 .animate-bokeh-pulse-5.animate-drift-3 {
-  animation: bokeh-pulse-5 42s ease-in-out infinite alternate 5s, drift-3 18s ease-in-out infinite alternate 4s;
+  animation: bokeh-pulse-5 68s ease-in-out infinite alternate 1s, drift-3 18s ease-in-out infinite alternate 4s;
 }
 .animate-bokeh-pulse-5.animate-drift-4 {
-  animation: bokeh-pulse-5 75s ease-in-out infinite alternate 13s, drift-4 28s ease-in-out infinite alternate 1s;
+  animation: bokeh-pulse-5 92s ease-in-out infinite alternate-reverse 58s, drift-4 28s ease-in-out infinite alternate 1s;
 }
 .animate-bokeh-pulse-5.animate-drift-5 {
-  animation: bokeh-pulse-5 55s ease-in-out infinite alternate 2s, drift-5 22s ease-in-out infinite alternate 3s;
+  animation: bokeh-pulse-5 45s ease-in-out infinite alternate 28s, drift-5 22s ease-in-out infinite alternate 3s;
 }
 .animate-bokeh-pulse-5.animate-drift-6 {
-  animation: bokeh-pulse-5 50s ease-in-out infinite alternate 17s, drift-6 26s ease-in-out infinite alternate 5s;
+  animation: bokeh-pulse-5 75s ease-in-out infinite alternate-reverse 72s, drift-6 26s ease-in-out infinite alternate 5s;
 }
 
 .animate-bokeh-pulse-6.animate-drift-1 {
-  animation: bokeh-pulse-6 70s ease-in-out infinite alternate 4s, drift-1 20s ease-in-out infinite alternate;
+  animation: bokeh-pulse-6 58s ease-in-out infinite alternate-reverse 5s, drift-1 20s ease-in-out infinite alternate;
 }
 .animate-bokeh-pulse-6.animate-drift-2 {
-  animation: bokeh-pulse-6 56s ease-in-out infinite alternate 15s, drift-2 24s ease-in-out infinite alternate 2s;
+  animation: bokeh-pulse-6 88s ease-in-out infinite alternate 32s, drift-2 24s ease-in-out infinite alternate 2s;
 }
 .animate-bokeh-pulse-6.animate-drift-3 {
-  animation: bokeh-pulse-6 44s ease-in-out infinite alternate 23s, drift-3 18s ease-in-out infinite alternate 4s;
+  animation: bokeh-pulse-6 48s ease-in-out infinite alternate-reverse 65s, drift-3 18s ease-in-out infinite alternate 4s;
 }
 .animate-bokeh-pulse-6.animate-drift-4 {
-  animation: bokeh-pulse-6 65s ease-in-out infinite alternate 1s, drift-4 28s ease-in-out infinite alternate 1s;
+  animation: bokeh-pulse-6 72s ease-in-out infinite alternate 18s, drift-4 28s ease-in-out infinite alternate 1s;
 }
 .animate-bokeh-pulse-6.animate-drift-5 {
-  animation: bokeh-pulse-6 52s ease-in-out infinite alternate 12s, drift-5 22s ease-in-out infinite alternate 3s;
+  animation: bokeh-pulse-6 60s ease-in-out infinite alternate-reverse 48s, drift-5 22s ease-in-out infinite alternate 3s;
 }
 .animate-bokeh-pulse-6.animate-drift-6 {
-  animation: bokeh-pulse-6 46s ease-in-out infinite alternate 6s, drift-6 26s ease-in-out infinite alternate 5s;
+  animation: bokeh-pulse-6 82s ease-in-out infinite alternate 8s, drift-6 26s ease-in-out infinite alternate 5s;
 }
 
 .animate-bokeh-pulse-7.animate-drift-1 {
-  animation: bokeh-pulse-7 54s ease-in-out infinite alternate 18s, drift-1 20s ease-in-out infinite alternate;
+  animation: bokeh-pulse-7 65s ease-in-out infinite alternate 38s, drift-1 20s ease-in-out infinite alternate;
 }
 .animate-bokeh-pulse-7.animate-drift-2 {
-  animation: bokeh-pulse-7 60s ease-in-out infinite alternate 9s, drift-2 24s ease-in-out infinite alternate 2s;
+  animation: bokeh-pulse-7 78s ease-in-out infinite alternate-reverse 12s, drift-2 24s ease-in-out infinite alternate 2s;
 }
 .animate-bokeh-pulse-7.animate-drift-3 {
-  animation: bokeh-pulse-7 48s ease-in-out infinite alternate 14s, drift-3 18s ease-in-out infinite alternate 4s;
+  animation: bokeh-pulse-7 55s ease-in-out infinite alternate 55s, drift-3 18s ease-in-out infinite alternate 4s;
 }
 .animate-bokeh-pulse-7.animate-drift-4 {
-  animation: bokeh-pulse-7 42s ease-in-out infinite alternate 3s, drift-4 28s ease-in-out infinite alternate 1s;
+  animation: bokeh-pulse-7 95s ease-in-out infinite alternate-reverse 2s, drift-4 28s ease-in-out infinite alternate 1s;
 }
 .animate-bokeh-pulse-7.animate-drift-5 {
-  animation: bokeh-pulse-7 68s ease-in-out infinite alternate 20s, drift-5 22s ease-in-out infinite alternate 3s;
+  animation: bokeh-pulse-7 50s ease-in-out infinite alternate 75s, drift-5 22s ease-in-out infinite alternate 3s;
 }
 .animate-bokeh-pulse-7.animate-drift-6 {
-  animation: bokeh-pulse-7 38s ease-in-out infinite alternate 11s, drift-6 26s ease-in-out infinite alternate 5s;
+  animation: bokeh-pulse-7 70s ease-in-out infinite alternate-reverse 22s, drift-6 26s ease-in-out infinite alternate 5s;
 }
 
 .animate-bokeh-pulse-8.animate-drift-1 {
-  animation: bokeh-pulse-8 46s ease-in-out infinite alternate 6s, drift-1 20s ease-in-out infinite alternate;
+  animation: bokeh-pulse-8 88s ease-in-out infinite alternate-reverse 45s, drift-1 20s ease-in-out infinite alternate;
 }
 .animate-bokeh-pulse-8.animate-drift-2 {
-  animation: bokeh-pulse-8 64s ease-in-out infinite alternate 16s, drift-2 24s ease-in-out infinite alternate 2s;
+  animation: bokeh-pulse-8 52s ease-in-out infinite alternate 8s, drift-2 24s ease-in-out infinite alternate 2s;
 }
 .animate-bokeh-pulse-8.animate-drift-3 {
-  animation: bokeh-pulse-8 50s ease-in-out infinite alternate 24s, drift-3 18s ease-in-out infinite alternate 4s;
+  animation: bokeh-pulse-8 75s ease-in-out infinite alternate-reverse 68s, drift-3 18s ease-in-out infinite alternate 4s;
 }
 .animate-bokeh-pulse-8.animate-drift-4 {
-  animation: bokeh-pulse-8 58s ease-in-out infinite alternate 4s, drift-4 28s ease-in-out infinite alternate 1s;
+  animation: bokeh-pulse-8 62s ease-in-out infinite alternate 25s, drift-4 28s ease-in-out infinite alternate 1s;
 }
 .animate-bokeh-pulse-8.animate-drift-5 {
-  animation: bokeh-pulse-8 44s ease-in-out infinite alternate 13s, drift-5 22s ease-in-out infinite alternate 3s;
+  animation: bokeh-pulse-8 85s ease-in-out infinite alternate-reverse 35s, drift-5 22s ease-in-out infinite alternate 3s;
 }
 .animate-bokeh-pulse-8.animate-drift-6 {
-  animation: bokeh-pulse-8 72s ease-in-out infinite alternate 2s, drift-6 26s ease-in-out infinite alternate 5s;
+  animation: bokeh-pulse-8 48s ease-in-out infinite alternate 82s, drift-6 26s ease-in-out infinite alternate 5s;
 }
 
 .animate-bokeh-pulse-9.animate-drift-1 {
-  animation: bokeh-pulse-9 66s ease-in-out infinite alternate 11s, drift-1 20s ease-in-out infinite alternate;
+  animation: bokeh-pulse-9 72s ease-in-out infinite alternate 58s, drift-1 20s ease-in-out infinite alternate;
 }
 .animate-bokeh-pulse-9.animate-drift-2 {
-  animation: bokeh-pulse-9 52s ease-in-out infinite alternate 5s, drift-2 24s ease-in-out infinite alternate 2s;
+  animation: bokeh-pulse-9 58s ease-in-out infinite alternate-reverse 28s, drift-2 24s ease-in-out infinite alternate 2s;
 }
 .animate-bokeh-pulse-9.animate-drift-3 {
-  animation: bokeh-pulse-9 40s ease-in-out infinite alternate 19s, drift-3 18s ease-in-out infinite alternate 4s;
+  animation: bokeh-pulse-9 92s ease-in-out infinite alternate 4s, drift-3 18s ease-in-out infinite alternate 4s;
 }
 .animate-bokeh-pulse-9.animate-drift-4 {
-  animation: bokeh-pulse-9 74s ease-in-out infinite alternate 8s, drift-4 28s ease-in-out infinite alternate 1s;
+  animation: bokeh-pulse-9 45s ease-in-out infinite alternate-reverse 78s, drift-4 28s ease-in-out infinite alternate 1s;
 }
 .animate-bokeh-pulse-9.animate-drift-5 {
-  animation: bokeh-pulse-9 56s ease-in-out infinite alternate 1s, drift-5 22s ease-in-out infinite alternate 3s;
+  animation: bokeh-pulse-9 80s ease-in-out infinite alternate 15s, drift-5 22s ease-in-out infinite alternate 3s;
 }
 .animate-bokeh-pulse-9.animate-drift-6 {
-  animation: bokeh-pulse-9 48s ease-in-out infinite alternate 22s, drift-6 26s ease-in-out infinite alternate 5s;
+  animation: bokeh-pulse-9 55s ease-in-out infinite alternate-reverse 52s, drift-6 26s ease-in-out infinite alternate 5s;
 }
 
 .animate-bokeh-pulse-10.animate-drift-1 {
-  animation: bokeh-pulse-10 60s ease-in-out infinite alternate 2s, drift-1 20s ease-in-out infinite alternate;
+  animation: bokeh-pulse-10 68s ease-in-out infinite alternate-reverse 18s, drift-1 20s ease-in-out infinite alternate;
 }
 .animate-bokeh-pulse-10.animate-drift-2 {
-  animation: bokeh-pulse-10 44s ease-in-out infinite alternate 14s, drift-2 24s ease-in-out infinite alternate 2s;
+  animation: bokeh-pulse-10 82s ease-in-out infinite alternate 62s, drift-2 24s ease-in-out infinite alternate 2s;
 }
 .animate-bokeh-pulse-10.animate-drift-3 {
-  animation: bokeh-pulse-10 70s ease-in-out infinite alternate 7s, drift-3 18s ease-in-out infinite alternate 4s;
+  animation: bokeh-pulse-10 50s ease-in-out infinite alternate-reverse 42s, drift-3 18s ease-in-out infinite alternate 4s;
 }
 .animate-bokeh-pulse-10.animate-drift-4 {
-  animation: bokeh-pulse-10 54s ease-in-out infinite alternate 17s, drift-4 28s ease-in-out infinite alternate 1s;
+  animation: bokeh-pulse-10 90s ease-in-out infinite alternate 1s, drift-4 28s ease-in-out infinite alternate 1s;
 }
 .animate-bokeh-pulse-10.animate-drift-5 {
-  animation: bokeh-pulse-10 42s ease-in-out infinite alternate 10s, drift-5 22s ease-in-out infinite alternate 3s;
+  animation: bokeh-pulse-10 60s ease-in-out infinite alternate-reverse 88s, drift-5 22s ease-in-out infinite alternate 3s;
 }
 .animate-bokeh-pulse-10.animate-drift-6 {
-  animation: bokeh-pulse-10 78s ease-in-out infinite alternate 5s, drift-6 26s ease-in-out infinite alternate 5s;
-}
-
-/* Scroll-responsive bokeh container */
-.bokeh-scroll-container {
-  transition: transform 0.15s ease-out;
+  animation: bokeh-pulse-10 75s ease-in-out infinite alternate 32s, drift-6 26s ease-in-out infinite alternate 5s;
 }
