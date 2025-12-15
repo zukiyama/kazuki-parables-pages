@@ -143,11 +143,20 @@ const Comics = () => {
         </section>
 
         {/* God of Lies Section */}
-        <section className="py-12 md:py-16 px-6">
-          <div className="container mx-auto max-w-7xl">
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
-              {/* Cover Image */}
-              <div className="lg:col-span-3">
+        <section className="py-12 md:py-16 px-6 max-sm:px-0">
+          <div className="container mx-auto max-w-7xl max-sm:px-0">
+            {/* Mobile: Full-width banner image above text */}
+            <div className="hidden max-sm:block mb-6">
+              <img 
+                src={godOfLiesCover}
+                alt="God of Lies comic cover"
+                className="w-full object-contain"
+              />
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center max-sm:px-6">
+              {/* Cover Image - Desktop only */}
+              <div className="lg:col-span-3 max-sm:hidden">
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies comic cover"
@@ -158,7 +167,7 @@ const Comics = () => {
               {/* Text Panel */}
               <div className="lg:col-span-2">
                 <div style={{ fontFamily: 'Bangers, cursive' }}>
-                  <h3 className="text-5xl md:text-6xl text-black uppercase tracking-wider mb-6 drop-shadow-lg">
+                  <h3 className="text-5xl md:text-6xl text-black uppercase tracking-wider mb-6 drop-shadow-lg max-sm:text-center">
                     GOD OF LIES
                   </h3>
                   
@@ -204,7 +213,7 @@ const Comics = () => {
                 }`}
               >
                 <div 
-                  className="bg-white shadow-xl border border-gray-200 p-6 md:p-8 rounded-lg" 
+                  className="bg-white shadow-xl border border-gray-200 p-6 md:p-8 rounded-lg max-sm:max-w-[85vw] max-sm:mx-auto" 
                   style={{ fontFamily: 'Courier New, Courier, monospace' }}
                 >
                   {/* Script header */}
@@ -276,11 +285,11 @@ const Comics = () => {
           <div className="container mx-auto">
             {/* FORTHCOMING Title with decorative lines */}
             <div className="flex items-center justify-center mb-20">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent to-amber-800 max-w-xs"></div>
-              <h2 className="font-bangers text-5xl md:text-6xl text-black mx-8 drop-shadow-lg tracking-wide">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent to-amber-800 max-w-xs max-sm:max-w-[60px]"></div>
+              <h2 className="font-bangers text-5xl md:text-6xl max-sm:text-3xl text-black mx-8 max-sm:mx-4 drop-shadow-lg tracking-wide">
                 FORTHCOMING
               </h2>
-              <div className="flex-1 h-px bg-gradient-to-l from-transparent to-amber-800 max-w-xs"></div>
+              <div className="flex-1 h-px bg-gradient-to-l from-transparent to-amber-800 max-w-xs max-sm:max-w-[60px]"></div>
             </div>
             
             {/* First Row */}
