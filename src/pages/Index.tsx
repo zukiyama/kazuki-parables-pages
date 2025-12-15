@@ -174,7 +174,7 @@ const Index = () => {
       {/* Content Section */}
       <section className="relative bg-background">
         {/* Book Announcement */}
-        <div className="container mx-auto px-6 py-12">
+        <div className="container mx-auto px-6 pt-12 pb-6">
           <ScrollFadeUp id="book-announcement" className="text-center mb-8">
             <h2 className="font-heading text-3xl md:text-5xl mb-4" style={{ color: '#2d1b1b' }}>
               Book One of The Parable Trilogy
@@ -197,9 +197,25 @@ const Index = () => {
             href="#/music" 
             className="group block w-full"
           >
-            <div className="relative w-full overflow-hidden bg-background border-t border-border py-10 md:py-14">
+            <div className="relative w-full overflow-hidden bg-gradient-to-r from-rose-50/80 via-amber-50/60 to-pink-50/80 border-t border-border/50 py-10 md:py-14">
+              {/* Decorative bokeh circles */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {/* Large pink circle - left side, blurred */}
+                <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-pink-300/30 blur-3xl"></div>
+                {/* Medium yellow circle - right side */}
+                <div className="absolute -right-10 top-0 w-48 h-48 rounded-full bg-amber-200/40 blur-2xl"></div>
+                {/* Small pink circle - top right */}
+                <div className="absolute right-1/4 -top-8 w-32 h-32 rounded-full bg-rose-200/50 blur-xl"></div>
+                {/* Tiny focused circles scattered */}
+                <div className="absolute left-1/4 top-1/3 w-8 h-8 rounded-full bg-pink-400/20 blur-sm"></div>
+                <div className="absolute right-1/3 bottom-1/4 w-6 h-6 rounded-full bg-amber-300/30 blur-sm"></div>
+                <div className="absolute left-1/3 bottom-1/3 w-10 h-10 rounded-full bg-rose-300/25 blur-md"></div>
+                {/* Large amber glow - bottom */}
+                <div className="absolute left-1/2 -translate-x-1/2 -bottom-20 w-96 h-40 rounded-full bg-amber-100/50 blur-3xl"></div>
+              </div>
+              
               {/* Shine effect on hover */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
               
               {/* Main content */}
               <div className="relative z-10 flex items-center justify-center gap-8 md:gap-12 px-4">
@@ -207,20 +223,20 @@ const Index = () => {
                 <img 
                   src={circlesSingleCover} 
                   alt="Circles single cover"
-                  className="w-24 h-24 md:w-36 md:h-36 rounded object-cover shadow-xl group-hover:scale-105 transition-transform duration-300"
+                  className="w-32 h-32 md:w-44 md:h-44 rounded-lg object-cover shadow-2xl group-hover:scale-105 transition-transform duration-300 ring-1 ring-black/5"
                 />
 
                 {/* Text */}
                 <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
                   <div>
-                    <p className="text-sm md:text-base font-bold uppercase tracking-widest text-muted-foreground mb-1">
+                    <p className="text-sm md:text-base font-bold uppercase tracking-widest text-rose-600/80 mb-1">
                       New Single
                     </p>
-                    <h4 className="font-heading text-3xl md:text-5xl font-black text-foreground tracking-tight group-hover:text-primary transition-colors duration-300">
+                    <h4 className="font-heading text-3xl md:text-5xl font-black text-foreground tracking-tight group-hover:text-rose-600 transition-colors duration-300 drop-shadow-sm">
                       CIRCLES
                     </h4>
                   </div>
-                  <div className="flex items-center gap-2 text-foreground font-semibold group-hover:text-primary transition-colors">
+                  <div className="flex items-center gap-2 text-foreground/80 font-semibold group-hover:text-rose-600 transition-colors">
                     <span className="text-base md:text-xl uppercase tracking-wider">Out Now →</span>
                   </div>
                 </div>
