@@ -397,13 +397,10 @@ const Music = () => {
       <main className="container mx-auto px-6 pt-72 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-16">
-            <h1 className="font-serif text-6xl font-bold text-white mb-4 tracking-wide animate-fade-in">
+          <div className="text-center mb-16 pt-4">
+            <h1 className="font-serif text-6xl font-bold text-white tracking-wide animate-fade-in">
               Music
             </h1>
-            <p className="text-white/80 text-xl font-serif">
-              A collection of surreal soundscapes and magical melodies
-            </p>
           </div>
           
           {/* Video Player - Cassette Deck Style */}
