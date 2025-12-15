@@ -18,7 +18,6 @@ import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
-import vintageMap from "@/assets/vintage-map-background.png";
 
 
 
@@ -63,22 +62,6 @@ const About = () => {
       <div className="container mx-auto px-6 py-16 max-w-6xl">
         {/* Artist Portrait & Bio Section */}
         <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
-          
-          {/* Vintage Map Background */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div 
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `url(${vintageMap})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                filter: 'blur(2px)',
-                opacity: 0.35,
-              }}
-            />
-            {/* Gradient fade to white at bottom */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white" />
-          </div>
           
           <div className="lg:col-span-1 flex justify-center lg:justify-start relative z-10">
             <div className="w-80 h-80 relative">
