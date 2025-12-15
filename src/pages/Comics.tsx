@@ -138,7 +138,7 @@ const Comics = () => {
             Comics & Scripts
           </h1>
           <p className="font-serif text-xl md:text-2xl text-amber-800 leading-relaxed drop-shadow-md max-w-2xl mx-auto">
-            Comics, webtoons, manga and scripts with original characters and stories
+            Original comics, manga, webtoons and scripts
           </p>
         </section>
 
