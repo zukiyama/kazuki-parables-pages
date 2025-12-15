@@ -841,48 +841,48 @@
   animation-delay: 0.3s;
 }
 
-/* Slow vertical drift animations */
+/* Slow vertical drift animations - increased movement */
 @keyframes drift-1 {
   0%, 100% { transform: translateY(0) translateX(0); }
-  25% { transform: translateY(-15px) translateX(3px); }
-  50% { transform: translateY(-8px) translateX(-2px); }
-  75% { transform: translateY(-20px) translateX(1px); }
+  25% { transform: translateY(-35px) translateX(4px); }
+  50% { transform: translateY(-18px) translateX(-3px); }
+  75% { transform: translateY(-45px) translateX(2px); }
 }
 
 @keyframes drift-2 {
   0%, 100% { transform: translateY(0) translateX(0); }
-  33% { transform: translateY(18px) translateX(-4px); }
-  66% { transform: translateY(10px) translateX(2px); }
+  33% { transform: translateY(40px) translateX(-5px); }
+  66% { transform: translateY(22px) translateX(3px); }
 }
 
 @keyframes drift-3 {
   0%, 100% { transform: translateY(0) translateX(0); }
-  20% { transform: translateY(-12px) translateX(-3px); }
-  40% { transform: translateY(-25px) translateX(1px); }
-  60% { transform: translateY(-18px) translateX(-2px); }
-  80% { transform: translateY(-8px) translateX(3px); }
+  20% { transform: translateY(-28px) translateX(-4px); }
+  40% { transform: translateY(-55px) translateX(2px); }
+  60% { transform: translateY(-38px) translateX(-3px); }
+  80% { transform: translateY(-18px) translateX(4px); }
 }
 
 @keyframes drift-4 {
   0%, 100% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(22px) translateX(-5px); }
+  50% { transform: translateY(48px) translateX(-6px); }
 }
 
 @keyframes drift-5 {
   0%, 100% { transform: translateY(0) translateX(0); }
-  30% { transform: translateY(-30px) translateX(4px); }
-  70% { transform: translateY(-15px) translateX(-3px); }
+  30% { transform: translateY(-60px) translateX(5px); }
+  70% { transform: translateY(-32px) translateX(-4px); }
 }
 
 @keyframes drift-6 {
   0%, 100% { transform: translateY(0) translateX(0); }
-  40% { transform: translateY(16px) translateX(2px); }
-  80% { transform: translateY(28px) translateX(-4px); }
+  40% { transform: translateY(35px) translateX(3px); }
+  80% { transform: translateY(58px) translateX(-5px); }
 }
 
-.animate-drift-1 { animation: drift-1 25s ease-in-out infinite; }
-.animate-drift-2 { animation: drift-2 30s ease-in-out infinite; animation-delay: 2s; }
-.animate-drift-3 { animation: drift-3 22s ease-in-out infinite; animation-delay: 5s; }
-.animate-drift-4 { animation: drift-4 35s ease-in-out infinite; animation-delay: 1s; }
-.animate-drift-5 { animation: drift-5 28s ease-in-out infinite; animation-delay: 4s; }
-.animate-drift-6 { animation: drift-6 32s ease-in-out infinite; animation-delay: 3s; }
+.animate-drift-1 { animation: drift-1 20s ease-in-out infinite; }
+.animate-drift-2 { animation: drift-2 24s ease-in-out infinite; animation-delay: 2s; }
+.animate-drift-3 { animation: drift-3 18s ease-in-out infinite; animation-delay: 4s; }
+.animate-drift-4 { animation: drift-4 28s ease-in-out infinite; animation-delay: 1s; }
+.animate-drift-5 { animation: drift-5 22s ease-in-out infinite; animation-delay: 3s; }
+.animate-drift-6 { animation: drift-6 26s ease-in-out infinite; animation-delay: 5s; }
