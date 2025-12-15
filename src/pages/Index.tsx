@@ -320,15 +320,17 @@ const Index = () => {
               
               {/* Main content */}
               <div className="relative z-10 flex items-center justify-center gap-8 md:gap-12 px-4">
-                {/* Album art */}
-                <img 
-                  src={circlesSingleCover} 
-                  alt="Circles single cover"
-                  className="w-32 h-32 md:w-44 md:h-44 rounded-lg object-cover shadow-2xl group-hover:scale-105 transition-transform duration-300 ring-1 ring-black/5"
-                />
+                {/* Album art - shifted left */}
+                <div className="-ml-4 md:-ml-8">
+                  <img 
+                    src={circlesSingleCover} 
+                    alt="Circles single cover"
+                    className="w-36 h-36 md:w-52 md:h-52 rounded-lg object-cover shadow-2xl group-hover:scale-105 transition-transform duration-300 ring-1 ring-black/5"
+                  />
+                </div>
 
-                {/* Text */}
-                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
+                {/* Text - shifted right */}
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8 ml-2 md:ml-4">
                   <div>
                     <p className="text-sm md:text-base font-bold uppercase tracking-widest text-rose-600/80 mb-1">
                       New Single
