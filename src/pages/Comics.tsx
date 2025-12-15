@@ -158,12 +158,12 @@ const Comics = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center max-sm:px-6">
-              {/* Cover Image - Desktop only - reserve space with aspect ratio */}
-              <div className="lg:col-span-3 max-sm:hidden" style={{ aspectRatio: '16/9', minHeight: '400px' }}>
+              {/* Cover Image - Desktop only - overflow-hidden clips rotated edges cleanly */}
+              <div className="lg:col-span-3 max-sm:hidden overflow-hidden rounded-sm shadow-2xl" style={{ minHeight: '400px' }}>
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies comic cover"
-                  className="w-full h-full object-contain shadow-2xl rounded-sm transform -rotate-1"
+                  className="w-full h-full object-cover transform -rotate-1 scale-105"
                 />
               </div>
               
