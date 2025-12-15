@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
-import CirclesBokehBackground from "@/components/CirclesBokehBackground";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import officeView from "@/assets/office-window-view.jpg";
 import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
@@ -192,10 +191,8 @@ const Index = () => {
           </ScrollFadeUp>
         </div>
 
-        {/* Music Banner - Full Width Edge to Edge - background isolated from interactive state to prevent flashing */}
+        {/* Music Banner - Full Width Edge to Edge */}
         <div className="relative w-full overflow-hidden border-t border-amber-200/50 bg-[#FDF6E8] isolate">
-          <CirclesBokehBackground />
-
           <Link to="/music" className="group relative z-10 block w-full py-10 md:py-14">
             {/* Shine effect on hover */}
             <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
