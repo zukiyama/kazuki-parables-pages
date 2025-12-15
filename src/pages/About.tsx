@@ -165,7 +165,7 @@ const About = () => {
             <div className="hidden max-sm:block absolute inset-0 bg-black/40 pointer-events-auto">
               <div className="flex items-center justify-center h-full px-6 text-center">
                 <p className="font-body text-xl text-white leading-relaxed max-w-md drop-shadow-lg">
-                  A writer and composer exploring the spaces between memory and imagination
+                  A writer and composer exploring the spaces between form and possibility
                 </p>
               </div>
             </div>
