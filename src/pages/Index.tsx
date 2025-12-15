@@ -200,20 +200,57 @@ const Index = () => {
             <div className="relative w-full overflow-hidden bg-gradient-to-r from-rose-50/80 via-amber-50/60 to-pink-50/80 border-t border-border/50 py-10 md:py-14">
               {/* Decorative bokeh circles - animated blur pulsing */}
               <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                {/* Large partial circle bottom right - extends off screen */}
-                <div className="absolute -right-16 -bottom-20 w-48 h-48 rounded-full bg-pink-400/40 animate-bokeh-pulse-1"></div>
-                {/* Medium circles scattered */}
-                <div className="absolute left-[8%] top-[15%] w-24 h-24 rounded-full bg-cyan-400/45 animate-bokeh-pulse-2"></div>
-                <div className="absolute right-[25%] top-[10%] w-20 h-20 rounded-full bg-amber-400/50 animate-bokeh-pulse-3"></div>
-                <div className="absolute left-[45%] bottom-[20%] w-16 h-16 rounded-full bg-violet-400/40 animate-bokeh-pulse-4"></div>
-                {/* Smaller accent circles */}
-                <div className="absolute right-[45%] top-[40%] w-10 h-10 rounded-full bg-teal-400/45 animate-bokeh-pulse-5"></div>
-                <div className="absolute left-[20%] bottom-[35%] w-12 h-12 rounded-full bg-rose-400/40 animate-bokeh-pulse-6"></div>
-                <div className="absolute right-[12%] top-[45%] w-8 h-8 rounded-full bg-sky-400/50 animate-bokeh-pulse-7"></div>
-                {/* Tiny highlights */}
-                <div className="absolute left-[60%] top-[25%] w-6 h-6 rounded-full bg-orange-400/45 animate-bokeh-pulse-8"></div>
-                {/* Large partial circle top left */}
-                <div className="absolute -left-12 -top-10 w-36 h-36 rounded-full bg-amber-300/35 animate-bokeh-pulse-3"></div>
+                {/* Large partial circles extending off edges */}
+                <div className="absolute -right-20 -bottom-24 w-56 h-56 rounded-full bg-pink-400/35 animate-bokeh-pulse-1"></div>
+                <div className="absolute -left-16 -top-14 w-44 h-44 rounded-full bg-amber-300/30 animate-bokeh-pulse-3"></div>
+                <div className="absolute -left-10 bottom-[20%] w-32 h-32 rounded-full bg-cyan-400/25 animate-bokeh-pulse-5"></div>
+                <div className="absolute -right-8 top-[15%] w-28 h-28 rounded-full bg-violet-400/30 animate-bokeh-pulse-7"></div>
+                
+                {/* Large circles */}
+                <div className="absolute left-[5%] top-[25%] w-28 h-28 rounded-full bg-cyan-400/40 animate-bokeh-pulse-2"></div>
+                <div className="absolute right-[18%] bottom-[10%] w-26 h-26 rounded-full bg-rose-400/35 animate-bokeh-pulse-4"></div>
+                <div className="absolute left-[55%] top-[8%] w-24 h-24 rounded-full bg-teal-400/40 animate-bokeh-pulse-6"></div>
+                <div className="absolute right-[35%] bottom-[25%] w-22 h-22 rounded-full bg-amber-400/45 animate-bokeh-pulse-8"></div>
+                
+                {/* Medium circles */}
+                <div className="absolute left-[22%] bottom-[40%] w-20 h-20 rounded-full bg-violet-400/40 animate-bokeh-pulse-1"></div>
+                <div className="absolute right-[28%] top-[20%] w-18 h-18 rounded-full bg-sky-400/45 animate-bokeh-pulse-3"></div>
+                <div className="absolute left-[38%] top-[45%] w-16 h-16 rounded-full bg-pink-400/35 animate-bokeh-pulse-5"></div>
+                <div className="absolute right-[8%] bottom-[45%] w-18 h-18 rounded-full bg-orange-400/40 animate-bokeh-pulse-7"></div>
+                <div className="absolute left-[68%] bottom-[15%] w-16 h-16 rounded-full bg-cyan-300/40 animate-bokeh-pulse-2"></div>
+                <div className="absolute right-[55%] top-[12%] w-14 h-14 rounded-full bg-amber-500/35 animate-bokeh-pulse-4"></div>
+                <div className="absolute left-[12%] top-[55%] w-15 h-15 rounded-full bg-teal-300/45 animate-bokeh-pulse-6"></div>
+                <div className="absolute right-[42%] bottom-[50%] w-14 h-14 rounded-full bg-rose-300/40 animate-bokeh-pulse-8"></div>
+                
+                {/* Small circles */}
+                <div className="absolute left-[48%] bottom-[35%] w-12 h-12 rounded-full bg-violet-300/45 animate-bokeh-pulse-1"></div>
+                <div className="absolute right-[15%] top-[35%] w-11 h-11 rounded-full bg-cyan-500/40 animate-bokeh-pulse-3"></div>
+                <div className="absolute left-[75%] top-[30%] w-10 h-10 rounded-full bg-pink-300/45 animate-bokeh-pulse-5"></div>
+                <div className="absolute right-[65%] bottom-[20%] w-12 h-12 rounded-full bg-amber-400/40 animate-bokeh-pulse-7"></div>
+                <div className="absolute left-[30%] top-[18%] w-11 h-11 rounded-full bg-sky-300/45 animate-bokeh-pulse-2"></div>
+                <div className="absolute right-[5%] bottom-[30%] w-10 h-10 rounded-full bg-teal-400/40 animate-bokeh-pulse-4"></div>
+                <div className="absolute left-[85%] bottom-[55%] w-9 h-9 rounded-full bg-rose-400/45 animate-bokeh-pulse-6"></div>
+                <div className="absolute right-[75%] top-[40%] w-10 h-10 rounded-full bg-orange-300/40 animate-bokeh-pulse-8"></div>
+                
+                {/* Tiny accent circles */}
+                <div className="absolute left-[18%] bottom-[18%] w-8 h-8 rounded-full bg-violet-400/50 animate-bokeh-pulse-1"></div>
+                <div className="absolute right-[22%] top-[50%] w-7 h-7 rounded-full bg-cyan-400/45 animate-bokeh-pulse-3"></div>
+                <div className="absolute left-[62%] top-[55%] w-6 h-6 rounded-full bg-pink-500/40 animate-bokeh-pulse-5"></div>
+                <div className="absolute right-[48%] bottom-[8%] w-8 h-8 rounded-full bg-amber-300/50 animate-bokeh-pulse-7"></div>
+                <div className="absolute left-[42%] bottom-[60%] w-7 h-7 rounded-full bg-teal-400/45 animate-bokeh-pulse-2"></div>
+                <div className="absolute right-[38%] top-[60%] w-6 h-6 rounded-full bg-sky-400/50 animate-bokeh-pulse-4"></div>
+                <div className="absolute left-[8%] top-[70%] w-8 h-8 rounded-full bg-rose-300/45 animate-bokeh-pulse-6"></div>
+                <div className="absolute right-[58%] top-[70%] w-5 h-5 rounded-full bg-orange-400/50 animate-bokeh-pulse-8"></div>
+                
+                {/* Extra tiny sparkle circles */}
+                <div className="absolute left-[52%] top-[15%] w-5 h-5 rounded-full bg-violet-500/45 animate-bokeh-pulse-2"></div>
+                <div className="absolute right-[32%] bottom-[40%] w-4 h-4 rounded-full bg-cyan-300/50 animate-bokeh-pulse-4"></div>
+                <div className="absolute left-[28%] top-[65%] w-5 h-5 rounded-full bg-pink-400/50 animate-bokeh-pulse-6"></div>
+                <div className="absolute right-[70%] bottom-[65%] w-4 h-4 rounded-full bg-amber-400/55 animate-bokeh-pulse-8"></div>
+                <div className="absolute left-[78%] bottom-[40%] w-5 h-5 rounded-full bg-teal-300/50 animate-bokeh-pulse-1"></div>
+                <div className="absolute right-[12%] top-[65%] w-4 h-4 rounded-full bg-rose-500/45 animate-bokeh-pulse-3"></div>
+                <div className="absolute left-[35%] bottom-[5%] w-6 h-6 rounded-full bg-sky-300/50 animate-bokeh-pulse-5"></div>
+                <div className="absolute right-[85%] top-[5%] w-5 h-5 rounded-full bg-orange-300/55 animate-bokeh-pulse-7"></div>
               </div>
               
               {/* Shine effect on hover */}
