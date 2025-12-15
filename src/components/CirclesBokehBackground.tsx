@@ -9,6 +9,7 @@ const CirclesBokehBackground = memo(({ className }: CirclesBokehBackgroundProps)
   return (
     <div
       aria-hidden="true"
+      style={{ willChange: "transform" }}
       className={cn(
         "absolute inset-0 z-0 overflow-hidden pointer-events-none transform-gpu",
         className
