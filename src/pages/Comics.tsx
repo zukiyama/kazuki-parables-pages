@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollScale } from "@/components/ScrollAnimations";
-import { useImagePreloader } from "@/hooks/useImagePreloader";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-wide-cover.png";
 import mangaSketchesBackground from "@/assets/manga-character-sketches-background.jpeg";
@@ -13,8 +12,6 @@ import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 
 const Comics = () => {
-  // Preload God of Lies cover to prevent layout shift
-  useImagePreloader({ images: [godOfLiesCover], priority: true });
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [hasZoomed, setHasZoomed] = useState(false);
@@ -148,8 +145,8 @@ const Comics = () => {
         {/* God of Lies Section */}
         <section className="py-12 md:py-16 px-6 max-sm:px-0">
           <div className="container mx-auto max-w-7xl max-sm:px-0">
-            {/* Mobile: Full-width banner image above text - reserve space with min-height */}
-            <div className="hidden max-sm:block mb-6 min-h-[200px]">
+            {/* Mobile: Full-width banner image above text */}
+            <div className="hidden max-sm:block mb-6">
               <img 
                 src={godOfLiesCover}
                 alt="God of Lies comic cover"
@@ -158,12 +155,12 @@ const Comics = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center max-sm:px-6">
-              {/* Cover Image - Desktop only - overflow-hidden clips rotated edges, rotate-1 mirrors Pendragon's rotation */}
-              <div className="lg:col-span-3 max-sm:hidden overflow-hidden rounded-sm shadow-2xl" style={{ aspectRatio: '1200/675' }}>
+              {/* Cover Image - Desktop only */}
+              <div className="lg:col-span-3 max-sm:hidden">
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies comic cover"
-                  className="w-full h-full object-contain transform rotate-1 scale-[1.02]"
+                  className="w-full object-contain shadow-2xl rounded-sm transform -rotate-1"
                 />
               </div>
               
