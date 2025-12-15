@@ -5,11 +5,11 @@ import { useImagePreloader } from "@/hooks/useImagePreloader";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-wide-cover.png";
 import mangaSketchesBackground from "@/assets/manga-character-sketches-background.jpeg";
-import godsCoverNew from "@/assets/gods-cover-new.png";
-import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
-import scriptedCoverNew from "@/assets/scripted-cover-new.png";
+import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
 import burdenCoverNew from "@/assets/burden-cover-new.png";
-import toFlyCoverNew from "@/assets/to-fly-cover-new.png";
+import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
+import godsCover from "@/assets/gods-cover-new.png";
+import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 
 const Comics = () => {
@@ -19,57 +19,18 @@ const Comics = () => {
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [hasZoomed, setHasZoomed] = useState(false);
   const [pendragonVisible, setPendragonVisible] = useState(false);
-  const pendragonRef = useRef<HTMLDivElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
+  const pendragonRef = useRef<HTMLDivElement>(null);
 
-  const forthcomingComics = [
-    { 
-      cover: godsCoverNew, 
-      title: "Gods", 
-      description: "A mythological epic exploring the nature of divinity and mortality.",
-      teaser: ""
-    },
-    { 
-      cover: mrMiracleCoverNew, 
-      title: "Mr. Miracle", 
-      description: "The extraordinary life of an ordinary man who discovers he can perform miracles.",
-      teaser: ""
-    },
-    { 
-      cover: scriptedCoverNew, 
-      title: "Scripted", 
-      description: "When reality follows a screenplay no one remembers writing.",
-      teaser: ""
-    },
-    { 
-      cover: burdenCoverNew, 
-      title: "The Burden", 
-      description: "A weight that cannot be put down, a journey that cannot be avoided.",
-      teaser: ""
-    },
-    { 
-      cover: toFlyCoverNew, 
-      title: "To Fly", 
-      description: "The dream of flight becomes something far more complex.",
-      teaser: ""
-    },
-    { 
-      cover: orangesGoldCoverNew, 
-      title: "Oranges & Gold", 
-      description: "Color, memory, and the spaces between what we see and what we remember.",
-      teaser: ""
-    },
-  ];
-
+  // One-way background zoom effect on initial scroll
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      if (scrollY > 50 && !hasZoomed) {
+      if (!hasZoomed && window.scrollY > 50) {
         setHasZoomed(true);
       }
     };
-
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [hasZoomed]);
@@ -77,11 +38,11 @@ const Comics = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const rowId = entry.target.getAttribute('data-row');
             if (rowId) {
-              setVisibleRows(prev => new Set([...prev, rowId]));
+              setVisibleRows((prev) => new Set(prev).add(rowId));
             }
           }
         });
@@ -95,91 +56,144 @@ const Comics = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Pendragon section slide-in observer
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setPendragonVisible(true);
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     );
 
-    if (pendragonRef.current) {
-      observer.observe(pendragonRef.current);
-    }
+    if (pendragonRef.current) observer.observe(pendragonRef.current);
 
     return () => observer.disconnect();
   }, []);
 
+  const smallShelfComics = [
+    {
+      cover: burdenCoverNew,
+      title: "The Burden",
+      description: "A touching story about a young man who must care for his aging mother, exploring themes of family duty, sacrifice, and the weight of responsibility. As memories float between past and present, both son and mother navigate the delicate balance between independence and care.",
+      teaser: "Family duty weighs heavier than expected burdens."
+    },
+    {
+      cover: mrMiracleCoverNew,
+      title: "Mr. Miracle", 
+      description: "A mysterious 40-year-old man moves into a tight-knit neighborhood where everyone knows everyone's business. Unmarried and with no known background, he becomes the subject of intense gossip among the local ladies. But as the community slowly gets to know him, perceptions begin to change in unexpected ways.",
+      teaser: "Sometimes the most ordinary man holds extraordinary secrets."
+    },
+    {
+      cover: soulTiedCover,
+      title: "Soul Tied",
+      description: "Two men, bound by fate yet worlds apart in their choices. One embraces chaos with casual indifference, while the other fights desperately to maintain control. Their intertwined destinies force them to confront what it means to be truly connected to another soul.",
+      teaser: "Destiny binds two souls in chaos and control."
+    },
+    {
+      cover: godsCover,
+      title: "Gods!",
+      description: "Set on a cosmic space station where idol-gods from different galaxies meet for a rare cosmic gathering. When disaster strikes and invasion threatens, a cynical female security officer who despises space idols and their fanatic followers must protect the very beings she can't stand. It's the worst day of her career.",
+      teaser: "When gods need saving, who do you call?"
+    },
+    {
+      cover: scriptedCover,
+      title: "Scripted",
+      description: "A group of actors keep being reincarnated in different shows as different characters with no memory of their past roles. But relationships from previous shows start bleeding through. When they seek help to uncover their past lives, they begin to question reality itself. Are they actors? Or is being actors just another script? And if so... who's watching?",
+      teaser: "Reality blurs when every life feels like a performance."
+    },
+    {
+      cover: orangesGoldCoverNew,
+      title: "Oranges are Made of Gold",
+      description: "A 99-year-old Korean CEO controls a vast orange empire built on rare oranges that grow only on Jeju Island. Instead of naming an heir, he forces his two sons to compete - whoever makes the most profit in one year inherits everything. A tale spanning generations, exploring family legacy, competition, and the price of empire.",
+      teaser: "In Jeju's orchards, family rivalry grows sweeter than gold."
+    }
+  ];
+
+  const handleComicClick = (comic: {cover: string; title: string; description: string; teaser?: string}) => {
+    setSelectedComic(comic);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedComic(null);
+  };
+
   return (
-    <div className="min-h-screen relative overflow-x-hidden">
-      {/* Fixed Background */}
+    <div className="min-h-screen relative">
+      {/* Manga Sketches Background */}
       <div 
-        className="fixed inset-0 z-0 transition-transform duration-700 ease-out"
-        style={{
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-50 pointer-events-none transition-transform duration-700 ease-out"
+        style={{ 
           backgroundImage: `url(${mangaSketchesBackground})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          transform: hasZoomed ? 'scale(1.02)' : 'scale(1)',
+          transform: hasZoomed ? 'scale(1.02)' : 'scale(1)'
         }}
       />
       
-      {/* Scrollable Content */}
-      <div className="relative z-10">
-        <Navigation />
-        
-        {/* Page Title */}
-        <section className="pt-40 pb-16 px-6">
-          <div className="container mx-auto text-center">
-            <h1 className="text-6xl md:text-7xl max-sm:text-4xl font-bold text-white drop-shadow-lg font-bangers tracking-wide">
-              Comics & Scripts
-            </h1>
-            <p className="text-xl md:text-2xl max-sm:text-lg text-white/90 mt-4 font-serif">
-              Original stories in graphic novel and screenplay format
-            </p>
-          </div>
+      <Navigation />
+
+      <main className="relative z-10 pt-40 pb-20">
+        {/* Title Section */}
+        <section className="text-center px-6 mb-16 max-sm:mb-6">
+          <h1 className="font-serif text-6xl md:text-7xl font-bold text-black mb-4 tracking-wide drop-shadow-lg">
+            Comics & Scripts
+          </h1>
+          <p className="font-serif text-xl md:text-2xl text-amber-800 leading-relaxed drop-shadow-md max-w-2xl mx-auto">
+            Original comics, manga, webtoons and scripts
+          </p>
         </section>
 
-        {/* God of Lies Section - Full width image with text below */}
-        <section className="py-8 md:py-12">
-          {/* Full-width image */}
-          <div className="w-full">
-            <img 
-              src={godOfLiesCover}
-              alt="God of Lies comic cover"
-              className="w-full"
-            />
-          </div>
-          
-          {/* Text Content - centered below image */}
-          <div className="text-center px-6 mt-8">
-            <div style={{ fontFamily: 'Bangers, cursive' }}>
-              <h3 className="text-5xl md:text-6xl text-black uppercase tracking-wider mb-6 drop-shadow-lg">
-                GOD OF LIES
-              </h3>
+        {/* God of Lies Section */}
+        <section className="py-12 md:py-16 px-6 max-sm:px-0">
+          <div className="container mx-auto max-w-7xl max-sm:px-0">
+            {/* Mobile: Full-width banner image above text - reserve space with min-height */}
+            <div className="hidden max-sm:block mb-6 min-h-[200px]">
+              <img 
+                src={godOfLiesCover}
+                alt="God of Lies comic cover"
+                className="w-full object-contain"
+              />
             </div>
-            <p className="text-xl max-sm:text-lg text-black leading-relaxed max-w-3xl mx-auto">
-              <span className="italic">
-                What happens if you're a god... who doesn't believe in gods?
-              </span>
-              <br /><br />
-              <span className="font-semibold">
-                Conceived and written as manga-style graphic novel
-              </span>
-            </p>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center max-sm:px-6">
+              {/* Cover Image - Desktop only - reserve space with aspect ratio */}
+              <div className="lg:col-span-3 max-sm:hidden" style={{ aspectRatio: '16/9', minHeight: '400px' }}>
+                <img 
+                  src={godOfLiesCover}
+                  alt="God of Lies comic cover"
+                  className="w-full h-full object-contain shadow-2xl rounded-sm transform -rotate-1"
+                />
+              </div>
+              
+              {/* Text Panel */}
+              <div className="lg:col-span-2">
+                <div style={{ fontFamily: 'Bangers, cursive' }}>
+                  <h3 className="text-5xl md:text-6xl text-black uppercase tracking-wider mb-6 drop-shadow-lg max-sm:text-center">
+                    GOD OF LIES
+                  </h3>
+                  
+                  <p className="text-lg md:text-xl text-black leading-relaxed mb-4" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
+                    A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
+                  </p>
+                  
+                  <p className="text-lg md:text-xl text-black leading-relaxed" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
+                    A psychological thriller exploring the price of dishonesty, where deception becomes truth and reality dissolves into fiction.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Pull Quote Section */}
+        {/* Pull Quote Section - KEPT */}
         <section className="relative py-10 md:py-16 overflow-hidden">
           <div className="container mx-auto px-6">
             <ScrollScale 
               initialScale={1.15} 
               finalScale={1} 
+              initialBlur={3}
               className="text-center"
             >
               <blockquote className="font-serif text-3xl md:text-5xl lg:text-6xl text-black/80 italic leading-tight max-w-4xl mx-auto">
@@ -194,158 +208,194 @@ const Comics = () => {
         <section className="py-8 md:py-12 px-6 max-[480px]:px-0 overflow-hidden">
           <div className="container mx-auto max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
-              {/* Text Content - Script format */}
+              {/* Script Panel - Left side on desktop */}
               <div 
                 ref={pendragonRef}
-                className={`lg:col-span-2 order-2 lg:order-1 max-[480px]:px-6 transition-all duration-700 ease-out ${
+                className={`lg:col-span-3 order-2 lg:order-1 transition-all duration-700 ease-out ${
                   pendragonVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-16'
                 }`}
               >
-                <h2 className="text-5xl max-sm:text-3xl font-bold mb-6 text-white drop-shadow-lg font-bangers tracking-wide">
-                  Surname Pendragon
-                </h2>
-                <div className="bg-black/60 backdrop-blur-sm p-6 rounded-lg font-mono text-sm text-white/90 space-y-4">
-                  <p className="text-white/60 uppercase tracking-wider text-xs">INT. LONDON TOWNHOUSE - NIGHT</p>
-                  <p>
-                    <span className="text-white/60">FADE IN:</span>
+                <div 
+                  className="bg-white shadow-xl border border-gray-200 p-6 md:p-8 rounded-lg max-sm:max-w-[85vw] max-sm:mx-auto max-[480px]:max-w-full max-[480px]:rounded-none max-[480px]:border-x-0" 
+                  style={{ fontFamily: 'Courier New, Courier, monospace' }}
+                >
+                  {/* Script header */}
+                  <div className="text-center border-b border-gray-400 pb-4 mb-4">
+                    <p className="text-sm text-gray-500 uppercase tracking-widest mb-1">Original Script</p>
+                    <h3 className="text-2xl md:text-3xl font-bold text-black uppercase tracking-wide">
+                      SURNAME PENDRAGON
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1">Written by Kazuki Yamakawa</p>
+                  </div>
+                  
+                  {/* Scene heading */}
+                  <p className="text-sm font-bold text-black uppercase mb-3">
+                    FADE IN:
                   </p>
-                  <p>
-                    A sprawling Victorian study. Books line every wall. ARTHUR PENDRAGON (40s, disheveled, brilliant) 
-                    paces before a crackling fire.
+                  
+                  <p className="text-sm font-bold text-black uppercase mb-2">
+                    INT. OFFICE BUILDING - DAY
                   </p>
-                  <p className="text-center text-white/60 uppercase">ARTHUR</p>
-                  <p className="text-center italic">
-                    The name carries weight, doesn't it?<br/>
-                    Pendragon. Dragon's head.<br/>
-                    Everyone expects a king.
+                  
+                  <p className="text-sm text-gray-700 mb-4 leading-relaxed">
+                    Fluorescent lights hum. ARTHUR PENN (28), unremarkable in every way, stares at spreadsheets. He doesn't know what's coming.
                   </p>
-                  <p className="text-white/50 text-xs mt-4">
-                    Original screenplay • Feature length
+                  
+                  {/* Character dialogue */}
+                  <p className="text-center text-sm font-bold text-black uppercase mb-1">
+                    MYSTERIOUS VOICE (V.O.)
+                  </p>
+                  <p className="text-center text-sm text-gray-700 italic mb-4 px-8">
+                    The sword chooses. The blood remembers.
+                  </p>
+                  
+                  <p className="text-sm font-bold text-black uppercase mb-2">
+                    EXT. LONDON STREETS - CONTINUOUS
+                  </p>
+                  
+                  <p className="text-sm text-gray-700 mb-4 leading-relaxed">
+                    Arthur walks home. The city pulses around him—but something ancient stirs beneath the concrete. A SWORD materializes in his path, embedded in stone.
+                  </p>
+                  
+                  <p className="text-center text-sm font-bold text-black uppercase mb-1">
+                    ARTHUR
+                  </p>
+                  <p className="text-center text-sm text-gray-700 italic mb-4 px-8">
+                    This can't be happening...
+                  </p>
+                  
+                  {/* Final action line */}
+                  <p className="text-sm text-gray-700 leading-relaxed border-t border-gray-300 pt-4 mt-4">
+                    A modern retelling where mythical beings walk among us. Where an ordinary man discovers an extraordinary destiny. Where the fate of both realms hangs in the balance.
                   </p>
                 </div>
               </div>
               
-              {/* Cover Image */}
-              <div className="lg:col-span-3 order-1 lg:order-2 max-[480px]:px-0">
+              {/* Cover Image - Right side on desktop */}
+              <div className="lg:col-span-2 flex items-center justify-center order-1 lg:order-2">
                 <img 
                   src={surnameProPendragonCoverNew}
-                  alt="Surname Pendragon screenplay cover"
-                  className="w-full object-contain shadow-2xl rounded-sm transform rotate-1"
+                  alt="Surname Pendragon comic cover"
+                  className="w-full max-w-md object-contain shadow-2xl rounded-sm transform rotate-1"
                 />
               </div>
             </div>
           </div>
         </section>
 
-        {/* Forthcoming Comics Section */}
-        <section className="py-16 md:py-24 px-6">
-          <div className="container mx-auto max-w-7xl">
-            <h2 className="text-5xl md:text-6xl font-bold text-center mb-20 text-white drop-shadow-lg font-bangers tracking-wide">
-              FORTHCOMING
-            </h2>
+        {/* Forthcoming Section */}
+        <section className="pt-16 pb-8 md:pt-24 md:pb-12 px-6">
+          <div className="container mx-auto">
+            {/* FORTHCOMING Title with decorative lines */}
+            <div className="flex items-center justify-center mb-20">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent to-amber-800 max-w-xs max-sm:max-w-[60px] max-[480px]:max-w-[30px]"></div>
+              <h2 className="font-bangers text-5xl md:text-6xl max-sm:text-3xl text-black mx-8 max-sm:mx-4 max-[480px]:mx-2 drop-shadow-lg tracking-wide">
+                FORTHCOMING
+              </h2>
+              <div className="flex-1 h-px bg-gradient-to-l from-transparent to-amber-800 max-w-xs max-sm:max-w-[60px] max-[480px]:max-w-[30px]"></div>
+            </div>
             
-            {/* First Row - 3 comics */}
+            {/* First Row */}
             <div 
               ref={row1Ref}
               data-row="row1"
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12"
+              className={`mb-12 transition-all duration-700 ${
+                visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
             >
-              {forthcomingComics.slice(0, 3).map((comic, index) => (
-                <div 
-                  key={comic.title}
-                  className={`group cursor-pointer transition-all duration-500 ${
-                    visibleRows.has('row1') 
-                      ? 'opacity-100 translate-y-0' 
-                      : 'opacity-0 translate-y-8'
-                  }`}
-                  style={{ transitionDelay: `${index * 150}ms` }}
-                  onClick={() => setSelectedComic(comic)}
-                >
-                  <div className="relative overflow-hidden rounded-lg shadow-xl">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 justify-items-center max-w-6xl mx-auto">
+                {smallShelfComics.slice(0, 3).map((comic, index) => (
+                  <div 
+                    key={comic.title} 
+                    className={`w-full max-w-xs cursor-pointer transition-all duration-500 hover:scale-105 ${
+                      visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                    }`}
+                    style={{ transitionDelay: visibleRows.has('row1') ? `${index * 150}ms` : '0ms' }}
+                    onClick={() => handleComicClick(comic)}
+                  >
                     <img 
                       src={comic.cover}
-                      alt={`${comic.title} cover`}
-                      className="w-full aspect-[2/3] object-cover transition-transform duration-500 group-hover:scale-105"
+                      alt={`${comic.title} comic cover`}
+                      className="w-full shadow-xl rounded-sm"
+                      loading="lazy"
                     />
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-            
-            {/* Second Row - 3 comics */}
-            <div 
+
+            {/* Second Row */}
+            <div
               ref={row2Ref}
               data-row="row2"
-              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+              className={`transition-all duration-700 ${
+                visibleRows.has('row2') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
             >
-              {forthcomingComics.slice(3, 6).map((comic, index) => (
-                <div 
-                  key={comic.title}
-                  className={`group cursor-pointer transition-all duration-500 ${
-                    visibleRows.has('row2') 
-                      ? 'opacity-100 translate-y-0' 
-                      : 'opacity-0 translate-y-8'
-                  }`}
-                  style={{ transitionDelay: `${index * 150}ms` }}
-                  onClick={() => setSelectedComic(comic)}
-                >
-                  <div className="relative overflow-hidden rounded-lg shadow-xl">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 justify-items-center max-w-6xl mx-auto">
+                {smallShelfComics.slice(3, 6).map((comic, index) => (
+                  <div 
+                    key={comic.title} 
+                    className={`w-full max-w-xs cursor-pointer transition-all duration-500 hover:scale-105 ${
+                      visibleRows.has('row2') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                    }`}
+                    style={{ transitionDelay: visibleRows.has('row2') ? `${index * 150}ms` : '0ms' }}
+                    onClick={() => handleComicClick(comic)}
+                  >
                     <img 
                       src={comic.cover}
-                      alt={`${comic.title} cover`}
-                      className="w-full aspect-[2/3] object-cover transition-transform duration-500 group-hover:scale-105"
+                      alt={`${comic.title} comic cover`}
+                      className="w-full shadow-xl rounded-sm"
+                      loading="lazy"
                     />
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className="py-8 px-6 text-center -mt-8">
-          <p className="text-white/70 font-serif text-sm">
+      </main>
+      
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 relative z-10 max-sm:py-8 -mt-8">
+        <div className="container mx-auto px-6 text-center">
+          <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
+          <p className="font-serif text-white">
             kazuki@kazukiyamakawa.com
           </p>
-        </footer>
-      </div>
+        </div>
+      </footer>
 
       {/* Comic Detail Modal */}
       {selectedComic && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-6"
-          onClick={() => setSelectedComic(null)}
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-6 max-sm:p-4"
+          onClick={handleCloseModal}
         >
           <div 
-            className="bg-white/10 backdrop-blur-md rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 border border-gray-200 max-sm:p-4 max-sm:gap-4 max-sm:max-h-[90vh] max-sm:overflow-y-auto animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex flex-col md:flex-row gap-6">
+            <div className="flex items-center justify-center max-sm:max-h-[40vh]">
               <img 
                 src={selectedComic.cover}
-                alt={`${selectedComic.title} cover`}
-                className="w-full md:w-1/2 aspect-[2/3] object-cover rounded-lg shadow-xl"
+                alt={`${selectedComic.title} comic cover`}
+                className="w-full max-w-lg shadow-2xl rounded-sm max-sm:max-h-full max-sm:object-contain"
               />
-              <div className="flex-1">
-                <h3 className="text-3xl font-bold text-white mb-4 font-bangers tracking-wide">
-                  {selectedComic.title}
-                </h3>
-                <p className="text-white/80 leading-relaxed">
-                  {selectedComic.description}
-                </p>
-                {selectedComic.teaser && (
-                  <p className="text-white/60 italic mt-4">
-                    {selectedComic.teaser}
-                  </p>
-                )}
-              </div>
             </div>
-            <button 
-              className="mt-6 px-6 py-2 bg-white/20 hover:bg-white/30 text-white rounded-full transition-colors"
-              onClick={() => setSelectedComic(null)}
-            >
-              Close
-            </button>
+            <div className="flex flex-col justify-center">
+              <h3 className="font-serif text-3xl md:text-4xl font-bold text-black mb-4 max-sm:text-2xl">
+                {selectedComic.title}
+              </h3>
+              <p className="font-serif text-base md:text-lg text-gray-700 leading-relaxed mb-6 max-sm:text-sm">
+                {selectedComic.description}
+              </p>
+              <button
+                onClick={handleCloseModal}
+                className="self-start px-6 py-2 bg-amber-800 text-white font-medium rounded-lg hover:bg-amber-900 transition-colors"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
