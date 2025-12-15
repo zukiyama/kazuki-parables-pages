@@ -840,3 +840,49 @@
   animation: bokeh-pulse-8 9s ease-in-out infinite;
   animation-delay: 0.3s;
 }
+
+/* Slow vertical drift animations */
+@keyframes drift-1 {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-15px) translateX(3px); }
+  50% { transform: translateY(-8px) translateX(-2px); }
+  75% { transform: translateY(-20px) translateX(1px); }
+}
+
+@keyframes drift-2 {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  33% { transform: translateY(18px) translateX(-4px); }
+  66% { transform: translateY(10px) translateX(2px); }
+}
+
+@keyframes drift-3 {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  20% { transform: translateY(-12px) translateX(-3px); }
+  40% { transform: translateY(-25px) translateX(1px); }
+  60% { transform: translateY(-18px) translateX(-2px); }
+  80% { transform: translateY(-8px) translateX(3px); }
+}
+
+@keyframes drift-4 {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(22px) translateX(-5px); }
+}
+
+@keyframes drift-5 {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  30% { transform: translateY(-30px) translateX(4px); }
+  70% { transform: translateY(-15px) translateX(-3px); }
+}
+
+@keyframes drift-6 {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  40% { transform: translateY(16px) translateX(2px); }
+  80% { transform: translateY(28px) translateX(-4px); }
+}
+
+.animate-drift-1 { animation: drift-1 25s ease-in-out infinite; }
+.animate-drift-2 { animation: drift-2 30s ease-in-out infinite; animation-delay: 2s; }
+.animate-drift-3 { animation: drift-3 22s ease-in-out infinite; animation-delay: 5s; }
+.animate-drift-4 { animation: drift-4 35s ease-in-out infinite; animation-delay: 1s; }
+.animate-drift-5 { animation: drift-5 28s ease-in-out infinite; animation-delay: 4s; }
+.animate-drift-6 { animation: drift-6 32s ease-in-out infinite; animation-delay: 3s; }
