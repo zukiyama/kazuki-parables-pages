@@ -763,43 +763,43 @@
 
 /* Bokeh pulse animations - each with unique timing, duration, and blur range */
 @keyframes bokeh-pulse-1 {
-  0%, 100% { filter: blur(12px); }
-  50% { filter: blur(2px); }
+  0%, 100% { filter: blur(18px); }
+  50% { filter: blur(1px); }
 }
 
 @keyframes bokeh-pulse-2 {
-  0%, 100% { filter: blur(8px); }
+  0%, 100% { filter: blur(14px); }
   50% { filter: blur(0px); }
 }
 
 @keyframes bokeh-pulse-3 {
-  0%, 100% { filter: blur(14px); }
-  50% { filter: blur(4px); }
-}
-
-@keyframes bokeh-pulse-4 {
-  0%, 100% { filter: blur(6px); }
-  50% { filter: blur(1px); }
-}
-
-@keyframes bokeh-pulse-5 {
-  0%, 100% { filter: blur(10px); }
+  0%, 100% { filter: blur(20px); }
   50% { filter: blur(2px); }
 }
 
-@keyframes bokeh-pulse-6 {
+@keyframes bokeh-pulse-4 {
+  0%, 100% { filter: blur(12px); }
+  50% { filter: blur(0px); }
+}
+
+@keyframes bokeh-pulse-5 {
   0%, 100% { filter: blur(16px); }
-  50% { filter: blur(3px); }
+  50% { filter: blur(1px); }
+}
+
+@keyframes bokeh-pulse-6 {
+  0%, 100% { filter: blur(22px); }
+  50% { filter: blur(2px); }
 }
 
 @keyframes bokeh-pulse-7 {
-  0%, 100% { filter: blur(5px); }
+  0%, 100% { filter: blur(10px); }
   50% { filter: blur(0px); }
 }
 
 @keyframes bokeh-pulse-8 {
-  0%, 100% { filter: blur(11px); }
-  50% { filter: blur(1px); }
+  0%, 100% { filter: blur(15px); }
+  50% { filter: blur(0px); }
 }
 
 .animate-bokeh-pulse-1 {
