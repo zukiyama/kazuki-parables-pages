@@ -456,7 +456,7 @@ const Writing = () => {
             text="the silence spoke"
             position="left"
             size="xl"
-            offsetY="10%"
+            offsetY="-15%"
           />
         </div>
 
