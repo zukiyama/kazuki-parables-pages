@@ -174,7 +174,7 @@ const Writing = () => {
   };
 
   return (
-    <div className="min-h-screen relative max-sm:overflow-x-hidden">
+    <div className="min-h-screen relative max-sm:overflow-x-hidden snap-y snap-mandatory overflow-y-auto h-screen">
       <Navigation />
       <BookshelfMenu 
         onBookClick={handleBookClick} 
@@ -260,7 +260,7 @@ const Writing = () => {
       
       <main className="relative z-10 pt-24 max-sm:pt-40">
         {/* KAIJU - The Parable Trilogy Section */}
-        <section data-section="kaiju" className="min-h-[80vh] flex items-center justify-center relative">
+        <section data-section="kaiju" className="min-h-screen flex items-center justify-center relative snap-start snap-always">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
               <h1 className={`font-serif text-6xl font-bold text-white mb-16 max-sm:mb-12 text-center tracking-wide transition-all duration-1000 ${
@@ -323,7 +323,7 @@ const Writing = () => {
         </section>
 
         {/* HOAX Section - Memo style */}
-        <section data-section="hoax" className="min-h-[80vh] flex items-center justify-center relative">
+        <section data-section="hoax" className="min-h-screen flex items-center justify-center relative snap-start snap-always">
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -398,7 +398,7 @@ const Writing = () => {
         </div>
 
         {/* THE MARKET Section */}
-        <section data-section="the-market" className="min-h-[80vh] flex items-center justify-center relative">
+        <section data-section="the-market" className="min-h-screen flex items-center justify-center relative snap-start snap-always">
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -461,7 +461,7 @@ const Writing = () => {
         </div>
 
         {/* AMYA Section */}
-        <section data-section="oba" className="min-h-[80vh] flex items-center justify-center relative">
+        <section data-section="oba" className="min-h-screen flex items-center justify-center relative snap-start snap-always">
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -508,7 +508,7 @@ const Writing = () => {
         </div>
 
         {/* STATES OF MOTION Section */}
-        <section data-section="states-of-motion" className="min-h-[80vh] flex items-center justify-center relative">
+        <section data-section="states-of-motion" className="min-h-screen flex items-center justify-center relative snap-start snap-always">
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -570,7 +570,7 @@ const Writing = () => {
         </div>
 
         {/* HOW Section */}
-        <section data-section="how" className="min-h-[80vh] flex items-center justify-center relative">
+        <section data-section="how" className="min-h-screen flex items-center justify-center relative snap-start snap-always">
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -628,7 +628,7 @@ const Writing = () => {
         </div>
 
         {/* VICE VERSA Section */}
-        <section data-section="vice-versa" className="min-h-[80vh] flex items-center justify-center relative">
+        <section data-section="vice-versa" className="min-h-screen flex items-center justify-center relative snap-start snap-always">
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -663,7 +663,7 @@ const Writing = () => {
 
 
         {/* Young Adult Books Section */}
-        <section data-section="young-adult" className="min-h-[80vh] flex items-center justify-center relative">
+        <section data-section="young-adult" className="min-h-screen flex items-center justify-center relative snap-start snap-always">
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <h2 className={`font-serif text-5xl font-bold text-white mb-4 text-center tracking-wide transition-all duration-1000 ${
