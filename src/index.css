@@ -818,97 +818,193 @@
   75% { filter: blur(0px); }
 }
 
-.animate-bokeh-pulse-1 {
-  animation: bokeh-pulse-1 7s ease-in-out infinite;
+/* Combined bokeh + drift animations - blur pulsing with vertical movement */
+.animate-bokeh-pulse-1.animate-drift-1 {
+  animation: bokeh-pulse-1 7s ease-in-out infinite, drift-1 20s ease-in-out infinite;
+}
+.animate-bokeh-pulse-1.animate-drift-2 {
+  animation: bokeh-pulse-1 7s ease-in-out infinite, drift-2 24s ease-in-out infinite 2s;
+}
+.animate-bokeh-pulse-1.animate-drift-3 {
+  animation: bokeh-pulse-1 7s ease-in-out infinite, drift-3 18s ease-in-out infinite 4s;
+}
+.animate-bokeh-pulse-1.animate-drift-4 {
+  animation: bokeh-pulse-1 7s ease-in-out infinite, drift-4 28s ease-in-out infinite 1s;
+}
+.animate-bokeh-pulse-1.animate-drift-5 {
+  animation: bokeh-pulse-1 7s ease-in-out infinite, drift-5 22s ease-in-out infinite 3s;
+}
+.animate-bokeh-pulse-1.animate-drift-6 {
+  animation: bokeh-pulse-1 7s ease-in-out infinite, drift-6 26s ease-in-out infinite 5s;
 }
 
-.animate-bokeh-pulse-2 {
-  animation: bokeh-pulse-2 11s ease-in-out infinite;
-  animation-delay: 1.2s;
+.animate-bokeh-pulse-2.animate-drift-1 {
+  animation: bokeh-pulse-2 11s ease-in-out infinite 1.2s, drift-1 20s ease-in-out infinite;
+}
+.animate-bokeh-pulse-2.animate-drift-2 {
+  animation: bokeh-pulse-2 11s ease-in-out infinite 1.2s, drift-2 24s ease-in-out infinite 2s;
+}
+.animate-bokeh-pulse-2.animate-drift-3 {
+  animation: bokeh-pulse-2 11s ease-in-out infinite 1.2s, drift-3 18s ease-in-out infinite 4s;
+}
+.animate-bokeh-pulse-2.animate-drift-4 {
+  animation: bokeh-pulse-2 11s ease-in-out infinite 1.2s, drift-4 28s ease-in-out infinite 1s;
+}
+.animate-bokeh-pulse-2.animate-drift-5 {
+  animation: bokeh-pulse-2 11s ease-in-out infinite 1.2s, drift-5 22s ease-in-out infinite 3s;
+}
+.animate-bokeh-pulse-2.animate-drift-6 {
+  animation: bokeh-pulse-2 11s ease-in-out infinite 1.2s, drift-6 26s ease-in-out infinite 5s;
 }
 
-.animate-bokeh-pulse-3 {
-  animation: bokeh-pulse-3 9s ease-in-out infinite;
-  animation-delay: 0.5s;
+.animate-bokeh-pulse-3.animate-drift-1 {
+  animation: bokeh-pulse-3 9s ease-in-out infinite 0.5s, drift-1 20s ease-in-out infinite;
+}
+.animate-bokeh-pulse-3.animate-drift-2 {
+  animation: bokeh-pulse-3 9s ease-in-out infinite 0.5s, drift-2 24s ease-in-out infinite 2s;
+}
+.animate-bokeh-pulse-3.animate-drift-3 {
+  animation: bokeh-pulse-3 9s ease-in-out infinite 0.5s, drift-3 18s ease-in-out infinite 4s;
+}
+.animate-bokeh-pulse-3.animate-drift-4 {
+  animation: bokeh-pulse-3 9s ease-in-out infinite 0.5s, drift-4 28s ease-in-out infinite 1s;
+}
+.animate-bokeh-pulse-3.animate-drift-5 {
+  animation: bokeh-pulse-3 9s ease-in-out infinite 0.5s, drift-5 22s ease-in-out infinite 3s;
+}
+.animate-bokeh-pulse-3.animate-drift-6 {
+  animation: bokeh-pulse-3 9s ease-in-out infinite 0.5s, drift-6 26s ease-in-out infinite 5s;
 }
 
-.animate-bokeh-pulse-4 {
-  animation: bokeh-pulse-4 6s ease-in-out infinite;
-  animation-delay: 3.1s;
+.animate-bokeh-pulse-4.animate-drift-1 {
+  animation: bokeh-pulse-4 6s ease-in-out infinite 3.1s, drift-1 20s ease-in-out infinite;
+}
+.animate-bokeh-pulse-4.animate-drift-2 {
+  animation: bokeh-pulse-4 6s ease-in-out infinite 3.1s, drift-2 24s ease-in-out infinite 2s;
+}
+.animate-bokeh-pulse-4.animate-drift-3 {
+  animation: bokeh-pulse-4 6s ease-in-out infinite 3.1s, drift-3 18s ease-in-out infinite 4s;
+}
+.animate-bokeh-pulse-4.animate-drift-4 {
+  animation: bokeh-pulse-4 6s ease-in-out infinite 3.1s, drift-4 28s ease-in-out infinite 1s;
+}
+.animate-bokeh-pulse-4.animate-drift-5 {
+  animation: bokeh-pulse-4 6s ease-in-out infinite 3.1s, drift-5 22s ease-in-out infinite 3s;
+}
+.animate-bokeh-pulse-4.animate-drift-6 {
+  animation: bokeh-pulse-4 6s ease-in-out infinite 3.1s, drift-6 26s ease-in-out infinite 5s;
 }
 
-.animate-bokeh-pulse-5 {
-  animation: bokeh-pulse-5 8s ease-in-out infinite;
-  animation-delay: 2.4s;
+.animate-bokeh-pulse-5.animate-drift-1 {
+  animation: bokeh-pulse-5 8s ease-in-out infinite 2.4s, drift-1 20s ease-in-out infinite;
+}
+.animate-bokeh-pulse-5.animate-drift-2 {
+  animation: bokeh-pulse-5 8s ease-in-out infinite 2.4s, drift-2 24s ease-in-out infinite 2s;
+}
+.animate-bokeh-pulse-5.animate-drift-3 {
+  animation: bokeh-pulse-5 8s ease-in-out infinite 2.4s, drift-3 18s ease-in-out infinite 4s;
+}
+.animate-bokeh-pulse-5.animate-drift-4 {
+  animation: bokeh-pulse-5 8s ease-in-out infinite 2.4s, drift-4 28s ease-in-out infinite 1s;
+}
+.animate-bokeh-pulse-5.animate-drift-5 {
+  animation: bokeh-pulse-5 8s ease-in-out infinite 2.4s, drift-5 22s ease-in-out infinite 3s;
+}
+.animate-bokeh-pulse-5.animate-drift-6 {
+  animation: bokeh-pulse-5 8s ease-in-out infinite 2.4s, drift-6 26s ease-in-out infinite 5s;
 }
 
-.animate-bokeh-pulse-6 {
-  animation: bokeh-pulse-6 13s ease-in-out infinite;
-  animation-delay: 0.8s;
+.animate-bokeh-pulse-6.animate-drift-1 {
+  animation: bokeh-pulse-6 13s ease-in-out infinite 0.8s, drift-1 20s ease-in-out infinite;
+}
+.animate-bokeh-pulse-6.animate-drift-2 {
+  animation: bokeh-pulse-6 13s ease-in-out infinite 0.8s, drift-2 24s ease-in-out infinite 2s;
+}
+.animate-bokeh-pulse-6.animate-drift-3 {
+  animation: bokeh-pulse-6 13s ease-in-out infinite 0.8s, drift-3 18s ease-in-out infinite 4s;
+}
+.animate-bokeh-pulse-6.animate-drift-4 {
+  animation: bokeh-pulse-6 13s ease-in-out infinite 0.8s, drift-4 28s ease-in-out infinite 1s;
+}
+.animate-bokeh-pulse-6.animate-drift-5 {
+  animation: bokeh-pulse-6 13s ease-in-out infinite 0.8s, drift-5 22s ease-in-out infinite 3s;
+}
+.animate-bokeh-pulse-6.animate-drift-6 {
+  animation: bokeh-pulse-6 13s ease-in-out infinite 0.8s, drift-6 26s ease-in-out infinite 5s;
 }
 
-.animate-bokeh-pulse-7 {
-  animation: bokeh-pulse-7 5s ease-in-out infinite;
-  animation-delay: 4.2s;
+.animate-bokeh-pulse-7.animate-drift-1 {
+  animation: bokeh-pulse-7 5s ease-in-out infinite 4.2s, drift-1 20s ease-in-out infinite;
+}
+.animate-bokeh-pulse-7.animate-drift-2 {
+  animation: bokeh-pulse-7 5s ease-in-out infinite 4.2s, drift-2 24s ease-in-out infinite 2s;
+}
+.animate-bokeh-pulse-7.animate-drift-3 {
+  animation: bokeh-pulse-7 5s ease-in-out infinite 4.2s, drift-3 18s ease-in-out infinite 4s;
+}
+.animate-bokeh-pulse-7.animate-drift-4 {
+  animation: bokeh-pulse-7 5s ease-in-out infinite 4.2s, drift-4 28s ease-in-out infinite 1s;
+}
+.animate-bokeh-pulse-7.animate-drift-5 {
+  animation: bokeh-pulse-7 5s ease-in-out infinite 4.2s, drift-5 22s ease-in-out infinite 3s;
+}
+.animate-bokeh-pulse-7.animate-drift-6 {
+  animation: bokeh-pulse-7 5s ease-in-out infinite 4.2s, drift-6 26s ease-in-out infinite 5s;
 }
 
-.animate-bokeh-pulse-8 {
-  animation: bokeh-pulse-8 10s ease-in-out infinite;
-  animation-delay: 1.7s;
+.animate-bokeh-pulse-8.animate-drift-1 {
+  animation: bokeh-pulse-8 10s ease-in-out infinite 1.7s, drift-1 20s ease-in-out infinite;
+}
+.animate-bokeh-pulse-8.animate-drift-2 {
+  animation: bokeh-pulse-8 10s ease-in-out infinite 1.7s, drift-2 24s ease-in-out infinite 2s;
+}
+.animate-bokeh-pulse-8.animate-drift-3 {
+  animation: bokeh-pulse-8 10s ease-in-out infinite 1.7s, drift-3 18s ease-in-out infinite 4s;
+}
+.animate-bokeh-pulse-8.animate-drift-4 {
+  animation: bokeh-pulse-8 10s ease-in-out infinite 1.7s, drift-4 28s ease-in-out infinite 1s;
+}
+.animate-bokeh-pulse-8.animate-drift-5 {
+  animation: bokeh-pulse-8 10s ease-in-out infinite 1.7s, drift-5 22s ease-in-out infinite 3s;
+}
+.animate-bokeh-pulse-8.animate-drift-6 {
+  animation: bokeh-pulse-8 10s ease-in-out infinite 1.7s, drift-6 26s ease-in-out infinite 5s;
 }
 
-.animate-bokeh-pulse-9 {
-  animation: bokeh-pulse-9 12s ease-in-out infinite;
-  animation-delay: 2.9s;
+.animate-bokeh-pulse-9.animate-drift-1 {
+  animation: bokeh-pulse-9 12s ease-in-out infinite 2.9s, drift-1 20s ease-in-out infinite;
+}
+.animate-bokeh-pulse-9.animate-drift-2 {
+  animation: bokeh-pulse-9 12s ease-in-out infinite 2.9s, drift-2 24s ease-in-out infinite 2s;
+}
+.animate-bokeh-pulse-9.animate-drift-3 {
+  animation: bokeh-pulse-9 12s ease-in-out infinite 2.9s, drift-3 18s ease-in-out infinite 4s;
+}
+.animate-bokeh-pulse-9.animate-drift-4 {
+  animation: bokeh-pulse-9 12s ease-in-out infinite 2.9s, drift-4 28s ease-in-out infinite 1s;
+}
+.animate-bokeh-pulse-9.animate-drift-5 {
+  animation: bokeh-pulse-9 12s ease-in-out infinite 2.9s, drift-5 22s ease-in-out infinite 3s;
+}
+.animate-bokeh-pulse-9.animate-drift-6 {
+  animation: bokeh-pulse-9 12s ease-in-out infinite 2.9s, drift-6 26s ease-in-out infinite 5s;
 }
 
-.animate-bokeh-pulse-10 {
-  animation: bokeh-pulse-10 14s ease-in-out infinite;
-  animation-delay: 0.3s;
+.animate-bokeh-pulse-10.animate-drift-1 {
+  animation: bokeh-pulse-10 14s ease-in-out infinite 0.3s, drift-1 20s ease-in-out infinite;
 }
-
-/* Slow vertical drift animations - increased movement */
-@keyframes drift-1 {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  25% { transform: translateY(-35px) translateX(4px); }
-  50% { transform: translateY(-18px) translateX(-3px); }
-  75% { transform: translateY(-45px) translateX(2px); }
+.animate-bokeh-pulse-10.animate-drift-2 {
+  animation: bokeh-pulse-10 14s ease-in-out infinite 0.3s, drift-2 24s ease-in-out infinite 2s;
 }
-
-@keyframes drift-2 {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  33% { transform: translateY(40px) translateX(-5px); }
-  66% { transform: translateY(22px) translateX(3px); }
+.animate-bokeh-pulse-10.animate-drift-3 {
+  animation: bokeh-pulse-10 14s ease-in-out infinite 0.3s, drift-3 18s ease-in-out infinite 4s;
 }
-
-@keyframes drift-3 {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  20% { transform: translateY(-28px) translateX(-4px); }
-  40% { transform: translateY(-55px) translateX(2px); }
-  60% { transform: translateY(-38px) translateX(-3px); }
-  80% { transform: translateY(-18px) translateX(4px); }
+.animate-bokeh-pulse-10.animate-drift-4 {
+  animation: bokeh-pulse-10 14s ease-in-out infinite 0.3s, drift-4 28s ease-in-out infinite 1s;
 }
-
-@keyframes drift-4 {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(48px) translateX(-6px); }
+.animate-bokeh-pulse-10.animate-drift-5 {
+  animation: bokeh-pulse-10 14s ease-in-out infinite 0.3s, drift-5 22s ease-in-out infinite 3s;
 }
-
-@keyframes drift-5 {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  30% { transform: translateY(-60px) translateX(5px); }
-  70% { transform: translateY(-32px) translateX(-4px); }
+.animate-bokeh-pulse-10.animate-drift-6 {
+  animation: bokeh-pulse-10 14s ease-in-out infinite 0.3s, drift-6 26s ease-in-out infinite 5s;
 }
-
-@keyframes drift-6 {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  40% { transform: translateY(35px) translateX(3px); }
-  80% { transform: translateY(58px) translateX(-5px); }
-}
-
-.animate-drift-1 { animation: drift-1 20s ease-in-out infinite; }
-.animate-drift-2 { animation: drift-2 24s ease-in-out infinite; animation-delay: 2s; }
-.animate-drift-3 { animation: drift-3 18s ease-in-out infinite; animation-delay: 4s; }
-.animate-drift-4 { animation: drift-4 28s ease-in-out infinite; animation-delay: 1s; }
-.animate-drift-5 { animation: drift-5 22s ease-in-out infinite; animation-delay: 3s; }
-.animate-drift-6 { animation: drift-6 26s ease-in-out infinite; animation-delay: 5s; }
