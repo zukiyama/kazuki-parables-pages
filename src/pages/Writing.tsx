@@ -5,6 +5,7 @@ import Navigation from "@/components/Navigation";
 import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungAdultSlideshow";
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
 import { BookshelfMenu } from "@/components/BookshelfMenu";
+import { FloatingQuote } from "@/components/FloatingQuote";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
@@ -386,6 +387,16 @@ const Writing = () => {
           </div>
         </section>
 
+        {/* Floating Quote between HOAX and THE MARKET */}
+        <div className="relative h-32 md:h-48 overflow-hidden">
+          <FloatingQuote 
+            text="where truth became fiction"
+            position="right"
+            size="lg"
+            offsetY="-20%"
+          />
+        </div>
+
         {/* THE MARKET Section */}
         <section data-section="the-market" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-24">
@@ -439,6 +450,16 @@ const Writing = () => {
           </div>
         </section>
 
+        {/* Floating Quote between THE MARKET and AMYA */}
+        <div className="relative h-32 md:h-48 overflow-hidden">
+          <FloatingQuote 
+            text="the silence spoke"
+            position="left"
+            size="xl"
+            offsetY="10%"
+          />
+        </div>
+
         {/* AMYA Section */}
         <section data-section="oba" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-24">
@@ -475,6 +496,16 @@ const Writing = () => {
             </div>
           </div>
         </section>
+
+        {/* Floating Quote between AMYA and STATES OF MOTION */}
+        <div className="relative h-32 md:h-48 overflow-hidden">
+          <FloatingQuote 
+            text="a world between worlds"
+            position="right"
+            size="md"
+            offsetY="-15%"
+          />
+        </div>
 
         {/* STATES OF MOTION Section */}
         <section data-section="states-of-motion" className="min-h-[80vh] flex items-center justify-center relative">
@@ -528,6 +559,16 @@ const Writing = () => {
           </div>
         </section>
 
+        {/* Floating Quote between STATES OF MOTION and HOW */}
+        <div className="relative h-32 md:h-48 overflow-hidden">
+          <FloatingQuote 
+            text="the path unfolds"
+            position="left"
+            size="lg"
+            offsetY="5%"
+          />
+        </div>
+
         {/* HOW Section */}
         <section data-section="how" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-24">
@@ -575,6 +616,16 @@ const Writing = () => {
             </div>
           </div>
         </section>
+
+        {/* Floating Quote between HOW and VICE VERSA */}
+        <div className="relative h-32 md:h-48 overflow-hidden">
+          <FloatingQuote 
+            text="nothing as it seems"
+            position="right"
+            size="xl"
+            offsetY="-10%"
+          />
+        </div>
 
         {/* VICE VERSA Section */}
         <section data-section="vice-versa" className="min-h-[80vh] flex items-center justify-center relative">
