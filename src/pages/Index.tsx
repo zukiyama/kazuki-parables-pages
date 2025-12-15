@@ -198,20 +198,20 @@ const Index = () => {
             className="group block w-full"
           >
             <div className="relative w-full overflow-hidden bg-gradient-to-r from-rose-50/80 via-amber-50/60 to-pink-50/80 border-t border-border/50 py-10 md:py-14">
-              {/* Decorative bokeh circles */}
+              {/* Decorative bokeh circles - visible with soft edges */}
               <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                {/* Large pink circle - left side, blurred */}
-                <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-pink-300/30 blur-3xl"></div>
-                {/* Medium yellow circle - right side */}
-                <div className="absolute -right-10 top-0 w-48 h-48 rounded-full bg-amber-200/40 blur-2xl"></div>
-                {/* Small pink circle - top right */}
-                <div className="absolute right-1/4 -top-8 w-32 h-32 rounded-full bg-rose-200/50 blur-xl"></div>
-                {/* Tiny focused circles scattered */}
-                <div className="absolute left-1/4 top-1/3 w-8 h-8 rounded-full bg-pink-400/20 blur-sm"></div>
-                <div className="absolute right-1/3 bottom-1/4 w-6 h-6 rounded-full bg-amber-300/30 blur-sm"></div>
-                <div className="absolute left-1/3 bottom-1/3 w-10 h-10 rounded-full bg-rose-300/25 blur-md"></div>
-                {/* Large amber glow - bottom */}
-                <div className="absolute left-1/2 -translate-x-1/2 -bottom-20 w-96 h-40 rounded-full bg-amber-100/50 blur-3xl"></div>
+                {/* Larger circles with soft blur */}
+                <div className="absolute -left-8 top-1/4 w-28 h-28 rounded-full bg-pink-300/40 blur-md"></div>
+                <div className="absolute right-12 top-4 w-20 h-20 rounded-full bg-amber-300/50 blur-sm"></div>
+                <div className="absolute right-1/3 bottom-2 w-24 h-24 rounded-full bg-rose-300/35 blur-md"></div>
+                {/* Smaller defined circles */}
+                <div className="absolute left-1/4 top-1/2 w-12 h-12 rounded-full bg-pink-400/30 blur-[2px]"></div>
+                <div className="absolute right-1/4 top-1/3 w-10 h-10 rounded-full bg-amber-400/40 blur-[2px]"></div>
+                <div className="absolute left-1/3 bottom-4 w-8 h-8 rounded-full bg-rose-400/35 blur-[1px]"></div>
+                <div className="absolute left-1/2 top-2 w-14 h-14 rounded-full bg-yellow-300/30 blur-sm"></div>
+                {/* Tiny sharp circles */}
+                <div className="absolute left-[15%] bottom-1/3 w-5 h-5 rounded-full bg-pink-500/25"></div>
+                <div className="absolute right-[20%] bottom-1/2 w-4 h-4 rounded-full bg-amber-500/30"></div>
               </div>
               
               {/* Shine effect on hover */}
