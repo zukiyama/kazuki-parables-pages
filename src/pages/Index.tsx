@@ -172,10 +172,10 @@ const Index = () => {
       </section>
 
       {/* Content Section */}
-      <section className="min-h-screen relative bg-background">
+      <section className="relative bg-background">
         {/* Book Announcement */}
         <div className="container mx-auto px-6 py-12">
-          <ScrollFadeUp id="book-announcement" className="text-center mb-16">
+          <ScrollFadeUp id="book-announcement" className="text-center mb-8">
             <h2 className="font-heading text-3xl md:text-5xl mb-4" style={{ color: '#2d1b1b' }}>
               Book One of The Parable Trilogy
             </h2>
@@ -189,79 +189,45 @@ const Index = () => {
               Coming Soon
             </p>
           </ScrollFadeUp>
-
-          {/* Music Banner - Full Width */}
-          <ScrollFadeUp id="music-banner" delay={300} className="w-full mt-16">
-            <a 
-              href="#/music" 
-              className="group block w-full"
-            >
-              <div className="relative w-full overflow-hidden bg-gradient-to-r from-black via-zinc-900 to-black py-6 md:py-8">
-                {/* Animated background effect */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                {/* Sound wave decoration */}
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-30 group-hover:opacity-60 transition-opacity">
-                  {[...Array(8)].map((_, i) => (
-                    <div 
-                      key={i} 
-                      className="w-1 bg-primary rounded-full animate-pulse"
-                      style={{ 
-                        height: `${20 + Math.sin(i * 0.8) * 15}px`,
-                        animationDelay: `${i * 0.1}s`
-                      }}
-                    />
-                  ))}
-                </div>
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-30 group-hover:opacity-60 transition-opacity">
-                  {[...Array(8)].map((_, i) => (
-                    <div 
-                      key={i} 
-                      className="w-1 bg-primary rounded-full animate-pulse"
-                      style={{ 
-                        height: `${20 + Math.sin(i * 0.8) * 15}px`,
-                        animationDelay: `${i * 0.1}s`
-                      }}
-                    />
-                  ))}
-                </div>
-
-                {/* Main content */}
-                <div className="relative z-10 flex items-center justify-center gap-6 md:gap-10 px-4">
-                  {/* Album art */}
-                  <div className="relative shrink-0">
-                    <img 
-                      src={circlesSingleCover} 
-                      alt="Circles single cover"
-                      className="w-16 h-16 md:w-24 md:h-24 rounded-md object-cover shadow-2xl group-hover:scale-105 transition-transform duration-300 ring-2 ring-white/10"
-                    />
-                  </div>
-
-                  {/* Text */}
-                  <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
-                    <div>
-                      <p className="text-xs md:text-sm font-bold uppercase tracking-[0.3em] text-primary mb-1">
-                        New Single
-                      </p>
-                      <h4 className="font-heading text-2xl md:text-4xl font-black text-white tracking-tight group-hover:text-primary transition-colors duration-300">
-                        CIRCLES
-                      </h4>
-                    </div>
-                    <div className="flex items-center gap-2 text-white/80 group-hover:text-white transition-colors">
-                      <span className="text-sm md:text-base font-medium uppercase tracking-wider">Out Now</span>
-                      <svg className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Bottom accent line */}
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div>
-              </div>
-            </a>
-          </ScrollFadeUp>
         </div>
+
+        {/* Music Banner - Full Width Edge to Edge */}
+        <ScrollFadeUp id="music-banner" delay={300} className="w-full">
+          <a 
+            href="#/music" 
+            className="group block w-full"
+          >
+            <div className="relative w-full overflow-hidden bg-gradient-to-r from-rose-600 via-rose-500 to-rose-600 py-5 md:py-6">
+              {/* Shine effect on hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+              
+              {/* Main content */}
+              <div className="relative z-10 flex items-center justify-center gap-5 md:gap-8 px-4">
+                {/* Album art */}
+                <img 
+                  src={circlesSingleCover} 
+                  alt="Circles single cover"
+                  className="w-14 h-14 md:w-20 md:h-20 rounded object-cover shadow-xl group-hover:scale-105 transition-transform duration-300"
+                />
+
+                {/* Text */}
+                <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-6">
+                  <div>
+                    <p className="text-xs md:text-sm font-bold uppercase tracking-widest text-white/90 mb-0.5">
+                      New Single
+                    </p>
+                    <h4 className="font-heading text-2xl md:text-4xl font-black text-white tracking-tight">
+                      CIRCLES
+                    </h4>
+                  </div>
+                  <div className="flex items-center gap-2 text-white font-semibold">
+                    <span className="text-sm md:text-lg uppercase tracking-wider">Out Now →</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </ScrollFadeUp>
 
         {/* Magazine Cover Section */}
         <div 
