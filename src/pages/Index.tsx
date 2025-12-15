@@ -205,10 +205,10 @@ const Index = () => {
                 <div className="absolute -left-24 -top-22 w-60 h-60 rounded-full bg-amber-400/30 bokeh-blur animate-drift-2"></div>
                 <div className="absolute -left-18 bottom-[12%] w-48 h-48 rounded-full bg-orange-300/28 bokeh-blur animate-drift-3"></div>
                 <div className="absolute -right-16 top-[8%] w-44 h-44 rounded-full bg-rose-300/30 bokeh-blur animate-drift-4"></div>
-                <div className="absolute -bottom-20 left-[28%] w-56 h-56 rounded-full bokeh-blur animate-drift-5" style={{ backgroundColor: 'rgba(248, 131, 121, 0.25)' }}></div>
+                <div className="absolute -bottom-20 left-[28%] w-56 h-56 rounded-full bg-[rgba(248,131,121,0.25)] bokeh-blur animate-drift-5"></div>
                 <div className="absolute -top-24 right-[22%] w-52 h-52 rounded-full bg-amber-300/28 bokeh-blur animate-drift-6"></div>
                 <div className="absolute -left-32 top-[40%] w-52 h-52 rounded-full bg-amber-300/22 bokeh-blur animate-drift-7"></div>
-                <div className="absolute -right-36 bottom-[20%] w-68 h-68 rounded-full bokeh-blur animate-drift-8" style={{ backgroundColor: 'rgba(255, 204, 170, 0.25)' }}></div>
+                <div className="absolute -right-36 bottom-[20%] w-68 h-68 rounded-full bg-[rgba(255,204,170,0.25)] bokeh-blur animate-drift-8"></div>
                 
                 {/* Large circles */}
                 <div className="absolute left-[2%] top-[18%] w-36 h-36 rounded-full bg-rose-300/38 bokeh-blur animate-drift-3"></div>
@@ -219,7 +219,7 @@ const Index = () => {
                 <div className="absolute right-[58%] top-[0%] w-32 h-32 rounded-full bg-amber-300/36 bokeh-blur animate-drift-6"></div>
                 <div className="absolute left-[18%] bottom-[0%] w-30 h-30 rounded-full bg-rose-200/35 bokeh-blur animate-drift-7"></div>
                 <div className="absolute right-[0%] top-[38%] w-28 h-28 rounded-full bg-orange-400/32 bokeh-blur animate-drift-8"></div>
-                <div className="absolute left-[85%] top-[5%] w-32 h-32 rounded-full bokeh-blur animate-drift-1" style={{ backgroundColor: 'rgba(248, 131, 121, 0.30)' }}></div>
+                <div className="absolute left-[85%] top-[5%] w-32 h-32 rounded-full bg-[rgba(248,131,121,0.30)] bokeh-blur animate-drift-1"></div>
                 <div className="absolute right-[75%] bottom-[8%] w-30 h-30 rounded-full bg-amber-200/38 bokeh-blur animate-drift-2"></div>
                 
                 {/* Medium-large circles */}
@@ -231,7 +231,7 @@ const Index = () => {
                 <div className="absolute right-[48%] top-[8%] w-20 h-20 rounded-full bg-amber-500/35 bokeh-blur animate-drift-5"></div>
                 <div className="absolute left-[8%] top-[72%] w-21 h-21 rounded-full bg-pink-200/42 bokeh-blur animate-drift-8"></div>
                 <div className="absolute right-[38%] bottom-[46%] w-20 h-20 rounded-full bg-rose-200/40 bokeh-blur animate-drift-1"></div>
-                <div className="absolute left-[42%] bottom-[5%] w-24 h-24 rounded-full bokeh-blur animate-drift-4" style={{ backgroundColor: 'rgba(255, 180, 150, 0.35)' }}></div>
+                <div className="absolute left-[42%] bottom-[5%] w-24 h-24 rounded-full bg-[rgba(255,180,150,0.35)] bokeh-blur animate-drift-4"></div>
                 <div className="absolute right-[65%] top-[25%] w-22 h-22 rounded-full bg-amber-300/40 bokeh-blur animate-drift-6"></div>
                 
                 {/* Medium circles */}
@@ -257,7 +257,7 @@ const Index = () => {
                 <div className="absolute right-[6%] bottom-[26%] w-14 h-14 rounded-full bg-amber-400/42 bokeh-blur animate-drift-3"></div>
                 <div className="absolute left-[86%] bottom-[46%] w-13 h-13 rounded-full bg-rose-400/45 bokeh-blur animate-drift-1"></div>
                 <div className="absolute right-[76%] top-[30%] w-14 h-14 rounded-full bg-orange-300/42 bokeh-blur animate-drift-7"></div>
-                <div className="absolute left-[12%] bottom-[12%] w-15 h-15 rounded-full bokeh-blur animate-drift-4" style={{ backgroundColor: 'rgba(255, 160, 130, 0.40)' }}></div>
+                <div className="absolute left-[12%] bottom-[12%] w-15 h-15 rounded-full bg-[rgba(255,160,130,0.40)] bokeh-blur animate-drift-4"></div>
                 <div className="absolute right-[42%] top-[58%] w-14 h-14 rounded-full bg-amber-300/45 bokeh-blur animate-drift-2"></div>
                 
                 {/* Small circles */}
