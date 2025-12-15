@@ -20,6 +20,7 @@ const Index = () => {
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
   const showMagazineRef = useRef(false);
+  const circlesBannerRef = useRef<HTMLDivElement | null>(null);
 
   const images = [
     officeView,
@@ -193,8 +194,11 @@ const Index = () => {
         </div>
 
         {/* Music Banner - Full Width Edge to Edge - background isolated from interactive state to prevent flashing */}
-        <div className="relative w-full overflow-hidden border-t border-amber-200/50 bg-[#FDF6E8] isolate">
-          <CirclesBokehBackground />
+        <div
+          ref={circlesBannerRef}
+          className="relative w-full overflow-hidden border-t border-amber-200/50 bg-[#FDF6E8]"
+        >
+          <CirclesBokehBackground targetRef={circlesBannerRef} />
 
           <Link to="/music" className="group relative z-10 block w-full py-10 md:py-14">
             {/* Shine effect on hover */}

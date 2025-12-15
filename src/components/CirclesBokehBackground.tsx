@@ -1,19 +1,76 @@
-import { memo } from "react";
+import { memo, useLayoutEffect, useState, type RefObject } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 
 type CirclesBokehBackgroundProps = {
   className?: string;
+  targetRef: RefObject<HTMLElement>;
 };
 
-const CirclesBokehBackground = memo(({ className }: CirclesBokehBackgroundProps) => {
-  return (
+type Rect = {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+};
+
+const CirclesBokehBackground = memo(({ className, targetRef }: CirclesBokehBackgroundProps) => {
+  const portalEl = document.getElementById("bokeh-portal");
+  const [rect, setRect] = useState<Rect | null>(null);
+
+  useLayoutEffect(() => {
+    const el = targetRef.current;
+    if (!el) return;
+
+    const update = () => {
+      const r = el.getBoundingClientRect();
+      const next: Rect = {
+        top: r.top + window.scrollY,
+        left: r.left + window.scrollX,
+        width: r.width,
+        height: r.height,
+      };
+
+      setRect((prev) => {
+        if (
+          prev &&
+          Math.abs(prev.top - next.top) < 0.5 &&
+          Math.abs(prev.left - next.left) < 0.5 &&
+          Math.abs(prev.width - next.width) < 0.5 &&
+          Math.abs(prev.height - next.height) < 0.5
+        ) {
+          return prev;
+        }
+        return next;
+      });
+    };
+
+    update();
+
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener("resize", update);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, [targetRef]);
+
+  if (!portalEl || !rect) return null;
+
+  return createPortal(
     <div
       aria-hidden="true"
-      style={{ contain: "strict" }}
-      className={cn(
-        "absolute inset-0 z-0 overflow-hidden pointer-events-none transform-gpu",
-        className
-      )}
+      style={{
+        position: "absolute",
+        top: rect.top,
+        left: rect.left,
+        width: rect.width,
+        height: rect.height,
+        contain: "strict",
+      }}
+      className={cn("z-0 overflow-hidden pointer-events-none transform-gpu", className)}
     >
       {/* Extra large partial circles extending off edges */}
       <div className="absolute -right-28 -bottom-32 w-72 h-72 rounded-full bg-rose-400/35 bokeh-blur animate-drift-1"></div>
@@ -128,10 +185,12 @@ const CirclesBokehBackground = memo(({ className }: CirclesBokehBackgroundProps)
       <div className="absolute right-[58%] bottom-[52%] w-4 h-4 rounded-full bg-amber-500/55 bokeh-blur animate-drift-4"></div>
       <div className="absolute left-[35%] top-[78%] w-5 h-5 rounded-full bg-rose-400/50 bokeh-blur animate-drift-8"></div>
       <div className="absolute right-[82%] top-[68%] w-4 h-4 rounded-full bg-orange-400/58 bokeh-blur animate-drift-1"></div>
-    </div>
+    </div>,
+    portalEl
   );
 });
 
 CirclesBokehBackground.displayName = "CirclesBokehBackground";
 
 export default CirclesBokehBackground;
+
