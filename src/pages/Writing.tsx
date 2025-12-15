@@ -57,9 +57,11 @@ const Writing = () => {
     if (location.hash === '#kaiju') {
       // Small delay to ensure DOM is rendered
       setTimeout(() => {
-        const kaijuSection = document.querySelector('[data-section="kaiju"]');
-        if (kaijuSection) {
-          kaijuSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const parableTrilogy = document.querySelector('[data-section="kaiju"] h2');
+        if (parableTrilogy) {
+          const rect = parableTrilogy.getBoundingClientRect();
+          const scrollTop = window.pageYOffset + rect.top - 100; // 100px offset for nav
+          window.scrollTo({ top: scrollTop, behavior: 'smooth' });
         }
       }, 100);
     } else {
