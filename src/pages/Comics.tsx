@@ -212,17 +212,21 @@ const Comics = () => {
         <div className="hidden sm:block">
           {/* Newspaper Masthead */}
           <section className="text-center px-6 mb-8 border-b-4 border-double border-black pb-6 mx-6 lg:mx-12">
-            <div className="border-b border-black pb-2 mb-2">
-              <p className="font-serif text-xs tracking-[0.3em] text-gray-600 uppercase">Est. 2024 • All the Stories Fit to Print • Volume I</p>
+            {/* Top date line */}
+            <div className="flex justify-between items-center border-b border-black/20 pb-2 mb-4 text-xs tracking-widest" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+              <span>Est. 2024</span>
+              <span className="font-semibold">The Creative Chronicle</span>
+              <span>Vol. I, No. 1</span>
             </div>
-            <h1 className="font-serif text-7xl lg:text-8xl font-black text-black tracking-tight" style={{ fontFamily: 'Playfair Display, Georgia, serif', fontWeight: 900 }}>
-              Comics & Scripts
+            {/* Main Masthead Title */}
+            <h1 className="text-7xl lg:text-8xl font-black text-black tracking-tight mb-2" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+              COMICS & SCRIPTS
             </h1>
-            <div className="flex items-center justify-center gap-4 mt-3 border-t border-black pt-2">
-              <span className="font-serif text-sm text-gray-700">Original comics, manga, webtoons and scripts</span>
-              <span className="text-gray-400">|</span>
-              <span className="font-serif text-sm text-gray-700 italic">By Kazuki Yamakawa</span>
-            </div>
+            <p className="text-lg text-black/60 italic" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+              Original stories in sequential art and screenplay
+            </p>
+            {/* Decorative rule */}
+            <div className="border-b border-black/20 mt-4" />
           </section>
 
           {/* Newspaper Content Grid */}
@@ -238,12 +242,14 @@ const Comics = () => {
                     className="w-full h-auto mb-4 shadow-lg"
                     onLoad={() => setGodOfLiesLoaded(true)}
                   />
-                  <h2 className="font-serif text-4xl lg:text-5xl font-bold text-black leading-tight mb-3" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
-                    GOD OF LIES: When Deception Becomes Reality
+                  {/* Headline */}
+                  <h2 className="text-5xl lg:text-6xl font-bold text-black leading-tight mb-2" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                    GOD OF LIES
                   </h2>
-                  <p className="font-serif text-sm text-gray-500 mb-3 uppercase tracking-wider border-b border-gray-200 pb-2">
-                    Featured Graphic Novel • Psychological Thriller
+                  <p className="text-lg text-black/60 italic mb-3" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                    A Psychological Thriller of Deception and Reality
                   </p>
+                  <div className="border-b border-black/20 mb-4" />
                   <div className="columns-2 gap-6 font-serif text-base text-gray-800 leading-relaxed text-justify">
                     <p className="mb-4 first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
                       A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality. What begins as an apparent gift soon reveals itself as a curse of devastating proportions.
@@ -262,12 +268,14 @@ const Comics = () => {
 
                 {/* Secondary Story - Surname Pendragon */}
                 <div className="col-span-4 pl-2">
-                  <h2 className="font-serif text-2xl lg:text-3xl font-bold text-black leading-tight mb-3" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+                  {/* Secondary Headline */}
+                  <h2 className="text-3xl lg:text-4xl font-bold text-black leading-tight mb-2" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
                     SURNAME PENDRAGON
                   </h2>
-                  <p className="font-serif text-xs text-gray-500 mb-3 uppercase tracking-wider border-b border-gray-200 pb-2">
-                    Original Screenplay • Fantasy Drama
+                  <p className="text-base text-black/60 italic mb-3" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                    A Modern Arthurian Legend
                   </p>
+                  <div className="border-b border-black/20 mb-4" />
                   <img 
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"
@@ -289,7 +297,7 @@ const Comics = () => {
 
               {/* Pull Quote Section - Desktop - leads into forthcoming */}
               {godOfLiesLoaded && (
-                <div className="text-center pt-32 pb-6">
+                <div className="text-center pt-28 pb-6">
                   <ScrollScale 
                     initialScale={1.1} 
                     finalScale={1} 
