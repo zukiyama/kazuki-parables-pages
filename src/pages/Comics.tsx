@@ -121,14 +121,15 @@ const Comics = () => {
 
   return (
     <div className="min-h-screen relative">
-      {/* Manga Sketches Background */}
-      <div 
-        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-50 pointer-events-none transition-transform duration-700 ease-out"
-        style={{ 
-          backgroundImage: `url(${mangaSketchesBackground})`,
-          transform: hasZoomed ? 'scale(1.02)' : 'scale(1)'
-        }}
-      />
+      {/* Manga Sketches Background - Using fixed container with explicit dimensions to prevent viewport resize zoom */}
+      <div className="fixed top-0 left-0 z-0 pointer-events-none" style={{ height: '100vh', width: '100vw' }}>
+        <img 
+          src={mangaSketchesBackground}
+          alt="Manga sketches background"
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-50 transition-transform duration-700 ease-out"
+          style={{ transform: hasZoomed ? 'scale(1.02)' : 'scale(1)' }}
+        />
+      </div>
       
       <Navigation />
 
