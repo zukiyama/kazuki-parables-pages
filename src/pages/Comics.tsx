@@ -134,76 +134,84 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative z-10 pt-28 pb-20">
-        {/* MOBILE VERSION - Original Layout */}
+        {/* MOBILE VERSION - Newspaper Layout */}
         <div className="sm:hidden">
-          {/* Title Section */}
-          <section className="text-center px-6 mb-6">
-            <h1 className="font-serif text-4xl font-bold text-black mb-4 tracking-wide drop-shadow-lg">
+          {/* Newspaper Masthead - Mobile */}
+          <section className="text-center px-4 mb-8">
+            {/* Top date line */}
+            <div className="flex justify-between items-center border-b border-black pb-2 mb-3 text-xs tracking-wider" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+              <span className="italic font-light">Est. 2024</span>
+              <span className="tracking-wide text-xs">by KAZUKI YAMAKAWA</span>
+              <span className="italic font-light">Vol. I, No. 1</span>
+            </div>
+            {/* Main Masthead Title */}
+            <h1 className="text-4xl font-bold text-black tracking-tight mt-4 mb-2" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
               Comics & Scripts
             </h1>
-            <p className="font-serif text-lg text-amber-800 leading-relaxed drop-shadow-md max-w-2xl mx-auto">
-              Original comics, manga, webtoons and scripts
-            </p>
+            {/* Subtitle with dashes */}
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="flex-1 h-px bg-black/60" />
+              <p className="text-sm text-black/80 italic whitespace-nowrap" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                Original stories in sequential art and screenplay
+              </p>
+              <div className="flex-1 h-px bg-black/60" />
+            </div>
+            {/* Bold decorative rules */}
+            <div className="border-b-4 border-double border-black mt-4" />
+            <div className="border-b-2 border-black mt-1" />
           </section>
 
           {/* God of Lies Section - Mobile */}
-          <section className="py-12 px-0">
+          <section className="py-6 px-4">
             <div className="container mx-auto">
-              <div className="mb-6">
-                <img 
-                  src={godOfLiesCover}
-                  alt="God of Lies comic cover"
-                  className="w-full object-contain"
-                  onLoad={() => setGodOfLiesLoaded(true)}
-                />
-              </div>
-              <div className="px-6">
-                <div style={{ fontFamily: 'Bangers, cursive' }}>
-                  <h3 className="text-4xl text-black uppercase tracking-wider mb-6 text-center drop-shadow-lg">
-                    GOD OF LIES
-                  </h3>
-                  <p className="text-lg text-black leading-relaxed mb-4" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
-                    A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
-                  </p>
-                  <p className="text-lg text-black leading-relaxed" style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.5px' }}>
-                    A psychological thriller exploring the price of dishonesty, where deception becomes truth and reality dissolves into fiction.
-                  </p>
-                </div>
+              {/* Headline - newspaper style */}
+              <h2 className="text-3xl font-bold text-black leading-tight mb-1" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                GOD OF LIES
+              </h2>
+              <p className="text-sm text-black/60 italic mb-2" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                A Psychological Thriller of Deception and Reality
+              </p>
+              <div className="border-b border-black/20 mb-4" />
+              <img 
+                src={godOfLiesCover}
+                alt="God of Lies comic cover"
+                className="w-full object-contain mb-4 shadow-lg"
+                onLoad={() => setGodOfLiesLoaded(true)}
+              />
+              <div className="font-serif text-base text-gray-800 leading-relaxed text-justify">
+                <p className="mb-3 first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
+                  A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
+                </p>
+                <p className="text-sm">
+                  A psychological thriller exploring the price of dishonesty, where deception becomes truth and reality dissolves into fiction.
+                </p>
               </div>
             </div>
           </section>
 
           {/* Surname Pendragon Section - Mobile */}
-          <section className="py-8 px-0 overflow-hidden">
+          <section className="py-6 px-4 overflow-hidden">
             <div className="container mx-auto">
-              <div className="flex items-center justify-center mb-6">
-                <img 
-                  src={surnameProPendragonCoverNew}
-                  alt="Surname Pendragon comic cover"
-                  className="w-full max-w-md object-contain shadow-2xl rounded-sm"
-                />
-              </div>
-              <div className="px-6">
-                <div 
-                  className="bg-white shadow-xl border border-gray-200 p-6 rounded-lg" 
-                  style={{ fontFamily: 'Courier New, Courier, monospace' }}
-                >
-                  <div className="text-center border-b border-gray-400 pb-4 mb-4">
-                    <p className="text-sm text-gray-500 uppercase tracking-widest mb-1">Original Script</p>
-                    <h3 className="text-2xl font-bold text-black uppercase tracking-wide">
-                      SURNAME PENDRAGON
-                    </h3>
-                    <p className="text-sm text-gray-500 mt-1">Written by Kazuki Yamakawa</p>
-                  </div>
-                  <p className="text-sm font-bold text-black uppercase mb-3">FADE IN:</p>
-                  <p className="text-sm font-bold text-black uppercase mb-2">INT. OFFICE BUILDING - DAY</p>
-                  <p className="text-sm text-gray-700 mb-4 leading-relaxed">
-                    Fluorescent lights hum. ARTHUR PENN (28), unremarkable in every way, stares at spreadsheets.
-                  </p>
-                  <p className="text-sm text-gray-700 leading-relaxed border-t border-gray-300 pt-4 mt-4">
-                    A modern retelling where mythical beings walk among us. Where an ordinary man discovers an extraordinary destiny.
-                  </p>
-                </div>
+              {/* Headline - newspaper style */}
+              <h2 className="text-2xl font-bold text-black leading-tight mb-1" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                SURNAME PENDRAGON
+              </h2>
+              <p className="text-xs text-black/60 tracking-wider uppercase mb-2" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                <span className="italic">A Modern Arthurian Legend</span> <span className="mx-1">|</span> ORIGINAL SCREENPLAY
+              </p>
+              <div className="border-b border-black/20 mb-4" />
+              <img 
+                src={surnameProPendragonCoverNew}
+                alt="Surname Pendragon comic cover"
+                className="w-full max-w-md mx-auto object-contain shadow-lg rounded-sm mb-4"
+              />
+              <div className="font-serif text-sm text-gray-800 leading-relaxed text-justify">
+                <p className="mb-3 first-letter:text-3xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
+                  Arthur Penn, an unremarkable office worker drowning in spreadsheets, finds his mundane existence shattered when he encounters a sword embedded in stone.
+                </p>
+                <p>
+                  The blood of kings flows through his veins, awakening powers and responsibilities he never asked for. Mythical beings walk among us, hidden in plain sight.
+                </p>
               </div>
             </div>
           </section>
