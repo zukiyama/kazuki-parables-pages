@@ -13,11 +13,17 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b border-stone-200/50" style={{ backgroundColor: 'rgba(250, 248, 245, 0.95)' }}>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="text-2xl text-stone-800 inline-flex items-center gap-3" style={{ fontFamily: 'Zen Kaku Gothic New, sans-serif', fontWeight: 300, letterSpacing: '0.08em' }}>
-            <span className="max-sm:text-lg">Kazuki Yamakawa</span>
+          <Link to="/" className="font-body text-2xl font-semibold text-ink-black inline-flex items-center gap-3">
+            <span className="tracking-wide max-sm:text-lg">Kazuki Yamakawa</span>
+            <svg width="28" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="text-ink-black/80 max-sm:w-6 max-sm:h-5">
+              <path d="M3 19 L12 5 L21 19 Z" stroke="currentColor" strokeWidth="1.5" fill="none" />
+              <circle cx="16" cy="10" r="3" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.7" />
+              <path d="M5 14 C9 12, 15 16, 20 18" stroke="currentColor" strokeWidth="1.2" fill="none" opacity="0.8" />
+              <path d="M4 16 C8 14, 14 18, 19 20" stroke="currentColor" strokeWidth="1.2" fill="none" opacity="0.5" />
+            </svg>
           </Link>
           
           <div className="flex space-x-8 max-sm:hidden">
