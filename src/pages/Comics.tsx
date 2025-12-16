@@ -172,12 +172,17 @@ const Comics = () => {
                 A Psychological Thriller of Deception and Reality
               </p>
               <div className="border-b border-black/20 mb-4" />
-              <img 
-                src={godOfLiesCover}
-                alt="God of Lies comic cover"
-                className="w-full object-contain mb-4 shadow-lg"
-                onLoad={() => setGodOfLiesLoaded(true)}
-              />
+            </div>
+          </section>
+          {/* God of Lies image - full width */}
+          <img 
+            src={godOfLiesCover}
+            alt="God of Lies comic cover"
+            className="w-full object-contain mb-4"
+            onLoad={() => setGodOfLiesLoaded(true)}
+          />
+          <section className="px-4 pb-6">
+            <div className="container mx-auto">
               <div className="font-serif text-base text-gray-800 leading-relaxed text-justify">
                 <p className="mb-3 first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
                   A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
@@ -197,7 +202,7 @@ const Comics = () => {
                 SURNAME PENDRAGON
               </h2>
               <p className="text-xs text-black/60 tracking-wider uppercase mb-2" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                <span className="italic">A Modern Arthurian Legend</span> <span className="mx-1">|</span> ORIGINAL SCREENPLAY
+                A Modern Arthurian Legend <span className="mx-1">|</span> <span className="italic">ORIGINAL SCREENPLAY</span>
               </p>
               <div className="border-b border-black/20 mb-4" />
               <img 
@@ -290,7 +295,7 @@ const Comics = () => {
                     SURNAME PENDRAGON
                   </h2>
                   <p className="text-sm text-black/60 tracking-wider uppercase mb-3" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                    <span className="italic">A Modern Arthurian Legend</span> <span className="mx-2">|</span> ORIGINAL SCREENPLAY
+                    A Modern Arthurian Legend <span className="mx-2">|</span> <span className="italic">ORIGINAL SCREENPLAY</span>
                   </p>
                   <div className="border-b border-black/20 mb-4" />
                   <div className="font-serif text-sm text-gray-800 leading-relaxed text-justify">
