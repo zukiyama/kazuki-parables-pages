@@ -29,6 +29,7 @@ import centreOfWorldAlbum from "@/assets/last-city-on-earth-album.jpeg";
 import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
 import flowerEpCover from "@/assets/flower-ep-cover.png";
 import circlesSingleCover from "@/assets/circles-single-cover.png";
+import logoTransparent from "@/assets/logo-transparent.png";
 
 const albums = [
   {
@@ -396,11 +397,13 @@ const Music = () => {
       
       <main className="container mx-auto px-6 pt-72 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
-          {/* Header */}
+          {/* Header - Logo */}
           <div className="text-center mb-16 pt-4">
-            <h1 className="font-serif text-6xl font-bold text-white tracking-wide animate-fade-in">
-              Music
-            </h1>
+            <img 
+              src={logoTransparent} 
+              alt="Kazuki Yamakawa" 
+              className="h-24 md:h-32 mx-auto animate-fade-in"
+            />
           </div>
           
           {/* Video Player - Cassette Deck Style */}
