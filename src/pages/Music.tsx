@@ -19,9 +19,6 @@ import starPeopleRiverBackground from "@/assets/star-people-river-background.png
 import deathOfLoveBackground from "@/assets/death-of-love-background.png";
 import sceneOfMyRestorationBackground from "@/assets/scene-of-my-restoration-background.png";
 
-// Logo
-import musicLogo from "@/assets/music-logo.jpeg";
-
 // Album covers
 import spaceshipAlbum from "@/assets/spaceship-album.png";
 import starPeopleRiverAlbum from "@/assets/star-people-river-album.jpeg";
@@ -399,13 +396,11 @@ const Music = () => {
       
       <main className="container mx-auto px-6 pt-72 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
-          {/* Header - Logo */}
+          {/* Header */}
           <div className="text-center mb-16 pt-4">
-            <img 
-              src={musicLogo} 
-              alt="Music" 
-              className="w-full max-w-2xl mx-auto animate-fade-in"
-            />
+            <h1 className="font-serif text-6xl font-bold text-white tracking-wide animate-fade-in">
+              Music
+            </h1>
           </div>
           
           {/* Video Player - Cassette Deck Style */}
