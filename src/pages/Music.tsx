@@ -18,7 +18,7 @@ import flowerEpBackground from "@/assets/flower-ep-background-stars.png";
 import starPeopleRiverBackground from "@/assets/star-people-river-background.png";
 import deathOfLoveBackground from "@/assets/death-of-love-background.png";
 import sceneOfMyRestorationBackground from "@/assets/scene-of-my-restoration-background.png";
-import musicLogo from "@/assets/music-logo.jpeg";
+import musicLogo from "@/assets/music-logo.png";
 
 // Album covers
 import spaceshipAlbum from "@/assets/spaceship-album.png";
@@ -402,7 +402,7 @@ const Music = () => {
             <img 
               src={musicLogo} 
               alt="Music" 
-              className="max-w-lg w-full mx-auto animate-fade-in"
+              className="max-w-2xl w-full mx-auto animate-fade-in"
             />
           </div>
           
