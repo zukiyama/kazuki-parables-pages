@@ -133,7 +133,7 @@ const Comics = () => {
       
       <Navigation />
 
-      <main className="relative z-10 pt-40 pb-20">
+      <main className="relative z-10 pt-28 pb-20">
         {/* MOBILE VERSION - Original Layout */}
         <div className="sm:hidden">
           {/* Title Section */}
@@ -212,27 +212,30 @@ const Comics = () => {
         {/* DESKTOP VERSION - Newspaper Layout */}
         <div className="hidden sm:block">
           {/* Newspaper Masthead */}
-          <section className="text-center px-6 mb-12 mx-6 lg:mx-12">
-            {/* Top date line */}
-            <div className="flex justify-between items-center border-b border-black pb-3 mb-6 text-sm tracking-wider" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-              <span className="italic font-light">Est. 2024</span>
-              <span className="tracking-wide">by KAZUKI YAMAKAWA</span>
-              <span className="italic font-light">Vol. I, No. 1</span>
+          <section className="text-center px-6 lg:px-12 mb-16">
+            <div className="max-w-7xl mx-auto">
+              {/* Top date line */}
+              <div className="flex justify-between items-center border-b border-black pb-3 mb-4 text-sm tracking-wider" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                <span className="italic font-light">Est. 2024</span>
+                <span className="tracking-wide">by KAZUKI YAMAKAWA</span>
+                <span className="italic font-light">Vol. I, No. 1</span>
+              </div>
+              {/* Main Masthead Title */}
+              <h1 className="text-7xl lg:text-8xl font-black text-black tracking-tight mt-6 mb-3" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                COMICS & SCRIPTS
+              </h1>
+              {/* Subtitle with dashes */}
+              <div className="flex items-center justify-center gap-4 mb-3">
+                <div className="flex-1 h-px bg-black/60" />
+                <p className="text-xl text-black/80 italic whitespace-nowrap" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                  Original stories in sequential art and screenplay
+                </p>
+                <div className="flex-1 h-px bg-black/60" />
+              </div>
+              {/* Bold decorative rules */}
+              <div className="border-b-4 border-double border-black mt-2" />
+              <div className="border-b-2 border-black mt-1" />
             </div>
-            {/* Main Masthead Title */}
-            <h1 className="text-7xl lg:text-8xl font-black text-black tracking-tight mt-8 mb-6" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-              COMICS & SCRIPTS
-            </h1>
-            {/* Subtitle with dashes */}
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <div className="w-24 h-px bg-black/60" />
-              <p className="text-xl text-black/80 italic" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                Original stories in sequential art and screenplay
-              </p>
-              <div className="w-24 h-px bg-black/60" />
-            </div>
-            {/* Bold decorative rule */}
-            <div className="border-b-4 border-double border-black mt-4" />
           </section>
 
           {/* Newspaper Content Grid */}
