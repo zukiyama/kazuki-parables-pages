@@ -277,8 +277,8 @@ const Comics = () => {
                   <h2 className="text-3xl lg:text-4xl font-bold text-black leading-tight mb-1" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
                     SURNAME PENDRAGON
                   </h2>
-                  <p className="text-sm text-black/60 italic tracking-wider uppercase mb-3" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                    A Modern Arthurian Legend
+                  <p className="text-sm text-black/60 tracking-wider uppercase mb-3" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                    <span className="italic">A Modern Arthurian Legend</span> <span className="mx-2">|</span> ORIGINAL SCREENPLAY
                   </p>
                   <div className="border-b border-black/20 mb-4" />
                   <div className="font-serif text-sm text-gray-800 leading-relaxed text-justify">
