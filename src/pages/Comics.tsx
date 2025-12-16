@@ -162,16 +162,16 @@ const Comics = () => {
           </section>
 
           {/* God of Lies Section - Mobile */}
-          <section className="py-6 px-4">
+          <section className="pt-2 pb-1 px-4">
             <div className="container mx-auto">
               {/* Headline - newspaper style */}
               <h2 className="text-3xl font-bold text-black leading-tight mb-1" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
                 GOD OF LIES
               </h2>
-              <p className="text-sm text-black/60 italic mb-2" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+              <p className="text-sm text-black/60 italic mb-1" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
                 A Psychological Thriller of Deception and Reality
               </p>
-              <div className="border-b border-black/20 mb-4" />
+              <div className="border-b border-black/20 mb-2" />
             </div>
           </section>
           {/* God of Lies image - full width */}
