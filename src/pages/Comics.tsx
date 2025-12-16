@@ -296,7 +296,7 @@ const Comics = () => {
                     initialBlur={2}
                     className="text-center"
                   >
-                    <blockquote className="font-serif text-4xl md:text-5xl text-foreground/70 italic leading-relaxed tracking-wide max-w-3xl mx-auto" style={{ fontFamily: 'EB Garamond, serif' }}>
+                    <blockquote className="font-serif text-4xl lg:text-5xl text-black/80 italic leading-tight max-w-3xl mx-auto" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
                       "Stories waiting to be told..."
                     </blockquote>
                     {/* Double underline effect */}
