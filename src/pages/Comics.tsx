@@ -221,8 +221,8 @@ const Comics = () => {
                 <span className="italic font-light">Vol. I, No. 1</span>
               </div>
               {/* Main Masthead Title */}
-              <h1 className="text-7xl lg:text-8xl font-black text-black tracking-tight mt-6 mb-3" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                COMICS & SCRIPTS
+              <h1 className="text-7xl lg:text-8xl font-bold text-black tracking-tight mt-6 mb-3" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+                Comics & Scripts
               </h1>
               {/* Subtitle with dashes */}
               <div className="flex items-center justify-center gap-4 mb-3">
@@ -233,7 +233,7 @@ const Comics = () => {
                 <div className="flex-1 h-px bg-black/60" />
               </div>
               {/* Bold decorative rules */}
-              <div className="border-b-4 border-double border-black mt-2" />
+              <div className="border-b-4 border-double border-black mt-6" />
               <div className="border-b-2 border-black mt-1" />
             </div>
           </section>
