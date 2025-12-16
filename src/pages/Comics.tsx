@@ -287,7 +287,7 @@ const Comics = () => {
                 </div>
               </div>
 
-              {/* Stories Waiting Quote */}
+              {/* Pull Quote Section - Desktop - leads into forthcoming */}
               {godOfLiesLoaded && (
                 <div className="text-center py-20">
                   <ScrollScale 
@@ -296,14 +296,10 @@ const Comics = () => {
                     initialBlur={2}
                     className="text-center"
                   >
-                    <blockquote className="font-serif text-4xl lg:text-5xl text-black/80 italic leading-tight max-w-3xl mx-auto" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+                    <blockquote className="font-serif text-5xl lg:text-6xl text-black/80 italic leading-tight max-w-4xl mx-auto">
                       "Stories waiting to be told..."
                     </blockquote>
-                    {/* Double underline effect */}
-                    <div className="flex flex-col items-center mt-8">
-                      <div className="w-32 h-[3px] bg-amber-700 rounded-full" />
-                      <div className="w-24 h-[2px] bg-amber-700/40 rounded-full mt-1" />
-                    </div>
+                    <div className="mt-6 w-24 h-1 bg-amber-800 mx-auto rounded-full" />
                   </ScrollScale>
                 </div>
               )}
@@ -314,7 +310,7 @@ const Comics = () => {
         {/* Forthcoming Section */}
         <section className="pt-16 pb-8 md:pt-24 md:pb-12 px-6">
           <div className="container mx-auto">
-            {/* Stories waiting to be told quote - Mobile only (desktop has it in newspaper layout) */}
+            {/* Mobile Pull Quote */}
             {godOfLiesLoaded && (
               <div className="mb-20 sm:hidden">
                 <ScrollScale 
