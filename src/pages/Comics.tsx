@@ -16,6 +16,7 @@ const Comics = () => {
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [hasZoomed, setHasZoomed] = useState(false);
   const [pendragonVisible, setPendragonVisible] = useState(false);
+  const [godOfLiesLoaded, setGodOfLiesLoaded] = useState(false);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
   const pendragonRef = useRef<HTMLDivElement>(null);
@@ -151,6 +152,7 @@ const Comics = () => {
                 src={godOfLiesCover}
                 alt="God of Lies comic cover"
                 className="w-full object-contain"
+                onLoad={() => setGodOfLiesLoaded(true)}
               />
             </div>
             
@@ -160,7 +162,9 @@ const Comics = () => {
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies comic cover"
-                  className="w-full object-contain shadow-2xl rounded-sm transform -rotate-1"
+                  className="w-full h-auto shadow-2xl transform -rotate-1"
+                  style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotate(-1deg) translateZ(0)' }}
+                  onLoad={() => setGodOfLiesLoaded(true)}
                 />
               </div>
               
@@ -184,22 +188,24 @@ const Comics = () => {
           </div>
         </section>
 
-        {/* Pull Quote Section - KEPT */}
-        <section className="relative py-10 md:py-16 overflow-hidden">
-          <div className="container mx-auto px-6">
-            <ScrollScale 
-              initialScale={1.15} 
-              finalScale={1} 
-              initialBlur={3}
-              className="text-center"
-            >
-              <blockquote className="font-serif text-3xl md:text-5xl lg:text-6xl text-black/80 italic leading-tight max-w-4xl mx-auto">
-                "Stories waiting to be told..."
-              </blockquote>
-              <div className="mt-6 w-24 h-1 bg-amber-800 mx-auto rounded-full" />
-            </ScrollScale>
-          </div>
-        </section>
+        {/* Pull Quote Section - KEPT - Only shows after God of Lies image loads */}
+        {godOfLiesLoaded && (
+          <section className="relative py-10 md:py-16 overflow-hidden">
+            <div className="container mx-auto px-6">
+              <ScrollScale 
+                initialScale={1.15} 
+                finalScale={1} 
+                initialBlur={3}
+                className="text-center"
+              >
+                <blockquote className="font-serif text-3xl md:text-5xl lg:text-6xl text-black/80 italic leading-tight max-w-4xl mx-auto">
+                  "Stories waiting to be told..."
+                </blockquote>
+                <div className="mt-6 w-24 h-1 bg-amber-800 mx-auto rounded-full" />
+              </ScrollScale>
+            </div>
+          </section>
+        )}
 
         {/* Surname Pendragon Section */}
         <section className="py-8 md:py-12 px-6 max-[480px]:px-0 overflow-hidden">
@@ -273,7 +279,8 @@ const Comics = () => {
                 <img 
                   src={surnameProPendragonCoverNew}
                   alt="Surname Pendragon comic cover"
-                  className="w-full max-w-md object-contain shadow-2xl rounded-sm transform rotate-1"
+                  className="w-full max-w-md object-contain shadow-2xl rounded-sm"
+                  style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotate(1deg) translateZ(0)' }}
                 />
               </div>
             </div>
