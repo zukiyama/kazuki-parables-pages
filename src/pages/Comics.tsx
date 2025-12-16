@@ -211,22 +211,27 @@ const Comics = () => {
         {/* DESKTOP VERSION - Newspaper Layout */}
         <div className="hidden sm:block">
           {/* Newspaper Masthead */}
-          <section className="text-center px-6 mb-8 border-b-4 border-double border-black pb-6 mx-6 lg:mx-12">
+          <section className="text-center px-6 mb-12 mx-6 lg:mx-12">
             {/* Top date line */}
-            <div className="flex justify-between items-center border-b border-black/20 pb-2 mb-4 text-xs tracking-widest" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-              <span>Est. 2024</span>
-              <span className="font-semibold">The Creative Chronicle</span>
-              <span>Vol. I, No. 1</span>
+            <div className="flex justify-between items-center border-b border-black pb-3 mb-6 text-sm tracking-wider" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+              <span className="italic font-light">Est. 2024</span>
+              <span className="tracking-wide">by KAZUKI YAMAKAWA</span>
+              <span className="italic font-light">Vol. I, No. 1</span>
             </div>
             {/* Main Masthead Title */}
-            <h1 className="text-7xl lg:text-8xl font-black text-black tracking-tight mb-2" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+            <h1 className="text-7xl lg:text-8xl font-black text-black tracking-tight mt-8 mb-6" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
               COMICS & SCRIPTS
             </h1>
-            <p className="text-lg text-black/60 italic" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-              Original stories in sequential art and screenplay
-            </p>
-            {/* Decorative rule */}
-            <div className="border-b border-black/20 mt-4" />
+            {/* Subtitle with dashes */}
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <div className="w-24 h-px bg-black/60" />
+              <p className="text-xl text-black/80 italic" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                Original stories in sequential art and screenplay
+              </p>
+              <div className="w-24 h-px bg-black/60" />
+            </div>
+            {/* Bold decorative rule */}
+            <div className="border-b-4 border-double border-black mt-4" />
           </section>
 
           {/* Newspaper Content Grid */}
@@ -236,13 +241,7 @@ const Comics = () => {
               <div className="grid grid-cols-12 gap-6">
                 {/* Lead Story - God of Lies */}
                 <div className="col-span-8 border-r border-gray-300 pr-6">
-                  <img 
-                    src={godOfLiesCover}
-                    alt="God of Lies comic cover"
-                    className="w-full h-auto mb-4 shadow-lg"
-                    onLoad={() => setGodOfLiesLoaded(true)}
-                  />
-                  {/* Headline */}
+                  {/* Headline - above image */}
                   <h2 className="text-5xl lg:text-6xl font-bold text-black leading-tight mb-2" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
                     GOD OF LIES
                   </h2>
@@ -250,6 +249,12 @@ const Comics = () => {
                     A Psychological Thriller of Deception and Reality
                   </p>
                   <div className="border-b border-black/20 mb-4" />
+                  <img 
+                    src={godOfLiesCover}
+                    alt="God of Lies comic cover"
+                    className="w-full h-auto mb-4 shadow-lg"
+                    onLoad={() => setGodOfLiesLoaded(true)}
+                  />
                   <div className="columns-2 gap-6 font-serif text-base text-gray-800 leading-relaxed text-justify">
                     <p className="mb-4 first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
                       A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality. What begins as an apparent gift soon reveals itself as a curse of devastating proportions.
@@ -269,29 +274,26 @@ const Comics = () => {
                 {/* Secondary Story - Surname Pendragon */}
                 <div className="col-span-4 pl-2">
                   {/* Secondary Headline */}
-                  <h2 className="text-3xl lg:text-4xl font-bold text-black leading-tight mb-2" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                  <h2 className="text-3xl lg:text-4xl font-bold text-black leading-tight mb-1" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
                     SURNAME PENDRAGON
                   </h2>
-                  <p className="text-base text-black/60 italic mb-3" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
+                  <p className="text-sm text-black/60 italic tracking-wider uppercase mb-3" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
                     A Modern Arthurian Legend
                   </p>
                   <div className="border-b border-black/20 mb-4" />
+                  <div className="font-serif text-sm text-gray-800 leading-relaxed text-justify">
+                    <p className="mb-3 first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
+                      Arthur Penn, an unremarkable office worker drowning in spreadsheets, finds his mundane existence shattered when he encounters a sword embedded in stone on a London street.
+                    </p>
+                    <p className="mb-3">
+                      The blood of kings flows through his veins, awakening powers and responsibilities he never asked for. Mythical beings walk among us, hidden in plain sight, and they have been waiting for him.
+                    </p>
+                  </div>
                   <img 
                     src={surnameProPendragonCoverNew}
                     alt="Surname Pendragon comic cover"
-                    className="w-full h-auto mb-4 shadow-lg"
+                    className="w-full h-auto mt-4 shadow-lg"
                   />
-                  <div className="font-serif text-sm text-gray-800 leading-relaxed text-justify">
-                    <p className="mb-3">
-                      Arthur Penn, 28, unremarkable in every way, stares at spreadsheets in an anonymous office building. He doesn't know what's coming.
-                    </p>
-                    <p className="mb-3 italic border-l-2 border-gray-400 pl-3 text-gray-600 text-xs">
-                      "The sword chooses. The blood remembers."
-                    </p>
-                    <p>
-                      A modern retelling where mythical beings walk among us—where an ordinary man discovers an extraordinary destiny.
-                    </p>
-                  </div>
                 </div>
               </div>
 
