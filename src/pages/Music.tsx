@@ -18,6 +18,7 @@ import flowerEpBackground from "@/assets/flower-ep-background-stars.png";
 import starPeopleRiverBackground from "@/assets/star-people-river-background.png";
 import deathOfLoveBackground from "@/assets/death-of-love-background.png";
 import sceneOfMyRestorationBackground from "@/assets/scene-of-my-restoration-background.png";
+import musicLogo from "@/assets/music-logo.jpeg";
 
 // Album covers
 import spaceshipAlbum from "@/assets/spaceship-album.png";
@@ -398,9 +399,11 @@ const Music = () => {
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16 pt-4">
-            <h1 className="font-serif text-6xl font-bold text-white tracking-wide animate-fade-in">
-              Music
-            </h1>
+            <img 
+              src={musicLogo} 
+              alt="Music" 
+              className="max-w-lg w-full mx-auto animate-fade-in"
+            />
           </div>
           
           {/* Video Player - Cassette Deck Style */}
