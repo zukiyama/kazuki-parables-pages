@@ -216,7 +216,7 @@ const Comics = () => {
               <p className="font-serif text-xs tracking-[0.3em] text-gray-600 uppercase">Est. 2024 • All the Stories Fit to Print • Volume I</p>
             </div>
             <h1 className="font-serif text-7xl lg:text-8xl font-black text-black tracking-tight" style={{ fontFamily: 'Playfair Display, Georgia, serif', fontWeight: 900 }}>
-              The Comics & Scripts
+              Comics & Scripts
             </h1>
             <div className="flex items-center justify-center gap-4 mt-3 border-t border-black pt-2">
               <span className="font-serif text-sm text-gray-700">Original comics, manga, webtoons and scripts</span>
@@ -229,9 +229,9 @@ const Comics = () => {
           <section className="px-6 lg:px-12 pb-12">
             <div className="max-w-7xl mx-auto">
               {/* Main Headlines Row */}
-              <div className="grid grid-cols-12 gap-6 border-b border-gray-300 pb-8 mb-8">
+              <div className="grid grid-cols-12 gap-6">
                 {/* Lead Story - God of Lies */}
-                <div className="col-span-7 border-r border-gray-300 pr-6">
+                <div className="col-span-8 border-r border-gray-300 pr-6">
                   <img 
                     src={godOfLiesCover}
                     alt="God of Lies comic cover"
@@ -251,18 +251,21 @@ const Comics = () => {
                     <p className="mb-4">
                       In this psychological thriller, the boundaries between truth and fiction dissolve entirely. Every deception carries consequences that ripple through reality itself, forcing our protagonist to confront the true price of dishonesty.
                     </p>
-                    <p>
+                    <p className="mb-4">
                       As the demon's influence grows stronger, the distinction between what is real and what has been spoken into existence becomes impossible to discern. A haunting exploration of identity, truth, and the stories we tell ourselves.
+                    </p>
+                    <p>
+                      The narrative weaves between past and present, revealing the true nature of the demon's bargain and the devastating toll of a life built on lies.
                     </p>
                   </div>
                 </div>
 
                 {/* Secondary Story - Surname Pendragon */}
-                <div className="col-span-5 pl-2">
-                  <h2 className="font-serif text-3xl lg:text-4xl font-bold text-black leading-tight mb-3" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
-                    SURNAME PENDRAGON: A Modern Arthurian Legend
+                <div className="col-span-4 pl-2">
+                  <h2 className="font-serif text-2xl lg:text-3xl font-bold text-black leading-tight mb-3" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+                    SURNAME PENDRAGON
                   </h2>
-                  <p className="font-serif text-sm text-gray-500 mb-4 uppercase tracking-wider border-b border-gray-200 pb-2">
+                  <p className="font-serif text-xs text-gray-500 mb-3 uppercase tracking-wider border-b border-gray-200 pb-2">
                     Original Screenplay • Fantasy Drama
                   </p>
                   <img 
@@ -270,26 +273,23 @@ const Comics = () => {
                     alt="Surname Pendragon comic cover"
                     className="w-full h-auto mb-4 shadow-lg"
                   />
-                  <div className="font-serif text-base text-gray-800 leading-relaxed text-justify">
-                    <p className="mb-3 first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
+                  <div className="font-serif text-sm text-gray-800 leading-relaxed text-justify">
+                    <p className="mb-3">
                       Arthur Penn, 28, unremarkable in every way, stares at spreadsheets in an anonymous office building. He doesn't know what's coming.
                     </p>
-                    <p className="mb-3 italic border-l-2 border-gray-400 pl-3 text-gray-600">
+                    <p className="mb-3 italic border-l-2 border-gray-400 pl-3 text-gray-600 text-xs">
                       "The sword chooses. The blood remembers."
                     </p>
-                    <p className="mb-3">
-                      Walking home through London streets, something ancient stirs beneath the concrete. A sword materializes in his path, embedded in stone.
-                    </p>
                     <p>
-                      A modern retelling where mythical beings walk among us—where an ordinary man discovers an extraordinary destiny, and the fate of both realms hangs in the balance.
+                      A modern retelling where mythical beings walk among us—where an ordinary man discovers an extraordinary destiny.
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Stories Waiting Quote - Styled as newspaper pull quote */}
+              {/* Stories Waiting Quote */}
               {godOfLiesLoaded && (
-                <div className="text-center py-8 border-y border-gray-300 my-8 bg-gray-50/50">
+                <div className="text-center py-16">
                   <ScrollScale 
                     initialScale={1.1} 
                     finalScale={1} 
@@ -299,11 +299,6 @@ const Comics = () => {
                     <blockquote className="font-serif text-4xl lg:text-5xl text-black/80 italic leading-tight max-w-3xl mx-auto" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
                       "Stories waiting to be told..."
                     </blockquote>
-                    <div className="mt-4 flex items-center justify-center gap-4">
-                      <div className="w-16 h-px bg-amber-800"></div>
-                      <span className="font-serif text-sm text-amber-800 uppercase tracking-widest">Forthcoming</span>
-                      <div className="w-16 h-px bg-amber-800"></div>
-                    </div>
                   </ScrollScale>
                 </div>
               )}
