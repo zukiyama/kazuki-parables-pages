@@ -289,7 +289,7 @@ const Comics = () => {
 
               {/* Stories Waiting Quote */}
               {godOfLiesLoaded && (
-                <div className="text-center py-16">
+                <div className="text-center py-20">
                   <ScrollScale 
                     initialScale={1.1} 
                     finalScale={1} 
@@ -299,6 +299,11 @@ const Comics = () => {
                     <blockquote className="font-serif text-4xl lg:text-5xl text-black/80 italic leading-tight max-w-3xl mx-auto" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
                       "Stories waiting to be told..."
                     </blockquote>
+                    {/* Double underline effect */}
+                    <div className="flex flex-col items-center mt-8">
+                      <div className="w-32 h-[3px] bg-amber-700 rounded-full" />
+                      <div className="w-24 h-[2px] bg-amber-700/40 rounded-full mt-1" />
+                    </div>
                   </ScrollScale>
                 </div>
               )}
