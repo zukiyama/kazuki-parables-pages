@@ -289,7 +289,7 @@ const Comics = () => {
 
               {/* Pull Quote Section - Desktop - leads into forthcoming */}
               {godOfLiesLoaded && (
-                <div className="text-center py-20">
+                <div className="text-center pt-32 pb-6">
                   <ScrollScale 
                     initialScale={1.1} 
                     finalScale={1} 
@@ -308,7 +308,7 @@ const Comics = () => {
         </div>
 
         {/* Forthcoming Section */}
-        <section className="pt-16 pb-8 md:pt-24 md:pb-12 px-6">
+        <section className="pt-8 pb-8 md:pt-10 md:pb-12 px-6">
           <div className="container mx-auto">
             {/* Mobile Pull Quote */}
             {godOfLiesLoaded && (
