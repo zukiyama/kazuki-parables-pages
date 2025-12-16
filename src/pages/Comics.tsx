@@ -188,24 +188,6 @@ const Comics = () => {
           </div>
         </section>
 
-        {/* Pull Quote Section - KEPT - Only shows after God of Lies image loads */}
-        {godOfLiesLoaded && (
-          <section className="relative py-10 md:py-16 overflow-hidden">
-            <div className="container mx-auto px-6">
-              <ScrollScale 
-                initialScale={1.15} 
-                finalScale={1} 
-                initialBlur={3}
-                className="text-center"
-              >
-                <blockquote className="font-serif text-3xl md:text-5xl lg:text-6xl text-black/80 italic leading-tight max-w-4xl mx-auto">
-                  "Stories waiting to be told..."
-                </blockquote>
-                <div className="mt-6 w-24 h-1 bg-amber-800 mx-auto rounded-full" />
-              </ScrollScale>
-            </div>
-          </section>
-        )}
 
         {/* Surname Pendragon Section */}
         <section className="py-8 md:py-12 px-6 max-[480px]:px-0 overflow-hidden">
@@ -290,14 +272,22 @@ const Comics = () => {
         {/* Forthcoming Section */}
         <section className="pt-16 pb-8 md:pt-24 md:pb-12 px-6">
           <div className="container mx-auto">
-            {/* FORTHCOMING Title with decorative lines */}
-            <div className="flex items-center justify-center mb-20">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent to-amber-800 max-w-xs max-sm:max-w-[60px] max-[480px]:max-w-[30px]"></div>
-              <h2 className="font-bangers text-5xl md:text-6xl max-sm:text-3xl text-black mx-8 max-sm:mx-4 max-[480px]:mx-2 drop-shadow-lg tracking-wide">
-                FORTHCOMING
-              </h2>
-              <div className="flex-1 h-px bg-gradient-to-l from-transparent to-amber-800 max-w-xs max-sm:max-w-[60px] max-[480px]:max-w-[30px]"></div>
-            </div>
+            {/* Stories waiting to be told quote - Only shows after God of Lies image loads */}
+            {godOfLiesLoaded && (
+              <div className="mb-20">
+                <ScrollScale 
+                  initialScale={1.15} 
+                  finalScale={1} 
+                  initialBlur={3}
+                  className="text-center"
+                >
+                  <blockquote className="font-serif text-3xl md:text-5xl lg:text-6xl text-black/80 italic leading-tight max-w-4xl mx-auto">
+                    "Stories waiting to be told..."
+                  </blockquote>
+                  <div className="mt-6 w-24 h-1 bg-amber-800 mx-auto rounded-full" />
+                </ScrollScale>
+              </div>
+            )}
             
             {/* First Row */}
             <div 
