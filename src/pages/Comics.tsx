@@ -10,45 +10,13 @@ import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 
-const NAV_HEIGHT = 80;
-
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
-  const [bannerFaded, setBannerFaded] = useState(false);
-  const [godOfLiesLoaded, setGodOfLiesLoaded] = useState(false);
-  
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const bannerRef = useRef<HTMLElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
 
-  // Always scroll to top on mount/navigation
   useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
-    setBannerFaded(false);
-  }, []);
-
-  // Handle banner fade based on scroll position
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    const handleScroll = () => {
-      const scrollTop = container.scrollTop;
-      const bannerHeight = bannerRef.current?.offsetHeight || 0;
-      setBannerFaded(scrollTop > bannerHeight / 2);
-    };
-
-    container.addEventListener("scroll", handleScroll, { passive: true });
-    return () => container.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Observe comic rows for staggered reveal
-  useEffect(() => {
-    const container = scrollContainerRef.current;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -60,7 +28,7 @@ const Comics = () => {
           }
         });
       },
-      { threshold: 0.2, root: container }
+      { threshold: 0.2 }
     );
 
     if (row1Ref.current) observer.observe(row1Ref.current);
@@ -117,35 +85,12 @@ const Comics = () => {
   };
 
   return (
-    <div className="h-screen bg-[#f5f0e6] overflow-hidden">
+    <div className="min-h-screen bg-[#f5f0e6]">
       <Navigation />
 
-      {/* Main Scroll Container with CSS Scroll Snap */}
-      <div 
-        ref={scrollContainerRef}
-        className="h-screen overflow-y-auto overflow-x-hidden"
-        style={{ 
-          scrollSnapType: "y mandatory",
-          scrollPaddingTop: NAV_HEIGHT,
-          WebkitOverflowScrolling: "touch",
-        }}
-      >
-        {/* Title Banner - Snap Section */}
-        <header 
-          ref={bannerRef}
-          className="bg-black text-center py-6 px-4 transition-opacity duration-500 ease-out"
-          style={{
-            height: `calc(100vh - ${NAV_HEIGHT}px)`,
-            scrollSnapAlign: "start",
-            scrollSnapStop: "always",
-            scrollMarginTop: NAV_HEIGHT,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            opacity: bannerFaded ? 0 : 1,
-            pointerEvents: bannerFaded ? 'none' : 'auto',
-          }}
-        >
+      <main className="relative z-10 pt-20">
+        {/* Header - Black Background */}
+        <header className="bg-black text-center py-6 px-4">
           <h1 
             className="text-4xl sm:text-6xl lg:text-7xl font-bold text-[#e8d9a0] tracking-wide"
             style={{ 
@@ -164,65 +109,44 @@ const Comics = () => {
           </div>
         </header>
 
-        {/* GOD OF LIES - Snap Section */}
-        <section 
-          className="w-full flex items-center justify-center bg-black"
-          style={{
-            height: `calc(100vh - ${NAV_HEIGHT}px)`,
-            scrollSnapAlign: "start",
-            scrollSnapStop: "always",
-            scrollMarginTop: NAV_HEIGHT,
-          }}
-        >
+        {/* GOD OF LIES - Full Width Image Only */}
+        <section className="w-full">
           <img 
             src={godOfLiesCover}
             alt="God of Lies"
-            className="w-full h-full object-cover"
-            onLoad={() => setGodOfLiesLoaded(true)}
+            className="w-full"
           />
         </section>
 
-        {/* SURNAME PENDRAGON - Snap Section */}
-        <section 
-          className="w-full flex items-center justify-center bg-black"
-          style={{
-            height: `calc(100vh - ${NAV_HEIGHT}px)`,
-            scrollSnapAlign: "start",
-            scrollSnapStop: "always",
-            scrollMarginTop: NAV_HEIGHT,
-          }}
-        >
+        {/* SURNAME PENDRAGON - Full Width Image Only */}
+        <section className="w-full">
           <img 
             src={surnamePendragonBanner}
             alt="Surname Pendragon"
-            className="w-full h-full object-cover"
+            className="w-full"
           />
         </section>
 
-        {/* Stories Waiting to be Told Section - NO snap, free scroll */}
+        {/* Stories Waiting to be Told Section */}
         <section className="text-center py-16 sm:py-24 bg-[#f5f0e6]">
-          {godOfLiesLoaded && (
-            <ScrollScale 
-              initialScale={1.3} 
-              finalScale={1} 
-              initialBlur={3}
-              className="text-center"
+          <ScrollScale 
+            initialScale={1.3} 
+            finalScale={1} 
+            initialBlur={3}
+            className="text-center"
+          >
+            <h2 
+              className="text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight mb-6"
+              style={{ fontFamily: 'EB Garamond, serif' }}
             >
-              <blockquote>
-                <h2 
-                  className="text-3xl sm:text-5xl lg:text-6xl text-foreground/70 italic leading-relaxed tracking-wide mb-6"
-                  style={{ fontFamily: 'EB Garamond, serif' }}
-                >
-                  "Stories waiting to be told..."
-                </h2>
-              </blockquote>
-              <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
-              <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
-            </ScrollScale>
-          )}
+              "Stories waiting to be told..."
+            </h2>
+            <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
+            <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
+          </ScrollScale>
         </section>
 
-        {/* Forthcoming Comics Grid - Free scroll */}
+        {/* Forthcoming Comics Grid */}
         <section className="pb-16 px-4 sm:px-6 bg-[#f5f0e6]">
           {/* First Row */}
           <div 
@@ -282,16 +206,16 @@ const Comics = () => {
             </div>
           </div>
         </section>
-        
-        <footer className="bg-slate-900 py-10 max-sm:py-6">
-          <div className="container mx-auto px-6 text-center">
-            <h3 className="font-heading text-xl mb-3 text-white">Contact</h3>
-            <p className="font-serif text-slate-300 text-sm">
-              kazuki@kazukiyamakawa.com
-            </p>
-          </div>
-        </footer>
-      </div>
+      </main>
+      
+      <footer className="bg-slate-900 py-10 max-sm:py-6">
+        <div className="container mx-auto px-6 text-center">
+          <h3 className="font-heading text-xl mb-3 text-white">Contact</h3>
+          <p className="font-serif text-slate-300 text-sm">
+            kazuki@kazukiyamakawa.com
+          </p>
+        </div>
+      </footer>
 
       {/* Comic Detail Modal */}
       {selectedComic && (
