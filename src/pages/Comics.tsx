@@ -10,12 +10,67 @@ import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 
+const NAV_HEIGHT = 80; // px - matches the fixed navigation height
+
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
+  const [bannerFaded, setBannerFaded] = useState(false);
+  const [hasScrolledOnce, setHasScrolledOnce] = useState(false);
+  
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const bannerRef = useRef<HTMLElement>(null);
+  const godOfLiesRef = useRef<HTMLElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
 
+  // Handle first scroll detection and banner fade
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    let scrollTimeout: ReturnType<typeof setTimeout>;
+    
+    const handleScroll = () => {
+      const scrollTop = container.scrollTop;
+      const bannerHeight = bannerRef.current?.offsetHeight || 0;
+      
+      // First scroll detection - fade banner when we scroll past threshold
+      if (!hasScrolledOnce && scrollTop > 10) {
+        setHasScrolledOnce(true);
+      }
+      
+      // Fade banner when God of Lies poster reaches/passes snap position
+      // The snap position is when the poster's top aligns with the nav bottom
+      if (scrollTop >= bannerHeight - 20) {
+        setBannerFaded(true);
+      } else {
+        setBannerFaded(false);
+      }
+    };
+
+    // Also detect snap end to trigger fade precisely
+    const handleScrollEnd = () => {
+      const scrollTop = container.scrollTop;
+      const bannerHeight = bannerRef.current?.offsetHeight || 0;
+      
+      // Check if we've snapped past the banner
+      if (scrollTop >= bannerHeight - 20) {
+        setBannerFaded(true);
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    container.addEventListener('scrollend', handleScrollEnd, { passive: true });
+    
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      container.removeEventListener('scrollend', handleScrollEnd);
+      clearTimeout(scrollTimeout);
+    };
+  }, [hasScrolledOnce]);
+
+  // Observe comic rows for staggered reveal
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -28,7 +83,7 @@ const Comics = () => {
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.2, root: scrollContainerRef.current }
     );
 
     if (row1Ref.current) observer.observe(row1Ref.current);
@@ -88,9 +143,27 @@ const Comics = () => {
     <div className="min-h-screen bg-[#f5f0e6]">
       <Navigation />
 
-      <main className="relative z-10 pt-20">
-        {/* Header - Black Background */}
-        <header className="bg-black text-center py-6 px-4">
+      {/* Scroll Snap Container */}
+      <div 
+        ref={scrollContainerRef}
+        className="h-screen overflow-y-auto"
+        style={{
+          scrollSnapType: 'y mandatory',
+          scrollPaddingTop: `${NAV_HEIGHT}px`,
+          paddingTop: `${NAV_HEIGHT}px`,
+        }}
+      >
+        {/* Title Banner - Fades on first snap */}
+        <header 
+          ref={bannerRef}
+          className="bg-black text-center py-6 px-4 transition-opacity duration-500 ease-out"
+          style={{
+            scrollSnapAlign: 'start',
+            scrollMarginTop: `${NAV_HEIGHT}px`,
+            opacity: bannerFaded ? 0 : 1,
+            pointerEvents: bannerFaded ? 'none' : 'auto',
+          }}
+        >
           <h1 
             className="text-4xl sm:text-6xl lg:text-7xl font-bold text-[#e8d9a0] tracking-wide"
             style={{ 
@@ -109,8 +182,15 @@ const Comics = () => {
           </div>
         </header>
 
-        {/* GOD OF LIES - Full Width Image Only */}
-        <section className="w-full">
+        {/* GOD OF LIES - Snap Section */}
+        <section 
+          ref={godOfLiesRef}
+          className="w-full"
+          style={{
+            scrollSnapAlign: 'start',
+            scrollMarginTop: `${NAV_HEIGHT}px`,
+          }}
+        >
           <img 
             src={godOfLiesCover}
             alt="God of Lies"
@@ -118,8 +198,14 @@ const Comics = () => {
           />
         </section>
 
-        {/* SURNAME PENDRAGON - Full Width Image Only */}
-        <section className="w-full">
+        {/* SURNAME PENDRAGON - Snap Section */}
+        <section 
+          className="w-full"
+          style={{
+            scrollSnapAlign: 'start',
+            scrollMarginTop: `${NAV_HEIGHT}px`,
+          }}
+        >
           <img 
             src={surnamePendragonBanner}
             alt="Surname Pendragon"
@@ -127,8 +213,14 @@ const Comics = () => {
           />
         </section>
 
-        {/* Stories Waiting to be Told Section */}
-        <section className="text-center py-16 sm:py-24 bg-[#f5f0e6]">
+        {/* Stories Waiting to be Told Section - No snap after this */}
+        <section 
+          className="text-center py-16 sm:py-24 bg-[#f5f0e6]"
+          style={{
+            scrollSnapAlign: 'start',
+            scrollMarginTop: `${NAV_HEIGHT}px`,
+          }}
+        >
           <ScrollScale 
             initialScale={1.3} 
             finalScale={1} 
@@ -146,7 +238,7 @@ const Comics = () => {
           </ScrollScale>
         </section>
 
-        {/* Forthcoming Comics Grid */}
+        {/* Forthcoming Comics Grid - Scrolls freely */}
         <section className="pb-16 px-4 sm:px-6 bg-[#f5f0e6]">
           {/* First Row */}
           <div 
@@ -206,16 +298,16 @@ const Comics = () => {
             </div>
           </div>
         </section>
-      </main>
-      
-      <footer className="bg-slate-900 py-10 max-sm:py-6">
-        <div className="container mx-auto px-6 text-center">
-          <h3 className="font-heading text-xl mb-3 text-white">Contact</h3>
-          <p className="font-serif text-slate-300 text-sm">
-            kazuki@kazukiyamakawa.com
-          </p>
-        </div>
-      </footer>
+        
+        <footer className="bg-slate-900 py-10 max-sm:py-6">
+          <div className="container mx-auto px-6 text-center">
+            <h3 className="font-heading text-xl mb-3 text-white">Contact</h3>
+            <p className="font-serif text-slate-300 text-sm">
+              kazuki@kazukiyamakawa.com
+            </p>
+          </div>
+        </footer>
+      </div>
 
       {/* Comic Detail Modal */}
       {selectedComic && (
