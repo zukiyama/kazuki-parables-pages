@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollScale } from "@/components/ScrollAnimations";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
@@ -10,11 +10,165 @@ import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 
+const HEADER_HEIGHT = 64; // Fixed header height in pixels
+
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
+  
+  // Refs for snap sections
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const bannerSectionRef = useRef<HTMLElement>(null);
+  const godOfLiesSectionRef = useRef<HTMLElement>(null);
+  const pendragonSectionRef = useRef<HTMLElement>(null);
+  const normalScrollSectionRef = useRef<HTMLElement>(null);
+
+  // Reset scroll position on page load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Scroll snap logic
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    let scrollTimeout: NodeJS.Timeout;
+    let lastScrollY = container.scrollTop;
+    let scrollVelocity = 0;
+    let isSnapping = false;
+
+    const getSnapPoints = () => {
+      const bannerEl = bannerSectionRef.current;
+      const godOfLiesEl = godOfLiesSectionRef.current;
+      const pendragonEl = pendragonSectionRef.current;
+      
+      if (!bannerEl || !godOfLiesEl || !pendragonEl) return [];
+
+      const viewportHeight = window.innerHeight;
+      
+      // Snap point 1: Banner top aligned with header bottom (scroll position 0)
+      const bannerSnapPoint = 0;
+      
+      // Snap point 2: God of Lies bottom edge aligned with viewport bottom
+      const godOfLiesRect = godOfLiesEl.getBoundingClientRect();
+      const godOfLiesBottom = godOfLiesEl.offsetTop + godOfLiesEl.offsetHeight;
+      const godOfLiesSnapPoint = godOfLiesBottom - viewportHeight;
+      
+      // Snap point 3: Pendragon top edge aligned with header bottom
+      const pendragonSnapPoint = pendragonEl.offsetTop - HEADER_HEIGHT;
+      
+      return [
+        { point: bannerSnapPoint, name: 'banner' },
+        { point: godOfLiesSnapPoint, name: 'godOfLies' },
+        { point: pendragonSnapPoint, name: 'pendragon' }
+      ];
+    };
+
+    const snapToPoint = (targetY: number) => {
+      isSnapping = true;
+      container.scrollTo({
+        top: targetY,
+        behavior: 'smooth'
+      });
+      setTimeout(() => {
+        isSnapping = false;
+      }, 500);
+    };
+
+    const handleScrollEnd = () => {
+      if (isSnapping) return;
+      
+      const currentScroll = container.scrollTop;
+      const snapPoints = getSnapPoints();
+      
+      if (snapPoints.length === 0) return;
+      
+      // Find if we're past the snap zone (after pendragon section)
+      const pendragonEl = pendragonSectionRef.current;
+      if (pendragonEl) {
+        const pendragonBottom = pendragonEl.offsetTop + pendragonEl.offsetHeight - HEADER_HEIGHT;
+        
+        // If scrolling down past pendragon, allow free scroll
+        if (currentScroll > pendragonBottom && scrollVelocity > 0) {
+          return;
+        }
+        
+        // If scrolling up into snap zone from below
+        if (currentScroll > snapPoints[2].point && currentScroll < pendragonBottom + 100 && scrollVelocity < 0) {
+          snapToPoint(snapPoints[2].point);
+          return;
+        }
+      }
+      
+      // Only snap if within the snap zone
+      const maxSnapZone = snapPoints[2].point + 50;
+      if (currentScroll > maxSnapZone) return;
+      
+      // Find nearest snap point
+      let nearestPoint = snapPoints[0];
+      let minDistance = Math.abs(currentScroll - snapPoints[0].point);
+      
+      for (const sp of snapPoints) {
+        const distance = Math.abs(currentScroll - sp.point);
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestPoint = sp;
+        }
+      }
+      
+      // Threshold-based snapping with velocity consideration
+      const threshold = window.innerHeight * 0.25;
+      
+      // Find current section index
+      let currentIndex = 0;
+      for (let i = snapPoints.length - 1; i >= 0; i--) {
+        if (currentScroll >= snapPoints[i].point - threshold) {
+          currentIndex = i;
+          break;
+        }
+      }
+      
+      // Determine target based on velocity and threshold
+      let targetIndex = currentIndex;
+      
+      if (Math.abs(scrollVelocity) > 15) {
+        // Fast scroll - go to next/prev section
+        if (scrollVelocity > 0 && currentIndex < snapPoints.length - 1) {
+          targetIndex = currentIndex + 1;
+        } else if (scrollVelocity < 0 && currentIndex > 0) {
+          targetIndex = currentIndex - 1;
+        }
+      } else {
+        // Slow scroll - snap to nearest
+        targetIndex = snapPoints.indexOf(nearestPoint);
+      }
+      
+      const targetPoint = snapPoints[targetIndex].point;
+      
+      if (Math.abs(currentScroll - targetPoint) > 5) {
+        snapToPoint(targetPoint);
+      }
+    };
+
+    const handleScroll = () => {
+      const currentScroll = container.scrollTop;
+      scrollVelocity = currentScroll - lastScrollY;
+      lastScrollY = currentScroll;
+      
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(handleScrollEnd, 100);
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -85,12 +239,19 @@ const Comics = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f0e6]">
+    <div 
+      ref={scrollContainerRef}
+      className="h-screen overflow-y-auto bg-[#f5f0e6]"
+      style={{ scrollBehavior: 'auto' }}
+    >
       <Navigation />
 
       <main className="relative z-10">
-        {/* Header - Black Background */}
-        <header className="bg-black text-center py-6 px-4 mt-16">
+        {/* Header Banner - Snap Section 1 */}
+        <header 
+          ref={bannerSectionRef}
+          className="bg-black text-center py-6 px-4 mt-16"
+        >
           <h1 
             className="text-4xl sm:text-6xl lg:text-7xl font-bold text-[#e8d9a0] tracking-wide"
             style={{ 
@@ -109,8 +270,8 @@ const Comics = () => {
           </div>
         </header>
 
-        {/* GOD OF LIES - Full Width Image Only */}
-        <section className="w-full">
+        {/* GOD OF LIES - Snap Section 2 */}
+        <section ref={godOfLiesSectionRef} className="w-full">
           <img 
             src={godOfLiesCover}
             alt="God of Lies"
@@ -118,8 +279,8 @@ const Comics = () => {
           />
         </section>
 
-        {/* SURNAME PENDRAGON - Full Width Image Only */}
-        <section className="w-full">
+        {/* SURNAME PENDRAGON - Snap Section 3 */}
+        <section ref={pendragonSectionRef} className="w-full">
           <img 
             src={surnamePendragonBanner}
             alt="Surname Pendragon"
@@ -127,8 +288,8 @@ const Comics = () => {
           />
         </section>
 
-        {/* Stories Waiting to be Told Section */}
-        <section className="text-center py-16 sm:py-24 bg-[#f5f0e6]">
+        {/* Normal Scroll Section - Stories Waiting to be Told */}
+        <section ref={normalScrollSectionRef} className="text-center py-16 sm:py-24 bg-[#f5f0e6]">
           <ScrollScale 
             initialScale={1.3} 
             finalScale={1} 
