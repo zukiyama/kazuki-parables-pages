@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollScale } from "@/components/ScrollAnimations";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
@@ -12,157 +12,43 @@ import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 
 const NAV_HEIGHT = 80;
 
-type SnapPosition = 'banner' | 'god-of-lies' | 'surname-pendragon' | 'free';
-
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [bannerFaded, setBannerFaded] = useState(false);
   const [godOfLiesLoaded, setGodOfLiesLoaded] = useState(false);
-  const [currentSnap, setCurrentSnap] = useState<SnapPosition>('banner');
-  const [isSnapping, setIsSnapping] = useState(false);
   
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const bannerRef = useRef<HTMLElement>(null);
-  const godOfLiesRef = useRef<HTMLElement>(null);
-  const surnamePendragonRef = useRef<HTMLElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
-  const lastScrollY = useRef(0);
-  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Always scroll to top on mount/navigation
   useEffect(() => {
-    window.scrollTo(0, 0);
-    setCurrentSnap('banner');
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
     setBannerFaded(false);
   }, []);
 
-  // Calculate snap positions
-  const getSnapPositions = useCallback(() => {
-    const container = scrollContainerRef.current;
-    const godOfLiesEl = godOfLiesRef.current;
-    const surnamePendragonEl = surnamePendragonRef.current;
-    const bannerEl = bannerRef.current;
-    
-    if (!container || !godOfLiesEl || !surnamePendragonEl || !bannerEl) return null;
-    
-    const viewportHeight = window.innerHeight;
-    const bannerHeight = bannerEl.offsetHeight;
-    const godOfLiesHeight = godOfLiesEl.offsetHeight;
-    
-    // God of Lies: bottom of image aligns with bottom of screen
-    // scrollY position where bottom of God of Lies image = bottom of viewport
-    const godOfLiesSnapY = NAV_HEIGHT + bannerHeight + godOfLiesHeight - viewportHeight;
-    
-    // Surname Pendragon: top of image aligns with top of screen (no header visible)
-    const surnamePendragonSnapY = NAV_HEIGHT + bannerHeight + godOfLiesHeight;
-    
-    // Free scroll starts after Surname Pendragon
-    const freeScrollStartY = surnamePendragonSnapY + surnamePendragonEl.offsetHeight;
-    
-    return {
-      banner: 0,
-      godOfLies: Math.max(0, godOfLiesSnapY),
-      surnamePendragon: surnamePendragonSnapY,
-      freeScrollStart: freeScrollStartY,
-    };
-  }, []);
-
-  // Handle scroll snap
-  const handleScroll = useCallback(() => {
-    if (isSnapping) return;
-    
-    const scrollY = window.scrollY;
-    const positions = getSnapPositions();
-    if (!positions) return;
-    
-    const scrollingDown = scrollY > lastScrollY.current;
-    lastScrollY.current = scrollY;
-    
-    // Clear existing timeout
-    if (scrollTimeout.current) {
-      clearTimeout(scrollTimeout.current);
-    }
-    
-    // Debounce snap decision
-    scrollTimeout.current = setTimeout(() => {
-      const currentY = window.scrollY;
-      const newPositions = getSnapPositions();
-      if (!newPositions) return;
-      
-      // Determine which section we should snap to
-      if (currentY < newPositions.godOfLies - 50) {
-        // Near banner area
-        if (scrollingDown && currentY > 30) {
-          // Snap to God of Lies (bottom aligned)
-          snapTo(newPositions.godOfLies, 'god-of-lies');
-        }
-      } else if (currentY >= newPositions.godOfLies - 50 && currentY < newPositions.surnamePendragon - 100) {
-        // In God of Lies zone
-        if (scrollingDown) {
-          // Snap to Surname Pendragon (top aligned)
-          snapTo(newPositions.surnamePendragon, 'surname-pendragon');
-        } else {
-          // Snap back to God of Lies
-          snapTo(newPositions.godOfLies, 'god-of-lies');
-        }
-      } else if (currentY >= newPositions.surnamePendragon - 100 && currentY < newPositions.freeScrollStart - 100) {
-        // In Surname Pendragon zone
-        if (!scrollingDown && currentY < newPositions.surnamePendragon + 100) {
-          // Scrolling up, snap back to God of Lies
-          snapTo(newPositions.godOfLies, 'god-of-lies');
-        } else if (scrollingDown) {
-          // Let it scroll free past Surname Pendragon
-          setCurrentSnap('free');
-        }
-      } else if (currentY >= newPositions.freeScrollStart - 100) {
-        // Free scroll zone - but check if scrolling up
-        if (!scrollingDown && currentY < newPositions.freeScrollStart + 200) {
-          // Scrolling up from free zone, snap to Surname Pendragon
-          snapTo(newPositions.surnamePendragon, 'surname-pendragon');
-        } else {
-          setCurrentSnap('free');
-        }
-      }
-    }, 100);
-    
-    // Update banner fade based on scroll position
-    const bannerHeight = bannerRef.current?.offsetHeight || 0;
-    if (scrollY > bannerHeight / 2) {
-      setBannerFaded(true);
-    } else {
-      setBannerFaded(false);
-    }
-  }, [isSnapping, getSnapPositions]);
-
-  const snapTo = useCallback((y: number, snapPosition: SnapPosition) => {
-    setIsSnapping(true);
-    setCurrentSnap(snapPosition);
-    
-    window.scrollTo({
-      top: y,
-      behavior: 'smooth'
-    });
-    
-    // Reset snapping flag after animation
-    setTimeout(() => {
-      setIsSnapping(false);
-    }, 500);
-  }, []);
-
+  // Handle banner fade based on scroll position
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (scrollTimeout.current) {
-        clearTimeout(scrollTimeout.current);
-      }
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scrollTop = container.scrollTop;
+      const bannerHeight = bannerRef.current?.offsetHeight || 0;
+      setBannerFaded(scrollTop > bannerHeight / 2);
     };
-  }, [handleScroll]);
+
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Observe comic rows for staggered reveal
   useEffect(() => {
+    const container = scrollContainerRef.current;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -174,7 +60,7 @@ const Comics = () => {
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.2, root: container }
     );
 
     if (row1Ref.current) observer.observe(row1Ref.current);
@@ -231,20 +117,31 @@ const Comics = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f0e6] overflow-x-hidden">
+    <div className="h-screen bg-[#f5f0e6] overflow-hidden">
       <Navigation />
 
-      {/* Main Content */}
+      {/* Main Scroll Container with CSS Scroll Snap */}
       <div 
         ref={scrollContainerRef}
-        className="overflow-x-hidden"
-        style={{ paddingTop: `${NAV_HEIGHT}px` }}
+        className="h-screen overflow-y-auto overflow-x-hidden"
+        style={{ 
+          scrollSnapType: "y mandatory",
+          scrollPaddingTop: NAV_HEIGHT,
+          WebkitOverflowScrolling: "touch",
+        }}
       >
-        {/* Title Banner - Fades on first snap */}
+        {/* Title Banner - Snap Section */}
         <header 
           ref={bannerRef}
           className="bg-black text-center py-6 px-4 transition-opacity duration-500 ease-out"
           style={{
+            height: `calc(100vh - ${NAV_HEIGHT}px)`,
+            scrollSnapAlign: "start",
+            scrollSnapStop: "always",
+            scrollMarginTop: NAV_HEIGHT,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
             opacity: bannerFaded ? 0 : 1,
             pointerEvents: bannerFaded ? 'none' : 'auto',
           }}
@@ -269,30 +166,40 @@ const Comics = () => {
 
         {/* GOD OF LIES - Snap Section */}
         <section 
-          ref={godOfLiesRef}
-          className="w-full"
+          className="w-full flex items-center justify-center bg-black"
+          style={{
+            height: `calc(100vh - ${NAV_HEIGHT}px)`,
+            scrollSnapAlign: "start",
+            scrollSnapStop: "always",
+            scrollMarginTop: NAV_HEIGHT,
+          }}
         >
           <img 
             src={godOfLiesCover}
             alt="God of Lies"
-            className="w-full"
+            className="w-full h-full object-cover"
             onLoad={() => setGodOfLiesLoaded(true)}
           />
         </section>
 
         {/* SURNAME PENDRAGON - Snap Section */}
         <section 
-          ref={surnamePendragonRef}
-          className="w-full"
+          className="w-full flex items-center justify-center bg-black"
+          style={{
+            height: `calc(100vh - ${NAV_HEIGHT}px)`,
+            scrollSnapAlign: "start",
+            scrollSnapStop: "always",
+            scrollMarginTop: NAV_HEIGHT,
+          }}
         >
           <img 
             src={surnamePendragonBanner}
             alt="Surname Pendragon"
-            className="w-full"
+            className="w-full h-full object-cover"
           />
         </section>
 
-        {/* Stories Waiting to be Told Section - Free scroll from here */}
+        {/* Stories Waiting to be Told Section - NO snap, free scroll */}
         <section className="text-center py-16 sm:py-24 bg-[#f5f0e6]">
           {godOfLiesLoaded && (
             <ScrollScale 
@@ -315,7 +222,7 @@ const Comics = () => {
           )}
         </section>
 
-        {/* Forthcoming Comics Grid - Scrolls freely */}
+        {/* Forthcoming Comics Grid - Free scroll */}
         <section className="pb-16 px-4 sm:px-6 bg-[#f5f0e6]">
           {/* First Row */}
           <div 
