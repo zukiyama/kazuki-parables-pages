@@ -88,9 +88,9 @@ const Comics = () => {
     <div className="min-h-screen bg-[#f5f0e6]">
       <Navigation />
 
-      <main className="relative z-10 pt-20">
+      <main className="relative z-10">
         {/* Header - Black Background */}
-        <header className="bg-black text-center py-6 px-4">
+        <header className="bg-black text-center py-6 px-4 mt-16">
           <h1 
             className="text-4xl sm:text-6xl lg:text-7xl font-bold text-[#e8d9a0] tracking-wide"
             style={{ 
