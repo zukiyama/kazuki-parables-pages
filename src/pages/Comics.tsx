@@ -16,59 +16,44 @@ const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [bannerFaded, setBannerFaded] = useState(false);
-  const [hasScrolledOnce, setHasScrolledOnce] = useState(false);
+  const [godOfLiesLoaded, setGodOfLiesLoaded] = useState(false);
   
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const bannerRef = useRef<HTMLElement>(null);
-  const godOfLiesRef = useRef<HTMLElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
 
-  // Handle first scroll detection and banner fade
+  // Always scroll to top on mount/navigation
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo(0, 0);
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Handle scroll and banner fade
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
-
-    let scrollTimeout: ReturnType<typeof setTimeout>;
     
     const handleScroll = () => {
       const scrollTop = container.scrollTop;
       const bannerHeight = bannerRef.current?.offsetHeight || 0;
       
-      // First scroll detection - fade banner when we scroll past threshold
-      if (!hasScrolledOnce && scrollTop > 10) {
-        setHasScrolledOnce(true);
-      }
-      
-      // Fade banner when God of Lies poster reaches/passes snap position
-      // The snap position is when the poster's top aligns with the nav bottom
-      if (scrollTop >= bannerHeight - 20) {
+      // Fade banner when God of Lies poster snaps into position
+      if (scrollTop >= bannerHeight - 10) {
         setBannerFaded(true);
       } else {
         setBannerFaded(false);
       }
     };
 
-    // Also detect snap end to trigger fade precisely
-    const handleScrollEnd = () => {
-      const scrollTop = container.scrollTop;
-      const bannerHeight = bannerRef.current?.offsetHeight || 0;
-      
-      // Check if we've snapped past the banner
-      if (scrollTop >= bannerHeight - 20) {
-        setBannerFaded(true);
-      }
-    };
-
     container.addEventListener('scroll', handleScroll, { passive: true });
-    container.addEventListener('scrollend', handleScrollEnd, { passive: true });
     
     return () => {
       container.removeEventListener('scroll', handleScroll);
-      container.removeEventListener('scrollend', handleScrollEnd);
-      clearTimeout(scrollTimeout);
     };
-  }, [hasScrolledOnce]);
+  }, []);
 
   // Observe comic rows for staggered reveal
   useEffect(() => {
@@ -184,7 +169,6 @@ const Comics = () => {
 
         {/* GOD OF LIES - Snap Section */}
         <section 
-          ref={godOfLiesRef}
           className="w-full"
           style={{
             scrollSnapAlign: 'start',
@@ -195,6 +179,7 @@ const Comics = () => {
             src={godOfLiesCover}
             alt="God of Lies"
             className="w-full"
+            onLoad={() => setGodOfLiesLoaded(true)}
           />
         </section>
 
@@ -213,29 +198,27 @@ const Comics = () => {
           />
         </section>
 
-        {/* Stories Waiting to be Told Section - No snap after this */}
-        <section 
-          className="text-center py-16 sm:py-24 bg-[#f5f0e6]"
-          style={{
-            scrollSnapAlign: 'start',
-            scrollMarginTop: `${NAV_HEIGHT}px`,
-          }}
-        >
-          <ScrollScale 
-            initialScale={1.3} 
-            finalScale={1} 
-            initialBlur={3}
-            className="text-center"
-          >
-            <h2 
-              className="text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight mb-6"
-              style={{ fontFamily: 'EB Garamond, serif' }}
+        {/* Stories Waiting to be Told Section - No more snap from here */}
+        <section className="text-center py-16 sm:py-24 bg-[#f5f0e6]">
+          {godOfLiesLoaded && (
+            <ScrollScale 
+              initialScale={1.3} 
+              finalScale={1} 
+              initialBlur={3}
+              className="text-center"
             >
-              "Stories waiting to be told..."
-            </h2>
-            <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
-            <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
-          </ScrollScale>
+              <blockquote>
+                <h2 
+                  className="text-3xl sm:text-5xl lg:text-6xl text-foreground/70 italic leading-relaxed tracking-wide mb-6"
+                  style={{ fontFamily: 'EB Garamond, serif' }}
+                >
+                  "Stories waiting to be told..."
+                </h2>
+              </blockquote>
+              <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
+              <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
+            </ScrollScale>
+          )}
         </section>
 
         {/* Forthcoming Comics Grid - Scrolls freely */}
