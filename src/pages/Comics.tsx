@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollScale } from "@/components/ScrollAnimations";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
-import surnameProPendragonCoverNew from "@/assets/surname-pendragon-wide-cover.png";
+import surnamePendragonBanner from "@/assets/surname-pendragon-banner.png";
 import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
 import burdenCoverNew from "@/assets/burden-cover-new.png";
 import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
@@ -89,7 +89,7 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative z-10 pt-20">
-        {/* Magazine Masthead - Black Background */}
+        {/* Header - Black Background */}
         <header className="bg-black text-center py-6 px-4">
           <h1 
             className="text-4xl sm:text-6xl lg:text-7xl font-bold text-[#e8d9a0] tracking-wide"
@@ -109,158 +109,45 @@ const Comics = () => {
           </div>
         </header>
 
-        {/* GOD OF LIES - Full Width Feature (~60vh) */}
-        <section className="relative w-full" style={{ minHeight: '60vh' }}>
-          {/* Full-bleed Background Image */}
+        {/* GOD OF LIES - Full Width Image Only */}
+        <section className="w-full">
           <img 
             src={godOfLiesCover}
             alt="God of Lies"
-            className="w-full h-full object-cover absolute inset-0"
-            style={{ minHeight: '60vh', objectPosition: 'center' }}
+            className="w-full"
           />
-          
-          {/* Gradient overlay for text readability on left */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 35%, transparent 60%)'
-            }}
-          />
-          
-          {/* Content Overlay */}
-          <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-10 lg:px-16" style={{ minHeight: '60vh' }}>
-            {/* Large Title - Stacked */}
-            <h2 
-              className="text-6xl sm:text-8xl lg:text-9xl font-bold text-[#d4a84b] leading-[0.85] mb-6"
-              style={{ 
-                fontFamily: 'Boogaloo, cursive',
-                textShadow: '4px 4px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 4px 8px rgba(0,0,0,0.5)'
-              }}
-            >
-              GOD<br/>OF<br/>LIES
-            </h2>
-            
-            {/* Text Box - Seamlessly integrated */}
-            <div 
-              className="max-w-sm lg:max-w-md p-4 sm:p-5"
-              style={{
-                background: 'linear-gradient(135deg, rgba(245, 240, 230, 0.92) 0%, rgba(235, 225, 200, 0.88) 100%)',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.5)'
-              }}
-            >
-              <p 
-                className="text-sm sm:text-base font-bold text-slate-900 uppercase tracking-wider mb-2"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
-                Be careful who you trust...
-              </p>
-              <p 
-                className="text-xs sm:text-sm text-slate-800 leading-relaxed mb-3"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
-                Dissatisfied with life, Seo Jun finds the mundane world quickly spiraling out of control when he enters into a perilous deal with a demonic god of lies who now lives in his shadow. A gripping dark urban fantasy with mystery, danger, and betrayal.
-              </p>
-              <div className="flex items-center gap-2">
-                <span 
-                  className="text-xs font-bold text-amber-800 uppercase tracking-wider"
-                  style={{ fontFamily: 'Georgia, serif' }}
-                >
-                  Special Preview!
-                </span>
-                <span className="text-amber-700 text-lg">→</span>
-              </div>
-            </div>
-            
-            {/* WEBTOON Badge */}
-            <div className="absolute bottom-6 right-6 sm:bottom-10 sm:right-10">
-              <div 
-                className="bg-red-600 text-white px-4 py-2 transform rotate-3"
-                style={{ 
-                  fontFamily: 'Arial Black, sans-serif',
-                  boxShadow: '2px 2px 8px rgba(0,0,0,0.4)'
-                }}
-              >
-                <span className="text-xs sm:text-sm font-black tracking-wider">WEBTOON</span>
-              </div>
-            </div>
-          </div>
         </section>
 
-        {/* SURNAME PENDRAGON - Full Width Feature (~25vh) */}
-        <section className="relative w-full" style={{ minHeight: '28vh' }}>
-          {/* Full-bleed Background Image */}
+        {/* SURNAME PENDRAGON - Full Width Image Only */}
+        <section className="w-full">
           <img 
-            src={surnameProPendragonCoverNew}
+            src={surnamePendragonBanner}
             alt="Surname Pendragon"
-            className="w-full h-full object-cover absolute inset-0"
-            style={{ minHeight: '28vh', objectPosition: 'center top' }}
+            className="w-full"
           />
-          
-          {/* Gradient overlay for text readability */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(to right, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 40%, transparent 65%)'
-            }}
-          />
-          
-          {/* Content Overlay */}
-          <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-10 lg:px-16" style={{ minHeight: '28vh' }}>
-            {/* Title */}
-            <h2 
-              className="text-3xl sm:text-5xl lg:text-6xl font-bold text-[#d4a84b] leading-[0.9] mb-4"
-              style={{ 
-                fontFamily: 'Boogaloo, cursive',
-                textShadow: '3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 3px 6px rgba(0,0,0,0.5)'
-              }}
-            >
-              SURNAME<br/>PENDRAGON
-            </h2>
-            
-            {/* Text Box */}
-            <div 
-              className="max-w-xs sm:max-w-sm p-3 sm:p-4"
-              style={{
-                background: 'linear-gradient(135deg, rgba(245, 240, 230, 0.92) 0%, rgba(235, 225, 200, 0.88) 100%)',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.5)'
-              }}
-            >
-              <p 
-                className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider mb-2"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
-                An Epic Modern Fantasy...
-              </p>
-              <p 
-                className="text-xs text-slate-800 leading-relaxed"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
-                Arthur Penn, an unremarkable office worker drowning in spreadsheets, finds his mundane existence shattered when he encounters a sword embedded in stone on a London street. The blood of kings flows through his veins.
-              </p>
-            </div>
-          </div>
         </section>
 
         {/* Stories Waiting to be Told Section */}
-        <section className="text-center py-10 sm:py-16 bg-[#f5f0e6]">
+        <section className="text-center py-16 sm:py-24 bg-[#f5f0e6]">
           <ScrollScale 
-            initialScale={1.1} 
+            initialScale={1.3} 
             finalScale={1} 
-            initialBlur={2}
+            initialBlur={3}
             className="text-center"
           >
             <h2 
-              className="text-3xl sm:text-4xl lg:text-5xl text-slate-800 italic mb-4"
-              style={{ fontFamily: 'EB Garamond, Playfair Display, serif' }}
+              className="text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight mb-6"
+              style={{ fontFamily: 'EB Garamond, serif' }}
             >
               "Stories waiting to be told..."
             </h2>
-            <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full" />
+            <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
+            <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
           </ScrollScale>
         </section>
 
         {/* Forthcoming Comics Grid */}
-        <section className="pb-12 px-4 sm:px-6 bg-[#f5f0e6]">
+        <section className="pb-16 px-4 sm:px-6 bg-[#f5f0e6]">
           {/* First Row */}
           <div 
             ref={row1Ref}
