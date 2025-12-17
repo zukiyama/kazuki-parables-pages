@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollScale } from "@/components/ScrollAnimations";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
@@ -10,50 +10,156 @@ import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 
-const NAV_HEIGHT = 80; // px - matches the fixed navigation height
+const NAV_HEIGHT = 80;
+
+type SnapPosition = 'banner' | 'god-of-lies' | 'surname-pendragon' | 'free';
 
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [bannerFaded, setBannerFaded] = useState(false);
   const [godOfLiesLoaded, setGodOfLiesLoaded] = useState(false);
+  const [currentSnap, setCurrentSnap] = useState<SnapPosition>('banner');
+  const [isSnapping, setIsSnapping] = useState(false);
   
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const bannerRef = useRef<HTMLElement>(null);
+  const godOfLiesRef = useRef<HTMLElement>(null);
+  const surnamePendragonRef = useRef<HTMLElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Always scroll to top on mount/navigation
   useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTo(0, 0);
-    }
     window.scrollTo(0, 0);
+    setCurrentSnap('banner');
+    setBannerFaded(false);
   }, []);
 
-  // Handle scroll and banner fade
-  useEffect(() => {
+  // Calculate snap positions
+  const getSnapPositions = useCallback(() => {
     const container = scrollContainerRef.current;
-    if (!container) return;
+    const godOfLiesEl = godOfLiesRef.current;
+    const surnamePendragonEl = surnamePendragonRef.current;
+    const bannerEl = bannerRef.current;
     
-    const handleScroll = () => {
-      const scrollTop = container.scrollTop;
-      const bannerHeight = bannerRef.current?.offsetHeight || 0;
+    if (!container || !godOfLiesEl || !surnamePendragonEl || !bannerEl) return null;
+    
+    const viewportHeight = window.innerHeight;
+    const bannerHeight = bannerEl.offsetHeight;
+    const godOfLiesHeight = godOfLiesEl.offsetHeight;
+    
+    // God of Lies: bottom of image aligns with bottom of screen
+    // scrollY position where bottom of God of Lies image = bottom of viewport
+    const godOfLiesSnapY = NAV_HEIGHT + bannerHeight + godOfLiesHeight - viewportHeight;
+    
+    // Surname Pendragon: top of image aligns with top of screen (no header visible)
+    const surnamePendragonSnapY = NAV_HEIGHT + bannerHeight + godOfLiesHeight;
+    
+    // Free scroll starts after Surname Pendragon
+    const freeScrollStartY = surnamePendragonSnapY + surnamePendragonEl.offsetHeight;
+    
+    return {
+      banner: 0,
+      godOfLies: Math.max(0, godOfLiesSnapY),
+      surnamePendragon: surnamePendragonSnapY,
+      freeScrollStart: freeScrollStartY,
+    };
+  }, []);
+
+  // Handle scroll snap
+  const handleScroll = useCallback(() => {
+    if (isSnapping) return;
+    
+    const scrollY = window.scrollY;
+    const positions = getSnapPositions();
+    if (!positions) return;
+    
+    const scrollingDown = scrollY > lastScrollY.current;
+    lastScrollY.current = scrollY;
+    
+    // Clear existing timeout
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+    
+    // Debounce snap decision
+    scrollTimeout.current = setTimeout(() => {
+      const currentY = window.scrollY;
+      const newPositions = getSnapPositions();
+      if (!newPositions) return;
       
-      // Fade banner when God of Lies poster snaps into position
-      if (scrollTop >= bannerHeight - 10) {
-        setBannerFaded(true);
-      } else {
-        setBannerFaded(false);
+      // Determine which section we should snap to
+      if (currentY < newPositions.godOfLies - 50) {
+        // Near banner area
+        if (scrollingDown && currentY > 30) {
+          // Snap to God of Lies (bottom aligned)
+          snapTo(newPositions.godOfLies, 'god-of-lies');
+        }
+      } else if (currentY >= newPositions.godOfLies - 50 && currentY < newPositions.surnamePendragon - 100) {
+        // In God of Lies zone
+        if (scrollingDown) {
+          // Snap to Surname Pendragon (top aligned)
+          snapTo(newPositions.surnamePendragon, 'surname-pendragon');
+        } else {
+          // Snap back to God of Lies
+          snapTo(newPositions.godOfLies, 'god-of-lies');
+        }
+      } else if (currentY >= newPositions.surnamePendragon - 100 && currentY < newPositions.freeScrollStart - 100) {
+        // In Surname Pendragon zone
+        if (!scrollingDown && currentY < newPositions.surnamePendragon + 100) {
+          // Scrolling up, snap back to God of Lies
+          snapTo(newPositions.godOfLies, 'god-of-lies');
+        } else if (scrollingDown) {
+          // Let it scroll free past Surname Pendragon
+          setCurrentSnap('free');
+        }
+      } else if (currentY >= newPositions.freeScrollStart - 100) {
+        // Free scroll zone - but check if scrolling up
+        if (!scrollingDown && currentY < newPositions.freeScrollStart + 200) {
+          // Scrolling up from free zone, snap to Surname Pendragon
+          snapTo(newPositions.surnamePendragon, 'surname-pendragon');
+        } else {
+          setCurrentSnap('free');
+        }
+      }
+    }, 100);
+    
+    // Update banner fade based on scroll position
+    const bannerHeight = bannerRef.current?.offsetHeight || 0;
+    if (scrollY > bannerHeight / 2) {
+      setBannerFaded(true);
+    } else {
+      setBannerFaded(false);
+    }
+  }, [isSnapping, getSnapPositions]);
+
+  const snapTo = useCallback((y: number, snapPosition: SnapPosition) => {
+    setIsSnapping(true);
+    setCurrentSnap(snapPosition);
+    
+    window.scrollTo({
+      top: y,
+      behavior: 'smooth'
+    });
+    
+    // Reset snapping flag after animation
+    setTimeout(() => {
+      setIsSnapping(false);
+    }, 500);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
       }
     };
-
-    container.addEventListener('scroll', handleScroll, { passive: true });
-    
-    return () => {
-      container.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  }, [handleScroll]);
 
   // Observe comic rows for staggered reveal
   useEffect(() => {
@@ -68,7 +174,7 @@ const Comics = () => {
           }
         });
       },
-      { threshold: 0.2, root: scrollContainerRef.current }
+      { threshold: 0.2 }
     );
 
     if (row1Ref.current) observer.observe(row1Ref.current);
@@ -125,26 +231,20 @@ const Comics = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f0e6]">
+    <div className="min-h-screen bg-[#f5f0e6] overflow-x-hidden">
       <Navigation />
 
-      {/* Scroll Snap Container */}
+      {/* Main Content */}
       <div 
         ref={scrollContainerRef}
-        className="h-screen overflow-y-auto"
-        style={{
-          scrollSnapType: 'y mandatory',
-          scrollPaddingTop: `${NAV_HEIGHT}px`,
-          paddingTop: `${NAV_HEIGHT}px`,
-        }}
+        className="overflow-x-hidden"
+        style={{ paddingTop: `${NAV_HEIGHT}px` }}
       >
         {/* Title Banner - Fades on first snap */}
         <header 
           ref={bannerRef}
           className="bg-black text-center py-6 px-4 transition-opacity duration-500 ease-out"
           style={{
-            scrollSnapAlign: 'start',
-            scrollMarginTop: `${NAV_HEIGHT}px`,
             opacity: bannerFaded ? 0 : 1,
             pointerEvents: bannerFaded ? 'none' : 'auto',
           }}
@@ -169,11 +269,8 @@ const Comics = () => {
 
         {/* GOD OF LIES - Snap Section */}
         <section 
+          ref={godOfLiesRef}
           className="w-full"
-          style={{
-            scrollSnapAlign: 'start',
-            scrollMarginTop: `${NAV_HEIGHT}px`,
-          }}
         >
           <img 
             src={godOfLiesCover}
@@ -185,11 +282,8 @@ const Comics = () => {
 
         {/* SURNAME PENDRAGON - Snap Section */}
         <section 
+          ref={surnamePendragonRef}
           className="w-full"
-          style={{
-            scrollSnapAlign: 'start',
-            scrollMarginTop: `${NAV_HEIGHT}px`,
-          }}
         >
           <img 
             src={surnamePendragonBanner}
@@ -198,7 +292,7 @@ const Comics = () => {
           />
         </section>
 
-        {/* Stories Waiting to be Told Section - No more snap from here */}
+        {/* Stories Waiting to be Told Section - Free scroll from here */}
         <section className="text-center py-16 sm:py-24 bg-[#f5f0e6]">
           {godOfLiesLoaded && (
             <ScrollScale 
