@@ -3,7 +3,6 @@ import Navigation from "@/components/Navigation";
 import { ScrollScale } from "@/components/ScrollAnimations";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
 import surnameProPendragonCoverNew from "@/assets/surname-pendragon-wide-cover.png";
-import mangaSketchesBackground from "@/assets/manga-character-sketches-background.jpeg";
 import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
 import burdenCoverNew from "@/assets/burden-cover-new.png";
 import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
@@ -14,24 +13,8 @@ import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
-  const [hasZoomed, setHasZoomed] = useState(false);
-  const [pendragonVisible, setPendragonVisible] = useState(false);
-  const [godOfLiesLoaded, setGodOfLiesLoaded] = useState(false);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
-  const pendragonRef = useRef<HTMLDivElement>(null);
-
-  // One-way background zoom effect on initial scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!hasZoomed && window.scrollY > 50) {
-        setHasZoomed(true);
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [hasZoomed]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -50,24 +33,6 @@ const Comics = () => {
 
     if (row1Ref.current) observer.observe(row1Ref.current);
     if (row2Ref.current) observer.observe(row2Ref.current);
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Pendragon section slide-in observer
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setPendragonVisible(true);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    if (pendragonRef.current) observer.observe(pendragonRef.current);
 
     return () => observer.disconnect();
   }, []);
@@ -120,305 +85,243 @@ const Comics = () => {
   };
 
   return (
-    <div className="min-h-screen relative">
-      {/* Manga Sketches Background - Using fixed container with explicit dimensions to prevent viewport resize zoom */}
-      <div className="fixed top-0 left-0 z-0 pointer-events-none" style={{ height: '100vh', width: '100vw' }}>
-        <img 
-          src={mangaSketchesBackground}
-          alt="Manga sketches background"
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-50 transition-transform duration-700 ease-out"
-          style={{ transform: hasZoomed ? 'scale(1.02)' : 'scale(1)' }}
-        />
-      </div>
-      
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <Navigation />
 
-      <main className="relative z-10 pt-28 pb-20">
-        {/* MOBILE VERSION - Newspaper Layout */}
-        <div className="sm:hidden">
-          {/* Newspaper Masthead - Mobile */}
-          <section className="text-center px-4 mb-8">
-            {/* Top date line */}
-            <div className="flex justify-between items-center border-b border-black pb-2 mb-3 text-xs tracking-wider" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-              <span className="italic font-light">Est. 2024</span>
-              <span className="tracking-wide text-xs">by KAZUKI YAMAKAWA</span>
-              <span className="italic font-light">Vol. I, No. 1</span>
-            </div>
-            {/* Main Masthead Title */}
-            <h1 className="text-4xl font-bold text-black tracking-tight mt-4 mb-2" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
-              Comics & Scripts
+      <main className="relative z-10 pt-24 pb-20">
+        {/* Modern Magazine Header */}
+        <header className="text-center px-6 mb-12 sm:mb-16">
+          <div className="max-w-5xl mx-auto">
+            {/* Main Title - Tintin Style */}
+            <h1 
+              className="text-5xl sm:text-7xl lg:text-8xl font-bold text-slate-900 tracking-tight mb-4"
+              style={{ fontFamily: 'Boogaloo, cursive' }}
+            >
+              COMICS AND SCRIPTS
             </h1>
-            {/* Subtitle with dashes */}
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <div className="flex-1 h-px bg-black/60" />
-              <p className="text-sm text-black/80 italic whitespace-nowrap" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                Original stories in sequential art and screenplay
+            
+            {/* Subtitle with decorative lines */}
+            <div className="flex items-center justify-center gap-4 max-w-2xl mx-auto">
+              <div className="flex-1 h-px bg-slate-300" />
+              <p className="text-sm sm:text-base text-slate-600 tracking-widest uppercase whitespace-nowrap">
+                Original Stories in Sequential Art & Screenplay
               </p>
-              <div className="flex-1 h-px bg-black/60" />
+              <div className="flex-1 h-px bg-slate-300" />
             </div>
-            {/* Bold decorative rules */}
-            <div className="border-b-4 border-double border-black mt-4" />
-            <div className="border-b-2 border-black mt-1" />
-          </section>
+          </div>
+        </header>
 
-          {/* God of Lies Section - Mobile */}
-          <section className="pt-2 pb-1 px-4">
-            <div className="container mx-auto">
-              {/* Headline - newspaper style */}
-              <h2 className="text-3xl font-bold text-black leading-tight mb-1" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                GOD OF LIES
-              </h2>
-              <p className="text-sm text-black/60 italic mb-1" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                A Psychological Thriller of Deception and Reality
-              </p>
-              <div className="border-b border-black/20 mb-2" />
-            </div>
-          </section>
-          {/* God of Lies image - full width */}
-          <img 
-            src={godOfLiesCover}
-            alt="God of Lies comic cover"
-            className="w-full object-contain mb-4"
-            onLoad={() => setGodOfLiesLoaded(true)}
-          />
-          <section className="px-4 pb-6">
-            <div className="container mx-auto">
-              <div className="font-serif text-base text-gray-800 leading-relaxed text-justify">
-                <p className="mb-3 first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
-                  A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality.
-                </p>
-                <p className="text-sm">
-                  A psychological thriller exploring the price of dishonesty, where deception becomes truth and reality dissolves into fiction.
-                </p>
-              </div>
-            </div>
-          </section>
+        {/* Main Content */}
+        <div className="px-4 sm:px-6 lg:px-12">
+          <div className="max-w-7xl mx-auto">
+            
+            {/* God of Lies Section */}
+            <section className="mb-12 sm:mb-16">
+              <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+                {/* Desktop Layout */}
+                <div className="hidden sm:grid sm:grid-cols-5 lg:grid-cols-3 gap-0">
+                  {/* Cover Image - Takes more space */}
+                  <div className="sm:col-span-3 lg:col-span-2 relative">
+                    <img 
+                      src={godOfLiesCover}
+                      alt="God of Lies comic cover"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  {/* Text Content */}
+                  <div className="sm:col-span-2 lg:col-span-1 p-8 lg:p-10 flex flex-col justify-center bg-slate-900 text-white">
+                    <h2 
+                      className="text-4xl lg:text-5xl font-bold mb-4 leading-tight"
+                      style={{ fontFamily: 'Boogaloo, cursive' }}
+                    >
+                      GOD OF LIES
+                    </h2>
+                    <p className="text-amber-400 text-sm uppercase tracking-widest mb-6 font-medium">
+                      Be careful who you trust...
+                    </p>
+                    <p className="text-slate-300 leading-relaxed mb-6 text-base lg:text-lg">
+                      Dissatisfied with life, Seo Jun finds the mundane world quickly spiraling out of control when he enters into a perilous deal with a demonic god of lies who now lives in his shadow.
+                    </p>
+                    <p className="text-slate-400 text-sm leading-relaxed">
+                      A gripping dark urban fantasy with mystery, danger, and betrayal.
+                    </p>
+                  </div>
+                </div>
 
-          {/* Surname Pendragon Section - Mobile */}
-          <section className="py-6 px-4 overflow-hidden">
-            <div className="container mx-auto">
-              {/* Headline - newspaper style */}
-              <h2 className="text-2xl font-bold text-black leading-tight mb-1" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                SURNAME PENDRAGON
-              </h2>
-              <p className="text-xs text-black/60 tracking-wider uppercase mb-2" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                A Modern Arthurian Legend <span className="mx-1">|</span> <span className="italic">ORIGINAL SCREENPLAY</span>
-              </p>
-              <div className="border-b border-black/20 mb-4" />
-              <img 
-                src={surnameProPendragonCoverNew}
-                alt="Surname Pendragon comic cover"
-                className="w-full max-w-md mx-auto object-contain shadow-lg rounded-sm mb-4"
-              />
-              <div className="font-serif text-sm text-gray-800 leading-relaxed text-justify">
-                <p className="mb-3 first-letter:text-3xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
-                  Arthur Penn, an unremarkable office worker drowning in spreadsheets, finds his mundane existence shattered when he encounters a sword embedded in stone.
-                </p>
-                <p>
-                  The blood of kings flows through his veins, awakening powers and responsibilities he never asked for. Mythical beings walk among us, hidden in plain sight.
-                </p>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        {/* DESKTOP VERSION - Newspaper Layout */}
-        <div className="hidden sm:block">
-          {/* Newspaper Masthead */}
-          <section className="text-center px-6 lg:px-12 mb-16">
-            <div className="max-w-7xl mx-auto">
-              {/* Top date line */}
-              <div className="flex justify-between items-center border-b border-black pb-3 mb-4 text-sm tracking-wider" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                <span className="italic font-light">Est. 2024</span>
-                <span className="tracking-wide">by KAZUKI YAMAKAWA</span>
-                <span className="italic font-light">Vol. I, No. 1</span>
-              </div>
-              {/* Main Masthead Title */}
-              <h1 className="text-7xl lg:text-8xl font-bold text-black tracking-tight mt-6 mb-3" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
-                Comics & Scripts
-              </h1>
-              {/* Subtitle with dashes */}
-              <div className="flex items-center justify-center gap-4 mb-3">
-                <div className="flex-1 h-px bg-black/60" />
-                <p className="text-xl text-black/80 italic whitespace-nowrap" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                  Original stories in sequential art and screenplay
-                </p>
-                <div className="flex-1 h-px bg-black/60" />
-              </div>
-              {/* Bold decorative rules */}
-              <div className="border-b-4 border-double border-black mt-6" />
-              <div className="border-b-2 border-black mt-1" />
-            </div>
-          </section>
-
-          {/* Newspaper Content Grid */}
-          <section className="px-6 lg:px-12 pb-12">
-            <div className="max-w-7xl mx-auto">
-              {/* Main Headlines Row */}
-              <div className="grid grid-cols-12 gap-6">
-                {/* Lead Story - God of Lies */}
-                <div className="col-span-8 border-r border-gray-300 pr-6">
-                  {/* Headline - above image */}
-                  <h2 className="text-5xl lg:text-6xl font-bold text-black leading-tight mb-2" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                    GOD OF LIES
-                  </h2>
-                  <p className="text-lg text-black/60 italic mb-3" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                    A Psychological Thriller of Deception and Reality
-                  </p>
-                  <div className="border-b border-black/20 mb-4" />
+                {/* Mobile Layout */}
+                <div className="sm:hidden">
                   <img 
                     src={godOfLiesCover}
                     alt="God of Lies comic cover"
-                    className="w-full h-auto mb-4 shadow-lg"
-                    onLoad={() => setGodOfLiesLoaded(true)}
+                    className="w-full"
                   />
-                  <div className="columns-2 gap-6 font-serif text-base text-gray-800 leading-relaxed text-justify">
-                    <p className="mb-4 first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
-                      A con man discovers that a demon has attached itself to his soul—making every lie he tells become reality. What begins as an apparent gift soon reveals itself as a curse of devastating proportions.
+                  <div className="p-6 bg-slate-900 text-white">
+                    <h2 
+                      className="text-3xl font-bold mb-3"
+                      style={{ fontFamily: 'Boogaloo, cursive' }}
+                    >
+                      GOD OF LIES
+                    </h2>
+                    <p className="text-amber-400 text-xs uppercase tracking-widest mb-4 font-medium">
+                      Be careful who you trust...
                     </p>
-                    <p className="mb-4">
-                      In this psychological thriller, the boundaries between truth and fiction dissolve entirely. Every deception carries consequences that ripple through reality itself, forcing our protagonist to confront the true price of dishonesty.
-                    </p>
-                    <p className="mb-4">
-                      As the demon's influence grows stronger, the distinction between what is real and what has been spoken into existence becomes impossible to discern. A haunting exploration of identity, truth, and the stories we tell ourselves.
-                    </p>
-                    <p>
-                      The narrative weaves between past and present, revealing the true nature of the demon's bargain and the devastating toll of a life built on lies.
+                    <p className="text-slate-300 leading-relaxed text-sm">
+                      Dissatisfied with life, Seo Jun finds the mundane world quickly spiraling out of control when he enters into a perilous deal with a demonic god of lies who now lives in his shadow. A gripping dark urban fantasy with mystery, danger, and betrayal.
                     </p>
                   </div>
                 </div>
+              </div>
+            </section>
 
-                {/* Secondary Story - Surname Pendragon */}
-                <div className="col-span-4 pl-2">
-                  {/* Secondary Headline */}
-                  <h2 className="text-3xl lg:text-4xl font-bold text-black leading-tight mb-1" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                    SURNAME PENDRAGON
-                  </h2>
-                  <p className="text-sm text-black/60 tracking-wider uppercase mb-3" style={{ fontFamily: 'Times New Roman, Georgia, serif' }}>
-                    A Modern Arthurian Legend <span className="mx-2">|</span> <span className="italic">ORIGINAL SCREENPLAY</span>
-                  </p>
-                  <div className="border-b border-black/20 mb-4" />
-                  <div className="font-serif text-sm text-gray-800 leading-relaxed text-justify">
-                    <p className="mb-3 first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
-                      Arthur Penn, an unremarkable office worker drowning in spreadsheets, finds his mundane existence shattered when he encounters a sword embedded in stone on a London street.
+            {/* Surname Pendragon Section */}
+            <section className="mb-16 sm:mb-24">
+              <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+                {/* Desktop Layout */}
+                <div className="hidden sm:grid sm:grid-cols-5 lg:grid-cols-3 gap-0">
+                  {/* Text Content - Left side */}
+                  <div className="sm:col-span-2 lg:col-span-1 p-8 lg:p-10 flex flex-col justify-center bg-gradient-to-br from-emerald-900 to-slate-900 text-white">
+                    <span className="text-emerald-400 text-xs uppercase tracking-widest mb-2 font-medium">
+                      Original Screenplay
+                    </span>
+                    <h2 
+                      className="text-3xl lg:text-4xl font-bold mb-4 leading-tight"
+                      style={{ fontFamily: 'Boogaloo, cursive' }}
+                    >
+                      SURNAME PENDRAGON
+                    </h2>
+                    <p className="text-amber-400 text-sm uppercase tracking-widest mb-6 font-medium">
+                      An Epic Modern Fantasy...
                     </p>
-                    <p className="mb-3">
-                      The blood of kings flows through his veins, awakening powers and responsibilities he never asked for. Mythical beings walk among us, hidden in plain sight, and they have been waiting for him.
+                    <p className="text-slate-300 leading-relaxed text-base">
+                      Arthur Penn, an unremarkable office worker drowning in spreadsheets, finds his mundane existence shattered when he encounters a sword embedded in stone on a London street. The blood of kings flows through his veins, awakening powers and responsibilities he never asked for.
                     </p>
                   </div>
+                  
+                  {/* Cover Image */}
+                  <div className="sm:col-span-3 lg:col-span-2 relative">
+                    <img 
+                      src={surnameProPendragonCoverNew}
+                      alt="Surname Pendragon cover"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+
+                {/* Mobile Layout */}
+                <div className="sm:hidden">
                   <img 
                     src={surnameProPendragonCoverNew}
-                    alt="Surname Pendragon comic cover"
-                    className="w-full h-auto mt-4 shadow-lg"
+                    alt="Surname Pendragon cover"
+                    className="w-full"
                   />
+                  <div className="p-6 bg-gradient-to-br from-emerald-900 to-slate-900 text-white">
+                    <span className="text-emerald-400 text-xs uppercase tracking-widest mb-2 font-medium block">
+                      Original Screenplay
+                    </span>
+                    <h2 
+                      className="text-2xl font-bold mb-3"
+                      style={{ fontFamily: 'Boogaloo, cursive' }}
+                    >
+                      SURNAME PENDRAGON
+                    </h2>
+                    <p className="text-amber-400 text-xs uppercase tracking-widest mb-4 font-medium">
+                      An Epic Modern Fantasy...
+                    </p>
+                    <p className="text-slate-300 leading-relaxed text-sm">
+                      Arthur Penn, an unremarkable office worker, finds his mundane existence shattered when he encounters a sword embedded in stone. The blood of kings flows through his veins.
+                    </p>
+                  </div>
                 </div>
               </div>
+            </section>
 
-              {/* Pull Quote Section - Desktop - leads into forthcoming */}
-              {godOfLiesLoaded && (
-                <div className="text-center pt-28 pb-6">
-                  <ScrollScale 
-                    initialScale={1.1} 
-                    finalScale={1} 
-                    initialBlur={2}
-                    className="text-center"
-                  >
-                    <blockquote className="font-serif text-5xl lg:text-6xl text-black/80 italic leading-tight max-w-4xl mx-auto">
-                      "Stories waiting to be told..."
-                    </blockquote>
-                    <div className="mt-6 w-24 h-1 bg-amber-800 mx-auto rounded-full" />
-                  </ScrollScale>
-                </div>
-              )}
-            </div>
-          </section>
-        </div>
-
-        {/* Forthcoming Section */}
-        <section className="pt-8 pb-8 md:pt-10 md:pb-12 px-6">
-          <div className="container mx-auto">
-            {/* Mobile Pull Quote */}
-            {godOfLiesLoaded && (
-              <div className="mb-20 sm:hidden">
-                <ScrollScale 
-                  initialScale={1.15} 
-                  finalScale={1} 
-                  initialBlur={3}
-                  className="text-center"
+            {/* Stories Waiting to be Told Section */}
+            <section className="text-center mb-12 sm:mb-16">
+              <ScrollScale 
+                initialScale={1.1} 
+                finalScale={1} 
+                initialBlur={2}
+                className="text-center"
+              >
+                <h2 
+                  className="text-3xl sm:text-5xl lg:text-6xl text-slate-800 italic mb-4"
+                  style={{ fontFamily: 'Playfair Display, serif' }}
                 >
-                  <blockquote className="font-serif text-3xl text-black/80 italic leading-tight max-w-4xl mx-auto">
-                    "Stories waiting to be told..."
-                  </blockquote>
-                  <div className="mt-6 w-24 h-1 bg-amber-800 mx-auto rounded-full" />
-                </ScrollScale>
-              </div>
-            )}
-            
-            {/* First Row */}
-            <div 
-              ref={row1Ref}
-              data-row="row1"
-              className={`mb-12 transition-all duration-700 ${
-                visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 justify-items-center max-w-6xl mx-auto">
-                {smallShelfComics.slice(0, 3).map((comic, index) => (
-                  <div 
-                    key={comic.title} 
-                    className={`w-full max-w-xs cursor-pointer transition-all duration-500 hover:scale-105 ${
-                      visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                    }`}
-                    style={{ transitionDelay: visibleRows.has('row1') ? `${index * 150}ms` : '0ms' }}
-                    onClick={() => handleComicClick(comic)}
-                  >
-                    <img 
-                      src={comic.cover}
-                      alt={`${comic.title} comic cover`}
-                      className="w-full shadow-xl rounded-sm"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
+                  "Stories waiting to be told..."
+                </h2>
+                <div className="w-24 h-1 bg-amber-600 mx-auto rounded-full" />
+              </ScrollScale>
+            </section>
 
-            {/* Second Row */}
-            <div
-              ref={row2Ref}
-              data-row="row2"
-              className={`transition-all duration-700 ${
-                visibleRows.has('row2') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 justify-items-center max-w-6xl mx-auto">
-                {smallShelfComics.slice(3, 6).map((comic, index) => (
-                  <div 
-                    key={comic.title} 
-                    className={`w-full max-w-xs cursor-pointer transition-all duration-500 hover:scale-105 ${
-                      visibleRows.has('row2') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                    }`}
-                    style={{ transitionDelay: visibleRows.has('row2') ? `${index * 150}ms` : '0ms' }}
-                    onClick={() => handleComicClick(comic)}
-                  >
-                    <img 
-                      src={comic.cover}
-                      alt={`${comic.title} comic cover`}
-                      className="w-full shadow-xl rounded-sm"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
+            {/* Forthcoming Comics Grid */}
+            <section className="pb-8">
+              {/* First Row */}
+              <div 
+                ref={row1Ref}
+                data-row="row1"
+                className={`mb-10 transition-all duration-700 ${
+                  visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
+              >
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
+                  {smallShelfComics.slice(0, 3).map((comic, index) => (
+                    <div 
+                      key={comic.title} 
+                      className={`cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl rounded-lg overflow-hidden ${
+                        visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                      }`}
+                      style={{ transitionDelay: visibleRows.has('row1') ? `${index * 150}ms` : '0ms' }}
+                      onClick={() => handleComicClick(comic)}
+                    >
+                      <img 
+                        src={comic.cover}
+                        alt={`${comic.title} comic cover`}
+                        className="w-full shadow-lg"
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+
+              {/* Second Row */}
+              <div
+                ref={row2Ref}
+                data-row="row2"
+                className={`transition-all duration-700 ${
+                  visibleRows.has('row2') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
+              >
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
+                  {smallShelfComics.slice(3, 6).map((comic, index) => (
+                    <div 
+                      key={comic.title} 
+                      className={`cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl rounded-lg overflow-hidden ${
+                        visibleRows.has('row2') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                      }`}
+                      style={{ transitionDelay: visibleRows.has('row2') ? `${index * 150}ms` : '0ms' }}
+                      onClick={() => handleComicClick(comic)}
+                    >
+                      <img 
+                        src={comic.cover}
+                        alt={`${comic.title} comic cover`}
+                        className="w-full shadow-lg"
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
           </div>
-        </section>
+        </div>
       </main>
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 relative z-10 max-sm:py-8 -mt-8">
+      <footer className="bg-slate-900 py-12 max-sm:py-8">
         <div className="container mx-auto px-6 text-center">
           <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
-          <p className="font-serif text-white">
+          <p className="font-serif text-slate-300">
             kazuki@kazukiyamakawa.com
           </p>
         </div>
@@ -431,26 +334,29 @@ const Comics = () => {
           onClick={handleCloseModal}
         >
           <div 
-            className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 border border-gray-200 max-sm:p-4 max-sm:gap-4 max-sm:max-h-[90vh] max-sm:overflow-y-auto animate-scale-in"
+            className="bg-white rounded-2xl shadow-2xl max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 max-sm:p-4 max-sm:gap-4 max-sm:max-h-[90vh] max-sm:overflow-y-auto animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-center max-sm:max-h-[40vh]">
               <img 
                 src={selectedComic.cover}
                 alt={`${selectedComic.title} comic cover`}
-                className="w-full max-w-lg shadow-2xl rounded-sm max-sm:max-h-full max-sm:object-contain"
+                className="w-full max-w-lg shadow-2xl rounded-lg max-sm:max-h-full max-sm:object-contain"
               />
             </div>
             <div className="flex flex-col justify-center">
-              <h3 className="font-serif text-3xl md:text-4xl font-bold text-black mb-4 max-sm:text-2xl">
+              <h3 
+                className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 max-sm:text-2xl"
+                style={{ fontFamily: 'Boogaloo, cursive' }}
+              >
                 {selectedComic.title}
               </h3>
-              <p className="font-serif text-base md:text-lg text-gray-700 leading-relaxed mb-6 max-sm:text-sm">
+              <p className="font-serif text-base md:text-lg text-slate-700 leading-relaxed mb-6 max-sm:text-sm">
                 {selectedComic.description}
               </p>
               <button
                 onClick={handleCloseModal}
-                className="self-start px-6 py-2 bg-amber-800 text-white font-medium rounded-lg hover:bg-amber-900 transition-colors"
+                className="self-start px-6 py-2 bg-slate-900 text-white font-medium rounded-lg hover:bg-slate-800 transition-colors"
               >
                 Close
               </button>
