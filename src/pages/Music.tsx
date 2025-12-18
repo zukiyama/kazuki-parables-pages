@@ -400,27 +400,12 @@ const Music = () => {
         <main className="container mx-auto px-6 pt-44 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Header - positioned closer to video */}
-          <div className="text-center mb-1 pt-0 relative">
+          <div className="text-center mb-0 pt-0">
             <img 
               src={musicLogo} 
               alt="Music" 
               className="max-w-2xl w-full mx-auto animate-fade-in"
             />
-            {/* Handwritten "music" animation */}
-            <div 
-              className="absolute right-[5%] bottom-[-10px] sm:right-[10%] sm:bottom-[-5px]"
-              style={{ transform: 'rotate(-30deg)' }}
-            >
-              <span 
-                className="text-white/80 text-2xl sm:text-3xl font-handwriting animate-music-handwrite"
-                style={{ 
-                  fontFamily: 'Great Vibes, cursive',
-                  textShadow: '0 0 10px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.2)'
-                }}
-              >
-                music
-              </span>
-            </div>
           </div>
           
           {/* Video Player - Cassette Deck Style */}
