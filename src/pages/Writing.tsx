@@ -433,7 +433,7 @@ const Writing = () => {
         <section data-section="kaiju" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
-              <h1 className={`font-serif text-6xl font-bold text-white mb-20 max-sm:mb-14 text-center tracking-wide transition-all duration-1000 ${
+              <h1 className={`font-serif text-6xl font-bold text-white mb-24 max-sm:mb-16 text-center tracking-wide transition-all duration-1000 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
               }`}>
                 Novels
@@ -450,7 +450,7 @@ const Writing = () => {
               </div>
               
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start lg:px-8">
-                <div className={`transition-all duration-1000 delay-300 pt-[3.5rem] ${
+                <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
                   <BookCoverSlideshow 
