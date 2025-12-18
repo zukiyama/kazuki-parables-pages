@@ -115,9 +115,9 @@ const Writing = () => {
   }, []);
 
 
-  // Scroll snap logic - simple direction-based: scroll up = previous section, scroll down = next section
+  // Scroll snap logic for book sections - only from HOAX onwards, not young-adult
   useEffect(() => {
-    let isSnappingLocal = false;
+    let scrollTimeout: NodeJS.Timeout;
     
     // Sections that should NOT have snap behavior
     const noSnapSections = ['kaiju', 'young-adult'];
@@ -145,6 +145,30 @@ const Writing = () => {
       const viewportHeight = window.innerHeight;
       const availableHeight = viewportHeight - topOffset;
       
+      if (sectionName === 'young-adult') {
+        // For young-adult: position so title-to-banner distance equals slideshow-to-footer distance
+        const title = section.querySelector('h2') as HTMLElement;
+        const slideshowContainer = section.querySelector('[class*="YoungAdult"], [class*="slideshow"], .relative.w-full') as HTMLElement;
+        if (!title) return null;
+        
+        const titleRect = title.getBoundingClientRect();
+        const titleHeight = titleRect.height;
+        
+        const slideshowEl = slideshowContainer || section.querySelector('.bg-black\\/60') as HTMLElement;
+        const slideshowRect = slideshowEl?.getBoundingClientRect();
+        const slideshowHeight = slideshowRect ? slideshowRect.height : 400;
+        
+        const contentSpan = slideshowRect 
+          ? (slideshowRect.bottom - titleRect.top)
+          : (titleHeight + slideshowHeight + 32);
+        
+        const desiredTitleTopInViewport = (topOffset + viewportHeight - contentSpan) / 2;
+        const currentTitleTop = titleRect.top;
+        const scrollAdjustment = currentTitleTop - desiredTitleTopInViewport;
+        
+        return Math.max(0, window.scrollY + scrollAdjustment);
+      }
+      
       // For book sections: center the book cover
       const bookCover = section.querySelector('.book-cover-slideshow img, [data-book-cover], img[alt*="Cover"]') as HTMLElement;
       if (!bookCover) {
@@ -160,172 +184,108 @@ const Writing = () => {
       return Math.max(0, coverCenter - desiredCenterY);
     };
 
-    const getCurrentSectionIndex = (sections: ReturnType<typeof getBookSections>) => {
-      const headerBottom = getHeaderBottom();
-      const banner = document.querySelector('.sticky.top-16') as HTMLElement;
-      const bannerHeight = banner ? banner.offsetHeight : 0;
-      const topOffset = headerBottom + bannerHeight;
-      
-      // Find which section is currently "active" (its center is closest to viewport center)
-      const viewportCenter = topOffset + (window.innerHeight - topOffset) / 2;
-      
-      let closestIndex = 0;
-      let minDistance = Infinity;
-      
-      sections.forEach((section, index) => {
-        const rect = section.el.getBoundingClientRect();
-        const sectionCenter = rect.top + rect.height / 2;
-        const distance = Math.abs(sectionCenter - viewportCenter);
-        
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestIndex = index;
-        }
+    const snapToPoint = (targetY: number) => {
+      if (isSnapping.current) return;
+      isSnapping.current = true;
+      window.scrollTo({
+        top: targetY,
+        behavior: 'smooth'
       });
+      setTimeout(() => {
+        isSnapping.current = false;
+      }, 600);
+    };
+
+    let lastScrollY = window.scrollY;
+    
+    const handleScrollEnd = () => {
+      if (isSnapping.current) return;
       
-      return closestIndex;
-    };
+      const currentScroll = window.scrollY;
+      const bookSections = getBookSections();
+      
+      if (bookSections.length === 0) return;
 
-    const snapToSection = (section: { el: HTMLElement; name: string }) => {
-      const snapPoint = getCenterSnapPoint(section.el, section.name);
-      if (snapPoint !== null) {
-        isSnappingLocal = true;
-        isSnapping.current = true;
-        window.scrollTo({
-          top: snapPoint,
-          behavior: 'smooth'
-        });
-        setTimeout(() => {
-          isSnappingLocal = false;
-          isSnapping.current = false;
-        }, 600);
-      }
-    };
-
-    const isInSnapZone = () => {
-      // Check if we're past the kaiju section (HOAX is visible enough)
+      // Check if we're in the no-snap zone (before HOAX)
       const hoaxSection = document.querySelector('[data-section="hoax"]') as HTMLElement;
-      if (!hoaxSection) return false;
-      
-      const hoaxRect = hoaxSection.getBoundingClientRect();
-      // If HOAX is below 70% of viewport, we're still in the no-snap kaiju zone
-      if (hoaxRect.top > window.innerHeight * 0.7) {
-        return false;
+      if (hoaxSection) {
+        const hoaxRect = hoaxSection.getBoundingClientRect();
+        // If HOAX is below the viewport center, we're still in the no-snap zone
+        if (hoaxRect.top > window.innerHeight * 0.7) {
+          return; // Don't snap
+        }
       }
-      
-      // Check if we're in the young-adult free-scroll zone
+
+      // Check if we're in or past the young-adult section (past vice-versa)
+      const youngAdultSection = document.querySelector('[data-section="young-adult"]') as HTMLElement;
       const viceVersaSection = document.querySelector('[data-section="vice-versa"]') as HTMLElement;
-      if (viceVersaSection) {
+      
+      if (youngAdultSection && viceVersaSection) {
+        const youngAdultRect = youngAdultSection.getBoundingClientRect();
         const viceVersaRect = viceVersaSection.getBoundingClientRect();
         const headerBottom = getHeaderBottom();
         const banner = document.querySelector('.sticky.top-16') as HTMLElement;
         const bannerHeight = banner ? banner.offsetHeight : 0;
         const topOffset = headerBottom + bannerHeight;
         
-        // If vice-versa's bottom is above the top offset, we're past it into young-adult zone
-        if (viceVersaRect.bottom < topOffset) {
-          return false;
-        }
-      }
-      
-      return true;
-    };
-
-    const handleWheel = (e: WheelEvent) => {
-      if (isSnappingLocal || isSnapping.current) return;
-      
-      const sections = getBookSections();
-      if (sections.length === 0) return;
-      
-      if (!isInSnapZone()) {
-        // Check if scrolling up into vice-versa from below
-        const viceVersaSection = document.querySelector('[data-section="vice-versa"]') as HTMLElement;
-        if (viceVersaSection && e.deltaY < 0) {
-          const viceVersaRect = viceVersaSection.getBoundingClientRect();
-          const headerBottom = getHeaderBottom();
-          const banner = document.querySelector('.sticky.top-16') as HTMLElement;
-          const bannerHeight = banner ? banner.offsetHeight : 0;
-          const topOffset = headerBottom + bannerHeight;
-          
-          // If scrolling up and vice-versa is very close (within 100px of being visible)
-          if (viceVersaRect.bottom > topOffset - 100 && viceVersaRect.bottom < topOffset + 100) {
-            const viceVersaSectionData = sections.find(s => s.name === 'vice-versa');
-            if (viceVersaSectionData) {
-              snapToSection(viceVersaSectionData);
-            }
+        // If young-adult section top is above the viewport center, we're in/past the young-adult area
+        if (youngAdultRect.top < window.innerHeight * 0.7) {
+          // Only snap back to vice-versa if we've scrolled UP and vice-versa is very close
+          // (its bottom is near or below the top offset area)
+          if (viceVersaRect.bottom > topOffset + 50) {
+            // Vice-versa is close enough - allow snap
+          } else {
+            // We're in young-adult zone, don't snap back to vice-versa
+            return;
           }
         }
-        return; // Free scroll otherwise
       }
-      
-      const currentIndex = getCurrentSectionIndex(sections);
-      const direction = e.deltaY > 0 ? 'down' : 'up';
-      
-      if (direction === 'down' && currentIndex < sections.length - 1) {
-        snapToSection(sections[currentIndex + 1]);
-      } else if (direction === 'up' && currentIndex > 0) {
-        snapToSection(sections[currentIndex - 1]);
-      }
-    };
 
-    // Touch handling for iPad/mobile
-    let touchStartY = 0;
-
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (isSnappingLocal || isSnapping.current) return;
+      // Always find the closest section regardless of visibility
+      let closestSection: { el: HTMLElement; name: string } | null = null;
+      let minDistance = Infinity;
       
-      const touchEndY = e.changedTouches[0].clientY;
-      const deltaY = touchStartY - touchEndY;
+      const headerBottom = getHeaderBottom();
+      const banner = document.querySelector('.sticky.top-16') as HTMLElement;
+      const bannerHeight = banner ? banner.offsetHeight : 0;
+      const topOffset = headerBottom + bannerHeight;
+      const viewportCenter = topOffset + (window.innerHeight - topOffset) / 2;
       
-      // Require minimum swipe distance (30px)
-      if (Math.abs(deltaY) < 30) return;
-      
-      const sections = getBookSections();
-      if (sections.length === 0) return;
-      
-      if (!isInSnapZone()) {
-        // Check if scrolling up into vice-versa from below
-        const viceVersaSection = document.querySelector('[data-section="vice-versa"]') as HTMLElement;
-        if (viceVersaSection && deltaY < 0) {
-          const viceVersaRect = viceVersaSection.getBoundingClientRect();
-          const headerBottom = getHeaderBottom();
-          const banner = document.querySelector('.sticky.top-16') as HTMLElement;
-          const bannerHeight = banner ? banner.offsetHeight : 0;
-          const topOffset = headerBottom + bannerHeight;
-          
-          // If scrolling up and vice-versa is very close
-          if (viceVersaRect.bottom > topOffset - 100 && viceVersaRect.bottom < topOffset + 100) {
-            const viceVersaSectionData = sections.find(s => s.name === 'vice-versa');
-            if (viceVersaSectionData) {
-              snapToSection(viceVersaSectionData);
-            }
-          }
+      bookSections.forEach(section => {
+        const rect = section.el.getBoundingClientRect();
+        // Use the section's center position relative to viewport
+        const sectionCenter = rect.top + (rect.height / 2);
+        const distance = Math.abs(sectionCenter - viewportCenter);
+        
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestSection = section;
         }
-        return; // Free scroll otherwise
+      });
+
+      // Snap to closest section regardless of whether it's visible or not
+      if (closestSection) {
+        const snapPoint = getCenterSnapPoint(closestSection.el, closestSection.name);
+        if (snapPoint !== null && Math.abs(currentScroll - snapPoint) > 15) {
+          snapToPoint(snapPoint);
+        }
       }
       
-      const currentIndex = getCurrentSectionIndex(sections);
-      const direction = deltaY > 0 ? 'down' : 'up';
-      
-      if (direction === 'down' && currentIndex < sections.length - 1) {
-        snapToSection(sections[currentIndex + 1]);
-      } else if (direction === 'up' && currentIndex > 0) {
-        snapToSection(sections[currentIndex - 1]);
-      }
+      lastScrollY = currentScroll;
     };
 
-    window.addEventListener('wheel', handleWheel, { passive: true });
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    const handleScroll = () => {
+      if (isSnapping.current) return;
+      
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(handleScrollEnd, 150);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
     };
   }, [getHeaderBottom]);
 
