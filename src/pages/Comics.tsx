@@ -43,11 +43,11 @@ const Comics = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Scroll snap logic using window scroll - direction-aware 25% threshold
+  // Scroll snap logic - simple direction-based: scroll up = previous section, scroll down = next section
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout;
     let isSnapping = false;
     let lastScrollY = window.scrollY;
+    let lastDirection: 'up' | 'down' | null = null;
 
     const getSnapSections = () => {
       const bannerEl = bannerSectionRef.current;
@@ -77,6 +77,19 @@ const Comics = () => {
       ];
     };
 
+    const getCurrentSectionIndex = (sections: ReturnType<typeof getSnapSections>) => {
+      const headerBottom = getHeaderBottom();
+      
+      // Find which section is currently "active" (its top is at or above header)
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const rect = sections[i].el.getBoundingClientRect();
+        if (rect.top <= headerBottom + 50) {
+          return i;
+        }
+      }
+      return 0;
+    };
+
     const snapToPoint = (targetY: number) => {
       isSnapping = true;
       window.scrollTo({
@@ -85,134 +98,94 @@ const Comics = () => {
       });
       setTimeout(() => {
         isSnapping = false;
-      }, 500);
+        lastDirection = null;
+      }, 600);
     };
 
-    const handleScrollEnd = () => {
+    const handleWheel = (e: WheelEvent) => {
       if (isSnapping) return;
       
-      const currentScroll = window.scrollY;
-      const scrollDirection = currentScroll > lastScrollY ? 'down' : 'up';
       const sections = getSnapSections();
-      
       if (sections.length === 0) return;
-
-      const headerBottom = getHeaderBottom();
-      const viewportBottom = window.innerHeight;
       
-      // Check if we're in the free-scroll zone below pendragon
+      const headerBottom = getHeaderBottom();
       const pendragonSection = sections.find(s => s.name === 'pendragon');
+      
+      // Check if we're in free-scroll zone below pendragon
       if (pendragonSection) {
         const pendragonRect = pendragonSection.el.getBoundingClientRect();
-        
-        // If pendragon's bottom is above the header (we're past it)
         if (pendragonRect.bottom < headerBottom) {
-          // We're in the free-scroll zone below pendragon
-          // Only snap back if scrolling UP AND pendragon is very close (within 50px of being visible)
-          if (scrollDirection === 'up' && pendragonRect.bottom > headerBottom - 50) {
+          // We're below pendragon - only snap back if scrolling up and very close
+          if (e.deltaY < 0 && pendragonRect.bottom > headerBottom - 100) {
             snapToPoint(pendragonSection.snapPoint);
           }
-          // Otherwise, free scroll - no snap
-          lastScrollY = currentScroll;
-          return;
-        }
-      }
-
-      // Direction-aware snapping:
-      // When scrolling DOWN: snap to the section BELOW if 25%+ visible
-      // When scrolling UP: snap to the section ABOVE if 25%+ visible
-      
-      // Sort sections by their position (top to bottom)
-      const sortedSections = [...sections].sort((a, b) => {
-        const aRect = a.el.getBoundingClientRect();
-        const bRect = b.el.getBoundingClientRect();
-        return aRect.top - bRect.top;
-      });
-      
-      // Find sections with visibility info
-      const sectionVisibility = sortedSections.map(section => {
-        const rect = section.el.getBoundingClientRect();
-        const sectionHeight = rect.height;
-        
-        const visibleTop = Math.max(rect.top, headerBottom);
-        const visibleBottom = Math.min(rect.bottom, viewportBottom);
-        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-        const visibilityRatio = visibleHeight / sectionHeight;
-        
-        // Is this section above or below the viewport center?
-        const sectionCenter = rect.top + sectionHeight / 2;
-        const viewportCenter = (headerBottom + viewportBottom) / 2;
-        const isAbove = sectionCenter < viewportCenter;
-        
-        return { section, visibilityRatio, isAbove, rect };
-      });
-      
-      let targetSection: typeof sections[0] | null = null;
-      
-      if (scrollDirection === 'down') {
-        // Scrolling down: look for section at bottom of viewport with ≥25% visibility
-        const candidatesBelow = sectionVisibility.filter(s => !s.isAbove && s.visibilityRatio >= 0.25);
-        if (candidatesBelow.length > 0) {
-          // Pick the one with highest visibility
-          candidatesBelow.sort((a, b) => b.visibilityRatio - a.visibilityRatio);
-          targetSection = candidatesBelow[0].section;
-        } else {
-          // No section below meets threshold, snap back to the section above
-          const candidatesAbove = sectionVisibility.filter(s => s.isAbove && s.visibilityRatio >= 0.25);
-          if (candidatesAbove.length > 0) {
-            candidatesAbove.sort((a, b) => b.visibilityRatio - a.visibilityRatio);
-            targetSection = candidatesAbove[0].section;
-          }
-        }
-      } else {
-        // Scrolling up: look for section at top of viewport with ≥25% visibility
-        const candidatesAbove = sectionVisibility.filter(s => s.isAbove && s.visibilityRatio >= 0.25);
-        if (candidatesAbove.length > 0) {
-          // Pick the one with highest visibility
-          candidatesAbove.sort((a, b) => b.visibilityRatio - a.visibilityRatio);
-          targetSection = candidatesAbove[0].section;
-        } else {
-          // No section above meets threshold, snap to the section below
-          const candidatesBelow = sectionVisibility.filter(s => !s.isAbove && s.visibilityRatio >= 0.25);
-          if (candidatesBelow.length > 0) {
-            candidatesBelow.sort((a, b) => b.visibilityRatio - a.visibilityRatio);
-            targetSection = candidatesBelow[0].section;
-          }
+          return; // Free scroll otherwise
         }
       }
       
-      // Fallback: if no section meets threshold, snap to closest
-      if (!targetSection) {
-        let minDistance = Infinity;
-        for (const section of sections) {
-          const rect = section.el.getBoundingClientRect();
-          const distance = Math.abs(rect.top - headerBottom);
-          if (distance < minDistance) {
-            minDistance = distance;
-            targetSection = section;
-          }
-        }
-      }
+      const currentIndex = getCurrentSectionIndex(sections);
+      const direction = e.deltaY > 0 ? 'down' : 'up';
       
-      if (targetSection && Math.abs(currentScroll - targetSection.snapPoint) > 10) {
-        snapToPoint(targetSection.snapPoint);
+      if (direction === 'down' && currentIndex < sections.length - 1) {
+        snapToPoint(sections[currentIndex + 1].snapPoint);
+      } else if (direction === 'up' && currentIndex > 0) {
+        snapToPoint(sections[currentIndex - 1].snapPoint);
       }
-      
-      lastScrollY = currentScroll;
     };
 
-    const handleScroll = () => {
+    // Touch handling for iPad/mobile
+    let touchStartY = 0;
+    let touchEndY = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
       if (isSnapping) return;
       
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(handleScrollEnd, 120);
+      touchEndY = e.changedTouches[0].clientY;
+      const deltaY = touchStartY - touchEndY;
+      
+      // Require minimum swipe distance (30px)
+      if (Math.abs(deltaY) < 30) return;
+      
+      const sections = getSnapSections();
+      if (sections.length === 0) return;
+      
+      const headerBottom = getHeaderBottom();
+      const pendragonSection = sections.find(s => s.name === 'pendragon');
+      
+      // Check if we're in free-scroll zone below pendragon
+      if (pendragonSection) {
+        const pendragonRect = pendragonSection.el.getBoundingClientRect();
+        if (pendragonRect.bottom < headerBottom) {
+          // We're below pendragon - only snap back if scrolling up and very close
+          if (deltaY < 0 && pendragonRect.bottom > headerBottom - 100) {
+            snapToPoint(pendragonSection.snapPoint);
+          }
+          return; // Free scroll otherwise
+        }
+      }
+      
+      const currentIndex = getCurrentSectionIndex(sections);
+      const direction = deltaY > 0 ? 'down' : 'up';
+      
+      if (direction === 'down' && currentIndex < sections.length - 1) {
+        snapToPoint(sections[currentIndex + 1].snapPoint);
+      } else if (direction === 'up' && currentIndex > 0) {
+        snapToPoint(sections[currentIndex - 1].snapPoint);
+      }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
     
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(scrollTimeout);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
     };
   }, [getHeaderBottom]);
 
