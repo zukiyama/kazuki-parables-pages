@@ -355,21 +355,13 @@ const Comics = () => {
 
         {/* Stories Waiting to be Told - Snap Section 4 */}
         <section ref={storiesSectionRef} className="text-center py-16 sm:py-24 bg-white">
-          <ScrollScale 
-            initialScale={1.3} 
-            finalScale={1} 
-            initialBlur={3}
-            className="text-center"
+          <h2 
+            className="font-serif text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight mb-6"
           >
-            <h2 
-              className="text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight mb-6"
-              style={{ fontFamily: 'EB Garamond, serif' }}
-            >
-              "Stories waiting to be told..."
-            </h2>
-            <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
-            <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
-          </ScrollScale>
+            "Stories waiting to be told..."
+          </h2>
+          <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
+          <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
         </section>
 
         {/* Forthcoming Comics Grid */}
