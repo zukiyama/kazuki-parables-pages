@@ -142,21 +142,42 @@ const Writing = () => {
       const availableHeight = viewportHeight - topOffset;
       
       if (sectionName === 'young-adult') {
-        // For young-adult: center the title
+        // For young-adult: position so title-to-banner distance equals slideshow-to-footer distance
         const title = section.querySelector('h2') as HTMLElement;
-        const slideshow = section.querySelector('.embla, [class*="slideshow"]') as HTMLElement;
+        const slideshowContainer = section.querySelector('[class*="YoungAdult"], [class*="slideshow"], .relative.w-full') as HTMLElement;
+        const footer = document.querySelector('footer') as HTMLElement;
         if (!title) return null;
         
-        // Get title top and slideshow bottom
         const titleRect = title.getBoundingClientRect();
-        const slideshowRect = slideshow?.getBoundingClientRect();
-        const contentTop = titleRect.top + window.scrollY;
-        const contentBottom = slideshowRect ? slideshowRect.bottom + window.scrollY : titleRect.bottom + window.scrollY + 400;
-        const contentHeight = contentBottom - contentTop;
-        const contentCenter = contentTop + (contentHeight / 2);
-        const desiredCenterY = topOffset + (availableHeight / 2);
+        const titleHeight = titleRect.height;
         
-        return Math.max(0, contentCenter - desiredCenterY);
+        // Get slideshow bottom (the actual slideshow component)
+        const slideshowEl = slideshowContainer || section.querySelector('.bg-black\\/60') as HTMLElement;
+        const slideshowRect = slideshowEl?.getBoundingClientRect();
+        const slideshowHeight = slideshowRect ? slideshowRect.height : 400;
+        
+        // Distance from title top to slideshow bottom
+        const contentSpan = slideshowRect 
+          ? (slideshowRect.bottom - titleRect.top)
+          : (titleHeight + slideshowHeight + 32); // 32px gap estimate
+        
+        // Calculate: we want (titleTop - topOffset) == (footerTop - slideshowBottom)
+        // Let titleTop be at position Y after scroll
+        // titleTop - topOffset = footerTop - slideshowBottom
+        // titleTop - topOffset = footerTop - (titleTop + contentSpan)
+        // 2*titleTop = topOffset + footerTop - contentSpan + topOffset... 
+        // Actually simpler: place content so equal spacing above and below
+        // Space above = titleTop - topOffset
+        // Space below = viewportHeight - slideshowBottom = viewportHeight - (titleTop + contentSpan)
+        // titleTop - topOffset = viewportHeight - titleTop - contentSpan
+        // 2*titleTop = topOffset + viewportHeight - contentSpan
+        // titleTop = (topOffset + viewportHeight - contentSpan) / 2
+        
+        const desiredTitleTopInViewport = (topOffset + viewportHeight - contentSpan) / 2;
+        const currentTitleTop = titleRect.top;
+        const scrollAdjustment = currentTitleTop - desiredTitleTopInViewport;
+        
+        return Math.max(0, window.scrollY + scrollAdjustment);
       }
       
       // For book sections: center the book cover
