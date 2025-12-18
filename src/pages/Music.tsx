@@ -29,7 +29,7 @@ import deathOfLoveAlbum from "@/assets/death-of-love-album.png";
 import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album-new.jpeg";
 import centreOfWorldAlbum from "@/assets/last-city-on-earth-album.jpeg";
 import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
-import flowerEpCover from "@/assets/flower-ep-cover-new.jpeg";
+import flowerEpCover from "@/assets/flower-ep-cover-banner.jpeg";
 import circlesSingleCover from "@/assets/circles-single-cover.png";
 
 const albums = [
@@ -397,15 +397,30 @@ const Music = () => {
         <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
       </div>
       
-        <main className="container mx-auto px-6 pt-48 pb-12 relative z-10">
+        <main className="container mx-auto px-6 pt-44 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
-          {/* Header - positioned closer to video with smaller gap above */}
-          <div className="text-center mb-2 pt-1">
+          {/* Header - positioned closer to video */}
+          <div className="text-center mb-1 pt-0 relative">
             <img 
               src={musicLogo} 
               alt="Music" 
               className="max-w-2xl w-full mx-auto animate-fade-in"
             />
+            {/* Handwritten "music" animation */}
+            <div 
+              className="absolute right-[5%] bottom-[-10px] sm:right-[10%] sm:bottom-[-5px]"
+              style={{ transform: 'rotate(-30deg)' }}
+            >
+              <span 
+                className="text-white/80 text-2xl sm:text-3xl font-handwriting animate-music-handwrite"
+                style={{ 
+                  fontFamily: 'Great Vibes, cursive',
+                  textShadow: '0 0 10px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.2)'
+                }}
+              >
+                music
+              </span>
+            </div>
           </div>
           
           {/* Video Player - Cassette Deck Style */}

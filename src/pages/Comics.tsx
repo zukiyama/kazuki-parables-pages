@@ -187,19 +187,19 @@ const Comics = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f0e6] overflow-x-hidden">
+    <div className="min-h-screen bg-[#f5f0e6] overflow-x-hidden overflow-y-visible">
       <Navigation />
 
       <main className="relative z-10">
         {/* Header Banner - Original black style */}
         <header 
           ref={bannerSectionRef}
-          className="py-4 sm:py-6 px-4 mt-16 bg-black"
+          className="py-3 sm:py-4 px-4 mt-16 bg-black"
         >
-          {/* Main title */}
+          {/* Main title - larger */}
           <div className="text-center">
             <h1 
-              className="text-3xl sm:text-5xl lg:text-6xl font-bold text-[#e8d9a0] tracking-wide"
+              className="text-4xl sm:text-6xl lg:text-7xl font-bold text-[#e8d9a0] tracking-wide"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
                 textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
@@ -217,17 +217,6 @@ const Comics = () => {
             </p>
             <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-20" />
           </div>
-          
-          {/* Category line */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-2 text-[#e8d9a0]/70 flex-wrap">
-            <span className="text-[10px] sm:text-xs tracking-widest uppercase font-light">MANGA</span>
-            <span className="text-[#e8d9a0]/40">•</span>
-            <span className="text-[10px] sm:text-xs tracking-widest uppercase font-light">WEBTOONS</span>
-            <span className="text-[#e8d9a0]/40">•</span>
-            <span className="text-[10px] sm:text-xs tracking-widest uppercase font-light">COMICS</span>
-            <span className="text-[#e8d9a0]/40">•</span>
-            <span className="text-[10px] sm:text-xs tracking-widest uppercase font-light">LONG-FORM SCRIPTS</span>
-          </div>
         </header>
 
         {/* GOD OF LIES - No snap, flush with banner */}
@@ -241,30 +230,24 @@ const Comics = () => {
             className="w-full"
           />
           
-          {/* Magazine-style "New Release" badge - professional magazine panel look */}
+          {/* New Release badge - muted red, plain style */}
           <div 
-            className="absolute right-[4%] top-[30%] sm:right-[6%] sm:top-[35%]"
+            className="absolute right-[4%] top-[40%] sm:right-[6%] sm:top-[45%]"
           >
             <div 
-              className="bg-gradient-to-br from-[#c41e3a] via-[#9b1b30] to-[#6b1525] px-5 py-3 sm:px-8 sm:py-4 border-2 border-white/30"
-              style={{
-                boxShadow: '0 4px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2)',
-                clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)'
-              }}
+              className="bg-[#8B3A3A]/90 px-4 py-2 sm:px-6 sm:py-3"
             >
               <p 
-                className="text-white text-sm sm:text-lg font-black tracking-wider uppercase leading-tight"
+                className="text-white text-sm sm:text-base tracking-wider uppercase"
                 style={{ 
-                  fontFamily: 'Impact, Haettenschweiler, sans-serif',
-                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
+                  fontFamily: 'Boogaloo, cursive'
                 }}
               >
                 NEW RELEASE
               </p>
-              <div className="w-full h-px bg-white/40 my-1.5" />
               <p 
-                className="text-white/95 text-[10px] sm:text-xs tracking-widest uppercase"
-                style={{ fontFamily: 'Arial Narrow, Arial, sans-serif' }}
+                className="text-white/90 text-[10px] sm:text-xs tracking-wide uppercase mt-1"
+                style={{ fontFamily: 'Boogaloo, cursive' }}
               >
                 First Issue Coming Soon
               </p>
@@ -452,19 +435,20 @@ const Comics = () => {
       </main>
       
       {/* Footer with mascot character */}
-      <footer className="bg-slate-900 py-10 max-sm:py-6 relative">
+      <footer className="bg-black py-10 max-sm:py-6 relative overflow-visible">
         {/* Footer character - very small, bottom right corner, aligned with footer top */}
         <img 
           src={comicsFooterCharacter}
           alt="Comics mascot"
-          className="absolute right-4 sm:right-6 bottom-full w-auto pointer-events-none"
+          className="absolute right-4 sm:right-6 w-auto pointer-events-none z-10"
           style={{
-            height: '1in'
+            height: '2.5cm',
+            bottom: '100%'
           }}
         />
         <div className="container mx-auto px-6 text-center">
-          <h3 className="font-heading text-xl mb-3 text-white">Contact</h3>
-          <p className="font-serif text-slate-300 text-sm">
+          <h3 className="font-heading text-xl mb-3 text-[#e8d9a0]">Contact</h3>
+          <p className="font-serif text-[#e8d9a0]/80 text-sm">
             kazuki@kazukiyamakawa.com
           </p>
         </div>

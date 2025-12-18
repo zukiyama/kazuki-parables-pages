@@ -191,6 +191,25 @@
   to { clip-path: inset(0 0 0 0); opacity: 1; }
 }
 
+@keyframes music-handwrite {
+  0% { 
+    clip-path: inset(0 100% 0 0); 
+    opacity: 0; 
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% { 
+    clip-path: inset(0 0 0 0); 
+    opacity: 0.8; 
+  }
+}
+
+.animate-music-handwrite {
+  display: inline-block;
+  animation: music-handwrite 2s ease-out 0.5s both;
+}
+
 @keyframes quote-expand {
   0% {
     transform: scale(0.8);
