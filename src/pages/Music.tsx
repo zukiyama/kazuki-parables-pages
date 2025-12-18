@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { AlbumBanner } from "@/components/AlbumBanner";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -221,6 +222,7 @@ const albums = [
 ];
 
 const Music = () => {
+  useScrollToTop();
   const location = useLocation();
   const [scrollY, setScrollY] = useState(0);
   const [selectedAlbum, setSelectedAlbum] = useState(albums[7]); // Default to Coming Soon EP
@@ -239,43 +241,11 @@ const Music = () => {
   // Zoom dialog for album covers
   const [isZoomDialogOpen, setIsZoomDialogOpen] = useState(false);
   
-  // Banner visibility state
-  const [isBannerVisible, setIsBannerVisible] = useState(true);
-  const lastScrollY = useRef(0);
-  const bannerRef = useRef<HTMLDivElement>(null);
-
-  // Handle scroll to hide banner on scroll down
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setScrollY(currentScrollY);
-      
-      // Hide banner when scrolling down (past threshold)
-      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
-        setIsBannerVisible(false);
-      }
-      
-      lastScrollY.current = currentScrollY;
-    };
+    const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Handle tap on blank areas to toggle banner
-  const handlePageClick = (e: React.MouseEvent) => {
-    const target = e.target as HTMLElement;
-    
-    // Check if click is on an interactive element
-    const isInteractive = target.closest('button, a, [role="button"], input, video, [data-interactive]');
-    
-    // Check if click is on the banner itself
-    const isOnBanner = bannerRef.current?.contains(target);
-    
-    // Only toggle if clicking on a blank/non-interactive area outside the banner
-    if (!isInteractive && !isOnBanner) {
-      setIsBannerVisible(prev => !prev);
-    }
-  };
 
   // Handle Ohio banner navigation - scroll to video player
   useEffect(() => {
@@ -394,17 +364,11 @@ const Music = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 relative overflow-hidden" onClick={handlePageClick}>
+    <div className="min-h-screen bg-slate-900 relative overflow-hidden">
       <Navigation />
       
-      {/* Album Banner - Fixed at top with fade transition */}  
-      <div 
-        ref={bannerRef}
-        className={`fixed top-16 left-0 right-0 z-20 transition-opacity duration-300 ease-in-out ${
-          isBannerVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
-        data-interactive
-      >
+      {/* Album Banner - Fixed at top */}  
+      <div className="fixed top-16 left-0 right-0 z-20">
         <AlbumBanner 
           selectedAlbumId={selectedAlbum.id}
           onAlbumClick={handleAlbumSelect}
@@ -433,10 +397,10 @@ const Music = () => {
         <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
       </div>
       
-      <main className="container mx-auto px-6 pt-28 pb-12 relative z-10">
+        <main className="container mx-auto px-6 pt-60 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-6 pt-2">
+          {/* Header - positioned equidistant between banner bottom and video top */}
+          <div className="text-center mb-8 pt-4">
             <img 
               src={musicLogo} 
               alt="Music" 

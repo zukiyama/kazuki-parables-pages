@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
-
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import officeView from "@/assets/office-window-view.jpg";
 import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
@@ -11,6 +11,7 @@ import circlesSingleCover from "@/assets/circles-single-cover.png";
 import useEmblaCarousel from "embla-carousel-react";
 
 const Index = () => {
+  useScrollToTop();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);

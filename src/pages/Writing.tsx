@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungAdultSlideshow";
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
@@ -34,6 +35,7 @@ import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
 import toFlyCover from "@/assets/to-fly-cover-new.png";
 
 const Writing = () => {
+  useScrollToTop();
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);

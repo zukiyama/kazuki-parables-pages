@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollScale } from "@/components/ScrollAnimations";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
 import surnamePendragonBanner from "@/assets/surname-pendragon-banner.png";
 import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
@@ -11,6 +12,7 @@ import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 
 const Comics = () => {
+  useScrollToTop();
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const row1Ref = useRef<HTMLDivElement>(null);
@@ -127,8 +129,8 @@ const Comics = () => {
         }
       }
       
-      // Threshold-based snapping with velocity consideration
-      const threshold = window.innerHeight * 0.25;
+      // Threshold-based snapping with velocity consideration - more sensitive
+      const threshold = window.innerHeight * 0.12;
       
       // Find current section index
       let currentIndex = 0;
@@ -142,7 +144,7 @@ const Comics = () => {
       // Determine target based on velocity and threshold
       let targetIndex = currentIndex;
       
-      if (Math.abs(scrollVelocity) > 15) {
+      if (Math.abs(scrollVelocity) > 8) {
         // Fast scroll - go to next/prev section
         if (scrollVelocity > 0 && currentIndex < snapPoints.length - 1) {
           targetIndex = currentIndex + 1;
