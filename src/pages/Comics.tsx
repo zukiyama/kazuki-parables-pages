@@ -244,7 +244,7 @@ const Comics = () => {
           
           {/* New Release label */}
           <div 
-            className="absolute right-[4%] top-[40%] sm:right-[6%] sm:top-[45%] w-28 sm:w-36 lg:w-44 transform rotate-2"
+            className="absolute right-[2%] top-[48%] sm:right-[4%] sm:top-[52%] w-36 sm:w-48 lg:w-56"
           >
             <img 
               src={newReleaseLabel}
@@ -255,7 +255,7 @@ const Comics = () => {
 
           {/* Slide-in description panel from left */}
           <div 
-            className={`absolute bottom-[8%] left-0 max-w-[85%] sm:max-w-[55%] lg:max-w-[40%] bg-amber-50/95 backdrop-blur-sm p-4 sm:p-6 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out ${
+            className={`absolute bottom-[12%] left-0 max-w-[85%] sm:max-w-[55%] lg:max-w-[40%] bg-amber-50/95 backdrop-blur-sm p-4 sm:p-6 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out ${
               showGodOfLiesDescription 
                 ? 'opacity-100 translate-x-0' 
                 : 'opacity-0 -translate-x-full'
@@ -274,12 +274,27 @@ const Comics = () => {
         {/* Bus Stop Image + Description Section */}
         <section ref={busStopSectionRef} className="w-full relative bg-white">
           <div className="flex flex-col lg:flex-row">
-            {/* Left side - Description text (no animation on mobile, slides in on desktop) */}
+            {/* Left side - Bus stop image (slides in from left on desktop) */}
             <div 
-              className={`w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex items-center transition-all duration-700 ease-out max-sm:opacity-100 max-sm:translate-x-0 ${
+              className={`w-full lg:w-1/2 transition-all duration-700 ease-out max-sm:opacity-100 max-sm:translate-x-0 ${
                 showBusStopSection 
                   ? 'opacity-100 translate-x-0' 
                   : 'sm:opacity-0 sm:-translate-x-16'
+              }`}
+            >
+              <img 
+                src={godOfLiesBusStop}
+                alt="God of Lies - Bus Stop Scene"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            
+            {/* Right side - Description text (slides in from right on desktop) */}
+            <div 
+              className={`w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex items-center bg-amber-50/95 transition-all duration-700 ease-out max-sm:opacity-100 max-sm:translate-x-0 ${
+                showBusStopSection 
+                  ? 'opacity-100 translate-x-0' 
+                  : 'sm:opacity-0 sm:translate-x-16'
               }`}
             >
               <div>
@@ -305,21 +320,6 @@ const Comics = () => {
                 </p>
               </div>
             </div>
-            
-            {/* Right side - Bus stop image (no animation on mobile, slides in on desktop) */}
-            <div 
-              className={`w-full lg:w-1/2 transition-all duration-700 ease-out max-sm:opacity-100 max-sm:translate-x-0 ${
-                showBusStopSection 
-                  ? 'opacity-100 translate-x-0' 
-                  : 'sm:opacity-0 sm:translate-x-16'
-              }`}
-            >
-              <img 
-                src={godOfLiesBusStop}
-                alt="God of Lies - Bus Stop Scene"
-                className="w-full h-full object-cover"
-              />
-            </div>
           </div>
         </section>
 
@@ -340,11 +340,12 @@ const Comics = () => {
           
           {/* Slide-in caption panel from left - classy film magazine style */}
           <div 
-            className={`absolute bottom-[10%] left-0 max-w-[85%] sm:max-w-[50%] lg:max-w-[38%] bg-black/90 backdrop-blur-sm p-5 sm:p-6 lg:p-8 transition-all duration-700 ease-out ${
+            className={`absolute bottom-[8%] left-0 max-w-[70%] sm:max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-5 sm:p-6 lg:p-8 transition-all duration-700 ease-out cursor-pointer ${
               showPendragonCaption 
                 ? 'opacity-100 translate-x-0' 
                 : 'opacity-0 -translate-x-full'
             }`}
+            onClick={() => setShowPendragonCaption(false)}
           >
             <h4 
               className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-3"
