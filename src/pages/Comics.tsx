@@ -12,6 +12,7 @@ import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop-cropped.jpeg";
 import comicsFooterCharacter from "@/assets/comics-footer-character.jpeg";
+import newReleaseLabel from "@/assets/new-release-label.jpeg";
 
 const Comics = () => {
   useScrollToTop();
@@ -243,10 +244,13 @@ const Comics = () => {
           
           {/* New Release label */}
           <div 
-            className="absolute right-[4%] top-[40%] sm:right-[6%] sm:top-[45%] bg-red-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded shadow-lg transform rotate-3"
+            className="absolute right-[4%] top-[40%] sm:right-[6%] sm:top-[45%] w-28 sm:w-36 lg:w-44 transform rotate-2"
           >
-            <p className="text-xs sm:text-sm font-bold uppercase tracking-wide">New Release</p>
-            <p className="text-[10px] sm:text-xs opacity-90">First Issue Coming Soon</p>
+            <img 
+              src={newReleaseLabel}
+              alt="First Issue! New Release"
+              className="w-full h-auto drop-shadow-lg"
+            />
           </div>
 
           {/* Slide-in description panel from left */}
