@@ -43,18 +43,18 @@ const Comics = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Scroll snap logic using window scroll - 25% threshold to snap to new section
+  // Scroll snap logic using window scroll - direction-aware 25% threshold
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let isSnapping = false;
+    let lastScrollY = window.scrollY;
 
     const getSnapSections = () => {
       const bannerEl = bannerSectionRef.current;
       const godOfLiesEl = godOfLiesSectionRef.current;
       const pendragonEl = pendragonSectionRef.current;
-      const storiesEl = storiesSectionRef.current;
       
-      if (!bannerEl || !godOfLiesEl || !pendragonEl || !storiesEl) return [];
+      if (!bannerEl || !godOfLiesEl || !pendragonEl) return [];
 
       const headerBottom = getHeaderBottom();
       
@@ -73,11 +73,6 @@ const Comics = () => {
           el: pendragonEl, 
           name: 'pendragon',
           snapPoint: pendragonEl.getBoundingClientRect().top + window.scrollY - headerBottom
-        },
-        { 
-          el: storiesEl, 
-          name: 'stories',
-          snapPoint: storiesEl.getBoundingClientRect().top + window.scrollY - headerBottom
         }
       ];
     };
@@ -97,6 +92,7 @@ const Comics = () => {
       if (isSnapping) return;
       
       const currentScroll = window.scrollY;
+      const scrollDirection = currentScroll > lastScrollY ? 'down' : 'up';
       const sections = getSnapSections();
       
       if (sections.length === 0) return;
@@ -104,41 +100,88 @@ const Comics = () => {
       const headerBottom = getHeaderBottom();
       const viewportBottom = window.innerHeight;
       
-      // If we're past the bottom of the stories section, allow free scroll
-      const storiesSection = sections.find(s => s.name === 'stories');
-      if (storiesSection) {
-        const storiesRect = storiesSection.el.getBoundingClientRect();
-        // Only allow free scroll when scrolling DOWN past stories section
-        if (storiesRect.bottom < headerBottom) return;
+      // Check if we're in the free-scroll zone below pendragon
+      const pendragonSection = sections.find(s => s.name === 'pendragon');
+      if (pendragonSection) {
+        const pendragonRect = pendragonSection.el.getBoundingClientRect();
+        
+        // If pendragon's bottom is above the header (we're past it)
+        if (pendragonRect.bottom < headerBottom) {
+          // We're in the free-scroll zone below pendragon
+          // Only snap back if scrolling UP AND pendragon is very close (within 50px of being visible)
+          if (scrollDirection === 'up' && pendragonRect.bottom > headerBottom - 50) {
+            snapToPoint(pendragonSection.snapPoint);
+          }
+          // Otherwise, free scroll - no snap
+          lastScrollY = currentScroll;
+          return;
+        }
       }
 
-      // Calculate visibility ratio for each section:
-      // (visible height of section in viewport) / (total height of section)
-      // Snap to section with ≥25% visibility; if multiple, choose the one with highest visibility
-      let targetSection: typeof sections[0] | null = null;
-      let highestVisibility = 0;
+      // Direction-aware snapping:
+      // When scrolling DOWN: snap to the section BELOW if 25%+ visible
+      // When scrolling UP: snap to the section ABOVE if 25%+ visible
       
-      for (const section of sections) {
+      // Sort sections by their position (top to bottom)
+      const sortedSections = [...sections].sort((a, b) => {
+        const aRect = a.el.getBoundingClientRect();
+        const bRect = b.el.getBoundingClientRect();
+        return aRect.top - bRect.top;
+      });
+      
+      // Find sections with visibility info
+      const sectionVisibility = sortedSections.map(section => {
         const rect = section.el.getBoundingClientRect();
         const sectionHeight = rect.height;
         
-        // Calculate visible portion of this section within the viewport
-        // Viewport starts at headerBottom and ends at viewportBottom
         const visibleTop = Math.max(rect.top, headerBottom);
         const visibleBottom = Math.min(rect.bottom, viewportBottom);
         const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-        
-        // Visibility ratio = visible height / total section height
         const visibilityRatio = visibleHeight / sectionHeight;
         
-        // If ≥25% is visible, it's a candidate
-        if (visibilityRatio >= 0.25 && visibilityRatio > highestVisibility) {
-          highestVisibility = visibilityRatio;
-          targetSection = section;
+        // Is this section above or below the viewport center?
+        const sectionCenter = rect.top + sectionHeight / 2;
+        const viewportCenter = (headerBottom + viewportBottom) / 2;
+        const isAbove = sectionCenter < viewportCenter;
+        
+        return { section, visibilityRatio, isAbove, rect };
+      });
+      
+      let targetSection: typeof sections[0] | null = null;
+      
+      if (scrollDirection === 'down') {
+        // Scrolling down: look for section at bottom of viewport with ≥25% visibility
+        const candidatesBelow = sectionVisibility.filter(s => !s.isAbove && s.visibilityRatio >= 0.25);
+        if (candidatesBelow.length > 0) {
+          // Pick the one with highest visibility
+          candidatesBelow.sort((a, b) => b.visibilityRatio - a.visibilityRatio);
+          targetSection = candidatesBelow[0].section;
+        } else {
+          // No section below meets threshold, snap back to the section above
+          const candidatesAbove = sectionVisibility.filter(s => s.isAbove && s.visibilityRatio >= 0.25);
+          if (candidatesAbove.length > 0) {
+            candidatesAbove.sort((a, b) => b.visibilityRatio - a.visibilityRatio);
+            targetSection = candidatesAbove[0].section;
+          }
+        }
+      } else {
+        // Scrolling up: look for section at top of viewport with ≥25% visibility
+        const candidatesAbove = sectionVisibility.filter(s => s.isAbove && s.visibilityRatio >= 0.25);
+        if (candidatesAbove.length > 0) {
+          // Pick the one with highest visibility
+          candidatesAbove.sort((a, b) => b.visibilityRatio - a.visibilityRatio);
+          targetSection = candidatesAbove[0].section;
+        } else {
+          // No section above meets threshold, snap to the section below
+          const candidatesBelow = sectionVisibility.filter(s => !s.isAbove && s.visibilityRatio >= 0.25);
+          if (candidatesBelow.length > 0) {
+            candidatesBelow.sort((a, b) => b.visibilityRatio - a.visibilityRatio);
+            targetSection = candidatesBelow[0].section;
+          }
         }
       }
       
-      // If no section has ≥25% visibility, snap to the closest section
+      // Fallback: if no section meets threshold, snap to closest
       if (!targetSection) {
         let minDistance = Infinity;
         for (const section of sections) {
@@ -154,6 +197,8 @@ const Comics = () => {
       if (targetSection && Math.abs(currentScroll - targetSection.snapPoint) > 10) {
         snapToPoint(targetSection.snapPoint);
       }
+      
+      lastScrollY = currentScroll;
     };
 
     const handleScroll = () => {
