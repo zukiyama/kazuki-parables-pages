@@ -382,80 +382,79 @@ const Writing = () => {
       />
       
       {/* Stacked Background Images - All preloaded */}
-      {/* Using fixed positioning with 120vh height to prevent white bar flicker when browser chrome hides/shows */}
-      <div className="fixed top-0 left-0 right-0 z-0 overflow-hidden" style={{ height: '120vh', width: '100vw' }}>
+      <div className="fixed top-0 left-0 z-0" style={{ height: '100vh', width: '100vw' }}>
         <img 
           src={schoolBackground} 
           alt="School background"
           loading="eager"
-          className="absolute top-0 left-0 w-full object-cover object-top transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.school, height: '120vh', minHeight: '120vh' }}
+          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.school }}
         />
         <img 
           src={hoaxBackground} 
           alt="Hoax background"
           loading="eager"
-          className="absolute top-0 left-0 w-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.hoax, height: '120vh', minHeight: '120vh' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.hoax }}
         />
         <img 
           src={theMarketBackground} 
           alt="The Market background"
           loading="eager"
-          className="absolute top-0 left-0 w-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.theMarket, height: '120vh', minHeight: '120vh' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.theMarket }}
         />
         <img 
           src={howBackground} 
           alt="HOW background"
           loading="eager"
-          className="absolute top-0 left-0 w-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.how, height: '120vh', minHeight: '120vh' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.how }}
         />
         <img 
           src={viceVersaBackground} 
           alt="Vice Versa background"
           loading="eager"
-          className="absolute top-0 left-0 w-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.viceVersa, height: '120vh', minHeight: '120vh' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.viceVersa }}
         />
         <img 
           src={amyaNewBackground} 
           alt="AMYA background"
           loading="eager"
-          className="absolute top-0 left-0 w-full object-cover transition-opacity duration-1000 ease-in-out brightness-150"
-          style={{ opacity: backgroundOpacities.oba, height: '120vh', minHeight: '120vh' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-150"
+          style={{ opacity: backgroundOpacities.oba }}
         />
         <img 
           src={statesOfMotionBackground} 
           alt="States of Motion background"
           loading="eager"
-          className="absolute top-0 left-0 w-full object-cover transition-opacity duration-1000 ease-in-out brightness-125"
-          style={{ opacity: backgroundOpacities.statesOfMotion, height: '120vh', minHeight: '120vh' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-125"
+          style={{ opacity: backgroundOpacities.statesOfMotion }}
         />
         <img 
           src={professorBarnabasBackground} 
           alt="Professor Barnabas background"
           loading="eager"
-          className="absolute top-0 left-0 w-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.victorianLondon, height: '120vh', minHeight: '120vh' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.victorianLondon }}
         />
         <img 
           src={wastelandCityBackground} 
           alt="Wasteland City background"
           loading="eager"
-          className="absolute top-0 left-0 w-full object-cover object-top transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.wasteland, height: '120vh', minHeight: '120vh' }}
+          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.wasteland }}
         />
         <img 
           src={deepSpaceBackground} 
           alt="Space battle background"
           loading="eager"
-          className="absolute top-0 left-0 w-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.deepSpace, height: '120vh', minHeight: '120vh' }}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.deepSpace }}
         />
         
-        <div className="absolute top-0 left-0 w-full bg-gradient-to-b from-black/20 via-black/30 to-black/40" style={{ height: '120vh', minHeight: '120vh' }}></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
       </div>
       
       <main className="relative z-10 pt-24 max-sm:pt-40">
