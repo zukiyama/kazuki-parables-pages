@@ -22,6 +22,7 @@ const Comics = () => {
   const bannerSectionRef = useRef<HTMLElement>(null);
   const godOfLiesSectionRef = useRef<HTMLElement>(null);
   const pendragonSectionRef = useRef<HTMLElement>(null);
+  const storiesSectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLElement | null>(null);
 
   // Get dynamic header height (accounts for browser chrome showing/hiding)
@@ -51,8 +52,9 @@ const Comics = () => {
       const bannerEl = bannerSectionRef.current;
       const godOfLiesEl = godOfLiesSectionRef.current;
       const pendragonEl = pendragonSectionRef.current;
+      const storiesEl = storiesSectionRef.current;
       
-      if (!bannerEl || !godOfLiesEl || !pendragonEl) return [];
+      if (!bannerEl || !godOfLiesEl || !pendragonEl || !storiesEl) return [];
 
       const headerBottom = getHeaderBottom();
       
@@ -71,6 +73,11 @@ const Comics = () => {
           el: pendragonEl, 
           name: 'pendragon',
           snapPoint: pendragonEl.getBoundingClientRect().top + window.scrollY - headerBottom
+        },
+        { 
+          el: storiesEl, 
+          name: 'stories',
+          snapPoint: storiesEl.getBoundingClientRect().top + window.scrollY - headerBottom
         }
       ];
     };
@@ -95,59 +102,51 @@ const Comics = () => {
       if (sections.length === 0) return;
 
       const headerBottom = getHeaderBottom();
-      const viewportTop = currentScroll + headerBottom;
       
-      // If we're past the last snap section, allow free scroll
-      const lastSection = sections[sections.length - 1];
-      const lastSectionRect = lastSection.el.getBoundingClientRect();
-      const lastSectionBottom = lastSectionRect.bottom + currentScroll;
-      if (viewportTop > lastSectionBottom) return;
+      // If we're past the bottom of the stories section, allow free scroll
+      const storiesSection = sections.find(s => s.name === 'stories');
+      if (storiesSection) {
+        const storiesRect = storiesSection.el.getBoundingClientRect();
+        // Only allow free scroll when scrolling DOWN past stories section
+        if (storiesRect.bottom < headerBottom) return;
+      }
 
-      // Simple 25% threshold logic:
-      // Check how much of each section is visible in the viewport
-      // If 25% or more of a section is showing, consider it a candidate
-      // Snap to the section that has the most visibility
+      // 25% threshold: find which section we've scrolled 25% into
+      // Check from bottom to top - if we've scrolled 25% into a new section, snap to it
+      let targetSection: typeof sections[0] | null = null;
       
-      let bestSection: typeof sections[0] | null = null;
-      let bestVisibility = 0;
-      
-      for (const section of sections) {
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
         const rect = section.el.getBoundingClientRect();
-        const sectionTop = rect.top;
-        const sectionBottom = rect.bottom;
         const sectionHeight = rect.height;
-        const viewportHeight = window.innerHeight;
         
-        // Calculate how much of this section is visible
-        const visibleTop = Math.max(sectionTop, headerBottom);
-        const visibleBottom = Math.min(sectionBottom, viewportHeight);
-        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-        const visibilityRatio = visibleHeight / sectionHeight;
+        // How much of this section is above the header (visible area starts at headerBottom)
+        const visibleFromTop = headerBottom - rect.top;
+        const visibilityRatio = visibleFromTop / sectionHeight;
         
-        // If 25% or more is visible, it's a candidate
-        if (visibilityRatio >= 0.25 && visibilityRatio > bestVisibility) {
-          bestVisibility = visibilityRatio;
-          bestSection = section;
+        // If 25% or more of this section is scrolled into view from top, it's our target
+        if (visibilityRatio >= 0.25) {
+          targetSection = section;
+          break;
         }
       }
       
-      // If no section has 25% visibility, snap to the closest one
-      if (!bestSection) {
+      // Fallback: if no section meets 25% threshold, find the one closest to viewport
+      if (!targetSection) {
         let minDistance = Infinity;
         for (const section of sections) {
           const rect = section.el.getBoundingClientRect();
-          const sectionCenter = rect.top + rect.height / 2;
-          const viewportCenter = window.innerHeight / 2;
-          const distance = Math.abs(sectionCenter - viewportCenter);
+          // Distance from section top to header bottom
+          const distance = Math.abs(rect.top - headerBottom);
           if (distance < minDistance) {
             minDistance = distance;
-            bestSection = section;
+            targetSection = section;
           }
         }
       }
       
-      if (bestSection && Math.abs(currentScroll - bestSection.snapPoint) > 10) {
-        snapToPoint(bestSection.snapPoint);
+      if (targetSection && Math.abs(currentScroll - targetSection.snapPoint) > 10) {
+        snapToPoint(targetSection.snapPoint);
       }
     };
 
@@ -280,8 +279,8 @@ const Comics = () => {
           />
         </section>
 
-        {/* Normal Scroll Section - Stories Waiting to be Told */}
-        <section className="text-center py-16 sm:py-24 bg-[#f5f0e6]">
+        {/* Stories Waiting to be Told - Snap Section 4 */}
+        <section ref={storiesSectionRef} className="text-center py-16 sm:py-24 bg-[#f5f0e6]">
           <ScrollScale 
             initialScale={1.3} 
             finalScale={1} 
