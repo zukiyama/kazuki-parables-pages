@@ -379,18 +379,20 @@ const Music = () => {
       <div className="fixed top-0 left-0" style={{ height: '100vh', width: '100vw' }}>
         {/* Layer A */}
         <div 
-          className="absolute inset-0 bg-cover bg-top transition-opacity duration-700 ease-in-out"
+          className="absolute inset-0 bg-cover transition-opacity duration-700 ease-in-out"
           style={{ 
             backgroundImage: `url(${layerA.image})`,
-            opacity: layerA.opacity
+            opacity: layerA.opacity,
+            backgroundPosition: 'center top 40px'
           }}
         />
         {/* Layer B */}
         <div 
-          className="absolute inset-0 bg-cover bg-top transition-opacity duration-700 ease-in-out"
+          className="absolute inset-0 bg-cover transition-opacity duration-700 ease-in-out"
           style={{ 
             backgroundImage: `url(${layerB.image})`,
-            opacity: layerB.opacity
+            opacity: layerB.opacity,
+            backgroundPosition: 'center top 40px'
           }}
         />
         {/* Static overlay for readability - not animated */}
@@ -409,7 +411,7 @@ const Music = () => {
           </div>
           
           {/* Video Player - Cassette Deck Style */}
-          <div className="mb-12 -mt-8" ref={videoRef}>
+          <div className="mb-12 -mt-20" ref={videoRef}>
             <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20 max-sm:p-2">
               <div className="relative aspect-video bg-black rounded-lg overflow-hidden group">
                 <video 
