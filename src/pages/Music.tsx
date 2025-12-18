@@ -400,7 +400,7 @@ const Music = () => {
         <main className="container mx-auto px-6 pt-48 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Header - positioned closer to video, further from banner */}
-          <div className="text-center mb-4 pt-4">
+          <div className="text-center mb-1 pt-4">
             <img 
               src={musicLogo} 
               alt="Music" 
