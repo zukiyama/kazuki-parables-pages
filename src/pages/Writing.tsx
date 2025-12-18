@@ -115,9 +115,10 @@ const Writing = () => {
   }, []);
 
 
-  // Scroll snap logic for book sections - only from HOAX onwards, not young-adult
+  // Scroll snap logic - loose snapping, only when section fills most of screen
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
+    let lastSnappedSection: string | null = null;
     
     // Sections that should NOT have snap behavior
     const noSnapSections = ['kaiju', 'young-adult'];
@@ -145,30 +146,6 @@ const Writing = () => {
       const viewportHeight = window.innerHeight;
       const availableHeight = viewportHeight - topOffset;
       
-      if (sectionName === 'young-adult') {
-        // For young-adult: position so title-to-banner distance equals slideshow-to-footer distance
-        const title = section.querySelector('h2') as HTMLElement;
-        const slideshowContainer = section.querySelector('[class*="YoungAdult"], [class*="slideshow"], .relative.w-full') as HTMLElement;
-        if (!title) return null;
-        
-        const titleRect = title.getBoundingClientRect();
-        const titleHeight = titleRect.height;
-        
-        const slideshowEl = slideshowContainer || section.querySelector('.bg-black\\/60') as HTMLElement;
-        const slideshowRect = slideshowEl?.getBoundingClientRect();
-        const slideshowHeight = slideshowRect ? slideshowRect.height : 400;
-        
-        const contentSpan = slideshowRect 
-          ? (slideshowRect.bottom - titleRect.top)
-          : (titleHeight + slideshowHeight + 32);
-        
-        const desiredTitleTopInViewport = (topOffset + viewportHeight - contentSpan) / 2;
-        const currentTitleTop = titleRect.top;
-        const scrollAdjustment = currentTitleTop - desiredTitleTopInViewport;
-        
-        return Math.max(0, window.scrollY + scrollAdjustment);
-      }
-      
       // For book sections: center the book cover
       const bookCover = section.querySelector('.book-cover-slideshow img, [data-book-cover], img[alt*="Cover"]') as HTMLElement;
       if (!bookCover) {
@@ -184,9 +161,10 @@ const Writing = () => {
       return Math.max(0, coverCenter - desiredCenterY);
     };
 
-    const snapToPoint = (targetY: number) => {
+    const snapToPoint = (targetY: number, sectionName: string) => {
       if (isSnapping.current) return;
       isSnapping.current = true;
+      lastSnappedSection = sectionName;
       window.scrollTo({
         top: targetY,
         behavior: 'smooth'
@@ -196,14 +174,10 @@ const Writing = () => {
       }, 600);
     };
 
-    let lastScrollY = window.scrollY;
-    
     const handleScrollEnd = () => {
       if (isSnapping.current) return;
       
-      const currentScroll = window.scrollY;
       const bookSections = getBookSections();
-      
       if (bookSections.length === 0) return;
 
       // Check if we're in the no-snap zone (before HOAX)
@@ -216,62 +190,66 @@ const Writing = () => {
         }
       }
 
-      // Check if we're in or past the young-adult section (past vice-versa)
+      // Check if we're past vice-versa into young-adult
       const youngAdultSection = document.querySelector('[data-section="young-adult"]') as HTMLElement;
-      const viceVersaSection = document.querySelector('[data-section="vice-versa"]') as HTMLElement;
-      
-      if (youngAdultSection && viceVersaSection) {
+      if (youngAdultSection) {
         const youngAdultRect = youngAdultSection.getBoundingClientRect();
-        const viceVersaRect = viceVersaSection.getBoundingClientRect();
-        const headerBottom = getHeaderBottom();
-        const banner = document.querySelector('.sticky.top-16') as HTMLElement;
-        const bannerHeight = banner ? banner.offsetHeight : 0;
-        const topOffset = headerBottom + bannerHeight;
-        
-        // If young-adult section top is above the viewport center, we're in/past the young-adult area
+        // If young-adult top is visible, we're in free scroll zone
         if (youngAdultRect.top < window.innerHeight * 0.7) {
-          // Only snap back to vice-versa if we've scrolled UP and vice-versa is very close
-          // (its bottom is near or below the top offset area)
-          if (viceVersaRect.bottom > topOffset + 50) {
-            // Vice-versa is close enough - allow snap
-          } else {
-            // We're in young-adult zone, don't snap back to vice-versa
-            return;
-          }
+          return; // Free scroll - no snapping
         }
       }
 
-      // Always find the closest section regardless of visibility
-      let closestSection: { el: HTMLElement; name: string } | null = null;
-      let minDistance = Infinity;
-      
       const headerBottom = getHeaderBottom();
       const banner = document.querySelector('.sticky.top-16') as HTMLElement;
       const bannerHeight = banner ? banner.offsetHeight : 0;
       const topOffset = headerBottom + bannerHeight;
-      const viewportCenter = topOffset + (window.innerHeight - topOffset) / 2;
-      
-      bookSections.forEach(section => {
-        const rect = section.el.getBoundingClientRect();
-        // Use the section's center position relative to viewport
-        const sectionCenter = rect.top + (rect.height / 2);
-        const distance = Math.abs(sectionCenter - viewportCenter);
-        
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestSection = section;
-        }
-      });
+      const viewportHeight = window.innerHeight;
+      const availableViewport = viewportHeight - topOffset;
 
-      // Snap to closest section regardless of whether it's visible or not
-      if (closestSection) {
-        const snapPoint = getCenterSnapPoint(closestSection.el, closestSection.name);
-        if (snapPoint !== null && Math.abs(currentScroll - snapPoint) > 15) {
-          snapToPoint(snapPoint);
+      // Find section that fills MOST of the screen (>50%)
+      let bestSection: typeof bookSections[0] | null = null;
+      let highestVisibility = 0;
+
+      for (const section of bookSections) {
+        const rect = section.el.getBoundingClientRect();
+        
+        const visibleTop = Math.max(rect.top, topOffset);
+        const visibleBottom = Math.min(rect.bottom, viewportHeight);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        
+        // Calculate what percentage of the VIEWPORT this section fills
+        const viewportFillRatio = visibleHeight / availableViewport;
+        
+        if (viewportFillRatio > highestVisibility) {
+          highestVisibility = viewportFillRatio;
+          bestSection = section;
         }
       }
-      
-      lastScrollY = currentScroll;
+
+      // Only snap if:
+      // 1. Section fills >50% of viewport
+      // 2. It's not the section we just snapped away from
+      if (bestSection && highestVisibility > 0.5) {
+        // If scrolling away from last snapped section, don't snap back
+        if (lastSnappedSection === bestSection.name) {
+          // Clear the last snapped section so we can snap to it again later
+          // but only if it now fills >70% (truly dominant)
+          if (highestVisibility < 0.7) {
+            lastSnappedSection = null;
+            return;
+          }
+        }
+        
+        const snapPoint = getCenterSnapPoint(bestSection.el, bestSection.name);
+        const currentScroll = window.scrollY;
+        if (snapPoint !== null && Math.abs(currentScroll - snapPoint) > 15) {
+          snapToPoint(snapPoint, bestSection.name);
+        }
+      } else {
+        // Not enough visibility - clear last snapped so we can snap fresh
+        lastSnappedSection = null;
+      }
     };
 
     const handleScroll = () => {
@@ -455,14 +433,14 @@ const Writing = () => {
         <section data-section="kaiju" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-20">
             <div className="max-w-6xl mx-auto">
-              <h1 className={`font-serif text-6xl font-bold text-white mb-16 max-sm:mb-12 text-center tracking-wide transition-all duration-1000 ${
+              <h1 className={`font-serif text-6xl font-bold text-white mb-20 max-sm:mb-14 text-center tracking-wide transition-all duration-1000 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
               }`}>
                 Novels
               </h1>
               
               {/* The Parable Trilogy Introduction */}
-              <div className={`text-center mb-16 transition-all duration-1000 delay-200 ${
+              <div className={`text-center mb-20 transition-all duration-1000 delay-200 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 <h2 className="font-serif text-4xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>
@@ -472,7 +450,7 @@ const Writing = () => {
               </div>
               
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start lg:px-8">
-                <div className={`transition-all duration-1000 delay-300 ${
+                <div className={`transition-all duration-1000 delay-300 pt-[3.5rem] ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
                   <BookCoverSlideshow 

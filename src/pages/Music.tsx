@@ -397,10 +397,10 @@ const Music = () => {
         <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
       </div>
       
-        <main className="container mx-auto px-6 pt-44 pb-12 relative z-10">
+        <main className="container mx-auto px-6 pt-48 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
-          {/* Header - positioned closer to banner and video */}
-          <div className="text-center mb-2 pt-2">
+          {/* Header - positioned closer to video, further from banner */}
+          <div className="text-center mb-4 pt-4">
             <img 
               src={musicLogo} 
               alt="Music" 
@@ -409,7 +409,7 @@ const Music = () => {
           </div>
           
           {/* Video Player - Cassette Deck Style */}
-          <div className="mb-16" ref={videoRef}>
+          <div className="mb-12" ref={videoRef}>
             <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20 max-sm:p-2">
               <div className="relative aspect-video bg-black rounded-lg overflow-hidden group">
                 <video 
