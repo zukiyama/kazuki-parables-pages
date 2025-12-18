@@ -15,56 +15,23 @@ const HEADER_HEIGHT = 64; // Fixed header height in pixels
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
-  const [quoteReady, setQuoteReady] = useState(false);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
-  const quoteSectionRef = useRef<HTMLElement>(null);
   
   // Refs for snap sections
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const bannerSectionRef = useRef<HTMLElement>(null);
   const godOfLiesSectionRef = useRef<HTMLElement>(null);
   const pendragonSectionRef = useRef<HTMLElement>(null);
-  const normalScrollSectionRef = useRef<HTMLElement>(null);
 
-  // Reset scroll position on page load and gate quote animation
+  // Reset scroll position on page load
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
-    // Reset quote ready state
-    setQuoteReady(false);
   }, []);
 
-  // Observer for quote section - only enable animation when scrolled into view
+  // Scroll snap logic using window scroll
   useEffect(() => {
-    const quoteEl = quoteSectionRef.current;
-    const container = scrollContainerRef.current;
-    if (!quoteEl || !container) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !quoteReady) {
-            setQuoteReady(true);
-          }
-        });
-      },
-      { threshold: 0.1, root: container }
-    );
-
-    observer.observe(quoteEl);
-    return () => observer.disconnect();
-  }, [quoteReady]);
-
-  // Scroll snap logic
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
     let scrollTimeout: NodeJS.Timeout;
-    let lastScrollY = container.scrollTop;
+    let lastScrollY = window.scrollY;
     let scrollVelocity = 0;
     let isSnapping = false;
 
@@ -81,15 +48,11 @@ const Comics = () => {
       const bannerSnapPoint = 0;
       
       // Snap point 2: God of Lies bottom edge aligned with viewport bottom
-      const godOfLiesRect = godOfLiesEl.getBoundingClientRect();
       const godOfLiesBottom = godOfLiesEl.offsetTop + godOfLiesEl.offsetHeight;
       const godOfLiesSnapPoint = godOfLiesBottom - viewportHeight;
       
       // Snap point 3: Pendragon top edge aligned with header bottom
-      // Use getBoundingClientRect for accurate positioning relative to current scroll
-      const containerScrollTop = scrollContainerRef.current?.scrollTop || 0;
-      const pendragonTop = pendragonEl.getBoundingClientRect().top + containerScrollTop;
-      const pendragonSnapPoint = pendragonTop - HEADER_HEIGHT;
+      const pendragonSnapPoint = pendragonEl.offsetTop - HEADER_HEIGHT;
       
       return [
         { point: bannerSnapPoint, name: 'banner' },
@@ -100,7 +63,7 @@ const Comics = () => {
 
     const snapToPoint = (targetY: number) => {
       isSnapping = true;
-      container.scrollTo({
+      window.scrollTo({
         top: targetY,
         behavior: 'smooth'
       });
@@ -112,7 +75,7 @@ const Comics = () => {
     const handleScrollEnd = () => {
       if (isSnapping) return;
       
-      const currentScroll = container.scrollTop;
+      const currentScroll = window.scrollY;
       const snapPoints = getSnapPoints();
       
       if (snapPoints.length === 0) return;
@@ -185,7 +148,7 @@ const Comics = () => {
     };
 
     const handleScroll = () => {
-      const currentScroll = container.scrollTop;
+      const currentScroll = window.scrollY;
       scrollVelocity = currentScroll - lastScrollY;
       lastScrollY = currentScroll;
       
@@ -193,10 +156,10 @@ const Comics = () => {
       scrollTimeout = setTimeout(handleScrollEnd, 100);
     };
 
-    container.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
-      container.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
       clearTimeout(scrollTimeout);
     };
   }, []);
@@ -270,11 +233,7 @@ const Comics = () => {
   };
 
   return (
-    <div 
-      ref={scrollContainerRef}
-      className="h-screen overflow-y-auto bg-[#f5f0e6]"
-      style={{ scrollBehavior: 'auto' }}
-    >
+    <div className="min-h-screen bg-[#f5f0e6]">
       <Navigation />
 
       <main className="relative z-10">
@@ -320,35 +279,22 @@ const Comics = () => {
         </section>
 
         {/* Normal Scroll Section - Stories Waiting to be Told */}
-        <section ref={(el) => { normalScrollSectionRef.current = el; quoteSectionRef.current = el; }} className="text-center py-16 sm:py-24 bg-[#f5f0e6]">
-          {quoteReady ? (
-            <ScrollScale 
-              initialScale={1.3} 
-              finalScale={1} 
-              initialBlur={3}
-              className="text-center"
+        <section className="text-center py-16 sm:py-24 bg-[#f5f0e6]">
+          <ScrollScale 
+            initialScale={1.3} 
+            finalScale={1} 
+            initialBlur={3}
+            className="text-center"
+          >
+            <h2 
+              className="text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight mb-6"
+              style={{ fontFamily: 'EB Garamond, serif' }}
             >
-              <h2 
-                className="text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight mb-6"
-                style={{ fontFamily: 'EB Garamond, serif' }}
-              >
-                "Stories waiting to be told..."
-              </h2>
-              <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
-              <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
-            </ScrollScale>
-          ) : (
-            <div className="text-center opacity-0">
-              <h2 
-                className="text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight mb-6"
-                style={{ fontFamily: 'EB Garamond, serif' }}
-              >
-                "Stories waiting to be told..."
-              </h2>
-              <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
-              <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
-            </div>
-          )}
+              "Stories waiting to be told..."
+            </h2>
+            <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
+            <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
+          </ScrollScale>
         </section>
 
         {/* Forthcoming Comics Grid */}
