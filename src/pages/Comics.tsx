@@ -187,19 +187,19 @@ const Comics = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f0e6] overflow-x-hidden overflow-y-visible">
+    <div className="min-h-screen bg-white overflow-x-hidden overflow-y-visible">
       <Navigation />
 
       <main className="relative z-10">
         {/* Header Banner - Original black style */}
         <header 
           ref={bannerSectionRef}
-          className="py-3 sm:py-4 px-4 mt-16 bg-black"
+          className="py-5 sm:py-6 lg:py-8 px-4 mt-16 bg-black"
         >
           {/* Main title - larger */}
           <div className="text-center">
             <h1 
-              className="text-4xl sm:text-6xl lg:text-7xl font-bold text-[#e8d9a0] tracking-wide"
+              className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold text-[#e8d9a0] tracking-wide"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
                 textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
@@ -210,7 +210,7 @@ const Comics = () => {
           </div>
           
           {/* Subtitle */}
-          <div className="flex items-center justify-center gap-3 mt-2">
+          <div className="flex items-center justify-center gap-3 mt-3">
             <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-20" />
             <p className="text-xs sm:text-sm text-[#e8d9a0]/80 tracking-widest uppercase font-light">
               Original Stories in Sequential Art & Screenplay
@@ -288,12 +288,12 @@ const Comics = () => {
         {/* Bus Stop Image + Description Section */}
         <section ref={busStopSectionRef} className="w-full relative bg-white">
           <div className="flex flex-col lg:flex-row min-h-[300px] lg:min-h-[400px]">
-            {/* Left side - Description text slides in */}
+            {/* Left side - Description text (no animation on mobile, slides in on desktop) */}
             <div 
-              className={`w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex items-center transition-all duration-700 ease-out ${
+              className={`w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex items-center transition-all duration-700 ease-out max-sm:opacity-100 max-sm:translate-x-0 ${
                 showBusStopSection 
                   ? 'opacity-100 translate-x-0' 
-                  : 'opacity-0 -translate-x-16'
+                  : 'sm:opacity-0 sm:-translate-x-16'
               }`}
             >
               <div>
@@ -320,12 +320,12 @@ const Comics = () => {
               </div>
             </div>
             
-            {/* Right side - Bus stop image slides in */}
+            {/* Right side - Bus stop image (no animation on mobile, slides in on desktop) */}
             <div 
-              className={`w-full lg:w-1/2 transition-all duration-700 ease-out ${
+              className={`w-full lg:w-1/2 transition-all duration-700 ease-out max-sm:opacity-100 max-sm:translate-x-0 ${
                 showBusStopSection 
                   ? 'opacity-100 translate-x-0' 
-                  : 'opacity-0 translate-x-16'
+                  : 'sm:opacity-0 sm:translate-x-16'
               }`}
             >
               <img 
@@ -436,11 +436,11 @@ const Comics = () => {
       
       {/* Footer with mascot character */}
       <footer className="bg-black py-10 max-sm:py-6 relative overflow-visible">
-        {/* Footer character - bottom right corner, aligned with footer top */}
+        {/* Footer character - bottom right corner, aligned with footer top, hidden on mobile */}
         <img 
           src={comicsFooterCharacter}
           alt="Comics mascot"
-          className="absolute right-12 sm:right-16 w-auto pointer-events-none z-10"
+          className="absolute right-12 sm:right-16 w-auto pointer-events-none z-10 hidden sm:block"
           style={{
             height: '5cm',
             bottom: '100%'
