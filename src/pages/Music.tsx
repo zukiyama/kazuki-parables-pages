@@ -238,12 +238,44 @@ const Music = () => {
   
   // Zoom dialog for album covers
   const [isZoomDialogOpen, setIsZoomDialogOpen] = useState(false);
+  
+  // Banner visibility state
+  const [isBannerVisible, setIsBannerVisible] = useState(true);
+  const lastScrollY = useRef(0);
+  const bannerRef = useRef<HTMLDivElement>(null);
 
+  // Handle scroll to hide banner on scroll down
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrollY(currentScrollY);
+      
+      // Hide banner when scrolling down (past threshold)
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        setIsBannerVisible(false);
+      }
+      
+      lastScrollY.current = currentScrollY;
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Handle tap on blank areas to toggle banner
+  const handlePageClick = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    
+    // Check if click is on an interactive element
+    const isInteractive = target.closest('button, a, [role="button"], input, video, [data-interactive]');
+    
+    // Check if click is on the banner itself
+    const isOnBanner = bannerRef.current?.contains(target);
+    
+    // Only toggle if clicking on a blank/non-interactive area outside the banner
+    if (!isInteractive && !isOnBanner) {
+      setIsBannerVisible(prev => !prev);
+    }
+  };
 
   // Handle Ohio banner navigation - scroll to video player
   useEffect(() => {
@@ -362,11 +394,17 @@ const Music = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-900 relative overflow-hidden" onClick={handlePageClick}>
       <Navigation />
       
-      {/* Album Banner - Fixed at top */}  
-      <div className="fixed top-16 left-0 right-0 z-20">
+      {/* Album Banner - Fixed at top with fade transition */}  
+      <div 
+        ref={bannerRef}
+        className={`fixed top-16 left-0 right-0 z-20 transition-opacity duration-300 ease-in-out ${
+          isBannerVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        data-interactive
+      >
         <AlbumBanner 
           selectedAlbumId={selectedAlbum.id}
           onAlbumClick={handleAlbumSelect}
