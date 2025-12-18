@@ -120,8 +120,8 @@ const Writing = () => {
     let scrollTimeout: NodeJS.Timeout;
     let lastSnappedSection: string | null = null;
     
-    // Sections that should NOT have snap behavior
-    const noSnapSections = ['kaiju', 'young-adult'];
+    // Sections that should NOT have snap behavior (except young-adult which has special handling)
+    const noSnapSections = ['kaiju'];
 
     const getBookSections = () => {
       const sections = document.querySelectorAll('[data-section]');
@@ -145,6 +145,45 @@ const Writing = () => {
       const topOffset = headerBottom + bannerHeight;
       const viewportHeight = window.innerHeight;
       const availableHeight = viewportHeight - topOffset;
+      
+      // Special handling for young-adult section
+      if (sectionName === 'young-adult') {
+        const footer = document.querySelector('footer') as HTMLElement;
+        const footerTop = footer ? footer.getBoundingClientRect().top + window.scrollY : document.body.scrollHeight;
+        
+        // Find the title element and slideshow container
+        const titleEl = section.querySelector('h2') as HTMLElement;
+        const slideshowContainer = section.querySelector('.transition-all.duration-1000.delay-500') as HTMLElement;
+        
+        if (!titleEl || !slideshowContainer) return null;
+        
+        const titleRect = titleEl.getBoundingClientRect();
+        const slideshowRect = slideshowContainer.getBoundingClientRect();
+        
+        // Calculate total height of title + subtitle + slideshow
+        const titleTop = titleRect.top + window.scrollY;
+        const slideshowBottom = slideshowRect.bottom + window.scrollY;
+        const totalContentHeight = slideshowBottom - titleTop;
+        
+        // Calculate available space between banner bottom and footer top at current scroll
+        const footerTopInViewport = footerTop - window.scrollY;
+        const availableSpaceForContent = footerTopInViewport - topOffset;
+        
+        // Scenario A: Can fit all content (title + slideshow)
+        if (availableSpaceForContent >= totalContentHeight + 40) { // 40px buffer
+          // Center the entire content (title to slideshow bottom) in the available space
+          const contentCenter = titleTop + (totalContentHeight / 2);
+          const desiredCenterY = topOffset + (availableHeight / 2);
+          return Math.max(0, contentCenter - desiredCenterY);
+        } else {
+          // Scenario B: Can't fit all, just center the slideshow
+          const slideshowTop = slideshowRect.top + window.scrollY;
+          const slideshowHeight = slideshowRect.height;
+          const slideshowCenter = slideshowTop + (slideshowHeight / 2);
+          const desiredCenterY = topOffset + (availableHeight / 2);
+          return Math.max(0, slideshowCenter - desiredCenterY);
+        }
+      }
       
       // For book sections: center the book cover
       const bookCover = section.querySelector('.book-cover-slideshow img, [data-book-cover], img[alt*="Cover"]') as HTMLElement;
@@ -187,16 +226,6 @@ const Writing = () => {
         // If HOAX is below the viewport center, we're still in the no-snap zone
         if (hoaxRect.top > window.innerHeight * 0.7) {
           return; // Don't snap
-        }
-      }
-
-      // Check if we're past vice-versa into young-adult
-      const youngAdultSection = document.querySelector('[data-section="young-adult"]') as HTMLElement;
-      if (youngAdultSection) {
-        const youngAdultRect = youngAdultSection.getBoundingClientRect();
-        // If young-adult top is visible, we're in free scroll zone
-        if (youngAdultRect.top < window.innerHeight * 0.7) {
-          return; // Free scroll - no snapping
         }
       }
 
