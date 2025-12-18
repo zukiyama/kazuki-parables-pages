@@ -45,39 +45,39 @@ const Comics = () => {
   // Scroll snap logic using window scroll
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
-    let lastScrollY = window.scrollY;
-    let scrollVelocity = 0;
     let isSnapping = false;
-    let lastDirection: 'up' | 'down' | null = null;
 
-    const getSnapPoints = () => {
+    const getSnapSections = () => {
       const bannerEl = bannerSectionRef.current;
       const godOfLiesEl = godOfLiesSectionRef.current;
       const pendragonEl = pendragonSectionRef.current;
       
       if (!bannerEl || !godOfLiesEl || !pendragonEl) return [];
 
-      // Get current header bottom position (dynamic based on browser chrome)
       const headerBottom = getHeaderBottom();
       
-      // Snap point 1: Banner top aligned with header bottom
-      // When scroll is 0, banner is at mt-16 (64px), so it aligns with header
-      const bannerSnapPoint = 0;
-      
-      // Snap point 2: God of Lies top edge aligned with header bottom
-      const godOfLiesSnapPoint = godOfLiesEl.getBoundingClientRect().top + window.scrollY - headerBottom;
-      
-      // Snap point 3: Pendragon top edge aligned with header bottom
-      const pendragonSnapPoint = pendragonEl.getBoundingClientRect().top + window.scrollY - headerBottom;
-      
-      // Snap point 4: Pendragon bottom edge aligned with header bottom
-      const pendragonBottomSnapPoint = pendragonEl.getBoundingClientRect().top + window.scrollY + pendragonEl.offsetHeight - headerBottom;
-      
       return [
-        { point: bannerSnapPoint, name: 'banner' },
-        { point: godOfLiesSnapPoint, name: 'godOfLies' },
-        { point: pendragonSnapPoint, name: 'pendragonTop' },
-        { point: pendragonBottomSnapPoint, name: 'pendragonBottom' }
+        { 
+          el: bannerEl, 
+          name: 'banner',
+          snapPoint: 0,
+          top: bannerEl.getBoundingClientRect().top + window.scrollY,
+          bottom: bannerEl.getBoundingClientRect().bottom + window.scrollY
+        },
+        { 
+          el: godOfLiesEl, 
+          name: 'godOfLies',
+          snapPoint: godOfLiesEl.getBoundingClientRect().top + window.scrollY - headerBottom,
+          top: godOfLiesEl.getBoundingClientRect().top + window.scrollY,
+          bottom: godOfLiesEl.getBoundingClientRect().bottom + window.scrollY
+        },
+        { 
+          el: pendragonEl, 
+          name: 'pendragon',
+          snapPoint: pendragonEl.getBoundingClientRect().top + window.scrollY - headerBottom,
+          top: pendragonEl.getBoundingClientRect().top + window.scrollY,
+          bottom: pendragonEl.getBoundingClientRect().bottom + window.scrollY
+        }
       ];
     };
 
@@ -96,81 +96,63 @@ const Comics = () => {
       if (isSnapping) return;
       
       const currentScroll = window.scrollY;
-      const snapPoints = getSnapPoints();
+      const sections = getSnapSections();
       
-      if (snapPoints.length === 0) return;
+      if (sections.length === 0) return;
 
-      const lastSnapPoint = snapPoints[3].point;
+      const headerBottom = getHeaderBottom();
+      const viewportTop = currentScroll + headerBottom;
       
-      // If we're past the snap zone and scrolling down, allow free scroll
-      if (currentScroll > lastSnapPoint + 50 && lastDirection === 'down') {
-        return;
-      }
-      
-      // If scrolling up into snap zone from below
-      if (currentScroll > lastSnapPoint - 50 && currentScroll <= lastSnapPoint + 150 && lastDirection === 'up') {
-        snapToPoint(lastSnapPoint);
-        return;
-      }
-      
-      // If we're far beyond snap zone, don't snap
-      if (currentScroll > lastSnapPoint + 150) return;
-      
-      // Find which section we're currently closest to
-      let currentSectionIndex = 0;
-      for (let i = snapPoints.length - 1; i >= 0; i--) {
-        if (currentScroll >= snapPoints[i].point - 50) {
-          currentSectionIndex = i;
-          break;
-        }
-      }
-      
-      // Determine target based on scroll direction and position
-      let targetIndex = currentSectionIndex;
-      const threshold = window.innerHeight * 0.10; // 10% of viewport - more sensitive
-      
-      if (lastDirection === 'down') {
-        // Scrolling down - check if we've passed threshold into next section
-        if (currentSectionIndex < snapPoints.length - 1) {
-          const nextPoint = snapPoints[currentSectionIndex + 1].point;
-          const distanceToNext = nextPoint - currentScroll;
-          if (distanceToNext < threshold) {
-            targetIndex = currentSectionIndex + 1;
-          }
-        }
-      } else if (lastDirection === 'up') {
-        // Scrolling up - stay in current section unless we've really moved back
-        const currentPoint = snapPoints[currentSectionIndex].point;
-        const distanceFromCurrent = currentScroll - currentPoint;
+      // If we're past the last snap section, allow free scroll
+      const lastSection = sections[sections.length - 1];
+      if (viewportTop > lastSection.bottom) return;
+
+      // Find which section we're currently in based on 25% threshold
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i];
+        const sectionHeight = section.bottom - section.top;
+        const threshold = sectionHeight * 0.25; // 25% of section height
         
-        // Only go back to previous if we're well below current snap point
-        if (currentSectionIndex > 0 && distanceFromCurrent < -threshold) {
-          targetIndex = currentSectionIndex - 1;
+        // Check if viewport top is within this section
+        if (viewportTop >= section.top - threshold && viewportTop < section.bottom + threshold) {
+          // We're in or near this section
+          // If we're 25% into this section from the top, snap to it
+          if (viewportTop >= section.top && viewportTop < section.top + threshold) {
+            // Just entered this section - snap to it
+            if (Math.abs(currentScroll - section.snapPoint) > 10) {
+              snapToPoint(section.snapPoint);
+            }
+            return;
+          }
+          
+          // If we're in the middle or bottom of section, check if we should snap to next
+          if (i < sections.length - 1) {
+            const nextSection = sections[i + 1];
+            const nextThreshold = (nextSection.bottom - nextSection.top) * 0.25;
+            
+            // If we're 25% into next section, snap to next
+            if (viewportTop >= nextSection.top - nextThreshold) {
+              if (Math.abs(currentScroll - nextSection.snapPoint) > 10) {
+                snapToPoint(nextSection.snapPoint);
+              }
+              return;
+            }
+          }
+          
+          // Otherwise snap to current section
+          if (Math.abs(currentScroll - section.snapPoint) > 10) {
+            snapToPoint(section.snapPoint);
+          }
+          return;
         }
-      }
-      
-      const targetPoint = snapPoints[targetIndex].point;
-      
-      if (Math.abs(currentScroll - targetPoint) > 5) {
-        snapToPoint(targetPoint);
       }
     };
 
     const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      scrollVelocity = currentScroll - lastScrollY;
-      
-      // Track direction
-      if (scrollVelocity > 2) {
-        lastDirection = 'down';
-      } else if (scrollVelocity < -2) {
-        lastDirection = 'up';
-      }
-      
-      lastScrollY = currentScroll;
+      if (isSnapping) return;
       
       clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(handleScrollEnd, 80);
+      scrollTimeout = setTimeout(handleScrollEnd, 120);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
