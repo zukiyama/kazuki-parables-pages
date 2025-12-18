@@ -67,10 +67,14 @@ const Comics = () => {
       // Snap point 3: Pendragon top edge aligned with header bottom
       const pendragonSnapPoint = pendragonEl.getBoundingClientRect().top + window.scrollY - headerBottom;
       
+      // Snap point 4: Pendragon bottom edge aligned with header bottom
+      const pendragonBottomSnapPoint = pendragonEl.getBoundingClientRect().top + window.scrollY + pendragonEl.offsetHeight - headerBottom;
+      
       return [
         { point: bannerSnapPoint, name: 'banner' },
         { point: godOfLiesSnapPoint, name: 'godOfLies' },
-        { point: pendragonSnapPoint, name: 'pendragon' }
+        { point: pendragonSnapPoint, name: 'pendragonTop' },
+        { point: pendragonBottomSnapPoint, name: 'pendragonBottom' }
       ];
     };
 
@@ -93,27 +97,22 @@ const Comics = () => {
       
       if (snapPoints.length === 0) return;
 
-      const headerBottom = getHeaderBottom();
+      // Find if we're past the snap zone (after pendragon bottom snap)
+      const lastSnapPoint = snapPoints[3].point;
       
-      // Find if we're past the snap zone (after pendragon section)
-      const pendragonEl = pendragonSectionRef.current;
-      if (pendragonEl) {
-        const pendragonBottom = pendragonEl.getBoundingClientRect().top + window.scrollY + pendragonEl.offsetHeight - headerBottom;
-        
-        // If scrolling down past pendragon, allow free scroll
-        if (currentScroll > pendragonBottom && scrollVelocity > 0) {
-          return;
-        }
-        
-        // If scrolling up into snap zone from below
-        if (currentScroll > snapPoints[2].point && currentScroll < pendragonBottom + 100 && scrollVelocity < 0) {
-          snapToPoint(snapPoints[2].point);
-          return;
-        }
+      // If scrolling down past pendragon bottom, allow free scroll
+      if (currentScroll > lastSnapPoint && scrollVelocity > 0) {
+        return;
+      }
+      
+      // If scrolling up into snap zone from below
+      if (currentScroll > lastSnapPoint && currentScroll < lastSnapPoint + 100 && scrollVelocity < 0) {
+        snapToPoint(lastSnapPoint);
+        return;
       }
       
       // Only snap if within the snap zone
-      const maxSnapZone = snapPoints[2].point + 50;
+      const maxSnapZone = lastSnapPoint + 50;
       if (currentScroll > maxSnapZone) return;
       
       // Find nearest snap point
