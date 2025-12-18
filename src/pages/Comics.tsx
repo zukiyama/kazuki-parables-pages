@@ -10,7 +10,7 @@ import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
 import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
-import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop.png";
+import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop-cropped.jpeg";
 import comicsFooterCharacter from "@/assets/comics-footer-character.jpeg";
 
 const Comics = () => {
@@ -194,12 +194,12 @@ const Comics = () => {
         {/* Header Banner - Original black style */}
         <header 
           ref={bannerSectionRef}
-          className="py-5 sm:py-6 lg:py-8 px-4 mt-16 bg-black"
+          className="py-3 sm:py-4 lg:py-5 px-4 mt-16 bg-black"
         >
-          {/* Main title - larger */}
+          {/* Main title - smaller */}
           <div className="text-center">
             <h1 
-              className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold text-[#e8d9a0] tracking-wide"
+              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#e8d9a0] tracking-wide"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
                 textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
@@ -287,7 +287,7 @@ const Comics = () => {
 
         {/* Bus Stop Image + Description Section */}
         <section ref={busStopSectionRef} className="w-full relative bg-white">
-          <div className="flex flex-col lg:flex-row min-h-[300px] lg:min-h-[400px]">
+          <div className="flex flex-col lg:flex-row">
             {/* Left side - Description text (no animation on mobile, slides in on desktop) */}
             <div 
               className={`w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex items-center transition-all duration-700 ease-out max-sm:opacity-100 max-sm:translate-x-0 ${
