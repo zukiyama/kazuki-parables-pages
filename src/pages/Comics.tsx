@@ -48,6 +48,7 @@ const Comics = () => {
     let lastScrollY = window.scrollY;
     let scrollVelocity = 0;
     let isSnapping = false;
+    let lastDirection: 'up' | 'down' | null = null;
 
     const getSnapPoints = () => {
       const bannerEl = bannerSectionRef.current;
@@ -99,61 +100,53 @@ const Comics = () => {
       
       if (snapPoints.length === 0) return;
 
-      // Find if we're past the snap zone (after pendragon bottom snap)
       const lastSnapPoint = snapPoints[3].point;
       
-      // If scrolling down past pendragon bottom, allow free scroll
-      if (currentScroll > lastSnapPoint && scrollVelocity > 0) {
+      // If we're past the snap zone and scrolling down, allow free scroll
+      if (currentScroll > lastSnapPoint + 50 && lastDirection === 'down') {
         return;
       }
       
       // If scrolling up into snap zone from below
-      if (currentScroll > lastSnapPoint && currentScroll < lastSnapPoint + 100 && scrollVelocity < 0) {
+      if (currentScroll > lastSnapPoint - 50 && currentScroll <= lastSnapPoint + 150 && lastDirection === 'up') {
         snapToPoint(lastSnapPoint);
         return;
       }
       
-      // Only snap if within the snap zone
-      const maxSnapZone = lastSnapPoint + 50;
-      if (currentScroll > maxSnapZone) return;
+      // If we're far beyond snap zone, don't snap
+      if (currentScroll > lastSnapPoint + 150) return;
       
-      // Find nearest snap point
-      let nearestPoint = snapPoints[0];
-      let minDistance = Math.abs(currentScroll - snapPoints[0].point);
-      
-      for (const sp of snapPoints) {
-        const distance = Math.abs(currentScroll - sp.point);
-        if (distance < minDistance) {
-          minDistance = distance;
-          nearestPoint = sp;
-        }
-      }
-      
-      // Threshold-based snapping with velocity consideration - more sensitive
-      const threshold = window.innerHeight * 0.12;
-      
-      // Find current section index
-      let currentIndex = 0;
+      // Find which section we're currently closest to
+      let currentSectionIndex = 0;
       for (let i = snapPoints.length - 1; i >= 0; i--) {
-        if (currentScroll >= snapPoints[i].point - threshold) {
-          currentIndex = i;
+        if (currentScroll >= snapPoints[i].point - 50) {
+          currentSectionIndex = i;
           break;
         }
       }
       
-      // Determine target based on velocity and threshold
-      let targetIndex = currentIndex;
+      // Determine target based on scroll direction and position
+      let targetIndex = currentSectionIndex;
+      const threshold = window.innerHeight * 0.10; // 10% of viewport - more sensitive
       
-      if (Math.abs(scrollVelocity) > 8) {
-        // Fast scroll - go to next/prev section
-        if (scrollVelocity > 0 && currentIndex < snapPoints.length - 1) {
-          targetIndex = currentIndex + 1;
-        } else if (scrollVelocity < 0 && currentIndex > 0) {
-          targetIndex = currentIndex - 1;
+      if (lastDirection === 'down') {
+        // Scrolling down - check if we've passed threshold into next section
+        if (currentSectionIndex < snapPoints.length - 1) {
+          const nextPoint = snapPoints[currentSectionIndex + 1].point;
+          const distanceToNext = nextPoint - currentScroll;
+          if (distanceToNext < threshold) {
+            targetIndex = currentSectionIndex + 1;
+          }
         }
-      } else {
-        // Slow scroll - snap to nearest
-        targetIndex = snapPoints.indexOf(nearestPoint);
+      } else if (lastDirection === 'up') {
+        // Scrolling up - stay in current section unless we've really moved back
+        const currentPoint = snapPoints[currentSectionIndex].point;
+        const distanceFromCurrent = currentScroll - currentPoint;
+        
+        // Only go back to previous if we're well below current snap point
+        if (currentSectionIndex > 0 && distanceFromCurrent < -threshold) {
+          targetIndex = currentSectionIndex - 1;
+        }
       }
       
       const targetPoint = snapPoints[targetIndex].point;
@@ -166,10 +159,18 @@ const Comics = () => {
     const handleScroll = () => {
       const currentScroll = window.scrollY;
       scrollVelocity = currentScroll - lastScrollY;
+      
+      // Track direction
+      if (scrollVelocity > 2) {
+        lastDirection = 'down';
+      } else if (scrollVelocity < -2) {
+        lastDirection = 'up';
+      }
+      
       lastScrollY = currentScroll;
       
       clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(handleScrollEnd, 100);
+      scrollTimeout = setTimeout(handleScrollEnd, 80);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

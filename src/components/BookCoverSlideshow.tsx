@@ -17,7 +17,7 @@ export const BookCoverSlideshow = ({ covers, title, className = "", loading = "e
 
   if (covers.length <= 1) {
     return (
-      <div className={`relative ${className}`}>
+      <div className={`relative book-cover-slideshow ${className}`}>
         <img 
           src={covers[0]?.image} 
           alt={covers[0]?.alt || title}
@@ -29,7 +29,7 @@ export const BookCoverSlideshow = ({ covers, title, className = "", loading = "e
   }
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative book-cover-slideshow ${className}`}>
       <img 
         key={`cover-${currentCover}`}
         src={covers[currentCover].image} 

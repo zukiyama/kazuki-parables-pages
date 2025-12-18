@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
@@ -39,6 +39,7 @@ const Writing = () => {
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
+  const [bannerVisible, setBannerVisible] = useState(true);
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -52,8 +53,32 @@ const Writing = () => {
     deepSpace: 0
   });
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
+  const mainRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLElement | null>(null);
+  const lastScrollY = useRef(0);
+  const isSnapping = useRef(false);
 
   const location = useLocation();
+
+  // Get dynamic header bottom position
+  const getHeaderBottom = useCallback(() => {
+    if (!headerRef.current) {
+      headerRef.current = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
+    }
+    if (headerRef.current) {
+      return headerRef.current.getBoundingClientRect().bottom;
+    }
+    return 64;
+  }, []);
+
+  // Get banner height
+  const getBannerHeight = useCallback(() => {
+    const banner = document.querySelector('.sticky.top-16, .fixed.top-16') as HTMLElement;
+    if (banner && bannerVisible) {
+      return banner.offsetHeight;
+    }
+    return 0;
+  }, [bannerVisible]);
 
   // Handle hash navigation to scroll to Parable Trilogy section
   useEffect(() => {
@@ -98,6 +123,156 @@ const Writing = () => {
       img.src = imgSrc;
     });
   }, []);
+
+  // Banner hide on scroll down, tap to toggle
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Hide banner when scrolling down (past initial position)
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100 && bannerVisible) {
+        setBannerVisible(false);
+      }
+      
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [bannerVisible]);
+
+  // Tap to toggle banner
+  const handlePageTap = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    // Check if the tap is on a non-interactive element
+    const target = e.target as HTMLElement;
+    const isInteractive = target.closest('a, button, [role="button"], input, select, textarea, img[role="button"], .book-cover');
+    
+    if (!isInteractive) {
+      setBannerVisible(prev => !prev);
+    }
+  }, []);
+
+  // Scroll snap logic for book sections
+  useEffect(() => {
+    if (isSnapping.current) return;
+    
+    let scrollTimeout: NodeJS.Timeout;
+    let lastDirection: 'up' | 'down' | null = null;
+    let prevScrollY = window.scrollY;
+
+    const getBookSections = () => {
+      const sections = document.querySelectorAll('[data-section]');
+      const bookSections: { el: HTMLElement; name: string }[] = [];
+      
+      sections.forEach(section => {
+        const name = section.getAttribute('data-section');
+        if (name && name !== 'young-adult') { // Exclude young-adult from snap
+          bookSections.push({ el: section as HTMLElement, name });
+        }
+      });
+      
+      return bookSections;
+    };
+
+    const getCenterSnapPoint = (section: HTMLElement) => {
+      // Find the book cover in this section
+      const bookCover = section.querySelector('.book-cover-slideshow, [class*="BookCoverSlideshow"]') as HTMLElement;
+      if (!bookCover) return null;
+
+      const headerBottom = getHeaderBottom();
+      const bannerHeight = getBannerHeight();
+      const topOffset = headerBottom + (bannerVisible ? bannerHeight : 0);
+      const viewportHeight = window.innerHeight;
+      const availableHeight = viewportHeight - topOffset;
+      
+      // Get the book cover's position relative to the section
+      const coverRect = bookCover.getBoundingClientRect();
+      const sectionRect = section.getBoundingClientRect();
+      const coverTopInSection = coverRect.top - sectionRect.top;
+      const coverHeight = coverRect.height;
+      
+      // Calculate where to scroll so the book cover is vertically centered
+      // in the available viewport space (below header/banner)
+      const sectionScrollTop = section.offsetTop;
+      const desiredCoverCenterY = topOffset + (availableHeight / 2);
+      const coverCenterInSection = coverTopInSection + (coverHeight / 2);
+      
+      // Scroll position to center the book cover
+      const snapPoint = sectionScrollTop + coverCenterInSection - desiredCoverCenterY;
+      
+      return Math.max(0, snapPoint);
+    };
+
+    const snapToPoint = (targetY: number) => {
+      isSnapping.current = true;
+      window.scrollTo({
+        top: targetY,
+        behavior: 'smooth'
+      });
+      setTimeout(() => {
+        isSnapping.current = false;
+      }, 500);
+    };
+
+    const handleScrollEnd = () => {
+      if (isSnapping.current) return;
+      
+      const currentScroll = window.scrollY;
+      const bookSections = getBookSections();
+      
+      if (bookSections.length === 0) return;
+
+      // Find which section we're in based on visibility
+      let currentSection: { el: HTMLElement; name: string } | null = null;
+      let minDistance = Infinity;
+      
+      bookSections.forEach(section => {
+        const rect = section.el.getBoundingClientRect();
+        const viewportCenter = window.innerHeight / 2;
+        const sectionCenter = rect.top + (rect.height / 2);
+        const distance = Math.abs(sectionCenter - viewportCenter);
+        
+        if (distance < minDistance) {
+          minDistance = distance;
+          currentSection = section;
+        }
+      });
+
+      if (!currentSection) return;
+
+      const snapPoint = getCenterSnapPoint(currentSection.el);
+      if (snapPoint === null) return;
+
+      const threshold = window.innerHeight * 0.15;
+      
+      if (Math.abs(currentScroll - snapPoint) > 10 && Math.abs(currentScroll - snapPoint) < threshold * 3) {
+        snapToPoint(snapPoint);
+      }
+    };
+
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+      const velocity = currentScroll - prevScrollY;
+      
+      if (velocity > 2) {
+        lastDirection = 'down';
+      } else if (velocity < -2) {
+        lastDirection = 'up';
+      }
+      
+      prevScrollY = currentScroll;
+      
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(handleScrollEnd, 120);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, [getHeaderBottom, getBannerHeight, bannerVisible]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -176,13 +351,18 @@ const Writing = () => {
   };
 
   return (
-    <div className="min-h-screen relative max-sm:overflow-x-hidden">
+    <div 
+      className="min-h-screen relative max-sm:overflow-x-hidden"
+      onClick={handlePageTap}
+    >
       <Navigation />
-      <BookshelfMenu 
-        onBookClick={handleBookClick} 
-        visibleSections={visibleSections} 
-        currentYoungAdultBook={currentYoungAdultBook}
-      />
+      <div className={`transition-all duration-300 ease-in-out ${bannerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'}`}>
+        <BookshelfMenu 
+          onBookClick={handleBookClick} 
+          visibleSections={visibleSections} 
+          currentYoungAdultBook={currentYoungAdultBook}
+        />
+      </div>
       
       {/* Stacked Background Images - All preloaded */}
       <div className="fixed top-0 left-0 z-0" style={{ height: '100vh', width: '100vw' }}>
