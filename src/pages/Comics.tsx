@@ -12,6 +12,7 @@ import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop.png";
 import comicsMascot from "@/assets/comics-mascot-character.png";
+import comicsFooterCharacter from "@/assets/comics-footer-character.jpeg";
 
 const Comics = () => {
   useScrollToTop();
@@ -41,15 +42,13 @@ const Comics = () => {
         const threshold = rect.height * 0.3;
         setShowGodOfLiesDescription(rect.top < -threshold);
         
-        // Show bus stop section when God of Lies is mostly scrolled past
-        const busStopThreshold = rect.height * 0.6;
+        // Show bus stop section much earlier - as soon as user starts scrolling past God of Lies
+        const busStopThreshold = rect.height * 0.15;
         setShowBusStopSection(rect.top < -busStopThreshold);
-      }
-      
-      if (busStopSectionRef.current) {
-        const rect = busStopSectionRef.current.getBoundingClientRect();
-        // Show Pendragon when bus stop section is partially visible
-        setShowPendragon(rect.top < window.innerHeight * 0.8);
+        
+        // Show Pendragon when God of Lies is about 40% scrolled past
+        const pendragonThreshold = rect.height * 0.4;
+        setShowPendragon(rect.top < -pendragonThreshold);
       }
     };
 
@@ -309,6 +308,30 @@ const Comics = () => {
           </div>
         </header>
 
+        {/* Thin gold line divider */}
+        <div className="w-full h-px bg-[#e8d9a0]/60" />
+
+        {/* Black bar with categories - directly below title banner */}
+        <div className="bg-black py-2 sm:py-3">
+          <div className="flex items-center justify-center gap-2 sm:gap-4 flex-wrap px-4">
+            <span className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light">
+              MANGA
+            </span>
+            <span className="text-[#e8d9a0]/60 text-lg">•</span>
+            <span className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light">
+              WEBTOONS
+            </span>
+            <span className="text-[#e8d9a0]/60 text-lg">•</span>
+            <span className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light">
+              COMICS
+            </span>
+            <span className="text-[#e8d9a0]/60 text-lg">•</span>
+            <span className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light">
+              LONG-FORM SCRIPTS
+            </span>
+          </div>
+        </div>
+
         {/* NEW RELEASES Bar */}
         <div ref={newReleasesBarRef} className="w-full">
           {/* White bar with quote */}
@@ -319,35 +342,6 @@ const Comics = () => {
             >
               "New Releases"
             </h2>
-          </div>
-          
-          {/* Thin black bar with categories */}
-          <div className="bg-black py-2 sm:py-3">
-            <div className="flex items-center justify-center gap-2 sm:gap-4 flex-wrap px-4">
-              <span 
-                className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light"
-              >
-                MANGA
-              </span>
-              <span className="text-[#e8d9a0]/60 text-lg">•</span>
-              <span 
-                className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light"
-              >
-                WEBTOONS
-              </span>
-              <span className="text-[#e8d9a0]/60 text-lg">•</span>
-              <span 
-                className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light"
-              >
-                COMICS
-              </span>
-              <span className="text-[#e8d9a0]/60 text-lg">•</span>
-              <span 
-                className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light"
-              >
-                LONG-FORM SCRIPTS
-              </span>
-            </div>
           </div>
         </div>
 
@@ -500,7 +494,7 @@ const Comics = () => {
         </section>
 
         {/* Forthcoming Comics Grid */}
-        <section className="pb-24 px-4 sm:px-6 bg-[#f5f0e6]">
+        <section className="pb-32 sm:pb-40 px-4 sm:px-6 bg-[#f5f0e6]">
           {/* First Row */}
           <div 
             ref={row1Ref}
@@ -563,13 +557,23 @@ const Comics = () => {
       
       {/* Footer with mascot character */}
       <footer className="bg-slate-900 py-10 max-sm:py-6 relative">
-        {/* Mascot character - bottom right, base aligned with footer top */}
+        {/* Mascot character - positioned to the left of the footer character */}
         <img 
           src={comicsMascot}
           alt="Comics mascot character"
-          className="absolute right-4 sm:right-8 bottom-full w-20 sm:w-28 lg:w-32 pointer-events-none"
+          className="absolute right-28 sm:right-36 lg:right-44 bottom-full w-20 sm:w-28 lg:w-32 pointer-events-none"
           style={{
             filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.3))'
+          }}
+        />
+        {/* Footer character - small, bottom right corner, ~3cm on 13" iPad */}
+        <img 
+          src={comicsFooterCharacter}
+          alt="Footer character"
+          className="absolute right-2 sm:right-4 bottom-full h-14 sm:h-16 lg:h-20 w-auto pointer-events-none"
+          style={{
+            filter: 'drop-shadow(1px 1px 3px rgba(0,0,0,0.3))',
+            mixBlendMode: 'multiply'
           }}
         />
         <div className="container mx-auto px-6 text-center">
