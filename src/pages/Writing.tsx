@@ -115,9 +115,12 @@ const Writing = () => {
   }, []);
 
 
-  // Scroll snap logic for book sections
+  // Scroll snap logic for book sections - only from HOAX onwards
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
+    
+    // Sections that should NOT have snap behavior
+    const noSnapSections = ['kaiju'];
 
     const getBookSections = () => {
       const sections = document.querySelectorAll('[data-section]');
@@ -125,7 +128,8 @@ const Writing = () => {
       
       sections.forEach(section => {
         const name = section.getAttribute('data-section');
-        if (name) {
+        // Only include sections that should have snap behavior
+        if (name && !noSnapSections.includes(name)) {
           bookSections.push({ el: section as HTMLElement, name });
         }
       });
@@ -145,33 +149,18 @@ const Writing = () => {
         // For young-adult: position so title-to-banner distance equals slideshow-to-footer distance
         const title = section.querySelector('h2') as HTMLElement;
         const slideshowContainer = section.querySelector('[class*="YoungAdult"], [class*="slideshow"], .relative.w-full') as HTMLElement;
-        const footer = document.querySelector('footer') as HTMLElement;
         if (!title) return null;
         
         const titleRect = title.getBoundingClientRect();
         const titleHeight = titleRect.height;
         
-        // Get slideshow bottom (the actual slideshow component)
         const slideshowEl = slideshowContainer || section.querySelector('.bg-black\\/60') as HTMLElement;
         const slideshowRect = slideshowEl?.getBoundingClientRect();
         const slideshowHeight = slideshowRect ? slideshowRect.height : 400;
         
-        // Distance from title top to slideshow bottom
         const contentSpan = slideshowRect 
           ? (slideshowRect.bottom - titleRect.top)
-          : (titleHeight + slideshowHeight + 32); // 32px gap estimate
-        
-        // Calculate: we want (titleTop - topOffset) == (footerTop - slideshowBottom)
-        // Let titleTop be at position Y after scroll
-        // titleTop - topOffset = footerTop - slideshowBottom
-        // titleTop - topOffset = footerTop - (titleTop + contentSpan)
-        // 2*titleTop = topOffset + footerTop - contentSpan + topOffset... 
-        // Actually simpler: place content so equal spacing above and below
-        // Space above = titleTop - topOffset
-        // Space below = viewportHeight - slideshowBottom = viewportHeight - (titleTop + contentSpan)
-        // titleTop - topOffset = viewportHeight - titleTop - contentSpan
-        // 2*titleTop = topOffset + viewportHeight - contentSpan
-        // titleTop = (topOffset + viewportHeight - contentSpan) / 2
+          : (titleHeight + slideshowHeight + 32);
         
         const desiredTitleTopInViewport = (topOffset + viewportHeight - contentSpan) / 2;
         const currentTitleTop = titleRect.top;
@@ -215,9 +204,22 @@ const Writing = () => {
       
       if (bookSections.length === 0) return;
 
+      // Check if we're in the no-snap zone (before HOAX)
+      const hoaxSection = document.querySelector('[data-section="hoax"]') as HTMLElement;
+      if (hoaxSection) {
+        const hoaxRect = hoaxSection.getBoundingClientRect();
+        // If HOAX is below the viewport center, we're still in the no-snap zone
+        if (hoaxRect.top > window.innerHeight * 0.7) {
+          return; // Don't snap
+        }
+      }
+
       // Find which section is closest to viewport center
       let closestSection: { el: HTMLElement; name: string } | null = null;
       let minDistance = Infinity;
+      
+      // Also track sections that are partially visible
+      const visibleSections: { section: { el: HTMLElement; name: string }; distance: number; snapPoint: number }[] = [];
       
       bookSections.forEach(section => {
         const rect = section.el.getBoundingClientRect();
@@ -225,22 +227,37 @@ const Writing = () => {
         const sectionCenter = rect.top + (rect.height / 2);
         const distance = Math.abs(sectionCenter - viewportCenter);
         
+        // Check if section is at least partially in viewport
+        if (rect.bottom > 0 && rect.top < window.innerHeight) {
+          const snapPoint = getCenterSnapPoint(section.el, section.name);
+          if (snapPoint !== null) {
+            visibleSections.push({ section, distance, snapPoint });
+          }
+        }
+        
         if (distance < minDistance) {
           minDistance = distance;
           closestSection = section;
         }
       });
 
-      if (!closestSection) return;
+      // If no sections are visible in viewport, find the nearest one
+      if (visibleSections.length === 0 && closestSection) {
+        const snapPoint = getCenterSnapPoint(closestSection.el, closestSection.name);
+        if (snapPoint !== null && Math.abs(currentScroll - snapPoint) > 15) {
+          snapToPoint(snapPoint);
+        }
+        return;
+      }
 
-      const snapPoint = getCenterSnapPoint(closestSection.el, closestSection.name);
-      if (snapPoint === null) return;
-
-      const scrollDiff = Math.abs(currentScroll - snapPoint);
-      
-      // Always snap if not already at target (more aggressive snapping)
-      if (scrollDiff > 15) {
-        snapToPoint(snapPoint);
+      // Find the section closest to center among visible sections
+      if (visibleSections.length > 0) {
+        visibleSections.sort((a, b) => a.distance - b.distance);
+        const targetSection = visibleSections[0];
+        
+        if (Math.abs(currentScroll - targetSection.snapPoint) > 15) {
+          snapToPoint(targetSection.snapPoint);
+        }
       }
     };
 
