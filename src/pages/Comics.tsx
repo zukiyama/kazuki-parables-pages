@@ -12,15 +12,12 @@ import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop-cropped.jpeg";
 import comicsFooterCharacter from "@/assets/comics-footer-character.jpeg";
-import newReleaseSticker from "@/assets/new-release-sticker.png";
-import godOfLiesCaptionPanel from "@/assets/god-of-lies-caption-panel.png";
-import surnamePendragonCaption from "@/assets/surname-pendragon-caption.png";
 
 const Comics = () => {
   useScrollToTop();
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
-  const [showGodOfLiesDescription, setShowGodOfLiesDescription] = useState(true); // Show immediately
+  const [showGodOfLiesDescription, setShowGodOfLiesDescription] = useState(false);
   const [showBusStopSection, setShowBusStopSection] = useState(false);
   const [showPendragon, setShowPendragon] = useState(false);
   const [showPendragonCaption, setShowPendragonCaption] = useState(false);
@@ -37,10 +34,12 @@ const Comics = () => {
 
   // Track scroll for slide-in animations
   useEffect(() => {
-    // Show God of Lies description immediately on component mount
-    setShowGodOfLiesDescription(true);
-    
     const handleScroll = () => {
+      // Show God of Lies description when user starts scrolling (even just a little)
+      if (window.scrollY > 20) {
+        setShowGodOfLiesDescription(true);
+      }
+      
       if (godOfLiesSectionRef.current) {
         const rect = godOfLiesSectionRef.current.getBoundingClientRect();
         
@@ -242,30 +241,29 @@ const Comics = () => {
             className="w-full"
           />
           
-          {/* New Release sticker - image instead of text block */}
+          {/* New Release label */}
           <div 
-            className="absolute right-[4%] top-[40%] sm:right-[6%] sm:top-[45%] w-24 sm:w-32 lg:w-40"
+            className="absolute right-[4%] top-[40%] sm:right-[6%] sm:top-[45%] bg-red-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded shadow-lg transform rotate-3"
           >
-            <img 
-              src={newReleaseSticker}
-              alt="New Release - First Issue Coming Soon"
-              className="w-full h-auto drop-shadow-lg"
-            />
+            <p className="text-xs sm:text-sm font-bold uppercase tracking-wide">New Release</p>
+            <p className="text-[10px] sm:text-xs opacity-90">First Issue Coming Soon</p>
           </div>
 
-          {/* Slide-in caption panel from left - using image */}
+          {/* Slide-in description panel from left */}
           <div 
-            className={`absolute bottom-[8%] left-0 max-w-[85%] sm:max-w-[55%] lg:max-w-[40%] transition-all duration-700 ease-out ${
+            className={`absolute bottom-[8%] left-0 max-w-[85%] sm:max-w-[55%] lg:max-w-[40%] bg-amber-50/95 backdrop-blur-sm p-4 sm:p-6 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out ${
               showGodOfLiesDescription 
                 ? 'opacity-100 translate-x-0' 
                 : 'opacity-0 -translate-x-full'
             }`}
           >
-            <img 
-              src={godOfLiesCaptionPanel}
-              alt="God of Lies - In a world where truth is currency, one man discovers he can make anyone believe anything."
-              className="w-full h-auto drop-shadow-xl"
-            />
+            <p 
+              className="text-slate-800 text-sm sm:text-base leading-relaxed"
+              style={{ fontFamily: 'Georgia, serif' }}
+            >
+              In a world where truth is currency, one man discovers he can make anyone believe anything. 
+              But when a child sees through his lies for the first time, everything begins to unravel.
+            </p>
           </div>
         </section>
 
@@ -336,19 +334,39 @@ const Comics = () => {
             className="w-full"
           />
           
-          {/* Slide-in caption panel from left - film/screenplay style */}
+          {/* Slide-in caption panel from left - classy film magazine style */}
           <div 
-            className={`absolute bottom-[10%] left-0 max-w-[80%] sm:max-w-[50%] lg:max-w-[35%] transition-all duration-700 ease-out ${
+            className={`absolute bottom-[10%] left-0 max-w-[85%] sm:max-w-[50%] lg:max-w-[38%] bg-black/90 backdrop-blur-sm p-5 sm:p-6 lg:p-8 transition-all duration-700 ease-out ${
               showPendragonCaption 
                 ? 'opacity-100 translate-x-0' 
                 : 'opacity-0 -translate-x-full'
             }`}
           >
-            <img 
-              src={surnamePendragonCaption}
-              alt="Surname Pendragon - A screenplay adaptation"
-              className="w-full h-auto drop-shadow-xl"
-            />
+            <h4 
+              className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-3"
+              style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+            >
+              Screenplay Adaptation
+            </h4>
+            <h3 
+              className="text-white text-xl sm:text-2xl lg:text-3xl font-light mb-3 tracking-wide"
+              style={{ fontFamily: 'Georgia, serif' }}
+            >
+              Surname Pendragon
+            </h3>
+            <p 
+              className="text-white/70 text-sm sm:text-base leading-relaxed mb-4"
+              style={{ fontFamily: 'Georgia, serif' }}
+            >
+              A sweeping family saga spanning three generations, where legacy is both burden and blessing. 
+              When secrets from the past resurface, the Pendragon name becomes a curse worth fighting for.
+            </p>
+            <p 
+              className="text-white/50 text-xs uppercase tracking-widest"
+              style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+            >
+              Feature Film • Drama • In Development
+            </p>
           </div>
         </section>
 
