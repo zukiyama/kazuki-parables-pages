@@ -354,7 +354,7 @@ const Comics = () => {
         </section>
 
         {/* Stories Waiting to be Told - Snap Section 4 */}
-        <section ref={storiesSectionRef} className="text-center py-16 sm:py-24 bg-[#f5f0e6]">
+        <section ref={storiesSectionRef} className="text-center py-16 sm:py-24 bg-white">
           <ScrollScale 
             initialScale={1.3} 
             finalScale={1} 
@@ -373,7 +373,7 @@ const Comics = () => {
         </section>
 
         {/* Forthcoming Comics Grid */}
-        <section className="pb-16 sm:pb-20 px-4 sm:px-6 bg-[#f5f0e6]">
+        <section className="pb-16 sm:pb-20 px-4 sm:px-6 bg-white">
           {/* First Row */}
           <div 
             ref={row1Ref}
@@ -436,13 +436,13 @@ const Comics = () => {
       
       {/* Footer with mascot character */}
       <footer className="bg-black py-10 max-sm:py-6 relative overflow-visible">
-        {/* Footer character - very small, bottom right corner, aligned with footer top */}
+        {/* Footer character - bottom right corner, aligned with footer top */}
         <img 
           src={comicsFooterCharacter}
           alt="Comics mascot"
-          className="absolute right-4 sm:right-6 w-auto pointer-events-none z-10"
+          className="absolute right-12 sm:right-16 w-auto pointer-events-none z-10"
           style={{
-            height: '2.5cm',
+            height: '5cm',
             bottom: '100%'
           }}
         />
