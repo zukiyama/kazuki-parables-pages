@@ -3,7 +3,7 @@ import { OptimizedImage } from "@/components/OptimizedImage";
 import Navigation from "@/components/Navigation";
 import { useScrollAnimation } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
-import artistPortrait from "@/assets/artist-portrait.png";
+import artistPortrait from "@/assets/author-portrait-new.png";
 import bannerImage from "@/assets/about-banner-balloon.jpeg";
 import windowCity from "@/assets/about-window-city.png";
 import aerialStreet from "@/assets/about-aerial-street.jpeg";
