@@ -214,26 +214,22 @@ const Writing = () => {
         }
       }
 
-      // Find which section is closest to viewport center
+      // Always find the closest section regardless of visibility
+      // This ensures snapping works even if the section hasn't appeared yet or has disappeared
       let closestSection: { el: HTMLElement; name: string } | null = null;
       let minDistance = Infinity;
       
-      // Also track sections that are partially visible
-      const visibleSections: { section: { el: HTMLElement; name: string }; distance: number; snapPoint: number }[] = [];
+      const headerBottom = getHeaderBottom();
+      const banner = document.querySelector('.sticky.top-16') as HTMLElement;
+      const bannerHeight = banner ? banner.offsetHeight : 0;
+      const topOffset = headerBottom + bannerHeight;
+      const viewportCenter = topOffset + (window.innerHeight - topOffset) / 2;
       
       bookSections.forEach(section => {
         const rect = section.el.getBoundingClientRect();
-        const viewportCenter = window.innerHeight / 2;
+        // Use the section's center position relative to viewport
         const sectionCenter = rect.top + (rect.height / 2);
         const distance = Math.abs(sectionCenter - viewportCenter);
-        
-        // Check if section is at least partially in viewport
-        if (rect.bottom > 0 && rect.top < window.innerHeight) {
-          const snapPoint = getCenterSnapPoint(section.el, section.name);
-          if (snapPoint !== null) {
-            visibleSections.push({ section, distance, snapPoint });
-          }
-        }
         
         if (distance < minDistance) {
           minDistance = distance;
@@ -241,22 +237,11 @@ const Writing = () => {
         }
       });
 
-      // If no sections are visible in viewport, find the nearest one
-      if (visibleSections.length === 0 && closestSection) {
+      // Snap to closest section regardless of whether it's visible or not
+      if (closestSection) {
         const snapPoint = getCenterSnapPoint(closestSection.el, closestSection.name);
         if (snapPoint !== null && Math.abs(currentScroll - snapPoint) > 15) {
           snapToPoint(snapPoint);
-        }
-        return;
-      }
-
-      // Find the section closest to center among visible sections
-      if (visibleSections.length > 0) {
-        visibleSections.sort((a, b) => a.distance - b.distance);
-        const targetSection = visibleSections[0];
-        
-        if (Math.abs(currentScroll - targetSection.snapPoint) > 15) {
-          snapToPoint(targetSection.snapPoint);
         }
       }
     };
