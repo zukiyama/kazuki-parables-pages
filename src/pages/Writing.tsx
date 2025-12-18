@@ -196,6 +196,8 @@ const Writing = () => {
       }, 600);
     };
 
+    let lastScrollY = window.scrollY;
+    
     const handleScrollEnd = () => {
       if (isSnapping.current) return;
       
@@ -214,8 +216,32 @@ const Writing = () => {
         }
       }
 
+      // Check if we're in or past the young-adult section (past vice-versa)
+      const youngAdultSection = document.querySelector('[data-section="young-adult"]') as HTMLElement;
+      const viceVersaSection = document.querySelector('[data-section="vice-versa"]') as HTMLElement;
+      
+      if (youngAdultSection && viceVersaSection) {
+        const youngAdultRect = youngAdultSection.getBoundingClientRect();
+        const viceVersaRect = viceVersaSection.getBoundingClientRect();
+        const headerBottom = getHeaderBottom();
+        const banner = document.querySelector('.sticky.top-16') as HTMLElement;
+        const bannerHeight = banner ? banner.offsetHeight : 0;
+        const topOffset = headerBottom + bannerHeight;
+        
+        // If young-adult section top is above the viewport center, we're in/past the young-adult area
+        if (youngAdultRect.top < window.innerHeight * 0.7) {
+          // Only snap back to vice-versa if we've scrolled UP and vice-versa is very close
+          // (its bottom is near or below the top offset area)
+          if (viceVersaRect.bottom > topOffset + 50) {
+            // Vice-versa is close enough - allow snap
+          } else {
+            // We're in young-adult zone, don't snap back to vice-versa
+            return;
+          }
+        }
+      }
+
       // Always find the closest section regardless of visibility
-      // This ensures snapping works even if the section hasn't appeared yet or has disappeared
       let closestSection: { el: HTMLElement; name: string } | null = null;
       let minDistance = Infinity;
       
@@ -244,6 +270,8 @@ const Writing = () => {
           snapToPoint(snapPoint);
         }
       }
+      
+      lastScrollY = currentScroll;
     };
 
     const handleScroll = () => {
