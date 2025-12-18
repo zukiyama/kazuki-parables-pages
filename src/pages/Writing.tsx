@@ -382,7 +382,8 @@ const Writing = () => {
       />
       
       {/* Stacked Background Images - All preloaded */}
-      <div className="fixed top-0 left-0 z-0" style={{ height: '100vh', width: '100vw' }}>
+      {/* Using 100lvh (large viewport height) + extra buffer to prevent white bar flicker when browser chrome hides */}
+      <div className="fixed inset-0 z-0" style={{ height: 'calc(100lvh + 50px)', width: '100vw' }}>
         <img 
           src={schoolBackground} 
           alt="School background"
