@@ -194,18 +194,18 @@ const Comics = () => {
         {/* Header Banner - Original black style */}
         <header 
           ref={bannerSectionRef}
-          className="py-3 sm:py-4 lg:py-5 px-4 mt-16 bg-black"
+          className="py-4 sm:py-5 lg:py-6 px-4 mt-16 bg-black"
         >
-          {/* Main title - smaller */}
+          {/* Main title */}
           <div className="text-center">
             <h1 
-              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#e8d9a0] tracking-wide"
+              className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-[#e8d9a0] tracking-wide"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
                 textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
               }}
             >
-              COMICS & SCRIPTS
+              COMICS AND SCRIPTS
             </h1>
           </div>
           
