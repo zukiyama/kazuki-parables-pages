@@ -10,23 +10,29 @@ import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
 import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
+import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop.png";
+import comicsMascot from "@/assets/comics-mascot-character.png";
 
 const Comics = () => {
   useScrollToTop();
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [showGodOfLiesDescription, setShowGodOfLiesDescription] = useState(false);
+  const [showBusStopSection, setShowBusStopSection] = useState(false);
+  const [showPendragon, setShowPendragon] = useState(false);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
   
   // Refs for snap sections
   const bannerSectionRef = useRef<HTMLElement>(null);
+  const newReleasesBarRef = useRef<HTMLDivElement>(null);
   const godOfLiesSectionRef = useRef<HTMLElement>(null);
+  const busStopSectionRef = useRef<HTMLElement>(null);
   const pendragonSectionRef = useRef<HTMLElement>(null);
   const storiesSectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLElement | null>(null);
 
-  // Track scroll for God of Lies description slide-in
+  // Track scroll for slide-in animations
   useEffect(() => {
     const handleScroll = () => {
       if (godOfLiesSectionRef.current) {
@@ -34,6 +40,16 @@ const Comics = () => {
         // Show description when scrolled past 30% of the image
         const threshold = rect.height * 0.3;
         setShowGodOfLiesDescription(rect.top < -threshold);
+        
+        // Show bus stop section when God of Lies is mostly scrolled past
+        const busStopThreshold = rect.height * 0.6;
+        setShowBusStopSection(rect.top < -busStopThreshold);
+      }
+      
+      if (busStopSectionRef.current) {
+        const rect = busStopSectionRef.current.getBoundingClientRect();
+        // Show Pendragon when bus stop section is partially visible
+        setShowPendragon(rect.top < window.innerHeight * 0.8);
       }
     };
 
@@ -116,6 +132,16 @@ const Comics = () => {
       const viewportTop = headerBottom;
       const viewportBottom = viewportHeight;
       const availableViewport = viewportBottom - viewportTop;
+      const currentScroll = window.scrollY;
+      
+      // Check if we're very close to top - snap to banner
+      if (currentScroll < 100) {
+        const bannerSection = sections.find(s => s.name === 'banner');
+        if (bannerSection && currentScroll !== 0) {
+          snapToPoint(0, 'banner');
+          return;
+        }
+      }
       
       // Check if we're in the free-scroll zone below pendragon
       const pendragonSection = sections.find(s => s.name === 'pendragon');
@@ -135,7 +161,6 @@ const Comics = () => {
 
       for (const section of sections) {
         const rect = section.el.getBoundingClientRect();
-        const sectionHeight = rect.height;
         
         const visibleTop = Math.max(rect.top, viewportTop);
         const visibleBottom = Math.min(rect.bottom, viewportBottom);
@@ -164,7 +189,6 @@ const Comics = () => {
           }
         }
         
-        const currentScroll = window.scrollY;
         if (Math.abs(currentScroll - bestSection.snapPoint) > 10) {
           snapToPoint(bestSection.snapPoint, bestSection.name);
         }
@@ -285,6 +309,48 @@ const Comics = () => {
           </div>
         </header>
 
+        {/* NEW RELEASES Bar */}
+        <div ref={newReleasesBarRef} className="w-full">
+          {/* White bar with quote */}
+          <div className="bg-white py-10 sm:py-14 text-center">
+            <h2 
+              className="text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight"
+              style={{ fontFamily: 'EB Garamond, serif' }}
+            >
+              "New Releases"
+            </h2>
+          </div>
+          
+          {/* Thin black bar with categories */}
+          <div className="bg-black py-2 sm:py-3">
+            <div className="flex items-center justify-center gap-2 sm:gap-4 flex-wrap px-4">
+              <span 
+                className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light"
+              >
+                MANGA
+              </span>
+              <span className="text-[#e8d9a0]/60 text-lg">•</span>
+              <span 
+                className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light"
+              >
+                WEBTOONS
+              </span>
+              <span className="text-[#e8d9a0]/60 text-lg">•</span>
+              <span 
+                className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light"
+              >
+                COMICS
+              </span>
+              <span className="text-[#e8d9a0]/60 text-lg">•</span>
+              <span 
+                className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light"
+              >
+                LONG-FORM SCRIPTS
+              </span>
+            </div>
+          </div>
+        </div>
+
         {/* GOD OF LIES - Snap Section 2 */}
         <section ref={godOfLiesSectionRef} className="w-full relative">
           <img 
@@ -346,8 +412,67 @@ const Comics = () => {
           </div>
         </section>
 
+        {/* Bus Stop Image + Description Section */}
+        <section ref={busStopSectionRef} className="w-full relative bg-white">
+          <div className="flex flex-col lg:flex-row min-h-[300px] lg:min-h-[400px]">
+            {/* Left side - Description text slides in */}
+            <div 
+              className={`w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex items-center transition-all duration-700 ease-out ${
+                showBusStopSection 
+                  ? 'opacity-100 translate-x-0' 
+                  : 'opacity-0 -translate-x-16'
+              }`}
+            >
+              <div>
+                <h3 
+                  className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-4"
+                  style={{ fontFamily: 'Bangers, cursive' }}
+                >
+                  GOD OF LIES
+                </h3>
+                <p 
+                  className="text-slate-700 text-sm sm:text-base leading-relaxed mb-4"
+                  style={{ fontFamily: 'Georgia, serif' }}
+                >
+                  In a world where every truth bends to the will of one man, reality itself becomes a question. 
+                  Takeshi Mori has spent decades mastering the art of deception—but when a child sees through 
+                  his lies for the first time, everything begins to unravel.
+                </p>
+                <p 
+                  className="text-slate-600 text-sm leading-relaxed italic"
+                  style={{ fontFamily: 'Georgia, serif' }}
+                >
+                  "What happens when a god discovers he's been lying to himself?"
+                </p>
+              </div>
+            </div>
+            
+            {/* Right side - Bus stop image slides in */}
+            <div 
+              className={`w-full lg:w-1/2 transition-all duration-700 ease-out ${
+                showBusStopSection 
+                  ? 'opacity-100 translate-x-0' 
+                  : 'opacity-0 translate-x-16'
+              }`}
+            >
+              <img 
+                src={godOfLiesBusStop}
+                alt="God of Lies - Bus Stop Scene"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </section>
+
         {/* SURNAME PENDRAGON - Snap Section 3 */}
-        <section ref={pendragonSectionRef} className="w-full">
+        <section 
+          ref={pendragonSectionRef} 
+          className={`w-full transition-all duration-700 ease-out ${
+            showPendragon 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-16'
+          }`}
+        >
           <img 
             src={surnamePendragonBanner}
             alt="Surname Pendragon"
@@ -375,7 +500,7 @@ const Comics = () => {
         </section>
 
         {/* Forthcoming Comics Grid */}
-        <section className="pb-16 px-4 sm:px-6 bg-[#f5f0e6]">
+        <section className="pb-24 px-4 sm:px-6 bg-[#f5f0e6]">
           {/* First Row */}
           <div 
             ref={row1Ref}
@@ -436,7 +561,17 @@ const Comics = () => {
         </section>
       </main>
       
-      <footer className="bg-slate-900 py-10 max-sm:py-6">
+      {/* Footer with mascot character */}
+      <footer className="bg-slate-900 py-10 max-sm:py-6 relative">
+        {/* Mascot character - bottom right, base aligned with footer top */}
+        <img 
+          src={comicsMascot}
+          alt="Comics mascot character"
+          className="absolute right-4 sm:right-8 bottom-full w-20 sm:w-28 lg:w-32 pointer-events-none"
+          style={{
+            filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.3))'
+          }}
+        />
         <div className="container mx-auto px-6 text-center">
           <h3 className="font-heading text-xl mb-3 text-white">Contact</h3>
           <p className="font-serif text-slate-300 text-sm">
