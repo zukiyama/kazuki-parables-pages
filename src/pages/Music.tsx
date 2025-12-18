@@ -397,10 +397,10 @@ const Music = () => {
         <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
       </div>
       
-        <main className="container mx-auto px-6 pt-60 pb-12 relative z-10">
+        <main className="container mx-auto px-6 pt-48 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
-          {/* Header - positioned equidistant between banner bottom and video top */}
-          <div className="text-center mb-8 pt-4">
+          {/* Header - positioned closer to banner and video */}
+          <div className="text-center mb-4 pt-2">
             <img 
               src={musicLogo} 
               alt="Music" 

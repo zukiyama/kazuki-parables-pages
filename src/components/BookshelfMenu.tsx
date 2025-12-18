@@ -142,9 +142,40 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       let targetScrollPosition;
       
       if (book.targetSection === 'young-adult') {
-        // For slideshow: position title at top with proper spacing
+        // For slideshow: position so distance from title-to-banner equals slideshow-to-footer
         const titleElement = section.querySelector('h2');
-        if (titleElement) {
+        const slideshowEl = section.querySelector('.bg-black\\/60') as HTMLElement;
+        const footer = document.querySelector('footer') as HTMLElement;
+        
+        if (titleElement && slideshowEl && footer) {
+          const bannerBottom = bookshelfMenu ? bookshelfMenu.getBoundingClientRect().bottom : fixedElementsHeight;
+          const viewportHeight = window.innerHeight;
+          const footerTop = footer.getBoundingClientRect().top + window.scrollY;
+          
+          // Get current measurements
+          const titleRect = titleElement.getBoundingClientRect();
+          const slideshowRect = slideshowEl.getBoundingClientRect();
+          
+          // Total content height from title top to slideshow bottom
+          const contentHeight = slideshowRect.bottom - titleRect.top;
+          
+          // Calculate where footer top would be relative to slideshow bottom after scroll
+          // Distance from title to banner should equal distance from slideshow to footer
+          // Let x = distance from banner to title = distance from slideshow to footer
+          // banner + x + contentHeight + x = viewportHeight
+          // 2x = viewportHeight - contentHeight - bannerPosition
+          const bannerPositionInViewport = bannerBottom;
+          const availableSpace = viewportHeight - bannerPositionInViewport;
+          const spacing = (availableSpace - contentHeight) / 2;
+          
+          // Target: title should be at bannerBottom + spacing
+          const currentTitleTop = titleRect.top;
+          const desiredTitleTop = bannerPositionInViewport + spacing;
+          const scrollAdjustment = currentTitleTop - desiredTitleTop;
+          
+          targetScrollPosition = window.scrollY + scrollAdjustment;
+        } else if (titleElement) {
+          // Fallback to simple positioning
           const titleTop = titleElement.getBoundingClientRect().top + window.scrollY;
           targetScrollPosition = titleTop - fixedElementsHeight;
         }

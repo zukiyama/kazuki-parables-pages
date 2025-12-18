@@ -115,12 +115,12 @@ const Writing = () => {
   }, []);
 
 
-  // Scroll snap logic for book sections - only from HOAX onwards
+  // Scroll snap logic for book sections - only from HOAX onwards, not young-adult
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     
     // Sections that should NOT have snap behavior
-    const noSnapSections = ['kaiju'];
+    const noSnapSections = ['kaiju', 'young-adult'];
 
     const getBookSections = () => {
       const sections = document.querySelectorAll('[data-section]');
