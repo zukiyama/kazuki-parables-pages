@@ -92,10 +92,9 @@ interface BookshelfMenuProps {
   onBookClick?: (bookId: string, slideToBook?: number) => void;
   visibleSections?: Set<string>;
   currentYoungAdultBook?: number;
-  visible?: boolean;
 }
 
-export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultBook = 0, visible = true }: BookshelfMenuProps) => {
+export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultBook = 0 }: BookshelfMenuProps) => {
   const [hoveredBook, setHoveredBook] = useState<string | null>(null);
   
   // Determine which book should be highlighted based on visible sections
@@ -190,7 +189,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
 
   return (
     <div 
-      className={`sticky top-16 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-4 max-sm:pt-5 max-sm:pb-6 max-sm:fixed max-sm:left-0 max-sm:right-0 transition-opacity duration-300 ease-in-out ${visible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      className="sticky top-16 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-4 max-sm:pt-5 max-sm:pb-6 max-sm:fixed max-sm:left-0 max-sm:right-0"
     >
       <div className="container mx-auto px-6 max-sm:px-4">
         <div className="flex justify-center items-center gap-6 overflow-x-auto overflow-y-visible pb-2 max-sm:gap-4 max-sm:pb-1 max-sm:justify-start max-sm:overflow-x-scroll max-sm:overflow-y-visible scrollbar-hide">
