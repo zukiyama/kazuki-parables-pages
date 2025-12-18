@@ -102,6 +102,7 @@ const Comics = () => {
       if (sections.length === 0) return;
 
       const headerBottom = getHeaderBottom();
+      const viewportBottom = window.innerHeight;
       
       // If we're past the bottom of the stories section, allow free scroll
       const storiesSection = sections.find(s => s.name === 'stories');
@@ -111,32 +112,37 @@ const Comics = () => {
         if (storiesRect.bottom < headerBottom) return;
       }
 
-      // 25% threshold: find which section we've scrolled 25% into
-      // Check from bottom to top - if we've scrolled 25% into a new section, snap to it
+      // Calculate visibility ratio for each section:
+      // (visible height of section in viewport) / (total height of section)
+      // Snap to section with ≥25% visibility; if multiple, choose the one with highest visibility
       let targetSection: typeof sections[0] | null = null;
+      let highestVisibility = 0;
       
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
+      for (const section of sections) {
         const rect = section.el.getBoundingClientRect();
         const sectionHeight = rect.height;
         
-        // How much of this section is above the header (visible area starts at headerBottom)
-        const visibleFromTop = headerBottom - rect.top;
-        const visibilityRatio = visibleFromTop / sectionHeight;
+        // Calculate visible portion of this section within the viewport
+        // Viewport starts at headerBottom and ends at viewportBottom
+        const visibleTop = Math.max(rect.top, headerBottom);
+        const visibleBottom = Math.min(rect.bottom, viewportBottom);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
         
-        // If 25% or more of this section is scrolled into view from top, it's our target
-        if (visibilityRatio >= 0.25) {
+        // Visibility ratio = visible height / total section height
+        const visibilityRatio = visibleHeight / sectionHeight;
+        
+        // If ≥25% is visible, it's a candidate
+        if (visibilityRatio >= 0.25 && visibilityRatio > highestVisibility) {
+          highestVisibility = visibilityRatio;
           targetSection = section;
-          break;
         }
       }
       
-      // Fallback: if no section meets 25% threshold, find the one closest to viewport
+      // If no section has ≥25% visibility, snap to the closest section
       if (!targetSection) {
         let minDistance = Infinity;
         for (const section of sections) {
           const rect = section.el.getBoundingClientRect();
-          // Distance from section top to header bottom
           const distance = Math.abs(rect.top - headerBottom);
           if (distance < minDistance) {
             minDistance = distance;
