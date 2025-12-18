@@ -42,7 +42,7 @@ const Comics = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Scroll snap logic using window scroll
+  // Scroll snap logic using window scroll - 25% threshold to snap to new section
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let isSnapping = false;
@@ -60,23 +60,17 @@ const Comics = () => {
         { 
           el: bannerEl, 
           name: 'banner',
-          snapPoint: 0,
-          top: bannerEl.getBoundingClientRect().top + window.scrollY,
-          bottom: bannerEl.getBoundingClientRect().bottom + window.scrollY
+          snapPoint: 0
         },
         { 
           el: godOfLiesEl, 
           name: 'godOfLies',
-          snapPoint: godOfLiesEl.getBoundingClientRect().top + window.scrollY - headerBottom,
-          top: godOfLiesEl.getBoundingClientRect().top + window.scrollY,
-          bottom: godOfLiesEl.getBoundingClientRect().bottom + window.scrollY
+          snapPoint: godOfLiesEl.getBoundingClientRect().top + window.scrollY - headerBottom
         },
         { 
           el: pendragonEl, 
           name: 'pendragon',
-          snapPoint: pendragonEl.getBoundingClientRect().top + window.scrollY - headerBottom,
-          top: pendragonEl.getBoundingClientRect().top + window.scrollY,
-          bottom: pendragonEl.getBoundingClientRect().bottom + window.scrollY
+          snapPoint: pendragonEl.getBoundingClientRect().top + window.scrollY - headerBottom
         }
       ];
     };
@@ -105,46 +99,55 @@ const Comics = () => {
       
       // If we're past the last snap section, allow free scroll
       const lastSection = sections[sections.length - 1];
-      if (viewportTop > lastSection.bottom) return;
+      const lastSectionRect = lastSection.el.getBoundingClientRect();
+      const lastSectionBottom = lastSectionRect.bottom + currentScroll;
+      if (viewportTop > lastSectionBottom) return;
 
-      // Find which section we're currently in based on 25% threshold
-      for (let i = 0; i < sections.length; i++) {
-        const section = sections[i];
-        const sectionHeight = section.bottom - section.top;
-        const threshold = sectionHeight * 0.25; // 25% of section height
+      // Simple 25% threshold logic:
+      // Check how much of each section is visible in the viewport
+      // If 25% or more of a section is showing, consider it a candidate
+      // Snap to the section that has the most visibility
+      
+      let bestSection: typeof sections[0] | null = null;
+      let bestVisibility = 0;
+      
+      for (const section of sections) {
+        const rect = section.el.getBoundingClientRect();
+        const sectionTop = rect.top;
+        const sectionBottom = rect.bottom;
+        const sectionHeight = rect.height;
+        const viewportHeight = window.innerHeight;
         
-        // Check if viewport top is within this section
-        if (viewportTop >= section.top - threshold && viewportTop < section.bottom + threshold) {
-          // We're in or near this section
-          // If we're 25% into this section from the top, snap to it
-          if (viewportTop >= section.top && viewportTop < section.top + threshold) {
-            // Just entered this section - snap to it
-            if (Math.abs(currentScroll - section.snapPoint) > 10) {
-              snapToPoint(section.snapPoint);
-            }
-            return;
-          }
-          
-          // If we're in the middle or bottom of section, check if we should snap to next
-          if (i < sections.length - 1) {
-            const nextSection = sections[i + 1];
-            const nextThreshold = (nextSection.bottom - nextSection.top) * 0.25;
-            
-            // If we're 25% into next section, snap to next
-            if (viewportTop >= nextSection.top - nextThreshold) {
-              if (Math.abs(currentScroll - nextSection.snapPoint) > 10) {
-                snapToPoint(nextSection.snapPoint);
-              }
-              return;
-            }
-          }
-          
-          // Otherwise snap to current section
-          if (Math.abs(currentScroll - section.snapPoint) > 10) {
-            snapToPoint(section.snapPoint);
-          }
-          return;
+        // Calculate how much of this section is visible
+        const visibleTop = Math.max(sectionTop, headerBottom);
+        const visibleBottom = Math.min(sectionBottom, viewportHeight);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        const visibilityRatio = visibleHeight / sectionHeight;
+        
+        // If 25% or more is visible, it's a candidate
+        if (visibilityRatio >= 0.25 && visibilityRatio > bestVisibility) {
+          bestVisibility = visibilityRatio;
+          bestSection = section;
         }
+      }
+      
+      // If no section has 25% visibility, snap to the closest one
+      if (!bestSection) {
+        let minDistance = Infinity;
+        for (const section of sections) {
+          const rect = section.el.getBoundingClientRect();
+          const sectionCenter = rect.top + rect.height / 2;
+          const viewportCenter = window.innerHeight / 2;
+          const distance = Math.abs(sectionCenter - viewportCenter);
+          if (distance < minDistance) {
+            minDistance = distance;
+            bestSection = section;
+          }
+        }
+      }
+      
+      if (bestSection && Math.abs(currentScroll - bestSection.snapPoint) > 10) {
+        snapToPoint(bestSection.snapPoint);
       }
     };
 
