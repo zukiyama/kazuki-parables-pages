@@ -458,16 +458,16 @@ const Writing = () => {
       <main className="relative z-10 pt-24 max-sm:pt-40">
         {/* KAIJU - The Parable Trilogy Section */}
         <section data-section="kaiju" className="min-h-[80vh] flex items-center justify-center relative">
-          <div className="container mx-auto px-6 py-20">
+          <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
-              <h1 className={`font-serif text-6xl font-bold text-white mb-24 max-sm:mb-16 text-center tracking-wide transition-all duration-1000 ${
+              <h1 className={`font-serif text-6xl font-bold text-white mb-12 max-sm:mb-10 text-center tracking-wide transition-all duration-1000 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
               }`}>
                 Novels
               </h1>
               
               {/* The Parable Trilogy Introduction */}
-              <div className={`text-center mb-20 transition-all duration-1000 delay-200 ${
+              <div className={`text-center mb-12 transition-all duration-1000 delay-200 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 <h2 className="font-serif text-4xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>
@@ -510,7 +510,7 @@ const Writing = () => {
                   </div>
                 </div>
               </div>
-              <p className={`font-serif text-xl leading-relaxed text-white italic text-center mt-10 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
+              <p className={`font-serif text-xl leading-relaxed text-white italic text-center mt-10 mb-16 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people in a 1979 that happened only for those who were there.
