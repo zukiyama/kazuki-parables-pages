@@ -409,7 +409,7 @@ const Music = () => {
           </div>
           
           {/* Video Player - Cassette Deck Style */}
-          <div className="mb-12" ref={videoRef}>
+          <div className="mb-12 -mt-8" ref={videoRef}>
             <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20 max-sm:p-2">
               <div className="relative aspect-video bg-black rounded-lg overflow-hidden group">
                 <video 
