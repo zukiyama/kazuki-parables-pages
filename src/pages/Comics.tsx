@@ -10,8 +10,6 @@ import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 
-const HEADER_HEIGHT = 64; // Fixed header height in pixels
-
 const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
@@ -22,6 +20,20 @@ const Comics = () => {
   const bannerSectionRef = useRef<HTMLElement>(null);
   const godOfLiesSectionRef = useRef<HTMLElement>(null);
   const pendragonSectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLElement | null>(null);
+
+  // Get dynamic header height (accounts for browser chrome showing/hiding)
+  const getHeaderBottom = useCallback(() => {
+    // Try to get the actual header element
+    if (!headerRef.current) {
+      headerRef.current = document.querySelector('header.fixed, nav.fixed, [data-header]') as HTMLElement;
+    }
+    if (headerRef.current) {
+      return headerRef.current.getBoundingClientRect().bottom;
+    }
+    // Fallback to fixed 64px if header not found
+    return 64;
+  }, []);
 
   // Reset scroll position on page load
   useEffect(() => {
@@ -42,17 +54,18 @@ const Comics = () => {
       
       if (!bannerEl || !godOfLiesEl || !pendragonEl) return [];
 
-      const viewportHeight = window.innerHeight;
+      // Get current header bottom position (dynamic based on browser chrome)
+      const headerBottom = getHeaderBottom();
       
-      // Snap point 1: Banner top aligned with header bottom (scroll position 0)
+      // Snap point 1: Banner top aligned with header bottom
+      // When scroll is 0, banner is at mt-16 (64px), so it aligns with header
       const bannerSnapPoint = 0;
       
-      // Snap point 2: God of Lies bottom edge aligned with viewport bottom
-      const godOfLiesBottom = godOfLiesEl.offsetTop + godOfLiesEl.offsetHeight;
-      const godOfLiesSnapPoint = godOfLiesBottom - viewportHeight;
+      // Snap point 2: God of Lies top edge aligned with header bottom
+      const godOfLiesSnapPoint = godOfLiesEl.getBoundingClientRect().top + window.scrollY - headerBottom;
       
       // Snap point 3: Pendragon top edge aligned with header bottom
-      const pendragonSnapPoint = pendragonEl.offsetTop - HEADER_HEIGHT;
+      const pendragonSnapPoint = pendragonEl.getBoundingClientRect().top + window.scrollY - headerBottom;
       
       return [
         { point: bannerSnapPoint, name: 'banner' },
@@ -79,11 +92,13 @@ const Comics = () => {
       const snapPoints = getSnapPoints();
       
       if (snapPoints.length === 0) return;
+
+      const headerBottom = getHeaderBottom();
       
       // Find if we're past the snap zone (after pendragon section)
       const pendragonEl = pendragonSectionRef.current;
       if (pendragonEl) {
-        const pendragonBottom = pendragonEl.offsetTop + pendragonEl.offsetHeight - HEADER_HEIGHT;
+        const pendragonBottom = pendragonEl.getBoundingClientRect().top + window.scrollY + pendragonEl.offsetHeight - headerBottom;
         
         // If scrolling down past pendragon, allow free scroll
         if (currentScroll > pendragonBottom && scrollVelocity > 0) {
@@ -162,7 +177,7 @@ const Comics = () => {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(scrollTimeout);
     };
-  }, []);
+  }, [getHeaderBottom]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -233,7 +248,7 @@ const Comics = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f0e6]">
+    <div className="min-h-screen bg-[#f5f0e6] overflow-x-hidden">
       <Navigation />
 
       <main className="relative z-10">
