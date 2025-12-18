@@ -11,7 +11,6 @@ import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop.png";
-import comicsMascot from "@/assets/comics-mascot-character.png";
 import comicsFooterCharacter from "@/assets/comics-footer-character.jpeg";
 
 const Comics = () => {
@@ -288,18 +287,49 @@ const Comics = () => {
         {/* Header Banner - Snap Section 1 */}
         <header 
           ref={bannerSectionRef}
-          className="bg-black text-center py-6 px-4 mt-16"
+          className="bg-black py-8 sm:py-10 lg:py-12 px-4 mt-16"
         >
-          <h1 
-            className="text-4xl sm:text-6xl lg:text-7xl font-bold text-[#e8d9a0] tracking-wide"
-            style={{ 
-              fontFamily: 'Boogaloo, cursive',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
-            }}
-          >
-            COMICS AND SCRIPTS
-          </h1>
-          <div className="flex items-center justify-center gap-3 mt-3">
+          {/* Main title row with categories on sides */}
+          <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-8">
+            {/* Left categories */}
+            <div className="hidden sm:flex items-center gap-2 text-[#e8d9a0]/80">
+              <span className="text-xs sm:text-sm tracking-widest uppercase font-light">MANGA</span>
+              <span className="text-[#e8d9a0]/50">•</span>
+              <span className="text-xs sm:text-sm tracking-widest uppercase font-light">WEBTOONS</span>
+            </div>
+            
+            {/* Main title */}
+            <h1 
+              className="text-5xl sm:text-7xl lg:text-8xl font-bold text-[#e8d9a0] tracking-wide"
+              style={{ 
+                fontFamily: 'Boogaloo, cursive',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+              }}
+            >
+              COMICS & SCRIPTS
+            </h1>
+            
+            {/* Right categories */}
+            <div className="hidden sm:flex items-center gap-2 text-[#e8d9a0]/80">
+              <span className="text-xs sm:text-sm tracking-widest uppercase font-light">COMICS</span>
+              <span className="text-[#e8d9a0]/50">•</span>
+              <span className="text-xs sm:text-sm tracking-widest uppercase font-light">LONG-FORM SCRIPTS</span>
+            </div>
+          </div>
+          
+          {/* Mobile categories - shown below title on small screens */}
+          <div className="sm:hidden flex items-center justify-center gap-2 mt-3 text-[#e8d9a0]/80 flex-wrap">
+            <span className="text-xs tracking-widest uppercase font-light">MANGA</span>
+            <span className="text-[#e8d9a0]/50">•</span>
+            <span className="text-xs tracking-widest uppercase font-light">WEBTOONS</span>
+            <span className="text-[#e8d9a0]/50">•</span>
+            <span className="text-xs tracking-widest uppercase font-light">COMICS</span>
+            <span className="text-[#e8d9a0]/50">•</span>
+            <span className="text-xs tracking-widest uppercase font-light">SCRIPTS</span>
+          </div>
+          
+          {/* Subtitle */}
+          <div className="flex items-center justify-center gap-3 mt-4">
             <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-20" />
             <p className="text-xs sm:text-sm text-[#e8d9a0]/80 tracking-widest uppercase font-light">
               Original Stories in Sequential Art & Screenplay
@@ -307,30 +337,6 @@ const Comics = () => {
             <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-20" />
           </div>
         </header>
-
-        {/* Thin gold line divider */}
-        <div className="w-full h-px bg-[#e8d9a0]/60" />
-
-        {/* Black bar with categories - directly below title banner */}
-        <div className="bg-black py-2 sm:py-3">
-          <div className="flex items-center justify-center gap-2 sm:gap-4 flex-wrap px-4">
-            <span className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light">
-              MANGA
-            </span>
-            <span className="text-[#e8d9a0]/60 text-lg">•</span>
-            <span className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light">
-              WEBTOONS
-            </span>
-            <span className="text-[#e8d9a0]/60 text-lg">•</span>
-            <span className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light">
-              COMICS
-            </span>
-            <span className="text-[#e8d9a0]/60 text-lg">•</span>
-            <span className="text-[#e8d9a0] text-xs sm:text-sm tracking-widest uppercase font-light">
-              LONG-FORM SCRIPTS
-            </span>
-          </div>
-        </div>
 
         {/* NEW RELEASES Bar */}
         <div ref={newReleasesBarRef} className="w-full">
@@ -345,34 +351,45 @@ const Comics = () => {
           </div>
         </div>
 
-        {/* GOD OF LIES - Snap Section 2 */}
-        <section ref={godOfLiesSectionRef} className="w-full relative">
+        {/* GOD OF LIES - Snap Section 2 - Slides over banner */}
+        <section 
+          ref={godOfLiesSectionRef} 
+          className="w-full relative z-20 sticky top-16"
+        >
           <img 
             src={godOfLiesCover}
             alt="God of Lies"
             className="w-full"
           />
           
-          {/* Magazine-style "New Release" badge - right side, above middle */}
+          {/* Magazine-style "New Release" badge - professional magazine panel look */}
           <div 
-            className="absolute right-[5%] top-[35%] bg-[#8B0000] px-4 py-2 sm:px-6 sm:py-3 shadow-lg"
-            style={{
-              transform: 'rotate(2deg)',
-              boxShadow: '2px 3px 8px rgba(0,0,0,0.4)',
-            }}
+            className="absolute right-[4%] top-[30%] sm:right-[6%] sm:top-[35%]"
           >
-            <p 
-              className="text-white text-xs sm:text-sm font-bold tracking-wide uppercase"
-              style={{ fontFamily: 'Impact, Haettenschweiler, sans-serif' }}
+            <div 
+              className="bg-gradient-to-br from-[#c41e3a] via-[#9b1b30] to-[#6b1525] px-5 py-3 sm:px-8 sm:py-4 border-2 border-white/30"
+              style={{
+                boxShadow: '0 4px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2)',
+                clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)'
+              }}
             >
-              NEW RELEASE
-            </p>
-            <p 
-              className="text-white/90 text-[10px] sm:text-xs tracking-wider"
-              style={{ fontFamily: 'Arial, sans-serif' }}
-            >
-              First Issue Available Soon
-            </p>
+              <p 
+                className="text-white text-sm sm:text-lg font-black tracking-wider uppercase leading-tight"
+                style={{ 
+                  fontFamily: 'Impact, Haettenschweiler, sans-serif',
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
+                }}
+              >
+                NEW RELEASE
+              </p>
+              <div className="w-full h-px bg-white/40 my-1.5" />
+              <p 
+                className="text-white/95 text-[10px] sm:text-xs tracking-widest uppercase"
+                style={{ fontFamily: 'Arial Narrow, Arial, sans-serif' }}
+              >
+                First Issue Coming Soon
+              </p>
+            </div>
           </div>
 
           {/* Slide-in description box from left */}
@@ -494,7 +511,7 @@ const Comics = () => {
         </section>
 
         {/* Forthcoming Comics Grid */}
-        <section className="pb-32 sm:pb-40 px-4 sm:px-6 bg-[#f5f0e6]">
+        <section className="pb-16 sm:pb-20 px-4 sm:px-6 bg-[#f5f0e6]">
           {/* First Row */}
           <div 
             ref={row1Ref}
@@ -557,23 +574,13 @@ const Comics = () => {
       
       {/* Footer with mascot character */}
       <footer className="bg-slate-900 py-10 max-sm:py-6 relative">
-        {/* Mascot character - positioned to the left of the footer character */}
-        <img 
-          src={comicsMascot}
-          alt="Comics mascot character"
-          className="absolute right-28 sm:right-36 lg:right-44 bottom-full w-20 sm:w-28 lg:w-32 pointer-events-none"
-          style={{
-            filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.3))'
-          }}
-        />
-        {/* Footer character - small, bottom right corner, ~3cm on 13" iPad */}
+        {/* Footer character - small, bottom right corner */}
         <img 
           src={comicsFooterCharacter}
           alt="Footer character"
-          className="absolute right-2 sm:right-4 bottom-full h-14 sm:h-16 lg:h-20 w-auto pointer-events-none"
+          className="absolute right-4 sm:right-6 bottom-full h-16 sm:h-20 lg:h-24 w-auto pointer-events-none object-contain"
           style={{
-            filter: 'drop-shadow(1px 1px 3px rgba(0,0,0,0.3))',
-            mixBlendMode: 'multiply'
+            filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.3))'
           }}
         />
         <div className="container mx-auto px-6 text-center">
