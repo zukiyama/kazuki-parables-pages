@@ -11,7 +11,7 @@ import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop.png";
-import comicsMascotCharacter from "@/assets/comics-mascot-character.png";
+import comicsFooterCharacter from "@/assets/comics-footer-character.jpeg";
 
 const Comics = () => {
   useScrollToTop();
@@ -191,19 +191,15 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative z-10">
-        {/* Header Banner - Wood-style background */}
+        {/* Header Banner - Original black style */}
         <header 
           ref={bannerSectionRef}
-          className="py-8 sm:py-10 lg:py-12 px-4 mt-16"
-          style={{
-            background: 'linear-gradient(135deg, #8B6914 0%, #6B4423 25%, #8B5A2B 50%, #5D3A1A 75%, #4A2C0A 100%)',
-            boxShadow: 'inset 0 2px 4px rgba(255,255,255,0.1), inset 0 -2px 4px rgba(0,0,0,0.2)'
-          }}
+          className="py-4 sm:py-6 px-4 mt-16 bg-black"
         >
           {/* Main title */}
           <div className="text-center">
             <h1 
-              className="text-5xl sm:text-7xl lg:text-8xl font-bold text-[#e8d9a0] tracking-wide"
+              className="text-3xl sm:text-5xl lg:text-6xl font-bold text-[#e8d9a0] tracking-wide"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
                 textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
@@ -214,7 +210,7 @@ const Comics = () => {
           </div>
           
           {/* Subtitle */}
-          <div className="flex items-center justify-center gap-3 mt-4">
+          <div className="flex items-center justify-center gap-3 mt-2">
             <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-20" />
             <p className="text-xs sm:text-sm text-[#e8d9a0]/80 tracking-widest uppercase font-light">
               Original Stories in Sequential Art & Screenplay
@@ -223,7 +219,7 @@ const Comics = () => {
           </div>
           
           {/* Category line */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 text-[#e8d9a0]/70 flex-wrap">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-2 text-[#e8d9a0]/70 flex-wrap">
             <span className="text-[10px] sm:text-xs tracking-widest uppercase font-light">MANGA</span>
             <span className="text-[#e8d9a0]/40">•</span>
             <span className="text-[10px] sm:text-xs tracking-widest uppercase font-light">WEBTOONS</span>
@@ -457,13 +453,13 @@ const Comics = () => {
       
       {/* Footer with mascot character */}
       <footer className="bg-slate-900 py-10 max-sm:py-6 relative">
-        {/* Mascot character - very small, bottom right corner, aligned with footer top */}
+        {/* Footer character - very small, bottom right corner, aligned with footer top */}
         <img 
-          src={comicsMascotCharacter}
+          src={comicsFooterCharacter}
           alt="Comics mascot"
           className="absolute right-4 sm:right-6 bottom-full w-auto pointer-events-none"
           style={{
-            height: '2.5cm'
+            height: '1in'
           }}
         />
         <div className="container mx-auto px-6 text-center">

@@ -15,7 +15,7 @@ import manOnFilmBackground from "@/assets/man-on-film-background-film-reels.png"
 import toDreamtManBackground from "@/assets/to-the-dreamt-man-background-final.png";
 import centreOfWorldBackground from "@/assets/centre-of-world-background-new.png";
 import ohioCassettePoster from "@/assets/music-video-poster-new.jpeg";
-import flowerEpBackground from "@/assets/flower-ep-background-stars.png";
+import flowerEpBackground from "@/assets/flower-ep-background-new.png";
 import starPeopleRiverBackground from "@/assets/star-people-river-background.png";
 import deathOfLoveBackground from "@/assets/death-of-love-background.png";
 import sceneOfMyRestorationBackground from "@/assets/scene-of-my-restoration-background.png";
@@ -29,7 +29,7 @@ import deathOfLoveAlbum from "@/assets/death-of-love-album.png";
 import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album-new.jpeg";
 import centreOfWorldAlbum from "@/assets/last-city-on-earth-album.jpeg";
 import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
-import flowerEpCover from "@/assets/flower-ep-cover.png";
+import flowerEpCover from "@/assets/flower-ep-cover-new.jpeg";
 import circlesSingleCover from "@/assets/circles-single-cover.png";
 
 const albums = [
@@ -399,8 +399,8 @@ const Music = () => {
       
         <main className="container mx-auto px-6 pt-48 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
-          {/* Header - positioned closer to video, further from banner */}
-          <div className="text-center mb-1 pt-4">
+          {/* Header - positioned closer to video with smaller gap above */}
+          <div className="text-center mb-2 pt-1">
             <img 
               src={musicLogo} 
               alt="Music" 
