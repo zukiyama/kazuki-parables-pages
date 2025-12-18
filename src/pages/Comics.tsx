@@ -286,12 +286,11 @@ const Comics = () => {
         </header>
 
         {/* GOD OF LIES - Snap Section 2 */}
-        <section ref={godOfLiesSectionRef} className="w-screen relative -ml-[calc((100vw-100%)/2)]">
+        <section ref={godOfLiesSectionRef} className="w-full relative">
           <img 
             src={godOfLiesCover}
             alt="God of Lies"
-            className="w-full block"
-            style={{ width: '100vw', maxWidth: 'none' }}
+            className="w-full"
           />
           
           {/* Magazine-style "New Release" badge - right side, above middle */}
@@ -348,12 +347,11 @@ const Comics = () => {
         </section>
 
         {/* SURNAME PENDRAGON - Snap Section 3 */}
-        <section ref={pendragonSectionRef} className="w-screen relative -ml-[calc((100vw-100%)/2)]">
+        <section ref={pendragonSectionRef} className="w-full">
           <img 
             src={surnamePendragonBanner}
             alt="Surname Pendragon"
-            className="w-full block"
-            style={{ width: '100vw', maxWidth: 'none' }}
+            className="w-full"
           />
         </section>
 
