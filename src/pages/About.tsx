@@ -2,6 +2,7 @@ import React from "react";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import Navigation from "@/components/Navigation";
 import { useScrollAnimation } from "@/components/ScrollAnimations";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 import artistPortrait from "@/assets/artist-portrait.png";
 import bannerImage from "@/assets/about-banner-balloon.jpeg";
 import windowCity from "@/assets/about-window-city.png";
@@ -22,6 +23,7 @@ import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
 
 
 const About = () => {
+  useScrollToTop();
   const visibleElements = useScrollAnimation();
   const [showCityscape, setShowCityscape] = React.useState(false);
 
