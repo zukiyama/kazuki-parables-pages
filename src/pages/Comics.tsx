@@ -11,7 +11,7 @@ import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop.png";
-import comicsFooterCharacter from "@/assets/comics-footer-character.jpeg";
+import comicsMascotCharacter from "@/assets/comics-mascot-character.png";
 
 const Comics = () => {
   useScrollToTop();
@@ -25,7 +25,6 @@ const Comics = () => {
   
   // Refs for snap sections
   const bannerSectionRef = useRef<HTMLElement>(null);
-  const newReleasesBarRef = useRef<HTMLDivElement>(null);
   const godOfLiesSectionRef = useRef<HTMLElement>(null);
   const busStopSectionRef = useRef<HTMLElement>(null);
   const pendragonSectionRef = useRef<HTMLElement>(null);
@@ -73,138 +72,46 @@ const Comics = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Scroll snap logic - loose snapping, only when section fills most of screen
+  // Scroll snap logic - ONLY for Surname Pendragon
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let isSnapping = false;
-    let lastSnappedSection: string | null = null;
-
-    const getSnapSections = () => {
-      const bannerEl = bannerSectionRef.current;
-      const godOfLiesEl = godOfLiesSectionRef.current;
-      const pendragonEl = pendragonSectionRef.current;
-      
-      if (!bannerEl || !godOfLiesEl || !pendragonEl) return [];
-
-      const headerBottom = getHeaderBottom();
-      
-      return [
-        { 
-          el: bannerEl, 
-          name: 'banner',
-          snapPoint: 0
-        },
-        { 
-          el: godOfLiesEl, 
-          name: 'godOfLies',
-          snapPoint: godOfLiesEl.getBoundingClientRect().top + window.scrollY - headerBottom
-        },
-        { 
-          el: pendragonEl, 
-          name: 'pendragon',
-          snapPoint: pendragonEl.getBoundingClientRect().top + window.scrollY - headerBottom
-        }
-      ];
-    };
-
-    const snapToPoint = (targetY: number, sectionName: string) => {
-      isSnapping = true;
-      lastSnappedSection = sectionName;
-      window.scrollTo({
-        top: targetY,
-        behavior: 'smooth'
-      });
-      setTimeout(() => {
-        isSnapping = false;
-      }, 500);
-    };
 
     const handleScrollEnd = () => {
       if (isSnapping) return;
       
-      const sections = getSnapSections();
-      if (sections.length === 0) return;
+      const pendragonEl = pendragonSectionRef.current;
+      if (!pendragonEl) return;
 
       const headerBottom = getHeaderBottom();
       const viewportHeight = window.innerHeight;
-      const viewportTop = headerBottom;
-      const viewportBottom = viewportHeight;
-      const availableViewport = viewportBottom - viewportTop;
-      const currentScroll = window.scrollY;
+      const rect = pendragonEl.getBoundingClientRect();
       
-      // Check if we're very close to top - snap to banner
-      if (currentScroll < 100) {
-        const bannerSection = sections.find(s => s.name === 'banner');
-        if (bannerSection && currentScroll !== 0) {
-          snapToPoint(0, 'banner');
-          return;
-        }
-      }
+      // Calculate visibility of Pendragon section
+      const visibleTop = Math.max(rect.top, headerBottom);
+      const visibleBottom = Math.min(rect.bottom, viewportHeight);
+      const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+      const availableViewport = viewportHeight - headerBottom;
+      const viewportFillRatio = visibleHeight / availableViewport;
       
-      // Check if we're in the free-scroll zone below pendragon
-      const pendragonSection = sections.find(s => s.name === 'pendragon');
-      if (pendragonSection) {
-        const pendragonRect = pendragonSection.el.getBoundingClientRect();
-        
-        // If pendragon's bottom is above the header (we're past it)
-        if (pendragonRect.bottom < headerBottom) {
-          // Free scroll zone - no snapping at all (even when scrolling up close to it)
-          return;
+      // Only snap to Pendragon if it fills >50% of viewport
+      if (viewportFillRatio > 0.5) {
+        const snapPoint = pendragonEl.getBoundingClientRect().top + window.scrollY - headerBottom;
+        if (Math.abs(window.scrollY - snapPoint) > 10) {
+          isSnapping = true;
+          window.scrollTo({ top: snapPoint, behavior: 'smooth' });
+          setTimeout(() => { isSnapping = false; }, 500);
         }
-      }
-
-      // Find section that fills MOST of the screen (>50%)
-      let bestSection: typeof sections[0] | null = null;
-      let highestVisibility = 0;
-
-      for (const section of sections) {
-        const rect = section.el.getBoundingClientRect();
-        
-        const visibleTop = Math.max(rect.top, viewportTop);
-        const visibleBottom = Math.min(rect.bottom, viewportBottom);
-        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-        
-        // Calculate what percentage of the VIEWPORT this section fills
-        const viewportFillRatio = visibleHeight / availableViewport;
-        
-        if (viewportFillRatio > highestVisibility) {
-          highestVisibility = viewportFillRatio;
-          bestSection = section;
-        }
-      }
-
-      // Only snap if:
-      // 1. Section fills >50% of viewport
-      // 2. It's not the section we just snapped away from
-      if (bestSection && highestVisibility > 0.5) {
-        // If scrolling away from last snapped section, don't snap back
-        if (lastSnappedSection === bestSection.name) {
-          // Clear the last snapped section so we can snap to it again later
-          // but only if it now fills >70% (truly dominant)
-          if (highestVisibility < 0.7) {
-            lastSnappedSection = null;
-            return;
-          }
-        }
-        
-        if (Math.abs(currentScroll - bestSection.snapPoint) > 10) {
-          snapToPoint(bestSection.snapPoint, bestSection.name);
-        }
-      } else {
-        // Not enough visibility - clear last snapped so we can snap fresh
-        lastSnappedSection = null;
       }
     };
 
     const handleScroll = () => {
       if (isSnapping) return;
-      
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(handleScrollEnd, 150);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
     return () => {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(scrollTimeout);
@@ -284,21 +191,17 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative z-10">
-        {/* Header Banner - Snap Section 1 */}
+        {/* Header Banner - Wood-style background */}
         <header 
           ref={bannerSectionRef}
-          className="bg-black py-8 sm:py-10 lg:py-12 px-4 mt-16"
+          className="py-8 sm:py-10 lg:py-12 px-4 mt-16"
+          style={{
+            background: 'linear-gradient(135deg, #8B6914 0%, #6B4423 25%, #8B5A2B 50%, #5D3A1A 75%, #4A2C0A 100%)',
+            boxShadow: 'inset 0 2px 4px rgba(255,255,255,0.1), inset 0 -2px 4px rgba(0,0,0,0.2)'
+          }}
         >
-          {/* Main title row with categories on sides */}
-          <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-8">
-            {/* Left categories */}
-            <div className="hidden sm:flex items-center gap-2 text-[#e8d9a0]/80">
-              <span className="text-xs sm:text-sm tracking-widest uppercase font-light">MANGA</span>
-              <span className="text-[#e8d9a0]/50">•</span>
-              <span className="text-xs sm:text-sm tracking-widest uppercase font-light">WEBTOONS</span>
-            </div>
-            
-            {/* Main title */}
+          {/* Main title */}
+          <div className="text-center">
             <h1 
               className="text-5xl sm:text-7xl lg:text-8xl font-bold text-[#e8d9a0] tracking-wide"
               style={{ 
@@ -308,24 +211,6 @@ const Comics = () => {
             >
               COMICS & SCRIPTS
             </h1>
-            
-            {/* Right categories */}
-            <div className="hidden sm:flex items-center gap-2 text-[#e8d9a0]/80">
-              <span className="text-xs sm:text-sm tracking-widest uppercase font-light">COMICS</span>
-              <span className="text-[#e8d9a0]/50">•</span>
-              <span className="text-xs sm:text-sm tracking-widest uppercase font-light">LONG-FORM SCRIPTS</span>
-            </div>
-          </div>
-          
-          {/* Mobile categories - shown below title on small screens */}
-          <div className="sm:hidden flex items-center justify-center gap-2 mt-3 text-[#e8d9a0]/80 flex-wrap">
-            <span className="text-xs tracking-widest uppercase font-light">MANGA</span>
-            <span className="text-[#e8d9a0]/50">•</span>
-            <span className="text-xs tracking-widest uppercase font-light">WEBTOONS</span>
-            <span className="text-[#e8d9a0]/50">•</span>
-            <span className="text-xs tracking-widest uppercase font-light">COMICS</span>
-            <span className="text-[#e8d9a0]/50">•</span>
-            <span className="text-xs tracking-widest uppercase font-light">SCRIPTS</span>
           </div>
           
           {/* Subtitle */}
@@ -336,25 +221,23 @@ const Comics = () => {
             </p>
             <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-20" />
           </div>
+          
+          {/* Category line */}
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 text-[#e8d9a0]/70 flex-wrap">
+            <span className="text-[10px] sm:text-xs tracking-widest uppercase font-light">MANGA</span>
+            <span className="text-[#e8d9a0]/40">•</span>
+            <span className="text-[10px] sm:text-xs tracking-widest uppercase font-light">WEBTOONS</span>
+            <span className="text-[#e8d9a0]/40">•</span>
+            <span className="text-[10px] sm:text-xs tracking-widest uppercase font-light">COMICS</span>
+            <span className="text-[#e8d9a0]/40">•</span>
+            <span className="text-[10px] sm:text-xs tracking-widest uppercase font-light">LONG-FORM SCRIPTS</span>
+          </div>
         </header>
 
-        {/* NEW RELEASES Bar */}
-        <div ref={newReleasesBarRef} className="w-full">
-          {/* White bar with quote */}
-          <div className="bg-white py-10 sm:py-14 text-center">
-            <h2 
-              className="text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight"
-              style={{ fontFamily: 'EB Garamond, serif' }}
-            >
-              "New Releases"
-            </h2>
-          </div>
-        </div>
-
-        {/* GOD OF LIES - Snap Section 2 - Slides over banner */}
+        {/* GOD OF LIES - No snap, flush with banner */}
         <section 
           ref={godOfLiesSectionRef} 
-          className="w-full relative z-20 sticky top-16"
+          className="w-full relative"
         >
           <img 
             src={godOfLiesCover}
@@ -574,13 +457,13 @@ const Comics = () => {
       
       {/* Footer with mascot character */}
       <footer className="bg-slate-900 py-10 max-sm:py-6 relative">
-        {/* Footer character - small, bottom right corner */}
+        {/* Mascot character - very small, bottom right corner, aligned with footer top */}
         <img 
-          src={comicsFooterCharacter}
-          alt="Footer character"
-          className="absolute right-4 sm:right-6 bottom-full h-16 sm:h-20 lg:h-24 w-auto pointer-events-none object-contain"
+          src={comicsMascotCharacter}
+          alt="Comics mascot"
+          className="absolute right-4 sm:right-6 bottom-full w-auto pointer-events-none"
           style={{
-            filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.3))'
+            height: '2.5cm'
           }}
         />
         <div className="container mx-auto px-6 text-center">
