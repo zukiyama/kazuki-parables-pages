@@ -12,14 +12,18 @@ import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop-cropped.jpeg";
 import comicsFooterCharacter from "@/assets/comics-footer-character.jpeg";
+import newReleaseSticker from "@/assets/new-release-sticker.png";
+import godOfLiesCaptionPanel from "@/assets/god-of-lies-caption-panel.png";
+import surnamePendragonCaption from "@/assets/surname-pendragon-caption.png";
 
 const Comics = () => {
   useScrollToTop();
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
-  const [showGodOfLiesDescription, setShowGodOfLiesDescription] = useState(false);
+  const [showGodOfLiesDescription, setShowGodOfLiesDescription] = useState(true); // Show immediately
   const [showBusStopSection, setShowBusStopSection] = useState(false);
   const [showPendragon, setShowPendragon] = useState(false);
+  const [showPendragonCaption, setShowPendragonCaption] = useState(false);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
   
@@ -33,20 +37,28 @@ const Comics = () => {
 
   // Track scroll for slide-in animations
   useEffect(() => {
+    // Show God of Lies description immediately on component mount
+    setShowGodOfLiesDescription(true);
+    
     const handleScroll = () => {
       if (godOfLiesSectionRef.current) {
         const rect = godOfLiesSectionRef.current.getBoundingClientRect();
-        // Show description when scrolled past 30% of the image
-        const threshold = rect.height * 0.3;
-        setShowGodOfLiesDescription(rect.top < -threshold);
         
-        // Show bus stop section much earlier - as soon as user starts scrolling past God of Lies
-        const busStopThreshold = rect.height * 0.15;
-        setShowBusStopSection(rect.top < -busStopThreshold);
+        // Show bus stop section when ANY white space appears below God of Lies image
+        // This triggers as soon as the bottom of the image approaches the viewport bottom
+        const busStopThreshold = window.innerHeight - rect.bottom;
+        setShowBusStopSection(busStopThreshold > 0);
         
-        // Show Pendragon when God of Lies is about 40% scrolled past
-        const pendragonThreshold = rect.height * 0.4;
+        // Show Pendragon when God of Lies is about 30% scrolled past
+        const pendragonThreshold = rect.height * 0.3;
         setShowPendragon(rect.top < -pendragonThreshold);
+      }
+      
+      // Show Pendragon caption when Pendragon section is visible
+      if (pendragonSectionRef.current) {
+        const pendragonRect = pendragonSectionRef.current.getBoundingClientRect();
+        // Trigger when bottom edge of pendragon image is visible in viewport
+        setShowPendragonCaption(pendragonRect.bottom > 0 && pendragonRect.top < window.innerHeight);
       }
     };
 
@@ -230,58 +242,30 @@ const Comics = () => {
             className="w-full"
           />
           
-          {/* New Release badge - muted red, plain style */}
+          {/* New Release sticker - image instead of text block */}
           <div 
-            className="absolute right-[4%] top-[40%] sm:right-[6%] sm:top-[45%]"
+            className="absolute right-[4%] top-[40%] sm:right-[6%] sm:top-[45%] w-24 sm:w-32 lg:w-40"
           >
-            <div 
-              className="bg-[#8B3A3A]/90 px-4 py-2 sm:px-6 sm:py-3"
-            >
-              <p 
-                className="text-white text-sm sm:text-base tracking-wider uppercase"
-                style={{ 
-                  fontFamily: 'Boogaloo, cursive'
-                }}
-              >
-                NEW RELEASE
-              </p>
-              <p 
-                className="text-white/90 text-[10px] sm:text-xs tracking-wide uppercase mt-1"
-                style={{ fontFamily: 'Boogaloo, cursive' }}
-              >
-                First Issue Coming Soon
-              </p>
-            </div>
+            <img 
+              src={newReleaseSticker}
+              alt="New Release - First Issue Coming Soon"
+              className="w-full h-auto drop-shadow-lg"
+            />
           </div>
 
-          {/* Slide-in description box from left */}
+          {/* Slide-in caption panel from left - using image */}
           <div 
-            className={`absolute bottom-[8%] left-0 max-w-[90%] sm:max-w-[60%] lg:max-w-[45%] transition-all duration-700 ease-out ${
+            className={`absolute bottom-[8%] left-0 max-w-[85%] sm:max-w-[55%] lg:max-w-[40%] transition-all duration-700 ease-out ${
               showGodOfLiesDescription 
                 ? 'opacity-100 translate-x-0' 
                 : 'opacity-0 -translate-x-full'
             }`}
           >
-            <div 
-              className="bg-black/85 backdrop-blur-sm border-l-4 border-[#8B0000] px-4 py-3 sm:px-6 sm:py-4"
-              style={{ boxShadow: '4px 4px 15px rgba(0,0,0,0.5)' }}
-            >
-              <h3 
-                className="text-[#e8d9a0] text-lg sm:text-xl font-bold mb-2 tracking-wide"
-                style={{ fontFamily: 'Bangers, cursive' }}
-              >
-                GOD OF LIES
-              </h3>
-              <p 
-                className="text-white/90 text-xs sm:text-sm leading-relaxed"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
-                In a world where truth is currency, one man discovers he can make anyone believe anything. 
-                But every lie has a price, and the God of Lies is about to learn that some truths 
-                cannot be buried forever. A dark supernatural thriller exploring the thin line 
-                between deception and reality.
-              </p>
-            </div>
+            <img 
+              src={godOfLiesCaptionPanel}
+              alt="God of Lies - In a world where truth is currency, one man discovers he can make anyone believe anything."
+              className="w-full h-auto drop-shadow-xl"
+            />
           </div>
         </section>
 
@@ -340,7 +324,7 @@ const Comics = () => {
         {/* SURNAME PENDRAGON - Snap Section 3 */}
         <section 
           ref={pendragonSectionRef} 
-          className={`w-full transition-all duration-700 ease-out ${
+          className={`w-full relative transition-all duration-700 ease-out ${
             showPendragon 
               ? 'opacity-100 translate-y-0' 
               : 'opacity-0 translate-y-16'
@@ -351,17 +335,39 @@ const Comics = () => {
             alt="Surname Pendragon"
             className="w-full"
           />
+          
+          {/* Slide-in caption panel from left - film/screenplay style */}
+          <div 
+            className={`absolute bottom-[10%] left-0 max-w-[80%] sm:max-w-[50%] lg:max-w-[35%] transition-all duration-700 ease-out ${
+              showPendragonCaption 
+                ? 'opacity-100 translate-x-0' 
+                : 'opacity-0 -translate-x-full'
+            }`}
+          >
+            <img 
+              src={surnamePendragonCaption}
+              alt="Surname Pendragon - A screenplay adaptation"
+              className="w-full h-auto drop-shadow-xl"
+            />
+          </div>
         </section>
 
         {/* Stories Waiting to be Told - Snap Section 4 */}
         <section ref={storiesSectionRef} className="text-center py-16 sm:py-24 bg-white">
-          <h2 
-            className="font-serif text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight mb-6"
+          <ScrollScale 
+            initialScale={1.3} 
+            finalScale={1} 
+            initialBlur={3}
+            className="text-center"
           >
-            "Stories waiting to be told..."
-          </h2>
-          <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
-          <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
+            <h2 
+              className="font-serif text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight mb-6"
+            >
+              "Stories waiting to be told..."
+            </h2>
+            <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
+            <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
+          </ScrollScale>
         </section>
 
         {/* Forthcoming Comics Grid */}
