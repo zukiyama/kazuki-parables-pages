@@ -15,6 +15,7 @@ const Comics = () => {
   useScrollToTop();
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
+  const [showGodOfLiesDescription, setShowGodOfLiesDescription] = useState(false);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
   
@@ -24,6 +25,21 @@ const Comics = () => {
   const pendragonSectionRef = useRef<HTMLElement>(null);
   const storiesSectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLElement | null>(null);
+
+  // Track scroll for God of Lies description slide-in
+  useEffect(() => {
+    const handleScroll = () => {
+      if (godOfLiesSectionRef.current) {
+        const rect = godOfLiesSectionRef.current.getBoundingClientRect();
+        // Show description when scrolled past 30% of the image
+        const threshold = rect.height * 0.3;
+        setShowGodOfLiesDescription(rect.top < -threshold);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Get dynamic header height (accounts for browser chrome showing/hiding)
   const getHeaderBottom = useCallback(() => {
@@ -270,12 +286,64 @@ const Comics = () => {
         </header>
 
         {/* GOD OF LIES - Snap Section 2 */}
-        <section ref={godOfLiesSectionRef} className="w-full">
+        <section ref={godOfLiesSectionRef} className="w-full relative">
           <img 
             src={godOfLiesCover}
             alt="God of Lies"
             className="w-full"
           />
+          
+          {/* Magazine-style "New Release" badge - right side, above middle */}
+          <div 
+            className="absolute right-[5%] top-[35%] bg-[#8B0000] px-4 py-2 sm:px-6 sm:py-3 shadow-lg"
+            style={{
+              transform: 'rotate(2deg)',
+              boxShadow: '2px 3px 8px rgba(0,0,0,0.4)',
+            }}
+          >
+            <p 
+              className="text-white text-xs sm:text-sm font-bold tracking-wide uppercase"
+              style={{ fontFamily: 'Impact, Haettenschweiler, sans-serif' }}
+            >
+              NEW RELEASE
+            </p>
+            <p 
+              className="text-white/90 text-[10px] sm:text-xs tracking-wider"
+              style={{ fontFamily: 'Arial, sans-serif' }}
+            >
+              First Issue Available Soon
+            </p>
+          </div>
+
+          {/* Slide-in description box from left */}
+          <div 
+            className={`absolute bottom-[8%] left-0 max-w-[90%] sm:max-w-[60%] lg:max-w-[45%] transition-all duration-700 ease-out ${
+              showGodOfLiesDescription 
+                ? 'opacity-100 translate-x-0' 
+                : 'opacity-0 -translate-x-full'
+            }`}
+          >
+            <div 
+              className="bg-black/85 backdrop-blur-sm border-l-4 border-[#8B0000] px-4 py-3 sm:px-6 sm:py-4"
+              style={{ boxShadow: '4px 4px 15px rgba(0,0,0,0.5)' }}
+            >
+              <h3 
+                className="text-[#e8d9a0] text-lg sm:text-xl font-bold mb-2 tracking-wide"
+                style={{ fontFamily: 'Bangers, cursive' }}
+              >
+                GOD OF LIES
+              </h3>
+              <p 
+                className="text-white/90 text-xs sm:text-sm leading-relaxed"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                In a world where truth is currency, one man discovers he can make anyone believe anything. 
+                But every lie has a price, and the God of Lies is about to learn that some truths 
+                cannot be buried forever. A dark supernatural thriller exploring the thin line 
+                between deception and reality.
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* SURNAME PENDRAGON - Snap Section 3 */}
