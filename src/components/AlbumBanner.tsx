@@ -8,7 +8,7 @@ import deathOfLoveAlbum from "@/assets/death-of-love-album.png";
 import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album-new.jpeg";
 import centreOfWorldAlbum from "@/assets/last-city-on-earth-album.jpeg";
 import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
-import flowerEpCover from "@/assets/flower-ep-cover.png";
+import flowerEpCover from "@/assets/flower-ep-cover-banner.jpeg";
 
 interface Album {
   id: number;
