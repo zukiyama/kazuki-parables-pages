@@ -13,6 +13,8 @@ import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop-cropped.jpeg";
 import comicsFooterCharacter from "@/assets/comics-footer-character.png";
 import newReleaseLabel from "@/assets/new-release-label.jpeg";
+import cameoPortraitLeft from "@/assets/cameo-portrait-left.jpeg";
+import cameoPortraitRight from "@/assets/cameo-portrait-right.jpeg";
 
 const Comics = () => {
   useScrollToTop();
@@ -227,8 +229,22 @@ const Comics = () => {
         {/* Header Banner - Original black style */}
         <header 
           ref={bannerSectionRef}
-          className="py-4 sm:py-5 lg:py-6 px-4 mt-16 bg-black"
+          className="py-4 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-16 bg-black relative"
         >
+          {/* Left cameo portrait */}
+          <img 
+            src={cameoPortraitLeft}
+            alt="Cameo portrait"
+            className="absolute left-4 sm:left-8 lg:left-12 top-1/2 -translate-y-1/2 h-16 sm:h-20 lg:h-24 w-auto object-contain hidden sm:block"
+          />
+          
+          {/* Right cameo portrait */}
+          <img 
+            src={cameoPortraitRight}
+            alt="Cameo portrait"
+            className="absolute right-4 sm:right-8 lg:right-12 top-1/2 -translate-y-1/2 h-16 sm:h-20 lg:h-24 w-auto object-contain hidden sm:block"
+          />
+          
           {/* Main title */}
           <div className="text-center">
             <h1 
@@ -477,14 +493,14 @@ const Comics = () => {
       </main>
       
       {/* Footer with mascot character */}
-      <footer className="bg-black py-10 max-sm:py-6 relative overflow-visible">
+      <footer className="bg-[#3a3d2f] py-10 max-sm:py-6 relative overflow-visible">
         {/* Footer character - bottom right corner, aligned with footer top, hidden on mobile */}
         <img 
           src={comicsFooterCharacter}
           alt="Comics mascot"
-          className="absolute right-12 sm:right-16 w-auto pointer-events-none z-10 hidden sm:block"
+          className="absolute right-14 sm:right-20 w-auto pointer-events-none z-10 hidden sm:block"
           style={{
-            height: '5cm',
+            height: '8.5cm',
             bottom: '100%'
           }}
         />
