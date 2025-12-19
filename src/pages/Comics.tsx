@@ -11,7 +11,7 @@ import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop-cropped.jpeg";
-import comicsFooterCharacter from "@/assets/comics-footer-character.jpeg";
+import comicsFooterCharacter from "@/assets/comics-footer-character.png";
 import newReleaseLabel from "@/assets/new-release-label.jpeg";
 
 const Comics = () => {
