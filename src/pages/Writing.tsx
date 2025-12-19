@@ -125,7 +125,7 @@ const Writing = () => {
 
     const getBookSections = () => {
       // Disable scroll snap on mobile
-      if (window.innerWidth < 640) return [];
+      if (window.innerWidth < 950) return [];
       
       const sections = document.querySelectorAll('[data-section]');
       const bookSections: { el: HTMLElement; name: string }[] = [];
@@ -215,8 +215,8 @@ const Writing = () => {
     };
 
     const handleScrollEnd = () => {
-      // Disable scroll snap on mobile
-      if (window.innerWidth < 640) return;
+      // Disable scroll snap on mobile/tablet (matches MOBILE_BREAKPOINT of 950px)
+      if (window.innerWidth < 950) return;
       if (isSnapping.current) return;
       
       const bookSections = getBookSections();
@@ -376,7 +376,7 @@ const Writing = () => {
   };
 
   return (
-    <div className="min-h-screen relative max-sm:overflow-x-hidden">
+    <div className="min-h-screen relative overflow-x-hidden">
       <Navigation />
       <BookshelfMenu 
         onBookClick={handleBookClick} 
