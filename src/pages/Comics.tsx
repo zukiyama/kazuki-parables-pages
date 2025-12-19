@@ -231,18 +231,20 @@ const Comics = () => {
           ref={bannerSectionRef}
           className="py-4 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-16 bg-black relative"
         >
-          {/* Left cameo portrait */}
+          {/* Left cameo portrait - equidistant between title and left edge */}
           <img 
             src={cameoPortraitLeft}
             alt="Cameo portrait"
-            className="absolute left-8 sm:left-16 lg:left-24 top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
+            className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
+            style={{ left: 'calc((100% - 600px) / 4)' }}
           />
           
-          {/* Right cameo portrait */}
+          {/* Right cameo portrait - equidistant between title and right edge */}
           <img 
             src={cameoPortraitRight}
             alt="Cameo portrait"
-            className="absolute right-8 sm:right-16 lg:right-24 top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
+            className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
+            style={{ right: 'calc((100% - 600px) / 4)' }}
           />
           
           {/* Main title */}
@@ -494,7 +496,7 @@ const Comics = () => {
       
       {/* Footer with mascot character */}
       <footer className="bg-[#1a1a1a] py-10 max-sm:py-6 relative overflow-visible">
-        {/* Footer character - centered between bottom right comic and page edge, aligned with footer top, hidden on mobile */}
+        {/* Footer character - centered in white space between comics and right edge, aligned with footer top */}
         <img 
           src={comicsFooterCharacter}
           alt="Comics mascot"
@@ -502,7 +504,7 @@ const Comics = () => {
           style={{
             height: '8.5cm',
             bottom: '100%',
-            right: 'calc(12.5% / 2)'
+            right: 'calc((100% - 75%) / 4)'
           }}
         />
         <div className="container mx-auto px-6 text-center">
