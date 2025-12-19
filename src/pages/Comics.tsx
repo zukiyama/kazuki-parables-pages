@@ -235,14 +235,14 @@ const Comics = () => {
           <img 
             src={cameoPortraitLeft}
             alt="Cameo portrait"
-            className="absolute left-4 sm:left-8 lg:left-12 top-1/2 -translate-y-1/2 h-16 sm:h-20 lg:h-24 w-auto object-contain hidden sm:block"
+            className="absolute left-8 sm:left-16 lg:left-24 top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
           />
           
           {/* Right cameo portrait */}
           <img 
             src={cameoPortraitRight}
             alt="Cameo portrait"
-            className="absolute right-4 sm:right-8 lg:right-12 top-1/2 -translate-y-1/2 h-16 sm:h-20 lg:h-24 w-auto object-contain hidden sm:block"
+            className="absolute right-8 sm:right-16 lg:right-24 top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
           />
           
           {/* Main title */}
@@ -493,15 +493,16 @@ const Comics = () => {
       </main>
       
       {/* Footer with mascot character */}
-      <footer className="bg-[#3a3d2f] py-10 max-sm:py-6 relative overflow-visible">
-        {/* Footer character - bottom right corner, aligned with footer top, hidden on mobile */}
+      <footer className="bg-[#1a1a1a] py-10 max-sm:py-6 relative overflow-visible">
+        {/* Footer character - centered between bottom right comic and page edge, aligned with footer top, hidden on mobile */}
         <img 
           src={comicsFooterCharacter}
           alt="Comics mascot"
-          className="absolute right-14 sm:right-20 w-auto pointer-events-none z-10 hidden sm:block"
+          className="absolute w-auto pointer-events-none z-10 hidden sm:block"
           style={{
             height: '8.5cm',
-            bottom: '100%'
+            bottom: '100%',
+            right: 'calc(12.5% / 2)'
           }}
         />
         <div className="container mx-auto px-6 text-center">
