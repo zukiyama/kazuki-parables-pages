@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 /**
@@ -8,18 +8,9 @@ import { useLocation } from 'react-router-dom';
 export const useScrollToTop = () => {
   const { pathname } = useLocation();
 
-  // Use useLayoutEffect for synchronous scroll before paint
-  useLayoutEffect(() => {
-    // Immediately scroll to absolute top
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-  }, [pathname]);
-
   useEffect(() => {
-    // Additional scroll attempts to handle mobile browser bar issues
     const scrollToAbsoluteTop = () => {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+      window.scrollTo(0, 0);
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
     };
@@ -27,16 +18,17 @@ export const useScrollToTop = () => {
     // Immediate scroll
     scrollToAbsoluteTop();
     
-    // Delayed scrolls to catch any viewport adjustments from browser bars
-    const timeouts = [
-      setTimeout(scrollToAbsoluteTop, 0),
-      setTimeout(scrollToAbsoluteTop, 50),
-      setTimeout(scrollToAbsoluteTop, 100),
-      setTimeout(scrollToAbsoluteTop, 200),
-    ];
+    // Delayed scrolls to catch any viewport adjustments from mobile browser bars
+    const t1 = setTimeout(scrollToAbsoluteTop, 0);
+    const t2 = setTimeout(scrollToAbsoluteTop, 50);
+    const t3 = setTimeout(scrollToAbsoluteTop, 100);
+    const t4 = setTimeout(scrollToAbsoluteTop, 200);
 
     return () => {
-      timeouts.forEach(clearTimeout);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
     };
   }, [pathname]);
 };
