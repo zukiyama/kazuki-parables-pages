@@ -238,7 +238,7 @@ const Comics = () => {
             src={cameoPortraitLeft}
             alt="Cameo portrait"
             className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
-            style={{ left: 'calc((50% - 300px) / 4)' }}
+            style={{ left: 'calc((50% - 300px) / 6)' }}
           />
           
           {/* Right cameo portrait - closer to right edge */}
@@ -246,7 +246,7 @@ const Comics = () => {
             src={cameoPortraitRight}
             alt="Cameo portrait"
             className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
-            style={{ right: 'calc((50% - 300px) / 4)' }}
+            style={{ right: 'calc((50% - 300px) / 6)' }}
           />
           
           {/* Main title */}
