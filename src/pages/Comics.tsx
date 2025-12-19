@@ -107,12 +107,14 @@ const Comics = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  // Scroll snap logic - ONLY for Surname Pendragon
+  // Scroll snap logic - ONLY for Surname Pendragon, DESKTOP ONLY
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let isSnapping = false;
 
     const handleScrollEnd = () => {
+      // Disable scroll snap on mobile
+      if (window.innerWidth < 640) return;
       if (isSnapping) return;
       
       const pendragonEl = pendragonSectionRef.current;
@@ -231,42 +233,43 @@ const Comics = () => {
           ref={bannerSectionRef}
           className="py-4 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-16 bg-black relative"
         >
-          {/* Left cameo portrait - equidistant between title and left edge */}
+          {/* Left cameo portrait - equidistant between title text edge and left page edge */}
           <img 
             src={cameoPortraitLeft}
             alt="Cameo portrait"
             className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
-            style={{ left: 'calc((100% - 600px) / 4)' }}
+            style={{ left: 'calc((50% - 300px) / 2)' }}
           />
           
-          {/* Right cameo portrait - equidistant between title and right edge */}
+          {/* Right cameo portrait - equidistant between title text edge and right page edge */}
           <img 
             src={cameoPortraitRight}
             alt="Cameo portrait"
             className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
-            style={{ right: 'calc((100% - 600px) / 4)' }}
+            style={{ right: 'calc((50% - 300px) / 2)' }}
           />
           
           {/* Main title */}
           <div className="text-center">
             <h1 
-              className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-[#e8d9a0] tracking-wide"
+              className="text-2xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-[#e8d9a0] tracking-wide"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
                 textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
               }}
             >
-              COMICS AND SCRIPTS
+              <span className="hidden sm:inline">COMICS AND SCRIPTS</span>
+              <span className="sm:hidden">COMICS & SCRIPTS</span>
             </h1>
           </div>
           
           {/* Subtitle */}
-          <div className="flex items-center justify-center gap-3 mt-3">
-            <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-20" />
-            <p className="text-xs sm:text-sm text-[#e8d9a0]/80 tracking-widest uppercase font-light">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-2 sm:mt-3">
+            <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-8 sm:max-w-20" />
+            <p className="text-[10px] sm:text-sm text-[#e8d9a0]/80 tracking-widest uppercase font-light text-center">
               Original Stories in Sequential Art & Screenplay
             </p>
-            <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-20" />
+            <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-8 sm:max-w-20" />
           </div>
         </header>
 
@@ -281,9 +284,9 @@ const Comics = () => {
             className="w-full"
           />
           
-          {/* New Release label */}
+          {/* New Release label - smaller on mobile */}
           <div 
-            className="absolute right-[2%] top-[48%] sm:right-[4%] sm:top-[52%] w-36 sm:w-48 lg:w-56"
+            className="absolute right-[3%] top-[45%] w-20 sm:right-[4%] sm:top-[52%] sm:w-48 lg:w-56"
           >
             <img 
               src={newReleaseLabel}
@@ -292,9 +295,9 @@ const Comics = () => {
             />
           </div>
 
-          {/* Slide-in description panel from left */}
+          {/* Slide-in description panel from left - hidden on mobile */}
           <div 
-            className={`absolute bottom-[12%] left-0 max-w-[85%] sm:max-w-[55%] lg:max-w-[40%] bg-amber-50/95 backdrop-blur-sm p-4 sm:p-6 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out ${
+            className={`absolute bottom-[12%] left-0 max-w-[55%] lg:max-w-[40%] bg-amber-50/95 backdrop-blur-sm p-4 sm:p-6 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out hidden sm:block ${
               showGodOfLiesDescription 
                 ? 'opacity-100 translate-x-0' 
                 : 'opacity-0 -translate-x-full'
@@ -328,9 +331,9 @@ const Comics = () => {
               />
             </div>
             
-            {/* Right side - Description text (slides in from right on desktop) */}
+            {/* Right side - Description text (slides in from right on desktop) - smaller on mobile */}
             <div 
-              className={`w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex items-center bg-amber-50/95 transition-all duration-700 ease-out max-sm:opacity-100 max-sm:translate-x-0 ${
+              className={`w-full lg:w-1/2 p-4 sm:p-8 lg:p-12 flex items-center bg-amber-50/95 transition-all duration-700 ease-out max-sm:opacity-100 max-sm:translate-x-0 ${
                 showBusStopSection 
                   ? 'opacity-100 translate-x-0' 
                   : 'sm:opacity-0 sm:translate-x-16'
@@ -344,18 +347,12 @@ const Comics = () => {
                   GOD OF LIES
                 </h3>
                 <p 
-                  className="text-slate-700 text-sm sm:text-base leading-relaxed mb-4"
+                  className="text-slate-700 text-sm sm:text-base leading-relaxed mb-4 max-sm:mb-2"
                   style={{ fontFamily: 'Georgia, serif' }}
                 >
                   In a world where every truth bends to the will of one man, reality itself becomes a question. 
                   Takeshi Mori has spent decades mastering the art of deception—but when a child sees through 
                   his lies for the first time, everything begins to unravel.
-                </p>
-                <p 
-                  className="text-slate-600 text-sm leading-relaxed italic"
-                  style={{ fontFamily: 'Georgia, serif' }}
-                >
-                  "What happens when a god discovers he's been lying to himself?"
                 </p>
               </div>
             </div>
@@ -377,9 +374,9 @@ const Comics = () => {
             className="w-full"
           />
           
-          {/* Slide-in caption panel from left - classy film magazine style */}
+          {/* Slide-in caption panel from left - classy film magazine style - hidden on mobile */}
           <div 
-            className={`absolute bottom-[8%] left-0 max-w-[70%] sm:max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-5 sm:p-6 lg:p-8 transition-all duration-700 ease-out cursor-pointer ${
+            className={`absolute bottom-[8%] left-0 max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-5 sm:p-6 lg:p-8 transition-all duration-700 ease-out cursor-pointer hidden sm:block ${
               showPendragonCaption 
                 ? 'opacity-100 translate-x-0' 
                 : 'opacity-0 -translate-x-full'
@@ -412,6 +409,16 @@ const Comics = () => {
               Feature Film • Drama • In Development
             </p>
           </div>
+          
+          {/* Mobile caption - below image */}
+          <div className="sm:hidden w-full bg-black/90 p-4">
+            <h4 
+              className="text-white/90 text-xs uppercase tracking-[0.2em] mb-2"
+              style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+            >
+              Screenplay Adaptation
+            </h4>
+          </div>
         </section>
 
         {/* Stories Waiting to be Told - Snap Section 4 */}
@@ -433,23 +440,23 @@ const Comics = () => {
         </section>
 
         {/* Forthcoming Comics Grid */}
-        <section className="pb-16 sm:pb-20 px-4 sm:px-6 bg-white">
-          {/* First Row */}
+        <section className="pb-6 sm:pb-20 px-4 sm:px-6 bg-white relative">
+          {/* All 6 comics in a grid - 2 columns on mobile, 3 on desktop */}
           <div 
             ref={row1Ref}
             data-row="row1"
-            className={`mb-6 transition-all duration-700 ${
+            className={`transition-all duration-700 ${
               visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 max-w-4xl mx-auto">
-              {smallShelfComics.slice(0, 3).map((comic, index) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 max-w-4xl mx-auto">
+              {smallShelfComics.map((comic, index) => (
                 <div 
                   key={comic.title} 
                   className={`cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl overflow-hidden ${
                     visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                   }`}
-                  style={{ transitionDelay: visibleRows.has('row1') ? `${index * 150}ms` : '0ms' }}
+                  style={{ transitionDelay: visibleRows.has('row1') ? `${index * 100}ms` : '0ms' }}
                   onClick={() => handleComicClick(comic)}
                 >
                   <img 
@@ -462,49 +469,23 @@ const Comics = () => {
               ))}
             </div>
           </div>
-
-          {/* Second Row */}
-          <div
-            ref={row2Ref}
-            data-row="row2"
-            className={`transition-all duration-700 ${
-              visibleRows.has('row2') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
-          >
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 max-w-4xl mx-auto">
-              {smallShelfComics.slice(3, 6).map((comic, index) => (
-                <div 
-                  key={comic.title} 
-                  className={`cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl overflow-hidden ${
-                    visibleRows.has('row2') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  }`}
-                  style={{ transitionDelay: visibleRows.has('row2') ? `${index * 150}ms` : '0ms' }}
-                  onClick={() => handleComicClick(comic)}
-                >
-                  <img 
-                    src={comic.cover}
-                    alt={`${comic.title} comic cover`}
-                    className="w-full shadow-lg"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+          
+          {/* Hidden ref for row2 to maintain observer */}
+          <div ref={row2Ref} data-row="row2" className="hidden" />
         </section>
       </main>
       
       {/* Footer with mascot character */}
       <footer className="bg-[#1a1a1a] py-10 max-sm:py-6 relative overflow-visible">
-        {/* Footer character - centered in white space between comics and right edge, aligned with footer top */}
+        {/* Footer character - in white space between comics grid and right edge, hidden on mobile/tablet */}
         <img 
           src={comicsFooterCharacter}
           alt="Comics mascot"
-          className="absolute w-auto pointer-events-none z-10 hidden sm:block"
+          className="absolute w-auto pointer-events-none z-10 hidden lg:block"
           style={{
             height: '8.5cm',
             bottom: '100%',
-            right: 'calc((100% - 75%) / 4)'
+            right: 'calc((100% - 896px) / 4 + 896px / 2 * 0.125)'
           }}
         />
         <div className="container mx-auto px-6 text-center">

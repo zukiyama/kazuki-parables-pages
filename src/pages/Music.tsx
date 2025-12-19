@@ -410,8 +410,8 @@ const Music = () => {
             />
           </div>
           
-          {/* Video Player - Cassette Deck Style */}
-          <div className="mb-12 -mt-16" ref={videoRef}>
+          {/* Video Player - Cassette Deck Style - more space on mobile */}
+          <div className="mb-12 -mt-16 max-sm:mt-4" ref={videoRef}>
             <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20 max-sm:p-2">
               <div className="relative aspect-video bg-black rounded-lg overflow-hidden group">
                 <video 
