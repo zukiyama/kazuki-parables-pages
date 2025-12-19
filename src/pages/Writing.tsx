@@ -215,6 +215,8 @@ const Writing = () => {
     };
 
     const handleScrollEnd = () => {
+      // Disable scroll snap on mobile
+      if (window.innerWidth < 640) return;
       if (isSnapping.current) return;
       
       const bookSections = getBookSections();
@@ -463,14 +465,14 @@ const Writing = () => {
         <section data-section="kaiju" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
-              <h1 className={`font-serif text-6xl font-bold text-white mb-12 max-sm:mb-10 max-sm:mt-8 text-center tracking-wide transition-all duration-1000 ${
+              <h1 className={`font-serif text-6xl font-bold text-white mb-16 max-sm:mb-14 max-sm:mt-12 mt-8 text-center tracking-wide transition-all duration-1000 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
               }`}>
                 Novels
               </h1>
               
               {/* The Parable Trilogy Introduction */}
-              <div className={`text-center mb-12 transition-all duration-1000 delay-200 ${
+              <div className={`text-center mb-16 mt-8 max-sm:mt-6 transition-all duration-1000 delay-200 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 <h2 className="font-serif text-4xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>

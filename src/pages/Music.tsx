@@ -627,11 +627,11 @@ const Music = () => {
       
       {/* Album Cover Zoom Dialog */}
       <Dialog open={isZoomDialogOpen} onOpenChange={setIsZoomDialogOpen}>
-        <DialogContent className="max-w-4xl w-full p-0 bg-transparent border-none" hideCloseButton>
+        <DialogContent className="max-w-4xl w-full p-0 bg-transparent border-none focus:outline-none" hideCloseButton>
           <img 
             src={selectedAlbum.cover} 
             alt={selectedAlbum.title}
-            className="w-full h-auto rounded-lg"
+            className="w-full h-auto rounded-lg outline-none ring-0"
           />
         </DialogContent>
       </Dialog>
