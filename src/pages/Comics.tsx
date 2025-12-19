@@ -113,8 +113,8 @@ const Comics = () => {
     let isSnapping = false;
 
     const handleScrollEnd = () => {
-      // Disable scroll snap on mobile
-      if (window.innerWidth < 640) return;
+      // Disable scroll snap on mobile/tablet (matches MOBILE_BREAKPOINT of 950px)
+      if (window.innerWidth < 950) return;
       if (isSnapping) return;
       
       const pendragonEl = pendragonSectionRef.current;
@@ -477,15 +477,15 @@ const Comics = () => {
       
       {/* Footer with mascot character */}
       <footer className="bg-[#1a1a1a] py-10 max-sm:py-6 relative overflow-visible">
-        {/* Footer character - in white space between comics grid and right edge, hidden on mobile/tablet */}
+        {/* Footer character - positioned between oranges comic and right edge, hidden when not enough space */}
         <img 
           src={comicsFooterCharacter}
           alt="Comics mascot"
-          className="absolute w-auto pointer-events-none z-10 hidden lg:block"
+          className="absolute w-auto pointer-events-none z-10 hidden xl:block"
           style={{
             height: '8.5cm',
             bottom: '100%',
-            right: 'calc((100% - 896px) / 4 + 896px / 2 * 0.125)'
+            right: 'calc((100vw - 896px) / 4)'
           }}
         />
         <div className="container mx-auto px-6 text-center">
