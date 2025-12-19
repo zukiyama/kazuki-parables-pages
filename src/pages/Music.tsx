@@ -411,7 +411,7 @@ const Music = () => {
           </div>
           
           {/* Video Player - Cassette Deck Style - more space on mobile */}
-          <div className="mb-12 -mt-16 max-sm:mt-4" ref={videoRef}>
+          <div className="mb-12 -mt-16 max-sm:-mt-6" ref={videoRef}>
             <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20 max-sm:p-2">
               <div className="relative aspect-video bg-black rounded-lg overflow-hidden group">
                 <video 
@@ -627,7 +627,7 @@ const Music = () => {
       
       {/* Album Cover Zoom Dialog */}
       <Dialog open={isZoomDialogOpen} onOpenChange={setIsZoomDialogOpen}>
-        <DialogContent className="max-w-4xl w-full p-0 bg-transparent border-none">
+        <DialogContent className="max-w-4xl w-full p-0 bg-transparent border-none" hideCloseButton>
           <img 
             src={selectedAlbum.cover} 
             alt={selectedAlbum.title}
