@@ -233,20 +233,20 @@ const Comics = () => {
           ref={bannerSectionRef}
           className="py-4 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-16 bg-black relative"
         >
-          {/* Left cameo portrait - equidistant between title text edge and left page edge */}
+          {/* Left cameo portrait - closer to left edge */}
           <img 
             src={cameoPortraitLeft}
             alt="Cameo portrait"
             className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
-            style={{ left: 'calc((50% - 300px) / 2)' }}
+            style={{ left: 'calc((50% - 300px) / 4)' }}
           />
           
-          {/* Right cameo portrait - equidistant between title text edge and right page edge */}
+          {/* Right cameo portrait - closer to right edge */}
           <img 
             src={cameoPortraitRight}
             alt="Cameo portrait"
             className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
-            style={{ right: 'calc((50% - 300px) / 2)' }}
+            style={{ right: 'calc((50% - 300px) / 4)' }}
           />
           
           {/* Main title */}
