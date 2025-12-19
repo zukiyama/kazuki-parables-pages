@@ -143,7 +143,7 @@ const Writing = () => {
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
       const headerBottom = getHeaderBottom();
-      const banner = document.querySelector('.sticky.top-16') as HTMLElement;
+      const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
       const bannerHeight = banner ? banner.offsetHeight : 0;
       const topOffset = headerBottom + bannerHeight;
       const viewportHeight = window.innerHeight;
@@ -233,7 +233,7 @@ const Writing = () => {
       }
 
       const headerBottom = getHeaderBottom();
-      const banner = document.querySelector('.sticky.top-16') as HTMLElement;
+      const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
       const bannerHeight = banner ? banner.offsetHeight : 0;
       const topOffset = headerBottom + bannerHeight;
       const viewportHeight = window.innerHeight;
