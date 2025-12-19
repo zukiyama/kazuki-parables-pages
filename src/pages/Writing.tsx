@@ -115,7 +115,7 @@ const Writing = () => {
   }, []);
 
 
-  // Scroll snap logic - loose snapping, only when section fills most of screen
+  // Scroll snap logic - loose snapping, only when section fills most of screen, DESKTOP ONLY
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let lastSnappedSection: string | null = null;
@@ -124,6 +124,9 @@ const Writing = () => {
     const noSnapSections = ['kaiju'];
 
     const getBookSections = () => {
+      // Disable scroll snap on mobile
+      if (window.innerWidth < 640) return [];
+      
       const sections = document.querySelectorAll('[data-section]');
       const bookSections: { el: HTMLElement; name: string }[] = [];
       
@@ -460,7 +463,7 @@ const Writing = () => {
         <section data-section="kaiju" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
-              <h1 className={`font-serif text-6xl font-bold text-white mb-12 max-sm:mb-10 text-center tracking-wide transition-all duration-1000 ${
+              <h1 className={`font-serif text-6xl font-bold text-white mb-12 max-sm:mb-10 max-sm:mt-8 text-center tracking-wide transition-all duration-1000 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
               }`}>
                 Novels
