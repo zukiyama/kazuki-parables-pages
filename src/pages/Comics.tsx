@@ -22,6 +22,7 @@ const Comics = () => {
   const [showBusStopSection, setShowBusStopSection] = useState(false);
   const [showPendragon, setShowPendragon] = useState(false);
   const [showPendragonCaption, setShowPendragonCaption] = useState(false);
+  const [pageReady, setPageReady] = useState(false);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
   
@@ -79,9 +80,29 @@ const Comics = () => {
     return 64;
   }, []);
 
-  // Reset scroll position on page load
+  // Force scroll to top on page load/navigation and preload God of Lies image
   useEffect(() => {
+    // Immediately scroll to top
     window.scrollTo(0, 0);
+    
+    // Preload God of Lies image before showing page
+    const img = new Image();
+    img.onload = () => {
+      // Once God of Lies is loaded, show the page
+      setPageReady(true);
+    };
+    img.onerror = () => {
+      // Show page anyway if image fails to load
+      setPageReady(true);
+    };
+    img.src = godOfLiesCover;
+    
+    // Fallback: show page after 1 second regardless
+    const timeout = setTimeout(() => {
+      setPageReady(true);
+    }, 1000);
+    
+    return () => clearTimeout(timeout);
   }, []);
 
   // Scroll snap logic - ONLY for Surname Pendragon
@@ -199,7 +220,7 @@ const Comics = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden overflow-y-visible">
+    <div className={`min-h-screen bg-white overflow-x-hidden overflow-y-visible transition-opacity duration-300 ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
       <Navigation />
 
       <main className="relative z-10">

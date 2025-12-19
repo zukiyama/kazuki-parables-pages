@@ -134,50 +134,51 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       const section = document.querySelector(`[data-section="${book.targetSection}"]`) as HTMLElement;
       if (!section) return;
 
-      // More accurate fixed elements height calculation
+      // Get fixed elements
       const navigation = document.querySelector('nav') as HTMLElement;
       const bookshelfMenu = document.querySelector('.sticky.top-16') as HTMLElement;
-      const fixedElementsHeight = (navigation?.offsetHeight || 64) + (bookshelfMenu?.offsetHeight || 100) + 80; // Extra padding for better spacing
+      const navHeight = navigation?.offsetHeight || 64;
+      const bannerHeight = bookshelfMenu?.offsetHeight || 100;
+      const topOffset = navHeight + bannerHeight;
       
       let targetScrollPosition;
       
       if (book.targetSection === 'young-adult') {
-        // For slideshow: position so distance from title-to-banner equals slideshow-to-footer
-        const titleElement = section.querySelector('h2');
-        const slideshowEl = section.querySelector('.bg-black\\/60') as HTMLElement;
-        const footer = document.querySelector('footer') as HTMLElement;
+        // For young-adult slideshow: apply same snap logic as scroll snap
+        const titleEl = section.querySelector('h2') as HTMLElement;
+        const slideshowContainer = section.querySelector('.transition-all.duration-1000.delay-500, .bg-black\\/60') as HTMLElement;
         
-        if (titleElement && slideshowEl && footer) {
-          const bannerBottom = bookshelfMenu ? bookshelfMenu.getBoundingClientRect().bottom : fixedElementsHeight;
+        if (titleEl && slideshowContainer) {
           const viewportHeight = window.innerHeight;
-          const footerTop = footer.getBoundingClientRect().top + window.scrollY;
+          const availableHeight = viewportHeight - topOffset;
           
-          // Get current measurements
-          const titleRect = titleElement.getBoundingClientRect();
-          const slideshowRect = slideshowEl.getBoundingClientRect();
+          // Get current positions
+          const titleRect = titleEl.getBoundingClientRect();
+          const slideshowRect = slideshowContainer.getBoundingClientRect();
           
           // Total content height from title top to slideshow bottom
-          const contentHeight = slideshowRect.bottom - titleRect.top;
+          const totalContentHeight = slideshowRect.bottom - titleRect.top;
           
-          // Calculate where footer top would be relative to slideshow bottom after scroll
-          // Distance from title to banner should equal distance from slideshow to footer
-          // Let x = distance from banner to title = distance from slideshow to footer
-          // banner + x + contentHeight + x = viewportHeight
-          // 2x = viewportHeight - contentHeight - bannerPosition
-          const bannerPositionInViewport = bannerBottom;
-          const availableSpace = viewportHeight - bannerPositionInViewport;
-          const spacing = (availableSpace - contentHeight) / 2;
-          
-          // Target: title should be at bannerBottom + spacing
-          const currentTitleTop = titleRect.top;
-          const desiredTitleTop = bannerPositionInViewport + spacing;
-          const scrollAdjustment = currentTitleTop - desiredTitleTop;
-          
-          targetScrollPosition = window.scrollY + scrollAdjustment;
-        } else if (titleElement) {
+          // Scenario A: Can fit all content (title + subtitle + slideshow)
+          if (availableHeight >= totalContentHeight + 40) {
+            // Center the entire content in the available space
+            const titleTop = titleRect.top + window.scrollY;
+            const slideshowBottom = slideshowRect.bottom + window.scrollY;
+            const contentCenter = titleTop + ((slideshowBottom - titleTop) / 2);
+            const desiredCenterY = topOffset + (availableHeight / 2);
+            targetScrollPosition = Math.max(0, contentCenter - desiredCenterY);
+          } else {
+            // Scenario B: Can't fit all, just center the slideshow alone
+            const slideshowTop = slideshowRect.top + window.scrollY;
+            const slideshowHeight = slideshowRect.height;
+            const slideshowCenter = slideshowTop + (slideshowHeight / 2);
+            const desiredCenterY = topOffset + (availableHeight / 2);
+            targetScrollPosition = Math.max(0, slideshowCenter - desiredCenterY);
+          }
+        } else if (titleEl) {
           // Fallback to simple positioning
-          const titleTop = titleElement.getBoundingClientRect().top + window.scrollY;
-          targetScrollPosition = titleTop - fixedElementsHeight;
+          const titleTop = titleEl.getBoundingClientRect().top + window.scrollY;
+          targetScrollPosition = titleTop - topOffset - 20;
         }
       } else {
         // For individual books: ensure full book cover is visible
@@ -185,20 +186,23 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
         if (bookCoverImg) {
           const imgRect = bookCoverImg.getBoundingClientRect();
           const imgTop = imgRect.top + window.scrollY;
-          // Position so the top of the book cover is just below the fixed elements
-          targetScrollPosition = imgTop - fixedElementsHeight;
+          targetScrollPosition = imgTop - topOffset - 80;
         } else {
-          // Fallback: position section top
           const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-          targetScrollPosition = sectionTop - fixedElementsHeight;
+          targetScrollPosition = sectionTop - topOffset - 80;
         }
       }
       
       if (targetScrollPosition !== undefined) {
-        window.scrollTo({ 
-          top: Math.max(0, targetScrollPosition),
-          behavior: 'smooth' 
-        });
+        // Check if we're already at or very close to the target position
+        const currentScroll = window.scrollY;
+        if (Math.abs(currentScroll - targetScrollPosition) > 5) {
+          window.scrollTo({ 
+            top: Math.max(0, targetScrollPosition),
+            behavior: 'smooth' 
+          });
+        }
+        // If we're already at the right position, don't scroll at all
       }
     };
 
@@ -206,8 +210,10 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
     if (onBookClick && book.slideToBook !== undefined) {
       onBookClick(book.id, book.slideToBook);
       
-      // Allow slideshow to update before scrolling
-      setTimeout(scrollToSection, 100);
+      // Small delay to let slideshow update, then scroll only if needed
+      requestAnimationFrame(() => {
+        scrollToSection();
+      });
     } else {
       // For non-slideshow books, scroll immediately
       scrollToSection();
