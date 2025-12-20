@@ -1,4 +1,4 @@
-import { useState, forwardRef, useImperativeHandle, useEffect, useRef } from "react";
+import { useState, forwardRef, useImperativeHandle, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -41,38 +41,14 @@ export interface YoungAdultSlideshowRef {
 
 export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdultSlideshowProps>(({ onBookChange }, ref) => {
   const [currentBook, setCurrentBookState] = useState(0);
-  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const touchStartX = useRef<number | null>(null);
-  const touchEndX = useRef<number | null>(null);
 
-  const setCurrentBook = (index: number, direction?: 'left' | 'right') => {
-    if (isAnimating) return;
-    
-    // Determine direction if not provided
-    const dir = direction || (index > currentBook ? 'left' : 'right');
-    setSlideDirection(dir);
-    setIsAnimating(true);
-    
-    // Change book after animation starts
-    setTimeout(() => {
-      setCurrentBookState(index);
-      onBookChange?.(index);
-    }, 50);
-    
-    // Reset animation state after transition completes
-    setTimeout(() => {
-      setIsAnimating(false);
-      setSlideDirection(null);
-    }, 350);
+  const setCurrentBook = (index: number) => {
+    setCurrentBookState(index);
+    onBookChange?.(index);
   };
 
   useImperativeHandle(ref, () => ({
-    setCurrentBook: (index: number) => {
-      const direction = index > currentBook ? 'left' : 'right';
-      setCurrentBook(index, direction);
-    }
+    setCurrentBook
   }));
 
   // Notify parent of initial book selection
@@ -81,70 +57,20 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
   }, [onBookChange]);
 
   const nextBook = () => {
-    if (isAnimating) return;
     const newIndex = (currentBook + 1) % books.length;
-    setCurrentBook(newIndex, 'left'); // Content slides left to show next
+    setCurrentBook(newIndex);
   };
 
   const prevBook = () => {
-    if (isAnimating) return;
     const newIndex = (currentBook - 1 + books.length) % books.length;
-    setCurrentBook(newIndex, 'right'); // Content slides right to show previous
-  };
-
-  // Touch handlers for swipe gestures
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (isAnimating) return;
-    touchStartX.current = e.touches[0].clientX;
-    touchEndX.current = null;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStartX.current === null || touchEndX.current === null) return;
-    if (isAnimating) return;
-    
-    const diff = touchStartX.current - touchEndX.current;
-    const threshold = 50; // Minimum swipe distance
-    
-    if (Math.abs(diff) > threshold) {
-      if (diff > 0) {
-        // Swiped left (finger moved left) - go to next book (right side)
-        nextBook();
-      } else {
-        // Swiped right (finger moved right) - go to previous book (left side)
-        prevBook();
-      }
-    }
-    
-    touchStartX.current = null;
-    touchEndX.current = null;
+    setCurrentBook(newIndex);
   };
 
   const book = books[currentBook];
 
-  // Animation classes based on slide direction
-  const getAnimationClass = () => {
-    if (!slideDirection) return '';
-    if (slideDirection === 'left') {
-      return 'animate-slide-in-from-right';
-    } else {
-      return 'animate-slide-in-from-left';
-    }
-  };
-
   return (
-    <div 
-      ref={containerRef}
-      className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20 touch-pan-y"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      <div className={`relative px-20 py-8 md:px-16 lg:px-12 pb-16 max-sm:px-8 max-sm:py-4 max-sm:pb-12 ${getAnimationClass()}`}>
+    <div className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">
+      <div className="relative px-20 py-8 md:px-16 lg:px-12 pb-16 max-sm:px-8 max-sm:py-4 max-sm:pb-12">
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-sm:gap-4 ${
           book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
         }`}>
@@ -154,7 +80,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
               key={`cover-${currentBook}`}
               src={book.cover} 
               alt={book.title}
-              className="w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg max-sm:max-w-[200px]"
+              className="w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100 max-sm:max-w-[200px]"
               loading="eager"
             />
           </div>
@@ -178,8 +104,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
           variant="outline"
           size="lg"
           onClick={prevBook}
-          disabled={isAnimating}
-          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl max-sm:w-8 max-sm:h-8 disabled:opacity-50"
+          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl max-sm:w-8 max-sm:h-8"
         >
           <ChevronLeft className="w-6 h-6 max-sm:w-4 max-sm:h-4" />
         </Button>
@@ -189,8 +114,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
           variant="outline"
           size="lg"
           onClick={nextBook}
-          disabled={isAnimating}
-          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl max-sm:w-8 max-sm:h-8 disabled:opacity-50"
+          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl max-sm:w-8 max-sm:h-8"
         >
           <ChevronRight className="w-6 h-6 max-sm:w-4 max-sm:h-4" />
         </Button>
@@ -199,15 +123,10 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
       {/* Book Indicator */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {books.map((_, index) => (
-          <button
+          <div
             key={index}
-            onClick={() => {
-              if (index !== currentBook) {
-                setCurrentBook(index, index > currentBook ? 'left' : 'right');
-              }
-            }}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              index === currentBook ? 'bg-yellow-300' : 'bg-yellow-300/40 hover:bg-yellow-300/60'
+            className={`w-2 h-2 rounded-full ${
+              index === currentBook ? 'bg-yellow-300' : 'bg-yellow-300/40'
             }`}
           />
         ))}

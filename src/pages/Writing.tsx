@@ -496,35 +496,31 @@ const Writing = () => {
       <main className={`relative z-10 transition-all duration-500 ${
         isWidescreen 
           ? (bannerVisible ? 'pt-56' : 'pt-28') 
-          : 'pt-52 max-sm:pt-52'
+          : 'pt-40 max-sm:pt-52'
       }`}>
         {/* KAIJU - The Parable Trilogy Section */}
         <section data-section="kaiju" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
-          <div className={`container mx-auto px-6 ${isWidescreen ? 'py-4' : 'py-12'}`}>
+          <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
-              <h1 className={`font-serif font-bold text-white text-center tracking-wide transition-all duration-1000 ${
-                isWidescreen ? 'text-4xl mb-6 mt-2' : 'text-6xl mb-16 max-sm:mb-14 max-sm:mt-12 mt-8'
-              } ${
+              <h1 className={`font-serif text-6xl font-bold text-white mb-16 max-sm:mb-14 max-sm:mt-12 mt-8 text-center tracking-wide transition-all duration-1000 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
               }`}>
                 Novels
               </h1>
               
               {/* The Parable Trilogy Introduction */}
-              <div className={`text-center transition-all duration-1000 delay-200 ${
-                isWidescreen ? 'mb-6 mt-2' : 'mb-16 mt-8 max-sm:mt-6'
-              } ${
+              <div className={`text-center mb-16 mt-8 max-sm:mt-6 transition-all duration-1000 delay-200 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
-                <h2 className={`font-serif font-bold text-yellow-300 ${isWidescreen ? 'text-2xl mb-3' : 'text-4xl mb-6'}`}>The Parable Trilogy</h2>
-                <p className={`font-serif leading-relaxed text-white max-w-4xl mx-auto ${isWidescreen ? 'text-sm' : 'text-lg md:text-xl'}`}>
+                <h2 className="font-serif text-4xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>
+                <p className="font-serif text-lg md:text-xl leading-relaxed text-white max-w-4xl mx-auto">
                   A metaphysical saga unfolding across the shifting decades of an alternate 20th-century Japan, taking the reader from mysterious towns and abandoned film sets to mountain temples and secret research facilities far from this world. With a cast as varied as its setting, childhood wonder collides with philosophy and fantasy in this compelling trilogy that explores the boundaries between truth and fiction.
                 </p>
               </div>
               
-                <div className={`grid grid-cols-1 lg:grid-cols-2 items-start lg:px-8 ${isWidescreen ? 'gap-8' : 'gap-14'}`}>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -534,34 +530,31 @@ const Writing = () => {
                     ]}
                     title="KAIJU"
                     loading="eager"
-                    isWidescreen={isWidescreen}
                   />
                 </div>
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className={`font-serif font-bold mb-2 text-white ${isWidescreen ? 'text-2xl' : ''}`} style={isWidescreen ? {} : { fontSize: '3rem' }}>
+                  <h2 className="font-serif font-bold mb-2 text-white" style={{ fontSize: '3rem' }}>
                     KAIJU
                   </h2>
-                  <div className={`bg-black/75 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'px-4 pt-3 pb-4' : 'px-6 pt-4 pb-6'}`}>
-                    <h3 className={`font-serif text-yellow-300 tracking-wide ${isWidescreen ? 'text-sm mb-3' : 'mb-6'}`} style={isWidescreen ? {} : { fontSize: 'calc(1rem + 2pt)' }}>
+                  <div className="bg-black/75 backdrop-blur-sm rounded-lg px-6 pt-4 pb-6 border border-white/20">
+                    <h3 className="font-serif text-yellow-300 mb-6 tracking-wide" style={{ fontSize: 'calc(1rem + 2pt)' }}>
                       Book One of The Parable Trilogy
                     </h3>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-xs' : 'text-base mb-3'}`}>
+                    <p className="font-serif text-base leading-relaxed text-white mb-3">
                       When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                     </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-xs' : 'text-base mb-3'}`}>
+                    <p className="font-serif text-base leading-relaxed text-white mb-3">
                       For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
                     </p>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-xs' : 'text-base'}`}>
+                    <p className="font-serif text-base leading-relaxed text-white">
                       Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
                     </p>
                   </div>
                 </div>
               </div>
-              <p className={`font-serif leading-relaxed text-white italic text-center max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
-                isWidescreen ? 'text-sm mt-4 mb-4' : 'text-xl mt-10 mb-16'
-              } ${
+              <p className={`font-serif text-xl leading-relaxed text-white italic text-center mt-10 mb-16 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people in a 1979 that happened only for those who were there.
@@ -572,11 +565,11 @@ const Writing = () => {
 
         {/* HOAX Section - Memo style */}
         <section data-section="hoax" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
-          <div className={`container mx-auto px-6 ${isWidescreen ? 'py-6' : 'py-24'}`}>
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
-              <div className={`grid grid-cols-1 lg:grid-cols-2 items-center lg:px-8 ${isWidescreen ? 'gap-8' : 'gap-14'}`}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`lg:order-2 transition-all duration-1000 delay-300 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
@@ -586,7 +579,6 @@ const Writing = () => {
                     ]}
                     title="HOAX"
                     loading="lazy"
-                    isWidescreen={isWidescreen}
                   />
                 </div>
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
@@ -650,11 +642,11 @@ const Writing = () => {
 
         {/* THE MARKET Section */}
         <section data-section="the-market" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
-          <div className={`container mx-auto px-6 ${isWidescreen ? 'py-6' : 'py-24'}`}>
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
-              <div className={`grid grid-cols-1 lg:grid-cols-2 items-center lg:px-8 ${isWidescreen ? 'gap-8' : 'gap-14'}`}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('the-market') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -664,7 +656,6 @@ const Writing = () => {
                     ]}
                     title="THE MARKET"
                     loading="lazy"
-                    isWidescreen={isWidescreen}
                   />
                 </div>
                 <div className={`transition-all duration-1000 delay-500 ${
@@ -716,11 +707,11 @@ const Writing = () => {
 
         {/* AMYA Section */}
         <section data-section="oba" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
-          <div className={`container mx-auto px-6 ${isWidescreen ? 'py-6' : 'py-24'}`}>
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
-              <div className={`grid grid-cols-1 lg:grid-cols-2 items-center lg:px-8 ${isWidescreen ? 'gap-8' : 'gap-14'}`}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`lg:order-2 transition-all duration-1000 delay-300 ${
                   visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -730,7 +721,6 @@ const Writing = () => {
                     ]}
                     title="AMYA"
                     loading="lazy"
-                    isWidescreen={isWidescreen}
                   />
                 </div>
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
@@ -766,11 +756,11 @@ const Writing = () => {
 
         {/* STATES OF MOTION Section */}
         <section data-section="states-of-motion" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
-          <div className={`container mx-auto px-6 ${isWidescreen ? 'py-6' : 'py-24'}`}>
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
-              <div className={`grid grid-cols-1 lg:grid-cols-2 items-center lg:px-8 ${isWidescreen ? 'gap-8' : 'gap-14'}`}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -780,7 +770,6 @@ const Writing = () => {
                     ]}
                     title="STATES OF MOTION"
                     loading="lazy"
-                    isWidescreen={isWidescreen}
                   />
                 </div>
                 <div className={`transition-all duration-1000 delay-500 ${
@@ -831,11 +820,11 @@ const Writing = () => {
 
         {/* HOW Section */}
         <section data-section="how" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
-          <div className={`container mx-auto px-6 ${isWidescreen ? 'py-6' : 'py-24'}`}>
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
-              <div className={`grid grid-cols-1 lg:grid-cols-2 items-center lg:px-8 ${isWidescreen ? 'gap-8' : 'gap-14'}`}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('how') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -845,7 +834,6 @@ const Writing = () => {
                     ]}
                     title="HOW"
                     loading="lazy"
-                    isWidescreen={isWidescreen}
                   />
                 </div>
                 <div className={`transition-all duration-1000 delay-500 ${
@@ -892,11 +880,11 @@ const Writing = () => {
 
         {/* VICE VERSA Section */}
         <section data-section="vice-versa" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
-          <div className={`container mx-auto px-6 ${isWidescreen ? 'py-6' : 'py-24'}`}>
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
-              <div className={`grid grid-cols-1 lg:grid-cols-2 items-center lg:px-8 ${isWidescreen ? 'gap-8' : 'gap-14'}`}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
@@ -919,7 +907,6 @@ const Writing = () => {
                     ]}
                     title="VICE VERSA"
                     loading="lazy"
-                    isWidescreen={isWidescreen}
                   />
                 </div>
               </div>
@@ -930,20 +917,16 @@ const Writing = () => {
 
         {/* Young Adult Books Section */}
         <section data-section="young-adult" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
-          <div className={`container mx-auto px-6 ${isWidescreen ? 'py-6' : 'py-24'}`}>
+          <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
-              <h2 className={`font-serif font-bold text-white text-center tracking-wide transition-all duration-1000 ${
-                isWidescreen ? 'text-3xl mb-2' : 'text-5xl mb-4'
-              } ${
+              <h2 className={`font-serif text-5xl font-bold text-white mb-4 text-center tracking-wide transition-all duration-1000 ${
                 visibleSections.has('young-adult') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 Young Adult Series
               </h2>
-              <p className={`font-serif text-yellow-300 text-center transition-all duration-1000 delay-300 ${
-                isWidescreen ? 'text-base mb-4' : 'text-xl mb-12'
-              } ${
+              <p className={`font-serif text-xl text-yellow-300 mb-12 text-center transition-all duration-1000 delay-300 ${
                 visibleSections.has('young-adult') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 Books of imagination for any age
