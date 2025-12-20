@@ -30,6 +30,7 @@ const Comics = () => {
   const [mobilePendragonExpanded, setMobilePendragonExpanded] = useState(false);
   const [pageReady, setPageReady] = useState(false);
   const [isNarrowPortrait, setIsNarrowPortrait] = useState(false); // 13-inch iPad portrait detection
+  const [godOfLiesImageLoaded, setGodOfLiesImageLoaded] = useState(false); // Track God of Lies image load
   const mobilePendragonRef = useRef<HTMLDivElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
@@ -408,6 +409,7 @@ const Comics = () => {
             src={godOfLiesCover}
             alt="God of Lies"
             className="w-full"
+            onLoad={() => setGodOfLiesImageLoaded(true)}
           />
           
           {/* MANGA • WEBTOON text at bottom */}
@@ -436,8 +438,9 @@ const Comics = () => {
           </div>
 
           {/* Slide-in description panel from left - hidden on mobile AND on narrow portrait desktop (13" iPad) */}
+          {/* Narrower panel that extends less into the page */}
           <div 
-            className={`absolute bottom-[10%] left-0 max-w-[55%] lg:max-w-[42%] bg-amber-50/95 backdrop-blur-sm p-5 sm:p-6 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out z-20 pointer-events-none ${
+            className={`absolute bottom-[8%] left-0 max-w-[45%] lg:max-w-[35%] bg-amber-50/95 backdrop-blur-sm p-4 sm:p-5 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out z-20 pointer-events-none ${
               // Hide on mobile and on narrow portrait desktop (13" iPad)
               isMobile || isNarrowPortrait ? 'hidden' : 'hidden sm:block'
             } ${
@@ -521,21 +524,23 @@ const Comics = () => {
         )}
 
         {/* SURNAME PENDRAGON - Snap Section 3 */}
-        {/* On mobile: always visible, slides down naturally when GOD OF LIES text expands above */}
+        {/* On mobile: wait for God of Lies image to load first, then show */}
         {/* On desktop: fades in on scroll */}
         <section 
           ref={pendragonSectionRef} 
           className={`w-full relative transition-all duration-700 ease-out ${
-            // Mobile/narrow portrait: always visible; Desktop: fade/slide animation based on scroll
-            isMobile || isNarrowPortrait || showPendragon
-              ? 'opacity-100 translate-y-0' 
-              : 'opacity-0 translate-y-16'
+            // Mobile/narrow portrait: wait for God of Lies image to load, then show
+            // Desktop: fade/slide animation based on scroll
+            (isMobile || isNarrowPortrait) 
+              ? (godOfLiesImageLoaded ? 'opacity-100 translate-y-0' : 'opacity-0')
+              : (showPendragon ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16')
           }`}
         >
           <img 
             src={surnamePendragonBanner}
             alt="Surname Pendragon"
             className="w-full"
+            loading={(isMobile || isNarrowPortrait) ? 'lazy' : 'eager'}
           />
           
           {/* Thin black bar at bottom of Pendragon image - desktop only (not on narrow portrait) */}
