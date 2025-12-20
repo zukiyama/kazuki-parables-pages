@@ -121,15 +121,35 @@ const Comics = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  // Scroll snap logic - DESKTOP ONLY
+  // Check if we're on a narrow portrait desktop (13-inch iPad in portrait)
+  // This is desktop mode (width >= 950) but in portrait orientation with limited height
+  const isNarrowPortraitDesktop = useCallback(() => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    // Desktop mode (>= 950px width) but portrait-ish aspect ratio (height > width or close)
+    // 13-inch iPad portrait is around 1024x1366
+    return width >= 950 && width <= 1100 && height > width;
+  }, []);
+
+  // On narrow portrait desktop, show Pendragon immediately
+  useEffect(() => {
+    if (isNarrowPortraitDesktop()) {
+      setShowPendragon(true);
+    }
+  }, [isNarrowPortraitDesktop]);
+
+  // Scroll snap logic - DESKTOP ONLY (disabled on narrow portrait desktop)
   // Snaps to God of Lies bottom OR Pendragon top based on scroll direction and visibility
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let isSnapping = false;
+    let snapTargetY: number | null = null;
 
     const handleScrollEnd = () => {
       // Disable scroll snap on mobile/tablet (matches MOBILE_BREAKPOINT of 950px)
       if (window.innerWidth < 950) return;
+      // Also disable on narrow portrait desktop (13-inch iPad portrait)
+      if (isNarrowPortraitDesktop()) return;
       if (isSnapping) return;
       
       const godOfLiesEl = godOfLiesSectionRef.current;
@@ -164,49 +184,52 @@ const Comics = () => {
       
       // Check if we're below Pendragon (scrolled past it)
       const isBelowPendragon = pendragonRect.top < fixedHeaderHeight;
+
+      // Helper function to perform snap with momentum prevention
+      const performSnap = (targetY: number) => {
+        if (Math.abs(currentScrollY - targetY) > 10) {
+          isSnapping = true;
+          snapTargetY = targetY;
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+          
+          // After smooth scroll completes, verify and lock position to prevent momentum overshoot
+          setTimeout(() => {
+            if (snapTargetY !== null && Math.abs(window.scrollY - snapTargetY) > 5) {
+              // Momentum caused overshoot, correct it
+              window.scrollTo({ top: snapTargetY, behavior: 'auto' });
+            }
+            isSnapping = false;
+            snapTargetY = null;
+          }, 500);
+        }
+      };
       
       // Scrolling UP from below Pendragon - snap to Pendragon if 25%+ visible
       // This triggers when coming back up from content below Pendragon
       if (scrollingUp && isBelowPendragon && pendragonVisibilityRatio >= 0.25) {
         // Snap to Pendragon (align top with fixed header height)
         const snapPoint = pendragonEl.getBoundingClientRect().top + currentScrollY - fixedHeaderHeight;
-        if (Math.abs(currentScrollY - snapPoint) > 10) {
-          isSnapping = true;
-          window.scrollTo({ top: snapPoint, behavior: 'smooth' });
-          setTimeout(() => { isSnapping = false; }, 500);
-        }
+        performSnap(snapPoint);
       }
       // Scrolling UP from Pendragon into God of Lies
       else if (scrollingUp && hasScrolledIntoPendragon.current && godOfLiesVisibilityRatio >= 0.25 && godOfLiesRect.bottom > viewportHeight * 0.5) {
         // Snap to God of Lies (bottom aligned with viewport bottom)
         const godOfLiesBottom = godOfLiesRect.bottom + currentScrollY;
         const snapPoint = godOfLiesBottom - viewportHeight;
-        if (Math.abs(currentScrollY - snapPoint) > 10) {
-          isSnapping = true;
-          hasScrolledIntoPendragon.current = false; // Reset for next cycle
-          window.scrollTo({ top: Math.max(0, snapPoint), behavior: 'smooth' });
-          setTimeout(() => { isSnapping = false; }, 500);
-        }
+        hasScrolledIntoPendragon.current = false; // Reset for next cycle
+        performSnap(Math.max(0, snapPoint));
       }
       // Scrolling DOWN - Only trigger snap if Pendragon is partially visible and not yet snapped
       else if (!scrollingUp && pendragonRect.top < viewportHeight && pendragonRect.bottom > 0 && !pendragonIsSnapped && !isBelowPendragon) {
         if (pendragonVisibilityRatio >= 0.25) {
           // Snap to Pendragon (align top with fixed header height for consistency)
           const snapPoint = pendragonEl.getBoundingClientRect().top + currentScrollY - fixedHeaderHeight;
-          if (Math.abs(currentScrollY - snapPoint) > 10) {
-            isSnapping = true;
-            window.scrollTo({ top: snapPoint, behavior: 'smooth' });
-            setTimeout(() => { isSnapping = false; }, 500);
-          }
+          performSnap(snapPoint);
         } else if (pendragonVisibilityRatio > 0 && pendragonVisibilityRatio < 0.25) {
           // Snap back to God of Lies (bottom aligned with viewport bottom)
           const godOfLiesBottom = godOfLiesRect.bottom + currentScrollY;
           const snapPoint = godOfLiesBottom - viewportHeight;
-          if (Math.abs(currentScrollY - snapPoint) > 10) {
-            isSnapping = true;
-            window.scrollTo({ top: Math.max(0, snapPoint), behavior: 'smooth' });
-            setTimeout(() => { isSnapping = false; }, 500);
-          }
+          performSnap(Math.max(0, snapPoint));
         }
       }
       
@@ -224,7 +247,7 @@ const Comics = () => {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(scrollTimeout);
     };
-  }, []);
+  }, [isNarrowPortraitDesktop]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -377,8 +400,9 @@ const Comics = () => {
           </div>
           
           {/* New Release label - smaller on mobile */}
+          {/* New Release label - larger on tablet, smaller on phone */}
           <div 
-            className="absolute right-[3%] top-[45%] w-20 sm:right-[4%] sm:top-[52%] sm:w-48 lg:w-56 z-20 pointer-events-none"
+            className="absolute right-[3%] top-[45%] w-20 xs:w-40 sm:right-[4%] sm:top-[52%] sm:w-48 lg:w-56 z-20 pointer-events-none"
           >
             <img 
               src={newReleaseLabel}
@@ -579,11 +603,12 @@ const Comics = () => {
               visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 max-w-4xl mx-auto">
+            {/* Comic images - smaller hover scale on tablet mobile to prevent overlap */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 xs:gap-4 sm:gap-4 lg:gap-6 max-w-4xl mx-auto">
               {smallShelfComics.map((comic, index) => (
                 <div 
                   key={comic.title} 
-                  className={`cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl overflow-hidden ${
+                  className={`cursor-pointer transition-all duration-500 hover:scale-[1.02] xs:hover:scale-[1.03] sm:hover:scale-105 hover:shadow-2xl overflow-visible ${
                     visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                   }`}
                   style={{ transitionDelay: visibleRows.has('row1') ? `${index * 100}ms` : '0ms' }}
