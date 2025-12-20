@@ -42,6 +42,7 @@ const Writing = () => {
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
   const [bannerVisible, setBannerVisible] = useState(true); // For widescreen banner toggle
+  const [isAtTop, setIsAtTop] = useState(true); // Track if at top of page
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -298,6 +299,13 @@ const Writing = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
+      
+      // Track if at top of page - show banner automatically on widescreen
+      const atTop = currentScrollY < 50;
+      setIsAtTop(atTop);
+      if (atTop && isWidescreen) {
+        setBannerVisible(true);
+      }
 
       // Check which sections are visible
       const sections = document.querySelectorAll('[data-section]');
@@ -390,12 +398,29 @@ const Writing = () => {
     setBannerVisible(prev => !prev);
   }, [isWidescreen]);
 
+  // Handle hover on banner area to show banner (widescreen only)
+  const handleBannerAreaHover = useCallback(() => {
+    if (isWidescreen && !bannerVisible) {
+      setBannerVisible(true);
+    }
+  }, [isWidescreen, bannerVisible]);
+
   return (
     <div 
       className="min-h-screen relative overflow-x-hidden"
       onClick={handlePageClick}
     >
       <Navigation />
+      
+      {/* Invisible hover zone for banner area - only on widescreen when banner is hidden */}
+      {isWidescreen && !bannerVisible && (
+        <div 
+          className="fixed left-0 right-0 z-40 pointer-events-auto"
+          style={{ top: '56px', height: '120px' }}
+          onMouseEnter={handleBannerAreaHover}
+        />
+      )}
+      
       <BookshelfMenu 
         onBookClick={handleBookClick} 
         visibleSections={visibleSections} 
