@@ -128,10 +128,10 @@
     user-select: none;
     -webkit-user-select: none;
     -webkit-user-drag: none;
-    pointer-events: none;
   }
 
-  /* Allow pointer events on images inside interactive elements */
+  /* Allow pointer events on clickable images */
+  img.cursor-pointer,
   a img,
   button img,
   [role="button"] img,
