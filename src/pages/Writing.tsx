@@ -149,50 +149,27 @@ const Writing = () => {
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
       const headerBottom = getHeaderBottom();
-      const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
-      const bannerHeight = banner ? banner.offsetHeight : 0;
-      const topOffset = headerBottom + bannerHeight;
+      // IGNORE banner completely - snap relative to header-bottom to screen-bottom only
+      const topOffset = headerBottom;
       const viewportHeight = window.innerHeight;
       const availableHeight = viewportHeight - topOffset;
       
-      // Special handling for young-adult section
+      // Special handling for young-adult section - center ONLY the slideshow, not the title
       if (sectionName === 'young-adult') {
-        // Find the title element and slideshow container
-        const titleEl = section.querySelector('h2') as HTMLElement;
-        const slideshowContainer = section.querySelector('.transition-all.duration-1000.delay-500') as HTMLElement;
+        // Find the slideshow container (the actual visual slideshow box)
+        const slideshowContainer = section.querySelector('.relative.w-full.max-w-5xl, .relative.w-full.bg-black\\/60') as HTMLElement;
         
-        if (!titleEl || !slideshowContainer) return null;
+        if (!slideshowContainer) return null;
         
-        const titleRect = titleEl.getBoundingClientRect();
         const slideshowRect = slideshowContainer.getBoundingClientRect();
-        
-        // Calculate total height of title + subtitle + slideshow (in viewport coords)
-        const titleTopInViewport = titleRect.top;
-        const slideshowBottomInViewport = slideshowRect.bottom;
-        const totalContentHeight = slideshowBottomInViewport - titleTopInViewport;
-        
-        // Recalculate available height dynamically (accounts for browser chrome changes)
-        const currentAvailableHeight = viewportHeight - topOffset;
-        
-        // Scenario A: Can fit all content (title + "Young Adult Series" text + slideshow)
-        if (currentAvailableHeight >= totalContentHeight + 40) { // 40px buffer
-          // Center the entire content in the available space
-          const titleTop = titleRect.top + window.scrollY;
-          const slideshowBottom = slideshowRect.bottom + window.scrollY;
-          const contentCenter = titleTop + ((slideshowBottom - titleTop) / 2);
-          const desiredCenterY = topOffset + (currentAvailableHeight / 2);
-          return Math.max(0, contentCenter - desiredCenterY);
-        } else {
-          // Scenario B: Can't fit all, just center the slideshow alone
-          const slideshowTop = slideshowRect.top + window.scrollY;
-          const slideshowHeight = slideshowRect.height;
-          const slideshowCenter = slideshowTop + (slideshowHeight / 2);
-          const desiredCenterY = topOffset + (currentAvailableHeight / 2);
-          return Math.max(0, slideshowCenter - desiredCenterY);
-        }
+        const slideshowHeight = slideshowRect.height;
+        const slideshowTop = slideshowRect.top + window.scrollY;
+        const slideshowCenter = slideshowTop + (slideshowHeight / 2);
+        const desiredCenterY = topOffset + (availableHeight / 2);
+        return Math.max(0, slideshowCenter - desiredCenterY);
       }
       
-      // For book sections: center the book cover
+      // For book sections: center the book cover in the viewport area (header-bottom to screen-bottom)
       const bookCover = section.querySelector('.book-cover-slideshow img, [data-book-cover], img[alt*="Cover"]') as HTMLElement;
       if (!bookCover) {
         return null;
@@ -239,9 +216,8 @@ const Writing = () => {
       }
 
       const headerBottom = getHeaderBottom();
-      const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
-      const bannerHeight = banner ? banner.offsetHeight : 0;
-      const topOffset = headerBottom + bannerHeight;
+      // IGNORE banner completely - snap relative to header-bottom to screen-bottom only
+      const topOffset = headerBottom;
       const viewportHeight = window.innerHeight;
       const availableViewport = viewportHeight - topOffset;
 
