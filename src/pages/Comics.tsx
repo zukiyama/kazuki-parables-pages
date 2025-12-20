@@ -276,14 +276,14 @@ const Comics = () => {
           {/* Main title */}
           <div className="text-center">
             <h1 
-              className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-[#e8d9a0] tracking-wide"
+              className="font-bold text-[#e8d9a0] tracking-wide max-sm:text-5xl sm:text-6xl lg:text-7xl xl:text-8xl"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
                 textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
               }}
             >
-              <span className="hidden sm:inline">COMICS AND SCRIPTS</span>
-              <span className="sm:hidden">COMICS & SCRIPTS</span>
+              <span className="max-sm:hidden">COMICS AND SCRIPTS</span>
+              <span className="hidden max-sm:inline">COMICS & SCRIPTS</span>
             </h1>
           </div>
           
