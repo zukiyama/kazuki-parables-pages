@@ -10,10 +10,16 @@ interface BookCoverSlideshowProps {
   title: string;
   className?: string;
   loading?: "lazy" | "eager";
+  isWidescreen?: boolean;
 }
 
-export const BookCoverSlideshow = ({ covers, title, className = "", loading = "eager" }: BookCoverSlideshowProps) => {
+export const BookCoverSlideshow = ({ covers, title, className = "", loading = "eager", isWidescreen = false }: BookCoverSlideshowProps) => {
   const [currentCover, setCurrentCover] = useState(0);
+
+  // Widescreen: use viewport-relative height for images
+  const imageClasses = isWidescreen
+    ? "h-[calc(55vh)] max-h-[400px] w-auto mx-auto object-contain rounded-lg shadow-2xl"
+    : "w-full max-w-sm mx-auto object-contain rounded-lg shadow-2xl";
 
   if (covers.length <= 1) {
     return (
@@ -21,7 +27,7 @@ export const BookCoverSlideshow = ({ covers, title, className = "", loading = "e
         <img 
           src={covers[0]?.image} 
           alt={covers[0]?.alt || title}
-          className="w-full max-w-sm mx-auto object-contain rounded-lg shadow-2xl"
+          className={imageClasses + " transition-opacity duration-300"}
           loading={loading}
         />
       </div>
@@ -34,7 +40,7 @@ export const BookCoverSlideshow = ({ covers, title, className = "", loading = "e
         key={`cover-${currentCover}`}
         src={covers[currentCover].image} 
         alt={covers[currentCover].alt}
-        className="w-full max-w-sm mx-auto object-contain rounded-lg shadow-2xl transition-opacity duration-300"
+        className={imageClasses + " transition-opacity duration-300"}
         loading={loading}
       />
       

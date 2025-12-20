@@ -33,13 +33,14 @@ const books = [
 
 interface YoungAdultSlideshowProps {
   onBookChange?: (index: number) => void;
+  isWidescreen?: boolean;
 }
 
 export interface YoungAdultSlideshowRef {
   setCurrentBook: (index: number) => void;
 }
 
-export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdultSlideshowProps>(({ onBookChange }, ref) => {
+export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdultSlideshowProps>(({ onBookChange, isWidescreen = false }, ref) => {
   const [currentBook, setCurrentBookState] = useState(0);
 
   const setCurrentBook = (index: number) => {
@@ -68,30 +69,55 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
 
   const book = books[currentBook];
 
+  // Widescreen: scale the entire slideshow to fit viewport
+  const containerClasses = isWidescreen
+    ? "relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20 max-h-[calc(60vh)] flex flex-col"
+    : "relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20";
+
+  const contentPadding = isWidescreen
+    ? "relative px-20 py-4 md:px-16 lg:px-12 pb-10 max-sm:px-8 max-sm:py-4 max-sm:pb-12 flex-1 overflow-hidden"
+    : "relative px-20 py-8 md:px-16 lg:px-12 pb-16 max-sm:px-8 max-sm:py-4 max-sm:pb-12";
+
+  const imageClasses = isWidescreen
+    ? "h-[calc(40vh)] max-h-[280px] w-auto mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100"
+    : "w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100 max-sm:max-w-[200px]";
+
+  const titleClasses = isWidescreen
+    ? "font-serif text-2xl font-bold text-white mb-1 drop-shadow-lg"
+    : "font-serif text-3xl font-bold text-white mb-2 drop-shadow-lg max-sm:text-xl max-sm:mb-1";
+
+  const subtitleClasses = isWidescreen
+    ? "font-serif text-lg text-yellow-300 mb-2 drop-shadow-lg"
+    : "font-serif text-xl text-yellow-300 mb-4 drop-shadow-lg max-sm:text-base max-sm:mb-2";
+
+  const summaryClasses = isWidescreen
+    ? "font-serif text-sm leading-relaxed text-white/90 drop-shadow-md"
+    : "font-serif text-lg leading-relaxed text-white/90 drop-shadow-md max-sm:text-sm max-sm:leading-normal";
+
   return (
-    <div className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">
-      <div className="relative px-20 py-8 md:px-16 lg:px-12 pb-16 max-sm:px-8 max-sm:py-4 max-sm:pb-12">
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-sm:gap-4 ${
+    <div className={containerClasses}>
+      <div className={contentPadding}>
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 items-center max-sm:gap-4 ${
           book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
-        }`}>
+        } ${isWidescreen ? "h-full" : ""}`}>
           {/* Book Cover */}
           <div className={book.layout === "cover-right" ? "lg:col-start-2" : ""}>
             <img 
               key={`cover-${currentBook}`}
               src={book.cover} 
               alt={book.title}
-              className="w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100 max-sm:max-w-[200px]"
+              className={imageClasses}
               loading="eager"
             />
           </div>
           
           {/* Book Info */}
-          <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-24 pl-8"} md:pl-24 md:pr-24 max-sm:px-0`}>
-            <h3 className="font-serif text-3xl font-bold text-white mb-2 drop-shadow-lg max-sm:text-xl max-sm:mb-1">{book.title}</h3>
+          <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-24 pl-8"} md:pl-24 md:pr-24 max-sm:px-0 ${isWidescreen ? "flex flex-col justify-center" : ""}`}>
+            <h3 className={titleClasses}>{book.title}</h3>
             {book.subtitle && (
-              <h4 className="font-serif text-xl text-yellow-300 mb-4 drop-shadow-lg max-sm:text-base max-sm:mb-2">{book.subtitle}</h4>
+              <h4 className={subtitleClasses}>{book.subtitle}</h4>
             )}
-            <p className="font-serif text-lg leading-relaxed text-white/90 drop-shadow-md max-sm:text-sm max-sm:leading-normal">
+            <p className={summaryClasses}>
               {book.summary}
             </p>
           </div>
@@ -121,7 +147,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
       </div>
       
       {/* Book Indicator */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className={`absolute left-1/2 transform -translate-x-1/2 flex space-x-2 ${isWidescreen ? "bottom-2" : "bottom-4"}`}>
         {books.map((_, index) => (
           <div
             key={index}
