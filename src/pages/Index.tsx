@@ -8,6 +8,7 @@ import officeView from "@/assets/office-window-view.jpg";
 import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
 import circlesSingleCover from "@/assets/circles-single-cover.png";
+import parableEyeBackground from "@/assets/parable-eye-background.png";
 import useEmblaCarousel from "embla-carousel-react";
 
 const Index = () => {
@@ -183,8 +184,21 @@ const Index = () => {
       {/* Content Section */}
       <section className="relative bg-background">
         {/* Book Announcement */}
-        <div className="container mx-auto px-6 pt-12 pb-6">
-          <ScrollFadeUp id="book-announcement" className="text-center mb-8">
+        <div className="container mx-auto px-6 pt-12 pb-6 relative">
+          {/* Eye background image - fades in slowly */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+            <img 
+              src={parableEyeBackground}
+              alt=""
+              className="w-full max-w-2xl h-auto object-contain opacity-0 animate-slow-fade-in"
+              style={{ 
+                opacity: 0.12,
+                animationDelay: '0.5s',
+                animationFillMode: 'forwards'
+              }}
+            />
+          </div>
+          <ScrollFadeUp id="book-announcement" className="text-center mb-8 relative z-10">
             <h2 className="font-heading text-3xl md:text-5xl mb-4" style={{ color: '#2d1b1b' }}>
               Book One of The Parable Trilogy
             </h2>
