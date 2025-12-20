@@ -489,34 +489,33 @@ const Comics = () => {
                 </div>
               )}
               
-              {/* GOD OF LIES text - slides in from left on scroll */}
-              {/* Starts with h-0, expands smoothly with slide-in animation */}
+              {/* GOD OF LIES text - slides down vertically on scroll (same style as Pendragon caption) */}
               <div 
-                className={`w-full flex items-center bg-amber-50/95 transition-all duration-700 ease-out ${
+                className={`w-full bg-amber-50/95 transition-all duration-700 ease-out overflow-hidden ${
                   showGodOfLiesDescription 
-                    ? 'h-auto opacity-100 p-4' 
-                    : 'h-0 opacity-0 p-0 overflow-hidden'
+                    ? 'max-h-96 opacity-100' 
+                    : 'max-h-0 opacity-0'
                 }`}
               >
-              <div className={`transition-transform duration-700 ease-out ${
-                showGodOfLiesDescription ? 'translate-x-0' : '-translate-x-full'
-              }`}>
-                <h3 
-                  className="text-2xl font-bold text-slate-900 mb-4"
-                  style={{ fontFamily: 'Bangers, cursive' }}
-                >
-                  GOD OF LIES
-                </h3>
-                <p 
-                  className="text-slate-700 text-sm leading-relaxed mb-2"
-                  style={{ fontFamily: 'Georgia, serif' }}
-                >
-                  In a world where every truth bends to the will of one man, reality itself becomes a question. 
-                  Takeshi Mori has spent decades mastering the art of deception—but when a child sees through 
-                  his lies for the first time, everything begins to unravel.
-                </p>
+                <div className={`p-4 transition-transform duration-700 ease-out ${
+                  showGodOfLiesDescription ? 'translate-y-0' : '-translate-y-full'
+                }`}>
+                  <h3 
+                    className="text-2xl font-bold text-slate-900 mb-4"
+                    style={{ fontFamily: 'Bangers, cursive' }}
+                  >
+                    GOD OF LIES
+                  </h3>
+                  <p 
+                    className="text-slate-700 text-sm leading-relaxed mb-2"
+                    style={{ fontFamily: 'Georgia, serif' }}
+                  >
+                    In a world where every truth bends to the will of one man, reality itself becomes a question. 
+                    Takeshi Mori has spent decades mastering the art of deception—but when a child sees through 
+                    his lies for the first time, everything begins to unravel.
+                  </p>
+                </div>
               </div>
-            </div>
           </div>
         </section>
         )}
