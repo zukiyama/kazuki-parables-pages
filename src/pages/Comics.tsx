@@ -76,9 +76,9 @@ const Comics = () => {
         const isNarrowPortraitNow = window.innerWidth >= 950 && window.innerWidth <= 1100 && window.innerHeight > window.innerWidth;
         
         if (isNarrowPortraitNow) {
-          // Caption appears when Pendragon top is near the top of the viewport (occupies most of page)
-          const pendragonOccupiesMostOfPage = pendragonRect.top <= fixedHeaderHeight + 50;
-          setShowPendragonCaption(pendragonOccupiesMostOfPage && pendragonRect.bottom > viewportHeight * 0.5);
+          // Caption appears when Pendragon is entirely visible on screen
+          const pendragonEntirelyVisible = pendragonRect.top >= fixedHeaderHeight && pendragonRect.bottom <= viewportHeight;
+          setShowPendragonCaption(pendragonEntirelyVisible || pendragonRect.top <= fixedHeaderHeight);
         } else {
           // Regular desktop: Trigger when bottom edge of pendragon image is visible in viewport
           setShowPendragonCaption(pendragonRect.bottom > 0 && pendragonRect.top < viewportHeight);
@@ -472,33 +472,32 @@ const Comics = () => {
 
         {/* GOD OF LIES Text Section - MOBILE AND 13" iPad Portrait */}
         {/* Shows between God of Lies image and Surname Pendragon, slides in on scroll */}
-        <section 
-          ref={busStopSectionRef} 
-          className={`w-full relative bg-white ${
-            // Show on mobile OR on narrow portrait desktop (13" iPad)
-            isMobile || isNarrowPortrait ? 'block' : 'hidden'
-          }`}
-        >
-          <div className="flex flex-col">
-            {/* Bus stop image - only on actual mobile, not on 13" iPad portrait */}
-            {isMobile && !isNarrowPortrait && (
-              <div className="w-full">
-                <img 
-                  src={godOfLiesBusStop}
-                  alt="God of Lies - Bus Stop Scene"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            )}
-            
-            {/* GOD OF LIES text - slides in from left on scroll */}
-            <div 
-              className={`w-full p-4 flex items-center bg-amber-50/95 transition-all duration-500 ease-out overflow-hidden ${
-                showGodOfLiesDescription 
-                  ? 'max-h-96 opacity-100' 
-                  : 'max-h-0 opacity-0 p-0'
-              }`}
-            >
+        {/* On 13" iPad portrait: Only render when text should show (no white gap initially) */}
+        {(isMobile || (isNarrowPortrait && showGodOfLiesDescription)) && (
+          <section 
+            ref={busStopSectionRef} 
+            className="w-full relative bg-white"
+          >
+            <div className="flex flex-col">
+              {/* Bus stop image - only on actual mobile, not on 13" iPad portrait */}
+              {isMobile && !isNarrowPortrait && (
+                <div className="w-full">
+                  <img 
+                    src={godOfLiesBusStop}
+                    alt="God of Lies - Bus Stop Scene"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              
+              {/* GOD OF LIES text - slides in from left on scroll */}
+              <div 
+                className={`w-full p-4 flex items-center bg-amber-50/95 transition-all duration-500 ease-out overflow-hidden ${
+                  showGodOfLiesDescription 
+                    ? 'max-h-96 opacity-100' 
+                    : 'max-h-0 opacity-0 p-0'
+                }`}
+              >
               <div className={`transition-transform duration-500 ease-out ${
                 showGodOfLiesDescription ? 'translate-x-0' : '-translate-x-full'
               }`}>
@@ -520,6 +519,7 @@ const Comics = () => {
             </div>
           </div>
         </section>
+        )}
 
         {/* SURNAME PENDRAGON - Snap Section 3 */}
         {/* On mobile: always visible, slides down naturally when GOD OF LIES text expands above */}
