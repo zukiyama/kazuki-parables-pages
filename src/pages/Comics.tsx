@@ -449,6 +449,9 @@ const Comics = () => {
             className="w-full"
           />
           
+          {/* Thin black bar at bottom of Pendragon image - desktop only */}
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-black hidden sm:block" />
+          
           {/* Slide-in caption panel from left - classy film magazine style - hidden on mobile */}
           {/* Tapping anywhere on the Pendragon image toggles the caption */}
           <div 
@@ -590,7 +593,7 @@ const Comics = () => {
           style={{
             height: '8.5cm',
             bottom: '100%',
-            right: '6px'
+            right: '-10px'
           }}
         />
         <div className="container mx-auto px-6 text-center">
