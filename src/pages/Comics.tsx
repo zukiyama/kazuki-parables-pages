@@ -348,7 +348,7 @@ const Comics = () => {
         {/* Header Banner - Original black style */}
         <header 
           ref={bannerSectionRef}
-          className="py-4 xs:py-10 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] bg-black relative"
+          className="py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] bg-black relative"
           style={{ marginTop: '64px' }}
         >
           {/* Left cameo portrait - closer to left edge */}
@@ -370,7 +370,7 @@ const Comics = () => {
           {/* Main title */}
           <div className="text-center">
             <h1 
-              className="font-bold text-[#e8d9a0] tracking-wide text-5xl xs:text-8xl sm:text-6xl lg:text-7xl xl:text-8xl"
+              className="font-bold text-[#e8d9a0] tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
                 textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
