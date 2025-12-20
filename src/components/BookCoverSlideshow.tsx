@@ -16,9 +16,9 @@ interface BookCoverSlideshowProps {
 export const BookCoverSlideshow = ({ covers, title, className = "", loading = "eager", isWidescreen = false }: BookCoverSlideshowProps) => {
   const [currentCover, setCurrentCover] = useState(0);
 
-  // Widescreen: use viewport-relative height for images (60vh matches blurb+title height)
+  // Widescreen: size relative to viewport WITHOUT banner (100vh - 4rem header - 4rem breathing = ~80vh)
   const imageClasses = isWidescreen
-    ? "h-[calc(60vh)] w-auto mx-auto object-contain rounded-lg shadow-2xl"
+    ? "h-[calc(80vh)] w-auto mx-auto object-contain rounded-lg shadow-2xl"
     : "w-full max-w-sm mx-auto object-contain rounded-lg shadow-2xl";
 
   if (covers.length <= 1) {
