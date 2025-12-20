@@ -834,3 +834,17 @@
 .animate-drift-6 { animation: drift-6 30s ease-in-out infinite; animation-delay: -15s; }
 .animate-drift-7 { animation: drift-7 24s ease-in-out infinite; animation-delay: -7s; }
 .animate-drift-8 { animation: drift-8 32s ease-in-out infinite; animation-delay: -10s; }
+
+/* Slow fade-in animation for background images */
+@keyframes slow-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.12;
+  }
+}
+
+.animate-slow-fade-in {
+  animation: slow-fade-in 5s ease-out forwards;
+}
