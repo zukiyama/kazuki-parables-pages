@@ -632,7 +632,7 @@ const Music = () => {
         <DialogContent 
           className={`p-0 bg-transparent border-none focus:outline-none ${
             isWidescreen 
-              ? 'max-w-3xl max-h-[85vh] w-auto' 
+              ? 'max-w-[90vh] w-auto' 
               : 'max-w-4xl w-full'
           }`} 
           hideCloseButton
@@ -642,7 +642,7 @@ const Music = () => {
             alt={selectedAlbum.title}
             className={`rounded-lg outline-none ring-0 ${
               isWidescreen 
-                ? 'max-h-[80vh] w-auto object-contain' 
+                ? 'h-[calc(100vh-4rem)] w-auto object-contain' 
                 : 'w-full h-auto'
             }`}
           />

@@ -500,8 +500,8 @@ const Writing = () => {
       }`}>
         {/* KAIJU - The Parable Trilogy Section */}
         <section data-section="kaiju" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
-        }`}>
+          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
           <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
               <h1 className={`font-serif text-6xl font-bold text-white mb-16 max-sm:mb-14 max-sm:mt-12 mt-8 text-center tracking-wide transition-all duration-1000 ${
@@ -565,8 +565,8 @@ const Writing = () => {
 
         {/* HOAX Section - Memo style */}
         <section data-section="hoax" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
-        }`}>
+          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -642,8 +642,8 @@ const Writing = () => {
 
         {/* THE MARKET Section */}
         <section data-section="the-market" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
-        }`}>
+          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -707,8 +707,8 @@ const Writing = () => {
 
         {/* AMYA Section */}
         <section data-section="oba" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
-        }`}>
+          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -756,8 +756,8 @@ const Writing = () => {
 
         {/* STATES OF MOTION Section */}
         <section data-section="states-of-motion" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
-        }`}>
+          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -820,8 +820,8 @@ const Writing = () => {
 
         {/* HOW Section */}
         <section data-section="how" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
-        }`}>
+          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -880,8 +880,8 @@ const Writing = () => {
 
         {/* VICE VERSA Section */}
         <section data-section="vice-versa" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
-        }`}>
+          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -917,8 +917,8 @@ const Writing = () => {
 
         {/* Young Adult Books Section */}
         <section data-section="young-adult" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
-        }`}>
+          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
+        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <h2 className={`font-serif text-5xl font-bold text-white mb-4 text-center tracking-wide transition-all duration-1000 ${
