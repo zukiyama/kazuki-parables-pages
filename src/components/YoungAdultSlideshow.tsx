@@ -69,17 +69,17 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
 
   const book = books[currentBook];
 
-  // Widescreen: scale the entire slideshow to fit viewport
+  // Widescreen: scale the entire slideshow to fit viewport (60vh matches book cover heights)
   const containerClasses = isWidescreen
-    ? "relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20 max-h-[calc(60vh)] flex flex-col"
+    ? "relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20 h-[calc(60vh)] flex flex-col"
     : "relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20";
 
   const contentPadding = isWidescreen
-    ? "relative px-20 py-4 md:px-16 lg:px-12 pb-10 max-sm:px-8 max-sm:py-4 max-sm:pb-12 flex-1 overflow-hidden"
+    ? "relative px-20 py-4 md:px-16 lg:px-12 pb-10 max-sm:px-8 max-sm:py-4 max-sm:pb-12 flex-1"
     : "relative px-20 py-8 md:px-16 lg:px-12 pb-16 max-sm:px-8 max-sm:py-4 max-sm:pb-12";
 
   const imageClasses = isWidescreen
-    ? "h-[calc(40vh)] max-h-[280px] w-auto mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100"
+    ? "h-[calc(45vh)] w-auto mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100"
     : "w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100 max-sm:max-w-[200px]";
 
   const titleClasses = isWidescreen
