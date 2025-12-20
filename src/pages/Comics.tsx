@@ -255,45 +255,45 @@ const Comics = () => {
         {/* Header Banner - Original black style */}
         <header 
           ref={bannerSectionRef}
-          className="py-4 lg:py-6 px-4 lg:px-12 mt-16 bg-black relative"
+          className="py-4 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-16 bg-black relative"
         >
-          {/* Left cameo portrait - closer to left edge - only show on desktop (lg+) */}
+          {/* Left cameo portrait - closer to left edge */}
           <img 
             src={cameoPortraitLeft}
             alt="Cameo portrait"
-            className="absolute top-1/2 -translate-y-1/2 h-20 lg:h-28 w-auto object-contain hidden lg:block"
+            className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
             style={{ left: 'calc((50% - 300px) / 6)' }}
           />
           
-          {/* Right cameo portrait - closer to right edge - only show on desktop (lg+) */}
+          {/* Right cameo portrait - closer to right edge */}
           <img 
             src={cameoPortraitRight}
             alt="Cameo portrait"
-            className="absolute top-1/2 -translate-y-1/2 h-20 lg:h-28 w-auto object-contain hidden lg:block"
+            className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block"
             style={{ right: 'calc((50% - 300px) / 6)' }}
           />
           
           {/* Main title */}
           <div className="text-center">
             <h1 
-              className="text-5xl lg:text-7xl xl:text-8xl font-bold text-[#e8d9a0] tracking-wide"
+              className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-[#e8d9a0] tracking-wide"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
                 textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
               }}
             >
-              <span className="hidden lg:inline">COMICS AND SCRIPTS</span>
-              <span className="lg:hidden">COMICS & SCRIPTS</span>
+              <span className="hidden sm:inline">COMICS AND SCRIPTS</span>
+              <span className="sm:hidden">COMICS & SCRIPTS</span>
             </h1>
           </div>
           
           {/* Subtitle */}
-          <div className="flex items-center justify-center gap-2 lg:gap-3 mt-3">
-            <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-8 lg:max-w-20" />
-            <p className="text-[10px] lg:text-sm text-[#e8d9a0]/80 tracking-widest uppercase font-light text-center">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-3">
+            <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-8 sm:max-w-20" />
+            <p className="text-[10px] sm:text-sm text-[#e8d9a0]/80 tracking-widest uppercase font-light text-center">
               Original Stories in Sequential Art & Screenplay
             </p>
-            <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-8 lg:max-w-20" />
+            <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-8 sm:max-w-20" />
           </div>
         </header>
 
