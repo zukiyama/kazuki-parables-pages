@@ -159,8 +159,15 @@ const Comics = () => {
         hasScrolledIntoPendragon.current = true;
       }
       
+      // Check if Pendragon has been snapped to (its top is at or near the header)
+      const pendragonIsSnapped = Math.abs(pendragonRect.top - fixedHeaderHeight) < 20;
+      
+      // Check if we're below Pendragon (scrolled past it)
+      const isBelowPendragon = pendragonRect.top < fixedHeaderHeight;
+      
       // Scrolling UP from below Pendragon - snap to Pendragon if 25%+ visible
-      if (scrollingUp && pendragonRect.bottom > viewportHeight && pendragonVisibilityRatio >= 0.25) {
+      // This triggers when coming back up from content below Pendragon
+      if (scrollingUp && isBelowPendragon && pendragonVisibilityRatio >= 0.25) {
         // Snap to Pendragon (align top with fixed header height)
         const snapPoint = pendragonEl.getBoundingClientRect().top + currentScrollY - fixedHeaderHeight;
         if (Math.abs(currentScrollY - snapPoint) > 10) {
@@ -181,8 +188,8 @@ const Comics = () => {
           setTimeout(() => { isSnapping = false; }, 500);
         }
       }
-      // Scrolling DOWN - Only trigger snap if Pendragon is partially visible
-      else if (!scrollingUp && pendragonRect.top < viewportHeight && pendragonRect.bottom > 0) {
+      // Scrolling DOWN - Only trigger snap if Pendragon is partially visible and not yet snapped
+      else if (!scrollingUp && pendragonRect.top < viewportHeight && pendragonRect.bottom > 0 && !pendragonIsSnapped && !isBelowPendragon) {
         if (pendragonVisibilityRatio >= 0.25) {
           // Snap to Pendragon (align top with fixed header height for consistency)
           const snapPoint = pendragonEl.getBoundingClientRect().top + currentScrollY - fixedHeaderHeight;
@@ -191,7 +198,7 @@ const Comics = () => {
             window.scrollTo({ top: snapPoint, behavior: 'smooth' });
             setTimeout(() => { isSnapping = false; }, 500);
           }
-        } else if (pendragonVisibilityRatio > 0 && pendragonVisibilityRatio < 0.25 && pendragonRect.top > fixedHeaderHeight) {
+        } else if (pendragonVisibilityRatio > 0 && pendragonVisibilityRatio < 0.25) {
           // Snap back to God of Lies (bottom aligned with viewport bottom)
           const godOfLiesBottom = godOfLiesRect.bottom + currentScrollY;
           const snapPoint = godOfLiesBottom - viewportHeight;
