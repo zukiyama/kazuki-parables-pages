@@ -520,7 +520,7 @@ const Writing = () => {
                 </p>
               </div>
               
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`transition-all duration-1000 delay-300 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
