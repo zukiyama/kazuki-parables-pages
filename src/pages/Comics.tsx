@@ -478,8 +478,8 @@ const Comics = () => {
             className="w-full relative"
           >
             <div className="flex flex-col">
-              {/* Bus stop image - only on actual mobile, not on 13" iPad portrait */}
-              {isMobile && !isNarrowPortrait && (
+              {/* Bus stop image - only on actual mobile phones, not on tablets or 13" iPad portrait */}
+              {isMobile && (
                 <div className="w-full">
                   <img 
                     src={godOfLiesBusStop}
@@ -490,12 +490,12 @@ const Comics = () => {
               )}
               
               {/* GOD OF LIES text - slides in from left on scroll */}
-              {/* On 13" iPad: starts with max-h-0, expands smoothly with slide-in animation */}
+              {/* Starts with h-0, expands smoothly with slide-in animation */}
               <div 
-                className={`w-full flex items-center bg-amber-50/95 transition-all duration-700 ease-out overflow-hidden ${
+                className={`w-full flex items-center bg-amber-50/95 transition-all duration-700 ease-out ${
                   showGodOfLiesDescription 
-                    ? 'max-h-96 opacity-100 p-4' 
-                    : 'max-h-0 opacity-0 p-0'
+                    ? 'h-auto opacity-100 p-4' 
+                    : 'h-0 opacity-0 p-0 overflow-hidden'
                 }`}
               >
               <div className={`transition-transform duration-700 ease-out ${
