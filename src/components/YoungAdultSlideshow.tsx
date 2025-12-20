@@ -1,4 +1,4 @@
-import { useState, forwardRef, useImperativeHandle, useEffect } from "react";
+import { useState, forwardRef, useImperativeHandle, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -41,6 +41,9 @@ export interface YoungAdultSlideshowRef {
 
 export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdultSlideshowProps>(({ onBookChange }, ref) => {
   const [currentBook, setCurrentBookState] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   const setCurrentBook = (index: number) => {
     setCurrentBookState(index);
@@ -66,10 +69,46 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     setCurrentBook(newIndex);
   };
 
+  // Touch handlers for swipe gestures
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = null;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    
+    const diff = touchStartX.current - touchEndX.current;
+    const threshold = 50; // Minimum swipe distance
+    
+    if (Math.abs(diff) > threshold) {
+      if (diff > 0) {
+        // Swiped left - go to next
+        nextBook();
+      } else {
+        // Swiped right - go to previous
+        prevBook();
+      }
+    }
+    
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   const book = books[currentBook];
 
   return (
-    <div className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20">
+    <div 
+      ref={containerRef}
+      className="relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20 touch-pan-y"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <div className="relative px-20 py-8 md:px-16 lg:px-12 pb-16 max-sm:px-8 max-sm:py-4 max-sm:pb-12">
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-sm:gap-4 ${
           book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""

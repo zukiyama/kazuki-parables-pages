@@ -496,7 +496,7 @@ const Writing = () => {
       <main className={`relative z-10 transition-all duration-500 ${
         isWidescreen 
           ? (bannerVisible ? 'pt-56' : 'pt-28') 
-          : 'pt-40 max-sm:pt-52'
+          : 'pt-52 max-sm:pt-52'
       }`}>
         {/* KAIJU - The Parable Trilogy Section */}
         <section data-section="kaiju" className={`flex items-center justify-center relative ${
