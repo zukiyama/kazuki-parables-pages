@@ -24,7 +24,9 @@ const Comics = () => {
   const [showBusStopSection, setShowBusStopSection] = useState(false);
   const [showPendragon, setShowPendragon] = useState(false);
   const [showPendragonCaption, setShowPendragonCaption] = useState(false);
+  const [mobilePendragonExpanded, setMobilePendragonExpanded] = useState(false);
   const [pageReady, setPageReady] = useState(false);
+  const mobilePendragonRef = useRef<HTMLDivElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
   
@@ -62,6 +64,14 @@ const Comics = () => {
         const pendragonRect = pendragonSectionRef.current.getBoundingClientRect();
         // Trigger when bottom edge of pendragon image is visible in viewport
         setShowPendragonCaption(pendragonRect.bottom > 0 && pendragonRect.top < window.innerHeight);
+      }
+      
+      // Mobile: Expand Pendragon caption based on scroll position relative to the caption bar
+      if (mobilePendragonRef.current) {
+        const captionRect = mobilePendragonRef.current.getBoundingClientRect();
+        // Expand when the caption bar reaches the top half of the viewport
+        const shouldExpand = captionRect.top < window.innerHeight * 0.6;
+        setMobilePendragonExpanded(shouldExpand);
       }
     };
 
@@ -252,7 +262,7 @@ const Comics = () => {
           {/* Main title */}
           <div className="text-center">
             <h1 
-              className="text-2xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-[#e8d9a0] tracking-wide"
+              className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-[#e8d9a0] tracking-wide"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
                 textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
@@ -264,7 +274,7 @@ const Comics = () => {
           </div>
           
           {/* Subtitle */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-2 sm:mt-3">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-3">
             <div className="flex-1 h-px bg-[#e8d9a0]/40 max-w-8 sm:max-w-20" />
             <p className="text-[10px] sm:text-sm text-[#e8d9a0]/80 tracking-widest uppercase font-light text-center">
               Original Stories in Sequential Art & Screenplay
@@ -410,14 +420,40 @@ const Comics = () => {
             </p>
           </div>
           
-          {/* Mobile caption - below image */}
-          <div className="sm:hidden w-full bg-black/90 p-4">
+          {/* Mobile caption - below image, expands on scroll */}
+          <div 
+            ref={mobilePendragonRef}
+            className={`sm:hidden w-full bg-black/90 overflow-hidden transition-all duration-500 ease-out ${
+              mobilePendragonExpanded ? 'max-h-96 p-4 pb-6' : 'max-h-12 p-4 py-3'
+            }`}
+          >
             <h4 
               className="text-white/90 text-xs uppercase tracking-[0.2em] mb-2"
               style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
             >
               Screenplay Adaptation
             </h4>
+            <div className={`transition-opacity duration-500 ${mobilePendragonExpanded ? 'opacity-100' : 'opacity-0'}`}>
+              <h3 
+                className="text-white text-xl font-light mb-3 tracking-wide"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                Surname Pendragon
+              </h3>
+              <p 
+                className="text-white/70 text-sm leading-relaxed mb-3"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                A sweeping family saga spanning three generations, where legacy is both burden and blessing. 
+                When secrets from the past resurface, the Pendragon name becomes a curse worth fighting for.
+              </p>
+              <p 
+                className="text-white/50 text-xs uppercase tracking-widest"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Feature Film • Drama • In Development
+              </p>
+            </div>
           </div>
         </section>
 
