@@ -477,7 +477,7 @@ const Comics = () => {
       
       {/* Footer with mascot character */}
       <footer className="bg-[#1a1a1a] py-10 max-sm:py-6 relative overflow-visible">
-        {/* Footer character - positioned between oranges comic and right edge, hidden when not enough space */}
+        {/* Footer character - positioned with right elbow 12px from page edge, hidden when not enough space */}
         <img 
           src={comicsFooterCharacter}
           alt="Comics mascot"
@@ -485,7 +485,7 @@ const Comics = () => {
           style={{
             height: '8.5cm',
             bottom: '100%',
-            right: 'calc((100vw - 896px) / 4)'
+            right: '12px'
           }}
         />
         <div className="container mx-auto px-6 text-center">
