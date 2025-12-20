@@ -500,7 +500,7 @@ const Writing = () => {
       <main className={`relative z-10 transition-all duration-500 ${
         isWidescreen 
           ? (bannerVisible ? 'pt-48' : 'pt-24') 
-          : 'pt-24 max-sm:pt-52'
+          : 'pt-40 max-sm:pt-52'
       }`}>
         {/* KAIJU - The Parable Trilogy Section */}
         <section data-section="kaiju" className="min-h-[80vh] flex items-center justify-center relative">
