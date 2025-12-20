@@ -159,8 +159,18 @@ const Comics = () => {
         hasScrolledIntoPendragon.current = true;
       }
       
+      // Scrolling UP from below Pendragon - snap to Pendragon if 25%+ visible
+      if (scrollingUp && pendragonRect.bottom > viewportHeight && pendragonVisibilityRatio >= 0.25) {
+        // Snap to Pendragon (align top with fixed header height)
+        const snapPoint = pendragonEl.getBoundingClientRect().top + currentScrollY - fixedHeaderHeight;
+        if (Math.abs(currentScrollY - snapPoint) > 10) {
+          isSnapping = true;
+          window.scrollTo({ top: snapPoint, behavior: 'smooth' });
+          setTimeout(() => { isSnapping = false; }, 500);
+        }
+      }
       // Scrolling UP from Pendragon into God of Lies
-      if (scrollingUp && hasScrolledIntoPendragon.current && godOfLiesVisibilityRatio >= 0.25 && godOfLiesRect.bottom > viewportHeight * 0.5) {
+      else if (scrollingUp && hasScrolledIntoPendragon.current && godOfLiesVisibilityRatio >= 0.25 && godOfLiesRect.bottom > viewportHeight * 0.5) {
         // Snap to God of Lies (bottom aligned with viewport bottom)
         const godOfLiesBottom = godOfLiesRect.bottom + currentScrollY;
         const snapPoint = godOfLiesBottom - viewportHeight;
@@ -370,7 +380,7 @@ const Comics = () => {
 
           {/* Slide-in description panel from left - hidden on mobile, tap to toggle */}
           <div 
-            className={`absolute bottom-[15%] left-0 max-w-[55%] lg:max-w-[42%] bg-amber-50/95 backdrop-blur-sm p-5 sm:p-6 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out hidden sm:block z-20 pointer-events-none ${
+            className={`absolute bottom-[10%] left-0 max-w-[55%] lg:max-w-[42%] bg-amber-50/95 backdrop-blur-sm p-5 sm:p-6 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out hidden sm:block z-20 pointer-events-none ${
               showGodOfLiesDescription && godOfLiesDescriptionVisible
                 ? 'opacity-100 translate-x-0' 
                 : 'opacity-0 -translate-x-full'
