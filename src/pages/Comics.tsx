@@ -29,6 +29,7 @@ const Comics = () => {
   const [showPendragonCaption, setShowPendragonCaption] = useState(false);
   const [mobilePendragonExpanded, setMobilePendragonExpanded] = useState(false);
   const [pageReady, setPageReady] = useState(false);
+  const [isNarrowPortrait, setIsNarrowPortrait] = useState(false); // 13-inch iPad portrait detection
   const mobilePendragonRef = useRef<HTMLDivElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
@@ -68,8 +69,20 @@ const Comics = () => {
       // Show Pendragon caption when Pendragon section is visible
       if (pendragonSectionRef.current) {
         const pendragonRect = pendragonSectionRef.current.getBoundingClientRect();
-        // Trigger when bottom edge of pendragon image is visible in viewport
-        setShowPendragonCaption(pendragonRect.bottom > 0 && pendragonRect.top < window.innerHeight);
+        const viewportHeight = window.innerHeight;
+        
+        // For narrow portrait desktop (13" iPad): Only show caption when Pendragon occupies most of the page
+        // Check if we're in narrow portrait mode by checking window dimensions
+        const isNarrowPortraitNow = window.innerWidth >= 950 && window.innerWidth <= 1100 && window.innerHeight > window.innerWidth;
+        
+        if (isNarrowPortraitNow) {
+          // Caption appears when Pendragon top is near the top of the viewport (occupies most of page)
+          const pendragonOccupiesMostOfPage = pendragonRect.top <= fixedHeaderHeight + 50;
+          setShowPendragonCaption(pendragonOccupiesMostOfPage && pendragonRect.bottom > viewportHeight * 0.5);
+        } else {
+          // Regular desktop: Trigger when bottom edge of pendragon image is visible in viewport
+          setShowPendragonCaption(pendragonRect.bottom > 0 && pendragonRect.top < viewportHeight);
+        }
       }
       
       // Mobile: Expand Pendragon caption based on scroll position relative to the caption bar
@@ -133,11 +146,19 @@ const Comics = () => {
     return width >= 950 && width <= 1100 && height > width;
   }, []);
 
-  // On narrow portrait desktop, show Pendragon immediately
+  // On narrow portrait desktop, show Pendragon immediately and track state for UI
   useEffect(() => {
-    if (isNarrowPortraitDesktop()) {
-      setShowPendragon(true);
-    }
+    const checkNarrowPortrait = () => {
+      const narrow = isNarrowPortraitDesktop();
+      setIsNarrowPortrait(narrow);
+      if (narrow) {
+        setShowPendragon(true);
+      }
+    };
+    
+    checkNarrowPortrait();
+    window.addEventListener('resize', checkNarrowPortrait);
+    return () => window.removeEventListener('resize', checkNarrowPortrait);
   }, [isNarrowPortraitDesktop]);
 
   // Scroll snap logic - DESKTOP ONLY (disabled on narrow portrait desktop)
@@ -414,9 +435,12 @@ const Comics = () => {
             />
           </div>
 
-          {/* Slide-in description panel from left - hidden on mobile, tap to toggle */}
+          {/* Slide-in description panel from left - hidden on mobile AND on narrow portrait desktop (13" iPad) */}
           <div 
-            className={`absolute bottom-[10%] left-0 max-w-[55%] lg:max-w-[42%] bg-amber-50/95 backdrop-blur-sm p-5 sm:p-6 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out hidden sm:block z-20 pointer-events-none ${
+            className={`absolute bottom-[10%] left-0 max-w-[55%] lg:max-w-[42%] bg-amber-50/95 backdrop-blur-sm p-5 sm:p-6 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out z-20 pointer-events-none ${
+              // Hide on mobile and on narrow portrait desktop (13" iPad)
+              isMobile || isNarrowPortrait ? 'hidden' : 'hidden sm:block'
+            } ${
               showGodOfLiesDescription && godOfLiesDescriptionVisible
                 ? 'opacity-100 translate-x-0' 
                 : 'opacity-0 -translate-x-full'
@@ -446,17 +470,26 @@ const Comics = () => {
           </div>
         </section>
 
-        {/* Bus Stop Image + GOD OF LIES Text Section - MOBILE ONLY */}
-        <section ref={busStopSectionRef} className="w-full relative bg-white sm:hidden">
+        {/* GOD OF LIES Text Section - MOBILE AND 13" iPad Portrait */}
+        {/* Shows between God of Lies image and Surname Pendragon, slides in on scroll */}
+        <section 
+          ref={busStopSectionRef} 
+          className={`w-full relative bg-white ${
+            // Show on mobile OR on narrow portrait desktop (13" iPad)
+            isMobile || isNarrowPortrait ? 'block' : 'hidden'
+          }`}
+        >
           <div className="flex flex-col">
-            {/* Bus stop image */}
-            <div className="w-full">
-              <img 
-                src={godOfLiesBusStop}
-                alt="God of Lies - Bus Stop Scene"
-                className="w-full h-full object-cover"
-              />
-            </div>
+            {/* Bus stop image - only on actual mobile, not on 13" iPad portrait */}
+            {isMobile && !isNarrowPortrait && (
+              <div className="w-full">
+                <img 
+                  src={godOfLiesBusStop}
+                  alt="God of Lies - Bus Stop Scene"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             
             {/* GOD OF LIES text - slides in from left on scroll */}
             <div 
@@ -494,8 +527,8 @@ const Comics = () => {
         <section 
           ref={pendragonSectionRef} 
           className={`w-full relative transition-all duration-700 ease-out ${
-            // Mobile: always visible; Desktop: fade/slide animation based on scroll
-            isMobile || showPendragon
+            // Mobile/narrow portrait: always visible; Desktop: fade/slide animation based on scroll
+            isMobile || isNarrowPortrait || showPendragon
               ? 'opacity-100 translate-y-0' 
               : 'opacity-0 translate-y-16'
           }`}
@@ -506,8 +539,8 @@ const Comics = () => {
             className="w-full"
           />
           
-          {/* Thin black bar at bottom of Pendragon image - desktop only */}
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-black hidden sm:block" />
+          {/* Thin black bar at bottom of Pendragon image - desktop only (not on narrow portrait) */}
+          <div className={`absolute bottom-0 left-0 right-0 h-1 bg-black ${isNarrowPortrait ? 'hidden' : 'hidden sm:block'}`} />
           
           {/* Slide-in caption panel from left - classy film magazine style - hidden on mobile */}
           {/* Tapping anywhere on the Pendragon image toggles the caption */}
