@@ -241,10 +241,22 @@ const Writing = () => {
         }
       }
 
+      // For young-adult section when approaching from ABOVE, require higher visibility threshold
+      // This allows reading the "Young Adult Series" text without snapping back
+      let snapThreshold = 0.5; // Default threshold
+      
+      if (bestSection && bestSection.name === 'young-adult') {
+        const slideshowRect = bestSection.el.getBoundingClientRect();
+        // If slideshow is mostly below viewport center, we're approaching from above
+        if (slideshowRect.top > viewportHeight * 0.3) {
+          snapThreshold = 0.7; // Higher threshold when approaching from above
+        }
+      }
+
       // Only snap if:
-      // 1. Section fills >50% of viewport
+      // 1. Section fills > threshold of viewport
       // 2. It's not the section we just snapped away from
-      if (bestSection && highestVisibility > 0.5) {
+      if (bestSection && highestVisibility > snapThreshold) {
         // If scrolling away from last snapped section, don't snap back
         if (lastSnappedSection === bestSection.name) {
           // Clear the last snapped section so we can snap to it again later
@@ -467,10 +479,10 @@ const Writing = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
       </div>
       
-      {/* Main content - pushed down on widescreen when banner visible for breathing space */}
-      <main ref={mainRef} className={`relative z-10 transition-all duration-500 ${
+      {/* Main content - FIXED padding for widescreen, independent of banner visibility */}
+      <main ref={mainRef} className={`relative z-10 ${
         isWidescreen 
-          ? (bannerVisible ? 'pt-56' : 'pt-28') 
+          ? 'pt-28' 
           : 'pt-52 max-sm:pt-52'
       }`}>
         {/* KAIJU - The Parable Trilogy Section */}
