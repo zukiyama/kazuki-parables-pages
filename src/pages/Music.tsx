@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 import { AlbumBanner } from "@/components/AlbumBanner";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -224,6 +225,7 @@ const albums = [
 const Music = () => {
   useScrollToTop();
   const location = useLocation();
+  const isWidescreen = useWidescreenAspectRatio();
   const [scrollY, setScrollY] = useState(0);
   const [selectedAlbum, setSelectedAlbum] = useState(albums[7]); // Default to Coming Soon EP
   const [isPlaying, setIsPlaying] = useState(false);
@@ -627,11 +629,22 @@ const Music = () => {
       
       {/* Album Cover Zoom Dialog */}
       <Dialog open={isZoomDialogOpen} onOpenChange={setIsZoomDialogOpen}>
-        <DialogContent className="max-w-4xl w-full p-0 bg-transparent border-none focus:outline-none" hideCloseButton>
+        <DialogContent 
+          className={`p-0 bg-transparent border-none focus:outline-none ${
+            isWidescreen 
+              ? 'max-w-3xl max-h-[85vh] w-auto' 
+              : 'max-w-4xl w-full'
+          }`} 
+          hideCloseButton
+        >
           <img 
             src={selectedAlbum.cover} 
             alt={selectedAlbum.title}
-            className="w-full h-auto rounded-lg outline-none ring-0"
+            className={`rounded-lg outline-none ring-0 ${
+              isWidescreen 
+                ? 'max-h-[80vh] w-auto object-contain' 
+                : 'w-full h-auto'
+            }`}
           />
         </DialogContent>
       </Dialog>
