@@ -507,14 +507,16 @@ const Writing = () => {
       </div>
       
       {/* Main content - FIXED padding for widescreen (pt-56 for breathing space), independent of banner visibility */}
+      {/* Non-widescreen (iPad): Use original pt-40 padding that worked before */}
       <main ref={mainRef} className={`relative z-10 ${
         isWidescreen 
           ? 'pt-56' 
-          : 'pt-52 max-sm:pt-52'
+          : 'pt-40 max-sm:pt-52'
       }`}>
         {/* KAIJU - The Parable Trilogy Section */}
+        {/* Non-widescreen (iPad): Use original min-h-screen for proper scroll behavior */}
         <section data-section="kaiju" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
         }`}>
           <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
@@ -579,8 +581,9 @@ const Writing = () => {
         </section>
 
         {/* HOAX Section - Memo style */}
+        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="hoax" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
@@ -657,8 +660,9 @@ const Writing = () => {
         </div>
 
         {/* THE MARKET Section */}
+        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="the-market" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
@@ -723,8 +727,9 @@ const Writing = () => {
         </div>
 
         {/* AMYA Section */}
+        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="oba" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
@@ -773,8 +778,9 @@ const Writing = () => {
         </div>
 
         {/* STATES OF MOTION Section */}
+        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="states-of-motion" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
@@ -838,8 +844,9 @@ const Writing = () => {
         </div>
 
         {/* HOW Section */}
+        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="how" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
@@ -899,8 +906,9 @@ const Writing = () => {
         </div>
 
         {/* VICE VERSA Section */}
+        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="vice-versa" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
@@ -937,8 +945,9 @@ const Writing = () => {
 
 
         {/* Young Adult Books Section */}
+        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="young-adult" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">

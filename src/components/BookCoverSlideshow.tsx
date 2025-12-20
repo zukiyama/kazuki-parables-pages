@@ -17,9 +17,10 @@ export const BookCoverSlideshow = ({ covers, title, className = "", loading = "e
   const [currentCover, setCurrentCover] = useState(0);
 
   // Widescreen: size relative to viewport WITHOUT banner (100vh - 4rem header - 4rem breathing = ~80vh)
+  // Non-widescreen (iPad, etc.): Use original proportional sizing that worked before
   const imageClasses = isWidescreen
     ? "h-[calc(80vh)] w-auto mx-auto object-contain rounded-lg shadow-2xl"
-    : "w-full max-w-sm mx-auto object-contain rounded-lg shadow-2xl";
+    : "w-full max-w-md mx-auto object-contain rounded-lg shadow-2xl";
 
   if (covers.length <= 1) {
     return (
