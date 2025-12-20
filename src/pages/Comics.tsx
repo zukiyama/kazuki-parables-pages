@@ -3,6 +3,7 @@ import Navigation from "@/components/Navigation";
 import { ScrollScale } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
 import surnamePendragonBanner from "@/assets/surname-pendragon-banner.png";
 import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
@@ -20,6 +21,7 @@ import cameoPortraitRight from "@/assets/cameo-portrait-right.jpeg";
 const Comics = () => {
   useScrollToTop();
   const isMobile = useIsMobile();
+  const isWidescreen = useWidescreenAspectRatio();
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [showGodOfLiesDescription, setShowGodOfLiesDescription] = useState(false);
@@ -174,6 +176,13 @@ const Comics = () => {
       if (window.innerWidth < 950) return;
       // Also disable on narrow portrait desktop (13-inch iPad portrait)
       if (isNarrowPortraitDesktop()) return;
+      // Disable scroll snap on 16:9/16:10 widescreen devices
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      if (width >= 1024 && height < width) {
+        const ratio = width / height;
+        if (ratio >= 1.55 && ratio <= 1.85) return;
+      }
       if (isSnapping) return;
       
       const godOfLiesEl = godOfLiesSectionRef.current;
@@ -709,14 +718,24 @@ const Comics = () => {
           onClick={handleCloseModal}
         >
           <div 
-            className="bg-white rounded-xl shadow-2xl max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 max-sm:p-4 max-sm:gap-4 max-sm:max-h-[90vh] max-sm:overflow-y-auto animate-scale-in"
+            className={`bg-white rounded-xl shadow-2xl w-full grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 max-sm:p-4 max-sm:gap-4 max-sm:max-h-[90vh] max-sm:overflow-y-auto animate-scale-in ${
+              isWidescreen 
+                ? 'max-w-4xl max-h-[85vh]' 
+                : 'max-w-5xl'
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-center max-sm:max-h-[40vh]">
+            <div className={`flex items-center justify-center max-sm:max-h-[40vh] ${
+              isWidescreen ? 'max-h-[70vh]' : ''
+            }`}>
               <img 
                 src={selectedComic.cover}
                 alt={`${selectedComic.title} comic cover`}
-                className="w-full max-w-md shadow-2xl rounded-lg max-sm:max-h-full max-sm:object-contain"
+                className={`w-full shadow-2xl rounded-lg max-sm:max-h-full max-sm:object-contain ${
+                  isWidescreen 
+                    ? 'max-w-sm max-h-[65vh] object-contain' 
+                    : 'max-w-md'
+                }`}
               />
             </div>
             <div className="flex flex-col justify-center">

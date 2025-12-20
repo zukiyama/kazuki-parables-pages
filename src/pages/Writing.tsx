@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 
 import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungAdultSlideshow";
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
@@ -36,9 +37,11 @@ import toFlyCover from "@/assets/to-fly-cover-new.png";
 
 const Writing = () => {
   useScrollToTop();
+  const isWidescreen = useWidescreenAspectRatio();
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
+  const [bannerVisible, setBannerVisible] = useState(true); // For widescreen banner toggle
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -116,6 +119,7 @@ const Writing = () => {
 
 
   // Scroll snap logic - loose snapping, only when section fills most of screen, DESKTOP ONLY
+  // DISABLED for 16:9/16:10 widescreen devices
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let lastSnappedSection: string | null = null;
@@ -126,6 +130,14 @@ const Writing = () => {
     const getBookSections = () => {
       // Disable scroll snap on mobile
       if (window.innerWidth < 950) return [];
+      
+      // Disable scroll snap on 16:9/16:10 widescreen devices
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      if (width >= 1024 && height < width) {
+        const ratio = width / height;
+        if (ratio >= 1.55 && ratio <= 1.85) return [];
+      }
       
       const sections = document.querySelectorAll('[data-section]');
       const bookSections: { el: HTMLElement; name: string }[] = [];
@@ -375,13 +387,37 @@ const Writing = () => {
     }
   };
 
+  // Handle click to toggle banner on widescreen devices
+  const handlePageClick = useCallback((e: React.MouseEvent) => {
+    if (!isWidescreen) return;
+    
+    // Don't toggle if clicking on interactive elements
+    const target = e.target as HTMLElement;
+    if (
+      target.closest('button') ||
+      target.closest('a') ||
+      target.closest('[role="button"]') ||
+      target.closest('.book-cover-slideshow') ||
+      target.closest('[data-slideshow-control]')
+    ) {
+      return;
+    }
+    
+    setBannerVisible(prev => !prev);
+  }, [isWidescreen]);
+
   return (
-    <div className="min-h-screen relative overflow-x-hidden">
+    <div 
+      className="min-h-screen relative overflow-x-hidden"
+      onClick={handlePageClick}
+    >
       <Navigation />
       <BookshelfMenu 
         onBookClick={handleBookClick} 
         visibleSections={visibleSections} 
         currentYoungAdultBook={currentYoungAdultBook}
+        isWidescreen={isWidescreen}
+        bannerVisible={bannerVisible}
       />
       
       {/* Stacked Background Images - All preloaded */}
@@ -460,7 +496,12 @@ const Writing = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
       </div>
       
-      <main className="relative z-10 pt-24 max-sm:pt-52">
+      {/* Main content - pushed down on widescreen when banner visible for breathing space */}
+      <main className={`relative z-10 transition-all duration-500 ${
+        isWidescreen 
+          ? (bannerVisible ? 'pt-48' : 'pt-24') 
+          : 'pt-24 max-sm:pt-52'
+      }`}>
         {/* KAIJU - The Parable Trilogy Section */}
         <section data-section="kaiju" className="min-h-[80vh] flex items-center justify-center relative">
           <div className="container mx-auto px-6 py-12">
