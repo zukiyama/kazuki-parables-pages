@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Navigation from "@/components/Navigation";
 import { ScrollScale } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { useIsMobile } from "@/hooks/use-mobile";
 import godOfLiesCover from "@/assets/god-of-lies-cover-new.png";
 import surnamePendragonBanner from "@/assets/surname-pendragon-banner.png";
 import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
@@ -18,6 +19,7 @@ import cameoPortraitRight from "@/assets/cameo-portrait-right.jpeg";
 
 const Comics = () => {
   useScrollToTop();
+  const isMobile = useIsMobile();
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [showGodOfLiesDescription, setShowGodOfLiesDescription] = useState(false);
@@ -325,7 +327,8 @@ const Comics = () => {
         {/* Header Banner - Original black style */}
         <header 
           ref={bannerSectionRef}
-          className="py-4 xs:py-6 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] bg-black relative"
+          className="py-4 xs:py-10 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] bg-black relative"
+          style={{ marginTop: '64px' }}
         >
           {/* Left cameo portrait - closer to left edge */}
           <img 
@@ -346,7 +349,7 @@ const Comics = () => {
           {/* Main title */}
           <div className="text-center">
             <h1 
-              className="font-bold text-[#e8d9a0] tracking-wide text-5xl xs:text-6xl sm:text-6xl lg:text-7xl xl:text-8xl"
+              className="font-bold text-[#e8d9a0] tracking-wide text-5xl xs:text-8xl sm:text-6xl lg:text-7xl xl:text-8xl"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
                 textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
@@ -443,10 +446,10 @@ const Comics = () => {
           </div>
         </section>
 
-        {/* Bus Stop Image + Description Section - MOBILE ONLY */}
+        {/* Bus Stop Image + GOD OF LIES Text Section - MOBILE ONLY */}
         <section ref={busStopSectionRef} className="w-full relative bg-white sm:hidden">
           <div className="flex flex-col">
-            {/* Left side - Bus stop image */}
+            {/* Bus stop image */}
             <div className="w-full">
               <img 
                 src={godOfLiesBusStop}
@@ -455,9 +458,17 @@ const Comics = () => {
               />
             </div>
             
-            {/* Right side - Description text */}
-            <div className="w-full p-4 flex items-center bg-amber-50/95">
-              <div>
+            {/* GOD OF LIES text - slides in from left on scroll */}
+            <div 
+              className={`w-full p-4 flex items-center bg-amber-50/95 transition-all duration-500 ease-out overflow-hidden ${
+                showGodOfLiesDescription 
+                  ? 'max-h-96 opacity-100' 
+                  : 'max-h-0 opacity-0 p-0'
+              }`}
+            >
+              <div className={`transition-transform duration-500 ease-out ${
+                showGodOfLiesDescription ? 'translate-x-0' : '-translate-x-full'
+              }`}>
                 <h3 
                   className="text-2xl font-bold text-slate-900 mb-4"
                   style={{ fontFamily: 'Bangers, cursive' }}
@@ -478,10 +489,13 @@ const Comics = () => {
         </section>
 
         {/* SURNAME PENDRAGON - Snap Section 3 */}
+        {/* On mobile: always visible, slides down naturally when GOD OF LIES text expands above */}
+        {/* On desktop: fades in on scroll */}
         <section 
           ref={pendragonSectionRef} 
           className={`w-full relative transition-all duration-700 ease-out ${
-            showPendragon 
+            // Mobile: always visible; Desktop: fade/slide animation based on scroll
+            isMobile || showPendragon
               ? 'opacity-100 translate-y-0' 
               : 'opacity-0 translate-y-16'
           }`}
