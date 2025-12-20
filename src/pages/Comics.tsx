@@ -472,11 +472,10 @@ const Comics = () => {
 
         {/* GOD OF LIES Text Section - MOBILE AND 13" iPad Portrait */}
         {/* Shows between God of Lies image and Surname Pendragon, slides in on scroll */}
-        {/* On 13" iPad portrait: Only render when text should show (no white gap initially) */}
-        {(isMobile || (isNarrowPortrait && showGodOfLiesDescription)) && (
+        {(isMobile || isNarrowPortrait) && (
           <section 
             ref={busStopSectionRef} 
-            className="w-full relative bg-white"
+            className="w-full relative"
           >
             <div className="flex flex-col">
               {/* Bus stop image - only on actual mobile, not on 13" iPad portrait */}
@@ -491,14 +490,15 @@ const Comics = () => {
               )}
               
               {/* GOD OF LIES text - slides in from left on scroll */}
+              {/* On 13" iPad: starts with max-h-0, expands smoothly with slide-in animation */}
               <div 
-                className={`w-full p-4 flex items-center bg-amber-50/95 transition-all duration-500 ease-out overflow-hidden ${
+                className={`w-full flex items-center bg-amber-50/95 transition-all duration-700 ease-out overflow-hidden ${
                   showGodOfLiesDescription 
-                    ? 'max-h-96 opacity-100' 
+                    ? 'max-h-96 opacity-100 p-4' 
                     : 'max-h-0 opacity-0 p-0'
                 }`}
               >
-              <div className={`transition-transform duration-500 ease-out ${
+              <div className={`transition-transform duration-700 ease-out ${
                 showGodOfLiesDescription ? 'translate-x-0' : '-translate-x-full'
               }`}>
                 <h3 
