@@ -500,8 +500,8 @@ const Writing = () => {
       }`}>
         {/* KAIJU - The Parable Trilogy Section */}
         <section data-section="kaiju" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
-        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+        }`}>
           <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
               <h1 className={`font-serif text-6xl font-bold text-white mb-16 max-sm:mb-14 max-sm:mt-12 mt-8 text-center tracking-wide transition-all duration-1000 ${
@@ -530,33 +530,34 @@ const Writing = () => {
                     ]}
                     title="KAIJU"
                     loading="eager"
+                    isWidescreen={isWidescreen}
                   />
                 </div>
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className="font-serif font-bold mb-2 text-white" style={{ fontSize: '3rem' }}>
+                  <h2 className="font-serif font-bold mb-2 text-white" style={{ fontSize: isWidescreen ? '2.5rem' : '3rem' }}>
                     KAIJU
                   </h2>
                   <div className="bg-black/75 backdrop-blur-sm rounded-lg px-6 pt-4 pb-6 border border-white/20">
-                    <h3 className="font-serif text-yellow-300 mb-6 tracking-wide" style={{ fontSize: 'calc(1rem + 2pt)' }}>
+                    <h3 className={`font-serif text-yellow-300 mb-6 tracking-wide ${isWidescreen ? 'text-sm mb-4' : ''}`} style={{ fontSize: isWidescreen ? 'calc(0.875rem + 1pt)' : 'calc(1rem + 2pt)' }}>
                       Book One of The Parable Trilogy
                     </h3>
-                    <p className="font-serif text-base leading-relaxed text-white mb-3">
+                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
                       When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                     </p>
-                    <p className="font-serif text-base leading-relaxed text-white mb-3">
+                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
                       For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
                     </p>
-                    <p className="font-serif text-base leading-relaxed text-white">
+                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base'}`}>
                       Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
                     </p>
                   </div>
                 </div>
               </div>
-              <p className={`font-serif text-xl leading-relaxed text-white italic text-center mt-10 mb-16 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
+              <p className={`font-serif leading-relaxed text-white italic text-center mt-10 mb-16 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}>
+              } ${isWidescreen ? 'text-lg' : 'text-xl'}`}>
                 Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people in a 1979 that happened only for those who were there.
               </p>
             </div>
@@ -565,8 +566,8 @@ const Writing = () => {
 
         {/* HOAX Section - Memo style */}
         <section data-section="hoax" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
-        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+        }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -579,13 +580,14 @@ const Writing = () => {
                     ]}
                     title="HOAX"
                     loading="lazy"
+                    isWidescreen={isWidescreen}
                   />
                 </div>
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
                 {/* Title above the memo */}
-                  <h2 className="font-serif text-5xl font-bold mb-6 text-white tracking-wide drop-shadow-lg">
+                  <h2 className={`font-serif font-bold mb-6 text-white tracking-wide drop-shadow-lg ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
                     HOAX
                   </h2>
                   
@@ -606,20 +608,20 @@ const Writing = () => {
                     }}></div>
                     
                     {/* Memo paper */}
-                    <div className="p-8 shadow-lg" style={{
+                    <div className={`shadow-lg ${isWidescreen ? 'p-6' : 'p-8'}`} style={{
                       background: 'linear-gradient(180deg, #fffef5 0%, #fefce8 50%, #fef9c3 100%)',
                       boxShadow: '2px 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)'
                     }}>
-                      <p className="font-serif text-base leading-loose text-stone-600 mb-4" style={{ lineHeight: '1.9' }}>
+                      <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.9' }}>
                         Peter Mayhew had hit rock bottom when he wrote Hoax, a pseudo-spiritual parody intended as his sign-off, a final insult to an industry he had grown to despise… and worst of all an overnight bestseller. He had finally made his name — and could never use it again.
                       </p>
-                      <p className="font-serif text-base leading-loose text-stone-600 mb-4" style={{ lineHeight: '1.9' }}>
+                      <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.9' }}>
                         A year later, fleeing his reputation in an Australian motel, paralysed by writer's block, with his only opportunities those to write a sequel, he receives a phone call from someone who claims to be part of a cult modelled on his book.
                       </p>
-                      <p className="font-serif text-base leading-loose text-stone-600 mb-4" style={{ lineHeight: '1.9' }}>
+                      <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.9' }}>
                         Walking into what feels like his own work come to life, Peter must convince a community it was all a hoax—but in doing so, he begins to question where his book truly came from.
                       </p>
-                      <p className="font-serif text-base leading-loose text-stone-600 italic" style={{ lineHeight: '1.9' }}>
+                      <p className={`font-serif leading-loose text-stone-600 italic ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.9' }}>
                         A mind bending tale of literary fiction.
                       </p>
                     </div>
@@ -642,8 +644,8 @@ const Writing = () => {
 
         {/* THE MARKET Section */}
         <section data-section="the-market" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
-        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+        }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -656,6 +658,7 @@ const Writing = () => {
                     ]}
                     title="THE MARKET"
                     loading="lazy"
+                    isWidescreen={isWidescreen}
                   />
                 </div>
                 <div className={`transition-all duration-1000 delay-500 ${
@@ -664,23 +667,23 @@ const Writing = () => {
                   {/* Futuristic holographic display */}
                   <div className="relative">
                     <div className="absolute inset-0 bg-cyan-400/20 blur-xl rounded-lg"></div>
-                    <div className="relative bg-gradient-to-br from-slate-900/90 via-cyan-950/80 to-slate-900/90 p-6 rounded border border-cyan-400/40" style={{
+                    <div className={`relative bg-gradient-to-br from-slate-900/90 via-cyan-950/80 to-slate-900/90 rounded border border-cyan-400/40 ${isWidescreen ? 'p-5' : 'p-6'}`} style={{
                       boxShadow: '0 0 30px rgba(34, 211, 238, 0.2), inset 0 1px 0 rgba(34, 211, 238, 0.2)'
                     }}>
                       <div className="flex items-center gap-2 mb-4 pb-3 border-b border-cyan-400/30">
                         <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
                         <span className="text-cyan-400/80 text-xs font-mono tracking-widest">CORP_01 // CLASSIFIED</span>
                       </div>
-                      <h2 className="font-mono text-4xl font-bold mb-4 text-cyan-300 tracking-tight">
+                      <h2 className={`font-mono font-bold mb-4 text-cyan-300 tracking-tight ${isWidescreen ? 'text-3xl' : 'text-4xl'}`}>
                         THE MARKET
                       </h2>
-                      <p className="font-sans text-base leading-relaxed text-cyan-100/90 mb-3">
+                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
                         James Tarreden's new life on <em>Island</em>—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. In fact, everything is falling into place a little too easily…
                       </p>
-                      <p className="font-sans text-base leading-relaxed text-cyan-100/90 mb-3">
+                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
                         Under the wing of an enigmatic young CEO, James is inducted into the secrets behind his company's new technology, and with everything he knew about reality unravelling, finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of <em>Island</em>, one that gives an entirely new meaning to corporate survival.
                       </p>
-                      <p className="font-sans text-sm italic text-cyan-200/80">
+                      <p className={`font-sans italic text-cyan-200/80 ${isWidescreen ? 'text-xs' : 'text-sm'}`}>
                         An existential psychological thriller.
                       </p>
                       <div className="mt-4 flex justify-between items-center text-cyan-400/50 text-xs font-mono">
@@ -707,8 +710,8 @@ const Writing = () => {
 
         {/* AMYA Section */}
         <section data-section="oba" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
-        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+        }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -721,20 +724,21 @@ const Writing = () => {
                     ]}
                     title="AMYA"
                     loading="lazy"
+                    isWidescreen={isWidescreen}
                   />
                 </div>
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white">
+                  <h2 className={`font-serif font-bold mb-4 text-white ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
                     AMYA
                   </h2>
                   {/* Original dark overlay style */}
-                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white mb-3">
+                  <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-5' : 'p-6'}`}>
+                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-lg'}`}>
                       Set in Nairobi, Kenya. A linguist specialising in rare languages is seconded, reluctantly, to a village where there have been reports of an ancient undiscovered language still being spoken. The village, existing on the fringes of the forest, brings back memories of a childhood he has tried to bury in his urban adult life. While there, he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive, awakening something that has lain silent in him for longer than he can remember.
                     </p>
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-lg'}`}>
                       Memories of the past interweave with the present as in attempting to help the young girl communicate, he discovers that he may have more to learn from her than she does from him.
                     </p>
                   </div>
@@ -756,8 +760,8 @@ const Writing = () => {
 
         {/* STATES OF MOTION Section */}
         <section data-section="states-of-motion" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
-        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+        }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -770,35 +774,36 @@ const Writing = () => {
                     ]}
                     title="STATES OF MOTION"
                     loading="lazy"
+                    isWidescreen={isWidescreen}
                   />
                 </div>
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white">
+                  <h2 className={`font-serif font-bold mb-4 text-white ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
                     STATES OF MOTION
                   </h2>
                   {/* Original dark overlay style - same as AMYA */}
-                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-5 border border-white/20">
-                    <p className="font-serif text-base leading-relaxed text-white italic mb-3">
+                  <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-4' : 'p-5'}`}>
+                    <p className={`font-serif leading-relaxed text-white italic mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
                       "…the city was not the arrangement of many things but the shifting posture of one…"
                     </p>
-                    <p className="font-serif text-base leading-relaxed text-white mb-2">
+                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
                       There is an America between Americas, an idea that every now and then is touched in the course of one life or another before fading, leaving behind a trace of itself and a sense of its own unreality on that which touched it.
                     </p>
-                    <p className="font-serif text-base leading-relaxed text-white mb-2">
+                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
                       A physicist on his way to a conference, carrying in his head a theory too precious to document; as enemy agents close in, is this paranoia, or is paranoia how they operate?
                     </p>
-                    <p className="font-serif text-base leading-relaxed text-white mb-2">
+                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
                       A pianist haunted by a melody from childhood, a song he has been chasing his entire life.
                     </p>
-                    <p className="font-serif text-base leading-relaxed text-white mb-2">
+                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
                       A man unable to distinguish truth from fiction, whose words are so dangerous they can alter reality itself.
                     </p>
-                    <p className="font-serif text-base leading-relaxed text-white mb-2">
+                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
                       A secret cabal of plumbers employed in an age old scheme that has evolved in the wastes beneath the cities they connect.
                     </p>
-                    <p className="font-serif text-base leading-relaxed text-white italic">
+                    <p className={`font-serif leading-relaxed text-white italic ${isWidescreen ? 'text-sm' : 'text-base'}`}>
                       A novel of multitudes and convergences; a sequel to a story that doesn't exist; a portrait of time and place; all these and more describe a nation seen only at its margins.
                     </p>
                   </div>
@@ -820,8 +825,8 @@ const Writing = () => {
 
         {/* HOW Section */}
         <section data-section="how" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
-        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+        }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
@@ -834,6 +839,7 @@ const Writing = () => {
                     ]}
                     title="HOW"
                     loading="lazy"
+                    isWidescreen={isWidescreen}
                   />
                 </div>
                 <div className={`transition-all duration-1000 delay-500 ${
@@ -841,7 +847,7 @@ const Writing = () => {
                 }`}>
                   {/* Zen scroll / meditation card - softer background */}
                   <div className="relative">
-                    <div className="p-8 text-center" style={{
+                    <div className={`text-center ${isWidescreen ? 'p-6' : 'p-8'}`} style={{
                       background: 'linear-gradient(180deg, rgba(250, 250, 249, 0.75) 0%, rgba(245, 245, 244, 0.8) 100%)',
                       boxShadow: '0 10px 40px rgba(0,0,0,0.15)',
                       borderTop: '3px solid rgba(120, 113, 108, 0.6)',
@@ -850,11 +856,11 @@ const Writing = () => {
                       <div className="mb-6">
                         <span className="text-stone-500 text-2xl">道</span>
                       </div>
-                      <h2 className="text-6xl font-light mb-6 text-stone-700 tracking-widest" style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                      <h2 className={`font-light mb-6 text-stone-700 tracking-widest ${isWidescreen ? 'text-5xl' : 'text-6xl'}`} style={{ fontFamily: 'Palatino, Georgia, serif' }}>
                         HOW
                       </h2>
                       <div className="w-16 h-px bg-stone-400/50 mx-auto mb-6"></div>
-                      <p className="text-base leading-loose text-stone-600 max-w-md mx-auto" style={{ fontFamily: 'Georgia, serif' }}>
+                      <p className={`leading-loose text-stone-600 max-w-md mx-auto ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ fontFamily: 'Georgia, serif' }}>
                         A philosophical exploration of understanding and wisdom. Through ancient teachings and modern perspectives, this book delves into the fundamental questions of existence, consciousness, and the path to enlightenment.
                       </p>
                       <div className="mt-8">
@@ -880,20 +886,20 @@ const Writing = () => {
 
         {/* VICE VERSA Section */}
         <section data-section="vice-versa" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
-        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+        }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <h2 className="font-serif text-5xl font-bold mb-4 text-white">
+                  <h2 className={`font-serif font-bold mb-4 text-white ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
                     VICE VERSA
                   </h2>
                   {/* Original dark overlay style */}
-                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <p className="font-serif text-lg leading-relaxed text-white">
+                  <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-5' : 'p-6'}`}>
+                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-lg'}`}>
                       A noir mystery set in the shadowy streets of a retro-futuristic metropolis. When detective Marcus Kane investigates a series of impossible crimes, he discovers that reality itself is not what it seems. In a world where identities can be stolen and memories can be traded, nothing is as it appears.
                     </p>
                   </div>
@@ -907,6 +913,7 @@ const Writing = () => {
                     ]}
                     title="VICE VERSA"
                     loading="lazy"
+                    isWidescreen={isWidescreen}
                   />
                 </div>
               </div>
@@ -917,18 +924,18 @@ const Writing = () => {
 
         {/* Young Adult Books Section */}
         <section data-section="young-adult" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden' : 'min-h-[80vh]'
-        }`} style={isWidescreen ? { transform: 'scale(0.92)', transformOrigin: 'center center' } : undefined}>
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+        }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
-              <h2 className={`font-serif text-5xl font-bold text-white mb-4 text-center tracking-wide transition-all duration-1000 ${
+              <h2 className={`font-serif font-bold text-white mb-4 text-center tracking-wide transition-all duration-1000 ${
                 visibleSections.has('young-adult') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}>
+              } ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
                 Young Adult Series
               </h2>
-              <p className={`font-serif text-xl text-yellow-300 mb-12 text-center transition-all duration-1000 delay-300 ${
+              <p className={`font-serif text-yellow-300 mb-12 text-center transition-all duration-1000 delay-300 ${
                 visibleSections.has('young-adult') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}>
+              } ${isWidescreen ? 'text-lg' : 'text-xl'}`}>
                 Books of imagination for any age
               </p>
               
@@ -938,6 +945,7 @@ const Writing = () => {
                 <YoungAdultSlideshow 
                   ref={youngAdultSlideshowRef} 
                   onBookChange={setCurrentYoungAdultBook}
+                  isWidescreen={isWidescreen}
                 />
               </div>
             </div>
