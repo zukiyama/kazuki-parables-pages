@@ -131,13 +131,8 @@ const Writing = () => {
       // Disable scroll snap on mobile
       if (window.innerWidth < 950) return [];
       
-      // Disable scroll snap on 16:9/16:10 widescreen devices
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      if (width >= 1024 && height < width) {
-        const ratio = width / height;
-        if (ratio >= 1.55 && ratio <= 1.85) return [];
-      }
+      // Disable scroll snap on widescreen devices (16:10 or wider)
+      if (isWidescreen) return [];
       
       const sections = document.querySelectorAll('[data-section]');
       const bookSections: { el: HTMLElement; name: string }[] = [];
@@ -309,7 +304,7 @@ const Writing = () => {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(scrollTimeout);
     };
-  }, [getHeaderBottom]);
+  }, [getHeaderBottom, isWidescreen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -396,9 +391,10 @@ const Writing = () => {
     if (
       target.closest('button') ||
       target.closest('a') ||
+      target.closest('nav') ||
       target.closest('[role="button"]') ||
-      target.closest('.book-cover-slideshow') ||
-      target.closest('[data-slideshow-control]')
+      target.closest('[data-slideshow-control]') ||
+      target.closest('.fixed.top-16') // The bookshelf menu itself
     ) {
       return;
     }
