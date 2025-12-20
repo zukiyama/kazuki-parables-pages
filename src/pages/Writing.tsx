@@ -131,8 +131,7 @@ const Writing = () => {
       // Disable scroll snap on mobile
       if (window.innerWidth < 950) return [];
       
-      // Disable scroll snap on widescreen devices (16:10 or wider)
-      if (isWidescreen) return [];
+      // Scroll snap is now enabled for widescreen devices as well
       
       const sections = document.querySelectorAll('[data-section]');
       const bookSections: { el: HTMLElement; name: string }[] = [];

@@ -70,16 +70,18 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
   const book = books[currentBook];
 
   // Widescreen: scale the entire slideshow to fit viewport WITHOUT banner (80vh matches book cover heights)
+  // max-w-5xl adds breathing space on wider screens
   const containerClasses = isWidescreen
-    ? "relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20 h-[calc(80vh)] flex flex-col"
+    ? "relative w-full max-w-5xl mx-auto bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20 h-[calc(80vh)] flex flex-col"
     : "relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20";
 
   const contentPadding = isWidescreen
     ? "relative px-20 py-4 md:px-16 lg:px-12 pb-10 max-sm:px-8 max-sm:py-4 max-sm:pb-12 flex-1"
     : "relative px-20 py-8 md:px-16 lg:px-12 pb-16 max-sm:px-8 max-sm:py-4 max-sm:pb-12";
 
+  // Widescreen book covers: larger to fill the container better
   const imageClasses = isWidescreen
-    ? "h-[calc(55vh)] w-auto mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100"
+    ? "h-[calc(65vh)] w-auto mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100"
     : "w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100 max-sm:max-w-[200px]";
 
   const titleClasses = isWidescreen
