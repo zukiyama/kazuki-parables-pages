@@ -302,7 +302,7 @@ const Comics = () => {
         {/* Header Banner - Original black style */}
         <header 
           ref={bannerSectionRef}
-          className="py-4 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-16 bg-black relative"
+          className="py-4 xs:py-6 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] bg-black relative"
         >
           {/* Left cameo portrait - closer to left edge */}
           <img 
@@ -323,14 +323,16 @@ const Comics = () => {
           {/* Main title */}
           <div className="text-center">
             <h1 
-              className="font-bold text-[#e8d9a0] tracking-wide max-sm:text-5xl sm:text-6xl lg:text-7xl xl:text-8xl"
+              className="font-bold text-[#e8d9a0] tracking-wide text-5xl xs:text-6xl sm:text-6xl lg:text-7xl xl:text-8xl"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
                 textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
               }}
             >
-              <span className="max-sm:hidden">COMICS AND SCRIPTS</span>
-              <span className="hidden max-sm:inline">COMICS & SCRIPTS</span>
+              {/* Phone only: & symbol */}
+              <span className="xs:hidden">COMICS & SCRIPTS</span>
+              {/* Tablet and Desktop: full "AND" word */}
+              <span className="hidden xs:inline">COMICS AND SCRIPTS</span>
             </h1>
           </div>
           
