@@ -176,13 +176,8 @@ const Comics = () => {
       if (window.innerWidth < 950) return;
       // Also disable on narrow portrait desktop (13-inch iPad portrait)
       if (isNarrowPortraitDesktop()) return;
-      // Disable scroll snap on 16:9/16:10 widescreen devices
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      if (width >= 1024 && height < width) {
-        const ratio = width / height;
-        if (ratio >= 1.55 && ratio <= 1.85) return;
-      }
+      // Disable scroll snap on widescreen devices (16:10 or wider)
+      if (isWidescreen) return;
       if (isSnapping) return;
       
       const godOfLiesEl = godOfLiesSectionRef.current;
@@ -280,7 +275,7 @@ const Comics = () => {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(scrollTimeout);
     };
-  }, [isNarrowPortraitDesktop]);
+  }, [isNarrowPortraitDesktop, isWidescreen]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

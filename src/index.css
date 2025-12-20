@@ -122,6 +122,22 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
   }
+
+  /* Prevent image selection/highlighting */
+  img {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
+
+  /* Allow pointer events on images inside interactive elements */
+  a img,
+  button img,
+  [role="button"] img,
+  [data-slideshow-control] img {
+    pointer-events: auto;
+  }
 }
 
 @layer components {
