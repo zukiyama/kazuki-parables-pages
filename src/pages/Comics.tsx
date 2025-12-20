@@ -21,6 +21,7 @@ const Comics = () => {
   const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [showGodOfLiesDescription, setShowGodOfLiesDescription] = useState(false);
+  const [godOfLiesDescriptionVisible, setGodOfLiesDescriptionVisible] = useState(true); // tap toggle state
   const [showBusStopSection, setShowBusStopSection] = useState(false);
   const [showPendragon, setShowPendragon] = useState(false);
   const [showPendragonCaption, setShowPendragonCaption] = useState(false);
@@ -29,6 +30,8 @@ const Comics = () => {
   const mobilePendragonRef = useRef<HTMLDivElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
+  const hasScrolledIntoPendragon = useRef(false);
   
   // Refs for snap sections
   const bannerSectionRef = useRef<HTMLElement>(null);
@@ -37,6 +40,7 @@ const Comics = () => {
   const pendragonSectionRef = useRef<HTMLElement>(null);
   const storiesSectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLElement | null>(null);
+  const fixedHeaderHeight = 64; // Fixed header height to avoid browser bar variability
 
   // Track scroll for slide-in animations
   useEffect(() => {
@@ -118,7 +122,7 @@ const Comics = () => {
   }, []);
 
   // Scroll snap logic - DESKTOP ONLY
-  // Snaps to God of Lies bottom OR Pendragon top based on how much of Pendragon is visible
+  // Snaps to God of Lies bottom OR Pendragon top based on scroll direction and visibility
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let isSnapping = false;
@@ -135,6 +139,8 @@ const Comics = () => {
       const viewportHeight = window.innerHeight;
       const pendragonRect = pendragonEl.getBoundingClientRect();
       const godOfLiesRect = godOfLiesEl.getBoundingClientRect();
+      const currentScrollY = window.scrollY;
+      const scrollingUp = currentScrollY < lastScrollY.current;
       
       // Calculate how much of Pendragon is visible
       const pendragonVisibleTop = Math.max(pendragonRect.top, 0);
@@ -142,28 +148,52 @@ const Comics = () => {
       const pendragonVisibleHeight = Math.max(0, pendragonVisibleBottom - pendragonVisibleTop);
       const pendragonVisibilityRatio = pendragonVisibleHeight / pendragonRect.height;
       
-      // Only trigger snap if Pendragon is partially visible (user has scrolled past God of Lies)
-      if (pendragonRect.top < viewportHeight && pendragonRect.bottom > 0) {
+      // Calculate how much of God of Lies is visible
+      const godOfLiesVisibleTop = Math.max(godOfLiesRect.top, fixedHeaderHeight);
+      const godOfLiesVisibleBottom = Math.min(godOfLiesRect.bottom, viewportHeight);
+      const godOfLiesVisibleHeight = Math.max(0, godOfLiesVisibleBottom - godOfLiesVisibleTop);
+      const godOfLiesVisibilityRatio = godOfLiesVisibleHeight / godOfLiesRect.height;
+      
+      // Track if user has ever scrolled into Pendragon (to enable upward snap)
+      if (pendragonVisibilityRatio > 0.1) {
+        hasScrolledIntoPendragon.current = true;
+      }
+      
+      // Scrolling UP from Pendragon into God of Lies
+      if (scrollingUp && hasScrolledIntoPendragon.current && godOfLiesVisibilityRatio >= 0.25 && godOfLiesRect.bottom > viewportHeight * 0.5) {
+        // Snap to God of Lies (bottom aligned with viewport bottom)
+        const godOfLiesBottom = godOfLiesRect.bottom + currentScrollY;
+        const snapPoint = godOfLiesBottom - viewportHeight;
+        if (Math.abs(currentScrollY - snapPoint) > 10) {
+          isSnapping = true;
+          hasScrolledIntoPendragon.current = false; // Reset for next cycle
+          window.scrollTo({ top: Math.max(0, snapPoint), behavior: 'smooth' });
+          setTimeout(() => { isSnapping = false; }, 500);
+        }
+      }
+      // Scrolling DOWN - Only trigger snap if Pendragon is partially visible
+      else if (!scrollingUp && pendragonRect.top < viewportHeight && pendragonRect.bottom > 0) {
         if (pendragonVisibilityRatio >= 0.25) {
-          // Snap to Pendragon (align top with viewport top)
-          const headerBottom = getHeaderBottom();
-          const snapPoint = pendragonEl.getBoundingClientRect().top + window.scrollY - headerBottom;
-          if (Math.abs(window.scrollY - snapPoint) > 10) {
+          // Snap to Pendragon (align top with fixed header height for consistency)
+          const snapPoint = pendragonEl.getBoundingClientRect().top + currentScrollY - fixedHeaderHeight;
+          if (Math.abs(currentScrollY - snapPoint) > 10) {
             isSnapping = true;
             window.scrollTo({ top: snapPoint, behavior: 'smooth' });
             setTimeout(() => { isSnapping = false; }, 500);
           }
         } else if (pendragonVisibilityRatio > 0 && pendragonVisibilityRatio < 0.25) {
           // Snap back to God of Lies (bottom aligned with viewport bottom)
-          const godOfLiesBottom = godOfLiesRect.bottom + window.scrollY;
+          const godOfLiesBottom = godOfLiesRect.bottom + currentScrollY;
           const snapPoint = godOfLiesBottom - viewportHeight;
-          if (Math.abs(window.scrollY - snapPoint) > 10) {
+          if (Math.abs(currentScrollY - snapPoint) > 10) {
             isSnapping = true;
             window.scrollTo({ top: Math.max(0, snapPoint), behavior: 'smooth' });
             setTimeout(() => { isSnapping = false; }, 500);
           }
         }
       }
+      
+      lastScrollY.current = currentScrollY;
     };
 
     const handleScroll = () => {
@@ -177,7 +207,7 @@ const Comics = () => {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(scrollTimeout);
     };
-  }, [getHeaderBottom]);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -302,15 +332,34 @@ const Comics = () => {
           ref={godOfLiesSectionRef} 
           className="w-full relative"
         >
+          {/* Clickable overlay for tap-to-toggle on desktop */}
+          <div 
+            className="absolute inset-0 cursor-pointer z-10 hidden sm:block"
+            onClick={() => setGodOfLiesDescriptionVisible(prev => !prev)}
+          />
+          
           <img 
             src={godOfLiesCover}
             alt="God of Lies"
             className="w-full"
           />
           
+          {/* MANGA • WEBTOON text at bottom */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 hidden sm:block z-20 pointer-events-none">
+            <p 
+              className="text-white/90 text-sm tracking-[0.3em] uppercase font-medium"
+              style={{ 
+                fontFamily: 'Georgia, serif',
+                textShadow: '1px 1px 3px rgba(0,0,0,0.8)'
+              }}
+            >
+              MANGA <span className="mx-2">•</span> WEBTOON
+            </p>
+          </div>
+          
           {/* New Release label - smaller on mobile */}
           <div 
-            className="absolute right-[3%] top-[45%] w-20 sm:right-[4%] sm:top-[52%] sm:w-48 lg:w-56"
+            className="absolute right-[3%] top-[45%] w-20 sm:right-[4%] sm:top-[52%] sm:w-48 lg:w-56 z-20 pointer-events-none"
           >
             <img 
               src={newReleaseLabel}
@@ -319,20 +368,34 @@ const Comics = () => {
             />
           </div>
 
-          {/* Slide-in description panel from left - hidden on mobile */}
+          {/* Slide-in description panel from left - hidden on mobile, tap to toggle */}
           <div 
-            className={`absolute bottom-[12%] left-0 max-w-[55%] lg:max-w-[40%] bg-amber-50/95 backdrop-blur-sm p-4 sm:p-6 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out hidden sm:block ${
-              showGodOfLiesDescription 
+            className={`absolute bottom-[15%] left-0 max-w-[55%] lg:max-w-[42%] bg-amber-50/95 backdrop-blur-sm p-5 sm:p-6 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out hidden sm:block z-20 pointer-events-none ${
+              showGodOfLiesDescription && godOfLiesDescriptionVisible
                 ? 'opacity-100 translate-x-0' 
                 : 'opacity-0 -translate-x-full'
             }`}
           >
+            <h3 
+              className="text-xl sm:text-2xl font-bold text-slate-900 mb-3"
+              style={{ fontFamily: 'Bangers, cursive' }}
+            >
+              GOD OF LIES
+            </h3>
             <p 
-              className="text-slate-800 text-sm sm:text-base leading-relaxed"
+              className="text-slate-800 text-sm sm:text-base leading-relaxed mb-3"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               In a world where truth is currency, one man discovers he can make anyone believe anything. 
-              But when a child sees through his lies for the first time, everything begins to unravel.
+              Takeshi Mori has spent decades mastering the art of deception—manipulating politicians, 
+              businessmen, and even his own family with effortless precision.
+            </p>
+            <p 
+              className="text-slate-700 text-sm sm:text-base leading-relaxed"
+              style={{ fontFamily: 'Georgia, serif' }}
+            >
+              But when a child sees through his lies for the first time, everything begins to unravel. 
+              Now he must confront the one truth he's been running from—himself.
             </p>
           </div>
         </section>
