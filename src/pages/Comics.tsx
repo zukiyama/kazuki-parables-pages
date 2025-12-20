@@ -191,7 +191,7 @@ const Comics = () => {
             window.scrollTo({ top: snapPoint, behavior: 'smooth' });
             setTimeout(() => { isSnapping = false; }, 500);
           }
-        } else if (pendragonVisibilityRatio > 0 && pendragonVisibilityRatio < 0.25) {
+        } else if (pendragonVisibilityRatio > 0 && pendragonVisibilityRatio < 0.25 && pendragonRect.top > fixedHeaderHeight) {
           // Snap back to God of Lies (bottom aligned with viewport bottom)
           const godOfLiesBottom = godOfLiesRect.bottom + currentScrollY;
           const snapPoint = godOfLiesBottom - viewportHeight;
