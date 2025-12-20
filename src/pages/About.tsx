@@ -3,6 +3,7 @@ import { OptimizedImage } from "@/components/OptimizedImage";
 import Navigation from "@/components/Navigation";
 import { useScrollAnimation } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 import artistPortrait from "@/assets/artist-portrait-new.png";
 import bannerImage from "@/assets/about-banner-balloon.jpeg";
 import windowCity from "@/assets/about-window-city.png";
@@ -26,6 +27,23 @@ const About = () => {
   useScrollToTop();
   const visibleElements = useScrollAnimation();
   const [showCityscape, setShowCityscape] = React.useState(false);
+  const isWidescreen = useWidescreenAspectRatio();
+  const [headerHeight, setHeaderHeight] = React.useState(56);
+
+  // Measure actual header height for precise alignment on widescreen
+  React.useEffect(() => {
+    const measureHeader = () => {
+      const header = document.querySelector('[data-header="true"]');
+      if (header) {
+        const height = header.getBoundingClientRect().height;
+        setHeaderHeight(height);
+      }
+    };
+    
+    measureHeader();
+    window.addEventListener('resize', measureHeader);
+    return () => window.removeEventListener('resize', measureHeader);
+  }, []);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -50,7 +68,10 @@ const About = () => {
       <Navigation />
       
       {/* Hero Banner */}
-      <div className="w-full h-[40vh] relative overflow-hidden mt-14 max-sm:h-[20vh] max-sm:mt-14">
+      <div 
+        className="w-full h-[40vh] relative overflow-hidden max-sm:h-[20vh] max-sm:mt-14"
+        style={{ marginTop: isWidescreen ? `${headerHeight}px` : '56px' }}
+      >
         <OptimizedImage 
           src={bannerImage}
           alt="Vintage Japanese cityscape"
