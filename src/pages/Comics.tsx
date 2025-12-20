@@ -538,6 +538,9 @@ const Comics = () => {
             </div>
           </div>
         </section>
+        
+        {/* Black bar beneath Pendragon image - desktop only */}
+        <div className="w-full h-1 bg-black hidden sm:block" />
 
         {/* Stories Waiting to be Told - Snap Section 4 */}
         <section ref={storiesSectionRef} className="text-center py-16 sm:py-24 bg-white">
