@@ -117,7 +117,8 @@ const Comics = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  // Scroll snap logic - ONLY for Surname Pendragon, DESKTOP ONLY
+  // Scroll snap logic - DESKTOP ONLY
+  // Snaps to God of Lies bottom OR Pendragon top based on how much of Pendragon is visible
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let isSnapping = false;
@@ -127,27 +128,40 @@ const Comics = () => {
       if (window.innerWidth < 950) return;
       if (isSnapping) return;
       
+      const godOfLiesEl = godOfLiesSectionRef.current;
       const pendragonEl = pendragonSectionRef.current;
-      if (!pendragonEl) return;
+      if (!godOfLiesEl || !pendragonEl) return;
 
-      const headerBottom = getHeaderBottom();
       const viewportHeight = window.innerHeight;
-      const rect = pendragonEl.getBoundingClientRect();
+      const pendragonRect = pendragonEl.getBoundingClientRect();
+      const godOfLiesRect = godOfLiesEl.getBoundingClientRect();
       
-      // Calculate visibility of Pendragon section
-      const visibleTop = Math.max(rect.top, headerBottom);
-      const visibleBottom = Math.min(rect.bottom, viewportHeight);
-      const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-      const availableViewport = viewportHeight - headerBottom;
-      const viewportFillRatio = visibleHeight / availableViewport;
+      // Calculate how much of Pendragon is visible
+      const pendragonVisibleTop = Math.max(pendragonRect.top, 0);
+      const pendragonVisibleBottom = Math.min(pendragonRect.bottom, viewportHeight);
+      const pendragonVisibleHeight = Math.max(0, pendragonVisibleBottom - pendragonVisibleTop);
+      const pendragonVisibilityRatio = pendragonVisibleHeight / pendragonRect.height;
       
-      // Only snap to Pendragon if it fills >50% of viewport
-      if (viewportFillRatio > 0.5) {
-        const snapPoint = pendragonEl.getBoundingClientRect().top + window.scrollY - headerBottom;
-        if (Math.abs(window.scrollY - snapPoint) > 10) {
-          isSnapping = true;
-          window.scrollTo({ top: snapPoint, behavior: 'smooth' });
-          setTimeout(() => { isSnapping = false; }, 500);
+      // Only trigger snap if Pendragon is partially visible (user has scrolled past God of Lies)
+      if (pendragonRect.top < viewportHeight && pendragonRect.bottom > 0) {
+        if (pendragonVisibilityRatio >= 0.25) {
+          // Snap to Pendragon (align top with viewport top)
+          const headerBottom = getHeaderBottom();
+          const snapPoint = pendragonEl.getBoundingClientRect().top + window.scrollY - headerBottom;
+          if (Math.abs(window.scrollY - snapPoint) > 10) {
+            isSnapping = true;
+            window.scrollTo({ top: snapPoint, behavior: 'smooth' });
+            setTimeout(() => { isSnapping = false; }, 500);
+          }
+        } else if (pendragonVisibilityRatio > 0 && pendragonVisibilityRatio < 0.25) {
+          // Snap back to God of Lies (bottom aligned with viewport bottom)
+          const godOfLiesBottom = godOfLiesRect.bottom + window.scrollY;
+          const snapPoint = godOfLiesBottom - viewportHeight;
+          if (Math.abs(window.scrollY - snapPoint) > 10) {
+            isSnapping = true;
+            window.scrollTo({ top: Math.max(0, snapPoint), behavior: 'smooth' });
+            setTimeout(() => { isSnapping = false; }, 500);
+          }
         }
       }
     };
@@ -323,17 +337,11 @@ const Comics = () => {
           </div>
         </section>
 
-        {/* Bus Stop Image + Description Section */}
-        <section ref={busStopSectionRef} className="w-full relative bg-white">
-          <div className="flex flex-col lg:flex-row">
-            {/* Left side - Bus stop image (slides in from left on desktop) */}
-            <div 
-              className={`w-full lg:w-1/2 transition-all duration-700 ease-out max-sm:opacity-100 max-sm:translate-x-0 ${
-                showBusStopSection 
-                  ? 'opacity-100 translate-x-0' 
-                  : 'sm:opacity-0 sm:-translate-x-16'
-              }`}
-            >
+        {/* Bus Stop Image + Description Section - MOBILE ONLY */}
+        <section ref={busStopSectionRef} className="w-full relative bg-white sm:hidden">
+          <div className="flex flex-col">
+            {/* Left side - Bus stop image */}
+            <div className="w-full">
               <img 
                 src={godOfLiesBusStop}
                 alt="God of Lies - Bus Stop Scene"
@@ -341,23 +349,17 @@ const Comics = () => {
               />
             </div>
             
-            {/* Right side - Description text (slides in from right on desktop) - smaller on mobile */}
-            <div 
-              className={`w-full lg:w-1/2 p-4 sm:p-8 lg:p-12 flex items-center bg-amber-50/95 transition-all duration-700 ease-out max-sm:opacity-100 max-sm:translate-x-0 ${
-                showBusStopSection 
-                  ? 'opacity-100 translate-x-0' 
-                  : 'sm:opacity-0 sm:translate-x-16'
-              }`}
-            >
+            {/* Right side - Description text */}
+            <div className="w-full p-4 flex items-center bg-amber-50/95">
               <div>
                 <h3 
-                  className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-4"
+                  className="text-2xl font-bold text-slate-900 mb-4"
                   style={{ fontFamily: 'Bangers, cursive' }}
                 >
                   GOD OF LIES
                 </h3>
                 <p 
-                  className="text-slate-700 text-sm sm:text-base leading-relaxed mb-4 max-sm:mb-2"
+                  className="text-slate-700 text-sm leading-relaxed mb-2"
                   style={{ fontFamily: 'Georgia, serif' }}
                 >
                   In a world where every truth bends to the will of one man, reality itself becomes a question. 
@@ -385,13 +387,17 @@ const Comics = () => {
           />
           
           {/* Slide-in caption panel from left - classy film magazine style - hidden on mobile */}
+          {/* Tapping anywhere on the Pendragon image toggles the caption */}
           <div 
-            className={`absolute bottom-[8%] left-0 max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-5 sm:p-6 lg:p-8 transition-all duration-700 ease-out cursor-pointer hidden sm:block ${
+            className="absolute inset-0 cursor-pointer hidden sm:block"
+            onClick={() => setShowPendragonCaption(prev => !prev)}
+          />
+          <div 
+            className={`absolute bottom-[8%] left-0 max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-5 sm:p-6 lg:p-8 transition-all duration-700 ease-out pointer-events-none hidden sm:block ${
               showPendragonCaption 
                 ? 'opacity-100 translate-x-0' 
                 : 'opacity-0 -translate-x-full'
             }`}
-            onClick={() => setShowPendragonCaption(false)}
           >
             <h4 
               className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-3"
@@ -513,7 +519,7 @@ const Comics = () => {
       
       {/* Footer with mascot character */}
       <footer className="bg-[#1a1a1a] py-10 max-sm:py-6 relative overflow-visible">
-        {/* Footer character - positioned with right elbow 12px from page edge, hidden when not enough space */}
+        {/* Footer character - positioned with right elbow 6px from page edge, hidden when not enough space */}
         <img 
           src={comicsFooterCharacter}
           alt="Comics mascot"
@@ -521,7 +527,7 @@ const Comics = () => {
           style={{
             height: '8.5cm',
             bottom: '100%',
-            right: '12px'
+            right: '6px'
           }}
         />
         <div className="container mx-auto px-6 text-center">
