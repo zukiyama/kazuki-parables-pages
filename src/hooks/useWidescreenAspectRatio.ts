@@ -1,14 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 
 /**
- * Hook to detect if the current viewport is approximately 16:9 or 16:10 aspect ratio.
+ * Hook to detect if the current viewport has a widescreen aspect ratio.
  * This typically corresponds to laptops and HDTVs in landscape orientation.
  * 
- * 16:9 ratio = 1.777...
  * 16:10 ratio = 1.6
+ * 16:9 ratio = 1.777...
+ * Browser viewports are often even wider due to browser chrome reducing height.
  * 
- * We use a range of 1.55 to 1.85 to account for slight variations (browser chrome, etc.)
- * and only on desktop-sized screens (width >= 1024px)
+ * We detect aspect ratios >= 1.6 (16:10 or wider) on desktop-sized screens (width >= 1024px)
+ * This covers laptops, HDTVs, and browser windows where chrome makes viewport wider.
  */
 export const useWidescreenAspectRatio = () => {
   const [isWidescreen, setIsWidescreen] = useState(false);
@@ -32,10 +33,11 @@ export const useWidescreenAspectRatio = () => {
     const ratio = width / height;
     
     // 16:10 = 1.6, 16:9 = 1.777
-    // Using range 1.55 to 1.85 to catch both with some tolerance
-    const is16x9or16x10 = ratio >= 1.55 && ratio <= 1.85;
+    // Detect anything 16:10 or wider (ratio >= 1.6)
+    // This catches laptops, HDTVs, and browser windows with chrome
+    const isWidescreenRatio = ratio >= 1.6;
     
-    setIsWidescreen(is16x9or16x10);
+    setIsWidescreen(isWidescreenRatio);
   }, []);
 
   useEffect(() => {
