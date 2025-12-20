@@ -248,9 +248,9 @@ const Writing = () => {
       if (bestSection && bestSection.name === 'young-adult') {
         const slideshowRect = bestSection.el.getBoundingClientRect();
         // If slideshow is mostly below viewport center, we're approaching from above
-        // Require very high visibility (92%) before snapping - allows reading title text
+        // Require very high visibility (97%) before snapping - allows reading title text
         if (slideshowRect.top > viewportHeight * 0.2) {
-          snapThreshold = 0.92; // Much higher threshold when approaching from above
+          snapThreshold = 0.97; // Much higher threshold when approaching from above
         }
       }
 
