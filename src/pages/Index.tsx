@@ -232,207 +232,165 @@ const Index = () => {
         <div
           className={`relative w-full overflow-hidden border-t border-amber-200/50 bg-[#FDF6E8] magazine-slide ${showCirclesBanner ? "visible" : ""}`}
         >
-          {/* Bokeh circles background - physics-driven with natural drift back to bobbing */}
+          {/* Sharp circles background - physics-driven with natural drift back to bobbing */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {/* Large circles at edges - Orange */}
+            {/* Large circles at edges - Orange - sharp edges, full saturation */}
             <div 
-              className="absolute -left-24 top-[10%] w-56 h-56 rounded-full bg-[hsl(25,95%,55%,0.35)] bokeh-blur"
+              className="absolute -left-24 top-[10%] w-56 h-56 rounded-full bg-[hsl(25,95%,55%)]"
               style={{ transform: `translateY(${circleOffsets[0]?.y || 0}px)` }}
             ></div>
             {/* Coral/Pink */}
             <div 
-              className="absolute -left-16 bottom-[5%] w-44 h-44 rounded-full bg-[hsl(350,75%,60%,0.30)] bokeh-blur"
+              className="absolute -left-16 bottom-[5%] w-44 h-44 rounded-full bg-[hsl(350,75%,60%)]"
               style={{ transform: `translateY(${circleOffsets[1]?.y || 0}px)` }}
             ></div>
             {/* Teal */}
             <div 
-              className="absolute left-[2%] top-[60%] w-36 h-36 rounded-full bg-[hsl(180,55%,50%,0.32)] bokeh-blur"
+              className="absolute left-[2%] top-[60%] w-36 h-36 rounded-full bg-[hsl(180,55%,50%)]"
               style={{ transform: `translateY(${circleOffsets[2]?.y || 0}px)` }}
             ></div>
             
             {/* Blue */}
             <div 
-              className="absolute -right-20 top-[20%] w-52 h-52 rounded-full bg-[hsl(215,65%,55%,0.33)] bokeh-blur"
+              className="absolute -right-20 top-[20%] w-52 h-52 rounded-full bg-[hsl(215,65%,55%)]"
               style={{ transform: `translateY(${circleOffsets[3]?.y || 0}px)` }}
             ></div>
             {/* Purple */}
             <div 
-              className="absolute -right-28 bottom-[15%] w-60 h-60 rounded-full bg-[hsl(320,45%,50%,0.28)] bokeh-blur"
+              className="absolute -right-28 bottom-[15%] w-60 h-60 rounded-full bg-[hsl(320,45%,50%)]"
               style={{ transform: `translateY(${circleOffsets[4]?.y || 0}px)` }}
             ></div>
             {/* Orange */}
             <div 
-              className="absolute right-[3%] top-[5%] w-40 h-40 rounded-full bg-[hsl(30,90%,55%,0.30)] bokeh-blur"
+              className="absolute right-[3%] top-[5%] w-40 h-40 rounded-full bg-[hsl(30,90%,55%)]"
               style={{ transform: `translateY(${circleOffsets[5]?.y || 0}px)` }}
             ></div>
             
             {/* Top edge circles - Coral */}
             <div 
-              className="absolute left-[15%] -top-16 w-48 h-48 rounded-full bg-[hsl(5,80%,65%,0.32)] bokeh-blur"
+              className="absolute left-[15%] -top-16 w-48 h-48 rounded-full bg-[hsl(5,80%,65%)]"
               style={{ transform: `translateY(${circleOffsets[6]?.y || 0}px)` }}
             ></div>
             {/* Teal */}
             <div 
-              className="absolute right-[25%] -top-12 w-40 h-40 rounded-full bg-[hsl(175,50%,48%,0.28)] bokeh-blur"
+              className="absolute right-[25%] -top-12 w-40 h-40 rounded-full bg-[hsl(175,50%,48%)]"
               style={{ transform: `translateY(${circleOffsets[7]?.y || 0}px)` }}
             ></div>
             
             {/* Bottom edge circles - Blue */}
             <div 
-              className="absolute left-[20%] -bottom-20 w-52 h-52 rounded-full bg-[hsl(220,60%,50%,0.30)] bokeh-blur"
+              className="absolute left-[20%] -bottom-20 w-52 h-52 rounded-full bg-[hsl(220,60%,50%)]"
               style={{ transform: `translateY(${circleOffsets[8]?.y || 0}px)` }}
             ></div>
             {/* Pink */}
             <div 
-              className="absolute right-[18%] -bottom-16 w-44 h-44 rounded-full bg-[hsl(340,70%,58%,0.32)] bokeh-blur"
+              className="absolute right-[18%] -bottom-16 w-44 h-44 rounded-full bg-[hsl(340,70%,58%)]"
               style={{ transform: `translateY(${circleOffsets[9]?.y || 0}px)` }}
             ></div>
             
             {/* Medium circles at corners - Purple */}
             <div 
-              className="absolute left-[8%] top-[25%] w-28 h-28 rounded-full bg-[hsl(310,40%,52%,0.35)] bokeh-blur"
+              className="absolute left-[8%] top-[25%] w-28 h-28 rounded-full bg-[hsl(310,40%,52%)]"
               style={{ transform: `translateY(${circleOffsets[10]?.y || 0}px)` }}
             ></div>
             {/* Orange */}
             <div 
-              className="absolute right-[6%] bottom-[40%] w-32 h-32 rounded-full bg-[hsl(28,92%,52%,0.33)] bokeh-blur"
+              className="absolute right-[6%] bottom-[40%] w-32 h-32 rounded-full bg-[hsl(28,92%,52%)]"
               style={{ transform: `translateY(${circleOffsets[11]?.y || 0}px)` }}
             ></div>
             {/* Teal */}
             <div 
-              className="absolute left-[5%] bottom-[30%] w-24 h-24 rounded-full bg-[hsl(185,55%,48%,0.30)] bokeh-blur"
+              className="absolute left-[5%] bottom-[30%] w-24 h-24 rounded-full bg-[hsl(185,55%,48%)]"
               style={{ transform: `translateY(${circleOffsets[12]?.y || 0}px)` }}
             ></div>
             {/* Blue */}
             <div 
-              className="absolute right-[8%] top-[55%] w-28 h-28 rounded-full bg-[hsl(210,60%,52%,0.32)] bokeh-blur"
+              className="absolute right-[8%] top-[55%] w-28 h-28 rounded-full bg-[hsl(210,60%,52%)]"
               style={{ transform: `translateY(${circleOffsets[13]?.y || 0}px)` }}
             ></div>
             
             {/* Small accent circles - Pink */}
             <div 
-              className="absolute left-[3%] top-[40%] w-20 h-20 rounded-full bg-[hsl(345,72%,62%,0.38)] bokeh-blur"
+              className="absolute left-[3%] top-[40%] w-20 h-20 rounded-full bg-[hsl(345,72%,62%)]"
               style={{ transform: `translateY(${circleOffsets[14]?.y || 0}px)` }}
             ></div>
             {/* Orange */}
             <div 
-              className="absolute right-[4%] top-[35%] w-20 h-20 rounded-full bg-[hsl(35,88%,58%,0.35)] bokeh-blur"
+              className="absolute right-[4%] top-[35%] w-20 h-20 rounded-full bg-[hsl(35,88%,58%)]"
               style={{ transform: `translateY(${circleOffsets[15]?.y || 0}px)` }}
             ></div>
             {/* Purple */}
             <div 
-              className="absolute left-[10%] bottom-[8%] w-16 h-16 rounded-full bg-[hsl(315,42%,55%,0.36)] bokeh-blur"
+              className="absolute left-[10%] bottom-[8%] w-16 h-16 rounded-full bg-[hsl(315,42%,55%)]"
               style={{ transform: `translateY(${circleOffsets[16]?.y || 0}px)` }}
             ></div>
             {/* Coral */}
             <div 
-              className="absolute right-[12%] bottom-[5%] w-20 h-20 rounded-full bg-[hsl(10,75%,60%,0.34)] bokeh-blur"
+              className="absolute right-[12%] bottom-[5%] w-20 h-20 rounded-full bg-[hsl(10,75%,60%)]"
               style={{ transform: `translateY(${circleOffsets[17]?.y || 0}px)` }}
             ></div>
             
             {/* Far corner circles - Blue */}
             <div 
-              className="absolute -left-10 top-[45%] w-32 h-32 rounded-full bg-[hsl(225,55%,55%,0.25)] bokeh-blur"
+              className="absolute -left-10 top-[45%] w-32 h-32 rounded-full bg-[hsl(225,55%,55%)]"
               style={{ transform: `translateY(${circleOffsets[18]?.y || 0}px)` }}
             ></div>
             {/* Teal */}
             <div 
-              className="absolute -right-14 top-[65%] w-36 h-36 rounded-full bg-[hsl(178,52%,52%,0.28)] bokeh-blur"
+              className="absolute -right-14 top-[65%] w-36 h-36 rounded-full bg-[hsl(178,52%,52%)]"
               style={{ transform: `translateY(${circleOffsets[19]?.y || 0}px)` }}
             ></div>
             
-            {/* Additional circles to fill the entire background - hidden on mobile */}
-            {/* Center area - Orange */}
+            {/* Additional circles - only at edges, away from center text - hidden on mobile */}
+            {/* Top left area - Orange */}
             <div 
-              className="hidden sm:block absolute left-[30%] top-[15%] w-44 h-44 rounded-full bg-[hsl(20,85%,58%,0.26)] bokeh-blur"
+              className="hidden sm:block absolute left-[12%] top-[8%] w-36 h-36 rounded-full bg-[hsl(20,85%,58%)]"
               style={{ transform: `translateY(${circleOffsets[20]?.y || 0}px)` }}
             ></div>
-            {/* Coral center-left */}
+            {/* Bottom left - Coral */}
             <div 
-              className="hidden sm:block absolute left-[25%] top-[45%] w-36 h-36 rounded-full bg-[hsl(355,70%,62%,0.28)] bokeh-blur"
+              className="hidden sm:block absolute left-[8%] bottom-[15%] w-32 h-32 rounded-full bg-[hsl(355,70%,62%)]"
               style={{ transform: `translateY(${circleOffsets[21]?.y || 0}px)` }}
             ></div>
-            {/* Blue center-right */}
+            {/* Top right - Blue */}
             <div 
-              className="hidden sm:block absolute right-[30%] top-[25%] w-40 h-40 rounded-full bg-[hsl(205,62%,52%,0.25)] bokeh-blur"
+              className="hidden sm:block absolute right-[10%] top-[10%] w-40 h-40 rounded-full bg-[hsl(205,62%,52%)]"
               style={{ transform: `translateY(${circleOffsets[22]?.y || 0}px)` }}
             ></div>
-            {/* Teal center */}
+            {/* Bottom right - Teal */}
             <div 
-              className="hidden sm:block absolute left-[40%] top-[55%] w-32 h-32 rounded-full bg-[hsl(172,50%,50%,0.30)] bokeh-blur"
+              className="hidden sm:block absolute right-[8%] bottom-[20%] w-32 h-32 rounded-full bg-[hsl(172,50%,50%)]"
               style={{ transform: `translateY(${circleOffsets[23]?.y || 0}px)` }}
             ></div>
-            {/* Purple center-left */}
+            {/* Left edge mid - Purple */}
             <div 
-              className="hidden sm:block absolute left-[35%] bottom-[20%] w-48 h-48 rounded-full bg-[hsl(295,38%,52%,0.24)] bokeh-blur"
+              className="hidden sm:block absolute left-[4%] top-[75%] w-28 h-28 rounded-full bg-[hsl(295,38%,52%)]"
               style={{ transform: `translateY(${circleOffsets[24]?.y || 0}px)` }}
             ></div>
-            {/* Orange center-right */}
+            {/* Right edge mid - Orange */}
             <div 
-              className="hidden sm:block absolute right-[35%] bottom-[15%] w-38 h-38 rounded-full bg-[hsl(32,88%,55%,0.28)] bokeh-blur"
+              className="hidden sm:block absolute right-[5%] top-[70%] w-30 h-30 rounded-full bg-[hsl(32,88%,55%)]"
               style={{ transform: `translateY(${circleOffsets[25]?.y || 0}px)` }}
             ></div>
-            {/* Pink top-center */}
+            {/* Far top left - Pink */}
             <div 
-              className="hidden sm:block absolute left-[50%] top-[8%] w-36 h-36 rounded-full bg-[hsl(338,65%,60%,0.26)] bokeh-blur"
+              className="hidden sm:block absolute -left-8 top-[30%] w-36 h-36 rounded-full bg-[hsl(338,65%,60%)]"
               style={{ transform: `translateY(${circleOffsets[26]?.y || 0}px)` }}
             ></div>
-            {/* Blue bottom-center */}
+            {/* Far bottom left - Blue */}
             <div 
-              className="hidden sm:block absolute left-[45%] bottom-[5%] w-42 h-42 rounded-full bg-[hsl(218,58%,54%,0.27)] bokeh-blur"
+              className="hidden sm:block absolute -left-12 bottom-[25%] w-42 h-42 rounded-full bg-[hsl(218,58%,54%)]"
               style={{ transform: `translateY(${circleOffsets[27]?.y || 0}px)` }}
             ></div>
-            {/* Teal mid-left */}
+            {/* Far top right - Teal */}
             <div 
-              className="hidden sm:block absolute left-[18%] top-[35%] w-28 h-28 rounded-full bg-[hsl(168,52%,48%,0.32)] bokeh-blur"
+              className="hidden sm:block absolute -right-10 top-[35%] w-38 h-38 rounded-full bg-[hsl(168,52%,48%)]"
               style={{ transform: `translateY(${circleOffsets[28]?.y || 0}px)` }}
             ></div>
-            {/* Coral mid-right */}
+            {/* Far bottom right - Coral */}
             <div 
-              className="hidden sm:block absolute right-[20%] top-[40%] w-34 h-34 rounded-full bg-[hsl(8,78%,58%,0.29)] bokeh-blur"
+              className="hidden sm:block absolute -right-8 bottom-[35%] w-34 h-34 rounded-full bg-[hsl(8,78%,58%)]"
               style={{ transform: `translateY(${circleOffsets[29]?.y || 0}px)` }}
-            ></div>
-            
-            {/* Small floating circles throughout */}
-            <div 
-              className="hidden sm:block absolute left-[42%] top-[30%] w-20 h-20 rounded-full bg-[hsl(280,45%,55%,0.35)] bokeh-blur"
-              style={{ transform: `translateY(${circleOffsets[30]?.y || 0}px)` }}
-            ></div>
-            <div 
-              className="hidden sm:block absolute right-[40%] top-[60%] w-24 h-24 rounded-full bg-[hsl(25,90%,60%,0.32)] bokeh-blur"
-              style={{ transform: `translateY(${circleOffsets[31]?.y || 0}px)` }}
-            ></div>
-            <div 
-              className="hidden sm:block absolute left-[55%] top-[70%] w-18 h-18 rounded-full bg-[hsl(195,55%,52%,0.34)] bokeh-blur"
-              style={{ transform: `translateY(${circleOffsets[32]?.y || 0}px)` }}
-            ></div>
-            <div 
-              className="hidden sm:block absolute right-[45%] top-[15%] w-22 h-22 rounded-full bg-[hsl(345,68%,58%,0.30)] bokeh-blur"
-              style={{ transform: `translateY(${circleOffsets[33]?.y || 0}px)` }}
-            ></div>
-            <div 
-              className="hidden sm:block absolute left-[60%] bottom-[30%] w-26 h-26 rounded-full bg-[hsl(210,60%,50%,0.33)] bokeh-blur"
-              style={{ transform: `translateY(${circleOffsets[34]?.y || 0}px)` }}
-            ></div>
-            <div 
-              className="hidden sm:block absolute right-[55%] bottom-[40%] w-20 h-20 rounded-full bg-[hsl(165,48%,50%,0.35)] bokeh-blur"
-              style={{ transform: `translateY(${circleOffsets[35]?.y || 0}px)` }}
-            ></div>
-            <div 
-              className="hidden sm:block absolute left-[48%] top-[42%] w-30 h-30 rounded-full bg-[hsl(15,82%,56%,0.28)] bokeh-blur"
-              style={{ transform: `translateY(${circleOffsets[36]?.y || 0}px)` }}
-            ></div>
-            <div 
-              className="hidden sm:block absolute right-[48%] bottom-[25%] w-16 h-16 rounded-full bg-[hsl(305,42%,54%,0.36)] bokeh-blur"
-              style={{ transform: `translateY(${circleOffsets[37]?.y || 0}px)` }}
-            ></div>
-            <div 
-              className="hidden sm:block absolute left-[65%] top-[20%] w-38 h-38 rounded-full bg-[hsl(188,50%,52%,0.26)] bokeh-blur"
-              style={{ transform: `translateY(${circleOffsets[38]?.y || 0}px)` }}
-            ></div>
-            <div 
-              className="hidden sm:block absolute right-[60%] top-[75%] w-28 h-28 rounded-full bg-[hsl(358,72%,60%,0.30)] bokeh-blur"
-              style={{ transform: `translateY(${circleOffsets[39]?.y || 0}px)` }}
             ></div>
           </div>
 
