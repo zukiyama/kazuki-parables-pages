@@ -149,75 +149,50 @@ const Writing = () => {
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
       const headerBottom = getHeaderBottom();
-      
-      // For widescreen devices (16:9, 16:10 or wider): IGNORE banner completely
-      // Snap relative to header-bottom to screen-bottom only
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      const ratio = width / height;
-      const isWidescreenDevice = width >= 1024 && ratio >= 1.6;
-      
-      let topOffset: number;
-      if (isWidescreenDevice) {
-        // Widescreen: ignore banner, use only header
-        topOffset = headerBottom;
-      } else {
-        // Non-widescreen (iPad, etc): include banner in calculation
-        const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
-        const bannerHeight = banner ? banner.offsetHeight : 0;
-        topOffset = headerBottom + bannerHeight;
-      }
-      
+      const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
+      const bannerHeight = banner ? banner.offsetHeight : 0;
+      const topOffset = headerBottom + bannerHeight;
       const viewportHeight = window.innerHeight;
       const availableHeight = viewportHeight - topOffset;
       
-      // Special handling for young-adult section - center ONLY the slideshow, not the title (for widescreen)
+      // Special handling for young-adult section
       if (sectionName === 'young-adult') {
-        if (isWidescreenDevice) {
-          // Widescreen: center just the slideshow container
-          const slideshowContainer = section.querySelector('.relative.w-full.max-w-5xl, .relative.w-full.bg-black\\/60') as HTMLElement;
-          
-          if (!slideshowContainer) return null;
-          
-          const slideshowRect = slideshowContainer.getBoundingClientRect();
-          const slideshowHeight = slideshowRect.height;
-          const slideshowTop = slideshowRect.top + window.scrollY;
-          const slideshowCenter = slideshowTop + (slideshowHeight / 2);
-          const desiredCenterY = topOffset + (availableHeight / 2);
-          return Math.max(0, slideshowCenter - desiredCenterY);
+        // Find the title element and slideshow container
+        const titleEl = section.querySelector('h2') as HTMLElement;
+        const slideshowContainer = section.querySelector('.transition-all.duration-1000.delay-500') as HTMLElement;
+        
+        if (!titleEl || !slideshowContainer) return null;
+        
+        const titleRect = titleEl.getBoundingClientRect();
+        const slideshowRect = slideshowContainer.getBoundingClientRect();
+        
+        // Calculate total height of title + subtitle + slideshow (in viewport coords)
+        const titleTopInViewport = titleRect.top;
+        const slideshowBottomInViewport = slideshowRect.bottom;
+        const totalContentHeight = slideshowBottomInViewport - titleTopInViewport;
+        
+        // Recalculate available height dynamically (accounts for browser chrome changes)
+        const currentAvailableHeight = viewportHeight - topOffset;
+        
+        // Scenario A: Can fit all content (title + "Young Adult Series" text + slideshow)
+        if (currentAvailableHeight >= totalContentHeight + 40) { // 40px buffer
+          // Center the entire content in the available space
+          const titleTop = titleRect.top + window.scrollY;
+          const slideshowBottom = slideshowRect.bottom + window.scrollY;
+          const contentCenter = titleTop + ((slideshowBottom - titleTop) / 2);
+          const desiredCenterY = topOffset + (currentAvailableHeight / 2);
+          return Math.max(0, contentCenter - desiredCenterY);
         } else {
-          // Non-widescreen (iPad): use original logic with title + slideshow
-          const titleEl = section.querySelector('h2') as HTMLElement;
-          const slideshowContainer = section.querySelector('.transition-all.duration-1000.delay-500') as HTMLElement;
-          
-          if (!titleEl || !slideshowContainer) return null;
-          
-          const titleRect = titleEl.getBoundingClientRect();
-          const slideshowRect = slideshowContainer.getBoundingClientRect();
-          
-          const titleTopInViewport = titleRect.top;
-          const slideshowBottomInViewport = slideshowRect.bottom;
-          const totalContentHeight = slideshowBottomInViewport - titleTopInViewport;
-          
-          const currentAvailableHeight = viewportHeight - topOffset;
-          
-          if (currentAvailableHeight >= totalContentHeight + 40) {
-            const titleTop = titleRect.top + window.scrollY;
-            const slideshowBottom = slideshowRect.bottom + window.scrollY;
-            const contentCenter = titleTop + ((slideshowBottom - titleTop) / 2);
-            const desiredCenterY = topOffset + (currentAvailableHeight / 2);
-            return Math.max(0, contentCenter - desiredCenterY);
-          } else {
-            const slideshowTop = slideshowRect.top + window.scrollY;
-            const slideshowHeight = slideshowRect.height;
-            const slideshowCenter = slideshowTop + (slideshowHeight / 2);
-            const desiredCenterY = topOffset + (currentAvailableHeight / 2);
-            return Math.max(0, slideshowCenter - desiredCenterY);
-          }
+          // Scenario B: Can't fit all, just center the slideshow alone
+          const slideshowTop = slideshowRect.top + window.scrollY;
+          const slideshowHeight = slideshowRect.height;
+          const slideshowCenter = slideshowTop + (slideshowHeight / 2);
+          const desiredCenterY = topOffset + (currentAvailableHeight / 2);
+          return Math.max(0, slideshowCenter - desiredCenterY);
         }
       }
       
-      // For book sections: center the book cover in the viewport area (header-bottom to screen-bottom)
+      // For book sections: center the book cover
       const bookCover = section.querySelector('.book-cover-slideshow img, [data-book-cover], img[alt*="Cover"]') as HTMLElement;
       if (!bookCover) {
         return null;
@@ -264,22 +239,9 @@ const Writing = () => {
       }
 
       const headerBottom = getHeaderBottom();
-      
-      // For widescreen devices (16:9, 16:10 or wider): IGNORE banner completely
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      const ratio = width / height;
-      const isWidescreenDevice = width >= 1024 && ratio >= 1.6;
-      
-      let topOffset: number;
-      if (isWidescreenDevice) {
-        topOffset = headerBottom;
-      } else {
-        const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
-        const bannerHeight = banner ? banner.offsetHeight : 0;
-        topOffset = headerBottom + bannerHeight;
-      }
-      
+      const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
+      const bannerHeight = banner ? banner.offsetHeight : 0;
+      const topOffset = headerBottom + bannerHeight;
       const viewportHeight = window.innerHeight;
       const availableViewport = viewportHeight - topOffset;
 
