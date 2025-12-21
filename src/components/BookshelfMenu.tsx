@@ -94,9 +94,10 @@ interface BookshelfMenuProps {
   currentYoungAdultBook?: number;
   isWidescreen?: boolean;
   bannerVisible?: boolean;
+  onBannerHide?: () => void; // Callback to hide banner on widescreen
 }
 
-export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultBook = 0, isWidescreen = false, bannerVisible = true }: BookshelfMenuProps) => {
+export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultBook = 0, isWidescreen = false, bannerVisible = true, onBannerHide }: BookshelfMenuProps) => {
   const [hoveredBook, setHoveredBook] = useState<string | null>(null);
   
   // Determine which book should be highlighted based on visible sections
@@ -132,15 +133,23 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   });
 
   const handleBookClick = (book: Book) => {
+    // For widescreen: hide banner when clicking any book
+    if (isWidescreen && onBannerHide) {
+      onBannerHide();
+    }
+    
     const scrollToSection = () => {
       const section = document.querySelector(`[data-section="${book.targetSection}"]`) as HTMLElement;
       if (!section) return;
 
       // Get fixed elements
       const navigation = document.querySelector('nav') as HTMLElement;
-      const bookshelfMenu = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
       const navHeight = navigation?.offsetHeight || 64;
-      const bannerHeight = bookshelfMenu?.offsetHeight || 100;
+      
+      // For widescreen: ignore banner in calculations (snap is independent of banner)
+      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
+      const bookshelfMenu = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
+      const bannerHeight = (bookshelfMenu && !isWidescreenDevice) ? bookshelfMenu.offsetHeight : 0;
       const topOffset = navHeight + bannerHeight;
       
       let targetScrollPosition;
