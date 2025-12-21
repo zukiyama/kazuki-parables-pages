@@ -232,34 +232,34 @@ const Index = () => {
         <div
           className={`relative w-full overflow-hidden border-t border-amber-200/50 bg-[#F5EBD8] magazine-slide ${showCirclesBanner ? "visible" : ""}`}
         >
-          {/* Static circles background - matching single cover palette with transparency overlap */}
+          {/* Drifting circles background - matching single cover palette with transparency overlap */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ mixBlendMode: 'multiply' }}>
             {/* Far left - Orange */}
-            <div className="absolute -left-28 top-[15%] w-56 h-56 rounded-full bg-[hsla(25,85%,55%,0.7)]"></div>
+            <div className="absolute -left-28 top-[15%] w-56 h-56 rounded-full bg-[hsla(25,85%,55%,0.7)] animate-circle-drift-1"></div>
             
             {/* Left area - Coral */}
-            <div className="absolute left-[5%] -bottom-12 w-44 h-44 rounded-full bg-[hsla(350,70%,58%,0.6)]"></div>
+            <div className="absolute left-[5%] -bottom-12 w-44 h-44 rounded-full bg-[hsla(350,70%,58%,0.6)] animate-circle-drift-2"></div>
             
             {/* Left-center top - Teal (partially visible) */}
-            <div className="absolute left-[18%] -top-24 w-52 h-52 rounded-full bg-[hsla(180,55%,48%,0.55)]"></div>
+            <div className="absolute left-[18%] -top-24 w-52 h-52 rounded-full bg-[hsla(180,55%,48%,0.55)] animate-circle-drift-3"></div>
+            
+            {/* Between orange and teal - warm Pink/Coral */}
+            <div className="absolute left-[2%] top-[5%] w-40 h-40 rounded-full bg-[hsla(15,75%,60%,0.6)] animate-circle-drift-9"></div>
             
             {/* Right of center top - Pink */}
-            <div className="absolute right-[22%] -top-16 w-40 h-40 rounded-full bg-[hsla(340,65%,55%,0.5)]"></div>
+            <div className="absolute right-[22%] -top-16 w-40 h-40 rounded-full bg-[hsla(340,65%,55%,0.5)] animate-circle-drift-4"></div>
             
             {/* Right area top - Blue */}
-            <div className="absolute right-[8%] top-[5%] w-48 h-48 rounded-full bg-[hsla(215,60%,52%,0.65)]"></div>
+            <div className="absolute right-[8%] top-[5%] w-48 h-48 rounded-full bg-[hsla(215,60%,52%,0.65)] animate-circle-drift-5"></div>
             
             {/* Far right mid - Teal overlapping blue */}
-            <div className="absolute -right-12 top-[30%] w-44 h-44 rounded-full bg-[hsla(175,50%,48%,0.6)]"></div>
+            <div className="absolute -right-12 top-[30%] w-44 h-44 rounded-full bg-[hsla(175,50%,48%,0.6)] animate-circle-drift-6"></div>
             
             {/* Right bottom - Purple */}
-            <div className="absolute right-[12%] -bottom-20 w-56 h-56 rounded-full bg-[hsla(300,40%,50%,0.6)]"></div>
+            <div className="absolute right-[12%] -bottom-20 w-56 h-56 rounded-full bg-[hsla(300,40%,50%,0.6)] animate-circle-drift-7"></div>
             
             {/* Far right bottom - Orange */}
-            <div className="absolute -right-24 -bottom-8 w-52 h-52 rounded-full bg-[hsla(30,80%,52%,0.55)]"></div>
-            
-            {/* Left bottom corner - Blue */}
-            <div className="absolute -left-16 bottom-[20%] w-40 h-40 rounded-full bg-[hsla(220,55%,50%,0.55)]"></div>
+            <div className="absolute -right-24 -bottom-8 w-52 h-52 rounded-full bg-[hsla(30,80%,52%,0.55)] animate-circle-drift-8"></div>
           </div>
 
           <Link to="/music" className="group relative z-10 block w-full py-10 md:py-14">
