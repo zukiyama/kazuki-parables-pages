@@ -161,14 +161,18 @@ const About = () => {
               </div>
             </div>
             
-            {/* Desktop text at bottom right - hidden on mobile */}
+            {/* Desktop text at bottom right - word by word fade in - hidden on mobile */}
             <div 
               data-scroll-animation="bottom-right-text"
-              className={`absolute bottom-[24%] right-[12%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-right z-30 ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
+              className={`absolute bottom-[18%] right-[10%] pointer-events-auto max-sm:hidden z-30 ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
             >
-              <p className="font-body text-2xl lg:text-3xl text-white italic">
-                The eye closes,<br/><span className="inline-block pl-8 mt-6">Truth appears</span>
-              </p>
+              <div className="font-body text-2xl lg:text-3xl text-white italic flex flex-col items-end">
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-1" : ""}`} style={{ marginRight: '0px' }}>None</span>
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-2" : ""}`} style={{ marginRight: '12px', marginTop: '6px' }}>of</span>
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-3" : ""}`} style={{ marginRight: '-8px', marginTop: '10px' }}>this</span>
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-4" : ""}`} style={{ marginRight: '18px', marginTop: '5px' }}>is</span>
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-5" : ""}`} style={{ marginRight: '-4px', marginTop: '8px' }}>real</span>
+              </div>
             </div>
             
           </div>
