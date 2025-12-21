@@ -445,18 +445,47 @@ const Music = () => {
       setSelectedAlbum(album);
     }
     
-    // Scroll to show entire container with gap from banner
+    // Scroll to show album - widescreen devices center the album cover + title
     setTimeout(() => {
       if (trackListingRef.current) {
         const navigationHeight = 64; // Navigation bar height (h-16)
-        const bannerHeight = 176; // Banner height (from top-16 to pt-60: 240-64=176)
-        const gap = 4; // Smaller gap between banner and container (~5mm on iPad 13")
-        const totalOffset = navigationHeight + bannerHeight + gap;
-        const offset = trackListingRef.current.offsetTop - totalOffset;
-        window.scrollTo({
-          top: offset,
-          behavior: 'smooth'
-        });
+        
+        if (isWidescreen) {
+          // For widescreen: center the album cover + title vertically in the viewport
+          // Viewport = area from bottom of header to bottom of screen
+          const viewportHeight = window.innerHeight - navigationHeight;
+          
+          // Find album cover and title elements within trackListingRef
+          const container = trackListingRef.current;
+          const albumCover = container.querySelector('img[alt]') as HTMLElement;
+          const albumTitle = container.querySelector('h2') as HTMLElement;
+          
+          if (albumCover && albumTitle) {
+            // Calculate the combined height from top of album cover to bottom of album title
+            const coverTop = albumCover.getBoundingClientRect().top + window.scrollY;
+            const titleBottom = albumTitle.getBoundingClientRect().bottom + window.scrollY;
+            const contentHeight = titleBottom - coverTop;
+            
+            // Calculate scroll position to center content in viewport
+            const centerOffset = (viewportHeight - contentHeight) / 2;
+            const scrollTarget = coverTop - navigationHeight - centerOffset;
+            
+            window.scrollTo({
+              top: Math.max(0, scrollTarget),
+              behavior: 'smooth'
+            });
+          }
+        } else {
+          // For non-widescreen (iPad, etc.): use original offset-based scroll
+          const bannerHeight = 176; // Banner height (from top-16 to pt-60: 240-64=176)
+          const gap = 4; // Smaller gap between banner and container (~5mm on iPad 13")
+          const totalOffset = navigationHeight + bannerHeight + gap;
+          const offset = trackListingRef.current.offsetTop - totalOffset;
+          window.scrollTo({
+            top: offset,
+            behavior: 'smooth'
+          });
+        }
       }
     }, 100); // Small delay to ensure DOM update
     
