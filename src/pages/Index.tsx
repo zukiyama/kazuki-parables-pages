@@ -207,7 +207,7 @@ const Index = () => {
             <img 
               src={parableEyeBackground}
               alt=""
-              className="w-full h-full object-cover scale-150 translate-y-16 opacity-0 animate-slow-fade-in-50"
+              className="w-full h-full object-cover scale-150 opacity-0 animate-slow-fade-in-40 -translate-y-4 md:translate-y-24"
             />
           </div>
           <ScrollFadeUp id="book-announcement" className="text-center mb-8 relative z-10">
