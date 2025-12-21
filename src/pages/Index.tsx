@@ -234,29 +234,29 @@ const Index = () => {
         >
           {/* Bokeh circles background */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none bokeh-blur">
-            {/* Large circles at edges - desktop: cyan/pink to match album, mobile: original peachy */}
-            <div className="absolute -left-20 top-1/4 w-56 h-56 rounded-full bg-[hsla(25,85%,72%,0.35)] md:bg-[hsla(185,70%,65%,0.35)] animate-drift-1"></div>
-            <div className="absolute -right-16 top-1/3 w-48 h-48 rounded-full bg-[hsla(15,80%,70%,0.32)] md:bg-[hsla(330,65%,70%,0.32)] animate-drift-2"></div>
+            {/* Large circles at edges - desktop: match album cover colors, mobile: original peachy */}
+            <div className="absolute -left-20 top-1/4 w-56 h-56 rounded-full bg-[hsla(25,85%,72%,0.35)] md:bg-[hsla(25,90%,55%,0.35)] animate-drift-1"></div>
+            <div className="absolute -right-16 top-1/3 w-48 h-48 rounded-full bg-[hsla(15,80%,70%,0.32)] md:bg-[hsla(180,55%,50%,0.32)] animate-drift-2"></div>
             
             {/* Top edge circles */}
-            <div className="absolute left-1/4 -top-12 w-40 h-40 rounded-full bg-[hsla(20,75%,68%,0.28)] md:bg-[hsla(195,65%,60%,0.28)] animate-drift-3"></div>
-            <div className="absolute right-1/4 -top-8 w-44 h-44 rounded-full bg-[hsla(30,80%,74%,0.30)] md:bg-[hsla(320,60%,72%,0.30)] animate-drift-4"></div>
+            <div className="absolute left-1/4 -top-12 w-40 h-40 rounded-full bg-[hsla(20,75%,68%,0.28)] md:bg-[hsla(210,60%,55%,0.28)] animate-drift-3"></div>
+            <div className="absolute right-1/4 -top-8 w-44 h-44 rounded-full bg-[hsla(30,80%,74%,0.30)] md:bg-[hsla(345,75%,60%,0.30)] animate-drift-4"></div>
             
             {/* Bottom edge circles */}
-            <div className="absolute left-1/3 -bottom-16 w-52 h-52 rounded-full bg-[hsla(18,78%,71%,0.33)] md:bg-[hsla(180,60%,62%,0.33)] animate-drift-5"></div>
-            <div className="absolute right-1/3 -bottom-10 w-36 h-36 rounded-full bg-[hsla(22,82%,69%,0.25)] md:bg-[hsla(340,55%,68%,0.25)] animate-drift-6"></div>
+            <div className="absolute left-1/3 -bottom-16 w-52 h-52 rounded-full bg-[hsla(18,78%,71%,0.33)] md:bg-[hsla(300,40%,55%,0.33)] animate-drift-5"></div>
+            <div className="absolute right-1/3 -bottom-10 w-36 h-36 rounded-full bg-[hsla(22,82%,69%,0.25)] md:bg-[hsla(10,75%,65%,0.25)] animate-drift-6"></div>
             
             {/* Medium circles at corners */}
-            <div className="absolute left-[15%] bottom-[20%] w-32 h-32 rounded-full bg-[hsla(28,76%,73%,0.30)] md:bg-[hsla(190,55%,68%,0.30)] animate-drift-7"></div>
-            <div className="absolute right-[18%] top-[25%] w-36 h-36 rounded-full bg-[hsla(12,84%,67%,0.28)] md:bg-[hsla(335,60%,65%,0.28)] animate-drift-8"></div>
+            <div className="absolute left-[15%] bottom-[20%] w-32 h-32 rounded-full bg-[hsla(28,76%,73%,0.30)] md:bg-[hsla(175,50%,48%,0.30)] animate-drift-7"></div>
+            <div className="absolute right-[18%] top-[25%] w-36 h-36 rounded-full bg-[hsla(12,84%,67%,0.28)] md:bg-[hsla(25,95%,50%,0.28)] animate-drift-8"></div>
             
             {/* Small accent circles */}
-            <div className="absolute left-[40%] top-[15%] w-24 h-24 rounded-full bg-[hsla(35,70%,75%,0.35)] md:bg-[hsla(175,50%,70%,0.35)] animate-drift-1"></div>
-            <div className="absolute right-[35%] bottom-[25%] w-28 h-28 rounded-full bg-[hsla(8,85%,72%,0.32)] md:bg-[hsla(315,55%,72%,0.32)] animate-drift-3"></div>
+            <div className="absolute left-[40%] top-[15%] w-24 h-24 rounded-full bg-[hsla(35,70%,75%,0.35)] md:bg-[hsla(340,80%,55%,0.35)] animate-drift-1"></div>
+            <div className="absolute right-[35%] bottom-[25%] w-28 h-28 rounded-full bg-[hsla(8,85%,72%,0.32)] md:bg-[hsla(215,55%,50%,0.32)] animate-drift-3"></div>
             
             {/* Far corner circles */}
-            <div className="absolute -left-8 -bottom-12 w-44 h-44 rounded-full bg-[hsla(20,80%,70%,0.38)] md:bg-[hsla(188,65%,58%,0.38)] animate-drift-6"></div>
-            <div className="absolute -right-12 -top-8 w-40 h-40 rounded-full bg-[hsla(32,75%,68%,0.30)] md:bg-[hsla(325,58%,68%,0.30)] animate-drift-2"></div>
+            <div className="absolute -left-8 -bottom-12 w-44 h-44 rounded-full bg-[hsla(20,80%,70%,0.38)] md:bg-[hsla(290,35%,50%,0.38)] animate-drift-6"></div>
+            <div className="absolute -right-12 -top-8 w-40 h-40 rounded-full bg-[hsla(32,75%,68%,0.30)] md:bg-[hsla(35,85%,55%,0.30)] animate-drift-2"></div>
           </div>
 
           <Link to="/music" className="group relative z-10 block w-full py-10 md:py-14">
