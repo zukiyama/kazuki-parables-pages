@@ -461,19 +461,15 @@ const Writing = () => {
       const nav = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
       const navBottom = nav ? nav.getBoundingClientRect().bottom : 64;
       
-      // Two different zones:
-      // 1. Trigger zone (top 2/3 of banner area) - cursor must enter here to SHOW banner
-      // 2. Full banner zone - cursor must leave this entire area to HIDE banner
+      // Banner area is from nav bottom to approximately 100px below it (banner height)
       const bannerAreaTop = navBottom;
-      const bannerTriggerBottom = navBottom + 80; // Top 2/3 for triggering appearance
-      const bannerAreaBottom = navBottom + 120; // Full height for hiding detection
+      const bannerAreaBottom = navBottom + 100; // Approximate banner height
       
-      const isInTriggerZone = e.clientY >= bannerAreaTop && e.clientY <= bannerTriggerBottom;
-      const isInFullBannerArea = e.clientY >= bannerAreaTop && e.clientY <= bannerAreaBottom;
+      const isInBannerArea = e.clientY >= bannerAreaTop && e.clientY <= bannerAreaBottom;
       
-      if (isInFullBannerArea) {
-        // Only show banner if cursor ENTERED the trigger zone (top 2/3) from outside
-        if (cursorWasOutsideBannerRef.current && !bannerClickedRef.current && !bannerVisible && isInTriggerZone) {
+      if (isInBannerArea) {
+        // Only show banner if cursor ENTERED from outside AND banner wasn't just clicked
+        if (cursorWasOutsideBannerRef.current && !bannerClickedRef.current && !bannerVisible) {
           setBannerVisible(true);
         }
         cursorWasOutsideBannerRef.current = false;
