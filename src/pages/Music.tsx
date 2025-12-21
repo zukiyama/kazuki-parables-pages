@@ -343,16 +343,19 @@ const Music = () => {
       const nav = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
       const navBottom = nav ? nav.getBoundingClientRect().bottom : 64;
       
-      // Banner area is from nav bottom to approximately 120px below it (full banner height)
-      // Use a slightly larger value to ensure cursor must fully leave the banner
+      // Two different zones:
+      // 1. Trigger zone (top 2/3 of banner area) - cursor must enter here to SHOW banner
+      // 2. Full banner zone - cursor must leave this entire area to HIDE banner
       const bannerAreaTop = navBottom;
-      const bannerAreaBottom = navBottom + 120;
+      const bannerTriggerBottom = navBottom + 80; // Top 2/3 for triggering appearance
+      const bannerAreaBottom = navBottom + 120; // Full height for hiding detection
       
-      const isInBannerArea = e.clientY >= bannerAreaTop && e.clientY <= bannerAreaBottom;
+      const isInTriggerZone = e.clientY >= bannerAreaTop && e.clientY <= bannerTriggerBottom;
+      const isInFullBannerArea = e.clientY >= bannerAreaTop && e.clientY <= bannerAreaBottom;
       
-      if (isInBannerArea) {
-        // Only show banner if cursor ENTERED from outside AND banner wasn't just clicked
-        if (cursorWasOutsideBannerRef.current && !bannerClickedRef.current && !bannerVisible) {
+      if (isInFullBannerArea) {
+        // Only show banner if cursor ENTERED the trigger zone (top 2/3) from outside
+        if (cursorWasOutsideBannerRef.current && !bannerClickedRef.current && !bannerVisible && isInTriggerZone) {
           setBannerVisible(true);
         }
         cursorWasOutsideBannerRef.current = false;
