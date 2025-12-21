@@ -8,7 +8,7 @@ import officeView from "@/assets/office-window-view.jpg";
 import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
 import circlesSingleCover from "@/assets/circles-single-cover.png";
-import parableEyeBackground from "@/assets/parable-eye-background.png";
+import parableEyeBackground from "@/assets/parable-eye-background-new.png";
 import useEmblaCarousel from "embla-carousel-react";
 
 const Index = () => {
@@ -192,7 +192,7 @@ const Index = () => {
               alt=""
               className="w-full max-w-2xl h-auto object-contain opacity-0 animate-slow-fade-in"
               style={{ 
-                opacity: 0.12,
+                opacity: 0.35,
                 animationDelay: '0.5s',
                 animationFillMode: 'forwards'
               }}
