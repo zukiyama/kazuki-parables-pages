@@ -140,7 +140,7 @@ const About = () => {
               className={`absolute top-[calc(15%-57px)] left-[8%] max-w-md pointer-events-auto max-sm:hidden scroll-slide-left z-30 ${visibleElements.has("quote-text") ? "visible" : ""}`}
             >
               <p className="font-body text-base lg:text-lg leading-relaxed text-foreground mb-6 italic">
-                I have always had the flaw of describing myself through my interests, because I suppose that I don't feel I can be seen any other way. And so, to that end: if it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk; if I had spent the summer revising rather than learning to hold an open A major on an old half size acoustic guitar—in short, if I hadn't have traded what I should be doing for what I love, achievement, elevation, and progress for erring, curiosity, and wonder, I should never have found this hapless grove in which I am so brightly sustained.
+                I have always had the flaw of describing myself through my interests... because I suppose that I don't feel I can be seen any other way. And so, to that end: if it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk; if I had spent the summer revising rather than learning to hold an open A major on an old half size acoustic guitar—in short, if I hadn't have traded what I should be doing for what I love, achievement, elevation, and progress for erring, curiosity, and wonder, I should never have found this hapless grove in which I am so brightly sustained.
               </p>
               <p className="font-body text-base lg:text-lg leading-relaxed text-foreground mb-6 italic">
                 Gardens appear whether you mean them to or not, and these many years later my action figures have grown taller than the boy that buried them.
@@ -164,14 +164,14 @@ const About = () => {
             {/* Desktop text at bottom right - word by word fade in - hidden on mobile */}
             <div 
               data-scroll-animation="bottom-right-text"
-              className={`absolute bottom-[18%] right-[10%] pointer-events-auto max-sm:hidden z-30 ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
+              className={`absolute bottom-[22%] right-[14%] pointer-events-auto max-sm:hidden z-30 ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
             >
-              <div className="font-body text-2xl lg:text-3xl text-white italic flex flex-col items-end">
-                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-1" : ""}`} style={{ marginRight: '0px' }}>None</span>
-                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-2" : ""}`} style={{ marginRight: '12px', marginTop: '6px' }}>of</span>
-                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-3" : ""}`} style={{ marginRight: '-8px', marginTop: '10px' }}>this</span>
-                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-4" : ""}`} style={{ marginRight: '18px', marginTop: '5px' }}>is</span>
-                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-5" : ""}`} style={{ marginRight: '-4px', marginTop: '8px' }}>real</span>
+              <div className="font-body text-3xl lg:text-4xl text-white italic flex flex-col items-end tracking-wide">
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-1" : ""}`} style={{ marginRight: '20px' }}>None</span>
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-2" : ""}`} style={{ marginRight: '-5px', marginTop: '14px' }}>of</span>
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-3" : ""}`} style={{ marginRight: '25px', marginTop: '16px' }}>this</span>
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-4" : ""}`} style={{ marginRight: '-10px', marginTop: '12px' }}>is</span>
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-5" : ""}`} style={{ marginRight: '15px', marginTop: '18px' }}>real</span>
               </div>
             </div>
             
