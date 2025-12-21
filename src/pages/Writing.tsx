@@ -149,28 +149,50 @@ const Writing = () => {
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
       const headerBottom = getHeaderBottom();
-      // IMPORTANT: Ignore banner completely - snap position is always relative to 
-      // the viewport from header bottom to screen bottom
-      const topOffset = headerBottom;
+      const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
+      const bannerHeight = banner ? banner.offsetHeight : 0;
+      const topOffset = headerBottom + bannerHeight;
       const viewportHeight = window.innerHeight;
       const availableHeight = viewportHeight - topOffset;
       
-      // Special handling for young-adult section - center just the slideshow
+      // Special handling for young-adult section
       if (sectionName === 'young-adult') {
-        // Find just the slideshow container (not the title text above)
+        // Find the title element and slideshow container
+        const titleEl = section.querySelector('h2') as HTMLElement;
         const slideshowContainer = section.querySelector('.transition-all.duration-1000.delay-500') as HTMLElement;
         
-        if (!slideshowContainer) return null;
+        if (!titleEl || !slideshowContainer) return null;
         
+        const titleRect = titleEl.getBoundingClientRect();
         const slideshowRect = slideshowContainer.getBoundingClientRect();
-        const slideshowHeight = slideshowRect.height;
-        const slideshowTop = slideshowRect.top + window.scrollY;
-        const slideshowCenter = slideshowTop + (slideshowHeight / 2);
-        const desiredCenterY = topOffset + (availableHeight / 2);
-        return Math.max(0, slideshowCenter - desiredCenterY);
+        
+        // Calculate total height of title + subtitle + slideshow (in viewport coords)
+        const titleTopInViewport = titleRect.top;
+        const slideshowBottomInViewport = slideshowRect.bottom;
+        const totalContentHeight = slideshowBottomInViewport - titleTopInViewport;
+        
+        // Recalculate available height dynamically (accounts for browser chrome changes)
+        const currentAvailableHeight = viewportHeight - topOffset;
+        
+        // Scenario A: Can fit all content (title + "Young Adult Series" text + slideshow)
+        if (currentAvailableHeight >= totalContentHeight + 40) { // 40px buffer
+          // Center the entire content in the available space
+          const titleTop = titleRect.top + window.scrollY;
+          const slideshowBottom = slideshowRect.bottom + window.scrollY;
+          const contentCenter = titleTop + ((slideshowBottom - titleTop) / 2);
+          const desiredCenterY = topOffset + (currentAvailableHeight / 2);
+          return Math.max(0, contentCenter - desiredCenterY);
+        } else {
+          // Scenario B: Can't fit all, just center the slideshow alone
+          const slideshowTop = slideshowRect.top + window.scrollY;
+          const slideshowHeight = slideshowRect.height;
+          const slideshowCenter = slideshowTop + (slideshowHeight / 2);
+          const desiredCenterY = topOffset + (currentAvailableHeight / 2);
+          return Math.max(0, slideshowCenter - desiredCenterY);
+        }
       }
       
-      // For book sections: center the book cover in the viewport area
+      // For book sections: center the book cover
       const bookCover = section.querySelector('.book-cover-slideshow img, [data-book-cover], img[alt*="Cover"]') as HTMLElement;
       if (!bookCover) {
         return null;
@@ -217,8 +239,9 @@ const Writing = () => {
       }
 
       const headerBottom = getHeaderBottom();
-      // Ignore banner - snap visibility calculation uses only header to screen bottom
-      const topOffset = headerBottom;
+      const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
+      const bannerHeight = banner ? banner.offsetHeight : 0;
+      const topOffset = headerBottom + bannerHeight;
       const viewportHeight = window.innerHeight;
       const availableViewport = viewportHeight - topOffset;
 
