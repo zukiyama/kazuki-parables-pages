@@ -190,9 +190,9 @@ const Index = () => {
             <img 
               src={parableEyeBackground}
               alt=""
-              className="w-full h-full object-cover scale-150 opacity-0 animate-slow-fade-in"
+              className="w-full h-full object-cover scale-150 translate-y-12 opacity-0 animate-slow-fade-in"
               style={{ 
-                opacity: 0.85,
+                opacity: 0.95,
                 animationDelay: '0.5s',
                 animationFillMode: 'forwards'
               }}
