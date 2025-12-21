@@ -461,9 +461,10 @@ const Writing = () => {
       const nav = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
       const navBottom = nav ? nav.getBoundingClientRect().bottom : 64;
       
-      // Banner area is from nav bottom to approximately 100px below it (banner height)
+      // Banner area is from nav bottom to approximately 120px below it (full banner height)
+      // Use a slightly larger value to ensure cursor must fully leave the banner
       const bannerAreaTop = navBottom;
-      const bannerAreaBottom = navBottom + 100; // Approximate banner height
+      const bannerAreaBottom = navBottom + 120;
       
       const isInBannerArea = e.clientY >= bannerAreaTop && e.clientY <= bannerAreaBottom;
       
