@@ -418,6 +418,52 @@ const Writing = () => {
     setBannerVisible(prev => !prev);
   }, [isWidescreen]);
 
+  // Widescreen only: Auto-show banner at top of page
+  useEffect(() => {
+    if (!isWidescreen) return;
+
+    const handleScrollForBanner = () => {
+      const scrollTop = window.scrollY;
+      // If at the very top (within 10px), show banner
+      if (scrollTop <= 10) {
+        setBannerVisible(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScrollForBanner, { passive: true });
+    // Check initial position
+    handleScrollForBanner();
+    
+    return () => window.removeEventListener('scroll', handleScrollForBanner);
+  }, [isWidescreen]);
+
+  // Widescreen only: Show banner when mouse enters banner area (when banner is hidden)
+  useEffect(() => {
+    if (!isWidescreen) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      // Only trigger if banner is currently hidden
+      if (bannerVisible) return;
+      
+      // Get the header/nav height
+      const nav = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
+      const navBottom = nav ? nav.getBoundingClientRect().bottom : 64;
+      
+      // Banner area is from nav bottom to approximately 100px below it (banner height)
+      const bannerAreaTop = navBottom;
+      const bannerAreaBottom = navBottom + 100; // Approximate banner height
+      
+      // Check if mouse is in the banner area
+      if (e.clientY >= bannerAreaTop && e.clientY <= bannerAreaBottom) {
+        setBannerVisible(true);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [isWidescreen, bannerVisible]);
+
   return (
     <div 
       className="min-h-screen relative overflow-x-hidden"
