@@ -230,168 +230,33 @@ const Index = () => {
 
         {/* Music Banner - Full Width Edge to Edge - slide in on scroll */}
         <div
-          className={`relative w-full overflow-hidden border-t border-amber-200/50 bg-[#FDF6E8] magazine-slide ${showCirclesBanner ? "visible" : ""}`}
+          className={`relative w-full overflow-hidden border-t border-amber-200/50 bg-[#F5EBD8] magazine-slide ${showCirclesBanner ? "visible" : ""}`}
         >
-          {/* Sharp circles background - physics-driven with natural drift back to bobbing */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {/* Large circles at edges - Orange - sharp edges, full saturation */}
-            <div 
-              className="absolute -left-24 top-[10%] w-56 h-56 rounded-full bg-[hsl(25,95%,55%)]"
-              style={{ transform: `translateY(${circleOffsets[0]?.y || 0}px)` }}
-            ></div>
-            {/* Coral/Pink */}
-            <div 
-              className="absolute -left-16 bottom-[5%] w-44 h-44 rounded-full bg-[hsl(350,75%,60%)]"
-              style={{ transform: `translateY(${circleOffsets[1]?.y || 0}px)` }}
-            ></div>
-            {/* Teal */}
-            <div 
-              className="absolute left-[2%] top-[60%] w-36 h-36 rounded-full bg-[hsl(180,55%,50%)]"
-              style={{ transform: `translateY(${circleOffsets[2]?.y || 0}px)` }}
-            ></div>
+          {/* Static circles background - matching single cover palette with transparency overlap */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ mixBlendMode: 'multiply' }}>
+            {/* Large circles at left edge - Orange */}
+            <div className="absolute -left-20 top-[5%] w-64 h-64 rounded-full bg-[hsla(25,85%,55%,0.7)]"></div>
+            {/* Coral overlapping with orange */}
+            <div className="absolute -left-8 top-[25%] w-48 h-48 rounded-full bg-[hsla(350,70%,58%,0.6)]"></div>
             
-            {/* Blue */}
-            <div 
-              className="absolute -right-20 top-[20%] w-52 h-52 rounded-full bg-[hsl(215,65%,55%)]"
-              style={{ transform: `translateY(${circleOffsets[3]?.y || 0}px)` }}
-            ></div>
-            {/* Purple */}
-            <div 
-              className="absolute -right-28 bottom-[15%] w-60 h-60 rounded-full bg-[hsl(320,45%,50%)]"
-              style={{ transform: `translateY(${circleOffsets[4]?.y || 0}px)` }}
-            ></div>
-            {/* Orange */}
-            <div 
-              className="absolute right-[3%] top-[5%] w-40 h-40 rounded-full bg-[hsl(30,90%,55%)]"
-              style={{ transform: `translateY(${circleOffsets[5]?.y || 0}px)` }}
-            ></div>
+            {/* Right side cluster - Blue */}
+            <div className="absolute -right-16 top-[10%] w-56 h-56 rounded-full bg-[hsla(215,60%,52%,0.65)]"></div>
+            {/* Teal overlapping */}
+            <div className="absolute -right-4 top-[35%] w-40 h-40 rounded-full bg-[hsla(175,50%,48%,0.6)]"></div>
             
-            {/* Top edge circles - Coral */}
-            <div 
-              className="absolute left-[15%] -top-16 w-48 h-48 rounded-full bg-[hsl(5,80%,65%)]"
-              style={{ transform: `translateY(${circleOffsets[6]?.y || 0}px)` }}
-            ></div>
-            {/* Teal */}
-            <div 
-              className="absolute right-[25%] -top-12 w-40 h-40 rounded-full bg-[hsl(175,50%,48%)]"
-              style={{ transform: `translateY(${circleOffsets[7]?.y || 0}px)` }}
-            ></div>
+            {/* Bottom left - Pink */}
+            <div className="absolute -left-12 -bottom-8 w-52 h-52 rounded-full bg-[hsla(340,65%,55%,0.65)]"></div>
             
-            {/* Bottom edge circles - Blue */}
-            <div 
-              className="absolute left-[20%] -bottom-20 w-52 h-52 rounded-full bg-[hsl(220,60%,50%)]"
-              style={{ transform: `translateY(${circleOffsets[8]?.y || 0}px)` }}
-            ></div>
-            {/* Pink */}
-            <div 
-              className="absolute right-[18%] -bottom-16 w-44 h-44 rounded-full bg-[hsl(340,70%,58%)]"
-              style={{ transform: `translateY(${circleOffsets[9]?.y || 0}px)` }}
-            ></div>
+            {/* Bottom right cluster - Purple */}
+            <div className="absolute -right-20 -bottom-12 w-60 h-60 rounded-full bg-[hsla(300,40%,50%,0.6)]"></div>
+            {/* Orange overlapping */}
+            <div className="absolute right-[8%] -bottom-16 w-44 h-44 rounded-full bg-[hsla(30,80%,52%,0.55)]"></div>
             
-            {/* Medium circles at corners - Purple */}
-            <div 
-              className="absolute left-[8%] top-[25%] w-28 h-28 rounded-full bg-[hsl(310,40%,52%)]"
-              style={{ transform: `translateY(${circleOffsets[10]?.y || 0}px)` }}
-            ></div>
-            {/* Orange */}
-            <div 
-              className="absolute right-[6%] bottom-[40%] w-32 h-32 rounded-full bg-[hsl(28,92%,52%)]"
-              style={{ transform: `translateY(${circleOffsets[11]?.y || 0}px)` }}
-            ></div>
-            {/* Teal */}
-            <div 
-              className="absolute left-[5%] bottom-[30%] w-24 h-24 rounded-full bg-[hsl(185,55%,48%)]"
-              style={{ transform: `translateY(${circleOffsets[12]?.y || 0}px)` }}
-            ></div>
-            {/* Blue */}
-            <div 
-              className="absolute right-[8%] top-[55%] w-28 h-28 rounded-full bg-[hsl(210,60%,52%)]"
-              style={{ transform: `translateY(${circleOffsets[13]?.y || 0}px)` }}
-            ></div>
+            {/* Top edge accent - Teal */}
+            <div className="absolute left-[8%] -top-20 w-48 h-48 rounded-full bg-[hsla(180,55%,48%,0.6)]"></div>
             
-            {/* Small accent circles - Pink */}
-            <div 
-              className="absolute left-[3%] top-[40%] w-20 h-20 rounded-full bg-[hsl(345,72%,62%)]"
-              style={{ transform: `translateY(${circleOffsets[14]?.y || 0}px)` }}
-            ></div>
-            {/* Orange */}
-            <div 
-              className="absolute right-[4%] top-[35%] w-20 h-20 rounded-full bg-[hsl(35,88%,58%)]"
-              style={{ transform: `translateY(${circleOffsets[15]?.y || 0}px)` }}
-            ></div>
-            {/* Purple */}
-            <div 
-              className="absolute left-[10%] bottom-[8%] w-16 h-16 rounded-full bg-[hsl(315,42%,55%)]"
-              style={{ transform: `translateY(${circleOffsets[16]?.y || 0}px)` }}
-            ></div>
-            {/* Coral */}
-            <div 
-              className="absolute right-[12%] bottom-[5%] w-20 h-20 rounded-full bg-[hsl(10,75%,60%)]"
-              style={{ transform: `translateY(${circleOffsets[17]?.y || 0}px)` }}
-            ></div>
-            
-            {/* Far corner circles - Blue */}
-            <div 
-              className="absolute -left-10 top-[45%] w-32 h-32 rounded-full bg-[hsl(225,55%,55%)]"
-              style={{ transform: `translateY(${circleOffsets[18]?.y || 0}px)` }}
-            ></div>
-            {/* Teal */}
-            <div 
-              className="absolute -right-14 top-[65%] w-36 h-36 rounded-full bg-[hsl(178,52%,52%)]"
-              style={{ transform: `translateY(${circleOffsets[19]?.y || 0}px)` }}
-            ></div>
-            
-            {/* Additional circles - only at edges, away from center text - hidden on mobile */}
-            {/* Top left area - Orange */}
-            <div 
-              className="hidden sm:block absolute left-[12%] top-[8%] w-36 h-36 rounded-full bg-[hsl(20,85%,58%)]"
-              style={{ transform: `translateY(${circleOffsets[20]?.y || 0}px)` }}
-            ></div>
-            {/* Bottom left - Coral */}
-            <div 
-              className="hidden sm:block absolute left-[8%] bottom-[15%] w-32 h-32 rounded-full bg-[hsl(355,70%,62%)]"
-              style={{ transform: `translateY(${circleOffsets[21]?.y || 0}px)` }}
-            ></div>
-            {/* Top right - Blue */}
-            <div 
-              className="hidden sm:block absolute right-[10%] top-[10%] w-40 h-40 rounded-full bg-[hsl(205,62%,52%)]"
-              style={{ transform: `translateY(${circleOffsets[22]?.y || 0}px)` }}
-            ></div>
-            {/* Bottom right - Teal */}
-            <div 
-              className="hidden sm:block absolute right-[8%] bottom-[20%] w-32 h-32 rounded-full bg-[hsl(172,50%,50%)]"
-              style={{ transform: `translateY(${circleOffsets[23]?.y || 0}px)` }}
-            ></div>
-            {/* Left edge mid - Purple */}
-            <div 
-              className="hidden sm:block absolute left-[4%] top-[75%] w-28 h-28 rounded-full bg-[hsl(295,38%,52%)]"
-              style={{ transform: `translateY(${circleOffsets[24]?.y || 0}px)` }}
-            ></div>
-            {/* Right edge mid - Orange */}
-            <div 
-              className="hidden sm:block absolute right-[5%] top-[70%] w-30 h-30 rounded-full bg-[hsl(32,88%,55%)]"
-              style={{ transform: `translateY(${circleOffsets[25]?.y || 0}px)` }}
-            ></div>
-            {/* Far top left - Pink */}
-            <div 
-              className="hidden sm:block absolute -left-8 top-[30%] w-36 h-36 rounded-full bg-[hsl(338,65%,60%)]"
-              style={{ transform: `translateY(${circleOffsets[26]?.y || 0}px)` }}
-            ></div>
-            {/* Far bottom left - Blue */}
-            <div 
-              className="hidden sm:block absolute -left-12 bottom-[25%] w-42 h-42 rounded-full bg-[hsl(218,58%,54%)]"
-              style={{ transform: `translateY(${circleOffsets[27]?.y || 0}px)` }}
-            ></div>
-            {/* Far top right - Teal */}
-            <div 
-              className="hidden sm:block absolute -right-10 top-[35%] w-38 h-38 rounded-full bg-[hsl(168,52%,48%)]"
-              style={{ transform: `translateY(${circleOffsets[28]?.y || 0}px)` }}
-            ></div>
-            {/* Far bottom right - Coral */}
-            <div 
-              className="hidden sm:block absolute -right-8 bottom-[35%] w-34 h-34 rounded-full bg-[hsl(8,78%,58%)]"
-              style={{ transform: `translateY(${circleOffsets[29]?.y || 0}px)` }}
-            ></div>
+            {/* Right edge mid - Blue overlapping with coral */}
+            <div className="absolute -right-10 bottom-[35%] w-36 h-36 rounded-full bg-[hsla(220,55%,50%,0.55)]"></div>
           </div>
 
           <Link to="/music" className="group relative z-10 block w-full py-10 md:py-14">
