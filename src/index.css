@@ -869,3 +869,17 @@
 .animate-slow-fade-in {
   animation: slow-fade-in 5s ease-out forwards;
 }
+
+/* Slow fade-in to 50% opacity */
+@keyframes slow-fade-in-50 {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.animate-slow-fade-in-50 {
+  animation: slow-fade-in-50 5s ease-out forwards;
+}
