@@ -388,7 +388,7 @@
 
 @keyframes cityscape-fade-in {
   0% { opacity: 0; }
-  100% { opacity: 0.6; }
+  100% { opacity: 0.5; }
 }
 
 .animate-quote-expand {
