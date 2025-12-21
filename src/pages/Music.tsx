@@ -359,8 +359,10 @@ const Music = () => {
       } else {
         // Cursor is outside banner area
         if (!cursorWasOutsideBannerRef.current) {
-          // Cursor just LEFT the banner area - hide banner (but not if at/near top of page)
-          if (window.scrollY > 50) {
+          // Cursor just LEFT the banner area
+          // Only hide if cursor moved DOWN (below banner), not UP (into header)
+          // And not if at/near top of page
+          if (window.scrollY > 50 && e.clientY > bannerAreaBottom) {
             setBannerVisible(false);
           }
         }
