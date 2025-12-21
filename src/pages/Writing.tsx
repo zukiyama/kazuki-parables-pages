@@ -42,7 +42,6 @@ const Writing = () => {
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
   const [bannerVisible, setBannerVisible] = useState(true); // For widescreen banner toggle
-  const [isAtTop, setIsAtTop] = useState(true); // Track if at top of page
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -150,27 +149,50 @@ const Writing = () => {
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
       const headerBottom = getHeaderBottom();
-      // IGNORE banner completely - snap relative to header-bottom to screen-bottom only
-      const topOffset = headerBottom;
+      const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
+      const bannerHeight = banner ? banner.offsetHeight : 0;
+      const topOffset = headerBottom + bannerHeight;
       const viewportHeight = window.innerHeight;
       const availableHeight = viewportHeight - topOffset;
       
-      // Special handling for young-adult section - center ONLY the slideshow, not the title
+      // Special handling for young-adult section
       if (sectionName === 'young-adult') {
-        // Find the slideshow container (the actual visual slideshow box)
-        const slideshowContainer = section.querySelector('.relative.w-full.max-w-5xl, .relative.w-full.bg-black\\/60') as HTMLElement;
+        // Find the title element and slideshow container
+        const titleEl = section.querySelector('h2') as HTMLElement;
+        const slideshowContainer = section.querySelector('.transition-all.duration-1000.delay-500') as HTMLElement;
         
-        if (!slideshowContainer) return null;
+        if (!titleEl || !slideshowContainer) return null;
         
+        const titleRect = titleEl.getBoundingClientRect();
         const slideshowRect = slideshowContainer.getBoundingClientRect();
-        const slideshowHeight = slideshowRect.height;
-        const slideshowTop = slideshowRect.top + window.scrollY;
-        const slideshowCenter = slideshowTop + (slideshowHeight / 2);
-        const desiredCenterY = topOffset + (availableHeight / 2);
-        return Math.max(0, slideshowCenter - desiredCenterY);
+        
+        // Calculate total height of title + subtitle + slideshow (in viewport coords)
+        const titleTopInViewport = titleRect.top;
+        const slideshowBottomInViewport = slideshowRect.bottom;
+        const totalContentHeight = slideshowBottomInViewport - titleTopInViewport;
+        
+        // Recalculate available height dynamically (accounts for browser chrome changes)
+        const currentAvailableHeight = viewportHeight - topOffset;
+        
+        // Scenario A: Can fit all content (title + "Young Adult Series" text + slideshow)
+        if (currentAvailableHeight >= totalContentHeight + 40) { // 40px buffer
+          // Center the entire content in the available space
+          const titleTop = titleRect.top + window.scrollY;
+          const slideshowBottom = slideshowRect.bottom + window.scrollY;
+          const contentCenter = titleTop + ((slideshowBottom - titleTop) / 2);
+          const desiredCenterY = topOffset + (currentAvailableHeight / 2);
+          return Math.max(0, contentCenter - desiredCenterY);
+        } else {
+          // Scenario B: Can't fit all, just center the slideshow alone
+          const slideshowTop = slideshowRect.top + window.scrollY;
+          const slideshowHeight = slideshowRect.height;
+          const slideshowCenter = slideshowTop + (slideshowHeight / 2);
+          const desiredCenterY = topOffset + (currentAvailableHeight / 2);
+          return Math.max(0, slideshowCenter - desiredCenterY);
+        }
       }
       
-      // For book sections: center the book cover in the viewport area (header-bottom to screen-bottom)
+      // For book sections: center the book cover
       const bookCover = section.querySelector('.book-cover-slideshow img, [data-book-cover], img[alt*="Cover"]') as HTMLElement;
       if (!bookCover) {
         return null;
@@ -217,8 +239,9 @@ const Writing = () => {
       }
 
       const headerBottom = getHeaderBottom();
-      // IGNORE banner completely - snap relative to header-bottom to screen-bottom only
-      const topOffset = headerBottom;
+      const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
+      const bannerHeight = banner ? banner.offsetHeight : 0;
+      const topOffset = headerBottom + bannerHeight;
       const viewportHeight = window.innerHeight;
       const availableViewport = viewportHeight - topOffset;
 
@@ -242,23 +265,10 @@ const Writing = () => {
         }
       }
 
-      // For young-adult section when approaching from ABOVE, require much higher visibility threshold
-      // This allows reading the "Young Adult Series" text without snapping back
-      let snapThreshold = 0.5; // Default threshold
-      
-      if (bestSection && bestSection.name === 'young-adult') {
-        const slideshowRect = bestSection.el.getBoundingClientRect();
-        // If slideshow is mostly below viewport center, we're approaching from above
-        // Require very high visibility (97%) before snapping - allows reading title text
-        if (slideshowRect.top > viewportHeight * 0.2) {
-          snapThreshold = 0.97; // Much higher threshold when approaching from above
-        }
-      }
-
       // Only snap if:
-      // 1. Section fills > threshold of viewport
+      // 1. Section fills >50% of viewport
       // 2. It's not the section we just snapped away from
-      if (bestSection && highestVisibility > snapThreshold) {
+      if (bestSection && highestVisibility > 0.5) {
         // If scrolling away from last snapped section, don't snap back
         if (lastSnappedSection === bestSection.name) {
           // Clear the last snapped section so we can snap to it again later
@@ -299,13 +309,6 @@ const Writing = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
-      
-      // Track if at top of page - show banner automatically on widescreen
-      const atTop = currentScrollY < 50;
-      setIsAtTop(atTop);
-      if (atTop && isWidescreen) {
-        setBannerVisible(true);
-      }
 
       // Check which sections are visible
       const sections = document.querySelectorAll('[data-section]');
@@ -398,36 +401,18 @@ const Writing = () => {
     setBannerVisible(prev => !prev);
   }, [isWidescreen]);
 
-  // Handle hover on banner area to show banner (widescreen only)
-  const handleBannerAreaHover = useCallback(() => {
-    if (isWidescreen && !bannerVisible) {
-      setBannerVisible(true);
-    }
-  }, [isWidescreen, bannerVisible]);
-
   return (
     <div 
       className="min-h-screen relative overflow-x-hidden"
       onClick={handlePageClick}
     >
       <Navigation />
-      
-      {/* Invisible hover zone for banner area - only on widescreen when banner is hidden */}
-      {isWidescreen && !bannerVisible && (
-        <div 
-          className="fixed left-0 right-0 z-40 pointer-events-auto"
-          style={{ top: '56px', height: '120px' }}
-          onMouseEnter={handleBannerAreaHover}
-        />
-      )}
-      
       <BookshelfMenu 
         onBookClick={handleBookClick} 
         visibleSections={visibleSections} 
         currentYoungAdultBook={currentYoungAdultBook}
         isWidescreen={isWidescreen}
         bannerVisible={bannerVisible}
-        onBannerHide={() => setBannerVisible(false)}
       />
       
       {/* Stacked Background Images - All preloaded */}
@@ -506,17 +491,15 @@ const Writing = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
       </div>
       
-      {/* Main content - FIXED padding for widescreen (pt-56 for breathing space), independent of banner visibility */}
-      {/* Non-widescreen (iPad): Use original pt-40 padding that worked before */}
-      <main ref={mainRef} className={`relative z-10 ${
+      {/* Main content - pushed down on widescreen when banner visible for breathing space */}
+      <main ref={mainRef} className={`relative z-10 transition-all duration-500 ${
         isWidescreen 
-          ? 'pt-56' 
-          : 'pt-40 max-sm:pt-52'
+          ? (bannerVisible ? 'pt-56' : 'pt-28') 
+          : 'pt-52 max-sm:pt-52'
       }`}>
         {/* KAIJU - The Parable Trilogy Section */}
-        {/* Non-widescreen (iPad): Use original min-h-screen for proper scroll behavior */}
         <section data-section="kaiju" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
           <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
@@ -581,9 +564,8 @@ const Writing = () => {
         </section>
 
         {/* HOAX Section - Memo style */}
-        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="hoax" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
@@ -660,9 +642,8 @@ const Writing = () => {
         </div>
 
         {/* THE MARKET Section */}
-        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="the-market" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
@@ -727,9 +708,8 @@ const Writing = () => {
         </div>
 
         {/* AMYA Section */}
-        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="oba" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
@@ -778,9 +758,8 @@ const Writing = () => {
         </div>
 
         {/* STATES OF MOTION Section */}
-        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="states-of-motion" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
@@ -844,9 +823,8 @@ const Writing = () => {
         </div>
 
         {/* HOW Section */}
-        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="how" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
@@ -906,9 +884,8 @@ const Writing = () => {
         </div>
 
         {/* VICE VERSA Section */}
-        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="vice-versa" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
@@ -945,9 +922,8 @@ const Writing = () => {
 
 
         {/* Young Adult Books Section */}
-        {/* Non-widescreen (iPad): Use original min-h-screen */}
         <section data-section="young-adult" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">

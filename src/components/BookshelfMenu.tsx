@@ -94,10 +94,9 @@ interface BookshelfMenuProps {
   currentYoungAdultBook?: number;
   isWidescreen?: boolean;
   bannerVisible?: boolean;
-  onBannerHide?: () => void;
 }
 
-export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultBook = 0, isWidescreen = false, bannerVisible = true, onBannerHide }: BookshelfMenuProps) => {
+export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultBook = 0, isWidescreen = false, bannerVisible = true }: BookshelfMenuProps) => {
   const [hoveredBook, setHoveredBook] = useState<string | null>(null);
   
   // Determine which book should be highlighted based on visible sections
@@ -133,42 +132,55 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   });
 
   const handleBookClick = (book: Book) => {
-    // Hide banner when clicking a book on widescreen (before scrolling)
-    if (isWidescreen && onBannerHide) {
-      onBannerHide();
-    }
-
     const scrollToSection = () => {
       const section = document.querySelector(`[data-section="${book.targetSection}"]`) as HTMLElement;
       if (!section) return;
 
-      // Get fixed elements - IGNORE banner height for snap position calculation
+      // Get fixed elements
       const navigation = document.querySelector('nav') as HTMLElement;
+      const bookshelfMenu = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
       const navHeight = navigation?.offsetHeight || 64;
-      // Use ONLY nav height for offset - snap position is independent of banner
-      const topOffset = navHeight;
+      const bannerHeight = bookshelfMenu?.offsetHeight || 100;
+      const topOffset = navHeight + bannerHeight;
       
       let targetScrollPosition;
       
       if (book.targetSection === 'young-adult') {
-        // For young-adult slideshow: center the slideshow in viewport (ignoring banner)
-        const slideshowContainer = section.querySelector('.relative.w-full.max-w-5xl, .relative.w-full.bg-black\\/60') as HTMLElement;
+        // For young-adult slideshow: apply same snap logic as scroll snap
+        const titleEl = section.querySelector('h2') as HTMLElement;
+        const slideshowContainer = section.querySelector('.transition-all.duration-1000.delay-500, .bg-black\\/60') as HTMLElement;
         
-        if (slideshowContainer) {
+        if (titleEl && slideshowContainer) {
           const viewportHeight = window.innerHeight;
           const availableHeight = viewportHeight - topOffset;
           
-          // Center the slideshow alone in the viewport area
+          // Get current positions
+          const titleRect = titleEl.getBoundingClientRect();
           const slideshowRect = slideshowContainer.getBoundingClientRect();
-          const slideshowTop = slideshowRect.top + window.scrollY;
-          const slideshowHeight = slideshowRect.height;
-          const slideshowCenter = slideshowTop + (slideshowHeight / 2);
-          const desiredCenterY = topOffset + (availableHeight / 2);
-          targetScrollPosition = Math.max(0, slideshowCenter - desiredCenterY);
-        } else {
-          // Fallback to section positioning
-          const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-          targetScrollPosition = sectionTop - topOffset - 20;
+          
+          // Total content height from title top to slideshow bottom
+          const totalContentHeight = slideshowRect.bottom - titleRect.top;
+          
+          // Scenario A: Can fit all content (title + subtitle + slideshow)
+          if (availableHeight >= totalContentHeight + 40) {
+            // Center the entire content in the available space
+            const titleTop = titleRect.top + window.scrollY;
+            const slideshowBottom = slideshowRect.bottom + window.scrollY;
+            const contentCenter = titleTop + ((slideshowBottom - titleTop) / 2);
+            const desiredCenterY = topOffset + (availableHeight / 2);
+            targetScrollPosition = Math.max(0, contentCenter - desiredCenterY);
+          } else {
+            // Scenario B: Can't fit all, just center the slideshow alone
+            const slideshowTop = slideshowRect.top + window.scrollY;
+            const slideshowHeight = slideshowRect.height;
+            const slideshowCenter = slideshowTop + (slideshowHeight / 2);
+            const desiredCenterY = topOffset + (availableHeight / 2);
+            targetScrollPosition = Math.max(0, slideshowCenter - desiredCenterY);
+          }
+        } else if (titleEl) {
+          // Fallback to simple positioning
+          const titleTop = titleEl.getBoundingClientRect().top + window.scrollY;
+          targetScrollPosition = titleTop - topOffset - 20;
         }
       } else {
         // For individual books: ensure full book cover is visible
