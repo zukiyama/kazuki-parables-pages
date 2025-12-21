@@ -232,47 +232,31 @@ const Index = () => {
         <div
           className={`relative w-full overflow-hidden border-t border-amber-200/50 bg-[#F5EBD8] magazine-slide ${showCirclesBanner ? "visible" : ""}`}
         >
-          {/* Drifting circles background - matching single cover palette with transparency overlap */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ mixBlendMode: 'multiply' }}>
-            {/* Far left - Orange */}
-            <div className="absolute -left-28 top-[15%] w-56 h-56 rounded-full bg-[hsla(25,85%,55%,0.7)] animate-circle-drift-1"></div>
+          {/* Bokeh circles background */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none bokeh-blur">
+            {/* Large circles at edges */}
+            <div className="absolute -left-20 top-1/4 w-56 h-56 rounded-full bg-[hsla(25,85%,72%,0.35)] animate-drift-1"></div>
+            <div className="absolute -right-16 top-1/3 w-48 h-48 rounded-full bg-[hsla(15,80%,70%,0.32)] animate-drift-2"></div>
             
-            {/* Left area - Coral */}
-            <div className="absolute left-[5%] -bottom-12 w-44 h-44 rounded-full bg-[hsla(350,70%,58%,0.6)] animate-circle-drift-2"></div>
+            {/* Top edge circles */}
+            <div className="absolute left-1/4 -top-12 w-40 h-40 rounded-full bg-[hsla(20,75%,68%,0.28)] animate-drift-3"></div>
+            <div className="absolute right-1/4 -top-8 w-44 h-44 rounded-full bg-[hsla(30,80%,74%,0.30)] animate-drift-4"></div>
             
-            {/* Left-center top - Teal (partially visible) */}
-            <div className="absolute left-[18%] -top-24 w-52 h-52 rounded-full bg-[hsla(180,55%,48%,0.55)] animate-circle-drift-3"></div>
+            {/* Bottom edge circles */}
+            <div className="absolute left-1/3 -bottom-16 w-52 h-52 rounded-full bg-[hsla(18,78%,71%,0.33)] animate-drift-5"></div>
+            <div className="absolute right-1/3 -bottom-10 w-36 h-36 rounded-full bg-[hsla(22,82%,69%,0.25)] animate-drift-6"></div>
             
-            {/* Between orange and teal - warm Pink/Coral */}
-            <div className="absolute left-[2%] top-[5%] w-40 h-40 rounded-full bg-[hsla(15,75%,60%,0.6)] animate-circle-drift-9"></div>
+            {/* Medium circles at corners */}
+            <div className="absolute left-[15%] bottom-[20%] w-32 h-32 rounded-full bg-[hsla(28,76%,73%,0.30)] animate-drift-7"></div>
+            <div className="absolute right-[18%] top-[25%] w-36 h-36 rounded-full bg-[hsla(12,84%,67%,0.28)] animate-drift-8"></div>
             
-            {/* Right of center top - Pink */}
-            <div className="absolute right-[22%] -top-16 w-40 h-40 rounded-full bg-[hsla(340,65%,55%,0.5)] animate-circle-drift-4"></div>
+            {/* Small accent circles */}
+            <div className="absolute left-[40%] top-[15%] w-24 h-24 rounded-full bg-[hsla(35,70%,75%,0.35)] animate-drift-1"></div>
+            <div className="absolute right-[35%] bottom-[25%] w-28 h-28 rounded-full bg-[hsla(8,85%,72%,0.32)] animate-drift-3"></div>
             
-            {/* Right area top - Blue */}
-            <div className="absolute right-[8%] top-[5%] w-48 h-48 rounded-full bg-[hsla(215,60%,52%,0.65)] animate-circle-drift-5"></div>
-            
-            {/* Far right mid - Teal overlapping blue */}
-            <div className="absolute -right-12 top-[30%] w-44 h-44 rounded-full bg-[hsla(175,50%,48%,0.6)] animate-circle-drift-6"></div>
-            
-            {/* Right bottom - Purple */}
-            <div className="absolute right-[12%] -bottom-20 w-56 h-56 rounded-full bg-[hsla(300,40%,50%,0.6)] animate-circle-drift-7"></div>
-            
-            {/* Far right bottom - Orange */}
-            <div className="absolute -right-24 -bottom-8 w-52 h-52 rounded-full bg-[hsla(30,80%,52%,0.55)] animate-circle-drift-8"></div>
-            
-            {/* Additional circles for variety */}
-            {/* Small teal - center left */}
-            <div className="absolute left-[30%] top-[45%] w-28 h-28 rounded-full bg-[hsla(185,50%,52%,0.5)] animate-circle-drift-1"></div>
-            
-            {/* Medium coral - upper center */}
-            <div className="absolute left-[42%] -top-10 w-36 h-36 rounded-full bg-[hsla(10,70%,58%,0.45)] animate-circle-drift-4"></div>
-            
-            {/* Small purple - bottom left */}
-            <div className="absolute left-[15%] bottom-[8%] w-32 h-32 rounded-full bg-[hsla(280,45%,55%,0.5)] animate-circle-drift-7"></div>
-            
-            {/* Large soft blue - far left bottom */}
-            <div className="absolute -left-20 bottom-[5%] w-48 h-48 rounded-full bg-[hsla(200,55%,55%,0.45)] animate-circle-drift-5"></div>
+            {/* Far corner circles */}
+            <div className="absolute -left-8 -bottom-12 w-44 h-44 rounded-full bg-[hsla(20,80%,70%,0.38)] animate-drift-6"></div>
+            <div className="absolute -right-12 -top-8 w-40 h-40 rounded-full bg-[hsla(32,75%,68%,0.30)] animate-drift-2"></div>
           </div>
 
           <Link to="/music" className="group relative z-10 block w-full py-10 md:py-14">
