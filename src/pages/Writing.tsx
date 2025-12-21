@@ -402,8 +402,8 @@ const Writing = () => {
   const handlePageClick = useCallback((e: React.MouseEvent) => {
     if (!isWidescreen) return;
     
-    // At the very top of the page, don't allow hiding the banner
-    if (window.scrollY <= 10) return;
+    // At or near the top of the page, don't allow hiding the banner
+    if (window.scrollY <= 50) return;
     
     // Don't toggle if clicking on interactive elements
     const target = e.target as HTMLElement;
@@ -430,8 +430,8 @@ const Writing = () => {
     const handleScrollForBanner = () => {
       const scrollTop = window.scrollY;
       
-      // If at the very top (within 10px), show banner
-      if (scrollTop <= 10) {
+      // If at or near the top (within 50px), show banner
+      if (scrollTop <= 50) {
         setBannerVisible(true);
       } else if (scrollTop > lastScrollY && scrollTop > 50) {
         // Scrolling down and past initial area - hide banner
@@ -478,8 +478,8 @@ const Writing = () => {
       } else {
         // Cursor is outside banner area
         if (!cursorWasOutsideBannerRef.current) {
-          // Cursor just LEFT the banner area - hide banner (but not if at top of page)
-          if (window.scrollY > 10) {
+          // Cursor just LEFT the banner area - hide banner (but not if at/near top of page)
+          if (window.scrollY > 50) {
             setBannerVisible(false);
           }
         }
