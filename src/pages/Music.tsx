@@ -243,6 +243,11 @@ const Music = () => {
   // Zoom dialog for album covers
   const [isZoomDialogOpen, setIsZoomDialogOpen] = useState(false);
   
+  // Widescreen banner behavior (matching Writing page)
+  const [bannerVisible, setBannerVisible] = useState(true);
+  const cursorWasOutsideBannerRef = useRef(true);
+  const bannerClickedRef = useRef(false);
+  
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
@@ -301,6 +306,102 @@ const Music = () => {
       }
     }
   }, [selectedAlbum.id]);
+
+  // Widescreen only: Auto-show banner at top of page, hide on scroll down
+  useEffect(() => {
+    if (!isWidescreen) return;
+
+    let lastScrollY = window.scrollY;
+
+    const handleScrollForBanner = () => {
+      const scrollTop = window.scrollY;
+      
+      // If at the very top (within 10px), show banner
+      if (scrollTop <= 10) {
+        setBannerVisible(true);
+      } else if (scrollTop > lastScrollY && scrollTop > 50) {
+        // Scrolling down and past initial area - hide banner
+        setBannerVisible(false);
+      }
+      
+      lastScrollY = scrollTop;
+    };
+
+    window.addEventListener('scroll', handleScrollForBanner, { passive: true });
+    // Check initial position
+    handleScrollForBanner();
+    
+    return () => window.removeEventListener('scroll', handleScrollForBanner);
+  }, [isWidescreen]);
+
+  // Widescreen only: Show banner when mouse ENTERS banner area from outside, hide when it leaves
+  useEffect(() => {
+    if (!isWidescreen) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      // Get the header/nav height
+      const nav = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
+      const navBottom = nav ? nav.getBoundingClientRect().bottom : 64;
+      
+      // Banner area is from nav bottom to approximately 100px below it (banner height)
+      const bannerAreaTop = navBottom;
+      const bannerAreaBottom = navBottom + 100;
+      
+      const isInBannerArea = e.clientY >= bannerAreaTop && e.clientY <= bannerAreaBottom;
+      
+      if (isInBannerArea) {
+        // Only show banner if cursor ENTERED from outside AND banner wasn't just clicked
+        if (cursorWasOutsideBannerRef.current && !bannerClickedRef.current && !bannerVisible) {
+          setBannerVisible(true);
+        }
+        cursorWasOutsideBannerRef.current = false;
+        bannerClickedRef.current = false;
+      } else {
+        // Cursor is outside banner area
+        if (!cursorWasOutsideBannerRef.current) {
+          // Cursor just LEFT the banner area - hide banner (but not if at top of page)
+          if (window.scrollY > 10) {
+            setBannerVisible(false);
+          }
+        }
+        cursorWasOutsideBannerRef.current = true;
+        bannerClickedRef.current = false;
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [isWidescreen, bannerVisible]);
+
+  // Handle click to toggle banner on widescreen devices
+  const handlePageClick = (e: React.MouseEvent) => {
+    if (!isWidescreen) return;
+    
+    // At the very top of the page, don't allow hiding the banner
+    if (window.scrollY <= 10) return;
+    
+    // Don't toggle if clicking on interactive elements
+    const target = e.target as HTMLElement;
+    if (
+      target.closest('button') ||
+      target.closest('a') ||
+      target.closest('nav') ||
+      target.closest('[role="button"]') ||
+      target.closest('.fixed.top-16')
+    ) {
+      return;
+    }
+    
+    setBannerVisible(prev => !prev);
+  };
+
+  // Callback for when an album in banner is clicked (to prevent flickering)
+  const handleBannerAlbumClick = () => {
+    bannerClickedRef.current = true;
+    cursorWasOutsideBannerRef.current = false;
+    setBannerVisible(false);
+  };
 
   const handleAlbumSelect = async (albumId: number) => {
     const album = albums.find(a => a.id === albumId);
@@ -365,15 +466,27 @@ const Music = () => {
     }, 800); // Match CSS transition duration
   };
 
+  // Wrap album select to also handle banner hiding on widescreen
+  const handleAlbumSelectWithBanner = (albumId: number) => {
+    if (isWidescreen) {
+      handleBannerAlbumClick();
+    }
+    handleAlbumSelect(albumId);
+  };
+
   return (
-    <div className="min-h-screen bg-slate-900 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-900 relative overflow-hidden" onClick={handlePageClick}>
       <Navigation />
       
       {/* Album Banner - Fixed at top */}  
-      <div className="fixed top-16 left-0 right-0 z-20">
+      <div 
+        className={`fixed top-16 left-0 right-0 z-20 transition-all duration-300 ${
+          isWidescreen && !bannerVisible ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
+        }`}
+      >
         <AlbumBanner 
           selectedAlbumId={selectedAlbum.id}
-          onAlbumClick={handleAlbumSelect}
+          onAlbumClick={handleAlbumSelectWithBanner}
         />
       </div>
       
