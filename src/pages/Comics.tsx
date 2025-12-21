@@ -662,18 +662,21 @@ const Comics = () => {
             {/* Comic images - smaller hover scale on tablet mobile to prevent overlap */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 xs:gap-4 sm:gap-4 lg:gap-6 max-w-4xl mx-auto">
               {smallShelfComics.map((comic, index) => (
-              <div 
+                <div 
                   key={comic.title} 
-                  className={`cursor-pointer transition-transform duration-150 ease-out hover:scale-[1.02] xs:hover:scale-[1.03] sm:hover:scale-105 hover:shadow-2xl overflow-visible ${
+                  className={`cursor-pointer overflow-visible ${
                     visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  } ${visibleRows.has('row1') ? 'transition-all' : ''}`}
-                  style={{ transitionDelay: visibleRows.has('row1') ? `${index * 100}ms` : '0ms' }}
+                  }`}
+                  style={{ 
+                    transition: 'opacity 0.7s ease, transform 0.7s ease',
+                    transitionDelay: visibleRows.has('row1') ? `${index * 100}ms` : '0ms' 
+                  }}
                   onClick={() => handleComicClick(comic)}
                 >
                   <img 
                     src={comic.cover}
                     alt={`${comic.title} comic cover`}
-                    className="w-full shadow-lg"
+                    className="w-full shadow-lg transition-transform duration-200 ease-out hover:scale-[1.02] xs:hover:scale-[1.03] sm:hover:scale-105"
                     loading="lazy"
                   />
                 </div>
