@@ -218,11 +218,8 @@ const Index = () => {
           className={`relative w-full overflow-hidden border-t border-amber-200/50 bg-[#FDF6E8] magazine-slide ${showCirclesBanner ? "visible" : ""}`}
         >
           {/* Bokeh circles background - colors matching Circles single cover */}
-          {/* Scroll-reactive parallax wrapper */}
-          <div 
-            className="absolute inset-0 overflow-hidden pointer-events-none transition-transform duration-200 ease-out"
-            style={{ transform: `translateY(${-scrollVelocity * 0.8}px)` }}
-          >
+          {/* Each circle has individual scroll-reactive parallax */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
             {/* Large circles at edges - Orange - higher sensitivity */}
             <div 
               className="absolute -left-24 top-[10%] w-56 h-56 rounded-full bg-[hsl(25,95%,55%,0.35)] bokeh-blur animate-drift-1 transition-transform duration-150 ease-out"
