@@ -234,29 +234,32 @@ const Index = () => {
         >
           {/* Static circles background - matching single cover palette with transparency overlap */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ mixBlendMode: 'multiply' }}>
-            {/* Large circles at left edge - Orange */}
-            <div className="absolute -left-20 top-[5%] w-64 h-64 rounded-full bg-[hsla(25,85%,55%,0.7)]"></div>
-            {/* Coral overlapping with orange */}
-            <div className="absolute -left-8 top-[25%] w-48 h-48 rounded-full bg-[hsla(350,70%,58%,0.6)]"></div>
+            {/* Far left - Orange */}
+            <div className="absolute -left-28 top-[15%] w-56 h-56 rounded-full bg-[hsla(25,85%,55%,0.7)]"></div>
             
-            {/* Right side cluster - Blue */}
-            <div className="absolute -right-16 top-[10%] w-56 h-56 rounded-full bg-[hsla(215,60%,52%,0.65)]"></div>
-            {/* Teal overlapping */}
-            <div className="absolute -right-4 top-[35%] w-40 h-40 rounded-full bg-[hsla(175,50%,48%,0.6)]"></div>
+            {/* Left area - Coral */}
+            <div className="absolute left-[5%] -bottom-12 w-44 h-44 rounded-full bg-[hsla(350,70%,58%,0.6)]"></div>
             
-            {/* Bottom left - Pink */}
-            <div className="absolute -left-12 -bottom-8 w-52 h-52 rounded-full bg-[hsla(340,65%,55%,0.65)]"></div>
+            {/* Left-center top - Teal (partially visible) */}
+            <div className="absolute left-[18%] -top-24 w-52 h-52 rounded-full bg-[hsla(180,55%,48%,0.55)]"></div>
             
-            {/* Bottom right cluster - Purple */}
-            <div className="absolute -right-20 -bottom-12 w-60 h-60 rounded-full bg-[hsla(300,40%,50%,0.6)]"></div>
-            {/* Orange overlapping */}
-            <div className="absolute right-[8%] -bottom-16 w-44 h-44 rounded-full bg-[hsla(30,80%,52%,0.55)]"></div>
+            {/* Right of center top - Pink */}
+            <div className="absolute right-[22%] -top-16 w-40 h-40 rounded-full bg-[hsla(340,65%,55%,0.5)]"></div>
             
-            {/* Top edge accent - Teal */}
-            <div className="absolute left-[8%] -top-20 w-48 h-48 rounded-full bg-[hsla(180,55%,48%,0.6)]"></div>
+            {/* Right area top - Blue */}
+            <div className="absolute right-[8%] top-[5%] w-48 h-48 rounded-full bg-[hsla(215,60%,52%,0.65)]"></div>
             
-            {/* Right edge mid - Blue overlapping with coral */}
-            <div className="absolute -right-10 bottom-[35%] w-36 h-36 rounded-full bg-[hsla(220,55%,50%,0.55)]"></div>
+            {/* Far right mid - Teal overlapping blue */}
+            <div className="absolute -right-12 top-[30%] w-44 h-44 rounded-full bg-[hsla(175,50%,48%,0.6)]"></div>
+            
+            {/* Right bottom - Purple */}
+            <div className="absolute right-[12%] -bottom-20 w-56 h-56 rounded-full bg-[hsla(300,40%,50%,0.6)]"></div>
+            
+            {/* Far right bottom - Orange */}
+            <div className="absolute -right-24 -bottom-8 w-52 h-52 rounded-full bg-[hsla(30,80%,52%,0.55)]"></div>
+            
+            {/* Left bottom corner - Blue */}
+            <div className="absolute -left-16 bottom-[20%] w-40 h-40 rounded-full bg-[hsla(220,55%,50%,0.55)]"></div>
           </div>
 
           <Link to="/music" className="group relative z-10 block w-full py-10 md:py-14">
