@@ -22,9 +22,9 @@ interface CirclePhysicsResult {
 }
 
 const defaultConfig: PhysicsConfig = {
-  returnStrength: 0.003,
-  damping: 0.985,
-  scrollForceMultiplier: 0.4,
+  returnStrength: 0.002,      // Gentler pull back to drift
+  damping: 0.992,             // More momentum, slower decay
+  scrollForceMultiplier: 0.6, // More reactive to scroll
 };
 
 export function useCirclePhysics(
@@ -46,15 +46,15 @@ export function useCirclePhysics(
     isSettled: true,
   });
   
-  // Initialize circles with varied drift parameters
+  // Initialize circles with varied drift parameters - more relaxed, larger range
   useEffect(() => {
     circles.current = sensitivities.map((sensitivity) => ({
       y: 0,
       vy: 0,
       basePhase: Math.random() * Math.PI * 2,           // Random starting phase
-      baseSpeed: 0.0004 + Math.random() * 0.0003,       // Slow drift speed (varies)
-      baseAmplitude: 8 + Math.random() * 12,            // Drift range 8-20px
-      mass: 0.7 + Math.random() * 0.6,                  // Mass variation
+      baseSpeed: 0.00025 + Math.random() * 0.00025,     // Slower, more relaxed drift
+      baseAmplitude: 20 + Math.random() * 35,           // Much larger drift range 20-55px
+      mass: 0.6 + Math.random() * 0.8,                  // Varied mass
       sensitivity,
     }));
   }, [sensitivities.length]);
@@ -79,14 +79,14 @@ export function useCirclePhysics(
       circle.vy *= cfg.damping;
       
       // Clamp max velocity to prevent flying off
-      const maxVel = 12;
+      const maxVel = 8;
       circle.vy = Math.max(-maxVel, Math.min(maxVel, circle.vy));
       
       // Update position
       circle.y += circle.vy;
       
-      // Clamp max offset
-      const maxOffset = 60;
+      // Clamp max offset - larger range for relaxed movement
+      const maxOffset = 80;
       circle.y = Math.max(-maxOffset, Math.min(maxOffset, circle.y));
       
       // Track how far from natural state (for isSettled detection)
