@@ -266,12 +266,10 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
                   width="64"
                   height="96"
                   loading="eager"
-                  className={`rounded shadow-lg transition-all duration-300 group-hover:shadow-xl object-contain w-16 h-auto max-sm:w-10 max-sm:max-h-none ${
+                  className={`rounded shadow-lg transition-all duration-200 group-hover:shadow-xl object-contain w-16 h-auto max-sm:w-10 max-sm:max-h-none ${
                     activeBook === book.id
                       ? 'scale-110 shadow-xl shadow-yellow-300/30 ring-2 ring-yellow-300/50'
-                      : hoveredBook === book.id 
-                        ? 'scale-125 shadow-2xl shadow-yellow-300/20' 
-                        : 'hover:scale-110'
+                      : 'hover:scale-110'
                   }`}
                 />
                 
