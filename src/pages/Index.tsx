@@ -190,20 +190,20 @@ const Index = () => {
             <img 
               src={parableEyeBackground}
               alt=""
-              className="w-full h-full object-cover scale-150 translate-y-12 opacity-0 animate-slow-fade-in-50"
+              className="w-full h-full object-cover scale-150 translate-y-16 opacity-0 animate-slow-fade-in-50"
             />
           </div>
           <ScrollFadeUp id="book-announcement" className="text-center mb-8 relative z-10">
-            <h2 className="font-heading text-3xl md:text-5xl mb-4" style={{ color: '#2d1b1b' }}>
+            <h2 className="font-heading text-3xl md:text-5xl mb-4 text-black">
               Book One of The Parable Trilogy
             </h2>
-            <h3 className="font-heading text-4xl md:text-6xl font-bold text-primary">
+            <h3 className="font-heading text-4xl md:text-6xl font-bold text-black">
               KAIJU
             </h3>
-            <p className="font-handwriting text-3xl md:text-4xl text-primary mt-6 inline-block rotate-[-2deg] handwriting-write">
+            <p className="font-handwriting text-3xl md:text-4xl text-black mt-6 inline-block rotate-[-2deg] handwriting-write">
               A metaphysical fantasy
             </p>
-            <p className="font-body text-xl text-muted-foreground mt-6">
+            <p className="font-body text-xl text-black mt-6">
               Coming Soon
             </p>
           </ScrollFadeUp>
