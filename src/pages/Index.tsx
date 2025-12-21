@@ -218,113 +218,113 @@ const Index = () => {
           className={`relative w-full overflow-hidden border-t border-amber-200/50 bg-[#FDF6E8] magazine-slide ${showCirclesBanner ? "visible" : ""}`}
         >
           {/* Bokeh circles background - colors matching Circles single cover */}
-          {/* Each circle has individual scroll-reactive parallax */}
+          {/* Each circle has individual scroll-reactive parallax - animations pause during scrolling */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {/* Large circles at edges - Orange - higher sensitivity */}
+            {/* Large circles at edges - Orange */}
             <div 
-              className="absolute -left-24 top-[10%] w-56 h-56 rounded-full bg-[hsl(25,95%,55%,0.35)] bokeh-blur animate-drift-1 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.3}px)` }}
+              className={`absolute -left-24 top-[10%] w-56 h-56 rounded-full bg-[hsl(25,95%,55%,0.35)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-1' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 2.5}px)` }}
             ></div>
             {/* Coral/Pink */}
             <div 
-              className="absolute -left-16 bottom-[5%] w-44 h-44 rounded-full bg-[hsl(350,75%,60%,0.30)] bokeh-blur animate-drift-4 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.5}px)` }}
+              className={`absolute -left-16 bottom-[5%] w-44 h-44 rounded-full bg-[hsl(350,75%,60%,0.30)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-4' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 4}px)` }}
             ></div>
             {/* Teal */}
             <div 
-              className="absolute left-[2%] top-[60%] w-36 h-36 rounded-full bg-[hsl(180,55%,50%,0.32)] bokeh-blur animate-drift-7 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.2}px)` }}
+              className={`absolute left-[2%] top-[60%] w-36 h-36 rounded-full bg-[hsl(180,55%,50%,0.32)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-7' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 1.8}px)` }}
             ></div>
             
             {/* Blue */}
             <div 
-              className="absolute -right-20 top-[20%] w-52 h-52 rounded-full bg-[hsl(215,65%,55%,0.33)] bokeh-blur animate-drift-2 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.4}px)` }}
+              className={`absolute -right-20 top-[20%] w-52 h-52 rounded-full bg-[hsl(215,65%,55%,0.33)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-2' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 3.2}px)` }}
             ></div>
             {/* Purple */}
             <div 
-              className="absolute -right-28 bottom-[15%] w-60 h-60 rounded-full bg-[hsl(320,45%,50%,0.28)] bokeh-blur animate-drift-5 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.35}px)` }}
+              className={`absolute -right-28 bottom-[15%] w-60 h-60 rounded-full bg-[hsl(320,45%,50%,0.28)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-5' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 2.8}px)` }}
             ></div>
             {/* Orange */}
             <div 
-              className="absolute right-[3%] top-[5%] w-40 h-40 rounded-full bg-[hsl(30,90%,55%,0.30)] bokeh-blur animate-drift-8 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.25}px)` }}
+              className={`absolute right-[3%] top-[5%] w-40 h-40 rounded-full bg-[hsl(30,90%,55%,0.30)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-8' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 2}px)` }}
             ></div>
             
             {/* Top edge circles - Coral */}
             <div 
-              className="absolute left-[15%] -top-16 w-48 h-48 rounded-full bg-[hsl(5,80%,65%,0.32)] bokeh-blur animate-drift-3 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.45}px)` }}
+              className={`absolute left-[15%] -top-16 w-48 h-48 rounded-full bg-[hsl(5,80%,65%,0.32)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-3' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 3.5}px)` }}
             ></div>
             {/* Teal */}
             <div 
-              className="absolute right-[25%] -top-12 w-40 h-40 rounded-full bg-[hsl(175,50%,48%,0.28)] bokeh-blur animate-drift-6 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.3}px)` }}
+              className={`absolute right-[25%] -top-12 w-40 h-40 rounded-full bg-[hsl(175,50%,48%,0.28)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-6' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 2.4}px)` }}
             ></div>
             
             {/* Bottom edge circles - Blue */}
             <div 
-              className="absolute left-[20%] -bottom-20 w-52 h-52 rounded-full bg-[hsl(220,60%,50%,0.30)] bokeh-blur animate-drift-1 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.4}px)` }}
+              className={`absolute left-[20%] -bottom-20 w-52 h-52 rounded-full bg-[hsl(220,60%,50%,0.30)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-1' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 3}px)` }}
             ></div>
             {/* Pink */}
             <div 
-              className="absolute right-[18%] -bottom-16 w-44 h-44 rounded-full bg-[hsl(340,70%,58%,0.32)] bokeh-blur animate-drift-4 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.35}px)` }}
+              className={`absolute right-[18%] -bottom-16 w-44 h-44 rounded-full bg-[hsl(340,70%,58%,0.32)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-4' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 2.6}px)` }}
             ></div>
             
             {/* Medium circles at corners - Purple */}
             <div 
-              className="absolute left-[8%] top-[25%] w-28 h-28 rounded-full bg-[hsl(310,40%,52%,0.35)] bokeh-blur animate-drift-5 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.2}px)` }}
+              className={`absolute left-[8%] top-[25%] w-28 h-28 rounded-full bg-[hsl(310,40%,52%,0.35)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-5' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 1.6}px)` }}
             ></div>
             {/* Orange */}
             <div 
-              className="absolute right-[6%] bottom-[40%] w-32 h-32 rounded-full bg-[hsl(28,92%,52%,0.33)] bokeh-blur animate-drift-2 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.25}px)` }}
+              className={`absolute right-[6%] bottom-[40%] w-32 h-32 rounded-full bg-[hsl(28,92%,52%,0.33)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-2' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 2}px)` }}
             ></div>
             {/* Teal */}
             <div 
-              className="absolute left-[5%] bottom-[30%] w-24 h-24 rounded-full bg-[hsl(185,55%,48%,0.30)] bokeh-blur animate-drift-8 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.15}px)` }}
+              className={`absolute left-[5%] bottom-[30%] w-24 h-24 rounded-full bg-[hsl(185,55%,48%,0.30)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-8' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 1.2}px)` }}
             ></div>
             {/* Blue */}
             <div 
-              className="absolute right-[8%] top-[55%] w-28 h-28 rounded-full bg-[hsl(210,60%,52%,0.32)] bokeh-blur animate-drift-3 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.3}px)` }}
+              className={`absolute right-[8%] top-[55%] w-28 h-28 rounded-full bg-[hsl(210,60%,52%,0.32)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-3' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 2.2}px)` }}
             ></div>
             
             {/* Small accent circles - Pink */}
             <div 
-              className="absolute left-[3%] top-[40%] w-20 h-20 rounded-full bg-[hsl(345,72%,62%,0.38)] bokeh-blur animate-drift-6 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.1}px)` }}
+              className={`absolute left-[3%] top-[40%] w-20 h-20 rounded-full bg-[hsl(345,72%,62%,0.38)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-6' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 0.8}px)` }}
             ></div>
             {/* Orange */}
             <div 
-              className="absolute right-[4%] top-[35%] w-20 h-20 rounded-full bg-[hsl(35,88%,58%,0.35)] bokeh-blur animate-drift-7 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.2}px)` }}
+              className={`absolute right-[4%] top-[35%] w-20 h-20 rounded-full bg-[hsl(35,88%,58%,0.35)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-7' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 1.5}px)` }}
             ></div>
             {/* Purple */}
             <div 
-              className="absolute left-[10%] bottom-[8%] w-16 h-16 rounded-full bg-[hsl(315,42%,55%,0.36)] bokeh-blur animate-drift-1 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.15}px)` }}
+              className={`absolute left-[10%] bottom-[8%] w-16 h-16 rounded-full bg-[hsl(315,42%,55%,0.36)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-1' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 1}px)` }}
             ></div>
             {/* Coral */}
             <div 
-              className="absolute right-[12%] bottom-[5%] w-20 h-20 rounded-full bg-[hsl(10,75%,60%,0.34)] bokeh-blur animate-drift-4 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.25}px)` }}
+              className={`absolute right-[12%] bottom-[5%] w-20 h-20 rounded-full bg-[hsl(10,75%,60%,0.34)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-4' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 1.8}px)` }}
             ></div>
             
             {/* Far corner circles - Blue */}
             <div 
-              className="absolute -left-10 top-[45%] w-32 h-32 rounded-full bg-[hsl(225,55%,55%,0.25)] bokeh-blur animate-drift-2 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.35}px)` }}
+              className={`absolute -left-10 top-[45%] w-32 h-32 rounded-full bg-[hsl(225,55%,55%,0.25)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-2' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 2.8}px)` }}
             ></div>
             {/* Teal */}
             <div 
-              className="absolute -right-14 top-[65%] w-36 h-36 rounded-full bg-[hsl(178,52%,52%,0.28)] bokeh-blur animate-drift-5 transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(${-scrollVelocity * 0.4}px)` }}
+              className={`absolute -right-14 top-[65%] w-36 h-36 rounded-full bg-[hsl(178,52%,52%,0.28)] bokeh-blur transition-transform duration-300 ease-out ${Math.abs(scrollVelocity) < 0.5 ? 'animate-drift-5' : ''}`}
+              style={{ transform: `translateY(${-scrollVelocity * 3.2}px)` }}
             ></div>
           </div>
 
