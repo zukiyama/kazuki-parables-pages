@@ -898,6 +898,43 @@
   animation: slow-fade-in-40 5s ease-out forwards;
 }
 
+/* Word by word fade in animation for About page */
+@keyframes word-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-word-fade-1 {
+  animation: word-fade-in 0.8s ease-out forwards;
+  animation-delay: 0s;
+}
+
+.animate-word-fade-2 {
+  animation: word-fade-in 0.8s ease-out forwards;
+  animation-delay: 0.5s;
+}
+
+.animate-word-fade-3 {
+  animation: word-fade-in 0.8s ease-out forwards;
+  animation-delay: 1s;
+}
+
+.animate-word-fade-4 {
+  animation: word-fade-in 0.8s ease-out forwards;
+  animation-delay: 1.5s;
+}
+
+.animate-word-fade-5 {
+  animation: word-fade-in 0.8s ease-out forwards;
+  animation-delay: 2s;
+}
+
 /* Circle drift animations - slow vertical bobbing at different phases */
 @keyframes circle-drift {
   0%, 100% {

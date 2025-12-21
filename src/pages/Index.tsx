@@ -260,6 +260,19 @@ const Index = () => {
             
             {/* Far right bottom - Orange */}
             <div className="absolute -right-24 -bottom-8 w-52 h-52 rounded-full bg-[hsla(30,80%,52%,0.55)] animate-circle-drift-8"></div>
+            
+            {/* Additional circles for variety */}
+            {/* Small teal - center left */}
+            <div className="absolute left-[30%] top-[45%] w-28 h-28 rounded-full bg-[hsla(185,50%,52%,0.5)] animate-circle-drift-1"></div>
+            
+            {/* Medium coral - upper center */}
+            <div className="absolute left-[42%] -top-10 w-36 h-36 rounded-full bg-[hsla(10,70%,58%,0.45)] animate-circle-drift-4"></div>
+            
+            {/* Small purple - bottom left */}
+            <div className="absolute left-[15%] bottom-[8%] w-32 h-32 rounded-full bg-[hsla(280,45%,55%,0.5)] animate-circle-drift-7"></div>
+            
+            {/* Large soft blue - far left bottom */}
+            <div className="absolute -left-20 bottom-[5%] w-48 h-48 rounded-full bg-[hsla(200,55%,55%,0.45)] animate-circle-drift-5"></div>
           </div>
 
           <Link to="/music" className="group relative z-10 block w-full py-10 md:py-14">
