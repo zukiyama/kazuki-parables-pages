@@ -936,6 +936,16 @@
 }
 
 /* Slower word fade animations for About page */
+.animate-word-fade-slow-1,
+.animate-word-fade-slow-2,
+.animate-word-fade-slow-3,
+.animate-word-fade-slow-4,
+.animate-word-fade-slow-5 {
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
 .animate-word-fade-slow-1 {
   animation: word-fade-in 1.2s ease-out forwards;
   animation-delay: 0s;
