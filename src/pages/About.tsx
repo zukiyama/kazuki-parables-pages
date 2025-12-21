@@ -164,14 +164,15 @@ const About = () => {
             {/* Desktop text at bottom right - word by word fade in - hidden on mobile */}
             <div 
               data-scroll-animation="bottom-right-text"
-              className={`absolute bottom-[18%] right-[14%] pointer-events-auto max-sm:hidden z-30 ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
+              className={`absolute bottom-[18%] right-[14%] pointer-events-auto max-sm:hidden z-30 overflow-visible ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
+              style={{ transform: 'translateZ(0)' }}
             >
-              <div className="font-body text-3xl lg:text-4xl text-white italic flex flex-col items-end tracking-wide">
-                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-1" : ""}`} style={{ marginRight: '20px' }}>None</span>
-                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-2" : ""}`} style={{ marginRight: '-5px', marginTop: '14px' }}>of</span>
-                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-3" : ""}`} style={{ marginRight: '25px', marginTop: '16px' }}>this</span>
-                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-4" : ""}`} style={{ marginRight: '-10px', marginTop: '12px' }}>is</span>
-                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-5" : ""}`} style={{ marginRight: '15px', marginTop: '18px' }}>real</span>
+              <div className="font-body text-3xl lg:text-4xl text-white italic flex flex-col items-end tracking-wide overflow-visible">
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-1" : ""}`} style={{ marginRight: '20px', transform: 'translateZ(0)' }}>None</span>
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-2" : ""}`} style={{ marginRight: '-5px', marginTop: '14px', transform: 'translateZ(0)' }}>of</span>
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-3" : ""}`} style={{ marginRight: '25px', marginTop: '16px', transform: 'translateZ(0)' }}>this</span>
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-4" : ""}`} style={{ marginRight: '-10px', marginTop: '12px', transform: 'translateZ(0)' }}>is</span>
+                <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-5" : ""}`} style={{ marginRight: '15px', marginTop: '22px', transform: 'translateZ(0)' }}>real</span>
               </div>
             </div>
             
