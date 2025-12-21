@@ -29,6 +29,7 @@ const Comics = () => {
   const [showBusStopSection, setShowBusStopSection] = useState(false);
   const [showPendragon, setShowPendragon] = useState(false);
   const [showPendragonCaption, setShowPendragonCaption] = useState(false);
+  const [pendragonCaptionVisible, setPendragonCaptionVisible] = useState(true); // tap toggle state (like godOfLiesDescriptionVisible)
   const [mobilePendragonExpanded, setMobilePendragonExpanded] = useState(false);
   const [pageReady, setPageReady] = useState(false);
   const [isNarrowPortrait, setIsNarrowPortrait] = useState(false); // 13-inch iPad portrait detection
@@ -551,14 +552,14 @@ const Comics = () => {
           <div className={`absolute bottom-0 left-0 right-0 h-1 bg-black ${isNarrowPortrait ? 'hidden' : 'hidden sm:block'}`} />
           
           {/* Slide-in caption panel from left - classy film magazine style - hidden on mobile */}
-          {/* Tapping anywhere on the Pendragon image toggles the caption */}
+          {/* Tapping anywhere on the Pendragon image toggles the caption visibility */}
           <div 
             className="absolute inset-0 cursor-pointer hidden sm:block"
-            onClick={() => setShowPendragonCaption(prev => !prev)}
+            onClick={() => setPendragonCaptionVisible(prev => !prev)}
           />
           <div 
             className={`absolute bottom-[8%] left-0 max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-5 sm:p-6 lg:p-8 transition-all duration-700 ease-out pointer-events-none hidden sm:block ${
-              showPendragonCaption 
+              showPendragonCaption && pendragonCaptionVisible
                 ? 'opacity-100 translate-x-0' 
                 : 'opacity-0 -translate-x-full'
             }`}
