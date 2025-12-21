@@ -346,10 +346,10 @@ const Comics = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-white overflow-x-hidden overflow-y-visible transition-opacity duration-300 ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
+    <div className={`min-h-screen bg-white overflow-x-hidden overflow-y-visible transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
       <Navigation />
 
-      <main className="relative z-10">
+      <main className="relative z-10 flex-1">
         {/* Header Banner - Original black style */}
         <header 
           ref={bannerSectionRef}
