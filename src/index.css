@@ -897,3 +897,57 @@
 .animate-slow-fade-in-40 {
   animation: slow-fade-in-40 5s ease-out forwards;
 }
+
+/* Circle drift animations - slow vertical bobbing at different phases */
+@keyframes circle-drift {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-circle-drift-1 {
+  animation: circle-drift 6s ease-in-out infinite;
+}
+
+.animate-circle-drift-2 {
+  animation: circle-drift 6s ease-in-out infinite;
+  animation-delay: -1s;
+}
+
+.animate-circle-drift-3 {
+  animation: circle-drift 6s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+.animate-circle-drift-4 {
+  animation: circle-drift 6s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+.animate-circle-drift-5 {
+  animation: circle-drift 6s ease-in-out infinite;
+  animation-delay: -4s;
+}
+
+.animate-circle-drift-6 {
+  animation: circle-drift 6s ease-in-out infinite;
+  animation-delay: -0.5s;
+}
+
+.animate-circle-drift-7 {
+  animation: circle-drift 6s ease-in-out infinite;
+  animation-delay: -2.5s;
+}
+
+.animate-circle-drift-8 {
+  animation: circle-drift 6s ease-in-out infinite;
+  animation-delay: -4.5s;
+}
+
+.animate-circle-drift-9 {
+  animation: circle-drift 6s ease-in-out infinite;
+  animation-delay: -1.5s;
+}
