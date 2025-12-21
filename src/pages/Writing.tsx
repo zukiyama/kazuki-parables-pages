@@ -418,16 +418,24 @@ const Writing = () => {
     setBannerVisible(prev => !prev);
   }, [isWidescreen]);
 
-  // Widescreen only: Auto-show banner at top of page
+  // Widescreen only: Auto-show banner at top of page, hide on scroll down
   useEffect(() => {
     if (!isWidescreen) return;
 
+    let lastScrollY = window.scrollY;
+
     const handleScrollForBanner = () => {
       const scrollTop = window.scrollY;
+      
       // If at the very top (within 10px), show banner
       if (scrollTop <= 10) {
         setBannerVisible(true);
+      } else if (scrollTop > lastScrollY && scrollTop > 50) {
+        // Scrolling down and past initial area - hide banner
+        setBannerVisible(false);
       }
+      
+      lastScrollY = scrollTop;
     };
 
     window.addEventListener('scroll', handleScrollForBanner, { passive: true });
@@ -437,14 +445,15 @@ const Writing = () => {
     return () => window.removeEventListener('scroll', handleScrollForBanner);
   }, [isWidescreen]);
 
-  // Widescreen only: Show banner when mouse enters banner area (when banner is hidden)
+  // Track if cursor was previously outside banner area (for enter detection)
+  const cursorWasOutsideBannerRef = useRef(true);
+  const bannerClickedRef = useRef(false); // Track if banner was just clicked
+
+  // Widescreen only: Show banner when mouse ENTERS banner area from outside, hide when it leaves
   useEffect(() => {
     if (!isWidescreen) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Only trigger if banner is currently hidden
-      if (bannerVisible) return;
-      
       // Get the header/nav height
       const nav = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
       const navBottom = nav ? nav.getBoundingClientRect().bottom : 64;
@@ -453,9 +462,24 @@ const Writing = () => {
       const bannerAreaTop = navBottom;
       const bannerAreaBottom = navBottom + 100; // Approximate banner height
       
-      // Check if mouse is in the banner area
-      if (e.clientY >= bannerAreaTop && e.clientY <= bannerAreaBottom) {
-        setBannerVisible(true);
+      const isInBannerArea = e.clientY >= bannerAreaTop && e.clientY <= bannerAreaBottom;
+      
+      if (isInBannerArea) {
+        // Only show banner if cursor ENTERED from outside AND banner wasn't just clicked
+        if (cursorWasOutsideBannerRef.current && !bannerClickedRef.current && !bannerVisible) {
+          setBannerVisible(true);
+        }
+        cursorWasOutsideBannerRef.current = false;
+        // Clear the click flag once we've processed a move inside
+        bannerClickedRef.current = false;
+      } else {
+        // Cursor is outside banner area
+        if (!cursorWasOutsideBannerRef.current) {
+          // Cursor just LEFT the banner area - hide banner
+          setBannerVisible(false);
+        }
+        cursorWasOutsideBannerRef.current = true;
+        bannerClickedRef.current = false; // Clear click flag when outside
       }
     };
 
@@ -463,6 +487,13 @@ const Writing = () => {
     
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [isWidescreen, bannerVisible]);
+
+  // Callback for when a book in banner is clicked (to prevent flickering)
+  const handleBannerBookClick = useCallback(() => {
+    bannerClickedRef.current = true;
+    cursorWasOutsideBannerRef.current = false; // Cursor is inside since we clicked there
+    setBannerVisible(false);
+  }, []);
 
   return (
     <div 
@@ -476,7 +507,8 @@ const Writing = () => {
         currentYoungAdultBook={currentYoungAdultBook}
         isWidescreen={isWidescreen}
         bannerVisible={bannerVisible}
-        onBannerHide={() => setBannerVisible(false)}
+        onBannerHide={handleBannerBookClick}
+        getHeaderBottom={getHeaderBottom}
       />
       
       {/* Stacked Background Images - All preloaded */}

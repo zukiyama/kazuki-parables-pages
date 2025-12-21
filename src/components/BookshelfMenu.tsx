@@ -95,9 +95,10 @@ interface BookshelfMenuProps {
   isWidescreen?: boolean;
   bannerVisible?: boolean;
   onBannerHide?: () => void; // Callback to hide banner on widescreen
+  getHeaderBottom?: () => number; // Get header bottom position for snap calculations
 }
 
-export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultBook = 0, isWidescreen = false, bannerVisible = true, onBannerHide }: BookshelfMenuProps) => {
+export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultBook = 0, isWidescreen = false, bannerVisible = true, onBannerHide, getHeaderBottom }: BookshelfMenuProps) => {
   const [hoveredBook, setHoveredBook] = useState<string | null>(null);
   
   // Determine which book should be highlighted based on visible sections
@@ -142,36 +143,33 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       const section = document.querySelector(`[data-section="${book.targetSection}"]`) as HTMLElement;
       if (!section) return;
 
-      // Get fixed elements
-      const navigation = document.querySelector('nav') as HTMLElement;
-      const navHeight = navigation?.offsetHeight || 64;
+      // Get fixed elements - use passed getHeaderBottom for widescreen, fallback otherwise
+      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
+      const headerBottom = getHeaderBottom ? getHeaderBottom() : 64;
       
       // For widescreen: ignore banner in calculations (snap is independent of banner)
-      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
-      const bookshelfMenu = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
-      const bannerHeight = (bookshelfMenu && !isWidescreenDevice) ? bookshelfMenu.offsetHeight : 0;
-      const topOffset = navHeight + bannerHeight;
+      const topOffset = headerBottom; // No banner offset for widescreen
+      const viewportHeight = window.innerHeight;
+      const availableHeight = viewportHeight - topOffset;
       
       let targetScrollPosition;
       
       if (book.targetSection === 'young-adult') {
-        // For young-adult slideshow: apply same snap logic as scroll snap
+        // For young-adult slideshow: use EXACT same logic as getCenterSnapPoint in Writing.tsx
         const titleEl = section.querySelector('h2') as HTMLElement;
-        const slideshowContainer = section.querySelector('.transition-all.duration-1000.delay-500, .bg-black\\/60') as HTMLElement;
+        const slideshowContainer = section.querySelector('.transition-all.duration-1000.delay-500') as HTMLElement;
         
         if (titleEl && slideshowContainer) {
-          const viewportHeight = window.innerHeight;
-          const availableHeight = viewportHeight - topOffset;
-          
-          // Get current positions
           const titleRect = titleEl.getBoundingClientRect();
           const slideshowRect = slideshowContainer.getBoundingClientRect();
           
-          // Total content height from title top to slideshow bottom
-          const totalContentHeight = slideshowRect.bottom - titleRect.top;
+          // Calculate total height of title + subtitle + slideshow (in viewport coords)
+          const titleTopInViewport = titleRect.top;
+          const slideshowBottomInViewport = slideshowRect.bottom;
+          const totalContentHeight = slideshowBottomInViewport - titleTopInViewport;
           
-          // Scenario A: Can fit all content (title + subtitle + slideshow)
-          if (availableHeight >= totalContentHeight + 40) {
+          // Scenario A: Can fit all content (title + "Young Adult Series" text + slideshow)
+          if (availableHeight >= totalContentHeight + 40) { // 40px buffer
             // Center the entire content in the available space
             const titleTop = titleRect.top + window.scrollY;
             const slideshowBottom = slideshowRect.bottom + window.scrollY;
