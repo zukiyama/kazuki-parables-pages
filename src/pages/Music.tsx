@@ -577,25 +577,9 @@ const Music = () => {
                 >
                   music
                 </h1>
-                {/* Portrait tablet version (iPad 11" etc) - positioned where smaller text was, slightly lower and left */}
+                {/* Portrait tablet version (iPad 11" etc) - shows on md screens, hidden on lg+ and smaller */}
                 <h1 
                   className="absolute chalk-write hidden md:block lg:hidden"
-                  style={{ 
-                    fontFamily: "'DK Crayon Crumble', cursive",
-                    color: 'white',
-                    fontSize: 'clamp(1.8rem, 9vw, 2.8rem)',
-                    transform: 'rotate(-8deg)',
-                    right: 'calc(50% - 7.5rem)',
-                    top: '48%',
-                    zIndex: 10,
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
-                  }}
-                >
-                  music
-                </h1>
-                {/* Mobile phone version - moved right so last 2 letters extend beyond logo */}
-                <h1 
-                  className="absolute chalk-write md:hidden"
                   style={{ 
                     fontFamily: "'DK Crayon Crumble', cursive",
                     color: 'white',
