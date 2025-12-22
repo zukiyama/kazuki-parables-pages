@@ -212,6 +212,29 @@
   to { clip-path: inset(0 0 0 0); opacity: 1; }
 }
 
+/* Chalk handwriting animation - diagonal upward sweep */
+@keyframes chalk-write {
+  0% { 
+    clip-path: inset(0 100% 0 0); 
+    opacity: 0;
+    transform: rotate(-4deg) translateX(-20px) translateY(10px);
+  }
+  100% { 
+    clip-path: inset(0 0 0 0); 
+    opacity: 1;
+    transform: rotate(-4deg) translateX(0) translateY(0);
+  }
+}
+
+.chalk-write {
+  display: inline-block;
+  animation: chalk-write 1.4s ease-out 0.3s both;
+  text-shadow: 
+    0 0 8px rgba(255, 255, 255, 0.4),
+    2px 2px 4px rgba(0, 0, 0, 0.3);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
 @keyframes music-handwrite {
   0% { 
     clip-path: inset(0 100% 0 0); 
