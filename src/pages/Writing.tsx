@@ -606,11 +606,17 @@ const Writing = () => {
         }`}>
           <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
-              <h1 className={`font-serif text-6xl font-bold text-white mb-16 max-sm:mb-14 max-sm:mt-12 mt-8 text-center tracking-wide transition-all duration-1000 ${
-                visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-              }`}>
-                Novels
-              </h1>
+              {/* Chalk handwriting title */}
+              <div className="text-center mb-16 max-sm:mb-14 max-sm:mt-12 mt-8 pt-8">
+                <h1 
+                  className={`text-6xl md:text-7xl text-white inline-block rotate-[-4deg] origin-center transition-opacity duration-500 ${
+                    visibleSections.has('kaiju') ? 'chalk-write' : 'opacity-0'
+                  }`}
+                  style={{ fontFamily: "'Fredericka the Great', cursive" }}
+                >
+                  Stories
+                </h1>
+              </div>
               
               {/* The Parable Trilogy Introduction */}
               <div className={`text-center mb-16 mt-8 max-sm:mt-6 transition-all duration-1000 delay-200 ${
