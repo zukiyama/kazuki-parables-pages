@@ -941,7 +941,9 @@
 .animate-word-fade-slow-3,
 .animate-word-fade-slow-4,
 .animate-word-fade-slow-5 {
-  /* No GPU hints - let Safari handle compositing naturally */
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .animate-word-fade-slow-1 {
