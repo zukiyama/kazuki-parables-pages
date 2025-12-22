@@ -1087,6 +1087,19 @@
   animation-delay: -1.5s;
 }
 
+/* Music title desktop responsive positioning */
+.music-title-desktop {
+  right: calc(50% - 21rem);
+  top: 45%;
+}
+
+/* iPad desktop (1024px to 1280px) - slightly lower */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .music-title-desktop {
+    top: 50%;
+  }
+}
+
 /* Music title mobile responsive positioning */
 .music-title-mobile {
   /* Mobile phone default (below 768px) */
