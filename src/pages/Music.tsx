@@ -577,23 +577,23 @@ const Music = () => {
                 >
                   music
                 </h1>
-                {/* Portrait tablet version (iPad 11" etc) */}
+                {/* Portrait tablet version (iPad 11" etc) - positioned where smaller text was, slightly lower and left */}
                 <h1 
                   className="absolute chalk-write hidden md:block lg:hidden"
                   style={{ 
                     fontFamily: "'DK Crayon Crumble', cursive",
                     color: 'white',
-                    fontSize: 'clamp(2.8rem, 10vw, 4.5rem)',
+                    fontSize: 'clamp(1.8rem, 9vw, 2.8rem)',
                     transform: 'rotate(-8deg)',
-                    right: 'calc(50% - 9.5rem)',
-                    top: '44%',
+                    right: 'calc(50% - 7.5rem)',
+                    top: '48%',
                     zIndex: 10,
                     textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                   }}
                 >
                   music
                 </h1>
-                {/* Mobile phone version */}
+                {/* Mobile phone version - moved right so last 2 letters extend beyond logo */}
                 <h1 
                   className="absolute chalk-write md:hidden"
                   style={{ 
@@ -601,7 +601,7 @@ const Music = () => {
                     color: 'white',
                     fontSize: 'clamp(1.8rem, 9vw, 2.8rem)',
                     transform: 'rotate(-8deg)',
-                    right: 'calc(50% - 7rem)',
+                    right: 'calc(50% - 9rem)',
                     top: '46%',
                     zIndex: 10,
                     textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
