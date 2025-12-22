@@ -607,12 +607,12 @@ const Writing = () => {
           <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
               {/* Chalk handwriting title */}
-              <div className="text-center mb-16 max-sm:mb-14 max-sm:mt-12 mt-8 pt-8">
+              <div className="text-center mb-12 max-sm:mb-10 mt-4 max-sm:mt-8 pt-4">
                 <h1 
-                  className={`text-6xl md:text-7xl text-white inline-block rotate-[-4deg] origin-center transition-opacity duration-500 ${
+                  className={`text-7xl md:text-8xl lg:text-9xl text-white inline-block rotate-[-4deg] origin-center transition-opacity duration-500 ${
                     visibleSections.has('kaiju') ? 'chalk-write' : 'opacity-0'
                   }`}
-                  style={{ fontFamily: "'Fredericka the Great', cursive" }}
+                  style={{ fontFamily: "'DK Crayon Crumble', cursive" }}
                 >
                   Stories
                 </h1>
