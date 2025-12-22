@@ -554,9 +554,9 @@ const Music = () => {
               alt="Music" 
               className="max-w-2xl w-full mx-auto animate-fade-in"
             />
-            {/* Handwritten Music title - positioned to overlap end of logo */}
+            {/* Handwritten music title - positioned to overlap end of logo */}
             <h1 
-              className="absolute chalk-write"
+              className="absolute chalk-write hidden md:block"
               style={{ 
                 fontFamily: "'DK Crayon Crumble', cursive",
                 color: 'white',
@@ -568,7 +568,23 @@ const Music = () => {
                 textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
               }}
             >
-              Music
+              music
+            </h1>
+            {/* Mobile version - same relative position */}
+            <h1 
+              className="absolute chalk-write md:hidden"
+              style={{ 
+                fontFamily: "'DK Crayon Crumble', cursive",
+                color: 'white',
+                fontSize: 'clamp(2.5rem, 12vw, 4rem)',
+                transform: 'rotate(-8deg)',
+                right: 'calc(50% - 9rem)',
+                top: '40%',
+                zIndex: 10,
+                textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+              }}
+            >
+              music
             </h1>
           </div>
           
