@@ -561,25 +561,9 @@ const Music = () => {
             {/* Handwritten music title - positioned to overlap end of logo - only show after logo loads */}
             {logoLoaded && (
               <>
-                {/* Widescreen desktop version (16:9/16:10 and wider) */}
+                {/* Desktop version (lg and up) */}
                 <h1 
-                  className="absolute chalk-write hidden xl:block"
-                  style={{ 
-                    fontFamily: "'DK Crayon Crumble', cursive",
-                    color: 'white',
-                    fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
-                    transform: 'rotate(-8deg)',
-                    right: 'calc(50% - 21rem)',
-                    top: '45%',
-                    zIndex: 10,
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
-                  }}
-                >
-                  music
-                </h1>
-                {/* iPad desktop version (lg to xl) - slightly lower */}
-                <h1 
-                  className="absolute chalk-write hidden lg:block xl:hidden"
+                  className="absolute chalk-write hidden lg:block"
                   style={{ 
                     fontFamily: "'DK Crayon Crumble', cursive",
                     color: 'white',
