@@ -243,6 +243,9 @@ const Music = () => {
   // Zoom dialog for album covers
   const [isZoomDialogOpen, setIsZoomDialogOpen] = useState(false);
   
+  // Track when logo has loaded to show music text in correct position
+  const [logoLoaded, setLogoLoaded] = useState(false);
+  
   // Widescreen banner behavior (matching Writing page)
   const [bannerVisible, setBannerVisible] = useState(true);
   const cursorWasOutsideBannerRef = useRef(true);
@@ -553,39 +556,61 @@ const Music = () => {
               src={musicLogo} 
               alt="Music" 
               className="max-w-2xl w-full mx-auto animate-fade-in"
+              onLoad={() => setLogoLoaded(true)}
             />
-            {/* Handwritten music title - positioned to overlap end of logo */}
-            <h1 
-              className="absolute chalk-write hidden md:block"
-              style={{ 
-                fontFamily: "'DK Crayon Crumble', cursive",
-                color: 'white',
-                fontSize: 'clamp(3rem, 8vw, 6rem)',
-                transform: 'rotate(-8deg)',
-                right: 'calc(50% - 22rem)',
-                top: '45%',
-                zIndex: 10,
-                textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
-              }}
-            >
-              music
-            </h1>
-            {/* Mobile version - same relative position */}
-            <h1 
-              className="absolute chalk-write md:hidden"
-              style={{ 
-                fontFamily: "'DK Crayon Crumble', cursive",
-                color: 'white',
-                fontSize: 'clamp(2.5rem, 12vw, 4rem)',
-                transform: 'rotate(-8deg)',
-                right: 'calc(50% - 9rem)',
-                top: '40%',
-                zIndex: 10,
-                textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
-              }}
-            >
-              music
-            </h1>
+            {/* Handwritten music title - positioned to overlap end of logo - only show after logo loads */}
+            {logoLoaded && (
+              <>
+                {/* Desktop version */}
+                <h1 
+                  className="absolute chalk-write hidden lg:block"
+                  style={{ 
+                    fontFamily: "'DK Crayon Crumble', cursive",
+                    color: 'white',
+                    fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
+                    transform: 'rotate(-8deg)',
+                    right: 'calc(50% - 21rem)',
+                    top: '45%',
+                    zIndex: 10,
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                  }}
+                >
+                  music
+                </h1>
+                {/* Portrait tablet version (iPad 11" etc) */}
+                <h1 
+                  className="absolute chalk-write hidden md:block lg:hidden"
+                  style={{ 
+                    fontFamily: "'DK Crayon Crumble', cursive",
+                    color: 'white',
+                    fontSize: 'clamp(2.8rem, 10vw, 4.5rem)',
+                    transform: 'rotate(-8deg)',
+                    right: 'calc(50% - 9.5rem)',
+                    top: '44%',
+                    zIndex: 10,
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                  }}
+                >
+                  music
+                </h1>
+                {/* Mobile phone version */}
+                <h1 
+                  className="absolute chalk-write md:hidden"
+                  style={{ 
+                    fontFamily: "'DK Crayon Crumble', cursive",
+                    color: 'white',
+                    fontSize: 'clamp(1.8rem, 9vw, 2.8rem)',
+                    transform: 'rotate(-8deg)',
+                    right: 'calc(50% - 7rem)',
+                    top: '46%',
+                    zIndex: 10,
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                  }}
+                >
+                  music
+                </h1>
+              </>
+            )}
           </div>
           
           {/* Video Player - Cassette Deck Style - more space on mobile */}
