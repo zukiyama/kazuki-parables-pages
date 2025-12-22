@@ -545,15 +545,31 @@ const Music = () => {
         <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
       </div>
       
-        <main className="container mx-auto px-6 pt-44 pb-12 relative z-10">
+        <main className="container mx-auto px-6 pt-40 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
-          {/* Header - positioned closer to video */}
-          <div className="text-center mb-0 pt-0">
+          {/* Header - Logo with handwritten Music title overlapping */}
+          <div className="text-center mb-0 pt-0 relative">
             <img 
               src={musicLogo} 
               alt="Music" 
               className="max-w-2xl w-full mx-auto animate-fade-in"
             />
+            {/* Handwritten Music title - positioned to overlap end of logo */}
+            <h1 
+              className="absolute chalk-write"
+              style={{ 
+                fontFamily: "'DK Crayon Crumble', cursive",
+                color: 'white',
+                fontSize: 'clamp(3rem, 8vw, 6rem)',
+                transform: 'rotate(-8deg)',
+                right: 'calc(50% - 22rem)',
+                top: '45%',
+                zIndex: 10,
+                textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+              }}
+            >
+              Music
+            </h1>
           </div>
           
           {/* Video Player - Cassette Deck Style - more space on mobile */}
