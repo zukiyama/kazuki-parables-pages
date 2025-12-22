@@ -178,7 +178,7 @@ const Index = () => {
   }, [currentImage]);
 
   return (
-    <div className="relative">
+    <div className="relative min-h-screen flex flex-col overflow-hidden">
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
@@ -362,7 +362,7 @@ const Index = () => {
       </section>
 
       {/* Footer/Contact */}
-      <footer className="bg-card border-t border-border py-12">
+      <footer className="bg-card border-t border-border py-12 mt-auto shrink-0">
         <div className="container mx-auto px-6 text-center">
           <h3 className="font-heading text-2xl mb-6 text-ink-black">Contact</h3>
           <p className="font-body text-muted-foreground">
