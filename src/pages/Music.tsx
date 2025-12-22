@@ -561,9 +561,9 @@ const Music = () => {
             {/* Handwritten music title - positioned to overlap end of logo - only show after logo loads */}
             {logoLoaded && (
               <>
-                {/* Desktop version */}
+                {/* Widescreen desktop version (16:9/16:10 and wider) */}
                 <h1 
-                  className="absolute chalk-write hidden lg:block"
+                  className="absolute chalk-write hidden xl:block"
                   style={{ 
                     fontFamily: "'DK Crayon Crumble', cursive",
                     color: 'white',
@@ -577,13 +577,32 @@ const Music = () => {
                 >
                   music
                 </h1>
-                {/* Mobile/tablet version - shows on all screens below lg, with responsive positioning */}
+                {/* iPad desktop version (lg to xl) - slightly lower */}
                 <h1 
-                  className="absolute chalk-write lg:hidden right-[calc(50%-6.5rem)] top-[50%] md:right-[calc(50%-9rem)] md:top-[46%] text-[clamp(1.5rem,8vw,2.2rem)] md:text-[clamp(1.8rem,9vw,2.8rem)]"
+                  className="absolute chalk-write hidden lg:block xl:hidden"
                   style={{ 
                     fontFamily: "'DK Crayon Crumble', cursive",
                     color: 'white',
+                    fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
                     transform: 'rotate(-8deg)',
+                    right: 'calc(50% - 21rem)',
+                    top: '47%',
+                    zIndex: 10,
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                  }}
+                >
+                  music
+                </h1>
+                {/* Mobile/tablet version - matches widescreen relative positioning (right edge of logo, 45% top) */}
+                <h1 
+                  className="absolute chalk-write lg:hidden"
+                  style={{ 
+                    fontFamily: "'DK Crayon Crumble', cursive",
+                    color: 'white',
+                    fontSize: 'clamp(1.4rem, 5.5vw, 2.2rem)',
+                    transform: 'rotate(-8deg)',
+                    right: 'calc(50% - 45%)',
+                    top: '45%',
                     zIndex: 10,
                     textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                   }}
