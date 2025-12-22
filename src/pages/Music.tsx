@@ -561,29 +561,64 @@ const Music = () => {
             {/* Handwritten music title - positioned to overlap end of logo - only show after logo loads */}
             {logoLoaded && (
               <>
-                {/* Desktop version (lg and up) */}
+                {/* Widescreen desktop version (16:9/16:10 and wider) */}
                 <h1 
-                  className="absolute chalk-write hidden lg:block"
+                  className="absolute chalk-write hidden xl:block"
                   style={{ 
                     fontFamily: "'DK Crayon Crumble', cursive",
                     color: 'white',
                     fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
                     transform: 'rotate(-8deg)',
                     right: 'calc(50% - 21rem)',
-                    top: '50%',
+                    top: '45%',
                     zIndex: 10,
                     textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                   }}
                 >
                   music
                 </h1>
-                {/* Single mobile/tablet version - CSS handles responsive positioning */}
+                {/* iPad desktop version (lg to xl) - slightly lower */}
                 <h1 
-                  className="absolute chalk-write lg:hidden music-title-mobile"
+                  className="absolute chalk-write hidden lg:block xl:hidden"
                   style={{ 
                     fontFamily: "'DK Crayon Crumble', cursive",
                     color: 'white',
+                    fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
                     transform: 'rotate(-8deg)',
+                    right: 'calc(50% - 21rem)',
+                    top: '49%',
+                    zIndex: 10,
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                  }}
+                >
+                  music
+                </h1>
+                {/* Mobile phone version - positioned so last 2 letters extend beyond logo text */}
+                <h1 
+                  className="absolute chalk-write block md:hidden"
+                  style={{ 
+                    fontFamily: "'DK Crayon Crumble', cursive",
+                    color: 'white',
+                    fontSize: 'clamp(1.4rem, 5.5vw, 2.2rem)',
+                    transform: 'rotate(-8deg)',
+                    right: 'calc(50% - 48%)',
+                    top: '45%',
+                    zIndex: 10,
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                  }}
+                >
+                  music
+                </h1>
+                {/* Smaller iPad portrait version - positioned lower and slightly left, "ic" past logo, "s" below "A" */}
+                <h1 
+                  className="absolute chalk-write hidden md:block lg:hidden"
+                  style={{ 
+                    fontFamily: "'DK Crayon Crumble', cursive",
+                    color: 'white',
+                    fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
+                    transform: 'rotate(-8deg)',
+                    right: 'calc(50% - 42%)',
+                    top: '52%',
                     zIndex: 10,
                     textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                   }}

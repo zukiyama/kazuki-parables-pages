@@ -1086,20 +1086,3 @@
   animation: circle-drift 6s ease-in-out infinite;
   animation-delay: -1.5s;
 }
-
-/* Music title mobile responsive positioning */
-.music-title-mobile {
-  /* Mobile phone default (below 768px) */
-  font-size: clamp(1.4rem, 5.5vw, 2.2rem);
-  right: calc(50% - 48%);
-  top: 45%;
-}
-
-/* iPad portrait / tablet (768px to 1024px) */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .music-title-mobile {
-    font-size: clamp(1.6rem, 6vw, 2.4rem);
-    right: calc(50% - 42%);
-    top: 52%;
-  }
-}
