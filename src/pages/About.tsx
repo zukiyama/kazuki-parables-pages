@@ -164,7 +164,7 @@ const About = () => {
             {/* Desktop text at bottom right - word by word fade in - hidden on mobile */}
             <div 
               data-scroll-animation="bottom-right-text"
-              className={`absolute bottom-[18%] right-[14%] pointer-events-auto max-sm:hidden z-30 overflow-visible ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
+              className={`absolute bottom-[14%] right-[12%] pointer-events-auto max-sm:hidden z-30 overflow-visible ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
             >
               <div className="font-body text-3xl lg:text-4xl text-white italic flex flex-col items-end tracking-wide overflow-visible">
                 <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-1" : ""}`} style={{ marginRight: '20px' }}>None</span>
