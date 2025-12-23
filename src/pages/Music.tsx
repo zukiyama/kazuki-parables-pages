@@ -571,8 +571,7 @@ const Music = () => {
                     transform: 'rotate(-8deg)',
                     right: 'calc(50% - 21rem)',
                     top: '45%',
-                    zIndex: 10,
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                    zIndex: 10
                   }}
                 >
                   music
@@ -587,8 +586,7 @@ const Music = () => {
                     transform: 'rotate(-8deg)',
                     right: 'calc(50% - 21rem)',
                     top: '47%',
-                    zIndex: 10,
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                    zIndex: 10
                   }}
                 >
                   music
@@ -603,8 +601,7 @@ const Music = () => {
                     transform: 'rotate(-8deg)',
                     right: 'calc(50% - 45%)',
                     top: '45%',
-                    zIndex: 10,
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                    zIndex: 10
                   }}
                 >
                   music
