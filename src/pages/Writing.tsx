@@ -607,7 +607,7 @@ const Writing = () => {
           <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
               {/* Page Title */}
-              <div className="text-center mb-16">
+              <div className="text-center mb-16 pt-8">
                 <h1 
                   className={`font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white transition-opacity duration-500 ${
                     visibleSections.has('kaiju') ? 'opacity-100' : 'opacity-0'
