@@ -561,7 +561,7 @@ const Music = () => {
             {/* Handwritten music title - positioned to overlap end of logo - only show after logo loads */}
             {logoLoaded && (
               <>
-                {/* Single responsive music title - uses aspect-ratio query from useWidescreenAspectRatio */}
+                {/* Desktop/tablet music title - hidden on mobile */}
                 <h1 
                   className="absolute chalk-write hidden lg:block"
                   style={{ 
@@ -571,6 +571,21 @@ const Music = () => {
                     transform: 'rotate(-8deg)',
                     right: 'calc(50% - 21rem)',
                     top: isWidescreen ? '45%' : '47%',
+                    zIndex: 10
+                  }}
+                >
+                  music
+                </h1>
+                {/* Mobile music title - matches desktop positioning relative to logo */}
+                <h1 
+                  className="absolute chalk-write lg:hidden"
+                  style={{ 
+                    fontFamily: "'DK Crayon Crumble', cursive",
+                    color: 'white',
+                    fontSize: 'clamp(2rem, 12vw, 3rem)',
+                    transform: 'rotate(-8deg)',
+                    right: '8%',
+                    top: '42%',
                     zIndex: 10
                   }}
                 >
