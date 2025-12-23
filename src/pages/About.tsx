@@ -19,7 +19,7 @@ import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
-import barbedWireFlowers from "@/assets/about-barbed-wire-flowers.png";
+
 
 
 
@@ -63,27 +63,6 @@ const About = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
       </div>
 
-      {/* Barbed wire with flowers background - FULL WIDTH across entire page behind bio section */}
-      <div 
-        className="absolute left-0 right-0 pointer-events-none"
-        style={{ 
-          top: 'calc(40vh + 4rem)',
-          height: '400px',
-          width: '100vw',
-          zIndex: 0
-        }}
-      >
-        <img 
-          src={barbedWireFlowers}
-          alt=""
-          className="w-full h-full object-cover"
-          style={{ objectPosition: 'center' }}
-        />
-        {/* Gradient at bottom to fade out to white */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
-        {/* Gradient at top to fade in from white */}
-        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white to-transparent" />
-      </div>
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-16 max-w-6xl relative z-10">
