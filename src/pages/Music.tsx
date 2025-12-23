@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { AlbumBanner } from "@/components/AlbumBanner";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -226,6 +227,8 @@ const Music = () => {
   useScrollToTop();
   const location = useLocation();
   const isWidescreen = useWidescreenAspectRatio();
+  const isMobile = useIsMobile();
+  const [isSmallPhone, setIsSmallPhone] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
   const [scrollY, setScrollY] = useState(0);
   const [selectedAlbum, setSelectedAlbum] = useState(albums[7]); // Default to Coming Soon EP
   const [isPlaying, setIsPlaying] = useState(false);
@@ -309,6 +312,15 @@ const Music = () => {
       }
     }
   }, [selectedAlbum.id]);
+
+  // Track screen size for mobile music title positioning
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallPhone(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Widescreen only: Auto-show banner at top of page, hide on scroll down
   useEffect(() => {
@@ -561,51 +573,40 @@ const Music = () => {
             {/* Handwritten music title - positioned to overlap end of logo - only show after logo loads */}
             {logoLoaded && (
               <>
-                {/* Desktop/tablet music title - hidden on mobile */}
-                <h1 
-                  className="absolute chalk-write hidden lg:block"
-                  style={{ 
-                    fontFamily: "'DK Crayon Crumble', cursive",
-                    color: 'white',
-                    fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
-                    transform: 'rotate(-8deg)',
-                    right: 'calc(50% - 21rem)',
-                    top: isWidescreen ? '45%' : '47%',
-                    zIndex: 10
-                  }}
-                >
-                  music
-                </h1>
-                {/* Mobile phone music title - only show on small screens (< 768px) */}
-                <h1 
-                  className="absolute chalk-write md:hidden"
-                  style={{ 
-                    fontFamily: "'DK Crayon Crumble', cursive",
-                    color: 'white',
-                    fontSize: 'clamp(2rem, 12vw, 3rem)',
-                    transform: 'rotate(-8deg)',
-                    right: '5%',
-                    top: '46%',
-                    zIndex: 10
-                  }}
-                >
-                  music
-                </h1>
-                {/* iPad portrait music title - show between 768px and 1024px */}
-                <h1 
-                  className="absolute chalk-write hidden md:block lg:hidden"
-                  style={{ 
-                    fontFamily: "'DK Crayon Crumble', cursive",
-                    color: 'white',
-                    fontSize: 'clamp(2.2rem, 6vw, 3.5rem)',
-                    transform: 'rotate(-8deg)',
-                    right: 'calc(50% - 14rem)',
-                    top: '46%',
-                    zIndex: 10
-                  }}
-                >
-                  music
-                </h1>
+                {/* Desktop music title - only render on large screens */}
+                {!isMobile && (
+                  <h1 
+                    className="absolute chalk-write"
+                    style={{ 
+                      fontFamily: "'DK Crayon Crumble', cursive",
+                      color: 'white',
+                      fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
+                      transform: 'rotate(-8deg)',
+                      right: 'calc(50% - 21rem)',
+                      top: isWidescreen ? '45%' : '47%',
+                      zIndex: 10
+                    }}
+                  >
+                    music
+                  </h1>
+                )}
+                {/* Mobile music title - single element for all mobile sizes */}
+                {isMobile && (
+                  <h1 
+                    className="absolute chalk-write"
+                    style={{ 
+                      fontFamily: "'DK Crayon Crumble', cursive",
+                      color: 'white',
+                      fontSize: isSmallPhone ? 'clamp(2rem, 12vw, 3rem)' : 'clamp(2.2rem, 6vw, 3.5rem)',
+                      transform: 'rotate(-8deg)',
+                      right: isSmallPhone ? '5%' : 'calc(50% - 14rem)',
+                      top: '46%',
+                      zIndex: 10
+                    }}
+                  >
+                    music
+                  </h1>
+                )}
               </>
             )}
           </div>
