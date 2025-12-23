@@ -576,16 +576,31 @@ const Music = () => {
                 >
                   music
                 </h1>
-                {/* Mobile music title - matches desktop positioning relative to logo */}
+                {/* Mobile phone music title - only show on small screens (< 768px) */}
                 <h1 
-                  className="absolute chalk-write lg:hidden"
+                  className="absolute chalk-write md:hidden"
                   style={{ 
                     fontFamily: "'DK Crayon Crumble', cursive",
                     color: 'white',
                     fontSize: 'clamp(2rem, 12vw, 3rem)',
                     transform: 'rotate(-8deg)',
-                    right: '8%',
-                    top: '42%',
+                    right: '5%',
+                    top: '46%',
+                    zIndex: 10
+                  }}
+                >
+                  music
+                </h1>
+                {/* iPad portrait music title - show between 768px and 1024px */}
+                <h1 
+                  className="absolute chalk-write hidden md:block lg:hidden"
+                  style={{ 
+                    fontFamily: "'DK Crayon Crumble', cursive",
+                    color: 'white',
+                    fontSize: 'clamp(2.2rem, 6vw, 3.5rem)',
+                    transform: 'rotate(-8deg)',
+                    right: 'calc(50% - 14rem)',
+                    top: '46%',
                     zIndex: 10
                   }}
                 >
