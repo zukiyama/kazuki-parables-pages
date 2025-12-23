@@ -17,6 +17,9 @@ import comicsFooterCharacter from "@/assets/comics-footer-character.png";
 import newReleaseLabel from "@/assets/new-release-label.jpeg";
 import cameoPortraitLeft from "@/assets/cameo-portrait-left.jpeg";
 import cameoPortraitRight from "@/assets/cameo-portrait-right.jpeg";
+import godOfLiesStreetScene from "@/assets/god-of-lies-street-scene.png";
+import godOfLiesManyFaces from "@/assets/god-of-lies-many-faces.png";
+import godOfLiesHandshake from "@/assets/god-of-lies-handshake.png";
 
 const Comics = () => {
   useScrollToTop();
@@ -330,41 +333,113 @@ const Comics = () => {
             />
           </div>
 
-          {/* Slide-in description panel from left - hidden on mobile AND on narrow portrait desktop (13" iPad) */}
-          {/* Narrower panel that extends less into the page */}
-          <div 
-            className={`absolute bottom-[8%] left-0 max-w-[45%] lg:max-w-[35%] bg-amber-50/95 backdrop-blur-sm p-4 sm:p-5 border-l-4 border-amber-700 shadow-xl transition-all duration-700 ease-out z-20 pointer-events-none ${
-              // Hide on mobile and on narrow portrait desktop (13" iPad)
-              isMobile || isNarrowPortrait ? 'hidden' : 'hidden sm:block'
-            } ${
-              showGodOfLiesDescription && godOfLiesDescriptionVisible
-                ? 'opacity-100 translate-x-0' 
-                : 'opacity-0 -translate-x-full'
+        </section>
+
+        {/* GOD OF LIES Magazine-Style Promo Section - Desktop Only */}
+        {!isMobile && !isNarrowPortrait && (
+          <section 
+            className={`w-full bg-gradient-to-b from-[#f5f0e1] to-[#e8e0cc] overflow-hidden transition-all duration-700 ease-out ${
+              showBusStopSection 
+                ? 'max-h-[2000px] opacity-100' 
+                : 'max-h-0 opacity-0'
             }`}
           >
-            <h3 
-              className="text-xl sm:text-2xl font-bold text-slate-900 mb-3"
-              style={{ fontFamily: 'Bangers, cursive' }}
-            >
-              GOD OF LIES
-            </h3>
-            <p 
-              className="text-slate-800 text-sm sm:text-base leading-relaxed mb-3"
-              style={{ fontFamily: 'Georgia, serif' }}
-            >
-              In a world where truth is currency, one man discovers he can make anyone believe anything. 
-              Takeshi Mori has spent decades mastering the art of deception—manipulating politicians, 
-              businessmen, and even his own family with effortless precision.
-            </p>
-            <p 
-              className="text-slate-700 text-sm sm:text-base leading-relaxed"
-              style={{ fontFamily: 'Georgia, serif' }}
-            >
-              But when a child sees through his lies for the first time, everything begins to unravel. 
-              Now he must confront the one truth he's been running from—himself.
-            </p>
-          </div>
-        </section>
+            <div className="max-w-6xl mx-auto px-6 py-12 lg:py-16">
+              {/* Magazine Header */}
+              <div className="text-center mb-10">
+                <p 
+                  className="text-xs uppercase tracking-[0.4em] text-amber-800/70 mb-2"
+                  style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                >
+                  Featured Series
+                </p>
+                <h2 
+                  className="text-4xl lg:text-5xl font-bold text-slate-900 mb-3"
+                  style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.02em' }}
+                >
+                  GOD OF LIES
+                </h2>
+                <div className="w-24 h-1 bg-amber-700 mx-auto" />
+              </div>
+
+              {/* Magazine Layout Grid */}
+              <div className="grid grid-cols-12 gap-6 lg:gap-8">
+                {/* Left Column - Large Feature Image */}
+                <div className="col-span-7">
+                  <div className="relative">
+                    <img 
+                      src={godOfLiesManyFaces}
+                      alt="The Man of Many Faces"
+                      className="w-full shadow-xl"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                      <p 
+                        className="text-white/90 text-sm uppercase tracking-widest"
+                        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                      >
+                        The Man of Many Faces
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column - Stacked Content */}
+                <div className="col-span-5 flex flex-col gap-6">
+                  {/* Top Right Image */}
+                  <div className="relative">
+                    <img 
+                      src={godOfLiesStreetScene}
+                      alt="Street scene"
+                      className="w-full shadow-lg"
+                    />
+                  </div>
+
+                  {/* Bottom Right Image */}
+                  <div className="relative">
+                    <img 
+                      src={godOfLiesHandshake}
+                      alt="The deal"
+                      className="w-full shadow-lg"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Magazine Article Text */}
+              <div className="mt-10 max-w-4xl mx-auto">
+                <div className="grid grid-cols-2 gap-8">
+                  <div>
+                    <p 
+                      className="text-slate-700 text-base leading-relaxed first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-amber-800"
+                      style={{ fontFamily: 'Georgia, serif' }}
+                    >
+                      In a world where truth is currency, one man discovers he can make anyone believe anything. 
+                      Takeshi Mori has spent decades mastering the art of deception—manipulating politicians, 
+                      businessmen, and even his own family with effortless precision. His face is everywhere 
+                      and nowhere, a chameleon who has lived a thousand lives.
+                    </p>
+                  </div>
+                  <div>
+                    <p 
+                      className="text-slate-700 text-base leading-relaxed"
+                      style={{ fontFamily: 'Georgia, serif' }}
+                    >
+                      But when a child sees through his lies for the first time, everything begins to unravel. 
+                      Now he must confront the one truth he's been running from—himself. A haunting exploration 
+                      of identity, deception, and the masks we wear to survive. Coming soon to Webtoon.
+                    </p>
+                    <p 
+                      className="text-amber-800 text-sm uppercase tracking-widest mt-4"
+                      style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                    >
+                      Manga • Webtoon • 2025
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* GOD OF LIES Text Section - MOBILE AND 13" iPad Portrait */}
         {/* Shows between God of Lies image and Surname Pendragon, slides in on scroll */}
@@ -436,8 +511,6 @@ const Comics = () => {
             loading={(isMobile || isNarrowPortrait) ? 'lazy' : 'eager'}
           />
           
-          {/* Thin black bar at bottom of Pendragon image - desktop only (not on narrow portrait) */}
-          <div className={`absolute bottom-0 left-0 right-0 h-1 bg-black ${isNarrowPortrait ? 'hidden' : 'hidden sm:block'}`} />
           
           {/* Slide-in caption panel from left - classy film magazine style - hidden on mobile */}
           {/* Tapping anywhere on the Pendragon image toggles the caption visibility */}
@@ -516,8 +589,6 @@ const Comics = () => {
           </div>
         </section>
         
-        {/* Black bar beneath Pendragon image - desktop only */}
-        <div className="w-full h-2 bg-black hidden sm:block" />
 
         {/* Stories Waiting to be Told - Snap Section 4 */}
         <section ref={storiesSectionRef} className="text-center py-16 sm:py-24 bg-white">
