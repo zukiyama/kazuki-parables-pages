@@ -2,16 +2,29 @@ import { useEffect, useState, useRef, useCallback } from "react";
 
 export const useScrollAnimation = () => {
   const [visibleElements, setVisibleElements] = useState<Set<string>>(new Set());
-  const mountedRef = useRef(false);
+  const hasScrolledRef = useRef(false);
+  const initialScrollYRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // Reset visible elements on component mount to allow animations to replay
+    // Reset everything on component mount
     setVisibleElements(new Set());
-    mountedRef.current = false;
+    hasScrolledRef.current = false;
+    initialScrollYRef.current = null;
+    
+    // Capture initial scroll position after a brief delay (after useScrollToTop has run)
+    const initTimer = setTimeout(() => {
+      initialScrollYRef.current = window.scrollY;
+    }, 50);
     
     const handleScroll = () => {
-      // Only process scroll events after component has been mounted for a moment
-      if (!mountedRef.current) return;
+      // Only process if user has actually scrolled from the initial position on THIS page
+      if (initialScrollYRef.current === null) return;
+      
+      // Require meaningful scroll movement (more than 50px from initial position)
+      const scrollDelta = Math.abs(window.scrollY - initialScrollYRef.current);
+      if (scrollDelta < 50 && !hasScrolledRef.current) return;
+      
+      hasScrolledRef.current = true;
       
       const elements = document.querySelectorAll("[data-scroll-animation]");
       
@@ -26,19 +39,11 @@ export const useScrollAnimation = () => {
       });
     };
 
-    // Delay enabling scroll detection to prevent triggering from previous page's scroll position
-    const enableTimer = setTimeout(() => {
-      mountedRef.current = true;
-      // Do initial check after enabling
-      handleScroll();
-    }, 100);
-
     window.addEventListener("scroll", handleScroll);
     
     return () => {
-      clearTimeout(enableTimer);
+      clearTimeout(initTimer);
       window.removeEventListener("scroll", handleScroll);
-      // Reset visible elements when component unmounts
       setVisibleElements(new Set());
     };
   }, []);
