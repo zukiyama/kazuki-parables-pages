@@ -586,39 +586,23 @@ const Music = () => {
                     fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
                     transform: 'rotate(-8deg)',
                     right: 'calc(50% - 21rem)',
-                    top: '49%',
+                    top: '47%',
                     zIndex: 10,
                     textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                   }}
                 >
                   music
                 </h1>
-                {/* Mobile phone version - positioned so last 2 letters extend beyond logo text */}
+                {/* Mobile/tablet version - matches widescreen relative positioning (right edge of logo, 45% top) */}
                 <h1 
-                  className="absolute chalk-write block md:hidden"
+                  className="absolute chalk-write lg:hidden"
                   style={{ 
                     fontFamily: "'DK Crayon Crumble', cursive",
                     color: 'white',
                     fontSize: 'clamp(1.4rem, 5.5vw, 2.2rem)',
                     transform: 'rotate(-8deg)',
-                    right: 'calc(50% - 48%)',
+                    right: 'calc(50% - 45%)',
                     top: '45%',
-                    zIndex: 10,
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
-                  }}
-                >
-                  music
-                </h1>
-                {/* Smaller iPad portrait version - positioned lower and slightly left, "ic" past logo, "s" below "A" */}
-                <h1 
-                  className="absolute chalk-write hidden md:block lg:hidden"
-                  style={{ 
-                    fontFamily: "'DK Crayon Crumble', cursive",
-                    color: 'white',
-                    fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
-                    transform: 'rotate(-8deg)',
-                    right: 'calc(50% - 42%)',
-                    top: '52%',
                     zIndex: 10,
                     textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                   }}
