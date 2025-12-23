@@ -593,22 +593,6 @@ const Music = () => {
                 >
                   music
                 </h1>
-                {/* Mobile/tablet version - matches widescreen relative positioning (right edge of logo, 45% top) */}
-                <h1 
-                  className="absolute chalk-write lg:hidden"
-                  style={{ 
-                    fontFamily: "'DK Crayon Crumble', cursive",
-                    color: 'white',
-                    fontSize: 'clamp(1.4rem, 5.5vw, 2.2rem)',
-                    transform: 'rotate(-8deg)',
-                    right: 'calc(50% - 45%)',
-                    top: '45%',
-                    zIndex: 10,
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
-                  }}
-                >
-                  music
-                </h1>
               </>
             )}
           </div>
