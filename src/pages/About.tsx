@@ -19,6 +19,7 @@ import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
+import fairyLightsCables from "@/assets/about-fairy-lights-cables.png";
 
 
 
@@ -62,27 +63,41 @@ const About = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-16 max-w-6xl">
-        {/* Artist Portrait & Bio Section */}
-        <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
+        {/* Artist Portrait & Bio Section with fairy lights background */}
+        <div className="relative mb-20">
+          {/* Fairy lights background - desktop only */}
+          <div 
+            className="absolute inset-0 hidden lg:block pointer-events-none"
+            style={{
+              backgroundImage: `url(${fairyLightsCables})`,
+              backgroundRepeat: 'repeat-x',
+              backgroundPosition: 'center top',
+              backgroundSize: 'auto 100%',
+              opacity: 0.4,
+              zIndex: 0
+            }}
+          />
           
-          <div className="lg:col-span-1 flex justify-center lg:justify-start relative z-10">
-            <div className="w-80 h-80 relative">
-              <OptimizedImage 
-                src={artistPortrait}
-                alt="Kazuki Yamakawa portrait"
-                className="w-full h-full object-cover relative z-10"
-              />
+          <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="lg:col-span-1 flex justify-center lg:justify-start relative z-10">
+              <div className="w-80 h-80 relative">
+                <OptimizedImage 
+                  src={artistPortrait}
+                  alt="Kazuki Yamakawa portrait"
+                  className="w-full h-full object-cover relative z-10"
+                />
+              </div>
             </div>
-          </div>
-          
-          <div className="lg:col-span-2 flex items-center relative z-10 lg:pl-8">
-            <div className="space-y-6">
-              <h1 className="font-heading text-4xl lg:text-5xl tracking-tight text-foreground">
-                Kazuki Yamakawa
-              </h1>
-              <p className="font-body text-base lg:text-lg leading-relaxed text-foreground/80 max-w-2xl">
-                Kazuki Yamakawa is a multi-disciplinary artist working in literature, music and visual storytelling. He has lived in various countries but calls England home. A writer in the games industry in a previous life, he decided in his thirties to pursue the work that had been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page where samples are available as well as links to Spotify/Bandcamp et al.
-              </p>
+            
+            <div className="lg:col-span-2 flex items-center relative z-10 lg:pl-8">
+              <div className="space-y-6">
+                <h1 className="font-heading text-4xl lg:text-5xl tracking-tight text-foreground">
+                  Kazuki Yamakawa
+                </h1>
+                <p className="font-body text-base lg:text-lg leading-relaxed text-foreground/80 max-w-2xl">
+                  Kazuki Yamakawa is a multi-disciplinary artist working in literature, music and visual storytelling. He has lived in various countries but calls England home. A writer in the games industry in a previous life, he decided in his thirties to pursue the work that had been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page where samples are available as well as links to Spotify/Bandcamp et al.
+                </p>
+              </div>
             </div>
           </div>
         </div>
