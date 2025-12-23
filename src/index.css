@@ -225,7 +225,6 @@
 .chalk-write {
   display: inline-block;
   animation: chalk-write 1.4s ease-out 0.3s both;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 }
 
 @keyframes music-handwrite {
@@ -455,8 +454,54 @@
   }
 }
 
+/* KAIJU pulse glow - fades in slowly, accelerates to peak, then dims quickly */
+@keyframes kaiju-pulse-glow {
+  0% {
+    opacity: 0;
+    text-shadow: none;
+    filter: brightness(1);
+  }
+  /* Slow fade in phase - 0% to 60% */
+  40% {
+    opacity: 0.6;
+    text-shadow: 
+      0 0 5px hsla(25, 100%, 50%, 0.2),
+      0 0 10px hsla(30, 100%, 45%, 0.1);
+    filter: brightness(1);
+  }
+  /* Acceleration phase - 60% to 80% (faster brightness increase) */
+  70% {
+    opacity: 0.9;
+    text-shadow: 
+      0 0 15px hsla(25, 100%, 55%, 0.5),
+      0 0 30px hsla(30, 100%, 50%, 0.4),
+      0 0 50px hsla(20, 100%, 45%, 0.3);
+    filter: brightness(1.1);
+  }
+  /* Peak brightness - sharp moment */
+  80% {
+    opacity: 1;
+    text-shadow: 
+      0 0 20px hsla(25, 100%, 60%, 0.8),
+      0 0 40px hsla(30, 100%, 55%, 0.7),
+      0 0 70px hsla(20, 100%, 50%, 0.5),
+      0 0 100px hsla(15, 100%, 45%, 0.3);
+    filter: brightness(1.2);
+  }
+  /* Quick dim phase - 80% to 100% */
+  100% {
+    opacity: 1;
+    text-shadow: none;
+    filter: brightness(1);
+  }
+}
+
 .animate-kaiju-glow {
   animation: kaiju-glow 4s ease-in-out infinite;
+}
+
+.animate-kaiju-pulse-glow {
+  animation: kaiju-pulse-glow 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .animate-slide-in-from-left {

@@ -19,7 +19,7 @@ import taiChiPark from "@/assets/about-tai-chi-park.png";
 import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import childPortrait from "@/assets/about-child-portrait.jpeg";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
-import fairyLightsCables from "@/assets/about-fairy-lights-cables.png";
+
 
 
 
@@ -63,20 +63,8 @@ const About = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-16 max-w-6xl">
-        {/* Artist Portrait & Bio Section with fairy lights background */}
+        {/* Artist Portrait & Bio Section */}
         <div className="relative mb-20">
-          {/* Fairy lights background - desktop only */}
-          <div 
-            className="absolute inset-0 hidden lg:block pointer-events-none"
-            style={{
-              backgroundImage: `url(${fairyLightsCables})`,
-              backgroundRepeat: 'repeat-x',
-              backgroundPosition: 'center top',
-              backgroundSize: 'auto 100%',
-              opacity: 0.4,
-              zIndex: 0
-            }}
-          />
           
           <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-1 flex justify-center lg:justify-start relative z-10">
