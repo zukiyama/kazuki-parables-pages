@@ -225,10 +225,7 @@
 .chalk-write {
   display: inline-block;
   animation: chalk-write 1.4s ease-out 0.3s both;
-  text-shadow: 
-    0 0 8px rgba(255, 255, 255, 0.4),
-    2px 2px 4px rgba(0, 0, 0, 0.3);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 }
 
 @keyframes music-handwrite {
