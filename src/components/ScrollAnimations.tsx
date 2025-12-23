@@ -2,12 +2,17 @@ import { useEffect, useState, useRef, useCallback } from "react";
 
 export const useScrollAnimation = () => {
   const [visibleElements, setVisibleElements] = useState<Set<string>>(new Set());
+  const mountedRef = useRef(false);
 
   useEffect(() => {
     // Reset visible elements on component mount to allow animations to replay
     setVisibleElements(new Set());
+    mountedRef.current = false;
     
     const handleScroll = () => {
+      // Only process scroll events after component has been mounted for a moment
+      if (!mountedRef.current) return;
+      
       const elements = document.querySelectorAll("[data-scroll-animation]");
       
       elements.forEach((element) => {
@@ -21,9 +26,17 @@ export const useScrollAnimation = () => {
       });
     };
 
+    // Delay enabling scroll detection to prevent triggering from previous page's scroll position
+    const enableTimer = setTimeout(() => {
+      mountedRef.current = true;
+      // Do initial check after enabling
+      handleScroll();
+    }, 100);
+
     window.addEventListener("scroll", handleScroll);
     
     return () => {
+      clearTimeout(enableTimer);
       window.removeEventListener("scroll", handleScroll);
       // Reset visible elements when component unmounts
       setVisibleElements(new Set());
