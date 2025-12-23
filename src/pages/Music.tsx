@@ -331,10 +331,10 @@ const Music = () => {
     const handleScrollForBanner = () => {
       const scrollTop = window.scrollY;
       
-      // If at or near the top (within 50px), show banner
-      if (scrollTop <= 50) {
+      // If at or near the top (within 100px), show banner
+      if (scrollTop <= 100) {
         setBannerVisible(true);
-      } else if (scrollTop > lastScrollY && scrollTop > 50) {
+      } else if (scrollTop > lastScrollY && scrollTop > 100) {
         // Scrolling down and past initial area - hide banner
         setBannerVisible(false);
       }
@@ -377,7 +377,7 @@ const Music = () => {
           // Cursor just LEFT the banner area
           // Only hide if cursor moved DOWN (below banner), not UP (into header)
           // And not if at/near top of page
-          if (window.scrollY > 50 && e.clientY > bannerAreaBottom) {
+          if (window.scrollY > 100 && e.clientY > bannerAreaBottom) {
             setBannerVisible(false);
           }
         }
@@ -396,7 +396,7 @@ const Music = () => {
     if (!isWidescreen) return;
     
     // At or near the top of the page, don't allow hiding the banner
-    if (window.scrollY <= 50) return;
+    if (window.scrollY <= 100) return;
     
     // Don't toggle if clicking on interactive elements
     const target = e.target as HTMLElement;
