@@ -63,24 +63,32 @@ const About = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
       </div>
 
+      {/* Barbed wire with flowers background - FULL WIDTH across entire page behind bio section */}
+      <div 
+        className="absolute left-0 right-0 pointer-events-none"
+        style={{ 
+          top: 'calc(40vh + 4rem)',
+          height: '400px',
+          width: '100vw',
+          zIndex: 0
+        }}
+      >
+        <img 
+          src={barbedWireFlowers}
+          alt=""
+          className="w-full h-full object-cover"
+          style={{ objectPosition: 'center' }}
+        />
+        {/* Gradient at bottom to fade out to white */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
+        {/* Gradient at top to fade in from white */}
+        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white to-transparent" />
+      </div>
+
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-16 max-w-6xl">
+      <div className="container mx-auto px-6 py-16 max-w-6xl relative z-10">
         {/* Artist Portrait & Bio Section */}
         <div className="relative mb-20">
-          {/* Barbed wire with flowers background - full width behind this section */}
-          <div 
-            className="absolute left-1/2 -translate-x-1/2 top-0 w-screen h-full pointer-events-none -z-10"
-            style={{ 
-              backgroundImage: `url(${barbedWireFlowers})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
-            }}
-          >
-            {/* Gradient at bottom to fade out */}
-            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />
-          </div>
-          
           <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-1 flex justify-center lg:justify-start relative z-10">
               <div className="w-80 h-80 relative">
@@ -94,8 +102,8 @@ const About = () => {
             
             <div className="lg:col-span-2 flex items-center relative z-10 lg:pl-8">
               <div className="space-y-6 relative">
-                {/* Semi-transparent white backdrop behind text for readability */}
-                <div className="absolute inset-0 -m-4 bg-white/70 rounded-lg -z-10" />
+                {/* Semi-transparent white backdrop behind text for readability - fades the image behind text */}
+                <div className="absolute inset-0 -m-6 bg-white/80 rounded-lg -z-10" />
                 <h1 className="font-heading text-4xl lg:text-5xl tracking-tight text-foreground">
                   Kazuki Yamakawa
                 </h1>
