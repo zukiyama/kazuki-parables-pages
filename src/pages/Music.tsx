@@ -579,7 +579,7 @@ const Music = () => {
                   style={{ 
                     fontFamily: "'DK Crayon Crumble', cursive",
                     color: 'white',
-                    fontSize: '11.2cqw',
+                    fontSize: '12cqw',
                     transform: 'rotate(-8deg)',
                     right: '-1%',
                     top: '48%',
