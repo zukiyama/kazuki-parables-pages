@@ -87,8 +87,8 @@ const Comics = () => {
       // Show Pendragon when magazine section is scrolled past (near end of it)
       if (busStopSectionRef.current && !isMobile && !isNarrowPortrait) {
         const magazineRect = busStopSectionRef.current.getBoundingClientRect();
-        // Trigger Pendragon when magazine section is 80% scrolled
-        const pendragonTrigger = magazineRect.bottom < window.innerHeight * 0.3;
+        // Trigger Pendragon when magazine section starts to scroll off (appears much earlier)
+        const pendragonTrigger = magazineRect.bottom < window.innerHeight * 0.85;
         setShowPendragon(pendragonTrigger);
       } else if (godOfLiesSectionRef.current) {
         // Fallback for mobile/narrow portrait
