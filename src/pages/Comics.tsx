@@ -301,7 +301,7 @@ const Comics = () => {
               className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
-                color: '#f5f0e6'
+                color: '#e8d5b5'
               }}
             >
               {/* Phone only: & symbol */}
@@ -313,11 +313,11 @@ const Comics = () => {
           
           {/* Subtitle */}
           <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-3 relative z-10">
-            <div className="flex-1 h-px bg-[#f5f0e6]/50 max-w-8 sm:max-w-20" />
-            <p className="text-[10px] sm:text-sm text-[#f5f0e6]/90 tracking-widest uppercase font-light text-center">
+            <div className="flex-1 h-px bg-[#e8d5b5]/50 max-w-8 sm:max-w-20" />
+            <p className="text-[10px] sm:text-sm text-[#e8d5b5]/90 tracking-widest uppercase font-light text-center">
               Original Stories in Sequential Art & Screenplay
             </p>
-            <div className="flex-1 h-px bg-[#f5f0e6]/50 max-w-8 sm:max-w-20" />
+            <div className="flex-1 h-px bg-[#e8d5b5]/50 max-w-8 sm:max-w-20" />
           </div>
         </header>
 
