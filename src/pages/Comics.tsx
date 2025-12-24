@@ -20,8 +20,8 @@ import godOfLiesManyFaces from "@/assets/god-of-lies-many-faces.png";
 import godOfLiesHandshake from "@/assets/god-of-lies-handshake.png";
 import comicCornerLeft from "@/assets/comic-corner-left.png";
 import comicCornerRight from "@/assets/comic-corner-right.png";
-import cameoPortraitLeft from "@/assets/cameo-portrait-left-brown.png";
-import cameoPortraitRight from "@/assets/cameo-portrait-right-brown.png";
+import cameoPortraitLeft from "@/assets/cameo-portrait-left.jpeg";
+import cameoPortraitRight from "@/assets/cameo-portrait-right.jpeg";
 
 const Comics = () => {
   useScrollToTop();
@@ -271,33 +271,26 @@ const Comics = () => {
         {/* Header Banner - Sticky so content scrolls over it */}
         <header 
           ref={bannerSectionRef}
-          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 overflow-hidden bg-black"
+          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative bg-black"
         >
-          {/* Left cameo portrait */}
-          <div className="absolute left-2 sm:left-6 lg:left-10 top-1/2 -translate-y-1/2 w-12 sm:w-16 lg:w-20 opacity-60">
-            <img 
-              src={cameoPortraitLeft}
-              alt="Decorative cameo left"
-              className="w-full h-auto"
-            />
+          {/* Left cameo portrait - closer to left edge */}
+          <div className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 sm:w-14 lg:w-16 hidden sm:block">
+            <img src={cameoPortraitLeft} alt="Decorative cameo left" className="w-full h-auto opacity-80" />
           </div>
-          
-          {/* Right cameo portrait */}
-          <div className="absolute right-2 sm:right-6 lg:right-10 top-1/2 -translate-y-1/2 w-12 sm:w-16 lg:w-20 opacity-60">
-            <img 
-              src={cameoPortraitRight}
-              alt="Decorative cameo right"
-              className="w-full h-auto"
-            />
+
+          {/* Right cameo portrait - closer to right edge */}
+          <div className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 sm:w-14 lg:w-16 hidden sm:block">
+            <img src={cameoPortraitRight} alt="Decorative cameo right" className="w-full h-auto opacity-80" />
           </div>
-          
+
           {/* Main title */}
-          <div className="text-center relative z-10">
+          <div className="text-center">
             <h1 
               className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
-                color: '#c9a227'
+                color: '#e8d9a0',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
               }}
             >
               {/* Phone only: & symbol */}
@@ -306,15 +299,14 @@ const Comics = () => {
               <span className="hidden xs:inline">COMICS AND SCRIPTS</span>
             </h1>
           </div>
-          
-          {/* Subtitle with bronze/gold text and lines */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-3 relative z-10">
-            <div className="flex-1 h-1 max-w-8 sm:max-w-20" style={{ backgroundColor: '#c9a227' }} />
-            <p className="text-[10px] sm:text-sm tracking-widest uppercase font-medium text-center" style={{ color: '#c9a227' }}>
-              Original Stories in Sequential Art & Screenplay
-            </p>
-            <div className="flex-1 h-1 max-w-8 sm:max-w-20" style={{ backgroundColor: '#c9a227' }} />
-          </div>
+
+          {/* Subtitle */}
+          <p 
+            className="text-center text-xs sm:text-sm tracking-widest uppercase mt-2 sm:mt-3"
+            style={{ color: '#e8d9a0' }}
+          >
+            Original Stories in Sequential Art & Screenplay
+          </p>
         </header>
 
         {/* GOD OF LIES - Higher z-index so it scrolls over the banner */}
