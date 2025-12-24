@@ -599,25 +599,25 @@ const Music = () => {
                       color: 'white',
                       fontSize: 'clamp(2rem, 12vw, 3rem)',
                       transform: 'rotate(-8deg)',
-                      right: '2%',
-                      top: '46%',
+                      right: '-2%',
+                      top: '48%',
                       zIndex: 10
                     }}
                   >
                     music
                   </h1>
                 )}
-                {/* Small iPad portrait (768px - 949px) - larger, moved right and down */}
+                {/* Small iPad portrait (768px - 949px) - 70% size, moved left and up */}
                 {isMobile && !isSmallPhone && (
                   <h1 
                     className="absolute chalk-write"
                     style={{ 
                       fontFamily: "'DK Crayon Crumble', cursive",
                       color: 'white',
-                      fontSize: 'clamp(5.5rem, 15vw, 8.75rem)',
+                      fontSize: 'clamp(3.85rem, 10.5vw, 6.1rem)',
                       transform: 'rotate(-8deg)',
-                      right: '-5%',
-                      top: '55%',
+                      right: 'calc(50% - 8rem)',
+                      top: '48%',
                       zIndex: 10
                     }}
                   >
