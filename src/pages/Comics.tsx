@@ -18,6 +18,8 @@ import newReleaseLabel from "@/assets/new-release-label.jpeg";
 import godOfLiesStreetScene from "@/assets/god-of-lies-street-scene.png";
 import godOfLiesManyFaces from "@/assets/god-of-lies-many-faces.png";
 import godOfLiesHandshake from "@/assets/god-of-lies-handshake.png";
+import comicCornerLeft from "@/assets/comic-corner-left.png";
+import comicCornerRight from "@/assets/comic-corner-right.png";
 
 const Comics = () => {
   useScrollToTop();
@@ -263,13 +265,28 @@ const Comics = () => {
     <div className={`min-h-screen bg-white overflow-x-hidden overflow-y-visible transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
       <Navigation />
 
-      <main className="relative z-10 flex-1">
+      <main className="relative flex-1">
         {/* Header Banner - Sticky so content scrolls over it */}
         <header 
           ref={bannerSectionRef}
-          className="py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 overflow-hidden"
+          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 overflow-hidden"
           style={{ backgroundColor: '#f5f0e1' }}
         >
+          {/* Comic corner illustrations */}
+          <img 
+            src={comicCornerLeft}
+            alt=""
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-16 xs:w-20 sm:w-24 lg:w-32 opacity-80 pointer-events-none"
+          />
+          <img 
+            src={comicCornerRight}
+            alt=""
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-16 xs:w-20 sm:w-24 lg:w-32 opacity-80 pointer-events-none"
+          />
+          
+          {/* Decorative comic-style border */}
+          <div className="absolute inset-x-4 sm:inset-x-8 top-2 bottom-2 border-2 border-dashed border-amber-700/30 pointer-events-none" />
+          
           {/* Main title */}
           <div className="text-center relative z-10">
             <h1 
@@ -285,20 +302,27 @@ const Comics = () => {
             </h1>
           </div>
           
-          {/* Subtitle with red/amber line */}
+          {/* Subtitle with red/amber text and lines */}
           <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-3 relative z-10">
             <div className="flex-1 h-1 bg-amber-700 max-w-8 sm:max-w-20" />
-            <p className="text-[10px] sm:text-sm text-black/90 tracking-widest uppercase font-light text-center">
+            <p className="text-[10px] sm:text-sm text-amber-700 tracking-widest uppercase font-medium text-center">
               Original Stories in Sequential Art & Screenplay
             </p>
             <div className="flex-1 h-1 bg-amber-700 max-w-8 sm:max-w-20" />
+          </div>
+          
+          {/* Comic magazine style issue number */}
+          <div className="absolute top-3 right-6 sm:right-12 hidden sm:block">
+            <div className="bg-amber-700 text-white px-2 py-1 text-xs font-bold uppercase tracking-wider">
+              Issue #1
+            </div>
           </div>
         </header>
 
         {/* GOD OF LIES - Higher z-index so it scrolls over the banner */}
         <section 
           ref={godOfLiesSectionRef} 
-          className="w-full relative z-10"
+          className="w-full relative z-10 bg-white"
         >
           {/* Clickable overlay for tap-to-toggle on desktop */}
           <div 
