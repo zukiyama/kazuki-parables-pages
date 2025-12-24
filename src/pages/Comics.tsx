@@ -15,8 +15,6 @@ import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop-cropped.jpeg";
 import comicsFooterCharacter from "@/assets/comics-footer-character.png";
 import newReleaseLabel from "@/assets/new-release-label.jpeg";
-import cameoPortraitLeft from "@/assets/cameo-portrait-left-brown.png";
-import cameoPortraitRight from "@/assets/cameo-portrait-right-brown.png";
 import godOfLiesStreetScene from "@/assets/god-of-lies-street-scene.png";
 import godOfLiesManyFaces from "@/assets/god-of-lies-many-faces.png";
 import godOfLiesHandshake from "@/assets/god-of-lies-handshake.png";
@@ -269,42 +267,17 @@ const Comics = () => {
         {/* Header Banner - Black with golden title */}
         <header 
           ref={bannerSectionRef}
-          className="py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] relative overflow-hidden"
+          className="py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] relative overflow-hidden bg-white"
           style={{ 
-            marginTop: '64px',
-            background: 'linear-gradient(180deg, #5c3d2e 0%, #4a3121 50%, #3d2819 100%)',
-            borderTop: '4px solid #d4a574',
-            borderBottom: '4px solid #8b5a3c',
-            boxShadow: 'inset 0 2px 20px rgba(212, 165, 116, 0.15), inset 0 -2px 20px rgba(0, 0, 0, 0.3)'
+            marginTop: '64px'
           }}
         >
-          {/* Left cameo portrait - closer to left edge */}
-          <img 
-            src={cameoPortraitLeft}
-            alt="Cameo portrait"
-            className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block drop-shadow-lg"
-            style={{ 
-              left: 'calc((50% - 300px) / 6)'
-            }}
-          />
-          
-          {/* Right cameo portrait - closer to right edge */}
-          <img 
-            src={cameoPortraitRight}
-            alt="Cameo portrait"
-            className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block drop-shadow-lg"
-            style={{ 
-              right: 'calc((50% - 300px) / 6)'
-            }}
-          />
-          
           {/* Main title */}
           <div className="text-center relative z-10">
             <h1 
-              className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl"
+              className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl text-black"
               style={{ 
-                fontFamily: 'Boogaloo, cursive',
-                color: '#e8d5b5'
+                fontFamily: 'Boogaloo, cursive'
               }}
             >
               {/* Phone only: & symbol */}
@@ -316,11 +289,11 @@ const Comics = () => {
           
           {/* Subtitle */}
           <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-3 relative z-10">
-            <div className="flex-1 h-px bg-[#e8d5b5]/50 max-w-8 sm:max-w-20" />
-            <p className="text-[10px] sm:text-sm text-[#e8d5b5]/90 tracking-widest uppercase font-light text-center">
+            <div className="flex-1 h-px bg-black/50 max-w-8 sm:max-w-20" />
+            <p className="text-[10px] sm:text-sm text-black/90 tracking-widest uppercase font-light text-center">
               Original Stories in Sequential Art & Screenplay
             </p>
-            <div className="flex-1 h-px bg-[#e8d5b5]/50 max-w-8 sm:max-w-20" />
+            <div className="flex-1 h-px bg-black/50 max-w-8 sm:max-w-20" />
           </div>
         </header>
 
