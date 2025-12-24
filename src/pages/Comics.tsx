@@ -272,7 +272,10 @@ const Comics = () => {
           className="py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] relative overflow-hidden"
           style={{ 
             marginTop: '64px',
-            background: '#a67c52'
+            background: 'linear-gradient(180deg, #5c3d2e 0%, #4a3121 50%, #3d2819 100%)',
+            borderTop: '4px solid #d4a574',
+            borderBottom: '4px solid #8b5a3c',
+            boxShadow: 'inset 0 2px 20px rgba(212, 165, 116, 0.15), inset 0 -2px 20px rgba(0, 0, 0, 0.3)'
           }}
         >
           {/* Left cameo portrait - closer to left edge */}
