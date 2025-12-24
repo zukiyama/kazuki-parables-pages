@@ -33,176 +33,188 @@ const About = () => {
   }, [showCityscape]);
   
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="min-h-screen bg-neutral-100">
       <Navigation />
       
       {/* Hero Section with Paris Square Background */}
-      <section className="relative min-h-screen">
+      <div className="relative min-h-screen">
         {/* Full-screen Paris background */}
-        <div className="absolute inset-0 w-full h-full">
-          <OptimizedImage
+        <div className="absolute inset-0">
+          <OptimizedImage 
             src={parisSquare}
             alt="Parisian square with pigeons"
             className="w-full h-full object-cover"
             priority
           />
           {/* Subtle overlay to improve text readability */}
-          <div className="absolute inset-0 bg-white/10"></div>
+          <div className="absolute inset-0 bg-white/20" />
         </div>
-
+        
         {/* Editorial Top Bar */}
-        <div className="relative z-10 pt-24 sm:pt-28 px-6 sm:px-12 lg:px-20">
-          <div className="max-w-7xl mx-auto">
-            <p className="font-body text-xs sm:text-sm tracking-[0.3em] text-stone-700 uppercase">
+        <div className="relative z-10 pt-24 px-8 md:px-16 lg:px-24">
+          <div className="border-b-2 border-black pb-4 mb-8">
+            <span className="font-body text-sm tracking-[0.3em] uppercase text-black">
               Author · Composer
-            </p>
-            <div className="w-full h-px bg-stone-400 mt-3"></div>
+            </span>
           </div>
         </div>
-
+        
         {/* Magazine-style text layout over background */}
-        <div className="relative z-10 px-6 sm:px-12 lg:px-20 pt-8 sm:pt-12 pb-20">
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 lg:gap-16">
+        <div className="relative z-10 px-8 md:px-16 lg:px-24 pb-24 mt-4">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
             
             {/* Large Editorial Title */}
-            <div className="flex-1 max-w-3xl">
-              <h1 className="font-heading font-normal text-stone-800 leading-[0.85] tracking-tight italic">
-                <span className="block" style={{ fontSize: 'clamp(4rem, 15vw, 12rem)' }}>Kazuki</span>
-                <span className="block -mt-2 sm:-mt-4" style={{ fontSize: 'clamp(4rem, 15vw, 12rem)' }}>Yamakawa</span>
+            <div className="lg:col-span-7">
+              <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-black leading-[0.9] tracking-tight mb-8">
+                Kazuki
+                <br />
+                <span className="italic font-light">Yamakawa</span>
               </h1>
               
               {/* Lead paragraph - larger text */}
-              <p className="font-heading text-lg sm:text-xl lg:text-2xl text-stone-700 mt-8 sm:mt-12 max-w-xl leading-relaxed italic">
+              <p className="font-body text-xl md:text-2xl lg:text-3xl text-black leading-snug max-w-2xl mb-12">
                 A multi-disciplinary artist working in literature, music and visual storytelling.
               </p>
               
-              {/* Body text */}
-              <p className="font-body text-sm sm:text-base text-stone-600 mt-6 max-w-xl leading-relaxed italic">
+              {/* Body text in columns */}
+              <p className="font-body text-base lg:text-lg text-black/80 leading-relaxed max-w-3xl -mt-6">
                 A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
               </p>
             </div>
-
+            
             {/* Author Portrait - positioned on right */}
-            <div className="lg:w-80 xl:w-96 flex-shrink-0">
-              <OptimizedImage
+            <div className="lg:col-span-5 flex justify-center lg:justify-end">
+              <OptimizedImage 
                 src={artistPortrait}
                 alt="Kazuki Yamakawa portrait"
-                className="w-48 sm:w-64 lg:w-full grayscale"
+                className="w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 object-cover grayscale shadow-2xl"
               />
             </div>
           </div>
         </div>
-
+        
         {/* Gradient transition to dark section */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-black"></div>
-      </section>
-
-      {/* Dark Quote Section */}
-      <section className="bg-black py-16 sm:py-24 lg:py-32 px-6 sm:px-12 lg:px-20">
-        <div className="max-w-5xl mx-auto">
-          <blockquote className="relative">
-            <span className="absolute -top-8 -left-4 sm:-top-12 sm:-left-8 text-6xl sm:text-8xl text-stone-500 font-heading leading-none">"</span>
-            <p className="font-heading text-lg sm:text-xl lg:text-2xl xl:text-3xl text-stone-300 leading-relaxed italic pl-4 sm:pl-8">
-              I have always had the flaw of describing myself through my interests... because I suppose that I don't feel I can be seen any other way. If it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk; if I had spent the summer revising rather than learning to hold an open A major on an old half size nylon-strung guitar—in short, if I hadn't have traded what I should be doing for what I love, achievement, elevation, and progress for erring, curiosity, and wonder, I should never have found this hapless grove in which I am so brightly sustained.
-            </p>
-          </blockquote>
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-neutral-900 z-10" />
+      </div>
+      
+      {/* Dark Quote Section - First Quote Only */}
+      <div className="relative z-20 -mt-20">
+        <div className="bg-neutral-900 pt-12 pb-8 px-8 md:px-16 lg:px-24">
+          <div className="max-w-4xl mx-auto">
+            <blockquote className="relative">
+              <span className="absolute -top-6 -left-4 text-8xl text-white/20 font-serif">"</span>
+              <p className="font-body text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed italic">
+                I have always had the flaw of describing myself through my interests... because I suppose that I don't feel I can be seen any other way. If it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk; if I had spent the summer revising rather than learning to hold an open A major on an old half size nylon-strung guitar—in short, if I hadn't have traded what I should be doing for what I love, achievement, elevation, and progress for erring, curiosity, and wonder, I should never have found this hapless grove in which I am so brightly sustained.
+              </p>
+            </blockquote>
+          </div>
         </div>
-        {/* Gradient fade from black to white */}
-        <div className="h-24 bg-gradient-to-b from-black to-white mt-16"></div>
-      </section>
-
-      {/* Background Image Section */}
-      <section className="relative min-h-screen -mt-24">
-        <div className="absolute inset-0">
+        {/* Short gradient fade from black to transparent */}
+        <div className="h-16 bg-gradient-to-b from-neutral-900 to-transparent" />
+      </div>
+      
+      {/* Background Image Section from Original About - pulled up */}
+      <div className="relative z-10 -mt-8">
+        <div 
+          data-scroll-animation="background-image"
+          className={`relative pointer-events-none overflow-hidden scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
+        >
           {/* Cityscape layer behind everything - desktop only */}
-          <div className={`hidden sm:block absolute inset-0 transition-opacity duration-[10000ms] ${showCityscape ? 'opacity-60' : 'opacity-0'}`}>
+          <div 
+            className={`absolute inset-0 max-sm:hidden z-0 ${showCityscape ? 'animate-cityscape-fade-in' : 'opacity-0'}`}
+            style={{ animationDuration: '10s', animationFillMode: 'forwards' }}
+          >
             <OptimizedImage
               src={cityscapeAerial}
-              alt="Aerial cityscape"
+              alt=""
               className="w-full h-full object-cover"
             />
-            {/* White gradient at top of cityscape */}
-            <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-white to-transparent"></div>
+            {/* White gradient at top of cityscape to blend with section above */}
+            <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent pointer-events-none" />
           </div>
           
           {/* Mobile: Child portrait as background */}
           <OptimizedImage
             src={childPortrait}
-            alt="Child portrait"
-            className="sm:hidden w-full h-full object-cover opacity-40"
+            alt=""
+            className="w-full h-auto object-cover sm:hidden"
           />
           
           {/* Desktop: PNG overlay with transparent areas */}
-          <div className="hidden sm:block absolute inset-0">
+          <div className="relative z-10 max-sm:hidden">
             <OptimizedImage
               src={backgroundSphere}
-              alt="Artistic sphere overlay"
-              className="w-full h-full object-cover"
+              alt=""
+              className="w-full h-auto object-cover"
             />
           </div>
           
-          {/* White overlay */}
-          <div className="absolute inset-0 bg-white/80"></div>
-
-          {/* Second Quote Block - Gardens appear poetry */}
-          <div className="absolute top-1/4 left-6 sm:left-12 lg:left-20 z-10 hidden sm:block">
-            <div className="max-w-md">
-              <p className="font-heading text-stone-800 leading-snug">
-                <span className="block text-2xl lg:text-3xl xl:text-4xl italic">Gardens appear</span>
-                <span className="block text-3xl lg:text-4xl xl:text-5xl font-bold mt-1">whether you mean</span>
-                <span className="block text-3xl lg:text-4xl xl:text-5xl font-bold ml-8 lg:ml-12">them to</span>
-                <span className="block text-xl lg:text-2xl xl:text-3xl italic ml-16 lg:ml-24 mt-1">or not,</span>
-                <span className="block text-lg lg:text-xl xl:text-2xl italic mt-2 ml-4 lg:ml-6">and these many years later</span>
-                <span className="block text-3xl lg:text-4xl xl:text-5xl font-bold mt-1">my action figures</span>
-                <span className="block text-xl lg:text-2xl xl:text-3xl italic">have grown taller than</span>
-                <span className="block text-lg lg:text-xl xl:text-2xl ml-2">the boy that buried them."</span>
+          {/* White overlay to replicate 80% opacity faded effect - affects both cityscape and background */}
+          <div className="absolute inset-0 bg-white/30 max-sm:hidden pointer-events-none z-20" />
+          
+          {/* Second Quote Block - Magazine style on left over cityscape */}
+          <div 
+            data-scroll-animation="second-quote"
+            className={`absolute top-[15%] left-[4%] w-[38%] pointer-events-auto max-sm:hidden scroll-slide-left z-30 ${visibleElements.has("second-quote") ? "visible" : ""}`}
+          >
+            <div className="text-center px-4">
+              <p className="font-body text-2xl lg:text-3xl xl:text-4xl text-black/85 leading-snug">
+                <span className="italic">Gardens appear</span>
+                <br />
+                <span className="text-3xl lg:text-4xl xl:text-5xl font-medium not-italic">whether or not you</span>
+                <br />
+                <span className="italic">mean them to,</span>
+                <br />
+                <span className="text-xl lg:text-2xl italic">and action figures</span>
+                <br />
+                <span className="text-3xl lg:text-4xl xl:text-5xl font-medium not-italic tracking-tight">grow taller than</span>
+                <br />
+                <span className="italic">the boys that</span>
+                <br />
+                <span className="text-2xl lg:text-3xl font-medium not-italic">bury them."</span>
               </p>
-              {/* Kanji Signature */}
-              <div className="mt-6 ml-20 lg:ml-32">
-                <OptimizedImage
+              {/* Kanji Signature - positioned right of quote */}
+              <div className="mt-6 flex justify-end pr-8">
+                <OptimizedImage 
                   src={signatureYamakawa}
-                  alt="Yamakawa signature in kanji"
-                  className="w-24 lg:w-32 opacity-70"
+                  alt="Yamakawa signature"
+                  className="w-32 h-auto opacity-90"
                 />
               </div>
             </div>
           </div>
-
-          {/* Mobile text */}
-          <div className="sm:hidden absolute inset-0 flex items-center justify-center z-10">
-            <div className="text-center px-8">
-              <p className="font-heading text-xl text-stone-700 italic leading-relaxed">
+          
+          {/* Mobile text - shown only on mobile */}
+          <div className="hidden max-sm:block absolute inset-0 bg-black/40 pointer-events-auto">
+            <div className="flex items-center justify-center h-full px-6 text-center">
+              <p className="font-body text-xl text-white leading-relaxed max-w-md drop-shadow-lg">
                 A writer and composer exploring the spaces between form and possibility
               </p>
             </div>
           </div>
-
-          {/* Desktop text at bottom right - word by word fade in */}
+          
+          {/* Desktop text at bottom right - word by word fade in - hidden on mobile */}
           <div 
             data-scroll-animation="bottom-right-text"
-            className={`hidden sm:block absolute bottom-24 right-12 lg:right-20 z-10 ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
+            className={`absolute bottom-[14%] right-[12%] pointer-events-auto max-sm:hidden z-30 overflow-visible ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
           >
-            <p className="font-heading text-4xl lg:text-5xl xl:text-6xl text-stone-800 tracking-wide italic">
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-1" : ""}`}>None</span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-2" : ""}`}> of</span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-3" : ""}`}> this</span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-4" : ""}`}> is</span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-5" : ""}`}> real</span>
-            </p>
+            <div className="font-body text-3xl lg:text-4xl text-white italic flex flex-col items-end tracking-wide overflow-visible">
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-1" : ""}`} style={{ marginRight: '20px' }}>None</span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-2" : ""}`} style={{ marginRight: '5px', marginTop: '14px' }}>of</span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-3" : ""}`} style={{ marginRight: '25px', marginTop: '16px' }}>this</span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-4" : ""}`} style={{ marginRight: '0px', marginTop: '12px' }}>is</span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-5" : ""}`} style={{ marginRight: '-15px', marginTop: '26px' }}>real</span>
+            </div>
           </div>
         </div>
-      </section>
-
-      {/* Contact Footer */}
-      <footer className="bg-black py-12 sm:py-16 px-6 sm:px-12 lg:px-20 relative z-10">
-        <div className="max-w-7xl mx-auto text-center">
-          <h3 className="font-heading text-2xl sm:text-3xl text-stone-300 mb-4">Contact</h3>
-          <a 
-            href="mailto:kazuki@kazukiyamakawa.com" 
-            className="font-body text-stone-400 hover:text-white transition-colors text-sm sm:text-base"
-          >
+      </div>
+      
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 relative z-10 max-sm:py-8">
+        <div className="container mx-auto px-6 text-center">
+          <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
+          <p className="font-serif text-white">
             kazuki@kazukiyamakawa.com
-          </a>
+          </p>
         </div>
       </footer>
     </div>
