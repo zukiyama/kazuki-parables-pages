@@ -278,7 +278,7 @@ const Comics = () => {
           {/* Main title */}
           <div className="text-center relative z-10">
             <h1 
-              className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl text-black"
+              className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl text-slate-700"
               style={{ 
                 fontFamily: 'Boogaloo, cursive'
               }}
