@@ -334,8 +334,8 @@ const Music = () => {
       // If at or near the top (within 75px), show banner
       if (scrollTop <= 75) {
         setBannerVisible(true);
-      } else if (scrollTop > lastScrollY && scrollTop > 75) {
-        // Scrolling down and past initial area - hide banner
+      } else if (scrollTop > lastScrollY && scrollTop > 50) {
+        // Scrolling down and past 50px from top - hide banner
         setBannerVisible(false);
       }
       
