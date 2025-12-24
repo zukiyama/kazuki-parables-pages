@@ -20,6 +20,8 @@ import godOfLiesManyFaces from "@/assets/god-of-lies-many-faces.png";
 import godOfLiesHandshake from "@/assets/god-of-lies-handshake.png";
 import comicCornerLeft from "@/assets/comic-corner-left.png";
 import comicCornerRight from "@/assets/comic-corner-right.png";
+import cameoPortraitLeft from "@/assets/cameo-portrait-left-brown.png";
+import cameoPortraitRight from "@/assets/cameo-portrait-right-brown.png";
 
 const Comics = () => {
   useScrollToTop();
@@ -269,18 +271,33 @@ const Comics = () => {
         {/* Header Banner - Sticky so content scrolls over it */}
         <header 
           ref={bannerSectionRef}
-          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 overflow-hidden"
-          style={{ backgroundColor: '#f5f0e1' }}
+          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 overflow-hidden bg-black"
         >
-          {/* Decorative comic-style border */}
-          <div className="absolute inset-x-4 sm:inset-x-8 top-2 bottom-2 border-2 border-dashed border-amber-700/30 pointer-events-none" />
+          {/* Left cameo portrait */}
+          <div className="absolute left-2 sm:left-6 lg:left-10 top-1/2 -translate-y-1/2 w-12 sm:w-16 lg:w-20 opacity-60">
+            <img 
+              src={cameoPortraitLeft}
+              alt="Decorative cameo left"
+              className="w-full h-auto"
+            />
+          </div>
+          
+          {/* Right cameo portrait */}
+          <div className="absolute right-2 sm:right-6 lg:right-10 top-1/2 -translate-y-1/2 w-12 sm:w-16 lg:w-20 opacity-60">
+            <img 
+              src={cameoPortraitRight}
+              alt="Decorative cameo right"
+              className="w-full h-auto"
+            />
+          </div>
           
           {/* Main title */}
           <div className="text-center relative z-10">
             <h1 
-              className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl text-black"
+              className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl"
               style={{ 
-                fontFamily: 'Boogaloo, cursive'
+                fontFamily: 'Boogaloo, cursive',
+                color: '#c9a227'
               }}
             >
               {/* Phone only: & symbol */}
@@ -290,13 +307,13 @@ const Comics = () => {
             </h1>
           </div>
           
-          {/* Subtitle with red/amber text and lines */}
+          {/* Subtitle with bronze/gold text and lines */}
           <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-3 relative z-10">
-            <div className="flex-1 h-1 bg-amber-700 max-w-8 sm:max-w-20" />
-            <p className="text-[10px] sm:text-sm text-amber-700 tracking-widest uppercase font-medium text-center">
+            <div className="flex-1 h-1 max-w-8 sm:max-w-20" style={{ backgroundColor: '#c9a227' }} />
+            <p className="text-[10px] sm:text-sm tracking-widest uppercase font-medium text-center" style={{ color: '#c9a227' }}>
               Original Stories in Sequential Art & Screenplay
             </p>
-            <div className="flex-1 h-1 bg-amber-700 max-w-8 sm:max-w-20" />
+            <div className="flex-1 h-1 max-w-8 sm:max-w-20" style={{ backgroundColor: '#c9a227' }} />
           </div>
         </header>
 
