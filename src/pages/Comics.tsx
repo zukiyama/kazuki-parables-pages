@@ -212,7 +212,7 @@ const Comics = () => {
     if (row2Ref.current) observer.observe(row2Ref.current);
 
     return () => observer.disconnect();
-  }, []);
+  }, [topSectionsLoaded]);
 
   const smallShelfComics = [
     {
