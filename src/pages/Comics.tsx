@@ -143,26 +143,26 @@ const Comics = () => {
     // Immediately scroll to top
     window.scrollTo(0, 0);
     
-    // Preload God of Lies image before showing page
+    // Show page immediately - don't wait for image preload
+    // This prevents blank page issues in preview panes and iframes
+    setPageReady(true);
+    
+    // Preload God of Lies image in background
     const img = new Image();
     img.onload = () => {
-      // Once God of Lies is loaded, show the page
-      setPageReady(true);
-      // Allow bottom sections to load after a delay
-      setTimeout(() => setTopSectionsLoaded(true), 500);
+      // Allow bottom sections to load after image is ready
+      setTimeout(() => setTopSectionsLoaded(true), 300);
     };
     img.onerror = () => {
-      // Show page anyway if image fails to load
-      setPageReady(true);
-      setTimeout(() => setTopSectionsLoaded(true), 500);
+      // Allow bottom sections anyway if image fails to load
+      setTimeout(() => setTopSectionsLoaded(true), 300);
     };
     img.src = godOfLiesCover;
     
-    // Fallback: show page after 1 second regardless
+    // Fallback: allow bottom sections after 800ms regardless
     const timeout = setTimeout(() => {
-      setPageReady(true);
-      setTimeout(() => setTopSectionsLoaded(true), 500);
-    }, 1000);
+      setTopSectionsLoaded(true);
+    }, 800);
     
     return () => clearTimeout(timeout);
   }, []);
