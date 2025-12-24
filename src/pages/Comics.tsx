@@ -266,38 +266,35 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative z-10 flex-1">
-        {/* Header Banner - Vibrant comic book style */}
+        {/* Header Banner - Warm burgundy/maroon style */}
         <header 
           ref={bannerSectionRef}
           className="py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] relative overflow-hidden"
           style={{ 
             marginTop: '64px',
-            background: 'linear-gradient(135deg, #1a3a4a 0%, #2d5a6b 50%, #1a3a4a 100%)'
+            background: '#6b2d3a'
           }}
         >
-          {/* Subtle comic halftone pattern overlay */}
-          <div 
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)',
-              backgroundSize: '8px 8px'
-            }}
-          />
-          
-          {/* Left cameo portrait - closer to left edge */}
+          {/* Left cameo portrait - closer to left edge with warm tint */}
           <img 
             src={cameoPortraitLeft}
             alt="Cameo portrait"
             className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block drop-shadow-lg"
-            style={{ left: 'calc((50% - 300px) / 6)' }}
+            style={{ 
+              left: 'calc((50% - 300px) / 6)',
+              filter: 'sepia(30%) saturate(120%) hue-rotate(-10deg)'
+            }}
           />
           
-          {/* Right cameo portrait - closer to right edge */}
+          {/* Right cameo portrait - closer to right edge with warm tint */}
           <img 
             src={cameoPortraitRight}
             alt="Cameo portrait"
             className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block drop-shadow-lg"
-            style={{ right: 'calc((50% - 300px) / 6)' }}
+            style={{ 
+              right: 'calc((50% - 300px) / 6)',
+              filter: 'sepia(30%) saturate(120%) hue-rotate(-10deg)'
+            }}
           />
           
           {/* Main title */}
@@ -345,30 +342,33 @@ const Comics = () => {
             onLoad={() => setGodOfLiesImageLoaded(true)}
           />
           
-          {/* MANGA • WEBTOON text at bottom */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 hidden sm:block z-20 pointer-events-none">
-            <p 
-              className="text-white/90 text-sm tracking-[0.3em] uppercase font-medium"
-              style={{ 
-                fontFamily: 'Georgia, serif',
-                textShadow: '1px 1px 3px rgba(0,0,0,0.8)'
-              }}
-            >
-              MANGA <span className="mx-2">•</span> WEBTOON
-            </p>
-          </div>
+          {/* MANGA • WEBTOON text at bottom - only shows after image loads */}
+          {godOfLiesImageLoaded && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 hidden sm:block z-20 pointer-events-none">
+              <p 
+                className="text-white/90 text-sm tracking-[0.3em] uppercase font-medium"
+                style={{ 
+                  fontFamily: 'Georgia, serif',
+                  textShadow: '1px 1px 3px rgba(0,0,0,0.8)'
+                }}
+              >
+                MANGA <span className="mx-2">•</span> WEBTOON
+              </p>
+            </div>
+          )}
           
-          {/* New Release label - smaller on mobile */}
-          {/* New Release label - larger on tablet, smaller on phone */}
-          <div 
-            className="absolute right-[3%] top-[45%] w-20 xs:w-40 sm:right-[4%] sm:top-[52%] sm:w-48 lg:w-56 z-20 pointer-events-none"
-          >
-            <img 
-              src={newReleaseLabel}
-              alt="First Issue! New Release"
-              className="w-full h-auto drop-shadow-lg"
-            />
-          </div>
+          {/* New Release label - only shows after image loads */}
+          {godOfLiesImageLoaded && (
+            <div 
+              className="absolute right-[3%] top-[45%] w-20 xs:w-40 sm:right-[4%] sm:top-[52%] sm:w-48 lg:w-56 z-20 pointer-events-none"
+            >
+              <img 
+                src={newReleaseLabel}
+                alt="First Issue! New Release"
+                className="w-full h-auto drop-shadow-lg"
+              />
+            </div>
+          )}
 
         </section>
 
@@ -656,9 +656,9 @@ const Comics = () => {
         </section>
 
         {/* Forthcoming Comics Grid - Only loads after top sections */}
-        {topSectionsLoaded && (
-          <section className="pb-6 sm:pb-20 px-4 sm:px-6 bg-white relative">
-            {/* All 6 comics in a grid - 2 columns on mobile, 3 on desktop */}
+        <section className="pb-6 sm:pb-20 px-4 sm:px-6 bg-white relative">
+          {/* All 6 comics in a grid - 2 columns on mobile, 3 on desktop */}
+          {topSectionsLoaded && (
             <div 
               ref={row1Ref}
               data-row="row1"
@@ -690,11 +690,11 @@ const Comics = () => {
                 ))}
               </div>
             </div>
-            
-            {/* Hidden ref for row2 to maintain observer */}
-            <div ref={row2Ref} data-row="row2" className="hidden" />
-          </section>
-        )}
+          )}
+          
+          {/* Hidden ref for row2 to maintain observer */}
+          <div ref={row2Ref} data-row="row2" className="hidden" />
+        </section>
       </main>
       
       {/* Footer with mascot character */}
