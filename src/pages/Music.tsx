@@ -590,17 +590,34 @@ const Music = () => {
                     music
                   </h1>
                 )}
-                {/* Mobile music title - single element for all mobile sizes */}
-                {isMobile && (
+                {/* Mobile music title - different for phone vs small iPad */}
+                {isMobile && isSmallPhone && (
                   <h1 
                     className="absolute chalk-write"
                     style={{ 
                       fontFamily: "'DK Crayon Crumble', cursive",
                       color: 'white',
-                      fontSize: isSmallPhone ? 'clamp(2rem, 12vw, 3rem)' : 'clamp(2.2rem, 6vw, 3.5rem)',
+                      fontSize: 'clamp(2rem, 12vw, 3rem)',
                       transform: 'rotate(-8deg)',
-                      right: isSmallPhone ? '5%' : 'calc(50% - 14rem)',
+                      right: '2%',
                       top: '46%',
+                      zIndex: 10
+                    }}
+                  >
+                    music
+                  </h1>
+                )}
+                {/* Small iPad portrait (768px - 949px) - larger, moved right and down */}
+                {isMobile && !isSmallPhone && (
+                  <h1 
+                    className="absolute chalk-write"
+                    style={{ 
+                      fontFamily: "'DK Crayon Crumble', cursive",
+                      color: 'white',
+                      fontSize: 'clamp(5.5rem, 15vw, 8.75rem)',
+                      transform: 'rotate(-8deg)',
+                      right: '-5%',
+                      top: '55%',
                       zIndex: 10
                     }}
                   >
