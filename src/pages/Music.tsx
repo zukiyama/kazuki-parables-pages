@@ -599,8 +599,8 @@ const Music = () => {
                       color: 'white',
                       fontSize: 'clamp(2rem, 12vw, 3rem)',
                       transform: 'rotate(-8deg)',
-                      right: '0%',
-                      top: '48%',
+                      right: 'calc(0% - 1px)',
+                      top: 'calc(48% - 2px)',
                       zIndex: 10
                     }}
                   >
@@ -616,7 +616,7 @@ const Music = () => {
                       color: 'white',
                       fontSize: 'clamp(3.85rem, 10.5vw, 6.1rem)',
                       transform: 'rotate(-8deg)',
-                      right: 'calc(50% - 12rem)',
+                      right: 'calc(50% - 12rem - 50px)',
                       top: '48%',
                       zIndex: 10
                     }}
