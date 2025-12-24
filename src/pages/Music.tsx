@@ -563,69 +563,34 @@ const Music = () => {
         <main className="container mx-auto px-6 pt-40 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Header - Logo with handwritten Music title overlapping */}
-          <div className="text-center mb-0 pt-0 relative">
-            <img 
-              src={musicLogo} 
-              alt="Music" 
-              className="max-w-2xl w-full mx-auto animate-fade-in"
-              onLoad={() => setLogoLoaded(true)}
-            />
-            {/* Handwritten music title - positioned to overlap end of logo - only show after logo loads */}
-            {logoLoaded && (
-              <>
-                {/* Desktop music title - only render on large screens */}
-                {!isMobile && (
-                  <h1 
-                    className="absolute chalk-write"
-                    style={{ 
-                      fontFamily: "'DK Crayon Crumble', cursive",
-                      color: 'white',
-                      fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
-                      transform: 'rotate(-8deg)',
-                      right: 'calc(50% - 21rem)',
-                      top: isWidescreen ? '45%' : '47%',
-                      zIndex: 10
-                    }}
-                  >
-                    music
-                  </h1>
-                )}
-                {/* Mobile music title - different for phone vs small iPad */}
-                {isMobile && isSmallPhone && (
-                  <h1 
-                    className="absolute chalk-write"
-                    style={{ 
-                      fontFamily: "'DK Crayon Crumble', cursive",
-                      color: 'white',
-                      fontSize: 'clamp(2rem, 12vw, 3rem)',
-                      transform: 'rotate(-8deg)',
-                      right: 'calc(0% - 1px)',
-                      top: 'calc(48% - 2px)',
-                      zIndex: 10
-                    }}
-                  >
-                    music
-                  </h1>
-                )}
-                {/* Small iPad portrait (768px - 949px) - aligned so only last 2 letters extend past YAMAKAWA */}
-                {isMobile && !isSmallPhone && (
-                  <h1 
-                    className="absolute chalk-write"
-                    style={{ 
-                      fontFamily: "'DK Crayon Crumble', cursive",
-                      color: 'white',
-                      fontSize: 'clamp(3.85rem, 10.5vw, 6.1rem)',
-                      transform: 'rotate(-8deg)',
-                      right: 'calc(50% - 12rem - 142px)',
-                      top: '48%',
-                      zIndex: 10
-                    }}
-                  >
-                    music
-                  </h1>
-                )}
-              </>
-            )}
+          <div className="text-center mb-0 pt-0">
+            {/* Wrapper maintains logo-relative positioning at all sizes */}
+            <div className="relative max-w-2xl w-full mx-auto" style={{ containerType: 'inline-size' }}>
+              <img 
+                src={musicLogo} 
+                alt="Music" 
+                className="w-full animate-fade-in"
+                onLoad={() => setLogoLoaded(true)}
+              />
+              {/* Single music title - positioned relative to logo wrapper using container units */}
+              {logoLoaded && (
+                <h1 
+                  className="absolute chalk-write"
+                  style={{ 
+                    fontFamily: "'DK Crayon Crumble', cursive",
+                    color: 'white',
+                    fontSize: '11.2cqw',
+                    transform: 'rotate(-8deg)',
+                    right: '-1%',
+                    top: '48%',
+                    zIndex: 10,
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  music
+                </h1>
+              )}
+            </div>
           </div>
           
           {/* Video Player - Cassette Deck Style - more space on mobile */}
