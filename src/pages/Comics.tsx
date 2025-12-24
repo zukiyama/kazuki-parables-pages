@@ -272,18 +272,6 @@ const Comics = () => {
           className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 overflow-hidden"
           style={{ backgroundColor: '#f5f0e1' }}
         >
-          {/* Comic corner illustrations */}
-          <img 
-            src={comicCornerLeft}
-            alt=""
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-16 xs:w-20 sm:w-24 lg:w-32 opacity-80 pointer-events-none"
-          />
-          <img 
-            src={comicCornerRight}
-            alt=""
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-16 xs:w-20 sm:w-24 lg:w-32 opacity-80 pointer-events-none"
-          />
-          
           {/* Decorative comic-style border */}
           <div className="absolute inset-x-4 sm:inset-x-8 top-2 bottom-2 border-2 border-dashed border-amber-700/30 pointer-events-none" />
           
@@ -309,13 +297,6 @@ const Comics = () => {
               Original Stories in Sequential Art & Screenplay
             </p>
             <div className="flex-1 h-1 bg-amber-700 max-w-8 sm:max-w-20" />
-          </div>
-          
-          {/* Comic magazine style issue number */}
-          <div className="absolute top-3 right-6 sm:right-12 hidden sm:block">
-            <div className="bg-amber-700 text-white px-2 py-1 text-xs font-bold uppercase tracking-wider">
-              Issue #1
-            </div>
           </div>
         </header>
 
