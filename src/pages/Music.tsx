@@ -616,7 +616,7 @@ const Music = () => {
                       color: 'white',
                       fontSize: 'clamp(3.85rem, 10.5vw, 6.1rem)',
                       transform: 'rotate(-8deg)',
-                      right: 'calc(50% - 12rem - 140px)',
+                      right: 'calc(50% - 12rem - 142px)',
                       top: '48%',
                       zIndex: 10
                     }}

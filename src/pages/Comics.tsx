@@ -675,7 +675,7 @@ const Comics = () => {
                     }`}
                     style={{ 
                       transition: 'opacity 0.7s ease, transform 0.7s ease',
-                      transitionDelay: visibleRows.has('row1') ? `${index * 100}ms` : '0ms' 
+                      transitionDelay: visibleRows.has('row1') ? `${index * 200}ms` : '0ms' 
                     }}
                     onClick={() => handleComicClick(comic)}
                   >
