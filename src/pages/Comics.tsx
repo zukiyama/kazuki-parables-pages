@@ -266,34 +266,32 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative z-10 flex-1">
-        {/* Header Banner - Cream style matching blurb section */}
+        {/* Header Banner - Black with golden title */}
         <header 
           ref={bannerSectionRef}
           className="py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] relative overflow-hidden"
           style={{ 
             marginTop: '64px',
-            background: '#f5f0e1'
+            background: '#000000'
           }}
         >
-          {/* Left cameo portrait - closer to left edge with warm tint */}
+          {/* Left cameo portrait - closer to left edge */}
           <img 
             src={cameoPortraitLeft}
             alt="Cameo portrait"
             className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block drop-shadow-lg"
             style={{ 
-              left: 'calc((50% - 300px) / 6)',
-              filter: 'sepia(20%) saturate(110%)'
+              left: 'calc((50% - 300px) / 6)'
             }}
           />
           
-          {/* Right cameo portrait - closer to right edge with warm tint */}
+          {/* Right cameo portrait - closer to right edge */}
           <img 
             src={cameoPortraitRight}
             alt="Cameo portrait"
             className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block drop-shadow-lg"
             style={{ 
-              right: 'calc((50% - 300px) / 6)',
-              filter: 'sepia(20%) saturate(110%)'
+              right: 'calc((50% - 300px) / 6)'
             }}
           />
           
@@ -303,8 +301,8 @@ const Comics = () => {
               className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
-                color: '#c45c26',
-                textShadow: '2px 2px 0px #8b4513, 4px 4px 6px rgba(0,0,0,0.2)'
+                color: '#f8b84e',
+                textShadow: '3px 3px 0px #c45c26, 5px 5px 8px rgba(0,0,0,0.4)'
               }}
             >
               {/* Phone only: & symbol */}
@@ -316,11 +314,11 @@ const Comics = () => {
           
           {/* Subtitle */}
           <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-3 relative z-10">
-            <div className="flex-1 h-px bg-amber-800/40 max-w-8 sm:max-w-20" />
-            <p className="text-[10px] sm:text-sm text-amber-800/80 tracking-widest uppercase font-light text-center">
+            <div className="flex-1 h-px bg-[#f8b84e]/50 max-w-8 sm:max-w-20" />
+            <p className="text-[10px] sm:text-sm text-[#f8b84e]/90 tracking-widest uppercase font-light text-center">
               Original Stories in Sequential Art & Screenplay
             </p>
-            <div className="flex-1 h-px bg-amber-800/40 max-w-8 sm:max-w-20" />
+            <div className="flex-1 h-px bg-[#f8b84e]/50 max-w-8 sm:max-w-20" />
           </div>
         </header>
 
