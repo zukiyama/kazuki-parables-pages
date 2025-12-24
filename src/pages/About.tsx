@@ -161,9 +161,9 @@ const About = () => {
               <p className="font-body text-2xl lg:text-3xl xl:text-4xl text-black/85 leading-snug">
                 <span className="italic">Gardens appear</span>
                 <br />
-                <span className="text-3xl lg:text-4xl xl:text-5xl font-medium not-italic">whether or not you</span>
+                <span className="text-3xl lg:text-4xl xl:text-5xl font-medium not-italic">whether you</span>
                 <br />
-                <span className="italic">mean them to,</span>
+                <span className="italic">mean them to or not,</span>
                 <br />
                 <span className="text-xl lg:text-2xl italic">and action figures</span>
                 <br />
