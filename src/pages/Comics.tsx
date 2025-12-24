@@ -18,8 +18,6 @@ import newReleaseLabel from "@/assets/new-release-label.jpeg";
 import godOfLiesStreetScene from "@/assets/god-of-lies-street-scene.png";
 import godOfLiesManyFaces from "@/assets/god-of-lies-many-faces.png";
 import godOfLiesHandshake from "@/assets/god-of-lies-handshake.png";
-import comicCornerLeft from "@/assets/comic-corner-left.png";
-import comicCornerRight from "@/assets/comic-corner-right.png";
 
 const Comics = () => {
   useScrollToTop();
@@ -265,59 +263,41 @@ const Comics = () => {
     <div className={`min-h-screen bg-white overflow-x-hidden overflow-y-visible transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
       <Navigation />
 
-      <main className="relative flex-1">
-        {/* Header Banner - Sticky so content scrolls over it */}
-        <header 
-          ref={bannerSectionRef}
-          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 overflow-hidden"
-          style={{ backgroundColor: '#f5f0e1' }}
-        >
-          {/* Comic corner illustrations */}
-          <img 
-            src={comicCornerLeft}
-            alt=""
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-16 xs:w-20 sm:w-24 lg:w-32 opacity-80 pointer-events-none"
-          />
-          <img 
-            src={comicCornerRight}
-            alt=""
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-16 xs:w-20 sm:w-24 lg:w-32 opacity-80 pointer-events-none"
-          />
-          
-          {/* Decorative comic-style border */}
-          <div className="absolute inset-x-4 sm:inset-x-8 top-2 bottom-2 border-2 border-dashed border-amber-700/30 pointer-events-none" />
-          
-          {/* Main title */}
-          <div className="text-center relative z-10">
-            <h1 
-              className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl text-black"
-              style={{ 
-                fontFamily: 'Boogaloo, cursive'
-              }}
-            >
-              {/* Phone only: & symbol */}
-              <span className="xs:hidden">COMICS & SCRIPTS</span>
-              {/* Tablet and Desktop: full "AND" word */}
-              <span className="hidden xs:inline">COMICS AND SCRIPTS</span>
-            </h1>
-          </div>
-          
-          {/* Subtitle with red/amber text and lines */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-3 relative z-10">
-            <div className="flex-1 h-1 bg-amber-700 max-w-8 sm:max-w-20" />
-            <p className="text-[10px] sm:text-sm text-amber-700 tracking-widest uppercase font-medium text-center">
-              Original Stories in Sequential Art & Screenplay
-            </p>
-            <div className="flex-1 h-1 bg-amber-700 max-w-8 sm:max-w-20" />
-          </div>
-          
-          {/* Comic magazine style issue number */}
-          <div className="absolute top-3 right-6 sm:right-12 hidden sm:block">
-            <div className="bg-amber-700 text-white px-2 py-1 text-xs font-bold uppercase tracking-wider">
-              Issue #1
-            </div>
-          </div>
-        </header>
+      {/* Header Banner - Fixed position so content scrolls over it */}
+      <header 
+        ref={bannerSectionRef}
+        className="fixed top-[64px] left-0 right-0 py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 z-0"
+        style={{ backgroundColor: '#f5f0e1' }}
+      >
+        {/* Main title */}
+        <div className="text-center">
+          <h1 
+            className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl text-black"
+            style={{ 
+              fontFamily: 'Boogaloo, cursive'
+            }}
+          >
+            {/* Phone only: & symbol */}
+            <span className="xs:hidden">COMICS & SCRIPTS</span>
+            {/* Tablet and Desktop: full "AND" word */}
+            <span className="hidden xs:inline">COMICS AND SCRIPTS</span>
+          </h1>
+        </div>
+        
+        {/* Subtitle with red/amber text and lines */}
+        <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-3">
+          <div className="flex-1 h-1 bg-amber-700 max-w-8 sm:max-w-20" />
+          <p className="text-[10px] sm:text-sm text-amber-700 tracking-widest uppercase font-medium text-center">
+            Original Stories in Sequential Art & Screenplay
+          </p>
+          <div className="flex-1 h-1 bg-amber-700 max-w-8 sm:max-w-20" />
+        </div>
+      </header>
+
+      {/* Spacer to push content below fixed banner */}
+      <div className="h-[120px] xs:h-[160px] sm:h-[120px] lg:h-[140px] mt-[64px]" />
+
+      <main className="relative flex-1 z-10">
 
         {/* GOD OF LIES - Higher z-index so it scrolls over the banner */}
         <section 
