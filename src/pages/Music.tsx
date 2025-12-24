@@ -599,7 +599,7 @@ const Music = () => {
                       color: 'white',
                       fontSize: 'clamp(2rem, 12vw, 3rem)',
                       transform: 'rotate(-8deg)',
-                      right: '-2%',
+                      right: '0%',
                       top: '48%',
                       zIndex: 10
                     }}
@@ -607,7 +607,7 @@ const Music = () => {
                     music
                   </h1>
                 )}
-                {/* Small iPad portrait (768px - 949px) - 70% size, moved left and up */}
+                {/* Small iPad portrait (768px - 949px) - aligned so only last 2 letters extend past YAMAKAWA */}
                 {isMobile && !isSmallPhone && (
                   <h1 
                     className="absolute chalk-write"
@@ -616,7 +616,7 @@ const Music = () => {
                       color: 'white',
                       fontSize: 'clamp(3.85rem, 10.5vw, 6.1rem)',
                       transform: 'rotate(-8deg)',
-                      right: 'calc(50% - 8rem)',
+                      right: 'calc(50% - 12rem)',
                       top: '48%',
                       zIndex: 10
                     }}
