@@ -44,6 +44,7 @@ const Comics = () => {
   const [isNarrowPortrait, setIsNarrowPortrait] = useState(false); // 13-inch iPad portrait detection
   const [godOfLiesImageLoaded, setGodOfLiesImageLoaded] = useState(false); // Track God of Lies image load
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false); // Track when top sections are loaded
+  const [bannerOpacity, setBannerOpacity] = useState(1); // Banner fade opacity
   const mobilePendragonRef = useRef<HTMLDivElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
@@ -59,12 +60,38 @@ const Comics = () => {
   const headerRef = useRef<HTMLElement | null>(null);
   const fixedHeaderHeight = 64; // Fixed header height to avoid browser bar variability
 
-  // Track scroll for slide-in animations
+  // Track scroll for slide-in animations and banner fade
   useEffect(() => {
     const handleScroll = () => {
       // Show God of Lies description when user starts scrolling (even just a little)
       if (window.scrollY > 20) {
         setShowGodOfLiesDescription(true);
+      }
+      
+      // Banner fade effect - calculate based on how much God of Lies has scrolled over the banner
+      if (bannerSectionRef.current && godOfLiesSectionRef.current) {
+        const bannerRect = bannerSectionRef.current.getBoundingClientRect();
+        const godOfLiesRect = godOfLiesSectionRef.current.getBoundingClientRect();
+        const bannerHeight = bannerRect.height;
+        
+        // Calculate how much the God of Lies image has overlapped the banner
+        // The banner is at top-[64px], so when God of Lies top reaches near the banner top, we start fading
+        const overlapStart = fixedHeaderHeight + bannerHeight; // When God of Lies reaches top of viewport + header
+        const godOfLiesTopFromNavBottom = godOfLiesRect.top - fixedHeaderHeight;
+        
+        // Only start fading after scrolling past a threshold (e.g., 100px overlap minimum)
+        const fadeThreshold = 100; // Minimum scroll before fade starts
+        const fadeDistance = bannerHeight - fadeThreshold; // Distance over which fade completes
+        
+        if (godOfLiesTopFromNavBottom < -fadeThreshold) {
+          // Calculate opacity: 1 at threshold, 0 when fully covering banner
+          const overlapAmount = Math.abs(godOfLiesTopFromNavBottom) - fadeThreshold;
+          const opacity = Math.max(0, 1 - (overlapAmount / fadeDistance));
+          setBannerOpacity(opacity);
+        } else {
+          // Not enough overlap yet, banner fully visible
+          setBannerOpacity(1);
+        }
       }
       
       if (godOfLiesSectionRef.current) {
@@ -268,10 +295,11 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative flex-1">
-        {/* Header Banner - Sticky so content scrolls over it */}
+        {/* Header Banner - Sticky so content scrolls over it, fades as God of Lies covers it */}
         <header 
           ref={bannerSectionRef}
-          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative bg-black"
+          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative bg-black transition-opacity duration-150"
+          style={{ opacity: bannerOpacity }}
         >
           {/* Left cameo portrait */}
           <div className="absolute left-4 sm:left-8 lg:left-12 xl:left-16 top-1/2 -translate-y-1/2 w-16 sm:w-20 lg:w-24 xl:w-28 hidden sm:block">
