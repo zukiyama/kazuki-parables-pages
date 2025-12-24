@@ -266,13 +266,13 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative z-10 flex-1">
-        {/* Header Banner - Warm dark brown style */}
+        {/* Header Banner - Cream style matching blurb section */}
         <header 
           ref={bannerSectionRef}
           className="py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] relative overflow-hidden"
           style={{ 
             marginTop: '64px',
-            background: '#3d2a1e'
+            background: '#f5f0e1'
           }}
         >
           {/* Left cameo portrait - closer to left edge with warm tint */}
@@ -282,7 +282,7 @@ const Comics = () => {
             className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block drop-shadow-lg"
             style={{ 
               left: 'calc((50% - 300px) / 6)',
-              filter: 'sepia(30%) saturate(120%) hue-rotate(-10deg)'
+              filter: 'sepia(20%) saturate(110%)'
             }}
           />
           
@@ -293,7 +293,7 @@ const Comics = () => {
             className="absolute top-1/2 -translate-y-1/2 h-20 sm:h-24 lg:h-28 w-auto object-contain hidden sm:block drop-shadow-lg"
             style={{ 
               right: 'calc((50% - 300px) / 6)',
-              filter: 'sepia(30%) saturate(120%) hue-rotate(-10deg)'
+              filter: 'sepia(20%) saturate(110%)'
             }}
           />
           
@@ -303,8 +303,8 @@ const Comics = () => {
               className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
-                color: '#f8b84e',
-                textShadow: '3px 3px 0px #c45c26, 5px 5px 8px rgba(0,0,0,0.4)'
+                color: '#c45c26',
+                textShadow: '2px 2px 0px #8b4513, 4px 4px 6px rgba(0,0,0,0.2)'
               }}
             >
               {/* Phone only: & symbol */}
@@ -316,11 +316,11 @@ const Comics = () => {
           
           {/* Subtitle */}
           <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-3 relative z-10">
-            <div className="flex-1 h-px bg-[#f8b84e]/50 max-w-8 sm:max-w-20" />
-            <p className="text-[10px] sm:text-sm text-[#f8b84e]/90 tracking-widest uppercase font-light text-center">
+            <div className="flex-1 h-px bg-amber-800/40 max-w-8 sm:max-w-20" />
+            <p className="text-[10px] sm:text-sm text-amber-800/80 tracking-widest uppercase font-light text-center">
               Original Stories in Sequential Art & Screenplay
             </p>
-            <div className="flex-1 h-px bg-[#f8b84e]/50 max-w-8 sm:max-w-20" />
+            <div className="flex-1 h-px bg-amber-800/40 max-w-8 sm:max-w-20" />
           </div>
         </header>
 
@@ -436,12 +436,14 @@ const Comics = () => {
                     showMagazineText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                   }`}>
                     <p 
-                      className="text-slate-700 text-sm leading-relaxed first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-amber-800"
+                      className="text-slate-700 text-base leading-relaxed first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-amber-800"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
                       In a world where truth is currency, one man discovers he can make anyone believe anything. 
-                      Takeshi Mori has mastered deception—manipulating politicians and businessmen with precision.
-                      But when a child sees through his lies, everything unravels.
+                      Takeshi Mori has mastered the art of deception—manipulating politicians, businessmen, and entire corporations with surgical precision.
+                      For years, he operated in the shadows, a phantom pulling strings that shaped nations. But when a single child sees through his carefully constructed lies, 
+                      his empire of illusions begins to crumble. Now hunted by those he once controlled, Takeshi must confront the one truth he's spent his life avoiding: 
+                      that every lie demands a reckoning.
                     </p>
                     <p 
                       className="text-amber-800 text-xs uppercase tracking-widest mt-3"
