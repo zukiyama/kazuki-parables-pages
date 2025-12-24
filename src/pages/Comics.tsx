@@ -267,7 +267,8 @@ const Comics = () => {
         {/* Header Banner - Sticky so content scrolls over it */}
         <header 
           ref={bannerSectionRef}
-          className="py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 overflow-hidden bg-white"
+          className="py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 overflow-hidden"
+          style={{ backgroundColor: '#f5f0e1' }}
         >
           {/* Main title */}
           <div className="text-center relative z-10">
@@ -284,13 +285,13 @@ const Comics = () => {
             </h1>
           </div>
           
-          {/* Subtitle */}
+          {/* Subtitle with red/amber line */}
           <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-3 relative z-10">
-            <div className="flex-1 h-px bg-black/50 max-w-8 sm:max-w-20" />
+            <div className="flex-1 h-1 bg-amber-700 max-w-8 sm:max-w-20" />
             <p className="text-[10px] sm:text-sm text-black/90 tracking-widest uppercase font-light text-center">
               Original Stories in Sequential Art & Screenplay
             </p>
-            <div className="flex-1 h-px bg-black/50 max-w-8 sm:max-w-20" />
+            <div className="flex-1 h-1 bg-amber-700 max-w-8 sm:max-w-20" />
           </div>
         </header>
 
