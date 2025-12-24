@@ -266,13 +266,13 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative z-10 flex-1">
-        {/* Header Banner - Warm burgundy/maroon style */}
+        {/* Header Banner - Warm dark brown style */}
         <header 
           ref={bannerSectionRef}
           className="py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] relative overflow-hidden"
           style={{ 
             marginTop: '64px',
-            background: '#6b2d3a'
+            background: '#3d2a1e'
           }}
         >
           {/* Left cameo portrait - closer to left edge with warm tint */}
