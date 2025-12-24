@@ -273,14 +273,14 @@ const Comics = () => {
           ref={bannerSectionRef}
           className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative bg-black"
         >
-          {/* Left cameo portrait - closer to left edge */}
-          <div className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 sm:w-14 lg:w-16 hidden sm:block">
-            <img src={cameoPortraitLeft} alt="Decorative cameo left" className="w-full h-auto opacity-80" />
+          {/* Left cameo portrait */}
+          <div className="absolute left-4 sm:left-8 lg:left-12 xl:left-16 top-1/2 -translate-y-1/2 w-16 sm:w-20 lg:w-24 xl:w-28 hidden sm:block">
+            <img src={cameoPortraitLeft} alt="Decorative cameo left" className="w-full h-auto" />
           </div>
 
-          {/* Right cameo portrait - closer to right edge */}
-          <div className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 sm:w-14 lg:w-16 hidden sm:block">
-            <img src={cameoPortraitRight} alt="Decorative cameo right" className="w-full h-auto opacity-80" />
+          {/* Right cameo portrait */}
+          <div className="absolute right-4 sm:right-8 lg:right-12 xl:right-16 top-1/2 -translate-y-1/2 w-16 sm:w-20 lg:w-24 xl:w-28 hidden sm:block">
+            <img src={cameoPortraitRight} alt="Decorative cameo right" className="w-full h-auto" />
           </div>
 
           {/* Main title */}
@@ -300,13 +300,27 @@ const Comics = () => {
             </h1>
           </div>
 
-          {/* Subtitle */}
-          <p 
-            className="text-center text-xs sm:text-sm tracking-widest uppercase mt-2 sm:mt-3"
-            style={{ color: '#e8d9a0' }}
-          >
-            Original Stories in Sequential Art & Screenplay
-          </p>
+          {/* Subtitle with tapering lines */}
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mt-3 sm:mt-4">
+            <div 
+              className="w-12 sm:w-16 lg:w-24 h-[2px]"
+              style={{ 
+                background: 'linear-gradient(to right, transparent, #e8d9a0)'
+              }}
+            />
+            <p 
+              className="text-sm sm:text-base lg:text-lg tracking-widest uppercase"
+              style={{ color: '#e8d9a0' }}
+            >
+              Original Stories in Sequential Art & Screenplay
+            </p>
+            <div 
+              className="w-12 sm:w-16 lg:w-24 h-[2px]"
+              style={{ 
+                background: 'linear-gradient(to left, transparent, #e8d9a0)'
+              }}
+            />
+          </div>
         </header>
 
         {/* GOD OF LIES - Higher z-index so it scrolls over the banner */}
