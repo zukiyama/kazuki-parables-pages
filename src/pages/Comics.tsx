@@ -264,13 +264,10 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative z-10 flex-1">
-        {/* Header Banner - Black with golden title */}
+        {/* Header Banner - Sticky so content scrolls over it */}
         <header 
           ref={bannerSectionRef}
-          className="py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] relative overflow-hidden bg-white"
-          style={{ 
-            marginTop: '64px'
-          }}
+          className="py-4 xs:py-8 sm:py-5 lg:py-6 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 overflow-hidden bg-white"
         >
           {/* Main title */}
           <div className="text-center relative z-10">
@@ -297,10 +294,10 @@ const Comics = () => {
           </div>
         </header>
 
-        {/* GOD OF LIES - No snap, flush with banner */}
+        {/* GOD OF LIES - Higher z-index so it scrolls over the banner */}
         <section 
           ref={godOfLiesSectionRef} 
-          className="w-full relative"
+          className="w-full relative z-10"
         >
           {/* Clickable overlay for tap-to-toggle on desktop */}
           <div 
