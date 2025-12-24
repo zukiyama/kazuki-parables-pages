@@ -269,16 +269,15 @@ const Comics = () => {
         {/* Header Banner - Sticky so content scrolls over it */}
         <header 
           ref={bannerSectionRef}
-          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 overflow-hidden"
-          style={{ backgroundColor: '#f5f0e1' }}
+          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 overflow-hidden bg-amber-700"
         >
           {/* Decorative comic-style border */}
-          <div className="absolute inset-x-4 sm:inset-x-8 top-2 bottom-2 border-2 border-dashed border-amber-700/30 pointer-events-none" />
+          <div className="absolute inset-x-4 sm:inset-x-8 top-2 bottom-2 border-2 border-dashed border-white/30 pointer-events-none" />
           
           {/* Main title */}
           <div className="text-center relative z-10">
             <h1 
-              className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl text-black"
+              className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl text-white"
               style={{ 
                 fontFamily: 'Boogaloo, cursive'
               }}
@@ -290,13 +289,13 @@ const Comics = () => {
             </h1>
           </div>
           
-          {/* Subtitle with red/amber text and lines */}
+          {/* Subtitle with white text and lines */}
           <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-3 relative z-10">
-            <div className="flex-1 h-1 bg-amber-700 max-w-8 sm:max-w-20" />
-            <p className="text-[10px] sm:text-sm text-amber-700 tracking-widest uppercase font-medium text-center">
+            <div className="flex-1 h-1 bg-white max-w-8 sm:max-w-20" />
+            <p className="text-[10px] sm:text-sm text-white tracking-widest uppercase font-medium text-center">
               Original Stories in Sequential Art & Screenplay
             </p>
-            <div className="flex-1 h-1 bg-amber-700 max-w-8 sm:max-w-20" />
+            <div className="flex-1 h-1 bg-white max-w-8 sm:max-w-20" />
           </div>
         </header>
 
