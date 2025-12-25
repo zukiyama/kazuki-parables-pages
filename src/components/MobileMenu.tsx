@@ -70,8 +70,8 @@ const MobileMenu = () => {
                 className={`font-body text-base px-4 py-3 transition-colors ${
                   isAboutPage
                     ? location.pathname === item.path
-                      ? 'text-accent font-semibold bg-gray-50'
-                      : 'text-ink-black hover:bg-gray-50'
+                      ? 'text-[hsl(0,35%,40%)] font-semibold bg-gray-50'
+                      : 'text-ink-black hover:text-[hsl(0,35%,40%)] hover:bg-gray-50'
                     : location.pathname === item.path
                       ? 'text-[hsl(25,45%,40%)] font-semibold bg-[hsl(39,30%,88%)]'
                       : 'text-[hsl(25,30%,25%)] hover:bg-[hsl(39,30%,88%)]'
