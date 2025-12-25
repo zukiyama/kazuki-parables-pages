@@ -301,31 +301,53 @@ const Comics = () => {
           className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative bg-black transition-opacity duration-150 overflow-hidden"
           style={{ opacity: bannerOpacity }}
         >
-          {/* Left spotlight beam */}
+          {/* Left searchlight beam - shining up diagonally toward title */}
           <div 
-            className="absolute left-0 bottom-0 w-32 sm:w-40 lg:w-52 h-full pointer-events-none"
+            className="absolute left-4 sm:left-8 lg:left-12 bottom-0 pointer-events-none"
             style={{
-              background: 'linear-gradient(25deg, rgba(232, 217, 160, 0.15) 0%, rgba(232, 217, 160, 0.08) 30%, transparent 60%)',
+              width: '120px',
+              height: '200%',
+              transformOrigin: 'bottom left',
+              transform: 'rotate(-25deg)',
+              background: 'linear-gradient(to top, rgba(255, 248, 200, 0.35) 0%, rgba(255, 248, 200, 0.2) 20%, rgba(255, 248, 200, 0.08) 50%, transparent 80%)',
+              clipPath: 'polygon(30% 100%, 70% 100%, 100% 0%, 0% 0%)',
             }}
           />
+          {/* Left beam glow */}
           <div 
-            className="absolute left-2 sm:left-4 bottom-0 w-16 sm:w-20 lg:w-28 h-full pointer-events-none"
+            className="absolute left-4 sm:left-8 lg:left-12 bottom-0 pointer-events-none"
             style={{
-              background: 'linear-gradient(20deg, rgba(255, 250, 220, 0.12) 0%, rgba(255, 250, 220, 0.04) 40%, transparent 70%)',
+              width: '80px',
+              height: '200%',
+              transformOrigin: 'bottom left',
+              transform: 'rotate(-25deg)',
+              background: 'linear-gradient(to top, rgba(255, 255, 240, 0.5) 0%, rgba(255, 255, 240, 0.15) 30%, transparent 60%)',
+              clipPath: 'polygon(35% 100%, 65% 100%, 90% 0%, 10% 0%)',
             }}
           />
           
-          {/* Right spotlight beam */}
+          {/* Right searchlight beam - shining up diagonally toward title */}
           <div 
-            className="absolute right-0 bottom-0 w-32 sm:w-40 lg:w-52 h-full pointer-events-none"
+            className="absolute right-4 sm:right-8 lg:right-12 bottom-0 pointer-events-none"
             style={{
-              background: 'linear-gradient(-25deg, rgba(232, 217, 160, 0.15) 0%, rgba(232, 217, 160, 0.08) 30%, transparent 60%)',
+              width: '120px',
+              height: '200%',
+              transformOrigin: 'bottom right',
+              transform: 'rotate(25deg)',
+              background: 'linear-gradient(to top, rgba(255, 248, 200, 0.35) 0%, rgba(255, 248, 200, 0.2) 20%, rgba(255, 248, 200, 0.08) 50%, transparent 80%)',
+              clipPath: 'polygon(30% 100%, 70% 100%, 100% 0%, 0% 0%)',
             }}
           />
+          {/* Right beam glow */}
           <div 
-            className="absolute right-2 sm:right-4 bottom-0 w-16 sm:w-20 lg:w-28 h-full pointer-events-none"
+            className="absolute right-4 sm:right-8 lg:right-12 bottom-0 pointer-events-none"
             style={{
-              background: 'linear-gradient(-20deg, rgba(255, 250, 220, 0.12) 0%, rgba(255, 250, 220, 0.04) 40%, transparent 70%)',
+              width: '80px',
+              height: '200%',
+              transformOrigin: 'bottom right',
+              transform: 'rotate(25deg)',
+              background: 'linear-gradient(to top, rgba(255, 255, 240, 0.5) 0%, rgba(255, 255, 240, 0.15) 30%, transparent 60%)',
+              clipPath: 'polygon(35% 100%, 65% 100%, 90% 0%, 10% 0%)',
             }}
           />
           {/* Main title */}
