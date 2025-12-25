@@ -20,6 +20,10 @@ import godOfLiesManyFaces from "@/assets/god-of-lies-many-faces.png";
 import godOfLiesHandshake from "@/assets/god-of-lies-handshake.png";
 import comicCornerLeft from "@/assets/comic-corner-left.png";
 import comicCornerRight from "@/assets/comic-corner-right.png";
+import comicPriceTag from "@/assets/comic-price-tag.png";
+import comicCandyGirl from "@/assets/comic-candy-girl.png";
+import comicIssueDate from "@/assets/comic-issue-date.png";
+import comicCornerFlourish from "@/assets/comic-corner-flourish.png";
 import cameoPortraitLeft from "@/assets/cameo-portrait-left.jpeg";
 import cameoPortraitRight from "@/assets/cameo-portrait-right.jpeg";
 
@@ -295,14 +299,51 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative flex-1">
-        {/* Header Banner - Sticky so content scrolls over it, fades as God of Lies covers it */}
+        {/* Header Banner - Styled like a vintage comic magazine */}
         <header 
           ref={bannerSectionRef}
           className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative transition-opacity duration-150 overflow-hidden"
           style={{ opacity: bannerOpacity, backgroundColor: '#3a2e1e' }}
         >
+          {/* Decorative corner flourish - top left */}
+          <img 
+            src={comicCornerFlourish} 
+            alt="" 
+            className="absolute top-2 left-2 w-20 sm:w-28 lg:w-36 h-auto opacity-80 pointer-events-none"
+          />
+          
+          {/* Decorative corner flourish - top right (flipped) */}
+          <img 
+            src={comicCornerFlourish} 
+            alt="" 
+            className="absolute top-2 right-2 w-20 sm:w-28 lg:w-36 h-auto opacity-80 pointer-events-none"
+            style={{ transform: 'scaleX(-1)' }}
+          />
+          
+          {/* Price tag decoration - positioned in top right area */}
+          <img 
+            src={comicPriceTag} 
+            alt="" 
+            className="absolute top-3 right-14 sm:right-24 lg:right-32 w-12 sm:w-16 lg:w-20 h-auto opacity-90 pointer-events-none"
+            style={{ transform: 'rotate(8deg)' }}
+          />
+          
+          {/* Candy girl illustration - positioned on the left */}
+          <img 
+            src={comicCandyGirl} 
+            alt="" 
+            className="absolute bottom-0 left-2 sm:left-6 lg:left-12 w-20 sm:w-28 lg:w-36 h-auto opacity-90 pointer-events-none"
+          />
+          
+          {/* Issue date decoration - positioned bottom center */}
+          <img 
+            src={comicIssueDate} 
+            alt="" 
+            className="absolute bottom-1 left-1/2 -translate-x-1/2 w-24 sm:w-32 lg:w-40 h-auto opacity-70 pointer-events-none hidden sm:block"
+          />
+          
           {/* Main title */}
-          <div className="text-center">
+          <div className="text-center relative z-10">
             <h1 
               className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl"
               style={{ 
@@ -318,7 +359,7 @@ const Comics = () => {
           </div>
 
           {/* Subtitle with tapering lines */}
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mt-3 sm:mt-4">
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mt-3 sm:mt-4 relative z-10">
             <div 
               className="w-12 sm:w-16 lg:w-24 h-[2px]"
               style={{ 
