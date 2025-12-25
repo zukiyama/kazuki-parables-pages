@@ -302,36 +302,32 @@ const Comics = () => {
           className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative bg-black transition-opacity duration-150 overflow-hidden"
           style={{ opacity: bannerOpacity }}
         >
-          {/* Left Art Deco Searchlight Overlay - cropped from far left portion only */}
+          {/* Left Art Deco Building with Searchlight */}
           <div 
-            className="absolute left-0 bottom-0 h-full w-[30%] sm:w-[25%] lg:w-[20%] pointer-events-none overflow-hidden"
+            className="absolute left-0 bottom-0 h-full w-[25%] sm:w-[22%] lg:w-[18%] pointer-events-none"
           >
             <div 
               className="absolute inset-0"
               style={{
                 backgroundImage: `url(${comicsSearchlightsArtdeco})`,
-                backgroundSize: '500% auto',
-                backgroundPosition: '0% center',
+                backgroundSize: '400% auto',
+                backgroundPosition: '0% bottom',
                 backgroundRepeat: 'no-repeat',
-                maskImage: 'linear-gradient(to right, black 50%, transparent 100%)',
-                WebkitMaskImage: 'linear-gradient(to right, black 50%, transparent 100%)',
               }}
             />
           </div>
           
-          {/* Right Art Deco Searchlight Overlay - cropped from far right portion only */}
+          {/* Right Art Deco Building with Searchlight */}
           <div 
-            className="absolute right-0 bottom-0 h-full w-[30%] sm:w-[25%] lg:w-[20%] pointer-events-none overflow-hidden"
+            className="absolute right-0 bottom-0 h-full w-[25%] sm:w-[22%] lg:w-[18%] pointer-events-none"
           >
             <div 
               className="absolute inset-0"
               style={{
                 backgroundImage: `url(${comicsSearchlightsArtdeco})`,
-                backgroundSize: '500% auto',
-                backgroundPosition: '100% center',
+                backgroundSize: '400% auto',
+                backgroundPosition: '100% bottom',
                 backgroundRepeat: 'no-repeat',
-                maskImage: 'linear-gradient(to left, black 50%, transparent 100%)',
-                WebkitMaskImage: 'linear-gradient(to left, black 50%, transparent 100%)',
               }}
             />
           </div>
