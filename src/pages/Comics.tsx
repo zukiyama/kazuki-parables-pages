@@ -299,7 +299,7 @@ const Comics = () => {
         <header 
           ref={bannerSectionRef}
           className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative transition-opacity duration-150 overflow-hidden"
-          style={{ opacity: bannerOpacity, backgroundColor: '#4a3c2a' }}
+          style={{ opacity: bannerOpacity, backgroundColor: '#3a2e1e' }}
         >
           {/* Main title */}
           <div className="text-center">
@@ -307,7 +307,7 @@ const Comics = () => {
               className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
-                color: '#f5f0e6'
+                color: '#e8dcc8'
               }}
             >
               {/* Phone only: & symbol */}
