@@ -299,7 +299,7 @@ const Comics = () => {
         <header 
           ref={bannerSectionRef}
           className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative transition-opacity duration-150 overflow-hidden"
-          style={{ opacity: bannerOpacity, backgroundColor: '#3d3124' }}
+          style={{ opacity: bannerOpacity, backgroundColor: '#4a3c2a' }}
         >
           {/* Main title */}
           <div className="text-center">
@@ -307,8 +307,7 @@ const Comics = () => {
               className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
-                color: '#d4c5a0',
-                textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                color: '#f5f0e6'
               }}
             >
               {/* Phone only: & symbol */}
@@ -323,19 +322,19 @@ const Comics = () => {
             <div 
               className="w-12 sm:w-16 lg:w-24 h-[2px]"
               style={{ 
-                background: 'linear-gradient(to right, transparent, #a89878)'
+                background: 'linear-gradient(to right, transparent, #e8e0d0)'
               }}
             />
             <p 
               className="text-sm sm:text-base lg:text-lg tracking-widest uppercase"
-              style={{ color: '#a89878' }}
+              style={{ color: '#e8e0d0' }}
             >
               Original Stories in Sequential Art & Screenplay
             </p>
             <div 
               className="w-12 sm:w-16 lg:w-24 h-[2px]"
               style={{ 
-                background: 'linear-gradient(to left, transparent, #a89878)'
+                background: 'linear-gradient(to left, transparent, #e8e0d0)'
               }}
             />
           </div>
