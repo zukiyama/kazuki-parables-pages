@@ -22,7 +22,7 @@ import comicCornerLeft from "@/assets/comic-corner-left.png";
 import comicCornerRight from "@/assets/comic-corner-right.png";
 import cameoPortraitLeft from "@/assets/cameo-portrait-left.jpeg";
 import cameoPortraitRight from "@/assets/cameo-portrait-right.jpeg";
-import comicsSearchlightsArtdeco from "@/assets/comics-searchlights-artdeco.png";
+
 
 const Comics = () => {
   useScrollToTop();
@@ -45,7 +45,7 @@ const Comics = () => {
   const [isNarrowPortrait, setIsNarrowPortrait] = useState(false); // 13-inch iPad portrait detection
   const [godOfLiesImageLoaded, setGodOfLiesImageLoaded] = useState(false); // Track God of Lies image load
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false); // Track when top sections are loaded
-  const [bannerOpacity, setBannerOpacity] = useState(1); // Banner fade opacity
+  
   const mobilePendragonRef = useRef<HTMLDivElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
@@ -67,32 +67,6 @@ const Comics = () => {
       // Show God of Lies description when user starts scrolling (even just a little)
       if (window.scrollY > 20) {
         setShowGodOfLiesDescription(true);
-      }
-      
-      // Banner fade effect - calculate based on how much God of Lies has scrolled over the banner
-      if (bannerSectionRef.current && godOfLiesSectionRef.current) {
-        const bannerRect = bannerSectionRef.current.getBoundingClientRect();
-        const godOfLiesRect = godOfLiesSectionRef.current.getBoundingClientRect();
-        const bannerHeight = bannerRect.height;
-        
-        // Calculate how much the God of Lies image has overlapped the banner
-        // The banner is at top-[64px], so when God of Lies top reaches near the banner top, we start fading
-        const overlapStart = fixedHeaderHeight + bannerHeight; // When God of Lies reaches top of viewport + header
-        const godOfLiesTopFromNavBottom = godOfLiesRect.top - fixedHeaderHeight;
-        
-        // Only start fading after scrolling past a threshold (e.g., 100px overlap minimum)
-        const fadeThreshold = 100; // Minimum scroll before fade starts
-        const fadeDistance = bannerHeight - fadeThreshold; // Distance over which fade completes
-        
-        if (godOfLiesTopFromNavBottom < -fadeThreshold) {
-          // Calculate opacity: 1 at threshold, 0 when fully covering banner
-          const overlapAmount = Math.abs(godOfLiesTopFromNavBottom) - fadeThreshold;
-          const opacity = Math.max(0, 1 - (overlapAmount / fadeDistance));
-          setBannerOpacity(opacity);
-        } else {
-          // Not enough overlap yet, banner fully visible
-          setBannerOpacity(1);
-        }
       }
       
       if (godOfLiesSectionRef.current) {
@@ -296,85 +270,43 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative flex-1">
-        {/* Header Banner - Sticky so content scrolls over it, fades as God of Lies covers it */}
+        {/* Header Banner - Clean magazine style with white background */}
         <header 
           ref={bannerSectionRef}
-          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative bg-black transition-opacity duration-150 overflow-hidden"
-          style={{ opacity: bannerOpacity }}
+          className="py-12 sm:py-16 lg:py-20 px-4 sm:px-8 lg:px-12 mt-[64px] bg-white"
         >
-          {/* Left Art Deco Building with Searchlight */}
-          <div 
-            className="absolute left-0 bottom-0 h-full w-[25%] sm:w-[22%] lg:w-[18%] pointer-events-none"
-          >
-            <div 
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `url(${comicsSearchlightsArtdeco})`,
-                backgroundSize: '400% auto',
-                backgroundPosition: '0% bottom',
-                backgroundRepeat: 'no-repeat',
-              }}
-            />
-          </div>
-          
-          {/* Right Art Deco Building with Searchlight */}
-          <div 
-            className="absolute right-0 bottom-0 h-full w-[25%] sm:w-[22%] lg:w-[18%] pointer-events-none"
-          >
-            <div 
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `url(${comicsSearchlightsArtdeco})`,
-                backgroundSize: '400% auto',
-                backgroundPosition: '100% bottom',
-                backgroundRepeat: 'no-repeat',
-              }}
-            />
-          </div>
           {/* Main title */}
           <div className="text-center">
             <h1 
-              className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl"
+              className="font-bold tracking-[0.15em] text-4xl xs:text-5xl sm:text-5xl lg:text-6xl xl:text-7xl uppercase text-black"
               style={{ 
-                fontFamily: 'Boogaloo, cursive',
-                color: '#e8d9a0',
-                textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                fontWeight: 700,
+                letterSpacing: '0.12em'
               }}
             >
-              {/* Phone only: & symbol */}
-              <span className="xs:hidden">COMICS & SCRIPTS</span>
-              {/* Tablet and Desktop: full "AND" word */}
-              <span className="hidden xs:inline">COMICS AND SCRIPTS</span>
+              COMICS & SCRIPTS
             </h1>
           </div>
 
-          {/* Subtitle with tapering lines */}
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mt-3 sm:mt-4">
-            <div 
-              className="w-12 sm:w-16 lg:w-24 h-[2px]"
-              style={{ 
-                background: 'linear-gradient(to right, transparent, #e8d9a0)'
-              }}
-            />
+          {/* Subtitle - clean without dashes */}
+          <div className="flex items-center justify-center mt-4 sm:mt-5">
             <p 
-              className="text-sm sm:text-base lg:text-lg tracking-widest uppercase"
-              style={{ color: '#e8d9a0' }}
+              className="text-xs sm:text-sm lg:text-base tracking-[0.2em] uppercase text-black/70"
+              style={{ 
+                fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                fontWeight: 400
+              }}
             >
               Original Stories in Sequential Art & Screenplay
             </p>
-            <div 
-              className="w-12 sm:w-16 lg:w-24 h-[2px]"
-              style={{ 
-                background: 'linear-gradient(to left, transparent, #e8d9a0)'
-              }}
-            />
           </div>
         </header>
 
-        {/* GOD OF LIES - Higher z-index so it scrolls over the banner */}
+        {/* GOD OF LIES - With margins for breathing room */}
         <section 
           ref={godOfLiesSectionRef} 
-          className="w-full relative z-10 bg-white"
+          className="w-full relative z-10 bg-white px-4 sm:px-8 lg:px-16 xl:px-24"
         >
           {/* Clickable overlay for tap-to-toggle on desktop */}
           <div 
