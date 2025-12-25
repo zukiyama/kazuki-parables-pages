@@ -299,7 +299,7 @@ const Comics = () => {
         <header 
           ref={bannerSectionRef}
           className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative transition-opacity duration-150 overflow-hidden"
-          style={{ opacity: bannerOpacity, backgroundColor: '#3a2818' }}
+          style={{ opacity: bannerOpacity, backgroundColor: '#3d2f1c' }}
         >
           {/* Main title */}
           <div className="text-center">
