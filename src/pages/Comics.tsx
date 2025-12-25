@@ -425,8 +425,7 @@ const Comics = () => {
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
                 color: '#e8d9a0',
-                textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
-                filter: 'hue-rotate(-5deg) saturate(1.05)'
+                textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
               }}
             >
               {/* Phone only: & symbol */}
@@ -474,7 +473,6 @@ const Comics = () => {
             src={godOfLiesCover}
             alt="God of Lies"
             className="w-full"
-            style={{ filter: 'hue-rotate(-5deg) saturate(1.05)' }}
             onLoad={() => setGodOfLiesImageLoaded(true)}
           />
           
