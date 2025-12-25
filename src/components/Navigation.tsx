@@ -43,8 +43,8 @@ const Navigation = () => {
                 className={`font-body text-sm tracking-wide transition-colors ${
                   isAboutPage
                     ? location.pathname === item.path
-                      ? "text-accent font-semibold"
-                      : "text-foreground hover:text-accent"
+                      ? "text-[hsl(0,35%,40%)] font-semibold"
+                      : "text-foreground hover:text-[hsl(0,35%,40%)]"
                     : location.pathname === item.path
                       ? "text-[hsl(25,45%,40%)] font-semibold"
                       : "text-[hsl(25,30%,25%)] hover:text-[hsl(25,45%,40%)]"
