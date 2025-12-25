@@ -301,16 +301,6 @@ const Comics = () => {
           className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative bg-black transition-opacity duration-150"
           style={{ opacity: bannerOpacity }}
         >
-          {/* Left cameo portrait */}
-          <div className="absolute left-4 sm:left-8 lg:left-12 xl:left-16 top-1/2 -translate-y-1/2 w-16 sm:w-20 lg:w-24 xl:w-28 hidden sm:block">
-            <img src={cameoPortraitLeft} alt="Decorative cameo left" className="w-full h-auto" />
-          </div>
-
-          {/* Right cameo portrait */}
-          <div className="absolute right-4 sm:right-8 lg:right-12 xl:right-16 top-1/2 -translate-y-1/2 w-16 sm:w-20 lg:w-24 xl:w-28 hidden sm:block">
-            <img src={cameoPortraitRight} alt="Decorative cameo right" className="w-full h-auto" />
-          </div>
-
           {/* Main title */}
           <div className="text-center">
             <h1 
@@ -384,19 +374,6 @@ const Comics = () => {
             </div>
           )}
           
-          {/* New Release label - only shows after image loads */}
-          {godOfLiesImageLoaded && (
-            <div 
-              className="absolute right-[3%] top-[45%] w-20 xs:w-40 sm:right-[4%] sm:top-[52%] sm:w-48 lg:w-56 z-20 pointer-events-none"
-            >
-              <img 
-                src={newReleaseLabel}
-                alt="First Issue! New Release"
-                className="w-full h-auto drop-shadow-lg"
-              />
-            </div>
-          )}
-
         </section>
 
         {/* GOD OF LIES Magazine-Style Promo Section - Desktop Only */}
