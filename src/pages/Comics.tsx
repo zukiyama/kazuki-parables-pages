@@ -301,55 +301,123 @@ const Comics = () => {
           className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative bg-black transition-opacity duration-150 overflow-hidden"
           style={{ opacity: bannerOpacity }}
         >
-          {/* Left searchlight beam - shining up diagonally toward title */}
-          <div 
-            className="absolute left-4 sm:left-8 lg:left-12 bottom-0 pointer-events-none"
-            style={{
-              width: '120px',
-              height: '200%',
-              transformOrigin: 'bottom left',
-              transform: 'rotate(-25deg)',
-              background: 'linear-gradient(to top, rgba(255, 248, 200, 0.35) 0%, rgba(255, 248, 200, 0.2) 20%, rgba(255, 248, 200, 0.08) 50%, transparent 80%)',
-              clipPath: 'polygon(30% 100%, 70% 100%, 100% 0%, 0% 0%)',
-            }}
-          />
-          {/* Left beam glow */}
-          <div 
-            className="absolute left-4 sm:left-8 lg:left-12 bottom-0 pointer-events-none"
-            style={{
-              width: '80px',
-              height: '200%',
-              transformOrigin: 'bottom left',
-              transform: 'rotate(-25deg)',
-              background: 'linear-gradient(to top, rgba(255, 255, 240, 0.5) 0%, rgba(255, 255, 240, 0.15) 30%, transparent 60%)',
-              clipPath: 'polygon(35% 100%, 65% 100%, 90% 0%, 10% 0%)',
-            }}
-          />
+          {/* Left Searchlight */}
+          <div className="absolute left-6 sm:left-12 lg:left-20 bottom-2 pointer-events-none">
+            {/* Light beam */}
+            <svg 
+              width="140" 
+              height="160" 
+              viewBox="0 0 140 160" 
+              className="absolute bottom-8 left-1/2 -translate-x-1/2"
+              style={{ transform: 'translateX(-50%) rotate(-20deg)', transformOrigin: 'bottom center' }}
+            >
+              <defs>
+                <linearGradient id="beamGradientLeft" x1="50%" y1="100%" x2="50%" y2="0%">
+                  <stop offset="0%" stopColor="rgba(255, 250, 220, 0.9)" />
+                  <stop offset="30%" stopColor="rgba(255, 248, 200, 0.5)" />
+                  <stop offset="60%" stopColor="rgba(255, 245, 180, 0.2)" />
+                  <stop offset="100%" stopColor="rgba(255, 245, 180, 0)" />
+                </linearGradient>
+                <filter id="beamGlowLeft" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              <polygon 
+                points="55,160 85,160 130,0 10,0" 
+                fill="url(#beamGradientLeft)" 
+                filter="url(#beamGlowLeft)"
+              />
+            </svg>
+            {/* Searchlight fixture */}
+            <svg 
+              width="36" 
+              height="28" 
+              viewBox="0 0 36 28" 
+              className="relative z-10"
+            >
+              {/* Base/tripod hint */}
+              <ellipse cx="18" cy="26" rx="10" ry="2" fill="rgba(60, 60, 60, 0.9)" />
+              {/* Light housing */}
+              <ellipse cx="18" cy="14" rx="14" ry="10" fill="url(#housingGradient)" />
+              {/* Inner ring */}
+              <ellipse cx="18" cy="14" rx="10" ry="7" fill="rgba(30, 30, 30, 0.95)" />
+              {/* Lens glow */}
+              <ellipse cx="18" cy="14" rx="7" ry="5" fill="rgba(255, 250, 220, 0.95)" />
+              <ellipse cx="18" cy="13" rx="4" ry="3" fill="rgba(255, 255, 255, 1)" />
+              {/* Highlight */}
+              <ellipse cx="16" cy="12" rx="2" ry="1.5" fill="rgba(255, 255, 255, 0.8)" />
+              <defs>
+                <linearGradient id="housingGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="rgba(80, 80, 80, 1)" />
+                  <stop offset="50%" stopColor="rgba(50, 50, 50, 1)" />
+                  <stop offset="100%" stopColor="rgba(30, 30, 30, 1)" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           
-          {/* Right searchlight beam - shining up diagonally toward title */}
-          <div 
-            className="absolute right-4 sm:right-8 lg:right-12 bottom-0 pointer-events-none"
-            style={{
-              width: '120px',
-              height: '200%',
-              transformOrigin: 'bottom right',
-              transform: 'rotate(25deg)',
-              background: 'linear-gradient(to top, rgba(255, 248, 200, 0.35) 0%, rgba(255, 248, 200, 0.2) 20%, rgba(255, 248, 200, 0.08) 50%, transparent 80%)',
-              clipPath: 'polygon(30% 100%, 70% 100%, 100% 0%, 0% 0%)',
-            }}
-          />
-          {/* Right beam glow */}
-          <div 
-            className="absolute right-4 sm:right-8 lg:right-12 bottom-0 pointer-events-none"
-            style={{
-              width: '80px',
-              height: '200%',
-              transformOrigin: 'bottom right',
-              transform: 'rotate(25deg)',
-              background: 'linear-gradient(to top, rgba(255, 255, 240, 0.5) 0%, rgba(255, 255, 240, 0.15) 30%, transparent 60%)',
-              clipPath: 'polygon(35% 100%, 65% 100%, 90% 0%, 10% 0%)',
-            }}
-          />
+          {/* Right Searchlight */}
+          <div className="absolute right-6 sm:right-12 lg:right-20 bottom-2 pointer-events-none">
+            {/* Light beam */}
+            <svg 
+              width="140" 
+              height="160" 
+              viewBox="0 0 140 160" 
+              className="absolute bottom-8 left-1/2 -translate-x-1/2"
+              style={{ transform: 'translateX(-50%) rotate(20deg)', transformOrigin: 'bottom center' }}
+            >
+              <defs>
+                <linearGradient id="beamGradientRight" x1="50%" y1="100%" x2="50%" y2="0%">
+                  <stop offset="0%" stopColor="rgba(255, 250, 220, 0.9)" />
+                  <stop offset="30%" stopColor="rgba(255, 248, 200, 0.5)" />
+                  <stop offset="60%" stopColor="rgba(255, 245, 180, 0.2)" />
+                  <stop offset="100%" stopColor="rgba(255, 245, 180, 0)" />
+                </linearGradient>
+                <filter id="beamGlowRight" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              <polygon 
+                points="55,160 85,160 130,0 10,0" 
+                fill="url(#beamGradientRight)" 
+                filter="url(#beamGlowRight)"
+              />
+            </svg>
+            {/* Searchlight fixture */}
+            <svg 
+              width="36" 
+              height="28" 
+              viewBox="0 0 36 28" 
+              className="relative z-10"
+            >
+              {/* Base/tripod hint */}
+              <ellipse cx="18" cy="26" rx="10" ry="2" fill="rgba(60, 60, 60, 0.9)" />
+              {/* Light housing */}
+              <ellipse cx="18" cy="14" rx="14" ry="10" fill="url(#housingGradientR)" />
+              {/* Inner ring */}
+              <ellipse cx="18" cy="14" rx="10" ry="7" fill="rgba(30, 30, 30, 0.95)" />
+              {/* Lens glow */}
+              <ellipse cx="18" cy="14" rx="7" ry="5" fill="rgba(255, 250, 220, 0.95)" />
+              <ellipse cx="18" cy="13" rx="4" ry="3" fill="rgba(255, 255, 255, 1)" />
+              {/* Highlight */}
+              <ellipse cx="20" cy="12" rx="2" ry="1.5" fill="rgba(255, 255, 255, 0.8)" />
+              <defs>
+                <linearGradient id="housingGradientR" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="rgba(80, 80, 80, 1)" />
+                  <stop offset="50%" stopColor="rgba(50, 50, 50, 1)" />
+                  <stop offset="100%" stopColor="rgba(30, 30, 30, 1)" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           {/* Main title */}
           <div className="text-center">
             <h1 
