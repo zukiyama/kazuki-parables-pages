@@ -298,9 +298,36 @@ const Comics = () => {
         {/* Header Banner - Sticky so content scrolls over it, fades as God of Lies covers it */}
         <header 
           ref={bannerSectionRef}
-          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative bg-black transition-opacity duration-150"
+          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative bg-black transition-opacity duration-150 overflow-hidden"
           style={{ opacity: bannerOpacity }}
         >
+          {/* Left spotlight beam */}
+          <div 
+            className="absolute left-0 bottom-0 w-32 sm:w-40 lg:w-52 h-full pointer-events-none"
+            style={{
+              background: 'linear-gradient(25deg, rgba(232, 217, 160, 0.15) 0%, rgba(232, 217, 160, 0.08) 30%, transparent 60%)',
+            }}
+          />
+          <div 
+            className="absolute left-2 sm:left-4 bottom-0 w-16 sm:w-20 lg:w-28 h-full pointer-events-none"
+            style={{
+              background: 'linear-gradient(20deg, rgba(255, 250, 220, 0.12) 0%, rgba(255, 250, 220, 0.04) 40%, transparent 70%)',
+            }}
+          />
+          
+          {/* Right spotlight beam */}
+          <div 
+            className="absolute right-0 bottom-0 w-32 sm:w-40 lg:w-52 h-full pointer-events-none"
+            style={{
+              background: 'linear-gradient(-25deg, rgba(232, 217, 160, 0.15) 0%, rgba(232, 217, 160, 0.08) 30%, transparent 60%)',
+            }}
+          />
+          <div 
+            className="absolute right-2 sm:right-4 bottom-0 w-16 sm:w-20 lg:w-28 h-full pointer-events-none"
+            style={{
+              background: 'linear-gradient(-20deg, rgba(255, 250, 220, 0.12) 0%, rgba(255, 250, 220, 0.04) 40%, transparent 70%)',
+            }}
+          />
           {/* Main title */}
           <div className="text-center">
             <h1 
