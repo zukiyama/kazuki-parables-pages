@@ -298,72 +298,16 @@ const Comics = () => {
         {/* Header Banner - Sticky so content scrolls over it, fades as God of Lies covers it */}
         <header 
           ref={bannerSectionRef}
-          className="py-8 xs:py-12 sm:py-10 lg:py-12 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative transition-opacity duration-150 overflow-hidden"
+          className="py-6 xs:py-10 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 mt-[64px] sticky top-[64px] z-0 relative transition-opacity duration-150 overflow-hidden"
           style={{ opacity: bannerOpacity, backgroundColor: '#3d2f1c' }}
         >
-          {/* Corner decorative elements */}
-          <img 
-            src={comicCornerLeft} 
-            alt="" 
-            className="absolute top-2 left-2 w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 opacity-60 pointer-events-none"
-          />
-          <img 
-            src={comicCornerRight} 
-            alt="" 
-            className="absolute top-2 right-2 w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 opacity-60 pointer-events-none"
-          />
-          
-          {/* Character illustration - left side */}
-          <div className="absolute bottom-0 left-2 sm:left-4 lg:left-8 z-10 pointer-events-none">
-            <img 
-              src={comicsFooterCharacter} 
-              alt="" 
-              className="w-16 h-auto sm:w-24 lg:w-32 xl:w-36 opacity-90 transform translate-y-[15%]"
-              style={{ filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.3))' }}
-            />
-          </div>
-          
-          {/* Collection badge - right side */}
-          <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-6 lg:bottom-6 lg:right-10 z-10">
-            <div 
-              className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center border-2 transform rotate-[-8deg]"
-              style={{ 
-                backgroundColor: '#c9a84c',
-                borderColor: '#e8dcc8',
-                boxShadow: '2px 2px 8px rgba(0,0,0,0.3)'
-              }}
-            >
-              <div className="text-center">
-                <span 
-                  className="block text-[10px] sm:text-xs font-bold leading-tight"
-                  style={{ color: '#3d2f1c' }}
-                >
-                  NEW
-                </span>
-                <span 
-                  className="block text-lg sm:text-xl lg:text-2xl font-black leading-none"
-                  style={{ color: '#3d2f1c', fontFamily: 'Boogaloo, cursive' }}
-                >
-                  6
-                </span>
-                <span 
-                  className="block text-[8px] sm:text-[10px] font-bold leading-tight"
-                  style={{ color: '#3d2f1c' }}
-                >
-                  STORIES
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Main title with comic-book styling */}
-          <div className="text-center relative z-20">
+          {/* Main title */}
+          <div className="text-center">
             <h1 
-              className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl relative inline-block"
+              className="font-bold tracking-wide text-5xl xs:text-7xl sm:text-6xl lg:text-7xl xl:text-8xl"
               style={{ 
                 fontFamily: 'Boogaloo, cursive',
-                color: '#e8dcc8',
-                textShadow: '3px 3px 0px rgba(0,0,0,0.4), -1px -1px 0px rgba(201,168,76,0.3)'
+                color: '#e8dcc8'
               }}
             >
               {/* Phone only: & symbol */}
@@ -373,44 +317,26 @@ const Comics = () => {
             </h1>
           </div>
 
-          {/* Subtitle with tapering lines - magazine tagline style */}
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mt-4 sm:mt-5">
+          {/* Subtitle with tapering lines */}
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mt-3 sm:mt-4">
             <div 
-              className="w-8 sm:w-12 lg:w-20 h-[2px]"
+              className="w-12 sm:w-16 lg:w-24 h-[2px]"
               style={{ 
-                background: 'linear-gradient(to right, transparent, #c9a84c)'
+                background: 'linear-gradient(to right, transparent, #e8e0d0)'
               }}
             />
-            <div 
-              className="w-2 h-2 rounded-full hidden sm:block"
-              style={{ backgroundColor: '#c9a84c' }}
-            />
             <p 
-              className="text-xs sm:text-sm lg:text-base tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium"
+              className="text-sm sm:text-base lg:text-lg tracking-widest uppercase"
               style={{ color: '#e8e0d0' }}
             >
               Original Stories in Sequential Art & Screenplay
             </p>
             <div 
-              className="w-2 h-2 rounded-full hidden sm:block"
-              style={{ backgroundColor: '#c9a84c' }}
-            />
-            <div 
-              className="w-8 sm:w-12 lg:w-20 h-[2px]"
+              className="w-12 sm:w-16 lg:w-24 h-[2px]"
               style={{ 
-                background: 'linear-gradient(to left, transparent, #c9a84c)'
+                background: 'linear-gradient(to left, transparent, #e8e0d0)'
               }}
             />
-          </div>
-          
-          {/* Small decorative date/edition text */}
-          <div className="text-center mt-2 sm:mt-3">
-            <span 
-              className="text-[10px] sm:text-xs tracking-widest opacity-70"
-              style={{ color: '#e8e0d0', fontFamily: 'Georgia, serif', fontStyle: 'italic' }}
-            >
-              — Collection 2024 —
-            </span>
           </div>
         </header>
 
