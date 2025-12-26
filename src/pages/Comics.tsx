@@ -14,17 +14,11 @@ import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop-cropped.jpeg";
 import comicsFooterCharacter from "@/assets/comics-footer-character.png";
-import newReleaseLabel from "@/assets/new-release-label.jpeg";
 import godOfLiesStreetScene from "@/assets/god-of-lies-street-scene.png";
-import godOfLiesManyFaces from "@/assets/god-of-lies-many-faces.png";
-import godOfLiesHandshake from "@/assets/god-of-lies-handshake.png";
-import comicCornerLeft from "@/assets/comic-corner-left.png";
-import comicCornerRight from "@/assets/comic-corner-right.png";
-import cameoPortraitLeft from "@/assets/cameo-portrait-left.jpeg";
-import cameoPortraitRight from "@/assets/cameo-portrait-right.jpeg";
 import vignetteApartments from "@/assets/god-of-lies-apartments.png";
 import vignetteSweeping from "@/assets/god-of-lies-sweeping.png";
 import vignetteBoardgame from "@/assets/god-of-lies-boardgame.png";
+import comicPanelsBackground from "@/assets/comic-panels-background.png";
 
 
 const Comics = () => {
@@ -35,104 +29,67 @@ const Comics = () => {
   const [zoomedImage, setZoomedImage] = useState<{src: string; alt: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [showGodOfLiesDescription, setShowGodOfLiesDescription] = useState(false);
-  const [godOfLiesDescriptionVisible, setGodOfLiesDescriptionVisible] = useState(true); // tap toggle state
-  const [showBusStopSection, setShowBusStopSection] = useState(false);
-  const [showMagazineHeader, setShowMagazineHeader] = useState(false);
-  const [showMagazineImages, setShowMagazineImages] = useState(false);
-  const [showMagazineText, setShowMagazineText] = useState(false);
   const [showPendragon, setShowPendragon] = useState(false);
   const [showPendragonCaption, setShowPendragonCaption] = useState(false);
-  const [pendragonCaptionVisible, setPendragonCaptionVisible] = useState(true); // tap toggle state (like godOfLiesDescriptionVisible)
+  const [pendragonCaptionVisible, setPendragonCaptionVisible] = useState(true);
   const [mobilePendragonExpanded, setMobilePendragonExpanded] = useState(false);
   const [pageReady, setPageReady] = useState(false);
-  const [isNarrowPortrait, setIsNarrowPortrait] = useState(false); // 13-inch iPad portrait detection
-  const [godOfLiesImageLoaded, setGodOfLiesImageLoaded] = useState(false); // Track God of Lies image load
-  const [topSectionsLoaded, setTopSectionsLoaded] = useState(false); // Track when top sections are loaded
-  const [showVignette1, setShowVignette1] = useState(false);
-  const [showVignette2, setShowVignette2] = useState(false);
-  const [showVignette3, setShowVignette3] = useState(false);
-  const [showVignetteText, setShowVignetteText] = useState(false);
-  const [godOfLiesCoverOpacity, setGodOfLiesCoverOpacity] = useState(1);
+  const [isNarrowPortrait, setIsNarrowPortrait] = useState(false);
+  const [godOfLiesImageLoaded, setGodOfLiesImageLoaded] = useState(false);
+  const [topSectionsLoaded, setTopSectionsLoaded] = useState(false);
+  
+  // Scroll-locked sections state (0 = cover, 1 = vignettes, 2 = cream blurb, 3+ = normal scroll)
+  const [currentSection, setCurrentSection] = useState(0);
+  const [sectionProgress, setSectionProgress] = useState(0);
   
   const mobilePendragonRef = useRef<HTMLDivElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
-  const lastScrollY = useRef(0);
-  const hasScrolledIntoPendragon = useRef(false);
   
-  // Refs for snap sections
-  const bannerSectionRef = useRef<HTMLElement>(null);
-  const godOfLiesSectionRef = useRef<HTMLElement>(null);
-  const vignetteSectionRef = useRef<HTMLElement>(null);
-  const busStopSectionRef = useRef<HTMLElement>(null);
   const pendragonSectionRef = useRef<HTMLElement>(null);
   const storiesSectionRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLElement | null>(null);
-  const fixedHeaderHeight = 64; // Fixed header height to avoid browser bar variability
+  const fixedHeaderHeight = 64;
 
-  // Track scroll for slide-in animations and banner fade
+  // Calculate section visibility based on scroll
   useEffect(() => {
     const handleScroll = () => {
-      // Show God of Lies description when user starts scrolling (even just a little)
-      if (window.scrollY > 20) {
+      const scrollY = window.scrollY;
+      const vh = window.innerHeight;
+      
+      // Each "section" takes 1 viewport height of scroll to transition
+      // Section 0 (cover) -> Section 1 (vignettes): scroll 0 to vh
+      // Section 1 (vignettes) -> Section 2 (cream): scroll vh to 2vh
+      // Section 2 (cream) -> normal scroll: scroll 2vh+
+      
+      const section0End = vh * 0.8; // Cover fully fades by 80% of first vh
+      const section1End = vh * 1.8; // Vignettes fully fade by 80% into second vh
+      
+      if (scrollY < section0End) {
+        setCurrentSection(0);
+        setSectionProgress(scrollY / section0End);
+      } else if (scrollY < section1End) {
+        setCurrentSection(1);
+        setSectionProgress((scrollY - section0End) / (section1End - section0End));
+      } else {
+        setCurrentSection(2);
+        setSectionProgress(1);
+      }
+      
+      // Mobile God of Lies description
+      if (scrollY > 20) {
         setShowGodOfLiesDescription(true);
       }
       
-      // Vignette section animations - all images slide in together as cover dissolves
-      if (vignetteSectionRef.current) {
-        const vignetteRect = vignetteSectionRef.current.getBoundingClientRect();
-        const vignetteProgress = 1 - (vignetteRect.top / window.innerHeight);
-        
-        // All vignettes appear together as we scroll into the section
-        const showVignettes = vignetteProgress > 0.15;
-        setShowVignette1(showVignettes);
-        setShowVignette2(showVignettes);
-        setShowVignette3(showVignettes);
-        setShowVignetteText(showVignettes);
-        
-        // Dissolve God of Lies cover as we scroll into vignette section
-        const dissolveProgress = Math.min(Math.max(vignetteProgress * 2.5, 0), 1);
-        setGodOfLiesCoverOpacity(1 - dissolveProgress);
+      // Show Pendragon when past section 2
+      if (scrollY > vh * 2.5) {
+        setShowPendragon(true);
       }
       
-      if (godOfLiesSectionRef.current) {
-        const rect = godOfLiesSectionRef.current.getBoundingClientRect();
-        
-        // Show bus stop section when ANY white space appears below God of Lies image
-        const busStopThreshold = window.innerHeight - rect.bottom;
-        setShowBusStopSection(busStopThreshold > 0);
-        
-        // Staggered animations for magazine section elements
-        if (busStopThreshold > 50) {
-          setShowMagazineHeader(true);
-        }
-        if (busStopThreshold > 150) {
-          setShowMagazineImages(true);
-        }
-        if (busStopThreshold > 250) {
-          setShowMagazineText(true);
-        }
-      }
-      
-      // Show Pendragon when magazine section is scrolled past (near end of it)
-      if (busStopSectionRef.current && !isMobile && !isNarrowPortrait) {
-        const magazineRect = busStopSectionRef.current.getBoundingClientRect();
-        // Trigger Pendragon when magazine section starts to scroll off (appears much earlier)
-        const pendragonTrigger = magazineRect.bottom < window.innerHeight * 0.85;
-        setShowPendragon(pendragonTrigger);
-      } else if (godOfLiesSectionRef.current) {
-        // Fallback for mobile/narrow portrait
-        const rect = godOfLiesSectionRef.current.getBoundingClientRect();
-        const pendragonThreshold = rect.height * 0.3;
-        setShowPendragon(rect.top < -pendragonThreshold);
-      }
-      
-      // Show Pendragon caption when Pendragon section is visible
+      // Show Pendragon caption
       if (pendragonSectionRef.current) {
         const pendragonRect = pendragonSectionRef.current.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         
-        // For narrow portrait desktop (13" iPad): Only show caption when Pendragon occupies most of the page
         const isNarrowPortraitNow = window.innerWidth >= 950 && window.innerWidth <= 1100 && window.innerHeight > window.innerWidth;
         
         if (isNarrowPortraitNow) {
@@ -143,7 +100,7 @@ const Comics = () => {
         }
       }
       
-      // Mobile: Expand Pendragon caption based on scroll position relative to the caption bar
+      // Mobile: Expand Pendragon caption
       if (mobilePendragonRef.current) {
         const captionRect = mobilePendragonRef.current.getBoundingClientRect();
         const shouldExpand = captionRect.top < window.innerHeight * 0.6;
@@ -152,44 +109,33 @@ const Comics = () => {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial call
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMobile, isNarrowPortrait]);
 
-  // Get dynamic header height (accounts for browser chrome showing/hiding)
+  // Get dynamic header height
   const getHeaderBottom = useCallback(() => {
-    // Try to get the actual header element
-    if (!headerRef.current) {
-      headerRef.current = document.querySelector('header.fixed, nav.fixed, [data-header]') as HTMLElement;
+    const header = document.querySelector('header.fixed, nav.fixed, [data-header]') as HTMLElement;
+    if (header) {
+      return header.getBoundingClientRect().bottom;
     }
-    if (headerRef.current) {
-      return headerRef.current.getBoundingClientRect().bottom;
-    }
-    // Fallback to fixed 64px if header not found
     return 64;
   }, []);
 
-  // Force scroll to top on page load/navigation and preload God of Lies image
+  // Force scroll to top on page load
   useEffect(() => {
-    // Immediately scroll to top
     window.scrollTo(0, 0);
-    
-    // Show page immediately - don't wait for image preload
-    // This prevents blank page issues in preview panes and iframes
     setPageReady(true);
     
-    // Preload God of Lies image in background
     const img = new Image();
     img.onload = () => {
-      // Allow bottom sections to load after image is ready
       setTimeout(() => setTopSectionsLoaded(true), 300);
     };
     img.onerror = () => {
-      // Allow bottom sections anyway if image fails to load
       setTimeout(() => setTopSectionsLoaded(true), 300);
     };
     img.src = godOfLiesCover;
     
-    // Fallback: allow bottom sections after 800ms regardless
     const timeout = setTimeout(() => {
       setTopSectionsLoaded(true);
     }, 800);
@@ -197,17 +143,13 @@ const Comics = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  // Check if we're on a narrow portrait desktop (13-inch iPad in portrait)
-  // This is desktop mode (width >= 950) but in portrait orientation with limited height
+  // Check narrow portrait desktop
   const isNarrowPortraitDesktop = useCallback(() => {
     const width = window.innerWidth;
     const height = window.innerHeight;
-    // Desktop mode (>= 950px width) but portrait-ish aspect ratio (height > width or close)
-    // 13-inch iPad portrait is around 1024x1366
     return width >= 950 && width <= 1100 && height > width;
   }, []);
 
-  // On narrow portrait desktop, show Pendragon immediately and track state for UI
   useEffect(() => {
     const checkNarrowPortrait = () => {
       const narrow = isNarrowPortraitDesktop();
@@ -221,7 +163,6 @@ const Comics = () => {
     window.addEventListener('resize', checkNarrowPortrait);
     return () => window.removeEventListener('resize', checkNarrowPortrait);
   }, [isNarrowPortraitDesktop]);
-
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -291,291 +232,262 @@ const Comics = () => {
     setSelectedComic(null);
   };
 
+  // Calculate opacities and transforms for each section
+  const coverOpacity = currentSection === 0 ? 1 - sectionProgress : 0;
+  const vignetteOpacity = currentSection === 0 ? sectionProgress : currentSection === 1 ? 1 - sectionProgress : 0;
+  const vignetteVisible = currentSection >= 0 && (currentSection === 0 ? sectionProgress > 0.1 : currentSection === 1);
+  const creamOpacity = currentSection === 1 ? sectionProgress : currentSection >= 2 ? 1 : 0;
+  const creamVisible = currentSection >= 1 && sectionProgress > 0.1;
+
   return (
-    <div className={`min-h-screen bg-white overflow-x-hidden overflow-y-visible transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
+    <div className={`min-h-screen bg-white overflow-x-hidden transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
       <Navigation />
 
       <main className="relative flex-1">
-        {/* Header Banner - Clean magazine style with white background */}
-        <header 
-          ref={bannerSectionRef}
-          className="py-12 sm:py-16 lg:py-20 px-4 sm:px-8 lg:px-12 mt-[64px] bg-white"
-        >
-          {/* Main title - Tintin/Adventure comic style */}
-          <div className="text-center">
-            <h1 
-              className="text-4xl xs:text-5xl sm:text-5xl lg:text-6xl xl:text-7xl uppercase text-black"
-              style={{ 
-                fontFamily: 'Bangers, cursive',
-                fontWeight: 400,
-                letterSpacing: '0.06em'
-              }}
-            >
-              COMICS & SCRIPTS
-            </h1>
-          </div>
-
-          {/* Subtitle - clean without dashes */}
-          <div className="flex items-center justify-center mt-4 sm:mt-5">
-            <p 
-              className="text-xs sm:text-sm lg:text-base tracking-[0.2em] uppercase text-black/70"
-              style={{ 
-                fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                fontWeight: 400
-              }}
-            >
-              Original Stories in Sequential Art & Screenplay
-            </p>
-          </div>
-        </header>
-
-        {/* GOD OF LIES Cover - Dissolves as you scroll to vignettes */}
-        <section 
-          ref={godOfLiesSectionRef} 
-          className="w-full relative z-10 bg-white px-4 sm:px-8 lg:px-16 xl:px-24 transition-opacity duration-500"
-          style={{ opacity: godOfLiesCoverOpacity }}
-        >
-          <img 
-            src={godOfLiesCover}
-            alt="God of Lies"
-            className="w-full"
-            onLoad={() => setGodOfLiesImageLoaded(true)}
-          />
-        </section>
-
-        {/* VIGNETTE SECTION - Images slide in simultaneously as cover dissolves */}
-        <section 
-          ref={vignetteSectionRef}
-          className="w-full bg-white min-h-screen relative overflow-hidden flex items-center"
-        >
-          {/* Magazine layout with images on sides, text in center */}
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-12 lg:py-16 relative">
+        {/* FIXED SCROLL CONTAINER - First 3 sections occupy 3vh of scroll but content is fixed */}
+        <div className="relative" style={{ height: '300vh' }}>
+          {/* Sticky container that holds all 3 animated sections */}
+          <div className="sticky top-0 h-screen overflow-hidden">
             
-            {/* Grid layout: Left image | Center text | Right images stacked */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-              
-              {/* LEFT SIDE - Board game image (middle-left position) */}
-              <div className="lg:col-span-4 flex items-center justify-center lg:justify-start order-2 lg:order-1">
-                <div 
-                  className={`vignette-slide-left w-full max-w-sm lg:max-w-none ${showVignette1 ? 'visible' : ''}`}
-                  style={{ transitionDelay: '100ms' }}
-                >
+            {/* Header Banner - Always visible at top */}
+            <header className="absolute top-0 left-0 right-0 py-8 sm:py-12 lg:py-16 px-4 sm:px-8 lg:px-12 mt-[64px] bg-white z-30">
+              <div className="text-center relative">
+                {/* Faded comic panels behind subtitle */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <img 
-                    src={vignetteBoardgame}
-                    alt="Family moments - God of Lies"
-                    className="w-full h-auto drop-shadow-2xl"
+                    src={comicPanelsBackground}
+                    alt=""
+                    className="w-full max-w-2xl opacity-10"
+                    style={{ marginTop: '2rem' }}
                   />
                 </div>
-              </div>
-              
-              {/* CENTER - Magazine text content */}
-              <div className="lg:col-span-4 order-1 lg:order-2">
-                <div 
-                  className={`text-center transition-all duration-700 ${showVignetteText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                  style={{ transitionDelay: '200ms' }}
+                
+                {/* Main title - Tintin/Adventure comic style with bigger letters */}
+                <h1 
+                  className="text-5xl xs:text-6xl sm:text-6xl lg:text-7xl xl:text-8xl uppercase text-black relative z-10"
+                  style={{ 
+                    fontFamily: 'Bangers, cursive',
+                    fontWeight: 400,
+                    letterSpacing: '0.08em'
+                  }}
                 >
+                  COMICS & SCRIPTS
+                </h1>
+
+                {/* Subtitle */}
+                <p 
+                  className="text-xs sm:text-sm lg:text-base tracking-[0.2em] uppercase text-black/70 mt-4 sm:mt-5 relative z-10"
+                  style={{ 
+                    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                    fontWeight: 400
+                  }}
+                >
+                  Original Stories in Sequential Art & Screenplay
+                </p>
+              </div>
+            </header>
+
+            {/* SECTION 0: GOD OF LIES Cover - Fades out as you scroll */}
+            <section 
+              className="absolute inset-0 flex items-center justify-center pt-32 sm:pt-40 transition-opacity duration-300"
+              style={{ opacity: coverOpacity, pointerEvents: coverOpacity > 0.1 ? 'auto' : 'none' }}
+            >
+              <div className="w-full px-4 sm:px-8 lg:px-16 xl:px-24">
+                <img 
+                  src={godOfLiesCover}
+                  alt="God of Lies"
+                  className="w-full max-h-[70vh] object-contain mx-auto"
+                  onLoad={() => setGodOfLiesImageLoaded(true)}
+                />
+              </div>
+            </section>
+
+            {/* SECTION 1: VIGNETTES - Slide in from sides, fill the screen */}
+            <section 
+              className="absolute inset-0 flex items-center justify-center pt-32 sm:pt-40 transition-opacity duration-500"
+              style={{ opacity: vignetteOpacity, pointerEvents: vignetteVisible ? 'auto' : 'none' }}
+            >
+              <div className="w-full h-full flex items-center px-4 sm:px-6 lg:px-8">
+                {/* Full-screen grid layout */}
+                <div className="w-full max-w-7xl mx-auto grid grid-cols-12 gap-4 lg:gap-6 items-center" style={{ maxHeight: '75vh' }}>
+                  
+                  {/* LEFT SIDE - Board game image (large, middle-left) */}
+                  <div className="col-span-5 lg:col-span-4 h-full flex items-center">
+                    <div 
+                      className={`w-full transition-all duration-700 ease-out ${
+                        vignetteVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-24'
+                      }`}
+                      style={{ transitionDelay: '100ms' }}
+                    >
+                      <img 
+                        src={vignetteBoardgame}
+                        alt="Family moments - God of Lies"
+                        className="w-full h-auto max-h-[60vh] object-contain drop-shadow-2xl"
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* CENTER - Magazine text content */}
+                  <div className="col-span-2 lg:col-span-4 flex items-center justify-center">
+                    <div 
+                      className={`text-center transition-all duration-700 ${
+                        vignetteVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                      }`}
+                      style={{ transitionDelay: '200ms' }}
+                    >
+                      <p 
+                        className="text-[10px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] text-slate-500 mb-2 sm:mb-3"
+                        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                      >
+                        Featured
+                      </p>
+                      <h2 
+                        className="text-xl sm:text-3xl lg:text-5xl mb-2 sm:mb-4 text-slate-900"
+                        style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.04em' }}
+                      >
+                        GOD OF LIES
+                      </h2>
+                      <div className="w-8 sm:w-16 h-0.5 sm:h-1 bg-red-600 mx-auto mb-2 sm:mb-4" />
+                      <p 
+                        className="text-xs sm:text-sm lg:text-base text-slate-700 leading-relaxed mb-2 sm:mb-3 hidden sm:block"
+                        style={{ fontFamily: 'Georgia, serif' }}
+                      >
+                        In a world where truth is currency, one man discovers he can make anyone believe anything.
+                      </p>
+                      <p 
+                        className="text-[10px] sm:text-xs text-blue-700 uppercase tracking-[0.15em] sm:tracking-[0.25em]"
+                        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                      >
+                        Manga • 2026
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* RIGHT SIDE - Two images stacked (larger) */}
+                  <div className="col-span-5 lg:col-span-4 flex flex-col gap-3 lg:gap-4 h-full justify-center">
+                    {/* Top right image - Apartments */}
+                    <div 
+                      className={`transition-all duration-700 ease-out ${
+                        vignetteVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-24'
+                      }`}
+                      style={{ transitionDelay: '0ms' }}
+                    >
+                      <img 
+                        src={vignetteApartments}
+                        alt="The neighborhood - God of Lies"
+                        className="w-full h-auto max-h-[28vh] object-contain drop-shadow-2xl"
+                      />
+                    </div>
+                    
+                    {/* Bottom right image - Sweeping */}
+                    <div 
+                      className={`transition-all duration-700 ease-out ${
+                        vignetteVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-24'
+                      }`}
+                      style={{ transitionDelay: '150ms' }}
+                    >
+                      <img 
+                        src={vignetteSweeping}
+                        alt="Daily life - God of Lies"
+                        className="w-full h-auto max-h-[28vh] object-contain drop-shadow-2xl"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* SECTION 2: CREAM BLURB - Slides in to replace vignettes */}
+            <section 
+              className="absolute inset-0 flex items-center justify-center pt-32 sm:pt-40 transition-opacity duration-500"
+              style={{ 
+                opacity: creamOpacity, 
+                pointerEvents: creamVisible ? 'auto' : 'none',
+                background: 'linear-gradient(to bottom, #f5f0e1, #e8e0cc)'
+              }}
+            >
+              <div className="w-full max-w-4xl mx-auto px-6 py-8">
+                {/* Magazine Header */}
+                <div className="text-center mb-6">
                   <p 
-                    className="text-xs uppercase tracking-[0.4em] text-slate-500 mb-3"
+                    className="text-xs uppercase tracking-[0.4em] text-amber-800/70 mb-2"
                     style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                   >
                     Featured Series
                   </p>
                   <h2 
-                    className="text-4xl sm:text-5xl lg:text-6xl mb-4 text-slate-900"
-                    style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.04em' }}
+                    className="text-4xl lg:text-5xl font-bold text-slate-900 mb-3"
+                    style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.02em' }}
                   >
                     GOD OF LIES
                   </h2>
-                  <div className="w-16 h-1 bg-red-600 mx-auto mb-5" />
-                  <p 
-                    className="text-base sm:text-lg text-slate-700 leading-relaxed mb-4"
-                    style={{ fontFamily: 'Georgia, serif' }}
-                  >
-                    In a world where truth is currency, one man discovers he can make anyone believe anything.
-                  </p>
-                  <p 
-                    className="text-base sm:text-lg text-slate-600 leading-relaxed mb-5"
-                    style={{ fontFamily: 'Georgia, serif' }}
-                  >
-                    When a single child sees through his lies, his empire of illusions begins to crumble.
-                  </p>
-                  <p 
-                    className="text-sm text-blue-700 uppercase tracking-[0.25em]"
-                    style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                  >
-                    Manga • Webtoon • 2026
-                  </p>
+                  <div className="w-24 h-1 bg-amber-700 mx-auto" />
                 </div>
-              </div>
-              
-              {/* RIGHT SIDE - Two images stacked (top-right and bottom-right) */}
-              <div className="lg:col-span-4 flex flex-col gap-4 lg:gap-6 order-3">
-                {/* Top right image - Apartments */}
-                <div 
-                  className={`vignette-slide-right w-full ${showVignette2 ? 'visible' : ''}`}
-                  style={{ transitionDelay: '0ms' }}
-                >
-                  <img 
-                    src={vignetteApartments}
-                    alt="The neighborhood - God of Lies"
-                    className="w-full h-auto drop-shadow-2xl"
-                  />
-                </div>
-                
-                {/* Bottom right image - Sweeping */}
-                <div 
-                  className={`vignette-slide-right w-full ${showVignette3 ? 'visible' : ''}`}
-                  style={{ transitionDelay: '150ms' }}
-                >
-                  <img 
-                    src={vignetteSweeping}
-                    alt="Daily life - God of Lies"
-                    className="w-full h-auto drop-shadow-2xl"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        {/* GOD OF LIES Magazine-Style Promo Section - Desktop Only */}
-        {!isMobile && !isNarrowPortrait && (
-          <section 
-            ref={busStopSectionRef}
-            className={`w-full bg-gradient-to-b from-[#f5f0e1] to-[#e8e0cc] overflow-hidden transition-all duration-700 ease-out ${
-              showBusStopSection 
-                ? 'max-h-[2000px] opacity-100' 
-                : 'max-h-0 opacity-0'
-            }`}
-          >
-            <div className="max-w-5xl mx-auto px-6 py-8 lg:py-10">
-              {/* Magazine Header - Fades in first */}
-              <div className={`text-center mb-6 transition-all duration-700 ease-out ${
-                showMagazineHeader ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}>
-                <p 
-                  className="text-xs uppercase tracking-[0.4em] text-amber-800/70 mb-2"
-                  style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                >
-                  Featured Series
-                </p>
-                <h2 
-                  className="text-4xl lg:text-5xl font-bold text-slate-900 mb-3"
-                  style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.02em' }}
-                >
-                  GOD OF LIES
-                </h2>
-                <div className="w-24 h-1 bg-amber-700 mx-auto" />
-              </div>
-
-              {/* Magazine Layout Grid - Images and Text side by side */}
-              <div className={`grid grid-cols-12 gap-5 transition-all duration-700 ease-out delay-100 ${
-                showMagazineImages ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}>
-                {/* Left Column - First Image + Text Below */}
-                <div className="col-span-5 flex flex-col gap-4">
-                  {/* First Image */}
-                  <div 
-                    className="relative cursor-pointer group"
-                    onClick={() => setZoomedImage({ src: godOfLiesManyFaces, alt: 'The Man of Many Faces' })}
-                  >
-                    <img 
-                      src={godOfLiesManyFaces}
-                      alt="The Man of Many Faces"
-                      className="w-full shadow-xl transition-transform duration-300 group-hover:scale-[1.02]"
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
-                      <p 
-                        className="text-white/90 text-xs uppercase tracking-widest"
-                        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                      >
-                        The Man of Many Faces
-                      </p>
-                    </div>
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                      <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-sm">Click to enlarge</span>
+                {/* Single large image with text */}
+                <div className="flex flex-col lg:flex-row gap-6 items-center">
+                  {/* Main Image - Street scene with masked figure */}
+                  <div className="lg:w-1/2">
+                    <div 
+                      className="relative cursor-pointer group"
+                      onClick={() => setZoomedImage({ src: godOfLiesStreetScene, alt: 'The Masked Figure' })}
+                    >
+                      <img 
+                        src={godOfLiesStreetScene}
+                        alt="The Masked Figure following"
+                        className="w-full shadow-xl transition-transform duration-300 group-hover:scale-[1.02]"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                        <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-sm">Click to enlarge</span>
+                      </div>
                     </div>
                   </div>
                   
-                  {/* Text Below Left Image */}
-                  <div className={`transition-all duration-700 ease-out delay-200 ${
-                    showMagazineText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                  }`}>
+                  {/* Text Content */}
+                  <div className="lg:w-1/2">
                     <p 
                       className="text-slate-700 text-base leading-relaxed first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-amber-800"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
                       In a world where truth is currency, one man discovers he can make anyone believe anything. 
-                      Takeshi Mori has mastered the art of deception—manipulating politicians, businessmen, and entire corporations with surgical precision.
-                      For years, he operated in the shadows, a phantom pulling strings that shaped nations. But when a single child sees through his carefully constructed lies, 
-                      his empire of illusions begins to crumble. Now hunted by those he once controlled, Takeshi must confront the one truth he's spent his life avoiding: 
-                      that every lie demands a reckoning.
+                      <span className="text-red-700 font-semibold"> Takeshi Mori</span> has mastered the art of deception—manipulating politicians, businessmen, and entire corporations with surgical precision.
                     </p>
                     <p 
-                      className="text-amber-800 text-xs uppercase tracking-widest mt-3"
+                      className="text-slate-700 text-base leading-relaxed mt-4"
+                      style={{ fontFamily: 'Georgia, serif' }}
+                    >
+                      For years, he operated in the shadows, a phantom pulling strings that shaped nations. But when a 
+                      <span className="text-blue-700 font-semibold"> single child</span> sees through his carefully constructed lies, 
+                      his empire of illusions begins to crumble. Now hunted by those he once controlled, Takeshi must confront the one truth he's spent his life avoiding: 
+                      <span className="italic"> that every lie demands a reckoning.</span>
+                    </p>
+                    <p 
+                      className="text-amber-800 text-xs uppercase tracking-widest mt-4"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
                       Manga • Webtoon • 2026
                     </p>
                   </div>
                 </div>
-
-                {/* Right Column - Two Stacked Images */}
-                <div className="col-span-7 flex flex-col gap-4">
-                  {/* Top Right Image */}
-                  <div 
-                    className="relative cursor-pointer group"
-                    onClick={() => setZoomedImage({ src: godOfLiesStreetScene, alt: 'Street scene' })}
-                  >
-                    <img 
-                      src={godOfLiesStreetScene}
-                      alt="Street scene"
-                      className="w-full shadow-lg transition-transform duration-300 group-hover:scale-[1.02]"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                      <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-sm">Click to enlarge</span>
-                    </div>
-                  </div>
-
-                  {/* Bottom Right Image */}
-                  <div 
-                    className="relative cursor-pointer group"
-                    onClick={() => setZoomedImage({ src: godOfLiesHandshake, alt: 'The deal' })}
-                  >
-                    <img 
-                      src={godOfLiesHandshake}
-                      alt="The deal"
-                      className="w-full shadow-lg transition-transform duration-300 group-hover:scale-[1.02]"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                      <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-sm">Click to enlarge</span>
-                    </div>
-                  </div>
-                </div>
               </div>
-            </div>
-          </section>
-        )}
+            </section>
+          </div>
+        </div>
 
-        {/* GOD OF LIES Text Section - MOBILE AND 13" iPad Portrait */}
-        {/* Shows between God of Lies image and Surname Pendragon, slides in on scroll */}
-        {(isMobile || isNarrowPortrait) && (
-          <section 
-            className="w-full relative"
-          >
+        {/* NORMAL SCROLLING CONTENT BELOW */}
+        
+        {/* GOD OF LIES Text Section - MOBILE */}
+        {isMobile && (
+          <section className="w-full relative">
             <div className="flex flex-col">
-              {/* Bus stop image - only on actual mobile phones, not on tablets or 13" iPad portrait */}
-              {isMobile && (
-                <div className="w-full">
-                  <img 
-                    src={godOfLiesBusStop}
-                    alt="God of Lies - Bus Stop Scene"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
+              <div className="w-full">
+                <img 
+                  src={godOfLiesBusStop}
+                  alt="God of Lies - Bus Stop Scene"
+                  className="w-full h-full object-cover"
+                />
+              </div>
               
-              {/* GOD OF LIES text - slides down vertically on scroll (same style as Pendragon caption) */}
               <div 
                 className={`w-full bg-amber-50/95 transition-all duration-700 ease-out overflow-hidden ${
                   showGodOfLiesDescription 
@@ -602,18 +514,14 @@ const Comics = () => {
                   </p>
                 </div>
               </div>
-          </div>
-        </section>
+            </div>
+          </section>
         )}
 
-        {/* SURNAME PENDRAGON - Snap Section 3 */}
-        {/* On mobile: wait for God of Lies image to load first, then show */}
-        {/* On desktop: fades in on scroll */}
+        {/* SURNAME PENDRAGON */}
         <section 
           ref={pendragonSectionRef} 
           className={`w-full relative transition-all duration-700 ease-out ${
-            // Mobile/narrow portrait: wait for God of Lies image to load, then show
-            // Desktop: fade/slide animation based on scroll
             (isMobile || isNarrowPortrait) 
               ? (godOfLiesImageLoaded ? 'opacity-100 translate-y-0' : 'opacity-0')
               : (showPendragon ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16')
@@ -626,9 +534,7 @@ const Comics = () => {
             loading={(isMobile || isNarrowPortrait) ? 'lazy' : 'eager'}
           />
           
-          
-          {/* Slide-in caption panel from left - classy film magazine style - hidden on mobile */}
-          {/* Tapping anywhere on the Pendragon image toggles the caption visibility */}
+          {/* Slide-in caption panel from left */}
           <div 
             className="absolute inset-0 cursor-pointer hidden sm:block"
             onClick={() => setPendragonCaptionVisible(prev => !prev)}
@@ -667,7 +573,7 @@ const Comics = () => {
             </p>
           </div>
           
-          {/* Mobile caption - below image, expands on scroll */}
+          {/* Mobile caption */}
           <div 
             ref={mobilePendragonRef}
             className={`sm:hidden w-full bg-black/90 overflow-hidden transition-all duration-500 ease-out ${
@@ -703,9 +609,8 @@ const Comics = () => {
             </div>
           </div>
         </section>
-        
 
-        {/* Stories Waiting to be Told - Snap Section 4 */}
+        {/* Stories Waiting to be Told */}
         <section ref={storiesSectionRef} className="text-center py-16 sm:py-24 bg-white">
           <ScrollScale 
             initialScale={1.3} 
@@ -723,9 +628,8 @@ const Comics = () => {
           </ScrollScale>
         </section>
 
-        {/* Forthcoming Comics Grid - Only loads after top sections */}
+        {/* Forthcoming Comics Grid */}
         <section className="pb-6 sm:pb-20 px-4 sm:px-6 bg-white relative">
-          {/* All 6 comics in a grid - 2 columns on mobile, 3 on desktop */}
           {topSectionsLoaded && (
             <div 
               ref={row1Ref}
@@ -734,7 +638,6 @@ const Comics = () => {
                 visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
             >
-              {/* Comic images - smaller hover scale on tablet mobile to prevent overlap */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 xs:gap-4 sm:gap-4 lg:gap-6 max-w-4xl mx-auto">
                 {smallShelfComics.map((comic, index) => (
                   <div 
@@ -760,14 +663,12 @@ const Comics = () => {
             </div>
           )}
           
-          {/* Hidden ref for row2 to maintain observer */}
           <div ref={row2Ref} data-row="row2" className="hidden" />
         </section>
       </main>
       
-      {/* Footer with mascot character */}
+      {/* Footer */}
       <footer className="bg-[#1a1a1a] py-10 max-sm:py-6 relative overflow-visible">
-        {/* Footer character - positioned with right elbow 6px from page edge, hidden when not enough space */}
         <img 
           src={comicsFooterCharacter}
           alt="Comics mascot"
