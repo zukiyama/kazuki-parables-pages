@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Serif+Pro:wght@300;400;600&family=Crimson+Text:wght@400;600&family=Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Serif+Pro:wght@300;400;600&family=Crimson+Text:wght@400;600&family=Great+Vibes&family=Bangers&display=swap');
 
 /* Self-hosted DK Crayon Crumble font for music title */
 @font-face {
@@ -196,6 +196,35 @@
   .tv-shop-text-reveal.visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  /* Vignette slide-in animations for pop-up book effect */
+  .vignette-slide-right {
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .vignette-slide-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .vignette-slide-left {
+    opacity: 0;
+    transform: translateX(-100px);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .vignette-slide-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Painted vignette organic edge effect using mask */
+  .vignette-painted {
+    mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 60%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 60%, transparent 100%);
   }
 }
 

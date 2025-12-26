@@ -22,6 +22,9 @@ import comicCornerLeft from "@/assets/comic-corner-left.png";
 import comicCornerRight from "@/assets/comic-corner-right.png";
 import cameoPortraitLeft from "@/assets/cameo-portrait-left.jpeg";
 import cameoPortraitRight from "@/assets/cameo-portrait-right.jpeg";
+import vignetteCityscape from "@/assets/god-of-lies-vignette-cityscape.png";
+import vignetteLounge from "@/assets/god-of-lies-vignette-lounge.png";
+import vignetteStreet from "@/assets/god-of-lies-vignette-street.png";
 
 
 const Comics = () => {
@@ -45,6 +48,11 @@ const Comics = () => {
   const [isNarrowPortrait, setIsNarrowPortrait] = useState(false); // 13-inch iPad portrait detection
   const [godOfLiesImageLoaded, setGodOfLiesImageLoaded] = useState(false); // Track God of Lies image load
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false); // Track when top sections are loaded
+  const [showVignette1, setShowVignette1] = useState(false);
+  const [showVignette2, setShowVignette2] = useState(false);
+  const [showVignette3, setShowVignette3] = useState(false);
+  const [showVignetteText, setShowVignetteText] = useState(false);
+  const [godOfLiesCoverOpacity, setGodOfLiesCoverOpacity] = useState(1);
   
   const mobilePendragonRef = useRef<HTMLDivElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
@@ -55,6 +63,7 @@ const Comics = () => {
   // Refs for snap sections
   const bannerSectionRef = useRef<HTMLElement>(null);
   const godOfLiesSectionRef = useRef<HTMLElement>(null);
+  const vignetteSectionRef = useRef<HTMLElement>(null);
   const busStopSectionRef = useRef<HTMLElement>(null);
   const pendragonSectionRef = useRef<HTMLElement>(null);
   const storiesSectionRef = useRef<HTMLElement>(null);
@@ -67,6 +76,22 @@ const Comics = () => {
       // Show God of Lies description when user starts scrolling (even just a little)
       if (window.scrollY > 20) {
         setShowGodOfLiesDescription(true);
+      }
+      
+      // Vignette section animations - staggered slide-ins
+      if (vignetteSectionRef.current) {
+        const vignetteRect = vignetteSectionRef.current.getBoundingClientRect();
+        const vignetteProgress = 1 - (vignetteRect.top / window.innerHeight);
+        
+        // Staggered vignette reveals as we scroll into the section
+        if (vignetteProgress > 0.1) setShowVignette1(true);
+        if (vignetteProgress > 0.25) setShowVignette2(true);
+        if (vignetteProgress > 0.4) setShowVignette3(true);
+        if (vignetteProgress > 0.35) setShowVignetteText(true);
+        
+        // Dissolve God of Lies cover as we scroll into vignette section
+        const dissolveProgress = Math.min(Math.max(vignetteProgress * 2, 0), 1);
+        setGodOfLiesCoverOpacity(1 - dissolveProgress);
       }
       
       if (godOfLiesSectionRef.current) {
@@ -275,12 +300,14 @@ const Comics = () => {
           ref={bannerSectionRef}
           className="py-12 sm:py-16 lg:py-20 px-4 sm:px-8 lg:px-12 mt-[64px] bg-white"
         >
-          {/* Main title */}
+          {/* Main title - Tintin/Adventure comic style */}
           <div className="text-center">
             <h1 
-              className="font-heading tracking-[0.08em] text-4xl xs:text-5xl sm:text-5xl lg:text-6xl xl:text-7xl uppercase text-black"
+              className="text-4xl xs:text-5xl sm:text-5xl lg:text-6xl xl:text-7xl uppercase text-black"
               style={{ 
-                fontWeight: 700
+                fontFamily: 'Bangers, cursive',
+                fontWeight: 400,
+                letterSpacing: '0.06em'
               }}
             >
               COMICS & SCRIPTS
@@ -301,39 +328,120 @@ const Comics = () => {
           </div>
         </header>
 
-        {/* GOD OF LIES - With margins for breathing room */}
+        {/* GOD OF LIES Cover - Dissolves as you scroll to vignettes */}
         <section 
           ref={godOfLiesSectionRef} 
-          className="w-full relative z-10 bg-white px-4 sm:px-8 lg:px-16 xl:px-24"
+          className="w-full relative z-10 bg-white px-4 sm:px-8 lg:px-16 xl:px-24 transition-opacity duration-500"
+          style={{ opacity: godOfLiesCoverOpacity }}
         >
-          {/* Clickable overlay for tap-to-toggle on desktop */}
-          <div 
-            className="absolute inset-0 cursor-pointer z-10 hidden sm:block"
-            onClick={() => setGodOfLiesDescriptionVisible(prev => !prev)}
-          />
-          
           <img 
             src={godOfLiesCover}
             alt="God of Lies"
             className="w-full"
             onLoad={() => setGodOfLiesImageLoaded(true)}
           />
-          
-          {/* MANGA • WEBTOON text at bottom - only shows after image loads */}
-          {godOfLiesImageLoaded && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 hidden sm:block z-20 pointer-events-none">
-              <p 
-                className="text-white/90 text-sm tracking-[0.3em] uppercase font-medium"
-                style={{ 
-                  fontFamily: 'Georgia, serif',
-                  textShadow: '1px 1px 3px rgba(0,0,0,0.8)'
-                }}
+        </section>
+
+        {/* VIGNETTE SECTION - Pop-up book style sliding images */}
+        <section 
+          ref={vignetteSectionRef}
+          className="w-full bg-white py-16 sm:py-24 lg:py-32 relative overflow-hidden"
+        >
+          <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
+            
+            {/* First vignette - slides from right */}
+            <div className="flex justify-end mb-12 lg:mb-16">
+              <div 
+                className={`vignette-slide-right w-full max-w-md lg:max-w-lg ${showVignette1 ? 'visible' : ''}`}
+                style={{ transitionDelay: '0ms' }}
               >
-                MANGA <span className="mx-2">•</span> WEBTOON
+                <div className="vignette-painted rounded-lg overflow-hidden shadow-2xl">
+                  <img 
+                    src={vignetteCityscape}
+                    alt="The City - God of Lies"
+                    className="w-full h-auto"
+                  />
+                </div>
+                <p 
+                  className="text-right mt-3 text-sm text-slate-600 italic"
+                  style={{ fontFamily: 'Georgia, serif' }}
+                >
+                  The gleaming towers of Seoul...
+                </p>
+              </div>
+            </div>
+
+            {/* Center text - GOD OF LIES title and blurb */}
+            <div 
+              className={`text-center my-16 lg:my-24 transition-all duration-700 ${showVignetteText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              style={{ transitionDelay: '200ms' }}
+            >
+              <h2 
+                className="text-4xl sm:text-5xl lg:text-6xl mb-6 text-slate-900"
+                style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.04em' }}
+              >
+                GOD OF LIES
+              </h2>
+              <div className="w-20 h-1 bg-red-600 mx-auto mb-6" />
+              <p 
+                className="text-lg sm:text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                In a world where truth is currency, one man discovers he can make anyone believe anything. 
+                When a single child sees through his lies, his empire of illusions begins to crumble.
+              </p>
+              <p 
+                className="text-sm text-blue-700 uppercase tracking-[0.3em] mt-4"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Manga • Webtoon • 2026
               </p>
             </div>
-          )}
-          
+
+            {/* Second vignette - slides from left */}
+            <div className="flex justify-start mb-12 lg:mb-16">
+              <div 
+                className={`vignette-slide-left w-full max-w-md lg:max-w-lg ${showVignette2 ? 'visible' : ''}`}
+                style={{ transitionDelay: '150ms' }}
+              >
+                <div className="vignette-painted rounded-lg overflow-hidden shadow-2xl">
+                  <img 
+                    src={vignetteLounge}
+                    alt="Intimate moment - God of Lies"
+                    className="w-full h-auto"
+                  />
+                </div>
+                <p 
+                  className="text-left mt-3 text-sm text-slate-600 italic"
+                  style={{ fontFamily: 'Georgia, serif' }}
+                >
+                  ...where secrets unfold in quiet moments.
+                </p>
+              </div>
+            </div>
+
+            {/* Third vignette - slides from right */}
+            <div className="flex justify-end">
+              <div 
+                className={`vignette-slide-right w-full max-w-md lg:max-w-lg ${showVignette3 ? 'visible' : ''}`}
+                style={{ transitionDelay: '300ms' }}
+              >
+                <div className="vignette-painted rounded-lg overflow-hidden shadow-2xl">
+                  <img 
+                    src={vignetteStreet}
+                    alt="Walking alone - God of Lies"
+                    className="w-full h-auto"
+                  />
+                </div>
+                <p 
+                  className="text-right mt-3 text-sm text-slate-600 italic"
+                  style={{ fontFamily: 'Georgia, serif' }}
+                >
+                  One man walks a path of deception.
+                </p>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* GOD OF LIES Magazine-Style Promo Section - Desktop Only */}
