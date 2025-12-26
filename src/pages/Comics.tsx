@@ -45,7 +45,7 @@ const Comics = () => {
   const row2Ref = useRef<HTMLDivElement>(null);
   const storiesSectionRef = useRef<HTMLElement>(null);
 
-  const maxPinnedSection = 4; // After section 4 (Surname Pendragon reveal), normal scrolling begins
+  const maxPinnedSection = 3; // After section 3 (God of Lies cover), normal scrolling begins
   
   // Track scroll position for COMING 2026 animation
   const [scrollY, setScrollY] = useState(0);
@@ -118,15 +118,8 @@ const Comics = () => {
     };
     
     const handleWheel = (e: WheelEvent) => {
-      // If in normal scroll mode
+      // If in normal scroll mode - allow normal scrolling, no cycling back to pinned
       if (!isScrollLocked) {
-        // At top and scrolling up - go back to pinned section
-        if (window.scrollY <= 5 && e.deltaY < 0) {
-          e.preventDefault();
-          setCurrentSection(maxPinnedSection);
-          setIsScrollLocked(true);
-          setSectionProgress(1);
-        }
         return;
       }
       
@@ -161,19 +154,8 @@ const Comics = () => {
     };
     
     const handleTouchMove = (e: TouchEvent) => {
-      // If in normal scroll mode
+      // If in normal scroll mode - allow normal scrolling, no cycling back to pinned
       if (!isScrollLocked) {
-        if (window.scrollY <= 5) {
-          const touchY = e.touches[0].clientY;
-          const delta = touchStartY - touchY;
-          if (delta < -50) {
-            // Swiping down at top - go back
-            e.preventDefault();
-            setCurrentSection(maxPinnedSection);
-            setIsScrollLocked(true);
-            setSectionProgress(1);
-          }
-        }
         return;
       }
       
@@ -379,13 +361,9 @@ const Comics = () => {
   const creamSlideOut = currentSection >= 3 ? sectionProgress : 0;
   const creamOpacity = currentSection === 2 ? sectionProgress : (currentSection === 3 ? 1 - sectionProgress : 0);
   
-  // God of Lies cover: visible on section 3
-  const godCoverVisible = currentSection === 3 || (currentSection === 4 && sectionProgress < 1);
-  const godCoverOpacity = currentSection === 3 ? sectionProgress : (currentSection === 4 ? 1 - sectionProgress : 0);
-  
-  // Surname Pendragon: visible on section 4 and when scroll is unlocked
-  const pendragonPinnedVisible = currentSection === 4 || !isScrollLocked;
-  const pendragonPinnedOpacity = currentSection === 4 ? sectionProgress : (!isScrollLocked ? 1 : 0);
+  // God of Lies cover: visible on section 3 (final pinned section)
+  const godCoverVisible = currentSection === 3;
+  const godCoverOpacity = currentSection === 3 ? sectionProgress : 0;
 
   return (
     <div className={`min-h-screen bg-white overflow-x-hidden transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
@@ -781,76 +759,7 @@ const Comics = () => {
                   </span>
                 </div>
                 
-                {/* "Other Works" hint at bottom - scroll down to reveal Surname Pendragon */}
-                <div 
-                  className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/70 animate-bounce"
-                >
-                  <span className="text-xs uppercase tracking-widest">Other Works</span>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 5v14M5 12l7 7 7-7"/>
-                  </svg>
-                </div>
-              </div>
-            </section>
-            
-            {/* SECTION 4: SURNAME PENDRAGON REVEAL - Dissolves in as final pinned section */}
-            <section 
-              className="absolute inset-0"
-              style={{ 
-                opacity: pendragonPinnedOpacity,
-                pointerEvents: pendragonPinnedVisible ? 'auto' : 'none',
-                transition: 'opacity 0.5s ease-out'
-              }}
-            >
-              <div className="w-full h-full relative">
-                {/* Desktop image */}
-                <img 
-                  src={surnamePendragonBanner}
-                  alt="Surname Pendragon"
-                  className="w-full h-full object-cover hidden sm:block"
-                  style={{ objectPosition: 'center center' }}
-                />
-                {/* Mobile image - zoomed/cropped */}
-                <div className="sm:hidden w-full h-full overflow-hidden">
-                  <img 
-                    src={surnamePendragonBanner}
-                    alt="Surname Pendragon"
-                    className="w-full h-full object-cover"
-                    style={{ objectPosition: 'center center' }}
-                  />
-                </div>
-                
-                {/* Caption overlay - positioned at bottom left */}
-                <div 
-                  className="absolute bottom-[8%] left-0 max-w-[90%] sm:max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-4 sm:p-6 lg:p-8"
-                >
-                  <h4 
-                    className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-2 sm:mb-3"
-                    style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                  >
-                    Screenplay Adaptation
-                  </h4>
-                  <h3 
-                    className="text-white text-lg sm:text-2xl lg:text-3xl font-light mb-2 sm:mb-3 tracking-wide"
-                    style={{ fontFamily: 'Georgia, serif' }}
-                  >
-                    Surname Pendragon
-                  </h3>
-                  <p 
-                    className="text-white/70 text-xs sm:text-sm sm:text-base leading-relaxed mb-3 sm:mb-4"
-                    style={{ fontFamily: 'Georgia, serif' }}
-                  >
-                    A sweeping family saga spanning three generations, where legacy is both burden and blessing.
-                  </p>
-                  <p 
-                    className="text-white/50 text-xs uppercase tracking-widest"
-                    style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                  >
-                    Feature Film • Drama • In Development
-                  </p>
-                </div>
-                
-                {/* Scroll hint to continue */}
+                {/* Scroll hint to continue to Surname Pendragon */}
                 <div 
                   className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/70 animate-bounce"
                 >
@@ -878,12 +787,60 @@ const Comics = () => {
           </div>
         )}
 
-        {/* SCROLLABLE CONTENT - Starts after Surname Pendragon (which is now in pinned sections) */}
+        {/* SCROLLABLE CONTENT - Surname Pendragon is first, then other content */}
         <div 
           ref={scrollableContentRef}
           className={isScrollLocked ? 'invisible' : 'visible'}
-          style={{ marginTop: isScrollLocked ? 0 : '100vh' }}
         >
+          {/* SURNAME PENDRAGON - First item in scrollable content */}
+          <section className="relative w-full h-screen">
+            {/* Desktop image */}
+            <img 
+              src={surnamePendragonBanner}
+              alt="Surname Pendragon"
+              className="w-full h-full object-cover hidden sm:block"
+              style={{ objectPosition: 'center center' }}
+            />
+            {/* Mobile image */}
+            <div className="sm:hidden w-full h-full overflow-hidden">
+              <img 
+                src={surnamePendragonBanner}
+                alt="Surname Pendragon"
+                className="w-full h-full object-cover"
+                style={{ objectPosition: 'center center' }}
+              />
+            </div>
+            
+            {/* Caption overlay - positioned at bottom left */}
+            <div 
+              className="absolute bottom-[8%] left-0 max-w-[90%] sm:max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-4 sm:p-6 lg:p-8"
+            >
+              <h4 
+                className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-2 sm:mb-3"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Screenplay Adaptation
+              </h4>
+              <h3 
+                className="text-white text-lg sm:text-2xl lg:text-3xl font-light mb-2 sm:mb-3 tracking-wide"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                Surname Pendragon
+              </h3>
+              <p 
+                className="text-white/70 text-xs sm:text-sm sm:text-base leading-relaxed mb-3 sm:mb-4"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                A sweeping family saga spanning three generations, where legacy is both burden and blessing.
+              </p>
+              <p 
+                className="text-white/50 text-xs uppercase tracking-widest"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Feature Film • Drama • In Development
+              </p>
+            </div>
+          </section>
 
           {/* Stories Waiting to be Told */}
           <section ref={storiesSectionRef as React.RefObject<HTMLElement>} className="text-center py-16 sm:py-24 bg-white">
