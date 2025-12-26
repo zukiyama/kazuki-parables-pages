@@ -38,82 +38,147 @@ const Comics = () => {
   const [godOfLiesImageLoaded, setGodOfLiesImageLoaded] = useState(false);
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false);
   
-  // SCROLL-HIJACKING STATE
-  // animationProgress: 0 = cover, 1 = vignettes fully in, 2 = cream fully in, 3+ = normal scroll
-  const [animationProgress, setAnimationProgress] = useState(0);
+  // SCROLL-HIJACKING STATE - Discrete sections with snap behavior
+  // Section 0 = Title screen, 1 = Vignettes, 2 = Cream, 3 = God of Lies cover, 4+ = normal scroll
+  const [currentSection, setCurrentSection] = useState(0);
+  const [sectionProgress, setSectionProgress] = useState(0); // 0-1 transition progress within section
   const [isScrollLocked, setIsScrollLocked] = useState(true);
-  const animationProgressRef = useRef(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const scrollableContentRef = useRef<HTMLDivElement>(null);
   
   const mobilePendragonRef = useRef<HTMLDivElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
-  
   const pendragonSectionRef = useRef<HTMLElement>(null);
   const storiesSectionRef = useRef<HTMLElement>(null);
   const fixedHeaderHeight = 64;
+  
+  const maxPinnedSection = 3; // After section 3 (God of Lies cover), normal scrolling begins
 
-  // SCROLL-HIJACKING: Intercept wheel/touch events and use them to drive animation
+  // SCROLL-HIJACKING: Intercept wheel/touch events and snap between sections
   useEffect(() => {
-    const sensitivity = 0.002; // How fast scroll input advances animation
-    const maxProgress = 3; // After this, normal scrolling begins
+    let scrollAccumulator = 0;
+    const scrollThreshold = 80; // Amount of scroll needed to trigger section change
+    let debounceTimer: NodeJS.Timeout | null = null;
+    
+    const triggerSectionChange = (direction: 'next' | 'prev') => {
+      if (isTransitioning) return;
+      
+      setCurrentSection(prev => {
+        const newSection = direction === 'next' 
+          ? Math.min(maxPinnedSection + 1, prev + 1)
+          : Math.max(0, prev - 1);
+        
+        // If moving to normal scroll section
+        if (newSection > maxPinnedSection) {
+          setIsScrollLocked(false);
+        } else if (prev > maxPinnedSection && direction === 'prev') {
+          // Coming back from normal scroll
+          setIsScrollLocked(true);
+        }
+        
+        return newSection;
+      });
+      
+      // Animate the transition
+      setIsTransitioning(true);
+      setSectionProgress(0);
+      
+      // Animate progress from 0 to 1
+      let progress = 0;
+      const animationDuration = 600; // ms
+      const startTime = performance.now();
+      
+      const animate = (currentTime: number) => {
+        const elapsed = currentTime - startTime;
+        progress = Math.min(1, elapsed / animationDuration);
+        
+        // Ease out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setSectionProgress(eased);
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          setSectionProgress(1);
+          setIsTransitioning(false);
+        }
+      };
+      
+      requestAnimationFrame(animate);
+      scrollAccumulator = 0;
+    };
     
     const handleWheel = (e: WheelEvent) => {
-      // If we're still in the locked animation phase
-      if (animationProgressRef.current < maxProgress) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Use wheel delta to advance animation
-        const delta = e.deltaY * sensitivity;
-        const newProgress = Math.max(0, Math.min(maxProgress, animationProgressRef.current + delta));
-        
-        animationProgressRef.current = newProgress;
-        setAnimationProgress(newProgress);
-        
-        // When we reach max progress, unlock scrolling
-        if (newProgress >= maxProgress) {
-          setIsScrollLocked(false);
-        }
-      } else {
-        // Normal scrolling - but check if user scrolls back up to top
+      // If in normal scroll mode and not at top, allow normal scroll
+      if (currentSection > maxPinnedSection) {
         if (window.scrollY === 0 && e.deltaY < 0) {
-          // At top and scrolling up - go back into locked mode
+          // At top and scrolling up - go back to pinned section
           e.preventDefault();
-          const newProgress = Math.max(0, animationProgressRef.current + e.deltaY * sensitivity);
-          animationProgressRef.current = newProgress;
-          setAnimationProgress(newProgress);
-          if (newProgress < maxProgress) {
-            setIsScrollLocked(true);
-          }
+          triggerSectionChange('prev');
         }
+        return;
+      }
+      
+      // In pinned mode - prevent default scroll
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (isTransitioning) return;
+      
+      scrollAccumulator += e.deltaY;
+      
+      // Debounce to prevent rapid section changes
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        scrollAccumulator = 0;
+      }, 150);
+      
+      if (scrollAccumulator > scrollThreshold) {
+        triggerSectionChange('next');
+      } else if (scrollAccumulator < -scrollThreshold) {
+        triggerSectionChange('prev');
       }
     };
     
     // Touch handling for mobile
     let touchStartY = 0;
-    let lastTouchY = 0;
+    let touchAccumulator = 0;
     
     const handleTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY;
-      lastTouchY = touchStartY;
+      touchAccumulator = 0;
     };
     
     const handleTouchMove = (e: TouchEvent) => {
-      if (animationProgressRef.current < maxProgress) {
-        e.preventDefault();
-        
-        const touchY = e.touches[0].clientY;
-        const delta = (lastTouchY - touchY) * sensitivity * 2; // Touch is more sensitive
-        lastTouchY = touchY;
-        
-        const newProgress = Math.max(0, Math.min(maxProgress, animationProgressRef.current + delta));
-        animationProgressRef.current = newProgress;
-        setAnimationProgress(newProgress);
-        
-        if (newProgress >= maxProgress) {
-          setIsScrollLocked(false);
+      // If in normal scroll mode and not at top, allow normal scroll
+      if (currentSection > maxPinnedSection) {
+        if (window.scrollY === 0) {
+          const touchY = e.touches[0].clientY;
+          const delta = touchStartY - touchY;
+          if (delta < -50) {
+            // Swiping down at top - go back
+            e.preventDefault();
+            triggerSectionChange('prev');
+          }
         }
+        return;
+      }
+      
+      e.preventDefault();
+      
+      if (isTransitioning) return;
+      
+      const touchY = e.touches[0].clientY;
+      const delta = touchStartY - touchY;
+      touchAccumulator = delta;
+      
+      if (touchAccumulator > 60) {
+        triggerSectionChange('next');
+        touchStartY = touchY;
+      } else if (touchAccumulator < -60) {
+        triggerSectionChange('prev');
+        touchStartY = touchY;
       }
     };
     
@@ -126,8 +191,9 @@ const Comics = () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
+      if (debounceTimer) clearTimeout(debounceTimer);
     };
-  }, []);
+  }, [currentSection, isTransitioning]);
 
   // Lock/unlock body scroll based on animation state
   useEffect(() => {
@@ -195,8 +261,8 @@ const Comics = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setPageReady(true);
-    setAnimationProgress(0);
-    animationProgressRef.current = 0;
+    setCurrentSection(0);
+    setSectionProgress(1);
     setIsScrollLocked(true);
     
     const img = new Image();
@@ -304,30 +370,28 @@ const Comics = () => {
     setSelectedComic(null);
   };
 
-  // ANIMATION CALCULATIONS based on progress (0 to 3)
-  // 0-1: Cover fades out, vignettes slide in
-  // 1-2: Vignettes stay visible (user can appreciate them)
-  // 2-3: Vignettes slide out, cream slides in
-  // 3+: Normal scrolling
+  // ANIMATION CALCULATIONS based on discrete sections with smooth transitions
+  // Section 0 = Title, 1 = Vignettes, 2 = Cream, 3 = God of Lies cover
   
-  // Cover: visible 0-1, fades out
-  const coverOpacity = animationProgress <= 1 ? Math.max(0, 1 - animationProgress) : 0;
-  const coverVisible = animationProgress < 1;
+  // Title screen: visible on section 0
+  const titleVisible = currentSection === 0;
+  const titleOpacity = currentSection === 0 ? 1 : (currentSection === 1 ? 1 - sectionProgress : 0);
   
-  // Vignettes: slide in 0-1, stay 1-2, slide out 2-3
-  const vignetteSlideIn = Math.min(1, animationProgress); // 0 to 1
-  const vignetteSlideOut = animationProgress > 2 ? Math.min(1, animationProgress - 2) : 0; // 0 to 1 after progress 2
-  const vignetteOpacity = animationProgress < 0.2 
-    ? animationProgress * 5 // Fade in
-    : animationProgress > 2.5 
-      ? Math.max(0, 1 - (animationProgress - 2.5) * 2) // Fade out
-      : 1;
-  const vignetteActive = animationProgress >= 0.2 && animationProgress < 3;
+  // Vignettes: visible on section 1
+  const vignetteVisible = currentSection === 1 || (currentSection === 2 && sectionProgress < 1);
+  const vignetteSlideIn = currentSection >= 1 ? 1 : 0;
+  const vignetteSlideOut = currentSection >= 2 ? sectionProgress : 0;
+  const vignetteOpacity = currentSection === 1 ? (sectionProgress) : (currentSection === 2 ? 1 - sectionProgress : 0);
   
-  // Cream section: slides in during 2-3
-  const creamProgress = animationProgress > 2 ? Math.min(1, (animationProgress - 2)) : 0;
-  const creamOpacity = creamProgress;
-  const creamActive = animationProgress >= 2;
+  // Cream section: visible on section 2
+  const creamVisible = currentSection === 2 || (currentSection === 3 && sectionProgress < 1);
+  const creamSlideIn = currentSection >= 2 ? sectionProgress : 0;
+  const creamSlideOut = currentSection >= 3 ? sectionProgress : 0;
+  const creamOpacity = currentSection === 2 ? sectionProgress : (currentSection === 3 ? 1 - sectionProgress : 0);
+  
+  // God of Lies cover: visible on section 3
+  const godCoverVisible = currentSection === 3;
+  const godCoverOpacity = currentSection === 3 ? sectionProgress : 0;
 
   return (
     <div className={`min-h-screen bg-white overflow-x-hidden transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
@@ -338,16 +402,22 @@ const Comics = () => {
         {isScrollLocked && (
           <div className="fixed inset-0 z-10 bg-white">
             
-            {/* Header Banner - Always visible at top */}
-            <header className="absolute top-0 left-0 right-0 py-6 sm:py-10 lg:py-12 px-4 sm:px-8 lg:px-12 mt-[64px] z-30">
+            {/* SECTION 0: TITLE SCREEN - Centered title with scroll hint */}
+            <section 
+              className="absolute inset-0 flex flex-col items-center justify-center"
+              style={{ 
+                opacity: titleOpacity,
+                pointerEvents: titleVisible ? 'auto' : 'none',
+                transition: 'opacity 0.5s ease-out'
+              }}
+            >
               <div className="text-center relative">
-                {/* Faded comic panels behind subtitle */}
+                {/* Faded comic panels behind */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <img 
                     src={comicPanelsBackground}
                     alt=""
                     className="w-full max-w-2xl opacity-10"
-                    style={{ marginTop: '2rem' }}
                   />
                 </div>
                 
@@ -362,6 +432,8 @@ const Comics = () => {
                   COMICS & SCRIPTS
                 </h1>
 
+                <div className="w-32 sm:w-48 h-0.5 bg-black/30 mx-auto mt-4" />
+
                 <p 
                   className="text-xs sm:text-sm lg:text-base tracking-[0.2em] uppercase text-black/70 mt-4 sm:mt-5 relative z-10"
                   style={{ 
@@ -372,80 +444,66 @@ const Comics = () => {
                   Original Stories in Sequential Art & Screenplay
                 </p>
               </div>
-            </header>
-
-            {/* SECTION 0: GOD OF LIES Cover - Fades out as vignettes slide in */}
-            <section 
-              className="absolute inset-0 flex items-center justify-center"
-              style={{ 
-                opacity: coverOpacity, 
-                pointerEvents: coverVisible ? 'auto' : 'none',
-                transition: 'opacity 0.15s ease-out',
-                paddingTop: '140px'
-              }}
-            >
-              <div className="w-full h-full flex items-center justify-center px-4 sm:px-8 lg:px-16">
-                <img 
-                  src={godOfLiesCover}
-                  alt="God of Lies"
-                  className="max-w-full max-h-[calc(100vh-180px)] object-contain"
-                  onLoad={() => setGodOfLiesImageLoaded(true)}
-                />
-              </div>
             </section>
 
-            {/* SECTION 1: VIGNETTES - HUGE, fill the entire viewport, slide in from sides */}
+            {/* SECTION 1: VIGNETTES - Slide in from sides with summary text */}
             <section 
               className="absolute inset-0"
               style={{ 
                 opacity: vignetteOpacity,
-                pointerEvents: vignetteActive ? 'auto' : 'none',
-                paddingTop: '100px'
+                pointerEvents: vignetteVisible ? 'auto' : 'none',
+                transition: 'opacity 0.5s ease-out'
               }}
             >
-              <div className="w-full h-[calc(100vh-100px)] flex">
+              <div className="w-full h-full flex items-center">
                 
-                {/* LEFT SIDE - Board game image (HUGE - fills left 45%) */}
+                {/* LEFT SIDE - Board game image */}
                 <div 
-                  className="w-[45%] h-full flex items-center justify-center p-2 sm:p-4"
+                  className="w-[42%] h-full flex items-center justify-center p-2 sm:p-4"
                   style={{
-                    transform: `translateX(${(-100 + vignetteSlideIn * 100) - vignetteSlideOut * 150}%)`,
-                    transition: 'transform 0.2s ease-out'
+                    transform: `translateX(${currentSection >= 1 ? (currentSection >= 2 ? -150 * sectionProgress : 0) : -100}%)`,
+                    transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
                   <img 
                     src={vignetteBoardgame}
                     alt="Family moments - God of Lies"
                     className="w-full h-full object-contain drop-shadow-2xl"
-                    style={{ maxHeight: '85vh' }}
+                    style={{ maxHeight: '90vh' }}
                   />
                 </div>
                 
-                {/* CENTER - Magazine text content (10%) - smaller to give more room to images */}
+                {/* CENTER - Summary text */}
                 <div 
-                  className="w-[10%] h-full flex items-center justify-center px-1"
+                  className="w-[16%] h-full flex items-center justify-center px-2"
                   style={{
-                    opacity: Math.max(0, vignetteSlideIn - vignetteSlideOut * 2),
-                    transform: `scale(${0.8 + vignetteSlideIn * 0.2 - vignetteSlideOut * 0.5})`,
-                    transition: 'opacity 0.2s ease-out, transform 0.2s ease-out'
+                    opacity: currentSection === 1 ? 1 : 0,
+                    transform: `scale(${currentSection === 1 ? 1 : 0.8})`,
+                    transition: 'opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s'
                   }}
                 >
                   <div className="text-center">
                     <p 
-                      className="text-[8px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.4em] text-slate-500 mb-1 sm:mb-2"
+                      className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-slate-500 mb-2"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
                       Featured
                     </p>
                     <h2 
-                      className="text-sm sm:text-xl lg:text-3xl xl:text-4xl mb-1 sm:mb-2 text-slate-900"
+                      className="text-lg sm:text-2xl lg:text-4xl mb-2 text-slate-900"
                       style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.04em' }}
                     >
                       GOD OF<br />LIES
                     </h2>
-                    <div className="w-4 sm:w-10 lg:w-14 h-0.5 sm:h-1 bg-red-600 mx-auto mb-1 sm:mb-2" />
+                    <div className="w-8 sm:w-12 h-0.5 sm:h-1 bg-red-600 mx-auto mb-2" />
                     <p 
-                      className="text-[8px] sm:text-[10px] lg:text-xs text-blue-700 uppercase tracking-[0.1em] sm:tracking-[0.2em]"
+                      className="text-[9px] sm:text-[11px] text-slate-600 leading-relaxed mb-2"
+                      style={{ fontFamily: 'Georgia, serif' }}
+                    >
+                      A psychological manga about deception and truth
+                    </p>
+                    <p 
+                      className="text-[8px] sm:text-[10px] text-blue-700 uppercase tracking-[0.15em]"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
                       Manga • 2026
@@ -453,57 +511,54 @@ const Comics = () => {
                   </div>
                 </div>
                 
-                {/* RIGHT SIDE - Two images stacked (HUGE - fills right 45%) */}
+                {/* RIGHT SIDE - Two images stacked */}
                 <div 
-                  className="w-[45%] h-full flex flex-col gap-1 sm:gap-2 p-2 sm:p-4"
+                  className="w-[42%] h-full flex flex-col gap-1 sm:gap-2 p-2 sm:p-4"
                   style={{
-                    transform: `translateX(${(100 - vignetteSlideIn * 100) + vignetteSlideOut * 150}%)`,
-                    transition: 'transform 0.2s ease-out'
+                    transform: `translateX(${currentSection >= 1 ? (currentSection >= 2 ? 150 * sectionProgress : 0) : 100}%)`,
+                    transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
-                  {/* Top right image - Apartments */}
                   <div className="flex-1 flex items-center justify-center overflow-hidden">
                     <img 
                       src={vignetteApartments}
                       alt="The neighborhood - God of Lies"
                       className="w-full h-full object-contain drop-shadow-2xl"
-                      style={{ maxHeight: '42vh' }}
+                      style={{ maxHeight: '45vh' }}
                     />
                   </div>
-                  
-                  {/* Bottom right image - Sweeping */}
                   <div className="flex-1 flex items-center justify-center overflow-hidden">
                     <img 
                       src={vignetteSweeping}
                       alt="Daily life - God of Lies"
                       className="w-full h-full object-contain drop-shadow-2xl"
-                      style={{ maxHeight: '42vh' }}
+                      style={{ maxHeight: '45vh' }}
                     />
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* SECTION 2: CREAM BLURB - Elements slide in from different directions */}
+            {/* SECTION 2: CREAM SCREEN - Street scene with description */}
             <section 
               className="absolute inset-0"
               style={{ 
-                opacity: creamOpacity, 
-                pointerEvents: creamActive ? 'auto' : 'none',
+                opacity: creamOpacity,
+                pointerEvents: creamVisible ? 'auto' : 'none',
                 background: 'linear-gradient(to bottom, #f5f0e1, #e8e0cc)',
-                paddingTop: '100px'
+                transition: 'opacity 0.5s ease-out'
               }}
             >
-              <div className="w-full h-[calc(100vh-100px)] flex items-center justify-center px-4 sm:px-6">
+              <div className="w-full h-full flex items-center justify-center px-4 sm:px-6">
                 <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6 lg:gap-8 items-center">
                   
                   {/* Main Image - Slides in from LEFT */}
                   <div 
                     className="lg:w-1/2 flex justify-center"
                     style={{
-                      transform: `translateX(${-100 + creamProgress * 100}%)`,
-                      opacity: creamProgress,
-                      transition: 'transform 0.2s ease-out, opacity 0.2s ease-out'
+                      transform: `translateX(${currentSection >= 2 ? 0 : -100}%)`,
+                      opacity: currentSection >= 2 ? 1 : 0,
+                      transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-out'
                     }}
                   >
                     <div 
@@ -525,19 +580,12 @@ const Comics = () => {
                   <div 
                     className="lg:w-1/2"
                     style={{
-                      transform: `translateX(${100 - creamProgress * 100}%)`,
-                      opacity: creamProgress,
-                      transition: 'transform 0.2s ease-out 0.05s, opacity 0.2s ease-out 0.05s'
+                      transform: `translateX(${currentSection >= 2 ? 0 : 100}%)`,
+                      opacity: currentSection >= 2 ? 1 : 0,
+                      transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s, opacity 0.5s ease-out 0.1s'
                     }}
                   >
-                    {/* Magazine Header - Slides down from TOP */}
-                    <div 
-                      className="text-center lg:text-left mb-4 lg:mb-6"
-                      style={{
-                        transform: `translateY(${-30 + creamProgress * 30}px)`,
-                        transition: 'transform 0.2s ease-out 0.1s'
-                      }}
-                    >
+                    <div className="text-center lg:text-left mb-4 lg:mb-6">
                       <p 
                         className="text-xs uppercase tracking-[0.4em] text-amber-800/70 mb-2"
                         style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
@@ -579,11 +627,30 @@ const Comics = () => {
               </div>
             </section>
 
-            {/* Scroll hint */}
-            {animationProgress < 0.3 && (
+            {/* SECTION 3: GOD OF LIES COVER - Large cover image */}
+            <section 
+              className="absolute inset-0 flex items-center justify-center"
+              style={{ 
+                opacity: godCoverOpacity,
+                pointerEvents: godCoverVisible ? 'auto' : 'none',
+                transition: 'opacity 0.5s ease-out',
+                paddingTop: '64px'
+              }}
+            >
+              <div className="w-full h-full flex items-center justify-center px-4 sm:px-8 lg:px-16">
+                <img 
+                  src={godOfLiesCover}
+                  alt="God of Lies"
+                  className="max-w-full max-h-[calc(100vh-120px)] object-contain drop-shadow-2xl"
+                  onLoad={() => setGodOfLiesImageLoaded(true)}
+                />
+              </div>
+            </section>
+
+            {/* Scroll hint - only on title screen */}
+            {currentSection === 0 && (
               <div 
                 className="absolute bottom-8 left-1/2 -translate-x-1/2 text-black/40 text-sm animate-bounce z-40"
-                style={{ opacity: 1 - animationProgress * 3 }}
               >
                 <div className="flex flex-col items-center gap-2">
                   <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
@@ -648,7 +715,7 @@ const Comics = () => {
 
           {/* SURNAME PENDRAGON */}
           <section 
-            ref={pendragonSectionRef} 
+            ref={pendragonSectionRef as React.RefObject<HTMLElement>}
             className={`w-full relative transition-all duration-700 ease-out ${
               (isMobile || isNarrowPortrait) 
                 ? (godOfLiesImageLoaded ? 'opacity-100 translate-y-0' : 'opacity-0')
@@ -739,7 +806,7 @@ const Comics = () => {
           </section>
 
           {/* Stories Waiting to be Told */}
-          <section ref={storiesSectionRef} className="text-center py-16 sm:py-24 bg-white">
+          <section ref={storiesSectionRef as React.RefObject<HTMLElement>} className="text-center py-16 sm:py-24 bg-white">
             <ScrollScale 
               initialScale={1.3} 
               finalScale={1} 
