@@ -16,8 +16,8 @@ import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop-cropped.jpeg";
 import comicsFooterCharacter from "@/assets/comics-footer-character.png";
 import godOfLiesStreetScene from "@/assets/god-of-lies-street-scene.png";
 import vignetteApartments from "@/assets/god-of-lies-apartments.png";
-import vignetteSweeping from "@/assets/god-of-lies-sweeping.png";
 import vignetteBoardgame from "@/assets/god-of-lies-boardgame.png";
+import vignetteManyFaces from "@/assets/god-of-lies-many-faces.png";
 import comicPanelsBackground from "@/assets/comic-panels-background.png";
 
 
@@ -455,27 +455,27 @@ const Comics = () => {
                 transition: 'opacity 0.5s ease-out'
               }}
             >
-              <div className="w-full h-full flex items-center">
+              <div className="w-full h-full flex items-center px-4 sm:px-6 lg:px-8">
                 
-                {/* LEFT SIDE - Board game image */}
+                {/* LEFT SIDE - Many Faces character collage (full height) */}
                 <div 
-                  className="w-[42%] h-full flex items-center justify-center p-2 sm:p-4"
+                  className="w-[40%] h-full flex items-center justify-center py-6"
                   style={{
                     transform: `translateX(${currentSection >= 1 ? (currentSection >= 2 ? -150 * sectionProgress : 0) : -100}%)`,
                     transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
                   <img 
-                    src={vignetteBoardgame}
-                    alt="Family moments - God of Lies"
-                    className="w-full h-full object-contain drop-shadow-2xl"
-                    style={{ maxHeight: '90vh' }}
+                    src={vignetteManyFaces}
+                    alt="The many faces - God of Lies"
+                    className="h-full w-auto object-contain drop-shadow-2xl"
+                    style={{ maxHeight: 'calc(100vh - 120px)' }}
                   />
                 </div>
                 
                 {/* CENTER - Summary text */}
                 <div 
-                  className="w-[16%] h-full flex items-center justify-center px-2"
+                  className="w-[14%] h-full flex items-center justify-center px-2"
                   style={{
                     opacity: currentSection === 1 ? 1 : 0,
                     transform: `scale(${currentSection === 1 ? 1 : 0.8})`,
@@ -511,28 +511,30 @@ const Comics = () => {
                   </div>
                 </div>
                 
-                {/* RIGHT SIDE - Two images stacked */}
+                {/* RIGHT SIDE - Two images stacked (apartments top larger, boardgame bottom) */}
                 <div 
-                  className="w-[42%] h-full flex flex-col gap-1 sm:gap-2 p-2 sm:p-4"
+                  className="w-[46%] h-full flex flex-col gap-2 sm:gap-3 py-6"
                   style={{
                     transform: `translateX(${currentSection >= 1 ? (currentSection >= 2 ? 150 * sectionProgress : 0) : 100}%)`,
                     transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
-                  <div className="flex-1 flex items-center justify-center overflow-hidden">
+                  {/* Top right - Apartments (larger) */}
+                  <div className="flex-[1.1] flex items-end justify-center overflow-hidden">
                     <img 
                       src={vignetteApartments}
                       alt="The neighborhood - God of Lies"
-                      className="w-full h-full object-contain drop-shadow-2xl"
-                      style={{ maxHeight: '45vh' }}
+                      className="w-auto h-full object-contain drop-shadow-2xl"
+                      style={{ maxHeight: '48vh' }}
                     />
                   </div>
-                  <div className="flex-1 flex items-center justify-center overflow-hidden">
+                  {/* Bottom right - Boardgame */}
+                  <div className="flex-1 flex items-start justify-center overflow-hidden">
                     <img 
-                      src={vignetteSweeping}
-                      alt="Daily life - God of Lies"
-                      className="w-full h-full object-contain drop-shadow-2xl"
-                      style={{ maxHeight: '45vh' }}
+                      src={vignetteBoardgame}
+                      alt="Family moments - God of Lies"
+                      className="w-auto h-full object-contain drop-shadow-2xl"
+                      style={{ maxHeight: '42vh' }}
                     />
                   </div>
                 </div>
@@ -627,7 +629,7 @@ const Comics = () => {
               </div>
             </section>
 
-            {/* SECTION 3: GOD OF LIES COVER - Large cover image with COMING 2026 */}
+            {/* SECTION 3: GOD OF LIES COVER - Large cover image with COMING 2026 overlay */}
             <section 
               className="absolute inset-0 flex items-center justify-center"
               style={{ 
@@ -637,23 +639,28 @@ const Comics = () => {
                 paddingTop: '64px'
               }}
             >
-              <div className="w-full h-full flex flex-col items-center justify-center px-4 sm:px-8 lg:px-16">
+              <div className="w-full h-full flex items-center justify-center px-4 sm:px-8 lg:px-16 relative">
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies"
-                  className="max-w-full max-h-[calc(100vh-180px)] object-contain drop-shadow-2xl"
+                  className="max-w-full max-h-[calc(100vh-100px)] object-contain drop-shadow-2xl"
                   onLoad={() => setGodOfLiesImageLoaded(true)}
                 />
-                <p 
-                  className="text-white text-2xl sm:text-3xl lg:text-4xl uppercase tracking-[0.2em] mt-6"
-                  style={{ 
-                    fontFamily: 'Bangers, cursive',
-                    textShadow: '2px 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)',
-                    letterSpacing: '0.15em'
-                  }}
+                {/* COMING 2026 overlay at bottom of screen */}
+                <div 
+                  className="absolute bottom-8 sm:bottom-12 left-0 right-0 flex justify-center"
                 >
-                  COMING 2026
-                </p>
+                  <p 
+                    className="text-white text-2xl sm:text-4xl lg:text-5xl uppercase tracking-[0.25em] px-8 py-3"
+                    style={{ 
+                      fontFamily: 'Bangers, cursive',
+                      textShadow: '3px 3px 12px rgba(0,0,0,0.9), 0 0 30px rgba(0,0,0,0.6), 0 0 60px rgba(0,0,0,0.3)',
+                      letterSpacing: '0.2em'
+                    }}
+                  >
+                    COMING 2026
+                  </p>
+                </div>
               </div>
             </section>
 
@@ -673,24 +680,29 @@ const Comics = () => {
           </div>
         )}
 
-        {/* NORMAL SCROLLABLE CONTENT - Shown after animation completes */}
-        {/* God of Lies cover stays visible at top and scrolls away naturally */}
+        {/* NORMAL SCROLLABLE CONTENT - God of Lies cover scrolls away naturally */}
         {!isScrollLocked && (
-          <div className="w-full flex flex-col items-center justify-center px-4 sm:px-8 lg:px-16 py-8 bg-white" style={{ minHeight: '80vh' }}>
+          <div className="w-full flex items-center justify-center px-4 sm:px-8 lg:px-16 bg-white relative" style={{ minHeight: '90vh', paddingTop: '80px', paddingBottom: '40px' }}>
             <img 
               src={godOfLiesCover}
               alt="God of Lies"
-              className="max-w-full max-h-[calc(100vh-180px)] object-contain drop-shadow-2xl"
+              className="max-w-full max-h-[calc(100vh-140px)] object-contain drop-shadow-2xl"
             />
-            <p 
-              className="text-slate-900 text-2xl sm:text-3xl lg:text-4xl uppercase tracking-[0.2em] mt-6"
-              style={{ 
-                fontFamily: 'Bangers, cursive',
-                letterSpacing: '0.15em'
-              }}
+            {/* COMING 2026 text that fades as you scroll */}
+            <div 
+              className="absolute bottom-8 sm:bottom-12 left-0 right-0 flex justify-center transition-opacity duration-300"
+              style={{ opacity: 1 }}
             >
-              COMING 2026
-            </p>
+              <p 
+                className="text-slate-800 text-2xl sm:text-4xl lg:text-5xl uppercase tracking-[0.25em] px-8 py-3"
+                style={{ 
+                  fontFamily: 'Bangers, cursive',
+                  letterSpacing: '0.2em'
+                }}
+              >
+                COMING 2026
+              </p>
+            </div>
           </div>
         )}
         
