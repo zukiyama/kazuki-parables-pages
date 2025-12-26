@@ -54,6 +54,9 @@ const Comics = () => {
   const fixedHeaderHeight = 64;
   
   const maxPinnedSection = 3; // After section 3 (God of Lies cover), normal scrolling begins
+  
+  // Track scroll position for COMING 2026 animation
+  const [scrollY, setScrollY] = useState(0);
 
   // SCROLL-HIJACKING: Intercept wheel/touch events and snap between sections
   useEffect(() => {
@@ -69,9 +72,10 @@ const Comics = () => {
           ? Math.min(maxPinnedSection + 1, prev + 1)
           : Math.max(0, prev - 1);
         
-        // If moving to normal scroll section
+        // If moving to normal scroll section - unlock immediately
         if (newSection > maxPinnedSection) {
           setIsScrollLocked(false);
+          return newSection;
         } else if (prev > maxPinnedSection && direction === 'prev') {
           // Coming back from normal scroll
           setIsScrollLocked(true);
@@ -80,18 +84,23 @@ const Comics = () => {
         return newSection;
       });
       
+      // Only animate if staying in pinned mode
+      if (direction === 'next' && currentSection === maxPinnedSection) {
+        // Going to normal scroll - no animation needed
+        return;
+      }
+      
       // Animate the transition
       setIsTransitioning(true);
       setSectionProgress(0);
       
       // Animate progress from 0 to 1
-      let progress = 0;
       const animationDuration = 600; // ms
       const startTime = performance.now();
       
       const animate = (currentTime: number) => {
         const elapsed = currentTime - startTime;
-        progress = Math.min(1, elapsed / animationDuration);
+        const progress = Math.min(1, elapsed / animationDuration);
         
         // Ease out cubic
         const eased = 1 - Math.pow(1 - progress, 3);
@@ -110,12 +119,14 @@ const Comics = () => {
     };
     
     const handleWheel = (e: WheelEvent) => {
-      // If in normal scroll mode and not at top, allow normal scroll
-      if (currentSection > maxPinnedSection) {
-        if (window.scrollY === 0 && e.deltaY < 0) {
-          // At top and scrolling up - go back to pinned section
+      // If in normal scroll mode
+      if (!isScrollLocked) {
+        // At top and scrolling up - go back to pinned section
+        if (window.scrollY <= 5 && e.deltaY < 0) {
           e.preventDefault();
-          triggerSectionChange('prev');
+          setCurrentSection(maxPinnedSection);
+          setIsScrollLocked(true);
+          setSectionProgress(1);
         }
         return;
       }
@@ -151,15 +162,17 @@ const Comics = () => {
     };
     
     const handleTouchMove = (e: TouchEvent) => {
-      // If in normal scroll mode and not at top, allow normal scroll
-      if (currentSection > maxPinnedSection) {
-        if (window.scrollY === 0) {
+      // If in normal scroll mode
+      if (!isScrollLocked) {
+        if (window.scrollY <= 5) {
           const touchY = e.touches[0].clientY;
           const delta = touchStartY - touchY;
           if (delta < -50) {
             // Swiping down at top - go back
             e.preventDefault();
-            triggerSectionChange('prev');
+            setCurrentSection(maxPinnedSection);
+            setIsScrollLocked(true);
+            setSectionProgress(1);
           }
         }
         return;
@@ -193,7 +206,7 @@ const Comics = () => {
       window.removeEventListener('touchmove', handleTouchMove);
       if (debounceTimer) clearTimeout(debounceTimer);
     };
-  }, [currentSection, isTransitioning]);
+  }, [currentSection, isTransitioning, isScrollLocked]);
 
   // Lock/unlock body scroll based on animation state
   useEffect(() => {
@@ -219,13 +232,14 @@ const Comics = () => {
 
   // Handle normal scroll events (after animation is done)
   useEffect(() => {
-    if (isScrollLocked) return;
-    
     const handleScroll = () => {
-      const scrollY = window.scrollY;
+      const currentScrollY = window.scrollY;
+      setScrollY(currentScrollY);
+      
+      if (isScrollLocked) return;
       
       // Show Pendragon when scrolled a bit
-      if (scrollY > 100) {
+      if (currentScrollY > 100) {
         setShowPendragon(true);
       }
       
@@ -629,37 +643,48 @@ const Comics = () => {
               </div>
             </section>
 
-            {/* SECTION 3: GOD OF LIES COVER - Large cover image with COMING 2026 overlay */}
+            {/* SECTION 3: GOD OF LIES COVER - Large cover image fills screen */}
             <section 
-              className="absolute inset-0 flex items-center justify-center"
+              className="absolute inset-0"
               style={{ 
                 opacity: godCoverOpacity,
                 pointerEvents: godCoverVisible ? 'auto' : 'none',
-                transition: 'opacity 0.5s ease-out',
-                paddingTop: '64px'
+                transition: 'opacity 0.5s ease-out'
               }}
             >
-              <div className="w-full h-full flex items-center justify-center px-4 sm:px-8 lg:px-16 relative">
+              <div className="w-full h-full relative">
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies"
-                  className="max-w-full max-h-[calc(100vh-100px)] object-contain drop-shadow-2xl"
+                  className="w-full h-full object-cover"
                   onLoad={() => setGodOfLiesImageLoaded(true)}
                 />
-                {/* COMING 2026 overlay at bottom of screen */}
+                {/* COMING 2026 overlay - fixed to bottom of viewport, movie poster style */}
                 <div 
-                  className="absolute bottom-8 sm:bottom-12 left-0 right-0 flex justify-center"
+                  className="absolute bottom-12 sm:bottom-16 lg:bottom-20 left-0 right-0 flex justify-center items-center gap-4 sm:gap-6 lg:gap-8"
                 >
-                  <p 
-                    className="text-white text-2xl sm:text-4xl lg:text-5xl uppercase tracking-[0.25em] px-8 py-3"
+                  <span 
+                    className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
                     style={{ 
-                      fontFamily: 'Bangers, cursive',
-                      textShadow: '3px 3px 12px rgba(0,0,0,0.9), 0 0 30px rgba(0,0,0,0.6), 0 0 60px rgba(0,0,0,0.3)',
-                      letterSpacing: '0.2em'
+                      fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
+                      textShadow: '4px 4px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)',
+                      letterSpacing: '0.15em',
+                      fontWeight: 900
                     }}
                   >
-                    COMING 2026
-                  </p>
+                    COMING
+                  </span>
+                  <span 
+                    className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
+                    style={{ 
+                      fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
+                      textShadow: '4px 4px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)',
+                      letterSpacing: '0.15em',
+                      fontWeight: 900
+                    }}
+                  >
+                    2026
+                  </span>
                 </div>
               </div>
             </section>
@@ -682,26 +707,43 @@ const Comics = () => {
 
         {/* NORMAL SCROLLABLE CONTENT - God of Lies cover scrolls away naturally */}
         {!isScrollLocked && (
-          <div className="w-full flex items-center justify-center px-4 sm:px-8 lg:px-16 bg-white relative" style={{ minHeight: '90vh', paddingTop: '80px', paddingBottom: '40px' }}>
+          <div className="w-full relative bg-white" style={{ minHeight: '100vh' }}>
             <img 
               src={godOfLiesCover}
               alt="God of Lies"
-              className="max-w-full max-h-[calc(100vh-140px)] object-contain drop-shadow-2xl"
+              className="w-full h-screen object-cover"
             />
-            {/* COMING 2026 text that fades as you scroll */}
+            {/* COMING 2026 text - slides apart when scrolling */}
             <div 
-              className="absolute bottom-8 sm:bottom-12 left-0 right-0 flex justify-center transition-opacity duration-300"
-              style={{ opacity: 1 }}
+              className="fixed bottom-12 sm:bottom-16 lg:bottom-20 left-0 right-0 flex justify-center items-center gap-4 sm:gap-6 lg:gap-8 pointer-events-none"
+              style={{ 
+                opacity: Math.max(0, 1 - scrollY / 150)
+              }}
             >
-              <p 
-                className="text-slate-800 text-2xl sm:text-4xl lg:text-5xl uppercase tracking-[0.25em] px-8 py-3"
+              <span 
+                className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
                 style={{ 
-                  fontFamily: 'Bangers, cursive',
-                  letterSpacing: '0.2em'
+                  fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
+                  textShadow: '4px 4px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)',
+                  letterSpacing: '0.15em',
+                  fontWeight: 900,
+                  transform: `translateX(${-scrollY * 2}px)`
                 }}
               >
-                COMING 2026
-              </p>
+                COMING
+              </span>
+              <span 
+                className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
+                style={{ 
+                  fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
+                  textShadow: '4px 4px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)',
+                  letterSpacing: '0.15em',
+                  fontWeight: 900,
+                  transform: `translateX(${scrollY * 2}px)`
+                }}
+              >
+                2026
+              </span>
             </div>
           </div>
         )}
