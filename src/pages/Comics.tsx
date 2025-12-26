@@ -721,14 +721,13 @@ const Comics = () => {
               style={{ 
                 opacity: pendragonPinnedOpacity,
                 pointerEvents: pendragonPinnedVisible ? 'auto' : 'none',
-                transition: 'opacity 0.5s ease-out'
+                transition: 'opacity 0.5s ease-out',
+                top: '64px', // Align top edge with header bottom
+                height: 'calc(100vh - 64px)' // Fill from header to screen bottom
               }}
               onClick={() => setPendragonCaptionVisible(!pendragonCaptionVisible)}
             >
-              <div 
-                className="w-full h-full relative"
-                style={{ paddingTop: '64px' }} // Push below header
-              >
+              <div className="w-full h-full relative">
                 {/* Desktop image */}
                 <img 
                   src={surnamePendragonBanner}
@@ -792,13 +791,80 @@ const Comics = () => {
           </div>
         )}
 
-        {/* SCROLLABLE CONTENT - Starts after Pendragon dissolve */}
+        {/* SCROLLABLE CONTENT - Starts with Pendragon duplicate for seamless transition */}
         <div 
           ref={scrollableContentRef}
           className={isScrollLocked ? 'invisible' : 'visible'}
-          style={{ marginTop: '100vh' }} // Push below the full viewport where Pendragon was shown
         >
-          {/* Stories Waiting to be Told - Floats in from above as you scroll */}
+          {/* PENDRAGON - First element in scrollable content, positioned identically to pinned version */}
+          <section 
+            className="relative w-full"
+            style={{ 
+              height: 'calc(100vh - 64px)',
+              marginTop: '64px' // Align top edge with header bottom
+            }}
+            onClick={() => setPendragonCaptionVisible(!pendragonCaptionVisible)}
+          >
+            {/* Desktop image */}
+            <img 
+              src={surnamePendragonBanner}
+              alt="Surname Pendragon"
+              className="hidden sm:block w-full h-full object-cover"
+              style={{ objectPosition: 'center center' }}
+            />
+            {/* Mobile image - fills edge to edge */}
+            <img 
+              src={surnamePendragonMobile}
+              alt="Surname Pendragon"
+              className="block sm:hidden w-full h-full object-cover"
+              style={{ objectPosition: 'center top' }}
+            />
+            
+            {/* Caption overlay - toggles on tap */}
+            <div 
+              className="absolute bottom-[8%] left-0 max-w-[90%] sm:max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-4 sm:p-6 lg:p-8 transition-all duration-300"
+              style={{
+                opacity: pendragonCaptionVisible ? 1 : 0,
+                transform: pendragonCaptionVisible ? 'translateX(0)' : 'translateX(-20px)',
+                pointerEvents: pendragonCaptionVisible ? 'auto' : 'none'
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h4 
+                className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-2 sm:mb-3"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Screenplay Adaptation
+              </h4>
+              <h3 
+                className="text-white text-lg sm:text-2xl lg:text-3xl font-light mb-2 sm:mb-3 tracking-wide"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                Surname Pendragon
+              </h3>
+              <p 
+                className="text-white/70 text-xs sm:text-sm sm:text-base leading-relaxed mb-3 sm:mb-4"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                A sweeping family saga spanning three generations, where legacy is both burden and blessing.
+              </p>
+              <p 
+                className="text-white/50 text-xs uppercase tracking-widest"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Feature Film • Drama • In Development
+              </p>
+            </div>
+            
+            {/* Tap hint - shown when caption is hidden */}
+            {!pendragonCaptionVisible && (
+              <div className="absolute bottom-8 left-8 text-white/50 text-xs uppercase tracking-wider animate-pulse">
+                Tap to show info
+              </div>
+            )}
+          </section>
+
+          {/* Stories Waiting to be Told - Directly below Pendragon, floats in as you scroll */}
           <section ref={storiesSectionRef as React.RefObject<HTMLElement>} className="text-center py-16 sm:py-24 bg-white">
             <ScrollScale 
               initialScale={1.3} 
