@@ -49,7 +49,7 @@ const Comics = () => {
   const row2Ref = useRef<HTMLDivElement>(null);
   const storiesSectionRef = useRef<HTMLElement>(null);
 
-  const maxPinnedSection = 3; // After section 3 (Pendragon), normal scrolling begins
+  const maxPinnedSection = 2; // After section 2 (Cream), normal scrolling begins - Pendragon is in scrollable content
 
   // SCROLL-HIJACKING: Intercept wheel/touch events and snap between sections
   useEffect(() => {
@@ -120,9 +120,9 @@ const Comics = () => {
         if (window.scrollY <= 0 && e.deltaY < 0) {
           e.preventDefault();
           setIsScrollLocked(true);
-          setCurrentSection(maxPinnedSection);
+          setCurrentSection(maxPinnedSection); // Re-lock at Cream (section 2)
           setSectionProgress(1);
-          // Don't trigger section change - just re-lock at Pendragon, next scroll-up will dissolve to Cream
+          // Next scroll-up will dissolve to Vignettes
         }
         return;
       }
@@ -355,9 +355,7 @@ const Comics = () => {
   const creamVisible = currentSection === 2;
   const creamOpacity = currentSection === 2 ? 1 : 0;
   
-  // Pendragon section: visible on section 3 (LAST dissolve section), after this scrolling begins
-  const pendragonPinnedVisible = currentSection === 3;
-  const pendragonPinnedOpacity = currentSection === 3 ? 1 : 0;
+  // Pendragon is now ONLY in scrollable content - no pinned version
 
   return (
     <div className={`min-h-screen bg-white overflow-x-hidden transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
@@ -715,91 +713,21 @@ const Comics = () => {
               </div>
             </section>
 
-            {/* SECTION 3: PENDRAGON - Final dissolve section before scrolling */}
-            <section 
-              className="absolute inset-0"
-              style={{ 
-                opacity: pendragonPinnedOpacity,
-                pointerEvents: pendragonPinnedVisible ? 'auto' : 'none',
-                transition: 'opacity 0.5s ease-out',
-                top: '64px', // Align top edge with header bottom
-                height: 'calc(100vh - 64px)' // Fill from header to screen bottom
-              }}
-              onClick={() => setPendragonCaptionVisible(!pendragonCaptionVisible)}
-            >
-              <div className="w-full h-full relative">
-                {/* Desktop image */}
-                <img 
-                  src={surnamePendragonBanner}
-                  alt="Surname Pendragon"
-                  className="hidden sm:block w-full h-full object-cover"
-                  style={{ objectPosition: 'center center' }}
-                />
-                {/* Mobile image - fills edge to edge */}
-                <img 
-                  src={surnamePendragonMobile}
-                  alt="Surname Pendragon"
-                  className="block sm:hidden w-full h-full object-cover"
-                  style={{ objectPosition: 'center top' }}
-                />
-                
-                {/* Caption overlay - toggles on tap */}
-                <div 
-                  className="absolute bottom-[8%] left-0 max-w-[90%] sm:max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-4 sm:p-6 lg:p-8 transition-all duration-300"
-                  style={{
-                    opacity: pendragonCaptionVisible ? 1 : 0,
-                    transform: pendragonCaptionVisible ? 'translateX(0)' : 'translateX(-20px)',
-                    pointerEvents: pendragonCaptionVisible ? 'auto' : 'none'
-                  }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <h4 
-                    className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-2 sm:mb-3"
-                    style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                  >
-                    Screenplay Adaptation
-                  </h4>
-                  <h3 
-                    className="text-white text-lg sm:text-2xl lg:text-3xl font-light mb-2 sm:mb-3 tracking-wide"
-                    style={{ fontFamily: 'Georgia, serif' }}
-                  >
-                    Surname Pendragon
-                  </h3>
-                  <p 
-                    className="text-white/70 text-xs sm:text-sm sm:text-base leading-relaxed mb-3 sm:mb-4"
-                    style={{ fontFamily: 'Georgia, serif' }}
-                  >
-                    A sweeping family saga spanning three generations, where legacy is both burden and blessing.
-                  </p>
-                  <p 
-                    className="text-white/50 text-xs uppercase tracking-widest"
-                    style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                  >
-                    Feature Film • Drama • In Development
-                  </p>
-                </div>
-                
-                {/* Tap hint - shown when caption is hidden */}
-                {!pendragonCaptionVisible && (
-                  <div className="absolute bottom-8 left-8 text-white/50 text-xs uppercase tracking-wider animate-pulse">
-                    Tap to show info
-                  </div>
-                )}
-              </div>
-            </section>
+            {/* Pendragon is now ONLY in scrollable content - dissolves from Cream, then scrolls */}
 
           </div>
         )}
 
-        {/* SCROLLABLE CONTENT - Starts with scrollable Pendragon that overlays the pinned one */}
+        {/* SCROLLABLE CONTENT - Pendragon sits behind pinned container, revealed when scroll unlocks */}
         <div 
           ref={scrollableContentRef}
-          style={{ marginTop: '64px' }} // Align with header bottom, same as pinned Pendragon
+          style={{ marginTop: '64px' }} // Align with header bottom
         >
-          {/* Scrollable Pendragon - perfectly overlays pinned Pendragon, scrolls away on first scroll */}
+          {/* Pendragon - the ONLY instance, sits behind pinned dissolve container */}
           <section 
             className="relative w-full overflow-hidden cursor-pointer"
             style={{ height: 'calc(100vh - 64px)' }}
+            onClick={() => setPendragonCaptionVisible(!pendragonCaptionVisible)}
           >
             {/* Desktop image */}
             <img 
