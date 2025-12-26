@@ -28,32 +28,24 @@ const Comics = () => {
   const [zoomedImage, setZoomedImage] = useState<{src: string; alt: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [showGodOfLiesDescription, setShowGodOfLiesDescription] = useState(false);
-  const [showPendragon, setShowPendragon] = useState(false);
-  const [showPendragonCaption, setShowPendragonCaption] = useState(false);
-  const [pendragonCaptionVisible, setPendragonCaptionVisible] = useState(true);
-  const [mobilePendragonExpanded, setMobilePendragonExpanded] = useState(false);
-  const [mobilePendragonManuallyToggled, setMobilePendragonManuallyToggled] = useState(false);
   const [pageReady, setPageReady] = useState(false);
   const [isNarrowPortrait, setIsNarrowPortrait] = useState(false);
   const [godOfLiesImageLoaded, setGodOfLiesImageLoaded] = useState(false);
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false);
   
   // SCROLL-HIJACKING STATE - Discrete sections with snap behavior
-  // Section 0 = Title screen, 1 = Vignettes, 2 = Cream, 3 = God of Lies cover (then unlocks to scroll)
+  // Section 0 = Title, 1 = Vignettes, 2 = Cream, 3 = God of Lies cover, 4 = Surname Pendragon
   const [currentSection, setCurrentSection] = useState(0);
   const [sectionProgress, setSectionProgress] = useState(0); // 0-1 transition progress within section
   const [isScrollLocked, setIsScrollLocked] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const scrollableContentRef = useRef<HTMLDivElement>(null);
   
-  const mobilePendragonRef = useRef<HTMLDivElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
-  const pendragonSectionRef = useRef<HTMLElement>(null);
   const storiesSectionRef = useRef<HTMLElement>(null);
-  const fixedHeaderHeight = 64;
-  
-  const maxPinnedSection = 3; // After section 3 (God of Lies cover), normal scrolling begins
+
+  const maxPinnedSection = 4; // After section 4 (Surname Pendragon reveal), normal scrolling begins
   
   // Track scroll position for COMING 2026 animation
   const [scrollY, setScrollY] = useState(0);
@@ -68,26 +60,32 @@ const Comics = () => {
       if (isTransitioning) return;
       
       setCurrentSection(prev => {
+        // Prevent going below 0
+        if (direction === 'prev' && prev <= 0) return 0;
+        
         const newSection = direction === 'next' 
           ? Math.min(maxPinnedSection + 1, prev + 1)
           : Math.max(0, prev - 1);
         
-        // If moving past section 3 - unlock scroll immediately (no animation needed)
+        // If moving past the last pinned section - unlock scroll immediately
         if (newSection > maxPinnedSection) {
           setIsScrollLocked(false);
           setSectionProgress(1);
-          return maxPinnedSection; // Stay at section 3 visually
-        } else if (prev > maxPinnedSection && direction === 'prev') {
-          // Coming back from normal scroll
-          setIsScrollLocked(true);
+          return maxPinnedSection; // Stay at section 4 visually
+        } else if (prev === maxPinnedSection && newSection > maxPinnedSection) {
+          // Already at max, trying to go further - just unlock
+          setIsScrollLocked(false);
+          setSectionProgress(1);
+          return maxPinnedSection;
         }
         
         return newSection;
       });
       
-      // Only animate if staying in pinned mode and not going to scroll mode
+      // Only animate if staying in pinned mode
       if (direction === 'next' && currentSection >= maxPinnedSection) {
-        // Going to normal scroll - no animation needed
+        // Going to normal scroll - just unlock
+        setIsScrollLocked(false);
         return;
       }
       
@@ -236,32 +234,11 @@ const Comics = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
-      
-      if (isScrollLocked) return;
-      
-      // Show Pendragon when scrolled a bit
-      if (currentScrollY > 100) {
-        setShowPendragon(true);
-      }
-      
-      // Show Pendragon caption
-      if (pendragonSectionRef.current) {
-        const pendragonRect = pendragonSectionRef.current.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        setShowPendragonCaption(pendragonRect.bottom > 0 && pendragonRect.top < viewportHeight);
-      }
-      
-      // Mobile: Only auto-expand if user hasn't manually toggled
-      if (mobilePendragonRef.current && !mobilePendragonManuallyToggled) {
-        const captionRect = mobilePendragonRef.current.getBoundingClientRect();
-        const shouldExpand = captionRect.top < window.innerHeight * 0.6;
-        setMobilePendragonExpanded(shouldExpand);
-      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isScrollLocked, isMobile, isNarrowPortrait, mobilePendragonManuallyToggled]);
+  }, [isScrollLocked]);
 
   // Get dynamic header height
   const getHeaderBottom = useCallback(() => {
@@ -307,9 +284,6 @@ const Comics = () => {
     const checkNarrowPortrait = () => {
       const narrow = isNarrowPortraitDesktop();
       setIsNarrowPortrait(narrow);
-      if (narrow) {
-        setShowPendragon(true);
-      }
     };
     
     checkNarrowPortrait();
@@ -385,14 +359,9 @@ const Comics = () => {
     setSelectedComic(null);
   };
 
-  // Handle mobile pendragon toggle
-  const handleMobilePendragonToggle = () => {
-    setMobilePendragonManuallyToggled(true);
-    setMobilePendragonExpanded(prev => !prev);
-  };
 
   // ANIMATION CALCULATIONS based on discrete sections with smooth transitions
-  // Section 0 = Title, 1 = Vignettes, 2 = Cream, 3 = God of Lies cover
+  // Section 0 = Title, 1 = Vignettes, 2 = Cream, 3 = God of Lies cover, 4 = Surname Pendragon reveal
   
   // Title screen: visible on section 0
   const titleVisible = currentSection === 0;
@@ -410,23 +379,24 @@ const Comics = () => {
   const creamSlideOut = currentSection >= 3 ? sectionProgress : 0;
   const creamOpacity = currentSection === 2 ? sectionProgress : (currentSection === 3 ? 1 - sectionProgress : 0);
   
-  // God of Lies cover: visible on section 3 AND when scroll is unlocked
-  const godCoverVisible = currentSection === 3 || !isScrollLocked;
-  const godCoverOpacity = currentSection === 3 ? sectionProgress : (!isScrollLocked ? 1 : 0);
+  // God of Lies cover: visible on section 3
+  const godCoverVisible = currentSection === 3 || (currentSection === 4 && sectionProgress < 1);
+  const godCoverOpacity = currentSection === 3 ? sectionProgress : (currentSection === 4 ? 1 - sectionProgress : 0);
+  
+  // Surname Pendragon: visible on section 4 and when scroll is unlocked
+  const pendragonPinnedVisible = currentSection === 4 || !isScrollLocked;
+  const pendragonPinnedOpacity = currentSection === 4 ? sectionProgress : (!isScrollLocked ? 1 : 0);
 
   return (
     <div className={`min-h-screen bg-white overflow-x-hidden transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
       <Navigation />
 
       <main className="relative flex-1">
-        {/* PINNED ANIMATION CONTAINER - Fixed during scroll-lock phase OR showing God of Lies cover */}
-        {(isScrollLocked || godCoverVisible) && (
+        {/* PINNED ANIMATION CONTAINER - Fixed during scroll-lock phase */}
+        {isScrollLocked && (
           <div 
             className="fixed inset-0 z-10 bg-white"
-            style={{
-              // When not scroll locked, allow pointer events to pass through for scrolling
-              pointerEvents: isScrollLocked ? 'auto' : 'none'
-            }}
+            style={{ pointerEvents: 'auto' }}
           >
             
             {/* SECTION 0: TITLE SCREEN - Centered title with scroll hint */}
@@ -772,32 +742,29 @@ const Comics = () => {
                   style={{ objectPosition: 'center 25%' }}
                   onLoad={() => setGodOfLiesImageLoaded(true)}
                 />
-                {/* Mobile: Cropped/zoomed to show only the two characters, hiding title */}
-                <img 
-                  src={godOfLiesCover}
-                  alt="God of Lies"
-                  className="w-full h-full object-cover sm:hidden"
-                  style={{ 
-                    objectPosition: '35% 60%',
-                    transform: 'scale(1.3)'
-                  }}
-                  onLoad={() => setGodOfLiesImageLoaded(true)}
-                />
-                {/* COMING 2026 overlay - fixed to bottom of viewport, movie poster style - NO DROP SHADOW */}
+                {/* Mobile: Image fills screen horizontally with space at bottom for Coming 2026 */}
+                <div className="sm:hidden w-full h-full flex flex-col">
+                  <div className="flex-1 w-full overflow-hidden">
+                    <img 
+                      src={godOfLiesCover}
+                      alt="God of Lies"
+                      className="w-full h-full object-cover"
+                      style={{ objectPosition: 'center 30%' }}
+                      onLoad={() => setGodOfLiesImageLoaded(true)}
+                    />
+                  </div>
+                </div>
+                {/* COMING 2026 overlay - NO DROP SHADOW */}
                 <div 
-                  className="absolute bottom-12 sm:bottom-16 lg:bottom-20 left-0 right-0 flex justify-center items-center gap-4 sm:gap-6 lg:gap-8"
-                  style={{
-                    opacity: isScrollLocked ? 1 : Math.max(0, 1 - scrollY / 150),
-                    pointerEvents: 'none'
-                  }}
+                  className="absolute bottom-24 sm:bottom-16 lg:bottom-20 left-0 right-0 flex justify-center items-center gap-4 sm:gap-6 lg:gap-8"
+                  style={{ pointerEvents: 'none' }}
                 >
                   <span 
                     className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
                     style={{ 
                       fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
                       letterSpacing: '0.15em',
-                      fontWeight: 900,
-                      transform: isScrollLocked ? 'none' : `translateX(${-scrollY * 2}px)`
+                      fontWeight: 900
                     }}
                   >
                     COMING
@@ -807,12 +774,90 @@ const Comics = () => {
                     style={{ 
                       fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
                       letterSpacing: '0.15em',
-                      fontWeight: 900,
-                      transform: isScrollLocked ? 'none' : `translateX(${scrollY * 2}px)`
+                      fontWeight: 900
                     }}
                   >
                     2026
                   </span>
+                </div>
+                
+                {/* "Other Works" hint at bottom - scroll down to reveal Surname Pendragon */}
+                <div 
+                  className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/70 animate-bounce"
+                >
+                  <span className="text-xs uppercase tracking-widest">Other Works</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                  </svg>
+                </div>
+              </div>
+            </section>
+            
+            {/* SECTION 4: SURNAME PENDRAGON REVEAL - Dissolves in as final pinned section */}
+            <section 
+              className="absolute inset-0"
+              style={{ 
+                opacity: pendragonPinnedOpacity,
+                pointerEvents: pendragonPinnedVisible ? 'auto' : 'none',
+                transition: 'opacity 0.5s ease-out'
+              }}
+            >
+              <div className="w-full h-full relative">
+                {/* Desktop image */}
+                <img 
+                  src={surnamePendragonBanner}
+                  alt="Surname Pendragon"
+                  className="w-full h-full object-cover hidden sm:block"
+                  style={{ objectPosition: 'center center' }}
+                />
+                {/* Mobile image - zoomed/cropped */}
+                <div className="sm:hidden w-full h-full overflow-hidden">
+                  <img 
+                    src={surnamePendragonBanner}
+                    alt="Surname Pendragon"
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: 'center center' }}
+                  />
+                </div>
+                
+                {/* Caption overlay - positioned at bottom left */}
+                <div 
+                  className="absolute bottom-[8%] left-0 max-w-[90%] sm:max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-4 sm:p-6 lg:p-8"
+                >
+                  <h4 
+                    className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-2 sm:mb-3"
+                    style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                  >
+                    Screenplay Adaptation
+                  </h4>
+                  <h3 
+                    className="text-white text-lg sm:text-2xl lg:text-3xl font-light mb-2 sm:mb-3 tracking-wide"
+                    style={{ fontFamily: 'Georgia, serif' }}
+                  >
+                    Surname Pendragon
+                  </h3>
+                  <p 
+                    className="text-white/70 text-xs sm:text-sm sm:text-base leading-relaxed mb-3 sm:mb-4"
+                    style={{ fontFamily: 'Georgia, serif' }}
+                  >
+                    A sweeping family saga spanning three generations, where legacy is both burden and blessing.
+                  </p>
+                  <p 
+                    className="text-white/50 text-xs uppercase tracking-widest"
+                    style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                  >
+                    Feature Film • Drama • In Development
+                  </p>
+                </div>
+                
+                {/* Scroll hint to continue */}
+                <div 
+                  className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/70 animate-bounce"
+                >
+                  <span className="text-xs uppercase tracking-widest">Continue</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                  </svg>
                 </div>
               </div>
             </section>
@@ -833,114 +878,12 @@ const Comics = () => {
           </div>
         )}
 
-        {/* SCROLLABLE CONTENT - Starts with Pendragon (God of Lies cover is handled by fixed overlay) */}
+        {/* SCROLLABLE CONTENT - Starts after Surname Pendragon (which is now in pinned sections) */}
         <div 
           ref={scrollableContentRef}
           className={isScrollLocked ? 'invisible' : 'visible'}
           style={{ marginTop: isScrollLocked ? 0 : '100vh' }}
         >
-          
-          {/* SURNAME PENDRAGON - Slides up from bottom with minimal white gap */}
-          <section 
-            ref={pendragonSectionRef as React.RefObject<HTMLElement>}
-            className="w-full relative"
-            style={{ marginTop: '-2px' }}
-          >
-            {/* Desktop image - normal */}
-            <img 
-              src={surnamePendragonBanner}
-              alt="Surname Pendragon"
-              className="w-full hidden sm:block"
-              loading="eager"
-            />
-            
-            {/* Mobile image - zoomed/cropped to fill more vertical space */}
-            <div className="sm:hidden w-full overflow-hidden" style={{ height: '50vh' }}>
-              <img 
-                src={surnamePendragonBanner}
-                alt="Surname Pendragon"
-                className="w-full h-full object-cover"
-                style={{ objectPosition: 'center center' }}
-                loading="eager"
-              />
-            </div>
-            
-            {/* Slide-in caption panel from left */}
-            <div 
-              className="absolute inset-0 cursor-pointer hidden sm:block"
-              onClick={() => setPendragonCaptionVisible(prev => !prev)}
-            />
-            <div 
-              className={`absolute bottom-[8%] left-0 max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-5 sm:p-6 lg:p-8 transition-all duration-700 ease-out pointer-events-none hidden sm:block ${
-                showPendragonCaption && pendragonCaptionVisible
-                  ? 'opacity-100 translate-x-0' 
-                  : 'opacity-0 -translate-x-full'
-              }`}
-            >
-              <h4 
-                className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-3"
-                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-              >
-                Screenplay Adaptation
-              </h4>
-              <h3 
-                className="text-white text-xl sm:text-2xl lg:text-3xl font-light mb-3 tracking-wide"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
-                Surname Pendragon
-              </h3>
-              <p 
-                className="text-white/70 text-sm sm:text-base leading-relaxed mb-4"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
-                A sweeping family saga spanning three generations, where legacy is both burden and blessing. 
-                When secrets from the past resurface, the Pendragon name becomes a curse worth fighting for.
-              </p>
-              <p 
-                className="text-white/50 text-xs uppercase tracking-widest"
-                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-              >
-                Feature Film • Drama • In Development
-              </p>
-            </div>
-            
-            {/* Mobile caption - tap to toggle, NO chevron, NO auto-expand after manual toggle */}
-            <div 
-              ref={mobilePendragonRef}
-              className={`sm:hidden w-full bg-black/90 overflow-hidden transition-all duration-500 ease-out cursor-pointer ${
-                mobilePendragonExpanded ? 'max-h-96 p-4 pb-6' : 'max-h-12 p-4 py-3'
-              }`}
-              onClick={handleMobilePendragonToggle}
-            >
-              <h4 
-                className="text-white/90 text-xs uppercase tracking-[0.2em] mb-2"
-                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-              >
-                <span>Screenplay Adaptation</span>
-              </h4>
-              <div className={`transition-opacity duration-500 ${mobilePendragonExpanded ? 'opacity-100' : 'opacity-0'}`}>
-                <h3 
-                  className="text-white text-xl font-light mb-3 tracking-wide"
-                  style={{ fontFamily: 'Georgia, serif' }}
-                >
-                  Surname Pendragon
-                </h3>
-                <p 
-                  className="text-white/70 text-sm leading-relaxed mb-3"
-                  style={{ fontFamily: 'Georgia, serif' }}
-                >
-                  A sweeping family saga spanning three generations, where legacy is both burden and blessing. 
-                  When secrets from the past resurface, the Pendragon name becomes a curse worth fighting for.
-                </p>
-                <p 
-                  className="text-white/50 text-xs uppercase tracking-widest"
-                  style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                >
-                  Feature Film • Drama • In Development
-                </p>
-              </div>
-            </div>
-          </section>
 
           {/* Stories Waiting to be Told */}
           <section ref={storiesSectionRef as React.RefObject<HTMLElement>} className="text-center py-16 sm:py-24 bg-white">
