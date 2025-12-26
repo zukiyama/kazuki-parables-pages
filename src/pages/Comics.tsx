@@ -38,9 +38,12 @@ const Comics = () => {
   const [godOfLiesImageLoaded, setGodOfLiesImageLoaded] = useState(false);
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false);
   
-  // Scroll-locked sections state (0 = cover, 1 = vignettes, 2 = cream blurb, 3+ = normal scroll)
-  const [currentSection, setCurrentSection] = useState(0);
-  const [sectionProgress, setSectionProgress] = useState(0);
+  // SCROLL-HIJACKING STATE
+  // animationProgress: 0 = cover, 1 = vignettes fully in, 2 = cream fully in, 3+ = normal scroll
+  const [animationProgress, setAnimationProgress] = useState(0);
+  const [isScrollLocked, setIsScrollLocked] = useState(true);
+  const animationProgressRef = useRef(0);
+  const scrollableContentRef = useRef<HTMLDivElement>(null);
   
   const mobilePendragonRef = useRef<HTMLDivElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
@@ -50,44 +53,113 @@ const Comics = () => {
   const storiesSectionRef = useRef<HTMLElement>(null);
   const fixedHeaderHeight = 64;
 
-  // Calculate section visibility based on scroll - POP-UP BOOK EFFECT
-  // Scrolling doesn't move content down - it triggers transitions between fixed sections
+  // SCROLL-HIJACKING: Intercept wheel/touch events and use them to drive animation
   useEffect(() => {
+    const sensitivity = 0.002; // How fast scroll input advances animation
+    const maxProgress = 3; // After this, normal scrolling begins
+    
+    const handleWheel = (e: WheelEvent) => {
+      // If we're still in the locked animation phase
+      if (animationProgressRef.current < maxProgress) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Use wheel delta to advance animation
+        const delta = e.deltaY * sensitivity;
+        const newProgress = Math.max(0, Math.min(maxProgress, animationProgressRef.current + delta));
+        
+        animationProgressRef.current = newProgress;
+        setAnimationProgress(newProgress);
+        
+        // When we reach max progress, unlock scrolling
+        if (newProgress >= maxProgress) {
+          setIsScrollLocked(false);
+        }
+      } else {
+        // Normal scrolling - but check if user scrolls back up to top
+        if (window.scrollY === 0 && e.deltaY < 0) {
+          // At top and scrolling up - go back into locked mode
+          e.preventDefault();
+          const newProgress = Math.max(0, animationProgressRef.current + e.deltaY * sensitivity);
+          animationProgressRef.current = newProgress;
+          setAnimationProgress(newProgress);
+          if (newProgress < maxProgress) {
+            setIsScrollLocked(true);
+          }
+        }
+      }
+    };
+    
+    // Touch handling for mobile
+    let touchStartY = 0;
+    let lastTouchY = 0;
+    
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+      lastTouchY = touchStartY;
+    };
+    
+    const handleTouchMove = (e: TouchEvent) => {
+      if (animationProgressRef.current < maxProgress) {
+        e.preventDefault();
+        
+        const touchY = e.touches[0].clientY;
+        const delta = (lastTouchY - touchY) * sensitivity * 2; // Touch is more sensitive
+        lastTouchY = touchY;
+        
+        const newProgress = Math.max(0, Math.min(maxProgress, animationProgressRef.current + delta));
+        animationProgressRef.current = newProgress;
+        setAnimationProgress(newProgress);
+        
+        if (newProgress >= maxProgress) {
+          setIsScrollLocked(false);
+        }
+      }
+    };
+    
+    // Add event listeners with passive: false to allow preventDefault
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, []);
+
+  // Lock/unlock body scroll based on animation state
+  useEffect(() => {
+    if (isScrollLocked) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = '0';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+    };
+  }, [isScrollLocked]);
+
+  // Handle normal scroll events (after animation is done)
+  useEffect(() => {
+    if (isScrollLocked) return;
+    
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const vh = window.innerHeight;
       
-      // Each "section" takes about 1 viewport height of scroll to transition
-      // But the content stays fixed - only the transitions change
-      const section0End = vh * 0.6;   // Cover dissolves, vignettes slide in
-      const section1End = vh * 1.4;   // Vignettes slide out, cream slides in  
-      const section2End = vh * 2.2;   // Cream stays, then normal scroll begins
-      
-      if (scrollY < section0End) {
-        // Section 0: Cover visible, fading out as we scroll
-        setCurrentSection(0);
-        setSectionProgress(scrollY / section0End);
-      } else if (scrollY < section1End) {
-        // Section 1: Vignettes visible, they slide in then out
-        setCurrentSection(1);
-        setSectionProgress((scrollY - section0End) / (section1End - section0End));
-      } else if (scrollY < section2End) {
-        // Section 2: Cream section visible
-        setCurrentSection(2);
-        setSectionProgress((scrollY - section1End) / (section2End - section1End));
-      } else {
-        // Past section 2: Normal scrolling begins
-        setCurrentSection(3);
-        setSectionProgress(1);
-      }
-      
-      // Mobile God of Lies description
-      if (scrollY > 20) {
-        setShowGodOfLiesDescription(true);
-      }
-      
-      // Show Pendragon when past section 2
-      if (scrollY > vh * 2.5) {
+      // Show Pendragon when scrolled a bit
+      if (scrollY > 100) {
         setShowPendragon(true);
       }
       
@@ -95,15 +167,7 @@ const Comics = () => {
       if (pendragonSectionRef.current) {
         const pendragonRect = pendragonSectionRef.current.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-        
-        const isNarrowPortraitNow = window.innerWidth >= 950 && window.innerWidth <= 1100 && window.innerHeight > window.innerWidth;
-        
-        if (isNarrowPortraitNow) {
-          const pendragonEntirelyVisible = pendragonRect.top >= fixedHeaderHeight && pendragonRect.bottom <= viewportHeight;
-          setShowPendragonCaption(pendragonEntirelyVisible || pendragonRect.top <= fixedHeaderHeight);
-        } else {
-          setShowPendragonCaption(pendragonRect.bottom > 0 && pendragonRect.top < viewportHeight);
-        }
+        setShowPendragonCaption(pendragonRect.bottom > 0 && pendragonRect.top < viewportHeight);
       }
       
       // Mobile: Expand Pendragon caption
@@ -115,9 +179,8 @@ const Comics = () => {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial call
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isMobile, isNarrowPortrait]);
+  }, [isScrollLocked, isMobile, isNarrowPortrait]);
 
   // Get dynamic header height
   const getHeaderBottom = useCallback(() => {
@@ -132,6 +195,9 @@ const Comics = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setPageReady(true);
+    setAnimationProgress(0);
+    animationProgressRef.current = 0;
+    setIsScrollLocked(true);
     
     const img = new Image();
     img.onload = () => {
@@ -238,37 +304,39 @@ const Comics = () => {
     setSelectedComic(null);
   };
 
-  // Calculate opacities and transforms for each section - POP-UP BOOK STYLE
-  // Cover: visible at start, fades out as vignettes slide in
-  const coverOpacity = currentSection === 0 ? 1 - sectionProgress : 0;
-  const coverVisible = currentSection === 0;
+  // ANIMATION CALCULATIONS based on progress (0 to 3)
+  // 0-1: Cover fades out, vignettes slide in
+  // 1-2: Vignettes stay visible (user can appreciate them)
+  // 2-3: Vignettes slide out, cream slides in
+  // 3+: Normal scrolling
   
-  // Vignettes: slide in from sides when cover fades (section 0), stay during section 1, slide out when cream comes (section 2)
-  const vignetteActive = (currentSection === 0 && sectionProgress > 0.2) || currentSection === 1 || (currentSection === 2 && sectionProgress < 0.5);
-  const vignetteSlideIn = currentSection === 0 ? Math.min(1, sectionProgress * 2) : 1;
-  const vignetteSlideOut = currentSection === 2 ? sectionProgress : 0;
-  const vignetteOpacity = currentSection === 0 
-    ? Math.min(1, sectionProgress * 2.5) 
-    : currentSection === 1 
-      ? 1 
-      : currentSection === 2 
-        ? 1 - sectionProgress 
-        : 0;
+  // Cover: visible 0-1, fades out
+  const coverOpacity = animationProgress <= 1 ? Math.max(0, 1 - animationProgress) : 0;
+  const coverVisible = animationProgress < 1;
   
-  // Cream section: slides in when vignettes slide out (section 2)
-  const creamActive = currentSection >= 2;
-  const creamSlideProgress = currentSection === 2 ? sectionProgress : currentSection >= 3 ? 1 : 0;
-  const creamOpacity = currentSection >= 2 ? Math.min(1, sectionProgress * 1.5) : 0;
+  // Vignettes: slide in 0-1, stay 1-2, slide out 2-3
+  const vignetteSlideIn = Math.min(1, animationProgress); // 0 to 1
+  const vignetteSlideOut = animationProgress > 2 ? Math.min(1, animationProgress - 2) : 0; // 0 to 1 after progress 2
+  const vignetteOpacity = animationProgress < 0.2 
+    ? animationProgress * 5 // Fade in
+    : animationProgress > 2.5 
+      ? Math.max(0, 1 - (animationProgress - 2.5) * 2) // Fade out
+      : 1;
+  const vignetteActive = animationProgress >= 0.2 && animationProgress < 3;
+  
+  // Cream section: slides in during 2-3
+  const creamProgress = animationProgress > 2 ? Math.min(1, (animationProgress - 2)) : 0;
+  const creamOpacity = creamProgress;
+  const creamActive = animationProgress >= 2;
 
   return (
     <div className={`min-h-screen bg-white overflow-x-hidden transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
       <Navigation />
 
       <main className="relative flex-1">
-        {/* FIXED SCROLL CONTAINER - Scroll triggers transitions, content stays fixed */}
-        <div className="relative" style={{ height: '300vh' }}>
-          {/* Sticky container - ALWAYS fills viewport, never scrolls past */}
-          <div className="sticky top-0 h-screen w-full overflow-hidden bg-white">
+        {/* PINNED ANIMATION CONTAINER - Fixed during scroll-lock phase */}
+        {isScrollLocked && (
+          <div className="fixed inset-0 z-10 bg-white">
             
             {/* Header Banner - Always visible at top */}
             <header className="absolute top-0 left-0 right-0 py-6 sm:py-10 lg:py-12 px-4 sm:px-8 lg:px-12 mt-[64px] z-30">
@@ -312,7 +380,7 @@ const Comics = () => {
               style={{ 
                 opacity: coverOpacity, 
                 pointerEvents: coverVisible ? 'auto' : 'none',
-                transition: 'opacity 0.3s ease-out',
+                transition: 'opacity 0.15s ease-out',
                 paddingTop: '140px'
               }}
             >
@@ -326,63 +394,58 @@ const Comics = () => {
               </div>
             </section>
 
-            {/* SECTION 1: VIGNETTES - Fill the ENTIRE screen, slide in from sides */}
+            {/* SECTION 1: VIGNETTES - HUGE, fill the entire viewport, slide in from sides */}
             <section 
               className="absolute inset-0"
               style={{ 
                 opacity: vignetteOpacity,
                 pointerEvents: vignetteActive ? 'auto' : 'none',
-                paddingTop: '140px'
+                paddingTop: '100px'
               }}
             >
-              <div className="w-full h-[calc(100vh-140px)] flex">
+              <div className="w-full h-[calc(100vh-100px)] flex">
                 
-                {/* LEFT SIDE - Board game image (HUGE, fills left 40%) */}
+                {/* LEFT SIDE - Board game image (HUGE - fills left 45%) */}
                 <div 
-                  className="w-[40%] h-full flex items-center justify-center p-4"
+                  className="w-[45%] h-full flex items-center justify-center p-2 sm:p-4"
                   style={{
-                    transform: `translateX(${(-100 + vignetteSlideIn * 100) - vignetteSlideOut * 100}%)`,
-                    transition: 'transform 0.4s ease-out'
+                    transform: `translateX(${(-100 + vignetteSlideIn * 100) - vignetteSlideOut * 150}%)`,
+                    transition: 'transform 0.2s ease-out'
                   }}
                 >
                   <img 
                     src={vignetteBoardgame}
                     alt="Family moments - God of Lies"
                     className="w-full h-full object-contain drop-shadow-2xl"
+                    style={{ maxHeight: '85vh' }}
                   />
                 </div>
                 
-                {/* CENTER - Magazine text content (20%) */}
+                {/* CENTER - Magazine text content (10%) - smaller to give more room to images */}
                 <div 
-                  className="w-[20%] h-full flex items-center justify-center px-2"
+                  className="w-[10%] h-full flex items-center justify-center px-1"
                   style={{
-                    opacity: Math.max(0, vignetteSlideIn - vignetteSlideOut),
-                    transform: `scale(${0.8 + vignetteSlideIn * 0.2 - vignetteSlideOut * 0.2})`,
-                    transition: 'opacity 0.4s ease-out, transform 0.4s ease-out'
+                    opacity: Math.max(0, vignetteSlideIn - vignetteSlideOut * 2),
+                    transform: `scale(${0.8 + vignetteSlideIn * 0.2 - vignetteSlideOut * 0.5})`,
+                    transition: 'opacity 0.2s ease-out, transform 0.2s ease-out'
                   }}
                 >
                   <div className="text-center">
                     <p 
-                      className="text-[10px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] text-slate-500 mb-2 sm:mb-3"
+                      className="text-[8px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.4em] text-slate-500 mb-1 sm:mb-2"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
                       Featured
                     </p>
                     <h2 
-                      className="text-xl sm:text-3xl lg:text-5xl xl:text-6xl mb-2 sm:mb-4 text-slate-900"
+                      className="text-sm sm:text-xl lg:text-3xl xl:text-4xl mb-1 sm:mb-2 text-slate-900"
                       style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.04em' }}
                     >
                       GOD OF<br />LIES
                     </h2>
-                    <div className="w-8 sm:w-16 lg:w-20 h-0.5 sm:h-1 bg-red-600 mx-auto mb-2 sm:mb-4" />
+                    <div className="w-4 sm:w-10 lg:w-14 h-0.5 sm:h-1 bg-red-600 mx-auto mb-1 sm:mb-2" />
                     <p 
-                      className="text-xs sm:text-sm lg:text-base text-slate-700 leading-relaxed mb-2 sm:mb-3 hidden lg:block"
-                      style={{ fontFamily: 'Georgia, serif' }}
-                    >
-                      In a world where truth is currency, one man discovers he can make anyone believe anything.
-                    </p>
-                    <p 
-                      className="text-[10px] sm:text-xs lg:text-sm text-blue-700 uppercase tracking-[0.15em] sm:tracking-[0.25em]"
+                      className="text-[8px] sm:text-[10px] lg:text-xs text-blue-700 uppercase tracking-[0.1em] sm:tracking-[0.2em]"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
                       Manga • 2026
@@ -390,29 +453,31 @@ const Comics = () => {
                   </div>
                 </div>
                 
-                {/* RIGHT SIDE - Two images stacked (40%) */}
+                {/* RIGHT SIDE - Two images stacked (HUGE - fills right 45%) */}
                 <div 
-                  className="w-[40%] h-full flex flex-col gap-2 p-4"
+                  className="w-[45%] h-full flex flex-col gap-1 sm:gap-2 p-2 sm:p-4"
                   style={{
-                    transform: `translateX(${(100 - vignetteSlideIn * 100) + vignetteSlideOut * 100}%)`,
-                    transition: 'transform 0.4s ease-out'
+                    transform: `translateX(${(100 - vignetteSlideIn * 100) + vignetteSlideOut * 150}%)`,
+                    transition: 'transform 0.2s ease-out'
                   }}
                 >
                   {/* Top right image - Apartments */}
-                  <div className="flex-1 flex items-center justify-center">
+                  <div className="flex-1 flex items-center justify-center overflow-hidden">
                     <img 
                       src={vignetteApartments}
                       alt="The neighborhood - God of Lies"
                       className="w-full h-full object-contain drop-shadow-2xl"
+                      style={{ maxHeight: '42vh' }}
                     />
                   </div>
                   
                   {/* Bottom right image - Sweeping */}
-                  <div className="flex-1 flex items-center justify-center">
+                  <div className="flex-1 flex items-center justify-center overflow-hidden">
                     <img 
                       src={vignetteSweeping}
                       alt="Daily life - God of Lies"
                       className="w-full h-full object-contain drop-shadow-2xl"
+                      style={{ maxHeight: '42vh' }}
                     />
                   </div>
                 </div>
@@ -426,19 +491,19 @@ const Comics = () => {
                 opacity: creamOpacity, 
                 pointerEvents: creamActive ? 'auto' : 'none',
                 background: 'linear-gradient(to bottom, #f5f0e1, #e8e0cc)',
-                paddingTop: '140px'
+                paddingTop: '100px'
               }}
             >
-              <div className="w-full h-[calc(100vh-140px)] flex items-center justify-center px-6">
-                <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-8 items-center">
+              <div className="w-full h-[calc(100vh-100px)] flex items-center justify-center px-4 sm:px-6">
+                <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6 lg:gap-8 items-center">
                   
                   {/* Main Image - Slides in from LEFT */}
                   <div 
                     className="lg:w-1/2 flex justify-center"
                     style={{
-                      transform: `translateX(${-100 + creamSlideProgress * 100}%)`,
-                      opacity: creamSlideProgress,
-                      transition: 'transform 0.5s ease-out, opacity 0.4s ease-out'
+                      transform: `translateX(${-100 + creamProgress * 100}%)`,
+                      opacity: creamProgress,
+                      transition: 'transform 0.2s ease-out, opacity 0.2s ease-out'
                     }}
                   >
                     <div 
@@ -448,7 +513,7 @@ const Comics = () => {
                       <img 
                         src={godOfLiesStreetScene}
                         alt="The Masked Figure following"
-                        className="max-h-[60vh] object-contain shadow-xl transition-transform duration-300 group-hover:scale-[1.02]"
+                        className="max-h-[65vh] object-contain shadow-xl transition-transform duration-300 group-hover:scale-[1.02]"
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
                         <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-sm">Click to enlarge</span>
@@ -460,17 +525,17 @@ const Comics = () => {
                   <div 
                     className="lg:w-1/2"
                     style={{
-                      transform: `translateX(${100 - creamSlideProgress * 100}%)`,
-                      opacity: creamSlideProgress,
-                      transition: 'transform 0.5s ease-out 0.1s, opacity 0.4s ease-out 0.1s'
+                      transform: `translateX(${100 - creamProgress * 100}%)`,
+                      opacity: creamProgress,
+                      transition: 'transform 0.2s ease-out 0.05s, opacity 0.2s ease-out 0.05s'
                     }}
                   >
                     {/* Magazine Header - Slides down from TOP */}
                     <div 
-                      className="text-center lg:text-left mb-6"
+                      className="text-center lg:text-left mb-4 lg:mb-6"
                       style={{
-                        transform: `translateY(${-50 + creamSlideProgress * 50}px)`,
-                        transition: 'transform 0.5s ease-out 0.15s'
+                        transform: `translateY(${-30 + creamProgress * 30}px)`,
+                        transition: 'transform 0.2s ease-out 0.1s'
                       }}
                     >
                       <p 
@@ -480,23 +545,23 @@ const Comics = () => {
                         Featured Series
                       </p>
                       <h2 
-                        className="text-3xl lg:text-5xl font-bold text-slate-900 mb-3"
+                        className="text-2xl lg:text-5xl font-bold text-slate-900 mb-2 lg:mb-3"
                         style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.02em' }}
                       >
                         GOD OF LIES
                       </h2>
-                      <div className="w-24 h-1 bg-amber-700 mx-auto lg:mx-0" />
+                      <div className="w-20 lg:w-24 h-1 bg-amber-700 mx-auto lg:mx-0" />
                     </div>
 
                     <p 
-                      className="text-slate-700 text-base lg:text-lg leading-relaxed first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-3 first-letter:text-amber-800"
+                      className="text-slate-700 text-sm lg:text-lg leading-relaxed first-letter:text-4xl lg:first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2 lg:first-letter:mr-3 first-letter:text-amber-800"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
                       In a world where truth is currency, one man discovers he can make anyone believe anything. 
                       <span className="text-red-700 font-semibold"> Takeshi Mori</span> has mastered the art of deception—manipulating politicians, businessmen, and entire corporations with surgical precision.
                     </p>
                     <p 
-                      className="text-slate-700 text-base lg:text-lg leading-relaxed mt-5"
+                      className="text-slate-700 text-sm lg:text-lg leading-relaxed mt-3 lg:mt-5 hidden sm:block"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
                       For years, he operated in the shadows, a phantom pulling strings that shaped nations. But when a 
@@ -504,7 +569,7 @@ const Comics = () => {
                       his empire of illusions begins to crumble.
                     </p>
                     <p 
-                      className="text-amber-800 text-xs uppercase tracking-widest mt-5"
+                      className="text-amber-800 text-xs uppercase tracking-widest mt-3 lg:mt-5"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
                       Manga • Webtoon • 2026
@@ -513,130 +578,116 @@ const Comics = () => {
                 </div>
               </div>
             </section>
-          </div>
-        </div>
 
-        {/* NORMAL SCROLLING CONTENT BELOW */}
-        
-        {/* GOD OF LIES Text Section - MOBILE */}
-        {isMobile && (
-          <section className="w-full relative">
-            <div className="flex flex-col">
-              <div className="w-full">
-                <img 
-                  src={godOfLiesBusStop}
-                  alt="God of Lies - Bus Stop Scene"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              
+            {/* Scroll hint */}
+            {animationProgress < 0.3 && (
               <div 
-                className={`w-full bg-amber-50/95 transition-all duration-700 ease-out overflow-hidden ${
-                  showGodOfLiesDescription 
-                    ? 'max-h-96 opacity-100' 
-                    : 'max-h-0 opacity-0'
-                }`}
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 text-black/40 text-sm animate-bounce z-40"
+                style={{ opacity: 1 - animationProgress * 3 }}
               >
-                <div className={`p-4 transition-transform duration-700 ease-out ${
-                  showGodOfLiesDescription ? 'translate-y-0' : '-translate-y-full'
-                }`}>
-                  <h3 
-                    className="text-2xl font-bold text-slate-900 mb-4"
-                    style={{ fontFamily: 'Bangers, cursive' }}
-                  >
-                    GOD OF LIES
-                  </h3>
-                  <p 
-                    className="text-slate-700 text-sm leading-relaxed mb-2"
-                    style={{ fontFamily: 'Georgia, serif' }}
-                  >
-                    In a world where every truth bends to the will of one man, reality itself becomes a question. 
-                    Takeshi Mori has spent decades mastering the art of deception—but when a child sees through 
-                    his lies for the first time, everything begins to unravel.
-                  </p>
+                <div className="flex flex-col items-center gap-2">
+                  <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                  </svg>
                 </div>
               </div>
-            </div>
-          </section>
+            )}
+          </div>
         )}
 
-        {/* SURNAME PENDRAGON */}
-        <section 
-          ref={pendragonSectionRef} 
-          className={`w-full relative transition-all duration-700 ease-out ${
-            (isMobile || isNarrowPortrait) 
-              ? (godOfLiesImageLoaded ? 'opacity-100 translate-y-0' : 'opacity-0')
-              : (showPendragon ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16')
-          }`}
+        {/* NORMAL SCROLLABLE CONTENT - Shown after animation completes */}
+        <div 
+          ref={scrollableContentRef}
+          className={isScrollLocked ? 'invisible' : 'visible'}
         >
-          <img 
-            src={surnamePendragonBanner}
-            alt="Surname Pendragon"
-            className="w-full"
-            loading={(isMobile || isNarrowPortrait) ? 'lazy' : 'eager'}
-          />
+          {/* Spacer to account for the fixed animation sections we just saw */}
+          {!isScrollLocked && <div className="h-0" />}
           
-          {/* Slide-in caption panel from left */}
-          <div 
-            className="absolute inset-0 cursor-pointer hidden sm:block"
-            onClick={() => setPendragonCaptionVisible(prev => !prev)}
-          />
-          <div 
-            className={`absolute bottom-[8%] left-0 max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-5 sm:p-6 lg:p-8 transition-all duration-700 ease-out pointer-events-none hidden sm:block ${
-              showPendragonCaption && pendragonCaptionVisible
-                ? 'opacity-100 translate-x-0' 
-                : 'opacity-0 -translate-x-full'
+          {/* GOD OF LIES Text Section - MOBILE */}
+          {isMobile && (
+            <section className="w-full relative">
+              <div className="flex flex-col">
+                <div className="w-full">
+                  <img 
+                    src={godOfLiesBusStop}
+                    alt="God of Lies - Bus Stop Scene"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                
+                <div 
+                  className={`w-full bg-amber-50/95 transition-all duration-700 ease-out overflow-hidden ${
+                    showGodOfLiesDescription 
+                      ? 'max-h-96 opacity-100' 
+                      : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className={`p-4 transition-transform duration-700 ease-out ${
+                    showGodOfLiesDescription ? 'translate-y-0' : '-translate-y-full'
+                  }`}>
+                    <h3 
+                      className="text-2xl font-bold text-slate-900 mb-4"
+                      style={{ fontFamily: 'Bangers, cursive' }}
+                    >
+                      GOD OF LIES
+                    </h3>
+                    <p 
+                      className="text-slate-700 text-sm leading-relaxed mb-2"
+                      style={{ fontFamily: 'Georgia, serif' }}
+                    >
+                      In a world where every truth bends to the will of one man, reality itself becomes a question. 
+                      Takeshi Mori has spent decades mastering the art of deception—but when a child sees through 
+                      his lies for the first time, everything begins to unravel.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* SURNAME PENDRAGON */}
+          <section 
+            ref={pendragonSectionRef} 
+            className={`w-full relative transition-all duration-700 ease-out ${
+              (isMobile || isNarrowPortrait) 
+                ? (godOfLiesImageLoaded ? 'opacity-100 translate-y-0' : 'opacity-0')
+                : (showPendragon ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16')
             }`}
           >
-            <h4 
-              className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-3"
-              style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+            <img 
+              src={surnamePendragonBanner}
+              alt="Surname Pendragon"
+              className="w-full"
+              loading={(isMobile || isNarrowPortrait) ? 'lazy' : 'eager'}
+            />
+            
+            {/* Slide-in caption panel from left */}
+            <div 
+              className="absolute inset-0 cursor-pointer hidden sm:block"
+              onClick={() => setPendragonCaptionVisible(prev => !prev)}
+            />
+            <div 
+              className={`absolute bottom-[8%] left-0 max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-5 sm:p-6 lg:p-8 transition-all duration-700 ease-out pointer-events-none hidden sm:block ${
+                showPendragonCaption && pendragonCaptionVisible
+                  ? 'opacity-100 translate-x-0' 
+                  : 'opacity-0 -translate-x-full'
+              }`}
             >
-              Screenplay Adaptation
-            </h4>
-            <h3 
-              className="text-white text-xl sm:text-2xl lg:text-3xl font-light mb-3 tracking-wide"
-              style={{ fontFamily: 'Georgia, serif' }}
-            >
-              Surname Pendragon
-            </h3>
-            <p 
-              className="text-white/70 text-sm sm:text-base leading-relaxed mb-4"
-              style={{ fontFamily: 'Georgia, serif' }}
-            >
-              A sweeping family saga spanning three generations, where legacy is both burden and blessing. 
-              When secrets from the past resurface, the Pendragon name becomes a curse worth fighting for.
-            </p>
-            <p 
-              className="text-white/50 text-xs uppercase tracking-widest"
-              style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-            >
-              Feature Film • Drama • In Development
-            </p>
-          </div>
-          
-          {/* Mobile caption */}
-          <div 
-            ref={mobilePendragonRef}
-            className={`sm:hidden w-full bg-black/90 overflow-hidden transition-all duration-500 ease-out ${
-              mobilePendragonExpanded ? 'max-h-96 p-4 pb-6' : 'max-h-12 p-4 py-3'
-            }`}
-          >
-            <h4 
-              className="text-white/90 text-xs uppercase tracking-[0.2em] mb-2"
-              style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-            >
-              Screenplay Adaptation
-            </h4>
-            <div className={`transition-opacity duration-500 ${mobilePendragonExpanded ? 'opacity-100' : 'opacity-0'}`}>
+              <h4 
+                className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-3"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Screenplay Adaptation
+              </h4>
               <h3 
-                className="text-white text-xl font-light mb-3 tracking-wide"
+                className="text-white text-xl sm:text-2xl lg:text-3xl font-light mb-3 tracking-wide"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 Surname Pendragon
               </h3>
               <p 
-                className="text-white/70 text-sm leading-relaxed mb-3"
+                className="text-white/70 text-sm sm:text-base leading-relaxed mb-4"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 A sweeping family saga spanning three generations, where legacy is both burden and blessing. 
@@ -649,68 +700,104 @@ const Comics = () => {
                 Feature Film • Drama • In Development
               </p>
             </div>
-          </div>
-        </section>
-
-        {/* Stories Waiting to be Told */}
-        <section ref={storiesSectionRef} className="text-center py-16 sm:py-24 bg-white">
-          <ScrollScale 
-            initialScale={1.3} 
-            finalScale={1} 
-            initialBlur={3}
-            className="text-center"
-          >
-            <h2 
-              className="font-serif text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight mb-6"
-            >
-              "Stories waiting to be told..."
-            </h2>
-            <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
-            <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
-          </ScrollScale>
-        </section>
-
-        {/* Forthcoming Comics Grid */}
-        <section className="pb-6 sm:pb-20 px-4 sm:px-6 bg-white relative">
-          {topSectionsLoaded && (
+            
+            {/* Mobile caption */}
             <div 
-              ref={row1Ref}
-              data-row="row1"
-              className={`transition-all duration-700 ${
-                visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              ref={mobilePendragonRef}
+              className={`sm:hidden w-full bg-black/90 overflow-hidden transition-all duration-500 ease-out ${
+                mobilePendragonExpanded ? 'max-h-96 p-4 pb-6' : 'max-h-12 p-4 py-3'
               }`}
             >
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 xs:gap-4 sm:gap-4 lg:gap-6 max-w-4xl mx-auto">
-                {smallShelfComics.map((comic, index) => (
-                  <div 
-                    key={comic.title} 
-                    className={`cursor-pointer overflow-visible ${
-                      visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                    }`}
-                    style={{ 
-                      transition: 'opacity 0.7s ease, transform 0.7s ease',
-                      transitionDelay: visibleRows.has('row1') ? `${index * 200}ms` : '0ms' 
-                    }}
-                    onClick={() => handleComicClick(comic)}
-                  >
-                    <img 
-                      src={comic.cover}
-                      alt={`${comic.title} comic cover`}
-                      className="w-full shadow-lg transition-transform duration-200 ease-out hover:scale-[1.02] xs:hover:scale-[1.03] sm:hover:scale-105"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
+              <h4 
+                className="text-white/90 text-xs uppercase tracking-[0.2em] mb-2"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Screenplay Adaptation
+              </h4>
+              <div className={`transition-opacity duration-500 ${mobilePendragonExpanded ? 'opacity-100' : 'opacity-0'}`}>
+                <h3 
+                  className="text-white text-xl font-light mb-3 tracking-wide"
+                  style={{ fontFamily: 'Georgia, serif' }}
+                >
+                  Surname Pendragon
+                </h3>
+                <p 
+                  className="text-white/70 text-sm leading-relaxed mb-3"
+                  style={{ fontFamily: 'Georgia, serif' }}
+                >
+                  A sweeping family saga spanning three generations, where legacy is both burden and blessing. 
+                  When secrets from the past resurface, the Pendragon name becomes a curse worth fighting for.
+                </p>
+                <p 
+                  className="text-white/50 text-xs uppercase tracking-widest"
+                  style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                >
+                  Feature Film • Drama • In Development
+                </p>
               </div>
             </div>
-          )}
-          
-          <div ref={row2Ref} data-row="row2" className="hidden" />
-        </section>
+          </section>
+
+          {/* Stories Waiting to be Told */}
+          <section ref={storiesSectionRef} className="text-center py-16 sm:py-24 bg-white">
+            <ScrollScale 
+              initialScale={1.3} 
+              finalScale={1} 
+              initialBlur={3}
+              className="text-center"
+            >
+              <h2 
+                className="font-serif text-3xl sm:text-5xl lg:text-6xl text-black/80 italic leading-tight mb-6"
+              >
+                "Stories waiting to be told..."
+              </h2>
+              <div className="w-24 h-1 bg-amber-800 mx-auto rounded-full mb-2" />
+              <div className="w-16 h-0.5 bg-amber-800/60 mx-auto rounded-full" />
+            </ScrollScale>
+          </section>
+
+          {/* Forthcoming Comics Grid */}
+          <section className="pb-6 sm:pb-20 px-4 sm:px-6 bg-white relative">
+            {topSectionsLoaded && (
+              <div 
+                ref={row1Ref}
+                data-row="row1"
+                className={`transition-all duration-700 ${
+                  visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
+              >
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 xs:gap-4 sm:gap-4 lg:gap-6 max-w-4xl mx-auto">
+                  {smallShelfComics.map((comic, index) => (
+                    <div 
+                      key={comic.title} 
+                      className={`cursor-pointer overflow-visible ${
+                        visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                      }`}
+                      style={{ 
+                        transition: 'opacity 0.7s ease, transform 0.7s ease',
+                        transitionDelay: visibleRows.has('row1') ? `${index * 200}ms` : '0ms' 
+                      }}
+                      onClick={() => handleComicClick(comic)}
+                    >
+                      <img 
+                        src={comic.cover}
+                        alt={`${comic.title} comic cover`}
+                        className="w-full shadow-lg transition-transform duration-200 ease-out hover:scale-[1.02] xs:hover:scale-[1.03] sm:hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            <div ref={row2Ref} data-row="row2" className="hidden" />
+          </section>
+        </div>
       </main>
       
       {/* Footer */}
-      <footer className="bg-[#1a1a1a] py-10 max-sm:py-6 relative overflow-visible">
+      <footer className={`bg-[#1a1a1a] py-10 max-sm:py-6 relative overflow-visible ${isScrollLocked ? 'hidden' : ''}`}>
         <img 
           src={comicsFooterCharacter}
           alt="Comics mascot"
@@ -786,15 +873,8 @@ const Comics = () => {
           <img 
             src={zoomedImage.src}
             alt={zoomedImage.alt}
-            className="max-w-full max-h-full object-contain animate-scale-in"
-            onClick={(e) => e.stopPropagation()}
+            className="max-w-full max-h-full object-contain"
           />
-          <button
-            onClick={() => setZoomedImage(null)}
-            className="absolute top-6 right-6 text-white/70 hover:text-white text-xl font-light transition-colors"
-          >
-            ✕
-          </button>
         </div>
       )}
     </div>
