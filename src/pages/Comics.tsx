@@ -43,6 +43,7 @@ const Comics = () => {
   const [sectionProgress, setSectionProgress] = useState(0); // 0-1 transition progress within section
   const [isScrollLocked, setIsScrollLocked] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [pinnedContainerOpacity, setPinnedContainerOpacity] = useState(1); // For dissolve to/from Pendragon
   const scrollableContentRef = useRef<HTMLDivElement>(null);
   
   const row1Ref = useRef<HTMLDivElement>(null);
@@ -68,11 +69,31 @@ const Comics = () => {
           ? Math.min(maxPinnedSection + 1, prev + 1)
           : Math.max(0, prev - 1);
         
-        // If moving past the last pinned section - unlock scroll immediately
+        // If moving past the last pinned section - dissolve to Pendragon
         if (newSection > maxPinnedSection) {
-          setIsScrollLocked(false);
+          // Animate the dissolve from Cream to Pendragon
+          setIsTransitioning(true);
+          const animationDuration = 600;
+          const startTime = performance.now();
+          
+          const animateFadeOut = (currentTime: number) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(1, elapsed / animationDuration);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setPinnedContainerOpacity(1 - eased);
+            
+            if (progress < 1) {
+              requestAnimationFrame(animateFadeOut);
+            } else {
+              setPinnedContainerOpacity(0);
+              setIsScrollLocked(false);
+              setIsTransitioning(false);
+            }
+          };
+          
+          requestAnimationFrame(animateFadeOut);
           setSectionProgress(1);
-          return maxPinnedSection; // Stay at section 2 visually
+          return maxPinnedSection;
         }
         
         return newSection;
@@ -80,8 +101,7 @@ const Comics = () => {
       
       // Only animate if staying in pinned mode
       if (direction === 'next' && currentSection >= maxPinnedSection) {
-        // Going to normal scroll - just unlock
-        setIsScrollLocked(false);
+        // Already handled above with dissolve animation
         return;
       }
       
@@ -116,13 +136,33 @@ const Comics = () => {
     const handleWheel = (e: WheelEvent) => {
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
-        // Check if user scrolled to top and wants to go up - re-lock for dissolve transitions
+        // Check if user scrolled to top and wants to go up - dissolve back to Cream
         if (window.scrollY <= 0 && e.deltaY < 0) {
           e.preventDefault();
           setIsScrollLocked(true);
           setCurrentSection(maxPinnedSection); // Re-lock at Cream (section 2)
           setSectionProgress(1);
-          // Next scroll-up will dissolve to Vignettes
+          
+          // Animate the dissolve back in (Pendragon fades, Cream appears)
+          setIsTransitioning(true);
+          const animationDuration = 600;
+          const startTime = performance.now();
+          
+          const animateFadeIn = (currentTime: number) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(1, elapsed / animationDuration);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setPinnedContainerOpacity(eased);
+            
+            if (progress < 1) {
+              requestAnimationFrame(animateFadeIn);
+            } else {
+              setPinnedContainerOpacity(1);
+              setIsTransitioning(false);
+            }
+          };
+          
+          requestAnimationFrame(animateFadeIn);
         }
         return;
       }
@@ -160,7 +200,7 @@ const Comics = () => {
     const handleTouchMove = (e: TouchEvent) => {
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
-        // Check if user scrolled to top and wants to go up - re-lock for dissolve transitions
+        // Check if user scrolled to top and wants to go up - dissolve back to Cream
         if (window.scrollY <= 0) {
           const touchY = e.touches[0].clientY;
           const delta = touchStartY - touchY;
@@ -169,7 +209,27 @@ const Comics = () => {
             setIsScrollLocked(true);
             setCurrentSection(maxPinnedSection);
             setSectionProgress(1);
-            // Don't trigger section change - just re-lock at Pendragon, next scroll-up will dissolve to Cream
+            
+            // Animate the dissolve back in
+            setIsTransitioning(true);
+            const animationDuration = 600;
+            const startTime = performance.now();
+            
+            const animateFadeIn = (currentTime: number) => {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(1, elapsed / animationDuration);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              setPinnedContainerOpacity(eased);
+              
+              if (progress < 1) {
+                requestAnimationFrame(animateFadeIn);
+              } else {
+                setPinnedContainerOpacity(1);
+                setIsTransitioning(false);
+              }
+            };
+            
+            requestAnimationFrame(animateFadeIn);
             touchStartY = touchY;
           }
         }
@@ -362,11 +422,15 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative flex-1">
-        {/* PINNED ANIMATION CONTAINER - Fixed during scroll-lock phase */}
-        {isScrollLocked && (
+        {/* PINNED ANIMATION CONTAINER - Fixed during scroll-lock phase, fades for Pendragon transition */}
+        {(isScrollLocked || pinnedContainerOpacity > 0) && (
           <div 
             className="fixed inset-0 z-10 bg-white"
-            style={{ pointerEvents: 'auto' }}
+            style={{ 
+              pointerEvents: isScrollLocked ? 'auto' : 'none',
+              opacity: pinnedContainerOpacity,
+              transition: 'opacity 0.05s ease-out'
+            }}
           >
             
             {/* SECTION 0: TITLE SCREEN - Centered title with scroll hint */}
