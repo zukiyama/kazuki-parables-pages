@@ -12,7 +12,6 @@ import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
 import godsCover from "@/assets/gods-cover-new.png";
 import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
-import godOfLiesBusStop from "@/assets/god-of-lies-bus-stop-cropped.jpeg";
 import comicsFooterCharacter from "@/assets/comics-footer-character.png";
 import godOfLiesStreetScene from "@/assets/god-of-lies-street-scene.png";
 import vignetteApartments from "@/assets/god-of-lies-apartments.png";
@@ -33,13 +32,14 @@ const Comics = () => {
   const [showPendragonCaption, setShowPendragonCaption] = useState(false);
   const [pendragonCaptionVisible, setPendragonCaptionVisible] = useState(true);
   const [mobilePendragonExpanded, setMobilePendragonExpanded] = useState(false);
+  const [mobilePendragonManuallyToggled, setMobilePendragonManuallyToggled] = useState(false);
   const [pageReady, setPageReady] = useState(false);
   const [isNarrowPortrait, setIsNarrowPortrait] = useState(false);
   const [godOfLiesImageLoaded, setGodOfLiesImageLoaded] = useState(false);
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false);
   
   // SCROLL-HIJACKING STATE - Discrete sections with snap behavior
-  // Section 0 = Title screen, 1 = Vignettes, 2 = Cream, 3 = God of Lies cover, 4+ = normal scroll
+  // Section 0 = Title screen, 1 = Vignettes, 2 = Cream, 3 = God of Lies cover (then unlocks to scroll)
   const [currentSection, setCurrentSection] = useState(0);
   const [sectionProgress, setSectionProgress] = useState(0); // 0-1 transition progress within section
   const [isScrollLocked, setIsScrollLocked] = useState(true);
@@ -72,10 +72,11 @@ const Comics = () => {
           ? Math.min(maxPinnedSection + 1, prev + 1)
           : Math.max(0, prev - 1);
         
-        // If moving to normal scroll section - unlock immediately
+        // If moving past section 3 - unlock scroll immediately (no animation needed)
         if (newSection > maxPinnedSection) {
           setIsScrollLocked(false);
-          return newSection;
+          setSectionProgress(1);
+          return maxPinnedSection; // Stay at section 3 visually
         } else if (prev > maxPinnedSection && direction === 'prev') {
           // Coming back from normal scroll
           setIsScrollLocked(true);
@@ -84,8 +85,8 @@ const Comics = () => {
         return newSection;
       });
       
-      // Only animate if staying in pinned mode
-      if (direction === 'next' && currentSection === maxPinnedSection) {
+      // Only animate if staying in pinned mode and not going to scroll mode
+      if (direction === 'next' && currentSection >= maxPinnedSection) {
         // Going to normal scroll - no animation needed
         return;
       }
@@ -250,8 +251,8 @@ const Comics = () => {
         setShowPendragonCaption(pendragonRect.bottom > 0 && pendragonRect.top < viewportHeight);
       }
       
-      // Mobile: Expand Pendragon caption
-      if (mobilePendragonRef.current) {
+      // Mobile: Only auto-expand if user hasn't manually toggled
+      if (mobilePendragonRef.current && !mobilePendragonManuallyToggled) {
         const captionRect = mobilePendragonRef.current.getBoundingClientRect();
         const shouldExpand = captionRect.top < window.innerHeight * 0.6;
         setMobilePendragonExpanded(shouldExpand);
@@ -260,7 +261,7 @@ const Comics = () => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isScrollLocked, isMobile, isNarrowPortrait]);
+  }, [isScrollLocked, isMobile, isNarrowPortrait, mobilePendragonManuallyToggled]);
 
   // Get dynamic header height
   const getHeaderBottom = useCallback(() => {
@@ -384,6 +385,12 @@ const Comics = () => {
     setSelectedComic(null);
   };
 
+  // Handle mobile pendragon toggle
+  const handleMobilePendragonToggle = () => {
+    setMobilePendragonManuallyToggled(true);
+    setMobilePendragonExpanded(prev => !prev);
+  };
+
   // ANIMATION CALCULATIONS based on discrete sections with smooth transitions
   // Section 0 = Title, 1 = Vignettes, 2 = Cream, 3 = God of Lies cover
   
@@ -403,18 +410,24 @@ const Comics = () => {
   const creamSlideOut = currentSection >= 3 ? sectionProgress : 0;
   const creamOpacity = currentSection === 2 ? sectionProgress : (currentSection === 3 ? 1 - sectionProgress : 0);
   
-  // God of Lies cover: visible on section 3
-  const godCoverVisible = currentSection === 3;
-  const godCoverOpacity = currentSection === 3 ? sectionProgress : 0;
+  // God of Lies cover: visible on section 3 AND when scroll is unlocked
+  const godCoverVisible = currentSection === 3 || !isScrollLocked;
+  const godCoverOpacity = currentSection === 3 ? sectionProgress : (!isScrollLocked ? 1 : 0);
 
   return (
     <div className={`min-h-screen bg-white overflow-x-hidden transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
       <Navigation />
 
       <main className="relative flex-1">
-        {/* PINNED ANIMATION CONTAINER - Fixed during scroll-lock phase */}
-        {isScrollLocked && (
-          <div className="fixed inset-0 z-10 bg-white">
+        {/* PINNED ANIMATION CONTAINER - Fixed during scroll-lock phase OR showing God of Lies cover */}
+        {(isScrollLocked || godCoverVisible) && (
+          <div 
+            className="fixed inset-0 z-10 bg-white"
+            style={{
+              // When not scroll locked, allow pointer events to pass through for scrolling
+              pointerEvents: isScrollLocked ? 'auto' : 'none'
+            }}
+          >
             
             {/* SECTION 0: TITLE SCREEN - Centered title with scroll hint */}
             <section 
@@ -587,87 +600,63 @@ const Comics = () => {
                 </div>
               </div>
               
-              {/* MOBILE VIGNETTES LAYOUT - Only Many Faces image with text on right */}
-              <div className="w-full h-full flex sm:hidden items-center px-4">
-                {/* LEFT - Many Faces image larger */}
+              {/* MOBILE VIGNETTES LAYOUT - Full screen image with overlaid text */}
+              <div className="w-full h-full flex sm:hidden items-center justify-center relative">
+                {/* Full page Many Faces image with padding */}
                 <div 
-                  className="w-[55%] h-full flex items-center justify-center py-6"
+                  className="absolute inset-0 flex items-center justify-center p-6"
                   style={{
-                    transform: `translateX(${currentSection >= 1 ? (currentSection >= 2 ? -150 * sectionProgress : 0) : -100}%)`,
-                    transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
+                    opacity: currentSection >= 1 ? 1 : 0,
+                    transform: `scale(${currentSection >= 1 ? 1 : 0.9})`,
+                    transition: 'opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
                   <img 
                     src={vignetteManyFaces}
                     alt="The many faces - God of Lies"
-                    className="h-full w-auto object-contain drop-shadow-2xl"
-                    style={{ maxHeight: 'calc(100vh - 140px)' }}
+                    className="max-h-full max-w-full object-contain drop-shadow-2xl"
                   />
                 </div>
                 
-                {/* RIGHT - Text content with vertical GOD OF LIES */}
+                {/* Overlaid text at bottom */}
                 <div 
-                  className="w-[45%] h-full flex items-center justify-center px-2"
+                  className="absolute bottom-0 left-0 right-0 px-4 pb-16 pt-20"
                   style={{
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 50%, transparent 100%)',
                     opacity: currentSection === 1 ? 1 : 0,
-                    transform: `scale(${currentSection === 1 ? 1 : 0.8})`,
-                    transition: 'opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s'
+                    transform: `translateY(${currentSection === 1 ? 0 : 30}px)`,
+                    transition: 'opacity 0.5s ease-out 0.3s, transform 0.5s ease-out 0.3s'
                   }}
                 >
-                  <div className="text-center flex flex-col items-center">
+                  <div className="text-center">
                     <p 
-                      className="text-[10px] uppercase tracking-[0.3em] text-slate-500 mb-3"
+                      className="text-[10px] uppercase tracking-[0.3em] text-white/70 mb-2"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
                       Featured
                     </p>
                     
-                    {/* Vertical GOD OF LIES with distinct font */}
-                    <div className="flex flex-col items-center gap-0.5 my-2">
-                      <span 
-                        className="text-2xl text-slate-900"
-                        style={{ 
-                          fontFamily: 'Playfair Display, Georgia, serif',
-                          fontWeight: 700,
-                          letterSpacing: '0.08em',
-                          lineHeight: 1
-                        }}
-                      >
-                        GOD
-                      </span>
-                      <span 
-                        className="text-base text-slate-600 italic"
-                        style={{ 
-                          fontFamily: 'Playfair Display, Georgia, serif',
-                          fontWeight: 400,
-                          letterSpacing: '0.2em',
-                          lineHeight: 1
-                        }}
-                      >
-                        of
-                      </span>
-                      <span 
-                        className="text-2xl text-slate-900"
-                        style={{ 
-                          fontFamily: 'Playfair Display, Georgia, serif',
-                          fontWeight: 700,
-                          letterSpacing: '0.08em',
-                          lineHeight: 1
-                        }}
-                      >
-                        LIES
-                      </span>
-                    </div>
+                    {/* Horizontal GOD OF LIES for mobile overlay */}
+                    <h2 
+                      className="text-3xl text-white mb-2"
+                      style={{ 
+                        fontFamily: 'Playfair Display, Georgia, serif',
+                        fontWeight: 700,
+                        letterSpacing: '0.1em'
+                      }}
+                    >
+                      GOD <span className="italic font-normal text-xl">of</span> LIES
+                    </h2>
                     
-                    <div className="w-10 h-0.5 bg-red-600 mx-auto my-3" />
+                    <div className="w-16 h-0.5 bg-red-500 mx-auto my-2" />
                     <p 
-                      className="text-[9px] text-slate-600 leading-relaxed mb-2"
+                      className="text-[11px] text-white/80 leading-relaxed mb-1"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
                       A psychological manga about deception and truth
                     </p>
                     <p 
-                      className="text-[8px] text-blue-700 uppercase tracking-[0.15em]"
+                      className="text-[9px] text-blue-300 uppercase tracking-[0.15em]"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
                       Manga • 2026
@@ -775,24 +764,40 @@ const Comics = () => {
               }}
             >
               <div className="w-full h-full relative">
+                {/* Desktop: Show full image positioned so title is below header */}
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies"
-                  className="w-full h-full object-cover"
-                  style={{ objectPosition: 'center 15%' }}
+                  className="w-full h-full object-cover hidden sm:block"
+                  style={{ objectPosition: 'center 25%' }}
                   onLoad={() => setGodOfLiesImageLoaded(true)}
                 />
-                {/* COMING 2026 overlay - fixed to bottom of viewport, movie poster style */}
+                {/* Mobile: Cropped/zoomed to show only the two characters, hiding title */}
+                <img 
+                  src={godOfLiesCover}
+                  alt="God of Lies"
+                  className="w-full h-full object-cover sm:hidden"
+                  style={{ 
+                    objectPosition: '35% 60%',
+                    transform: 'scale(1.3)'
+                  }}
+                  onLoad={() => setGodOfLiesImageLoaded(true)}
+                />
+                {/* COMING 2026 overlay - fixed to bottom of viewport, movie poster style - NO DROP SHADOW */}
                 <div 
                   className="absolute bottom-12 sm:bottom-16 lg:bottom-20 left-0 right-0 flex justify-center items-center gap-4 sm:gap-6 lg:gap-8"
+                  style={{
+                    opacity: isScrollLocked ? 1 : Math.max(0, 1 - scrollY / 150),
+                    pointerEvents: 'none'
+                  }}
                 >
                   <span 
                     className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
                     style={{ 
                       fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
-                      textShadow: '4px 4px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)',
                       letterSpacing: '0.15em',
-                      fontWeight: 900
+                      fontWeight: 900,
+                      transform: isScrollLocked ? 'none' : `translateX(${-scrollY * 2}px)`
                     }}
                   >
                     COMING
@@ -801,9 +806,9 @@ const Comics = () => {
                     className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
                     style={{ 
                       fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
-                      textShadow: '4px 4px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)',
                       letterSpacing: '0.15em',
-                      fontWeight: 900
+                      fontWeight: 900,
+                      transform: isScrollLocked ? 'none' : `translateX(${scrollY * 2}px)`
                     }}
                   >
                     2026
@@ -815,7 +820,7 @@ const Comics = () => {
             {/* Scroll hint - only on title screen */}
             {currentSection === 0 && (
               <div 
-                className="absolute bottom-8 left-0 right-0 flex justify-center text-black/40 text-sm animate-bounce z-40"
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex justify-center text-black/40 text-sm animate-bounce z-40"
               >
                 <div className="flex flex-col items-center gap-2">
                   <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
@@ -828,60 +833,13 @@ const Comics = () => {
           </div>
         )}
 
-        {/* NORMAL SCROLLABLE CONTENT - Seamless continuation from pinned state */}
-        {!isScrollLocked && (
-          <>
-            {/* Invisible spacer to maintain scroll position - God of Lies is already visible via fixed overlay during transition */}
-            <div className="w-full h-screen relative">
-              <img 
-                src={godOfLiesCover}
-                alt="God of Lies"
-                className="w-full h-full object-cover"
-                style={{ objectPosition: 'center 15%' }}
-              />
-              {/* COMING 2026 text - slides apart when scrolling */}
-              <div 
-                className="fixed bottom-12 sm:bottom-16 lg:bottom-20 left-0 right-0 flex justify-center items-center gap-4 sm:gap-6 lg:gap-8 pointer-events-none z-20"
-                style={{ 
-                  opacity: Math.max(0, 1 - scrollY / 150)
-                }}
-              >
-                <span 
-                  className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
-                  style={{ 
-                    fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
-                    textShadow: '4px 4px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)',
-                    letterSpacing: '0.15em',
-                    fontWeight: 900,
-                    transform: `translateX(${-scrollY * 2}px)`
-                  }}
-                >
-                  COMING
-                </span>
-                <span 
-                  className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
-                  style={{ 
-                    fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
-                    textShadow: '4px 4px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)',
-                    letterSpacing: '0.15em',
-                    fontWeight: 900,
-                    transform: `translateX(${scrollY * 2}px)`
-                  }}
-                >
-                  2026
-                </span>
-              </div>
-            </div>
-          </>
-        )}
-        
+        {/* SCROLLABLE CONTENT - Starts with Pendragon (God of Lies cover is handled by fixed overlay) */}
         <div 
           ref={scrollableContentRef}
           className={isScrollLocked ? 'invisible' : 'visible'}
+          style={{ marginTop: isScrollLocked ? 0 : '100vh' }}
         >
           
-          {/* GOD OF LIES Text Section - MOBILE - REMOVED bus queue image */}
-
           {/* SURNAME PENDRAGON - Slides up from bottom with minimal white gap */}
           <section 
             ref={pendragonSectionRef as React.RefObject<HTMLElement>}
@@ -946,30 +904,19 @@ const Comics = () => {
               </p>
             </div>
             
-            {/* Mobile caption - tap to toggle */}
+            {/* Mobile caption - tap to toggle, NO chevron, NO auto-expand after manual toggle */}
             <div 
               ref={mobilePendragonRef}
               className={`sm:hidden w-full bg-black/90 overflow-hidden transition-all duration-500 ease-out cursor-pointer ${
                 mobilePendragonExpanded ? 'max-h-96 p-4 pb-6' : 'max-h-12 p-4 py-3'
               }`}
-              onClick={() => setMobilePendragonExpanded(prev => !prev)}
+              onClick={handleMobilePendragonToggle}
             >
               <h4 
-                className="text-white/90 text-xs uppercase tracking-[0.2em] mb-2 flex items-center justify-between"
+                className="text-white/90 text-xs uppercase tracking-[0.2em] mb-2"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
                 <span>Screenplay Adaptation</span>
-                <svg 
-                  width="16" 
-                  height="16" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2"
-                  className={`transition-transform duration-300 ${mobilePendragonExpanded ? 'rotate-180' : ''}`}
-                >
-                  <path d="M6 9l6 6 6-6"/>
-                </svg>
               </h4>
               <div className={`transition-opacity duration-500 ${mobilePendragonExpanded ? 'opacity-100' : 'opacity-0'}`}>
                 <h3 
