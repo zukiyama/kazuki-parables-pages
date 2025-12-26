@@ -791,12 +791,69 @@ const Comics = () => {
           </div>
         )}
 
-        {/* SCROLLABLE CONTENT - Pinned Pendragon stays visible, content scrolls from below viewport */}
+        {/* SCROLLABLE CONTENT - Starts with scrollable Pendragon that overlays the pinned one */}
         <div 
           ref={scrollableContentRef}
-          style={{ marginTop: '100vh' }} // Content starts below viewport where Pendragon is shown
+          style={{ marginTop: '64px' }} // Align with header bottom, same as pinned Pendragon
         >
-          {/* Stories Waiting to be Told - First scrollable element, appears as you scroll down from Pendragon */}
+          {/* Scrollable Pendragon - perfectly overlays pinned Pendragon, scrolls away on first scroll */}
+          <section 
+            className="relative w-full overflow-hidden cursor-pointer"
+            style={{ height: 'calc(100vh - 64px)' }}
+          >
+            {/* Desktop image */}
+            <img 
+              src={surnamePendragonBanner}
+              alt="Surname Pendragon"
+              className="hidden sm:block absolute inset-0 w-full h-full object-cover"
+              style={{ objectPosition: 'center 20%' }}
+            />
+            {/* Mobile image */}
+            <img 
+              src={surnamePendragonMobile}
+              alt="Surname Pendragon"
+              className="sm:hidden absolute inset-0 w-full h-full object-cover"
+              style={{ objectPosition: 'center 30%' }}
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            {/* Caption */}
+            <div 
+              className="absolute bottom-12 left-8 sm:bottom-16 sm:left-12 max-w-sm transition-all duration-500"
+              style={{
+                opacity: pendragonCaptionVisible ? 1 : 0,
+                transform: pendragonCaptionVisible ? 'translateX(0)' : 'translateX(-20px)',
+                pointerEvents: pendragonCaptionVisible ? 'auto' : 'none'
+              }}
+            >
+              <h4 
+                className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-2 sm:mb-3"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Screenplay Adaptation
+              </h4>
+              <h3 
+                className="text-white text-lg sm:text-2xl lg:text-3xl font-light mb-2 sm:mb-3 tracking-wide"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                Surname Pendragon
+              </h3>
+              <p 
+                className="text-white/70 text-xs sm:text-sm sm:text-base leading-relaxed mb-3 sm:mb-4"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                A sweeping family saga spanning three generations, where legacy is both burden and blessing.
+              </p>
+              <p 
+                className="text-white/50 text-xs uppercase tracking-widest"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Feature Film • Drama • In Development
+              </p>
+            </div>
+          </section>
+
+          {/* Stories Waiting to be Told - appears as Pendragon scrolls away */}
           <section ref={storiesSectionRef as React.RefObject<HTMLElement>} className="text-center py-16 sm:py-24 bg-white">
             <ScrollScale 
               initialScale={1.3} 
