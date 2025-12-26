@@ -627,7 +627,7 @@ const Comics = () => {
               </div>
             </section>
 
-            {/* SECTION 3: GOD OF LIES COVER - Large cover image */}
+            {/* SECTION 3: GOD OF LIES COVER - Large cover image with COMING 2026 */}
             <section 
               className="absolute inset-0 flex items-center justify-center"
               style={{ 
@@ -637,13 +637,23 @@ const Comics = () => {
                 paddingTop: '64px'
               }}
             >
-              <div className="w-full h-full flex items-center justify-center px-4 sm:px-8 lg:px-16">
+              <div className="w-full h-full flex flex-col items-center justify-center px-4 sm:px-8 lg:px-16">
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies"
-                  className="max-w-full max-h-[calc(100vh-120px)] object-contain drop-shadow-2xl"
+                  className="max-w-full max-h-[calc(100vh-180px)] object-contain drop-shadow-2xl"
                   onLoad={() => setGodOfLiesImageLoaded(true)}
                 />
+                <p 
+                  className="text-white text-2xl sm:text-3xl lg:text-4xl uppercase tracking-[0.2em] mt-6"
+                  style={{ 
+                    fontFamily: 'Bangers, cursive',
+                    textShadow: '2px 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)',
+                    letterSpacing: '0.15em'
+                  }}
+                >
+                  COMING 2026
+                </p>
               </div>
             </section>
 
@@ -664,12 +674,30 @@ const Comics = () => {
         )}
 
         {/* NORMAL SCROLLABLE CONTENT - Shown after animation completes */}
+        {/* God of Lies cover stays visible at top and scrolls away naturally */}
+        {!isScrollLocked && (
+          <div className="w-full flex flex-col items-center justify-center px-4 sm:px-8 lg:px-16 py-8 bg-white" style={{ minHeight: '80vh' }}>
+            <img 
+              src={godOfLiesCover}
+              alt="God of Lies"
+              className="max-w-full max-h-[calc(100vh-180px)] object-contain drop-shadow-2xl"
+            />
+            <p 
+              className="text-slate-900 text-2xl sm:text-3xl lg:text-4xl uppercase tracking-[0.2em] mt-6"
+              style={{ 
+                fontFamily: 'Bangers, cursive',
+                letterSpacing: '0.15em'
+              }}
+            >
+              COMING 2026
+            </p>
+          </div>
+        )}
+        
         <div 
           ref={scrollableContentRef}
           className={isScrollLocked ? 'invisible' : 'visible'}
         >
-          {/* Spacer to account for the fixed animation sections we just saw */}
-          {!isScrollLocked && <div className="h-0" />}
           
           {/* GOD OF LIES Text Section - MOBILE */}
           {isMobile && (
