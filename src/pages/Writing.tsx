@@ -9,6 +9,7 @@ import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
 import { BookshelfMenu } from "@/components/BookshelfMenu";
 import { FloatingQuote } from "@/components/FloatingQuote";
 import { MagazineBlurb } from "@/components/MagazineBlurb";
+import { TypewriterBlurb } from "@/components/TypewriterBlurb";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
@@ -656,16 +657,42 @@ const Writing = () => {
                       Book One of The Parable Trilogy
                     </span>
                   </div>
-                  <MagazineBlurb
-                    title="KAIJU"
-                    paragraphs={[
-                      "When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.",
-                      "For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.",
-                      "Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined."
-                    ]}
-                    isVisible={visibleSections.has('kaiju')}
-                    isWidescreen={isWidescreen}
-                  />
+                  <h2 className={`font-serif font-bold mb-4 text-white tracking-wide drop-shadow-lg ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
+                    KAIJU
+                  </h2>
+                  {/* Film reel / vintage cinema frame */}
+                  <div className="relative">
+                    <div className={`relative ${isWidescreen ? 'p-5' : 'p-6'}`} style={{
+                      background: 'linear-gradient(180deg, rgba(20, 18, 15, 0.92) 0%, rgba(35, 30, 25, 0.95) 100%)',
+                      boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255, 215, 0, 0.1)',
+                      border: '2px solid rgba(255, 215, 0, 0.25)',
+                      borderRadius: '4px'
+                    }}>
+                      {/* Film sprocket holes decoration */}
+                      <div className="absolute left-1 top-0 bottom-0 flex flex-col justify-around py-4">
+                        {[...Array(5)].map((_, i) => (
+                          <div key={i} className="w-2 h-3 bg-black/60 rounded-sm border border-yellow-900/30" />
+                        ))}
+                      </div>
+                      <div className="absolute right-1 top-0 bottom-0 flex flex-col justify-around py-4">
+                        {[...Array(5)].map((_, i) => (
+                          <div key={i} className="w-2 h-3 bg-black/60 rounded-sm border border-yellow-900/30" />
+                        ))}
+                      </div>
+                      
+                      <div className="pl-4 pr-4">
+                        <p className={`font-serif leading-relaxed text-amber-100/90 mb-4 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.85' }}>
+                          When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
+                        </p>
+                        <p className={`font-serif leading-relaxed text-amber-100/90 mb-4 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.85' }}>
+                          For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
+                        </p>
+                        <p className={`font-serif leading-relaxed text-amber-100/90 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.85' }}>
+                          Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <p className={`font-serif leading-relaxed text-white italic text-center mt-10 mb-16 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
@@ -890,20 +917,36 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <MagazineBlurb
-                    title="STATES OF MOTION"
-                    paragraphs={[
-                      "\"…the city was not the arrangement of many things but the shifting posture of one…\"",
-                      "There is an America between Americas, an idea that every now and then is touched in the course of one life or another before fading, leaving behind a trace of itself and a sense of its own unreality on that which touched it.",
-                      "A physicist on his way to a conference, carrying in his head a theory too precious to document; as enemy agents close in, is this paranoia, or is paranoia how they operate?",
-                      "A pianist haunted by a melody from childhood, a song he has been chasing his entire life.",
-                      "A man unable to distinguish truth from fiction, whose words are so dangerous they can alter reality itself.",
-                      "A secret cabal of plumbers employed in an age old scheme that has evolved in the wastes beneath the cities they connect."
-                    ]}
-                    tagline="A novel of multitudes and convergences; a sequel to a story that doesn't exist; a portrait of time and place; all these and more describe a nation seen only at its margins."
-                    isVisible={visibleSections.has('states-of-motion')}
-                    isWidescreen={isWidescreen}
-                  />
+                  <h2 className={`font-serif font-bold mb-4 text-white tracking-wide drop-shadow-lg ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
+                    STATES OF MOTION
+                  </h2>
+                  {/* Vintage American letterpress style */}
+                  <div className="relative">
+                    <div className={`relative ${isWidescreen ? 'p-5' : 'p-6'}`} style={{
+                      background: 'linear-gradient(180deg, rgba(245, 240, 230, 0.95) 0%, rgba(235, 225, 210, 0.98) 100%)',
+                      boxShadow: '0 6px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.8)',
+                      border: '1px solid rgba(120, 100, 80, 0.3)',
+                    }}>
+                      <p className={`font-serif leading-relaxed text-stone-700 mb-4 italic ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.85' }}>
+                        "…the city was not the arrangement of many things but the shifting posture of one…"
+                      </p>
+                      <p className={`font-serif leading-relaxed text-stone-700 mb-4 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.85' }}>
+                        A physicist on his way to a conference, carrying in his head a theory too precious to document; as enemy agents close in, is this paranoia, or is paranoia how they operate?
+                      </p>
+                      <p className={`font-serif leading-relaxed text-stone-700 mb-4 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.85' }}>
+                        A pianist haunted by a melody from childhood, a song he has been chasing his entire life.
+                      </p>
+                      <p className={`font-serif leading-relaxed text-stone-700 mb-4 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.85' }}>
+                        A man unable to distinguish truth from fiction, whose words are so dangerous they can alter reality itself.
+                      </p>
+                      <p className={`font-serif leading-relaxed text-stone-700 mb-4 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.85' }}>
+                        A secret cabal of plumbers employed in an age old scheme that has evolved in the wastes beneath the cities they connect.
+                      </p>
+                      <p className={`font-serif leading-relaxed text-stone-600 italic border-t border-stone-300 pt-4 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.85' }}>
+                        A novel of multitudes and convergences; a sequel to a story that doesn't exist; a portrait of time and place; all these and more describe a nation seen only at its margins.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -991,7 +1034,7 @@ const Writing = () => {
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <MagazineBlurb
+                  <TypewriterBlurb
                     title="VICE VERSA"
                     paragraphs={[
                       "A noir mystery set in the shadowy streets of a retro-futuristic metropolis. When detective Marcus Kane investigates a series of impossible crimes, he discovers that reality itself is not what it seems. In a world where identities can be stolen and memories can be traded, nothing is as it appears."
