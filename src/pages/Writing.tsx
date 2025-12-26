@@ -846,7 +846,7 @@ const Writing = () => {
                   <MagazineBlurb
                     title="AMYA"
                     paragraphs={[
-                      "Set in Nairobi, Kenya. A linguist specialising in rare languages is seconded, reluctantly, to a village where there have been reports of an ancient undiscovered language still being spoken. The village, existing on the fringes of the forest, brings back memories of a childhood he has tried to bury in his urban adult life. While there, he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive, awakening something that has lain silent in him for longer than he can remember.",
+                      "Set in Nairobi, Kenya. A linguist specialising in rare languages is seconded, reluctantly, to a village where there have been reports of an ancient undiscovered language still being spoken. Existing on the fringes of the forest, the village brings back memories of a childhood he has tried to bury in his urban adult life. While there, he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive, awakening something that has lain silent in him for longer than he can remember.",
                       "Memories of the past interweave with the present as in attempting to help the young girl communicate, he discovers that he may have more to learn from her than she does from him."
                     ]}
                     isVisible={visibleSections.has('oba')}
