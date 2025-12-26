@@ -657,6 +657,7 @@ const Comics = () => {
                   src={godOfLiesCover}
                   alt="God of Lies"
                   className="w-full h-full object-cover"
+                  style={{ objectPosition: 'center 15%' }}
                   onLoad={() => setGodOfLiesImageLoaded(true)}
                 />
                 {/* COMING 2026 overlay - fixed to bottom of viewport, movie poster style */}
@@ -705,47 +706,51 @@ const Comics = () => {
           </div>
         )}
 
-        {/* NORMAL SCROLLABLE CONTENT - God of Lies cover scrolls away naturally */}
+        {/* NORMAL SCROLLABLE CONTENT - Seamless continuation from pinned state */}
         {!isScrollLocked && (
-          <div className="w-full relative bg-white" style={{ minHeight: '100vh' }}>
-            <img 
-              src={godOfLiesCover}
-              alt="God of Lies"
-              className="w-full h-screen object-cover"
-            />
-            {/* COMING 2026 text - slides apart when scrolling */}
-            <div 
-              className="fixed bottom-12 sm:bottom-16 lg:bottom-20 left-0 right-0 flex justify-center items-center gap-4 sm:gap-6 lg:gap-8 pointer-events-none"
-              style={{ 
-                opacity: Math.max(0, 1 - scrollY / 150)
-              }}
-            >
-              <span 
-                className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
+          <>
+            {/* Invisible spacer to maintain scroll position - God of Lies is already visible via fixed overlay during transition */}
+            <div className="w-full h-screen relative">
+              <img 
+                src={godOfLiesCover}
+                alt="God of Lies"
+                className="w-full h-full object-cover"
+                style={{ objectPosition: 'center 15%' }}
+              />
+              {/* COMING 2026 text - slides apart when scrolling */}
+              <div 
+                className="fixed bottom-12 sm:bottom-16 lg:bottom-20 left-0 right-0 flex justify-center items-center gap-4 sm:gap-6 lg:gap-8 pointer-events-none z-20"
                 style={{ 
-                  fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
-                  textShadow: '4px 4px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)',
-                  letterSpacing: '0.15em',
-                  fontWeight: 900,
-                  transform: `translateX(${-scrollY * 2}px)`
+                  opacity: Math.max(0, 1 - scrollY / 150)
                 }}
               >
-                COMING
-              </span>
-              <span 
-                className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
-                style={{ 
-                  fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
-                  textShadow: '4px 4px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)',
-                  letterSpacing: '0.15em',
-                  fontWeight: 900,
-                  transform: `translateX(${scrollY * 2}px)`
-                }}
-              >
-                2026
-              </span>
+                <span 
+                  className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
+                  style={{ 
+                    fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
+                    textShadow: '4px 4px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)',
+                    letterSpacing: '0.15em',
+                    fontWeight: 900,
+                    transform: `translateX(${-scrollY * 2}px)`
+                  }}
+                >
+                  COMING
+                </span>
+                <span 
+                  className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
+                  style={{ 
+                    fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
+                    textShadow: '4px 4px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)',
+                    letterSpacing: '0.15em',
+                    fontWeight: 900,
+                    transform: `translateX(${scrollY * 2}px)`
+                  }}
+                >
+                  2026
+                </span>
+              </div>
             </div>
-          </div>
+          </>
         )}
         
         <div 
@@ -795,20 +800,17 @@ const Comics = () => {
             </section>
           )}
 
-          {/* SURNAME PENDRAGON */}
+          {/* SURNAME PENDRAGON - Slides up from bottom with minimal white gap */}
           <section 
             ref={pendragonSectionRef as React.RefObject<HTMLElement>}
-            className={`w-full relative transition-all duration-700 ease-out ${
-              (isMobile || isNarrowPortrait) 
-                ? (godOfLiesImageLoaded ? 'opacity-100 translate-y-0' : 'opacity-0')
-                : (showPendragon ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16')
-            }`}
+            className="w-full relative"
+            style={{ marginTop: '-2px' }}
           >
             <img 
               src={surnamePendragonBanner}
               alt="Surname Pendragon"
               className="w-full"
-              loading={(isMobile || isNarrowPortrait) ? 'lazy' : 'eager'}
+              loading="eager"
             />
             
             {/* Slide-in caption panel from left */}
