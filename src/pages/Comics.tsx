@@ -469,7 +469,8 @@ const Comics = () => {
                 transition: 'opacity 0.5s ease-out'
               }}
             >
-              <div className="w-full h-full flex items-center px-4 sm:px-6 lg:px-8">
+              {/* DESKTOP VIGNETTES LAYOUT */}
+              <div className="w-full h-full hidden sm:flex items-center px-4 sm:px-6 lg:px-8">
                 
                 {/* LEFT SIDE - Many Faces character collage (full height) */}
                 <div 
@@ -487,7 +488,7 @@ const Comics = () => {
                   />
                 </div>
                 
-                {/* CENTER - Summary text */}
+                {/* CENTER - Summary text with distinct vertical GOD OF LIES title */}
                 <div 
                   className="w-[14%] h-full flex items-center justify-center px-2"
                   style={{
@@ -496,20 +497,52 @@ const Comics = () => {
                     transition: 'opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s'
                   }}
                 >
-                  <div className="text-center">
+                  <div className="text-center flex flex-col items-center justify-center h-full py-8">
                     <p 
-                      className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-slate-500 mb-2"
+                      className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-slate-500 mb-4"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
                       Featured
                     </p>
-                    <h2 
-                      className="text-lg sm:text-2xl lg:text-4xl mb-2 text-slate-900"
-                      style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.04em' }}
-                    >
-                      GOD OF<br />LIES
-                    </h2>
-                    <div className="w-8 sm:w-12 h-0.5 sm:h-1 bg-red-600 mx-auto mb-2" />
+                    
+                    {/* Vertical GOD OF LIES with distinct font */}
+                    <div className="flex flex-col items-center gap-1 my-2">
+                      <span 
+                        className="text-2xl sm:text-3xl lg:text-5xl text-slate-900"
+                        style={{ 
+                          fontFamily: 'Playfair Display, Georgia, serif',
+                          fontWeight: 700,
+                          letterSpacing: '0.08em',
+                          lineHeight: 1
+                        }}
+                      >
+                        GOD
+                      </span>
+                      <span 
+                        className="text-base sm:text-lg lg:text-2xl text-slate-600 italic"
+                        style={{ 
+                          fontFamily: 'Playfair Display, Georgia, serif',
+                          fontWeight: 400,
+                          letterSpacing: '0.2em',
+                          lineHeight: 1
+                        }}
+                      >
+                        of
+                      </span>
+                      <span 
+                        className="text-2xl sm:text-3xl lg:text-5xl text-slate-900"
+                        style={{ 
+                          fontFamily: 'Playfair Display, Georgia, serif',
+                          fontWeight: 700,
+                          letterSpacing: '0.08em',
+                          lineHeight: 1
+                        }}
+                      >
+                        LIES
+                      </span>
+                    </div>
+                    
+                    <div className="w-8 sm:w-12 h-0.5 sm:h-1 bg-red-600 mx-auto my-3" />
                     <p 
                       className="text-[9px] sm:text-[11px] text-slate-600 leading-relaxed mb-2"
                       style={{ fontFamily: 'Georgia, serif' }}
@@ -550,6 +583,95 @@ const Comics = () => {
                       className="w-auto h-full object-contain drop-shadow-2xl"
                       style={{ maxHeight: '42vh' }}
                     />
+                  </div>
+                </div>
+              </div>
+              
+              {/* MOBILE VIGNETTES LAYOUT - Only Many Faces image with text on right */}
+              <div className="w-full h-full flex sm:hidden items-center px-4">
+                {/* LEFT - Many Faces image larger */}
+                <div 
+                  className="w-[55%] h-full flex items-center justify-center py-6"
+                  style={{
+                    transform: `translateX(${currentSection >= 1 ? (currentSection >= 2 ? -150 * sectionProgress : 0) : -100}%)`,
+                    transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                >
+                  <img 
+                    src={vignetteManyFaces}
+                    alt="The many faces - God of Lies"
+                    className="h-full w-auto object-contain drop-shadow-2xl"
+                    style={{ maxHeight: 'calc(100vh - 140px)' }}
+                  />
+                </div>
+                
+                {/* RIGHT - Text content with vertical GOD OF LIES */}
+                <div 
+                  className="w-[45%] h-full flex items-center justify-center px-2"
+                  style={{
+                    opacity: currentSection === 1 ? 1 : 0,
+                    transform: `scale(${currentSection === 1 ? 1 : 0.8})`,
+                    transition: 'opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s'
+                  }}
+                >
+                  <div className="text-center flex flex-col items-center">
+                    <p 
+                      className="text-[10px] uppercase tracking-[0.3em] text-slate-500 mb-3"
+                      style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                    >
+                      Featured
+                    </p>
+                    
+                    {/* Vertical GOD OF LIES with distinct font */}
+                    <div className="flex flex-col items-center gap-0.5 my-2">
+                      <span 
+                        className="text-2xl text-slate-900"
+                        style={{ 
+                          fontFamily: 'Playfair Display, Georgia, serif',
+                          fontWeight: 700,
+                          letterSpacing: '0.08em',
+                          lineHeight: 1
+                        }}
+                      >
+                        GOD
+                      </span>
+                      <span 
+                        className="text-base text-slate-600 italic"
+                        style={{ 
+                          fontFamily: 'Playfair Display, Georgia, serif',
+                          fontWeight: 400,
+                          letterSpacing: '0.2em',
+                          lineHeight: 1
+                        }}
+                      >
+                        of
+                      </span>
+                      <span 
+                        className="text-2xl text-slate-900"
+                        style={{ 
+                          fontFamily: 'Playfair Display, Georgia, serif',
+                          fontWeight: 700,
+                          letterSpacing: '0.08em',
+                          lineHeight: 1
+                        }}
+                      >
+                        LIES
+                      </span>
+                    </div>
+                    
+                    <div className="w-10 h-0.5 bg-red-600 mx-auto my-3" />
+                    <p 
+                      className="text-[9px] text-slate-600 leading-relaxed mb-2"
+                      style={{ fontFamily: 'Georgia, serif' }}
+                    >
+                      A psychological manga about deception and truth
+                    </p>
+                    <p 
+                      className="text-[8px] text-blue-700 uppercase tracking-[0.15em]"
+                      style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                    >
+                      Manga • 2026
+                    </p>
                   </div>
                 </div>
               </div>
@@ -693,7 +815,7 @@ const Comics = () => {
             {/* Scroll hint - only on title screen */}
             {currentSection === 0 && (
               <div 
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 text-black/40 text-sm animate-bounce z-40"
+                className="absolute bottom-8 left-0 right-0 flex justify-center text-black/40 text-sm animate-bounce z-40"
               >
                 <div className="flex flex-col items-center gap-2">
                   <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
@@ -758,47 +880,7 @@ const Comics = () => {
           className={isScrollLocked ? 'invisible' : 'visible'}
         >
           
-          {/* GOD OF LIES Text Section - MOBILE */}
-          {isMobile && (
-            <section className="w-full relative">
-              <div className="flex flex-col">
-                <div className="w-full">
-                  <img 
-                    src={godOfLiesBusStop}
-                    alt="God of Lies - Bus Stop Scene"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                
-                <div 
-                  className={`w-full bg-amber-50/95 transition-all duration-700 ease-out overflow-hidden ${
-                    showGodOfLiesDescription 
-                      ? 'max-h-96 opacity-100' 
-                      : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  <div className={`p-4 transition-transform duration-700 ease-out ${
-                    showGodOfLiesDescription ? 'translate-y-0' : '-translate-y-full'
-                  }`}>
-                    <h3 
-                      className="text-2xl font-bold text-slate-900 mb-4"
-                      style={{ fontFamily: 'Bangers, cursive' }}
-                    >
-                      GOD OF LIES
-                    </h3>
-                    <p 
-                      className="text-slate-700 text-sm leading-relaxed mb-2"
-                      style={{ fontFamily: 'Georgia, serif' }}
-                    >
-                      In a world where every truth bends to the will of one man, reality itself becomes a question. 
-                      Takeshi Mori has spent decades mastering the art of deception—but when a child sees through 
-                      his lies for the first time, everything begins to unravel.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-          )}
+          {/* GOD OF LIES Text Section - MOBILE - REMOVED bus queue image */}
 
           {/* SURNAME PENDRAGON - Slides up from bottom with minimal white gap */}
           <section 
@@ -806,12 +888,24 @@ const Comics = () => {
             className="w-full relative"
             style={{ marginTop: '-2px' }}
           >
+            {/* Desktop image - normal */}
             <img 
               src={surnamePendragonBanner}
               alt="Surname Pendragon"
-              className="w-full"
+              className="w-full hidden sm:block"
               loading="eager"
             />
+            
+            {/* Mobile image - zoomed/cropped to fill more vertical space */}
+            <div className="sm:hidden w-full overflow-hidden" style={{ height: '50vh' }}>
+              <img 
+                src={surnamePendragonBanner}
+                alt="Surname Pendragon"
+                className="w-full h-full object-cover"
+                style={{ objectPosition: 'center center' }}
+                loading="eager"
+              />
+            </div>
             
             {/* Slide-in caption panel from left */}
             <div 
@@ -852,18 +946,30 @@ const Comics = () => {
               </p>
             </div>
             
-            {/* Mobile caption */}
+            {/* Mobile caption - tap to toggle */}
             <div 
               ref={mobilePendragonRef}
-              className={`sm:hidden w-full bg-black/90 overflow-hidden transition-all duration-500 ease-out ${
+              className={`sm:hidden w-full bg-black/90 overflow-hidden transition-all duration-500 ease-out cursor-pointer ${
                 mobilePendragonExpanded ? 'max-h-96 p-4 pb-6' : 'max-h-12 p-4 py-3'
               }`}
+              onClick={() => setMobilePendragonExpanded(prev => !prev)}
             >
               <h4 
-                className="text-white/90 text-xs uppercase tracking-[0.2em] mb-2"
+                className="text-white/90 text-xs uppercase tracking-[0.2em] mb-2 flex items-center justify-between"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
-                Screenplay Adaptation
+                <span>Screenplay Adaptation</span>
+                <svg 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2"
+                  className={`transition-transform duration-300 ${mobilePendragonExpanded ? 'rotate-180' : ''}`}
+                >
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
               </h4>
               <div className={`transition-opacity duration-500 ${mobilePendragonExpanded ? 'opacity-100' : 'opacity-0'}`}>
                 <h3 
