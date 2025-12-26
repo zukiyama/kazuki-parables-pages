@@ -33,8 +33,12 @@ const Comics = () => {
   const [godOfLiesImageLoaded, setGodOfLiesImageLoaded] = useState(false);
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false);
   
+  // Pendragon caption toggle state
+  const [pendragonCaptionVisible, setPendragonCaptionVisible] = useState(true);
+  
   // SCROLL-HIJACKING STATE - Discrete sections with snap behavior
-  // Section 0 = Title, 1 = Vignettes, 2 = Cream, 3 = God of Lies cover, 4 = Surname Pendragon
+  // Section 0 = Title, 1 = Vignettes, 2 = Cream (last dissolve section)
+  // After section 2, normal scrolling begins with God of Lies and Pendragon sliding up
   const [currentSection, setCurrentSection] = useState(0);
   const [sectionProgress, setSectionProgress] = useState(0); // 0-1 transition progress within section
   const [isScrollLocked, setIsScrollLocked] = useState(true);
@@ -45,10 +49,7 @@ const Comics = () => {
   const row2Ref = useRef<HTMLDivElement>(null);
   const storiesSectionRef = useRef<HTMLElement>(null);
 
-  const maxPinnedSection = 3; // After section 3 (God of Lies cover), normal scrolling begins
-  
-  // Track scroll position for COMING 2026 animation
-  const [scrollY, setScrollY] = useState(0);
+  const maxPinnedSection = 2; // After section 2 (Cream), normal scrolling begins with slide-up reveals
 
   // SCROLL-HIJACKING: Intercept wheel/touch events and snap between sections
   useEffect(() => {
@@ -71,12 +72,7 @@ const Comics = () => {
         if (newSection > maxPinnedSection) {
           setIsScrollLocked(false);
           setSectionProgress(1);
-          return maxPinnedSection; // Stay at section 4 visually
-        } else if (prev === maxPinnedSection && newSection > maxPinnedSection) {
-          // Already at max, trying to go further - just unlock
-          setIsScrollLocked(false);
-          setSectionProgress(1);
-          return maxPinnedSection;
+          return maxPinnedSection; // Stay at section 2 visually
         }
         
         return newSection;
@@ -118,8 +114,16 @@ const Comics = () => {
     };
     
     const handleWheel = (e: WheelEvent) => {
-      // If in normal scroll mode - allow normal scrolling, no cycling back to pinned
+      // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
+        // Check if user scrolled to top and wants to go up - re-lock for dissolve transitions
+        if (window.scrollY <= 0 && e.deltaY < 0) {
+          e.preventDefault();
+          setIsScrollLocked(true);
+          setCurrentSection(maxPinnedSection);
+          setSectionProgress(1);
+          triggerSectionChange('prev');
+        }
         return;
       }
       
@@ -154,8 +158,21 @@ const Comics = () => {
     };
     
     const handleTouchMove = (e: TouchEvent) => {
-      // If in normal scroll mode - allow normal scrolling, no cycling back to pinned
+      // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
+        // Check if user scrolled to top and wants to go up - re-lock for dissolve transitions
+        if (window.scrollY <= 0) {
+          const touchY = e.touches[0].clientY;
+          const delta = touchStartY - touchY;
+          if (delta < -60) {
+            e.preventDefault();
+            setIsScrollLocked(true);
+            setCurrentSection(maxPinnedSection);
+            setSectionProgress(1);
+            triggerSectionChange('prev');
+            touchStartY = touchY;
+          }
+        }
         return;
       }
       
@@ -210,26 +227,6 @@ const Comics = () => {
       document.body.style.top = '';
     };
   }, [isScrollLocked]);
-
-  // Handle normal scroll events (after animation is done)
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isScrollLocked]);
-
-  // Get dynamic header height
-  const getHeaderBottom = useCallback(() => {
-    const header = document.querySelector('header.fixed, nav.fixed, [data-header]') as HTMLElement;
-    if (header) {
-      return header.getBoundingClientRect().bottom;
-    }
-    return 64;
-  }, []);
 
   // Force scroll to top on page load
   useEffect(() => {
@@ -343,7 +340,7 @@ const Comics = () => {
 
 
   // ANIMATION CALCULATIONS based on discrete sections with smooth transitions
-  // Section 0 = Title, 1 = Vignettes, 2 = Cream, 3 = God of Lies cover, 4 = Surname Pendragon reveal
+  // Section 0 = Title, 1 = Vignettes, 2 = Cream (last dissolve section)
   
   // Title screen: visible on section 0
   const titleVisible = currentSection === 0;
@@ -351,19 +348,11 @@ const Comics = () => {
   
   // Vignettes: visible on section 1
   const vignetteVisible = currentSection === 1 || (currentSection === 2 && sectionProgress < 1);
-  const vignetteSlideIn = currentSection >= 1 ? 1 : 0;
-  const vignetteSlideOut = currentSection >= 2 ? sectionProgress : 0;
   const vignetteOpacity = currentSection === 1 ? (sectionProgress) : (currentSection === 2 ? 1 - sectionProgress : 0);
   
-  // Cream section: visible on section 2
-  const creamVisible = currentSection === 2 || (currentSection === 3 && sectionProgress < 1);
-  const creamSlideIn = currentSection >= 2 ? sectionProgress : 0;
-  const creamSlideOut = currentSection >= 3 ? sectionProgress : 0;
-  const creamOpacity = currentSection === 2 ? sectionProgress : (currentSection === 3 ? 1 - sectionProgress : 0);
-  
-  // God of Lies cover: visible on section 3 (final pinned section)
-  const godCoverVisible = currentSection === 3;
-  const godCoverOpacity = currentSection === 3 ? sectionProgress : 0;
+  // Cream section: visible on section 2 (and stays visible when scroll unlocks)
+  const creamVisible = currentSection === 2;
+  const creamOpacity = currentSection === 2 ? sectionProgress : 0;
 
   return (
     <div className={`min-h-screen bg-white overflow-x-hidden transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
@@ -418,6 +407,16 @@ const Comics = () => {
                 >
                   Original Stories in Sequential Art & Screenplay
                 </p>
+              </div>
+              
+              {/* Scroll hint - centrally aligned */}
+              <div 
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-black/40 animate-bounce"
+              >
+                <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
               </div>
             </section>
 
@@ -614,7 +613,7 @@ const Comics = () => {
               </div>
             </section>
 
-            {/* SECTION 2: CREAM SCREEN - Street scene with description */}
+            {/* SECTION 2: CREAM SCREEN - Street scene with description (LAST DISSOLVE SECTION) */}
             <section 
               className="absolute inset-0"
               style={{ 
@@ -700,100 +699,88 @@ const Comics = () => {
                   </div>
                 </div>
               </div>
-            </section>
-
-            {/* SECTION 3: GOD OF LIES COVER - Large cover image fills screen */}
-            <section 
-              className="absolute inset-0"
-              style={{ 
-                opacity: godCoverOpacity,
-                pointerEvents: godCoverVisible ? 'auto' : 'none',
-                transition: 'opacity 0.5s ease-out'
-              }}
-            >
-              <div className="w-full h-full relative">
-                {/* Desktop: Show full image positioned so title is below header */}
-                <img 
-                  src={godOfLiesCover}
-                  alt="God of Lies"
-                  className="w-full h-full object-cover hidden sm:block"
-                  style={{ objectPosition: 'center 25%' }}
-                  onLoad={() => setGodOfLiesImageLoaded(true)}
-                />
-                {/* Mobile: Image fills screen horizontally with space at bottom for Coming 2026 */}
-                <div className="sm:hidden w-full h-full flex flex-col">
-                  <div className="flex-1 w-full overflow-hidden">
-                    <img 
-                      src={godOfLiesCover}
-                      alt="God of Lies"
-                      className="w-full h-full object-cover"
-                      style={{ objectPosition: 'center 30%' }}
-                      onLoad={() => setGodOfLiesImageLoaded(true)}
-                    />
-                  </div>
-                </div>
-                {/* COMING 2026 overlay - NO DROP SHADOW */}
-                <div 
-                  className="absolute bottom-24 sm:bottom-16 lg:bottom-20 left-0 right-0 flex justify-center items-center gap-4 sm:gap-6 lg:gap-8"
-                  style={{ pointerEvents: 'none' }}
-                >
-                  <span 
-                    className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
-                    style={{ 
-                      fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
-                      letterSpacing: '0.15em',
-                      fontWeight: 900
-                    }}
-                  >
-                    COMING
-                  </span>
-                  <span 
-                    className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
-                    style={{ 
-                      fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
-                      letterSpacing: '0.15em',
-                      fontWeight: 900
-                    }}
-                  >
-                    2026
-                  </span>
-                </div>
-                
-                {/* Scroll hint to continue to Surname Pendragon */}
-                <div 
-                  className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/70 animate-bounce"
-                >
-                  <span className="text-xs uppercase tracking-widest">Continue</span>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 5v14M5 12l7 7 7-7"/>
-                  </svg>
-                </div>
-              </div>
-            </section>
-
-            {/* Scroll hint - only on title screen */}
-            {currentSection === 0 && (
+              
+              {/* Scroll hint at bottom of cream section */}
               <div 
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex justify-center text-black/40 text-sm animate-bounce z-40"
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-amber-800/60 animate-bounce"
               >
-                <div className="flex flex-col items-center gap-2">
-                  <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 5v14M5 12l7 7 7-7"/>
-                  </svg>
-                </div>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
               </div>
-            )}
+            </section>
           </div>
         )}
 
-        {/* SCROLLABLE CONTENT - Surname Pendragon is first, then other content */}
+        {/* SCROLLABLE CONTENT - God of Lies poster slides up, then Pendragon, then rest of page */}
         <div 
           ref={scrollableContentRef}
           className={isScrollLocked ? 'invisible' : 'visible'}
         >
-          {/* SURNAME PENDRAGON - First item in scrollable content */}
-          <section className="relative w-full h-screen">
+          {/* GOD OF LIES POSTER - Slides up as first scrollable item */}
+          <section className="relative w-full min-h-screen">
+            <div className="sticky top-0 w-full h-screen">
+              <img 
+                src={godOfLiesCover}
+                alt="God of Lies"
+                className="w-full h-full object-cover"
+                style={{ objectPosition: 'center 25%' }}
+                onLoad={() => setGodOfLiesImageLoaded(true)}
+              />
+              {/* COMING 2026 overlay */}
+              <div 
+                className="absolute bottom-32 sm:bottom-24 lg:bottom-28 left-0 right-0 flex justify-center items-center gap-4 sm:gap-6 lg:gap-8"
+                style={{ pointerEvents: 'none' }}
+              >
+                <span 
+                  className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
+                  style={{ 
+                    fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
+                    letterSpacing: '0.15em',
+                    fontWeight: 900
+                  }}
+                >
+                  COMING
+                </span>
+                <span 
+                  className="text-white text-4xl sm:text-6xl lg:text-8xl xl:text-9xl uppercase"
+                  style={{ 
+                    fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
+                    letterSpacing: '0.15em',
+                    fontWeight: 900
+                  }}
+                >
+                  2026
+                </span>
+              </div>
+              
+              {/* Professional MANGA • WEBTOON text at bottom */}
+              <div 
+                className="absolute bottom-8 sm:bottom-12 left-0 right-0 flex justify-center items-center gap-3 sm:gap-4"
+                style={{ pointerEvents: 'none' }}
+              >
+                <span 
+                  className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em]"
+                  style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 500 }}
+                >
+                  MANGA
+                </span>
+                <span className="text-white/60 text-lg">•</span>
+                <span 
+                  className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em]"
+                  style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 500 }}
+                >
+                  WEBTOON
+                </span>
+              </div>
+            </div>
+          </section>
+          
+          {/* SURNAME PENDRAGON - Slides up after God of Lies */}
+          <section 
+            className="relative w-full h-screen cursor-pointer"
+            onClick={() => setPendragonCaptionVisible(!pendragonCaptionVisible)}
+          >
             {/* Desktop image */}
             <img 
               src={surnamePendragonBanner}
@@ -811,9 +798,15 @@ const Comics = () => {
               />
             </div>
             
-            {/* Caption overlay - positioned at bottom left */}
+            {/* Caption overlay - toggles on tap */}
             <div 
-              className="absolute bottom-[8%] left-0 max-w-[90%] sm:max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-4 sm:p-6 lg:p-8"
+              className="absolute bottom-[8%] left-0 max-w-[90%] sm:max-w-[40%] lg:max-w-[30%] bg-black/90 backdrop-blur-sm p-4 sm:p-6 lg:p-8 transition-all duration-300"
+              style={{
+                opacity: pendragonCaptionVisible ? 1 : 0,
+                transform: pendragonCaptionVisible ? 'translateX(0)' : 'translateX(-20px)',
+                pointerEvents: pendragonCaptionVisible ? 'auto' : 'none'
+              }}
+              onClick={(e) => e.stopPropagation()}
             >
               <h4 
                 className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-2 sm:mb-3"
@@ -840,6 +833,13 @@ const Comics = () => {
                 Feature Film • Drama • In Development
               </p>
             </div>
+            
+            {/* Tap hint - shown when caption is hidden */}
+            {!pendragonCaptionVisible && (
+              <div className="absolute bottom-8 left-8 text-white/50 text-xs uppercase tracking-wider animate-pulse">
+                Tap to show info
+              </div>
+            )}
           </section>
 
           {/* Stories Waiting to be Told */}
