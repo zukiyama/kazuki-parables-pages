@@ -50,28 +50,34 @@ const Comics = () => {
   const storiesSectionRef = useRef<HTMLElement>(null);
   const fixedHeaderHeight = 64;
 
-  // Calculate section visibility based on scroll
+  // Calculate section visibility based on scroll - POP-UP BOOK EFFECT
+  // Scrolling doesn't move content down - it triggers transitions between fixed sections
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const vh = window.innerHeight;
       
-      // Each "section" takes 1 viewport height of scroll to transition
-      // Section 0 (cover) -> Section 1 (vignettes): scroll 0 to vh
-      // Section 1 (vignettes) -> Section 2 (cream): scroll vh to 2vh
-      // Section 2 (cream) -> normal scroll: scroll 2vh+
-      
-      const section0End = vh * 0.8; // Cover fully fades by 80% of first vh
-      const section1End = vh * 1.8; // Vignettes fully fade by 80% into second vh
+      // Each "section" takes about 1 viewport height of scroll to transition
+      // But the content stays fixed - only the transitions change
+      const section0End = vh * 0.6;   // Cover dissolves, vignettes slide in
+      const section1End = vh * 1.4;   // Vignettes slide out, cream slides in  
+      const section2End = vh * 2.2;   // Cream stays, then normal scroll begins
       
       if (scrollY < section0End) {
+        // Section 0: Cover visible, fading out as we scroll
         setCurrentSection(0);
         setSectionProgress(scrollY / section0End);
       } else if (scrollY < section1End) {
+        // Section 1: Vignettes visible, they slide in then out
         setCurrentSection(1);
         setSectionProgress((scrollY - section0End) / (section1End - section0End));
-      } else {
+      } else if (scrollY < section2End) {
+        // Section 2: Cream section visible
         setCurrentSection(2);
+        setSectionProgress((scrollY - section1End) / (section2End - section1End));
+      } else {
+        // Past section 2: Normal scrolling begins
+        setCurrentSection(3);
         setSectionProgress(1);
       }
       
@@ -232,12 +238,27 @@ const Comics = () => {
     setSelectedComic(null);
   };
 
-  // Calculate opacities and transforms for each section
+  // Calculate opacities and transforms for each section - POP-UP BOOK STYLE
+  // Cover: visible at start, fades out as vignettes slide in
   const coverOpacity = currentSection === 0 ? 1 - sectionProgress : 0;
-  const vignetteOpacity = currentSection === 0 ? sectionProgress : currentSection === 1 ? 1 - sectionProgress : 0;
-  const vignetteVisible = currentSection >= 0 && (currentSection === 0 ? sectionProgress > 0.1 : currentSection === 1);
-  const creamOpacity = currentSection === 1 ? sectionProgress : currentSection >= 2 ? 1 : 0;
-  const creamVisible = currentSection >= 1 && sectionProgress > 0.1;
+  const coverVisible = currentSection === 0;
+  
+  // Vignettes: slide in from sides when cover fades (section 0), stay during section 1, slide out when cream comes (section 2)
+  const vignetteActive = (currentSection === 0 && sectionProgress > 0.2) || currentSection === 1 || (currentSection === 2 && sectionProgress < 0.5);
+  const vignetteSlideIn = currentSection === 0 ? Math.min(1, sectionProgress * 2) : 1;
+  const vignetteSlideOut = currentSection === 2 ? sectionProgress : 0;
+  const vignetteOpacity = currentSection === 0 
+    ? Math.min(1, sectionProgress * 2.5) 
+    : currentSection === 1 
+      ? 1 
+      : currentSection === 2 
+        ? 1 - sectionProgress 
+        : 0;
+  
+  // Cream section: slides in when vignettes slide out (section 2)
+  const creamActive = currentSection >= 2;
+  const creamSlideProgress = currentSection === 2 ? sectionProgress : currentSection >= 3 ? 1 : 0;
+  const creamOpacity = currentSection >= 2 ? Math.min(1, sectionProgress * 1.5) : 0;
 
   return (
     <div className={`min-h-screen bg-white overflow-x-hidden transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
@@ -287,10 +308,14 @@ const Comics = () => {
               </div>
             </header>
 
-            {/* SECTION 0: GOD OF LIES Cover - Fades out as you scroll */}
+            {/* SECTION 0: GOD OF LIES Cover - Fades out as vignettes slide in */}
             <section 
-              className="absolute inset-0 flex items-center justify-center pt-32 sm:pt-40 transition-opacity duration-300"
-              style={{ opacity: coverOpacity, pointerEvents: coverOpacity > 0.1 ? 'auto' : 'none' }}
+              className="absolute inset-0 flex items-center justify-center pt-32 sm:pt-40"
+              style={{ 
+                opacity: coverOpacity, 
+                pointerEvents: coverVisible ? 'auto' : 'none',
+                transition: 'opacity 0.4s ease-out'
+              }}
             >
               <div className="w-full px-4 sm:px-8 lg:px-16 xl:px-24">
                 <img 
@@ -302,39 +327,43 @@ const Comics = () => {
               </div>
             </section>
 
-            {/* SECTION 1: VIGNETTES - Slide in from sides, fill the screen */}
+            {/* SECTION 1: VIGNETTES - Slide in from sides to FILL the screen */}
             <section 
-              className="absolute inset-0 flex items-center justify-center pt-32 sm:pt-40 transition-opacity duration-500"
-              style={{ opacity: vignetteOpacity, pointerEvents: vignetteVisible ? 'auto' : 'none' }}
+              className="absolute inset-0 pt-32 sm:pt-40"
+              style={{ 
+                opacity: vignetteOpacity,
+                pointerEvents: vignetteActive ? 'auto' : 'none'
+              }}
             >
-              <div className="w-full h-full flex items-center px-4 sm:px-6 lg:px-8">
-                {/* Full-screen grid layout */}
-                <div className="w-full max-w-7xl mx-auto grid grid-cols-12 gap-4 lg:gap-6 items-center" style={{ maxHeight: '75vh' }}>
+              <div className="w-full h-full flex items-center px-2 sm:px-4 lg:px-6">
+                {/* Full-screen layout with larger images */}
+                <div className="w-full h-full max-h-[calc(100vh-10rem)] flex items-center">
                   
-                  {/* LEFT SIDE - Board game image (large, middle-left) */}
-                  <div className="col-span-5 lg:col-span-4 h-full flex items-center">
-                    <div 
-                      className={`w-full transition-all duration-700 ease-out ${
-                        vignetteVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-24'
-                      }`}
-                      style={{ transitionDelay: '100ms' }}
-                    >
-                      <img 
-                        src={vignetteBoardgame}
-                        alt="Family moments - God of Lies"
-                        className="w-full h-auto max-h-[60vh] object-contain drop-shadow-2xl"
-                      />
-                    </div>
+                  {/* LEFT SIDE - Board game image (LARGE, fills left half) */}
+                  <div 
+                    className="w-[38%] h-full flex items-center justify-center pr-2"
+                    style={{
+                      transform: `translateX(${-100 + (vignetteSlideIn * 100) - (vignetteSlideOut * 100)}%)`,
+                      transition: 'transform 0.5s ease-out'
+                    }}
+                  >
+                    <img 
+                      src={vignetteBoardgame}
+                      alt="Family moments - God of Lies"
+                      className="w-full h-full max-h-[75vh] object-contain drop-shadow-2xl"
+                    />
                   </div>
                   
                   {/* CENTER - Magazine text content */}
-                  <div className="col-span-2 lg:col-span-4 flex items-center justify-center">
-                    <div 
-                      className={`text-center transition-all duration-700 ${
-                        vignetteVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                      }`}
-                      style={{ transitionDelay: '200ms' }}
-                    >
+                  <div 
+                    className="w-[24%] flex items-center justify-center px-2"
+                    style={{
+                      opacity: vignetteSlideIn - vignetteSlideOut,
+                      transform: `translateY(${20 - (vignetteSlideIn * 20) + (vignetteSlideOut * 20)}px)`,
+                      transition: 'opacity 0.5s ease-out, transform 0.5s ease-out'
+                    }}
+                  >
+                    <div className="text-center">
                       <p 
                         className="text-[10px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] text-slate-500 mb-2 sm:mb-3"
                         style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
@@ -342,20 +371,20 @@ const Comics = () => {
                         Featured
                       </p>
                       <h2 
-                        className="text-xl sm:text-3xl lg:text-5xl mb-2 sm:mb-4 text-slate-900"
+                        className="text-xl sm:text-3xl lg:text-5xl xl:text-6xl mb-2 sm:mb-4 text-slate-900"
                         style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.04em' }}
                       >
                         GOD OF LIES
                       </h2>
-                      <div className="w-8 sm:w-16 h-0.5 sm:h-1 bg-red-600 mx-auto mb-2 sm:mb-4" />
+                      <div className="w-8 sm:w-16 lg:w-20 h-0.5 sm:h-1 bg-red-600 mx-auto mb-2 sm:mb-4" />
                       <p 
-                        className="text-xs sm:text-sm lg:text-base text-slate-700 leading-relaxed mb-2 sm:mb-3 hidden sm:block"
+                        className="text-xs sm:text-sm lg:text-base xl:text-lg text-slate-700 leading-relaxed mb-2 sm:mb-3 hidden sm:block"
                         style={{ fontFamily: 'Georgia, serif' }}
                       >
                         In a world where truth is currency, one man discovers he can make anyone believe anything.
                       </p>
                       <p 
-                        className="text-[10px] sm:text-xs text-blue-700 uppercase tracking-[0.15em] sm:tracking-[0.25em]"
+                        className="text-[10px] sm:text-xs lg:text-sm text-blue-700 uppercase tracking-[0.15em] sm:tracking-[0.25em]"
                         style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                       >
                         Manga • 2026
@@ -363,33 +392,29 @@ const Comics = () => {
                     </div>
                   </div>
                   
-                  {/* RIGHT SIDE - Two images stacked (larger) */}
-                  <div className="col-span-5 lg:col-span-4 flex flex-col gap-3 lg:gap-4 h-full justify-center">
+                  {/* RIGHT SIDE - Two images stacked (LARGER, fill right side) */}
+                  <div 
+                    className="w-[38%] h-full flex flex-col gap-2 lg:gap-3 justify-center pl-2"
+                    style={{
+                      transform: `translateX(${100 - (vignetteSlideIn * 100) + (vignetteSlideOut * 100)}%)`,
+                      transition: 'transform 0.5s ease-out'
+                    }}
+                  >
                     {/* Top right image - Apartments */}
-                    <div 
-                      className={`transition-all duration-700 ease-out ${
-                        vignetteVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-24'
-                      }`}
-                      style={{ transitionDelay: '0ms' }}
-                    >
+                    <div className="flex-1 flex items-end justify-center max-h-[37vh]">
                       <img 
                         src={vignetteApartments}
                         alt="The neighborhood - God of Lies"
-                        className="w-full h-auto max-h-[28vh] object-contain drop-shadow-2xl"
+                        className="w-full h-full object-contain drop-shadow-2xl"
                       />
                     </div>
                     
                     {/* Bottom right image - Sweeping */}
-                    <div 
-                      className={`transition-all duration-700 ease-out ${
-                        vignetteVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-24'
-                      }`}
-                      style={{ transitionDelay: '150ms' }}
-                    >
+                    <div className="flex-1 flex items-start justify-center max-h-[37vh]">
                       <img 
                         src={vignetteSweeping}
                         alt="Daily life - God of Lies"
-                        className="w-full h-auto max-h-[28vh] object-contain drop-shadow-2xl"
+                        className="w-full h-full object-contain drop-shadow-2xl"
                       />
                     </div>
                   </div>
@@ -397,18 +422,20 @@ const Comics = () => {
               </div>
             </section>
 
-            {/* SECTION 2: CREAM BLURB - Slides in to replace vignettes */}
+            {/* SECTION 2: CREAM BLURB - Slides up to replace vignettes */}
             <section 
-              className="absolute inset-0 flex items-center justify-center pt-32 sm:pt-40 transition-opacity duration-500"
+              className="absolute inset-0 flex items-center justify-center pt-32 sm:pt-40"
               style={{ 
                 opacity: creamOpacity, 
-                pointerEvents: creamVisible ? 'auto' : 'none',
-                background: 'linear-gradient(to bottom, #f5f0e1, #e8e0cc)'
+                pointerEvents: creamActive ? 'auto' : 'none',
+                background: 'linear-gradient(to bottom, #f5f0e1, #e8e0cc)',
+                transform: `translateY(${100 - (creamSlideProgress * 100)}%)`,
+                transition: 'transform 0.5s ease-out, opacity 0.4s ease-out'
               }}
             >
-              <div className="w-full max-w-4xl mx-auto px-6 py-8">
+              <div className="w-full max-w-5xl mx-auto px-6 py-8">
                 {/* Magazine Header */}
-                <div className="text-center mb-6">
+                <div className="text-center mb-8">
                   <p 
                     className="text-xs uppercase tracking-[0.4em] text-amber-800/70 mb-2"
                     style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
@@ -416,7 +443,7 @@ const Comics = () => {
                     Featured Series
                   </p>
                   <h2 
-                    className="text-4xl lg:text-5xl font-bold text-slate-900 mb-3"
+                    className="text-4xl lg:text-6xl font-bold text-slate-900 mb-3"
                     style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.02em' }}
                   >
                     GOD OF LIES
@@ -424,9 +451,9 @@ const Comics = () => {
                   <div className="w-24 h-1 bg-amber-700 mx-auto" />
                 </div>
 
-                {/* Single large image with text */}
-                <div className="flex flex-col lg:flex-row gap-6 items-center">
-                  {/* Main Image - Street scene with masked figure */}
+                {/* Single large image with text - Magazine style layout */}
+                <div className="flex flex-col lg:flex-row gap-8 items-center">
+                  {/* Main Image - Street scene with masked figure (LARGER) */}
                   <div className="lg:w-1/2">
                     <div 
                       className="relative cursor-pointer group"
@@ -435,7 +462,7 @@ const Comics = () => {
                       <img 
                         src={godOfLiesStreetScene}
                         alt="The Masked Figure following"
-                        className="w-full shadow-xl transition-transform duration-300 group-hover:scale-[1.02]"
+                        className="w-full max-h-[55vh] object-contain shadow-xl transition-transform duration-300 group-hover:scale-[1.02]"
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
                         <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-sm">Click to enlarge</span>
@@ -446,14 +473,14 @@ const Comics = () => {
                   {/* Text Content */}
                   <div className="lg:w-1/2">
                     <p 
-                      className="text-slate-700 text-base leading-relaxed first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-amber-800"
+                      className="text-slate-700 text-base lg:text-lg leading-relaxed first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-3 first-letter:text-amber-800"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
                       In a world where truth is currency, one man discovers he can make anyone believe anything. 
                       <span className="text-red-700 font-semibold"> Takeshi Mori</span> has mastered the art of deception—manipulating politicians, businessmen, and entire corporations with surgical precision.
                     </p>
                     <p 
-                      className="text-slate-700 text-base leading-relaxed mt-4"
+                      className="text-slate-700 text-base lg:text-lg leading-relaxed mt-5"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
                       For years, he operated in the shadows, a phantom pulling strings that shaped nations. But when a 
@@ -462,7 +489,7 @@ const Comics = () => {
                       <span className="italic"> that every lie demands a reckoning.</span>
                     </p>
                     <p 
-                      className="text-amber-800 text-xs uppercase tracking-widest mt-4"
+                      className="text-amber-800 text-xs uppercase tracking-widest mt-5"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
                       Manga • Webtoon • 2026
