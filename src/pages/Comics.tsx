@@ -265,13 +265,13 @@ const Comics = () => {
       <Navigation />
 
       <main className="relative flex-1">
-        {/* FIXED SCROLL CONTAINER - First 3 sections occupy 3vh of scroll but content is fixed */}
+        {/* FIXED SCROLL CONTAINER - Scroll triggers transitions, content stays fixed */}
         <div className="relative" style={{ height: '300vh' }}>
-          {/* Sticky container that holds all 3 animated sections */}
-          <div className="sticky top-0 h-screen overflow-hidden">
+          {/* Sticky container - ALWAYS fills viewport, never scrolls past */}
+          <div className="sticky top-0 h-screen w-full overflow-hidden bg-white">
             
             {/* Header Banner - Always visible at top */}
-            <header className="absolute top-0 left-0 right-0 py-8 sm:py-12 lg:py-16 px-4 sm:px-8 lg:px-12 mt-[64px] bg-white z-30">
+            <header className="absolute top-0 left-0 right-0 py-6 sm:py-10 lg:py-12 px-4 sm:px-8 lg:px-12 mt-[64px] z-30">
               <div className="text-center relative">
                 {/* Faded comic panels behind subtitle */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -283,7 +283,6 @@ const Comics = () => {
                   />
                 </div>
                 
-                {/* Main title - Tintin/Adventure comic style with bigger letters */}
                 <h1 
                   className="text-5xl xs:text-6xl sm:text-6xl lg:text-7xl xl:text-8xl uppercase text-black relative z-10"
                   style={{ 
@@ -295,7 +294,6 @@ const Comics = () => {
                   COMICS & SCRIPTS
                 </h1>
 
-                {/* Subtitle */}
                 <p 
                   className="text-xs sm:text-sm lg:text-base tracking-[0.2em] uppercase text-black/70 mt-4 sm:mt-5 relative z-10"
                   style={{ 
@@ -310,151 +308,139 @@ const Comics = () => {
 
             {/* SECTION 0: GOD OF LIES Cover - Fades out as vignettes slide in */}
             <section 
-              className="absolute inset-0 flex items-center justify-center pt-32 sm:pt-40"
+              className="absolute inset-0 flex items-center justify-center"
               style={{ 
                 opacity: coverOpacity, 
                 pointerEvents: coverVisible ? 'auto' : 'none',
-                transition: 'opacity 0.4s ease-out'
+                transition: 'opacity 0.3s ease-out',
+                paddingTop: '140px'
               }}
             >
-              <div className="w-full px-4 sm:px-8 lg:px-16 xl:px-24">
+              <div className="w-full h-full flex items-center justify-center px-4 sm:px-8 lg:px-16">
                 <img 
                   src={godOfLiesCover}
                   alt="God of Lies"
-                  className="w-full max-h-[70vh] object-contain mx-auto"
+                  className="max-w-full max-h-[calc(100vh-180px)] object-contain"
                   onLoad={() => setGodOfLiesImageLoaded(true)}
                 />
               </div>
             </section>
 
-            {/* SECTION 1: VIGNETTES - Slide in from sides to FILL the screen */}
+            {/* SECTION 1: VIGNETTES - Fill the ENTIRE screen, slide in from sides */}
             <section 
-              className="absolute inset-0 pt-32 sm:pt-40"
+              className="absolute inset-0"
               style={{ 
                 opacity: vignetteOpacity,
-                pointerEvents: vignetteActive ? 'auto' : 'none'
+                pointerEvents: vignetteActive ? 'auto' : 'none',
+                paddingTop: '140px'
               }}
             >
-              <div className="w-full h-full flex items-center px-2 sm:px-4 lg:px-6">
-                {/* Full-screen layout with larger images */}
-                <div className="w-full h-full max-h-[calc(100vh-10rem)] flex items-center">
-                  
-                  {/* LEFT SIDE - Board game image (LARGE, fills left half) */}
-                  <div 
-                    className="w-[38%] h-full flex items-center justify-center pr-2"
-                    style={{
-                      transform: `translateX(${-100 + (vignetteSlideIn * 100) - (vignetteSlideOut * 100)}%)`,
-                      transition: 'transform 0.5s ease-out'
-                    }}
-                  >
+              <div className="w-full h-[calc(100vh-140px)] flex">
+                
+                {/* LEFT SIDE - Board game image (HUGE, fills left 40%) */}
+                <div 
+                  className="w-[40%] h-full flex items-center justify-center p-4"
+                  style={{
+                    transform: `translateX(${(-100 + vignetteSlideIn * 100) - vignetteSlideOut * 100}%)`,
+                    transition: 'transform 0.4s ease-out'
+                  }}
+                >
+                  <img 
+                    src={vignetteBoardgame}
+                    alt="Family moments - God of Lies"
+                    className="w-full h-full object-contain drop-shadow-2xl"
+                  />
+                </div>
+                
+                {/* CENTER - Magazine text content (20%) */}
+                <div 
+                  className="w-[20%] h-full flex items-center justify-center px-2"
+                  style={{
+                    opacity: Math.max(0, vignetteSlideIn - vignetteSlideOut),
+                    transform: `scale(${0.8 + vignetteSlideIn * 0.2 - vignetteSlideOut * 0.2})`,
+                    transition: 'opacity 0.4s ease-out, transform 0.4s ease-out'
+                  }}
+                >
+                  <div className="text-center">
+                    <p 
+                      className="text-[10px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] text-slate-500 mb-2 sm:mb-3"
+                      style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                    >
+                      Featured
+                    </p>
+                    <h2 
+                      className="text-xl sm:text-3xl lg:text-5xl xl:text-6xl mb-2 sm:mb-4 text-slate-900"
+                      style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.04em' }}
+                    >
+                      GOD OF<br />LIES
+                    </h2>
+                    <div className="w-8 sm:w-16 lg:w-20 h-0.5 sm:h-1 bg-red-600 mx-auto mb-2 sm:mb-4" />
+                    <p 
+                      className="text-xs sm:text-sm lg:text-base text-slate-700 leading-relaxed mb-2 sm:mb-3 hidden lg:block"
+                      style={{ fontFamily: 'Georgia, serif' }}
+                    >
+                      In a world where truth is currency, one man discovers he can make anyone believe anything.
+                    </p>
+                    <p 
+                      className="text-[10px] sm:text-xs lg:text-sm text-blue-700 uppercase tracking-[0.15em] sm:tracking-[0.25em]"
+                      style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                    >
+                      Manga • 2026
+                    </p>
+                  </div>
+                </div>
+                
+                {/* RIGHT SIDE - Two images stacked (40%) */}
+                <div 
+                  className="w-[40%] h-full flex flex-col gap-2 p-4"
+                  style={{
+                    transform: `translateX(${(100 - vignetteSlideIn * 100) + vignetteSlideOut * 100}%)`,
+                    transition: 'transform 0.4s ease-out'
+                  }}
+                >
+                  {/* Top right image - Apartments */}
+                  <div className="flex-1 flex items-center justify-center">
                     <img 
-                      src={vignetteBoardgame}
-                      alt="Family moments - God of Lies"
-                      className="w-full h-full max-h-[75vh] object-contain drop-shadow-2xl"
+                      src={vignetteApartments}
+                      alt="The neighborhood - God of Lies"
+                      className="w-full h-full object-contain drop-shadow-2xl"
                     />
                   </div>
                   
-                  {/* CENTER - Magazine text content */}
-                  <div 
-                    className="w-[24%] flex items-center justify-center px-2"
-                    style={{
-                      opacity: vignetteSlideIn - vignetteSlideOut,
-                      transform: `translateY(${20 - (vignetteSlideIn * 20) + (vignetteSlideOut * 20)}px)`,
-                      transition: 'opacity 0.5s ease-out, transform 0.5s ease-out'
-                    }}
-                  >
-                    <div className="text-center">
-                      <p 
-                        className="text-[10px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] text-slate-500 mb-2 sm:mb-3"
-                        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                      >
-                        Featured
-                      </p>
-                      <h2 
-                        className="text-xl sm:text-3xl lg:text-5xl xl:text-6xl mb-2 sm:mb-4 text-slate-900"
-                        style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.04em' }}
-                      >
-                        GOD OF LIES
-                      </h2>
-                      <div className="w-8 sm:w-16 lg:w-20 h-0.5 sm:h-1 bg-red-600 mx-auto mb-2 sm:mb-4" />
-                      <p 
-                        className="text-xs sm:text-sm lg:text-base xl:text-lg text-slate-700 leading-relaxed mb-2 sm:mb-3 hidden sm:block"
-                        style={{ fontFamily: 'Georgia, serif' }}
-                      >
-                        In a world where truth is currency, one man discovers he can make anyone believe anything.
-                      </p>
-                      <p 
-                        className="text-[10px] sm:text-xs lg:text-sm text-blue-700 uppercase tracking-[0.15em] sm:tracking-[0.25em]"
-                        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                      >
-                        Manga • 2026
-                      </p>
-                    </div>
-                  </div>
-                  
-                  {/* RIGHT SIDE - Two images stacked (LARGER, fill right side) */}
-                  <div 
-                    className="w-[38%] h-full flex flex-col gap-2 lg:gap-3 justify-center pl-2"
-                    style={{
-                      transform: `translateX(${100 - (vignetteSlideIn * 100) + (vignetteSlideOut * 100)}%)`,
-                      transition: 'transform 0.5s ease-out'
-                    }}
-                  >
-                    {/* Top right image - Apartments */}
-                    <div className="flex-1 flex items-end justify-center max-h-[37vh]">
-                      <img 
-                        src={vignetteApartments}
-                        alt="The neighborhood - God of Lies"
-                        className="w-full h-full object-contain drop-shadow-2xl"
-                      />
-                    </div>
-                    
-                    {/* Bottom right image - Sweeping */}
-                    <div className="flex-1 flex items-start justify-center max-h-[37vh]">
-                      <img 
-                        src={vignetteSweeping}
-                        alt="Daily life - God of Lies"
-                        className="w-full h-full object-contain drop-shadow-2xl"
-                      />
-                    </div>
+                  {/* Bottom right image - Sweeping */}
+                  <div className="flex-1 flex items-center justify-center">
+                    <img 
+                      src={vignetteSweeping}
+                      alt="Daily life - God of Lies"
+                      className="w-full h-full object-contain drop-shadow-2xl"
+                    />
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* SECTION 2: CREAM BLURB - Slides up to replace vignettes */}
+            {/* SECTION 2: CREAM BLURB - Elements slide in from different directions */}
             <section 
-              className="absolute inset-0 flex items-center justify-center pt-32 sm:pt-40"
+              className="absolute inset-0"
               style={{ 
                 opacity: creamOpacity, 
                 pointerEvents: creamActive ? 'auto' : 'none',
                 background: 'linear-gradient(to bottom, #f5f0e1, #e8e0cc)',
-                transform: `translateY(${100 - (creamSlideProgress * 100)}%)`,
-                transition: 'transform 0.5s ease-out, opacity 0.4s ease-out'
+                paddingTop: '140px'
               }}
             >
-              <div className="w-full max-w-5xl mx-auto px-6 py-8">
-                {/* Magazine Header */}
-                <div className="text-center mb-8">
-                  <p 
-                    className="text-xs uppercase tracking-[0.4em] text-amber-800/70 mb-2"
-                    style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              <div className="w-full h-[calc(100vh-140px)] flex items-center justify-center px-6">
+                <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-8 items-center">
+                  
+                  {/* Main Image - Slides in from LEFT */}
+                  <div 
+                    className="lg:w-1/2 flex justify-center"
+                    style={{
+                      transform: `translateX(${-100 + creamSlideProgress * 100}%)`,
+                      opacity: creamSlideProgress,
+                      transition: 'transform 0.5s ease-out, opacity 0.4s ease-out'
+                    }}
                   >
-                    Featured Series
-                  </p>
-                  <h2 
-                    className="text-4xl lg:text-6xl font-bold text-slate-900 mb-3"
-                    style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.02em' }}
-                  >
-                    GOD OF LIES
-                  </h2>
-                  <div className="w-24 h-1 bg-amber-700 mx-auto" />
-                </div>
-
-                {/* Single large image with text - Magazine style layout */}
-                <div className="flex flex-col lg:flex-row gap-8 items-center">
-                  {/* Main Image - Street scene with masked figure (LARGER) */}
-                  <div className="lg:w-1/2">
                     <div 
                       className="relative cursor-pointer group"
                       onClick={() => setZoomedImage({ src: godOfLiesStreetScene, alt: 'The Masked Figure' })}
@@ -462,7 +448,7 @@ const Comics = () => {
                       <img 
                         src={godOfLiesStreetScene}
                         alt="The Masked Figure following"
-                        className="w-full max-h-[55vh] object-contain shadow-xl transition-transform duration-300 group-hover:scale-[1.02]"
+                        className="max-h-[60vh] object-contain shadow-xl transition-transform duration-300 group-hover:scale-[1.02]"
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
                         <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-sm">Click to enlarge</span>
@@ -470,8 +456,38 @@ const Comics = () => {
                     </div>
                   </div>
                   
-                  {/* Text Content */}
-                  <div className="lg:w-1/2">
+                  {/* Text Content - Slides in from RIGHT */}
+                  <div 
+                    className="lg:w-1/2"
+                    style={{
+                      transform: `translateX(${100 - creamSlideProgress * 100}%)`,
+                      opacity: creamSlideProgress,
+                      transition: 'transform 0.5s ease-out 0.1s, opacity 0.4s ease-out 0.1s'
+                    }}
+                  >
+                    {/* Magazine Header - Slides down from TOP */}
+                    <div 
+                      className="text-center lg:text-left mb-6"
+                      style={{
+                        transform: `translateY(${-50 + creamSlideProgress * 50}px)`,
+                        transition: 'transform 0.5s ease-out 0.15s'
+                      }}
+                    >
+                      <p 
+                        className="text-xs uppercase tracking-[0.4em] text-amber-800/70 mb-2"
+                        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                      >
+                        Featured Series
+                      </p>
+                      <h2 
+                        className="text-3xl lg:text-5xl font-bold text-slate-900 mb-3"
+                        style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.02em' }}
+                      >
+                        GOD OF LIES
+                      </h2>
+                      <div className="w-24 h-1 bg-amber-700 mx-auto lg:mx-0" />
+                    </div>
+
                     <p 
                       className="text-slate-700 text-base lg:text-lg leading-relaxed first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-3 first-letter:text-amber-800"
                       style={{ fontFamily: 'Georgia, serif' }}
@@ -485,8 +501,7 @@ const Comics = () => {
                     >
                       For years, he operated in the shadows, a phantom pulling strings that shaped nations. But when a 
                       <span className="text-blue-700 font-semibold"> single child</span> sees through his carefully constructed lies, 
-                      his empire of illusions begins to crumble. Now hunted by those he once controlled, Takeshi must confront the one truth he's spent his life avoiding: 
-                      <span className="italic"> that every lie demands a reckoning.</span>
+                      his empire of illusions begins to crumble.
                     </p>
                     <p 
                       className="text-amber-800 text-xs uppercase tracking-widest mt-5"
