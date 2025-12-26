@@ -8,6 +8,7 @@ import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungA
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
 import { BookshelfMenu } from "@/components/BookshelfMenu";
 import { FloatingQuote } from "@/components/FloatingQuote";
+import { MagazineBlurb } from "@/components/MagazineBlurb";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
@@ -643,23 +644,28 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className="font-serif font-bold mb-2 text-white" style={{ fontSize: isWidescreen ? '2.5rem' : '3rem' }}>
-                    KAIJU
-                  </h2>
-                  <div className="bg-black/75 backdrop-blur-sm rounded-lg px-6 pt-4 pb-6 border border-white/20">
-                    <h3 className={`font-serif text-yellow-300 mb-6 tracking-wide ${isWidescreen ? 'text-sm mb-4' : ''}`} style={{ fontSize: isWidescreen ? 'calc(0.875rem + 1pt)' : 'calc(1rem + 2pt)' }}>
+                  <div className="mb-2">
+                    <span 
+                      className={`font-serif text-yellow-300 tracking-wide ${isWidescreen ? 'text-sm' : 'text-base'}`}
+                      style={{ 
+                        fontFamily: "'Merriweather', Georgia, serif",
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase'
+                      }}
+                    >
                       Book One of The Parable Trilogy
-                    </h3>
-                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
-                      When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
-                      For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base'}`}>
-                      Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
-                    </p>
+                    </span>
                   </div>
+                  <MagazineBlurb
+                    title="KAIJU"
+                    paragraphs={[
+                      "When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.",
+                      "For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.",
+                      "Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined."
+                    ]}
+                    isVisible={visibleSections.has('kaiju')}
+                    isWidescreen={isWidescreen}
+                  />
                 </div>
               </div>
               <p className={`font-serif leading-relaxed text-white italic text-center mt-10 mb-16 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
@@ -837,18 +843,15 @@ const Writing = () => {
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className={`font-serif font-bold mb-4 text-white ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
-                    AMYA
-                  </h2>
-                  {/* Original dark overlay style */}
-                  <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-5' : 'p-6'}`}>
-                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-lg'}`}>
-                      Set in Nairobi, Kenya. A linguist specialising in rare languages is seconded, reluctantly, to a village where there have been reports of an ancient undiscovered language still being spoken. The village, existing on the fringes of the forest, brings back memories of a childhood he has tried to bury in his urban adult life. While there, he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive, awakening something that has lain silent in him for longer than he can remember.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-lg'}`}>
-                      Memories of the past interweave with the present as in attempting to help the young girl communicate, he discovers that he may have more to learn from her than she does from him.
-                    </p>
-                  </div>
+                  <MagazineBlurb
+                    title="AMYA"
+                    paragraphs={[
+                      "Set in Nairobi, Kenya. A linguist specialising in rare languages is seconded, reluctantly, to a village where there have been reports of an ancient undiscovered language still being spoken. The village, existing on the fringes of the forest, brings back memories of a childhood he has tried to bury in his urban adult life. While there, he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive, awakening something that has lain silent in him for longer than he can remember.",
+                      "Memories of the past interweave with the present as in attempting to help the young girl communicate, he discovers that he may have more to learn from her than she does from him."
+                    ]}
+                    isVisible={visibleSections.has('oba')}
+                    isWidescreen={isWidescreen}
+                  />
                 </div>
               </div>
             </div>
@@ -887,33 +890,20 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className={`font-serif font-bold mb-4 text-white ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
-                    STATES OF MOTION
-                  </h2>
-                  {/* Original dark overlay style - same as AMYA */}
-                  <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-4' : 'p-5'}`}>
-                    <p className={`font-serif leading-relaxed text-white italic mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
-                      "…the city was not the arrangement of many things but the shifting posture of one…"
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
-                      There is an America between Americas, an idea that every now and then is touched in the course of one life or another before fading, leaving behind a trace of itself and a sense of its own unreality on that which touched it.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
-                      A physicist on his way to a conference, carrying in his head a theory too precious to document; as enemy agents close in, is this paranoia, or is paranoia how they operate?
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
-                      A pianist haunted by a melody from childhood, a song he has been chasing his entire life.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
-                      A man unable to distinguish truth from fiction, whose words are so dangerous they can alter reality itself.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
-                      A secret cabal of plumbers employed in an age old scheme that has evolved in the wastes beneath the cities they connect.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white italic ${isWidescreen ? 'text-sm' : 'text-base'}`}>
-                      A novel of multitudes and convergences; a sequel to a story that doesn't exist; a portrait of time and place; all these and more describe a nation seen only at its margins.
-                    </p>
-                  </div>
+                  <MagazineBlurb
+                    title="STATES OF MOTION"
+                    paragraphs={[
+                      "\"…the city was not the arrangement of many things but the shifting posture of one…\"",
+                      "There is an America between Americas, an idea that every now and then is touched in the course of one life or another before fading, leaving behind a trace of itself and a sense of its own unreality on that which touched it.",
+                      "A physicist on his way to a conference, carrying in his head a theory too precious to document; as enemy agents close in, is this paranoia, or is paranoia how they operate?",
+                      "A pianist haunted by a melody from childhood, a song he has been chasing his entire life.",
+                      "A man unable to distinguish truth from fiction, whose words are so dangerous they can alter reality itself.",
+                      "A secret cabal of plumbers employed in an age old scheme that has evolved in the wastes beneath the cities they connect."
+                    ]}
+                    tagline="A novel of multitudes and convergences; a sequel to a story that doesn't exist; a portrait of time and place; all these and more describe a nation seen only at its margins."
+                    isVisible={visibleSections.has('states-of-motion')}
+                    isWidescreen={isWidescreen}
+                  />
                 </div>
               </div>
             </div>
@@ -1001,15 +991,14 @@ const Writing = () => {
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <h2 className={`font-serif font-bold mb-4 text-white ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
-                    VICE VERSA
-                  </h2>
-                  {/* Original dark overlay style */}
-                  <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-5' : 'p-6'}`}>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-lg'}`}>
-                      A noir mystery set in the shadowy streets of a retro-futuristic metropolis. When detective Marcus Kane investigates a series of impossible crimes, he discovers that reality itself is not what it seems. In a world where identities can be stolen and memories can be traded, nothing is as it appears.
-                    </p>
-                  </div>
+                  <MagazineBlurb
+                    title="VICE VERSA"
+                    paragraphs={[
+                      "A noir mystery set in the shadowy streets of a retro-futuristic metropolis. When detective Marcus Kane investigates a series of impossible crimes, he discovers that reality itself is not what it seems. In a world where identities can be stolen and memories can be traded, nothing is as it appears."
+                    ]}
+                    isVisible={visibleSections.has('vice-versa')}
+                    isWidescreen={isWidescreen}
+                  />
                 </div>
                 <div className={`order-1 lg:order-2 transition-all duration-1000 delay-300 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
