@@ -278,11 +278,9 @@ const Comics = () => {
           {/* Main title */}
           <div className="text-center">
             <h1 
-              className="font-bold tracking-[0.15em] text-4xl xs:text-5xl sm:text-5xl lg:text-6xl xl:text-7xl uppercase text-black"
+              className="font-heading tracking-[0.08em] text-4xl xs:text-5xl sm:text-5xl lg:text-6xl xl:text-7xl uppercase text-black"
               style={{ 
-                fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                fontWeight: 700,
-                letterSpacing: '0.12em'
+                fontWeight: 700
               }}
             >
               COMICS & SCRIPTS
