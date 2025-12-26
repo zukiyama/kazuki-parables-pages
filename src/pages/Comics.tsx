@@ -340,22 +340,23 @@ const Comics = () => {
 
   // ANIMATION CALCULATIONS based on discrete sections with smooth transitions
   // Section 0 = Title, 1 = Vignettes, 2 = Cream, 3 = Pendragon (last dissolve section)
+  // After section 3, scrolling begins with "Stories waiting to be told"
   
-  // Title screen: visible on section 0
+  // Title screen: visible ONLY on section 0, fades out when transitioning to section 1
   const titleVisible = currentSection === 0;
-  const titleOpacity = currentSection === 0 ? 1 : (currentSection === 1 ? 1 - sectionProgress : 0);
+  const titleOpacity = currentSection === 0 ? 1 : 0;
   
-  // Vignettes: visible on section 1
-  const vignetteVisible = currentSection === 1 || (currentSection === 2 && sectionProgress < 1);
-  const vignetteOpacity = currentSection === 1 ? (sectionProgress) : (currentSection === 2 ? 1 - sectionProgress : 0);
+  // Vignettes: visible on section 1, fades in when arriving, fades out when leaving to section 2
+  const vignetteVisible = currentSection === 1;
+  const vignetteOpacity = currentSection === 1 ? 1 : 0;
   
-  // Cream section: visible on section 2
-  const creamVisible = currentSection === 2 || (currentSection === 3 && sectionProgress < 1);
-  const creamOpacity = currentSection === 2 ? sectionProgress : (currentSection === 3 ? 1 - sectionProgress : 0);
+  // Cream section: visible on section 2, fades in when arriving, fades out when leaving to section 3
+  const creamVisible = currentSection === 2;
+  const creamOpacity = currentSection === 2 ? 1 : 0;
   
-  // Pendragon section: visible on section 3 (last dissolve section)
+  // Pendragon section: visible on section 3 (last dissolve section), after this scrolling begins
   const pendragonVisible = currentSection === 3;
-  const pendragonOpacity = currentSection === 3 ? sectionProgress : 0;
+  const pendragonOpacity = currentSection === 3 ? 1 : 0;
 
   return (
     <div className={`min-h-screen bg-white overflow-x-hidden transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
@@ -774,15 +775,6 @@ const Comics = () => {
                     Tap to show info
                   </div>
                 )}
-                
-                {/* Scroll hint at bottom */}
-                <div 
-                  className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/60 animate-bounce"
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 5v14M5 12l7 7 7-7"/>
-                  </svg>
-                </div>
               </div>
             </section>
           </div>
