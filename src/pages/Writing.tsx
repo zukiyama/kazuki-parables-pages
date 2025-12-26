@@ -8,6 +8,7 @@ import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungA
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
 import { BookshelfMenu } from "@/components/BookshelfMenu";
 import { FloatingQuote } from "@/components/FloatingQuote";
+import { MagazineBlurb } from "@/components/MagazineBlurb";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
@@ -837,18 +838,17 @@ const Writing = () => {
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('oba') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className={`font-serif font-bold mb-4 text-white ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
-                    AMYA
-                  </h2>
-                  {/* Original dark overlay style */}
-                  <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-5' : 'p-6'}`}>
-                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-lg'}`}>
-                      Set in Nairobi, Kenya. A linguist specialising in rare languages is seconded, reluctantly, to a village where there have been reports of an ancient undiscovered language still being spoken. The village, existing on the fringes of the forest, brings back memories of a childhood he has tried to bury in his urban adult life. While there, he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive, awakening something that has lain silent in him for longer than he can remember.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-lg'}`}>
-                      Memories of the past interweave with the present as in attempting to help the young girl communicate, he discovers that he may have more to learn from her than she does from him.
-                    </p>
-                  </div>
+                  <MagazineBlurb
+                    title="AMYA"
+                    paragraphs={[
+                      "Set in Nairobi, Kenya. A linguist specialising in rare languages is seconded, reluctantly, to a village where there have been reports of an ancient undiscovered language still being spoken.",
+                      "The village, existing on the fringes of the forest, brings back memories of a childhood he has tried to bury in his urban adult life.",
+                      "While there, he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive, awakening something that has lain silent in him for longer than he can remember.",
+                      "Memories of the past interweave with the present as in attempting to help the young girl communicate, he discovers that he may have more to learn from her than she does from him."
+                    ]}
+                    isVisible={visibleSections.has('oba')}
+                    isWidescreen={isWidescreen}
+                  />
                 </div>
               </div>
             </div>

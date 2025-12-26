@@ -29,6 +29,8 @@ export default {
 			comic: ['Kalam', 'cursive'],
 			palatino: ['Palatino', 'Palatino Linotype', 'Book Antiqua', 'Georgia', 'serif'],
 			'new-york': ['".New York"', '"Iowan Old Style"', 'Georgia', 'serif'],
+			'playfair': ['Playfair Display', 'serif'],
+			'merriweather': ['Merriweather', 'Georgia', 'serif'],
 		},
 			colors: {
 				border: 'hsl(var(--border))',
