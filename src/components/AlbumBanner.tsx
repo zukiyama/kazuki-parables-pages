@@ -93,7 +93,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   const currentItems = showEPs ? eps : albums;
 
   return (
-    <div className="py-3 max-sm:py-4 bg-black/80 backdrop-blur-sm overflow-visible relative">
+    <div data-banner="album" className="py-3 max-sm:py-4 bg-black/80 backdrop-blur-sm overflow-visible relative">
       <div className="container mx-auto px-6 max-sm:px-2">
         <div className="flex justify-center items-center pb-2 relative overflow-y-visible">
           {/* Items Container */}
