@@ -13,7 +13,12 @@ interface KaijuFeatureSectionProps {
   visibleSections: Set<string>;
 }
 
-const KAIJU_BLURB = `When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years. For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems. Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.`;
+// Split blurb into paragraphs for line-by-line reveal
+const KAIJU_PARAGRAPHS = [
+  "When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.",
+  "For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.",
+  "Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined."
+];
 
 export const KaijuFeatureSection = ({ isWidescreen, visibleSections }: KaijuFeatureSectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -22,38 +27,38 @@ export const KaijuFeatureSection = ({ isWidescreen, visibleSections }: KaijuFeat
   const whiteOverlayRef = useRef<HTMLDivElement>(null);
   const vignetteTopRef = useRef<HTMLDivElement>(null);
   const vignetteBottomRef = useRef<HTMLDivElement>(null);
-  const blurbContainerRef = useRef<HTMLDivElement>(null);
+  const blurbRef = useRef<HTMLDivElement>(null);
   const [isFeatureActive, setIsFeatureActive] = useState(false);
-  const [typedText, setTypedText] = useState("");
+  const [visibleParagraphs, setVisibleParagraphs] = useState<number[]>([]);
   const [showBlurb, setShowBlurb] = useState(false);
-  const typewriterRef = useRef<NodeJS.Timeout | null>(null);
+  const paragraphTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Typewriter effect
-  const startTypewriter = useCallback(() => {
-    if (typewriterRef.current) clearTimeout(typewriterRef.current);
-    setTypedText("");
+  // Line-by-line paragraph reveal effect
+  const startParagraphReveal = useCallback(() => {
+    if (paragraphTimerRef.current) clearTimeout(paragraphTimerRef.current);
+    setVisibleParagraphs([]);
     setShowBlurb(true);
     
     let index = 0;
-    const typeNextChar = () => {
-      if (index < KAIJU_BLURB.length) {
-        setTypedText(KAIJU_BLURB.slice(0, index + 1));
+    const revealNext = () => {
+      if (index < KAIJU_PARAGRAPHS.length) {
+        setVisibleParagraphs(prev => [...prev, index]);
         index++;
-        // Fast typewriter - 8ms per character
-        typewriterRef.current = setTimeout(typeNextChar, 8);
+        // Fast reveal - 300ms between paragraphs
+        paragraphTimerRef.current = setTimeout(revealNext, 300);
       }
     };
-    // Start after a small delay for the layout to settle
-    typewriterRef.current = setTimeout(typeNextChar, 400);
+    // Start after a small delay
+    paragraphTimerRef.current = setTimeout(revealNext, 200);
   }, []);
 
-  const stopTypewriter = useCallback(() => {
-    if (typewriterRef.current) {
-      clearTimeout(typewriterRef.current);
-      typewriterRef.current = null;
+  const stopParagraphReveal = useCallback(() => {
+    if (paragraphTimerRef.current) {
+      clearTimeout(paragraphTimerRef.current);
+      paragraphTimerRef.current = null;
     }
     setShowBlurb(false);
-    setTypedText("");
+    setVisibleParagraphs([]);
   }, []);
 
   useEffect(() => {
@@ -66,14 +71,16 @@ export const KaijuFeatureSection = ({ isWidescreen, visibleSections }: KaijuFeat
     const whiteOverlay = whiteOverlayRef.current;
     const vignetteTop = vignetteTopRef.current;
     const vignetteBottom = vignetteBottomRef.current;
+    const blurb = blurbRef.current;
 
-    if (!section || !trigger || !cover || !whiteOverlay || !vignetteTop || !vignetteBottom) return;
+    if (!section || !trigger || !cover || !whiteOverlay || !vignetteTop || !vignetteBottom || !blurb) return;
 
-    // Set initial states
-    gsap.set(whiteOverlay, { scaleX: 0, transformOrigin: "left center" });
+    // Set initial states - white overlay starts invisible with 0 opacity
+    gsap.set(whiteOverlay, { opacity: 0, x: "-100%" });
     gsap.set(cover, { x: 0, scale: 1 });
     gsap.set(vignetteTop, { x: "100%", opacity: 0 });
     gsap.set(vignetteBottom, { x: "100%", opacity: 0 });
+    gsap.set(blurb, { opacity: 0 });
 
     // Create the main ScrollTrigger timeline
     const tl = gsap.timeline({
@@ -87,65 +94,79 @@ export const KaijuFeatureSection = ({ isWidescreen, visibleSections }: KaijuFeat
         anticipatePin: 1,
         onEnter: () => {
           setIsFeatureActive(true);
-          startTypewriter();
+          startParagraphReveal();
         },
         onLeave: () => {
           setIsFeatureActive(false);
-          stopTypewriter();
+          stopParagraphReveal();
         },
         onEnterBack: () => {
           setIsFeatureActive(true);
-          startTypewriter();
+          startParagraphReveal();
         },
         onLeaveBack: () => {
           setIsFeatureActive(false);
-          stopTypewriter();
+          stopParagraphReveal();
         },
       },
     });
 
     // Animation sequence
-    // 1. White wipe sweeps across (0 to 0.3)
+    // 1. White overlay fades in while sliding across (gradient wipe effect)
     tl.to(whiteOverlay, {
-      scaleX: 1,
-      duration: 0.3,
-      ease: "power2.inOut",
+      opacity: 1,
+      x: "0%",
+      duration: 0.35,
+      ease: "power2.out",
     }, 0);
 
-    // 2. Cover moves left and scales down (0.1 to 0.4)
+    // 2. Cover moves left and scales down (slightly delayed)
     tl.to(cover, {
-      x: "-25vw",
-      scale: 0.85,
+      x: "-28vw",
+      scale: 0.82,
       duration: 0.3,
       ease: "power2.out",
-    }, 0.1);
+    }, 0.05);
 
-    // 3. Vignettes slide in from right (0.2 to 0.5)
+    // 3. Vignettes slide in from right
     tl.to(vignetteTop, {
       x: "0%",
       opacity: 1,
       duration: 0.3,
       ease: "power2.out",
-    }, 0.2);
+    }, 0.15);
 
     tl.to(vignetteBottom, {
       x: "0%",
       opacity: 1,
       duration: 0.3,
       ease: "power2.out",
+    }, 0.2);
+
+    // 4. Blurb fades in
+    tl.to(blurb, {
+      opacity: 1,
+      duration: 0.2,
+      ease: "power2.out",
     }, 0.25);
 
     // Hold at feature state (0.5 to 0.7)
-    // The blurb typewriter happens during this hold via React state
 
     // Exit sequence (0.7 to 1.0)
+    // Blurb fades out
+    tl.to(blurb, {
+      opacity: 0,
+      duration: 0.1,
+      ease: "power2.in",
+    }, 0.7);
+
     // Vignettes slide out
     tl.to([vignetteTop, vignetteBottom], {
       x: "100%",
       opacity: 0,
       duration: 0.15,
       ease: "power2.in",
-    }, 0.7);
+    }, 0.72);
 
     // Cover returns to center
     tl.to(cover, {
@@ -153,21 +174,22 @@ export const KaijuFeatureSection = ({ isWidescreen, visibleSections }: KaijuFeat
       scale: 1,
       duration: 0.15,
       ease: "power2.out",
-    }, 0.75);
+    }, 0.78);
 
-    // White wipe reverses
+    // White overlay fades out while sliding away
     tl.to(whiteOverlay, {
-      scaleX: 0,
-      duration: 0.15,
+      opacity: 0,
+      x: "100%",
+      duration: 0.2,
       ease: "power2.inOut",
-    }, 0.85);
+    }, 0.82);
 
     return () => {
       tl.kill();
       ScrollTrigger.getAll().forEach(st => st.kill());
-      stopTypewriter();
+      stopParagraphReveal();
     };
-  }, [startTypewriter, stopTypewriter]);
+  }, [startParagraphReveal, stopParagraphReveal]);
 
   // Mobile/tablet fallback - simpler layout without GSAP
   const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
@@ -204,116 +226,155 @@ export const KaijuFeatureSection = ({ isWidescreen, visibleSections }: KaijuFeat
       <section 
         ref={sectionRef}
         data-section="kaiju" 
-        className={`relative flex items-center justify-center overflow-hidden ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
-        }`}
-        style={{ height: '100vh' }}
+        className="relative flex items-center justify-center overflow-hidden"
+        style={{ height: '100vh', width: '100vw' }}
       >
-        {/* White wipe overlay */}
+        {/* White wipe overlay with gradient fade edge - fills exact viewport */}
         <div 
           ref={whiteOverlayRef}
-          className="absolute inset-0 bg-white z-10 pointer-events-none"
-          style={{ transformOrigin: "left center" }}
+          className="fixed inset-0 pointer-events-none z-10"
+          style={{ 
+            background: 'linear-gradient(to right, white 85%, transparent 100%)',
+            top: 0,
+            left: 0,
+            width: '120vw',
+            height: '100vh',
+          }}
         />
 
-        {/* Main content container */}
-        <div className="container mx-auto px-6 py-12 relative z-20">
-          <div className="max-w-6xl mx-auto">
-            {/* Cover container - centered by default, animated to left */}
-            <div 
-              ref={coverRef}
-              className="flex flex-col items-center justify-center"
-              style={{ willChange: 'transform' }}
-            >
-              <div className={`transition-all duration-1000 delay-300 ${
-                visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}>
-                <BookCoverSlideshow 
-                  covers={[{ image: kaijuCover, alt: "KAIJU - Book One Cover" }]}
-                  title="KAIJU"
-                  loading="eager"
-                  isWidescreen={isWidescreen}
-                />
-              </div>
-              
-              {/* Summary line - visible in normal state, hidden in feature state */}
-              <p className={`font-serif leading-relaxed text-white italic text-center mt-8 max-w-2xl transition-opacity duration-500 ${
-                isWidescreen ? 'text-lg' : 'text-xl'
-              } ${isFeatureActive ? 'opacity-0' : 'opacity-100'}`}>
-                Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three people in a 1979 that happened only for those who were there.
-              </p>
+        {/* Main content container - positioned relative to viewport */}
+        <div className="fixed inset-0 z-20 pointer-events-none" style={{ top: 0, left: 0, width: '100vw', height: '100vh' }}>
+          {/* Cover container - centered vertically, positioned left */}
+          <div 
+            ref={coverRef}
+            className="absolute flex items-center justify-center pointer-events-auto"
+            style={{ 
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              willChange: 'transform' 
+            }}
+          >
+            <div className={`transition-all duration-1000 delay-300 ${
+              visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}>
+              <BookCoverSlideshow 
+                covers={[{ image: kaijuCover, alt: "KAIJU - Book One Cover" }]}
+                title="KAIJU"
+                loading="eager"
+                isWidescreen={isWidescreen}
+              />
             </div>
+            
+            {/* Summary line - visible in normal state, hidden in feature state */}
+            <p className={`absolute -bottom-16 left-1/2 -translate-x-1/2 font-serif leading-relaxed text-white italic text-center whitespace-nowrap transition-opacity duration-500 ${
+              isWidescreen ? 'text-lg' : 'text-xl'
+            } ${isFeatureActive ? 'opacity-0' : 'opacity-100'}`}>
+              Part coming of age, part mystery, and part supernatural drama
+            </p>
           </div>
-        </div>
 
-        {/* Blurb container - appears during feature state */}
-        <div 
-          ref={blurbContainerRef}
-          className={`absolute z-30 transition-opacity duration-500 ${
-            showBlurb ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}
-          style={{
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 'clamp(280px, 35vw, 450px)',
-            maxHeight: '70vh',
-          }}
-        >
-          <div className="bg-white/95 backdrop-blur-sm rounded-lg p-8 shadow-2xl border border-gray-200">
-            <h2 className="font-serif text-3xl font-bold text-gray-900 mb-2">KAIJU</h2>
-            <h3 className="font-serif text-sm text-amber-700 uppercase tracking-widest mb-6">
+          {/* Magazine-style blurb - printed directly on white background */}
+          <div 
+            ref={blurbRef}
+            className={`absolute pointer-events-auto ${showBlurb ? '' : 'pointer-events-none'}`}
+            style={{
+              top: '50%',
+              left: '52%',
+              transform: 'translateY(-50%)',
+              width: 'clamp(320px, 32vw, 480px)',
+              maxHeight: '75vh',
+              paddingRight: '2rem',
+            }}
+          >
+            {/* Elegant magazine title */}
+            <h2 
+              className="font-serif font-bold mb-1 tracking-tight"
+              style={{ 
+                fontSize: 'clamp(2.5rem, 4vw, 3.5rem)',
+                color: '#2d3748', // Elegant dark slate
+                letterSpacing: '-0.02em',
+              }}
+            >
+              KAIJU
+            </h2>
+            <h3 
+              className="font-serif uppercase tracking-[0.25em] mb-8"
+              style={{ 
+                fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
+                color: '#8b6914', // Warm amber/gold
+              }}
+            >
               Book One of The Parable Trilogy
             </h3>
-            <div className="font-serif text-sm text-gray-800 leading-relaxed overflow-hidden">
-              <span className="kaiju-typewriter">{typedText}</span>
-              <span className={`inline-block w-0.5 h-4 bg-gray-800 ml-0.5 ${showBlurb ? 'animate-blink' : ''}`} />
+            
+            {/* Paragraphs with line-by-line reveal */}
+            <div className="space-y-5">
+              {KAIJU_PARAGRAPHS.map((paragraph, index) => (
+                <p 
+                  key={index}
+                  className="font-serif leading-relaxed transition-all duration-500"
+                  style={{ 
+                    fontSize: 'clamp(0.85rem, 1.1vw, 1rem)',
+                    color: '#374151',
+                    lineHeight: '1.75',
+                    opacity: visibleParagraphs.includes(index) ? 1 : 0,
+                    transform: visibleParagraphs.includes(index) ? 'translateY(0)' : 'translateY(8px)',
+                  }}
+                >
+                  {paragraph}
+                </p>
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* Top-right vignette - full bleed corner */}
-        <div 
-          ref={vignetteTopRef}
-          className="absolute top-0 right-0 z-20 pointer-events-none"
-          style={{ 
-            width: 'clamp(200px, 28vw, 380px)',
-            height: 'clamp(150px, 22vh, 280px)',
-          }}
-        >
-          <img 
-            src={kaijuVignetteTop}
-            alt=""
-            className="w-full h-full object-cover object-left-bottom"
-            style={{
-              maskImage: 'linear-gradient(to left, black 60%, transparent 100%), linear-gradient(to top, black 60%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, black 60%, transparent 100%), linear-gradient(to top, black 60%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in',
+          {/* Top-right vignette - flush to viewport corner */}
+          <div 
+            ref={vignetteTopRef}
+            className="absolute pointer-events-none"
+            style={{ 
+              top: 0,
+              right: 0,
+              width: 'clamp(220px, 30vw, 420px)',
+              height: 'clamp(160px, 28vh, 320px)',
             }}
-          />
-        </div>
+          >
+            <img 
+              src={kaijuVignetteTop}
+              alt=""
+              className="w-full h-full object-cover object-left-bottom"
+              style={{
+                maskImage: 'linear-gradient(to left, black 50%, transparent 95%), linear-gradient(to top, black 50%, transparent 95%)',
+                WebkitMaskImage: 'linear-gradient(to left, black 50%, transparent 95%), linear-gradient(to top, black 50%, transparent 95%)',
+                maskComposite: 'intersect',
+                WebkitMaskComposite: 'source-in',
+              }}
+            />
+          </div>
 
-        {/* Bottom-right vignette - full bleed corner */}
-        <div 
-          ref={vignetteBottomRef}
-          className="absolute bottom-0 right-0 z-20 pointer-events-none"
-          style={{ 
-            width: 'clamp(180px, 25vw, 340px)',
-            height: 'clamp(140px, 20vh, 260px)',
-          }}
-        >
-          <img 
-            src={kaijuVignetteBottom}
-            alt=""
-            className="w-full h-full object-cover object-left-top"
-            style={{
-              maskImage: 'linear-gradient(to left, black 60%, transparent 100%), linear-gradient(to bottom, black 60%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, black 60%, transparent 100%), linear-gradient(to bottom, black 60%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in',
+          {/* Bottom-right vignette - flush to viewport corner */}
+          <div 
+            ref={vignetteBottomRef}
+            className="absolute pointer-events-none"
+            style={{ 
+              bottom: 0,
+              right: 0,
+              width: 'clamp(200px, 28vw, 380px)',
+              height: 'clamp(150px, 26vh, 300px)',
             }}
-          />
+          >
+            <img 
+              src={kaijuVignetteBottom}
+              alt=""
+              className="w-full h-full object-cover object-left-top"
+              style={{
+                maskImage: 'linear-gradient(to left, black 50%, transparent 95%), linear-gradient(to bottom, black 50%, transparent 95%)',
+                WebkitMaskImage: 'linear-gradient(to left, black 50%, transparent 95%), linear-gradient(to bottom, black 50%, transparent 95%)',
+                maskComposite: 'intersect',
+                WebkitMaskComposite: 'source-in',
+              }}
+            />
+          </div>
         </div>
       </section>
     </div>
