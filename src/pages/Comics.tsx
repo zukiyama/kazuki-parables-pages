@@ -690,8 +690,8 @@ const Comics = () => {
                 transition: 'opacity 0.5s ease-out'
               }}
             >
-              <div className="w-full h-full flex items-center justify-center px-4 sm:px-6">
-                <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6 lg:gap-8 items-center">
+              <div className={`w-full h-full flex items-center justify-center px-4 sm:px-6 ${isWidescreen ? 'pt-8' : ''}`}>
+                <div className={`w-full max-w-6xl flex flex-col lg:flex-row items-center ${isWidescreen ? 'gap-12 lg:gap-16' : 'gap-6 lg:gap-8'}`}>
                   
                   {/* Main Image - Slides in from LEFT */}
                   <div 
