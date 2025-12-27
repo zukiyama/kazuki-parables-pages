@@ -127,7 +127,8 @@ const Writing = () => {
     let lastSnappedSection: string | null = null;
     
     // Sections that should NOT have snap behavior (except young-adult which has special handling)
-    const noSnapSections = ['kaiju'];
+    // KAIJU now has snap behavior like other books
+    const noSnapSections: string[] = [];
 
     const getBookSections = () => {
       // Disable scroll snap on mobile
@@ -602,8 +603,8 @@ const Writing = () => {
           ? 'pt-56' 
           : 'pt-52 max-sm:pt-52'
       }`}>
-        {/* KAIJU - The Parable Trilogy Section */}
-        <section data-section="kaiju" className={`flex items-center justify-center relative ${
+        {/* KAIJU - The Parable Trilogy Section - Introduction */}
+        <section className={`flex items-center justify-center relative ${
           isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
           <div className="container mx-auto px-6 py-12">
@@ -628,24 +629,41 @@ const Writing = () => {
                   A metaphysical saga unfolding across the shifting decades of an alternate 20th-century Japan, taking the reader from mysterious towns and abandoned film sets to mountain temples and secret research facilities far from this world. With a cast as varied as its setting, childhood wonder collides with philosophy and fantasy in this compelling trilogy that explores the boundaries between truth and fiction.
                 </p>
               </div>
-              
-              {/* White magazine strip with book cover and literary blurb */}
+            </div>
+          </div>
+        </section>
+
+        {/* KAIJU Book Section with scroll-snap */}
+        <section data-section="kaiju" className={`flex items-center justify-center relative ${
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+        }`}>
+          <div className="container mx-auto px-6 py-12">
+            <div className="max-w-6xl mx-auto">
+              {/* Magazine strip with gradient fade - right to left */}
               <div 
-                className={`relative w-screen -mx-6 transition-all duration-1000 delay-300 ${
-                  visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                className={`relative w-screen transition-all duration-1000 ${
+                  visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
                 }`}
                 style={{ 
                   marginLeft: 'calc(-50vw + 50%)',
                   marginRight: 'calc(-50vw + 50%)'
                 }}
               >
-                <div className="bg-white/95 backdrop-blur-sm py-12 md:py-16 shadow-2xl">
-                  <div className="container mx-auto px-8 md:px-12 lg:px-16">
+                {/* Gradient background - white from right, fading to transparent on left */}
+                <div 
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(to left, rgba(255,255,255,0.97) 40%, rgba(255,255,255,0.85) 55%, rgba(255,255,255,0.4) 70%, rgba(255,255,255,0) 85%)'
+                  }}
+                />
+                
+                <div className="relative py-8 md:py-10">
+                  <div className="container mx-auto px-6 md:px-12 lg:px-16">
                     <div className="max-w-6xl mx-auto">
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-                        {/* Book Cover */}
-                        <div className={`transition-all duration-1000 delay-500 ${
-                          visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                        {/* Book Cover - slides in from left */}
+                        <div className={`transition-all duration-1000 delay-200 ${
+                          visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-24'
                         }`}>
                           <BookCoverSlideshow 
                             covers={[
@@ -657,16 +675,21 @@ const Writing = () => {
                           />
                         </div>
 
-                        {/* Literary Magazine Blurb */}
-                        <div className={`transition-all duration-1000 delay-700 ${
-                          visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
+                        {/* Literary Magazine Blurb - slides in from right */}
+                        <div className={`transition-all duration-1000 delay-400 ${
+                          visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-24'
                         }`}>
+                          {/* Elegant title - softer styling */}
                           <h2 
-                            className={`font-serif font-bold mb-6 text-stone-900 tracking-tight ${
-                              isWidescreen ? 'text-3xl' : 'text-4xl'
+                            className={`font-serif mb-5 text-stone-800 tracking-[0.15em] uppercase ${
+                              isWidescreen ? 'text-xl' : 'text-2xl'
                             }`}
+                            style={{
+                              fontWeight: 400,
+                              letterSpacing: '0.2em'
+                            }}
                           >
-                            KAIJU
+                            <span className="border-b-2 border-amber-600/40 pb-1">Kaiju</span>
                           </h2>
                           <LiteraryMagazineBlurb
                             bookNumber="Book One"
@@ -701,8 +724,8 @@ const Writing = () => {
                 </div>
               </div>
 
-              {/* Summary sentence beneath the white strip */}
-              <p className={`font-serif leading-relaxed text-white italic text-center mt-12 mb-16 max-w-4xl mx-auto transition-all duration-1000 delay-900 ${
+              {/* Summary sentence beneath */}
+              <p className={`font-serif leading-relaxed text-white italic text-center mt-12 mb-8 max-w-4xl mx-auto transition-all duration-1000 delay-600 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               } ${isWidescreen ? 'text-lg' : 'text-xl'}`}>
                 Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three people in a 1979 that happened only for those who were there.
