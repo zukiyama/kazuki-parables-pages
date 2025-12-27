@@ -9,7 +9,6 @@ import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
 import { BookshelfMenu } from "@/components/BookshelfMenu";
 import { FloatingQuote } from "@/components/FloatingQuote";
 import { MagazineBlurb } from "@/components/MagazineBlurb";
-import { LiteraryMagazineBlurb } from "@/components/LiteraryMagazineBlurb";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
@@ -126,9 +125,8 @@ const Writing = () => {
     let scrollTimeout: NodeJS.Timeout;
     let lastSnappedSection: string | null = null;
     
-    // Sections that should NOT have snap behavior
-    // parable-intro should not snap - it's just the intro text
-    const noSnapSections: string[] = ['parable-intro'];
+    // Sections that should NOT have snap behavior (except young-adult which has special handling)
+    const noSnapSections = ['kaiju'];
 
     const getBookSections = () => {
       // Disable scroll snap on mobile
@@ -603,8 +601,8 @@ const Writing = () => {
           ? 'pt-56' 
           : 'pt-52 max-sm:pt-52'
       }`}>
-        {/* KAIJU - The Parable Trilogy Section - Introduction */}
-        <section data-section="parable-intro" className={`flex items-center justify-center relative ${
+        {/* KAIJU - The Parable Trilogy Section */}
+        <section data-section="kaiju" className={`flex items-center justify-center relative ${
           isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
           <div className="container mx-auto px-6 py-12">
@@ -612,8 +610,8 @@ const Writing = () => {
               {/* Page Title */}
               <div className="text-center mb-16 lg:pt-12 pt-8">
                 <h1 
-                  className={`font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white transition-all duration-1000 ${
-                    !visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'
+                  className={`font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white transition-opacity duration-500 ${
+                    visibleSections.has('kaiju') ? 'opacity-100' : 'opacity-0'
                   }`}
                 >
                   Novels
@@ -622,121 +620,53 @@ const Writing = () => {
               
               {/* The Parable Trilogy Introduction */}
               <div className={`text-center mb-16 mt-8 max-sm:mt-6 transition-all duration-1000 delay-200 ${
-                !visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'
+                visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 <h2 className="font-serif text-4xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>
                 <p className="font-serif text-lg md:text-xl leading-relaxed text-white max-w-4xl mx-auto">
                   A metaphysical saga unfolding across the shifting decades of an alternate 20th-century Japan, taking the reader from mysterious towns and abandoned film sets to mountain temples and secret research facilities far from this world. With a cast as varied as its setting, childhood wonder collides with philosophy and fantasy in this compelling trilogy that explores the boundaries between truth and fiction.
                 </p>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* KAIJU Book Section with scroll-snap */}
-        <section data-section="kaiju" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
-        }`}>
-          <div className="container mx-auto px-6 py-8">
-            <div className="max-w-6xl mx-auto">
-              {/* Magazine strip with gradient fade - right to left, quicker fade */}
-              <div 
-                className={`relative w-screen transition-all duration-1000 ${
-                  visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
-                }`}
-                style={{ 
-                  marginLeft: 'calc(-50vw + 50%)',
-                  marginRight: 'calc(-50vw + 50%)'
-                }}
-              >
-                {/* Gradient background - white from right, fading quickly after text area */}
-                <div 
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background: 'linear-gradient(to left, rgba(255,255,255,0.97) 30%, rgba(255,255,255,0.9) 42%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 58%)'
-                  }}
-                />
-                
-                <div className="relative py-5 md:py-6">
-                  <div className="container mx-auto px-6 md:px-12 lg:px-16">
-                    <div className="max-w-6xl mx-auto">
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-center">
-                        {/* Book Cover - slides in from left */}
-                        <div className={`transition-all duration-1000 delay-200 ${
-                          visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-24'
-                        }`}>
-                          <BookCoverSlideshow 
-                            covers={[
-                              { image: kaijuCover, alt: "KAIJU - Book One Cover" }
-                            ]}
-                            title="KAIJU"
-                            loading="eager"
-                            isWidescreen={isWidescreen}
-                          />
-                        </div>
-
-                        {/* Literary Magazine Blurb - slides in from right */}
-                        <div className={`transition-all duration-1000 delay-400 ${
-                          visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-24'
-                        }`}>
-                          {/* Simplified header: Book One of the Parable Trilogy */}
-                          <p className={`font-serif tracking-[0.15em] uppercase text-stone-500 mb-2 ${
-                            isWidescreen ? 'text-xs' : 'text-sm'
-                          }`}>
-                            Book One of the Parable Trilogy
-                          </p>
-                          
-                          {/* KAIJU title - elegant, not harsh */}
-                          <h2 
-                            className={`font-serif mb-4 text-stone-700 tracking-[0.12em] ${
-                              isWidescreen ? 'text-xl' : 'text-2xl'
-                            }`}
-                            style={{
-                              fontWeight: 500,
-                              fontStyle: 'italic'
-                            }}
-                          >
-                            Kaiju
-                          </h2>
-                          
-                          {/* Decorative divider */}
-                          <div className="flex items-center gap-3 mb-4">
-                            <div className="h-px flex-1 bg-gradient-to-r from-stone-400 via-stone-300 to-transparent max-w-[120px]"></div>
-                            <div className="w-1.5 h-1.5 bg-amber-600 rotate-45"></div>
-                          </div>
-                          
-                          {/* Blurb paragraphs */}
-                          <div className="space-y-3">
-                            <p className={`font-serif leading-[1.8] text-stone-700 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
-                              <span className="float-left font-serif text-amber-700 mr-2 leading-none" style={{ fontSize: isWidescreen ? '2rem' : '2.5rem', marginTop: '0.05em' }}>W</span>
-                              hen a foreign object crashes from the sky in Osaka, Japan, and <span className="font-medium text-amber-700">a strange figure</span> steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
-                            </p>
-                            <p className={`font-serif leading-[1.8] text-stone-700 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ textIndent: '1.5em' }}>
-                              For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that <span className="font-medium text-amber-700">they each share a secret</span>, and begin to suspect the town is not all it seems.
-                            </p>
-                            <p className={`font-serif leading-[1.8] text-stone-700 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ textIndent: '1.5em' }}>
-                              Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something <span className="font-medium text-amber-700">far more dangerous</span> than she ever imagined.
-                            </p>
-                          </div>
-                          
-                          {/* Bottom decorative element */}
-                          <div className="mt-5 flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 bg-amber-600 rotate-45"></div>
-                            <div className="w-1.5 h-1.5 bg-stone-400 rotate-45"></div>
-                            <div className="w-1.5 h-1.5 bg-stone-300 rotate-45"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+              
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
+                <div className={`transition-all duration-1000 delay-300 ${
+                  visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
+                }`}>
+                  <BookCoverSlideshow 
+                    covers={[
+                      { image: kaijuCover, alt: "KAIJU - Book One Cover" }
+                    ]}
+                    title="KAIJU"
+                    loading="eager"
+                    isWidescreen={isWidescreen}
+                  />
+                </div>
+                <div className={`transition-all duration-1000 delay-500 ${
+                  visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
+                }`}>
+                  <h2 className="font-serif font-bold mb-2 text-white" style={{ fontSize: isWidescreen ? '2.5rem' : '3rem' }}>
+                    KAIJU
+                  </h2>
+                  <div className="bg-black/75 backdrop-blur-sm rounded-lg px-6 pt-4 pb-6 border border-white/20">
+                    <h3 className={`font-serif text-yellow-300 mb-6 tracking-wide ${isWidescreen ? 'text-sm mb-4' : ''}`} style={{ fontSize: isWidescreen ? 'calc(0.875rem + 1pt)' : 'calc(1rem + 2pt)' }}>
+                      Book One of The Parable Trilogy
+                    </h3>
+                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                      When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
+                    </p>
+                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                      For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
+                    </p>
+                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                      Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
+                    </p>
                   </div>
                 </div>
               </div>
-
-              {/* Summary sentence beneath */}
-              <p className={`font-serif leading-relaxed text-white italic text-center mt-12 mb-8 max-w-4xl mx-auto transition-all duration-1000 delay-600 ${
+              <p className={`font-serif leading-relaxed text-white italic text-center mt-10 mb-16 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               } ${isWidescreen ? 'text-lg' : 'text-xl'}`}>
-                Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three people in a 1979 that happened only for those who were there.
+                Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people in a 1979 that happened only for those who were there.
               </p>
             </div>
           </div>
