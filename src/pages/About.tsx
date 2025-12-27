@@ -106,34 +106,44 @@ const About = () => {
             </div>
           ) : (
             /* Standard layout for non-widescreen */
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-              
-              {/* Large Editorial Title */}
-              <div className="lg:col-span-7">
-                <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-black leading-[0.9] tracking-tight mb-8">
-                  Kazuki
-                  <br />
-                  <span className="italic font-light">Yamakawa</span>
-                </h1>
-                
-                {/* Lead paragraph - larger text */}
-                <p className="font-body text-xl md:text-2xl lg:text-3xl text-black leading-snug max-w-2xl mb-12">
-                  A multi-disciplinary artist working in literature, music and visual storytelling.
-                </p>
-                
-                {/* Body text in columns */}
-                <p className="font-body text-base lg:text-lg text-black/80 leading-relaxed max-w-3xl -mt-6">
-                  A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
-                </p>
-              </div>
-              
-              {/* Author Portrait - positioned on right */}
-              <div className="lg:col-span-5 flex justify-center lg:justify-end">
+            <div className="flex flex-col">
+              {/* Mobile: Artist photo at top (between Author·Composer and title) */}
+              <div className="lg:hidden flex justify-center mb-8">
                 <OptimizedImage 
                   src={artistPortrait}
                   alt="Kazuki Yamakawa portrait"
-                  className="w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 object-cover grayscale shadow-2xl"
+                  className="w-72 h-72 md:w-80 md:h-80 object-cover grayscale shadow-2xl"
                 />
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+                {/* Large Editorial Title */}
+                <div className="lg:col-span-7">
+                  <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-black leading-[0.9] tracking-tight mb-8">
+                    Kazuki
+                    <br />
+                    <span className="italic font-light">Yamakawa</span>
+                  </h1>
+                  
+                  {/* Lead paragraph - larger text */}
+                  <p className="font-body text-xl md:text-2xl lg:text-3xl text-black leading-snug max-w-2xl mb-12">
+                    A multi-disciplinary artist working in literature, music and visual storytelling.
+                  </p>
+                  
+                  {/* Body text in columns */}
+                  <p className="font-body text-base lg:text-lg text-black/80 leading-relaxed max-w-3xl -mt-6">
+                    A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                  </p>
+                </div>
+                
+                {/* Author Portrait - positioned on right (desktop/tablet only) */}
+                <div className="hidden lg:flex lg:col-span-5 justify-end">
+                  <OptimizedImage 
+                    src={artistPortrait}
+                    alt="Kazuki Yamakawa portrait"
+                    className="w-96 h-96 object-cover grayscale shadow-2xl"
+                  />
+                </div>
               </div>
             </div>
           )}

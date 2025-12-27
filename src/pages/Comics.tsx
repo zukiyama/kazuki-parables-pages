@@ -790,26 +790,24 @@ const Comics = () => {
           {/* Pendragon - the ONLY instance, sits behind pinned dissolve container */}
           <section 
             className="relative w-full overflow-hidden cursor-pointer"
-            style={{ height: isWidescreen ? 'auto' : 'calc(100vh - 64px)' }}
             onClick={() => setPendragonCaptionVisible(!pendragonCaptionVisible)}
           >
             {/* Desktop image - widescreen shows full image without cropping */}
             <img 
               src={surnamePendragonBanner}
               alt="Surname Pendragon"
-              className={`hidden sm:block w-full ${isWidescreen ? 'h-auto object-contain' : 'absolute inset-0 h-full object-cover'}`}
+              className={`hidden sm:block w-full ${isWidescreen ? 'h-auto object-contain' : 'h-[calc(100vh-64px)] object-cover'}`}
               style={{ objectPosition: isWidescreen ? undefined : 'center 20%' }}
             />
-            {/* Mobile image */}
+            {/* Mobile image - full width, show entire horizontal extent */}
             <img 
               src={surnamePendragonMobile}
               alt="Surname Pendragon"
-              className="sm:hidden absolute inset-0 w-full h-full object-cover"
-              style={{ objectPosition: 'center 30%' }}
+              className="sm:hidden w-full h-auto object-contain"
             />
             {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            {/* Caption */}
+            {/* Caption - positioned relative to bottom of image */}
             <div 
               className="absolute bottom-12 left-8 sm:bottom-16 sm:left-12 max-w-sm transition-all duration-500"
               style={{
