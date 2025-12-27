@@ -501,7 +501,7 @@ const Comics = () => {
                 
               {/* LEFT SIDE - Many Faces character collage (full height) */}
                 <div 
-                  className={`w-[40%] h-full flex items-center justify-center ${isWidescreen ? 'py-12 pt-20' : 'py-6'}`}
+                  className={`w-[40%] h-full flex items-center justify-center ${isWidescreen ? 'py-8 pt-16' : 'py-6'}`}
                   style={{
                     transform: `translateX(${currentSection >= 1 ? (currentSection >= 2 ? -150 * sectionProgress : 0) : -100}%)`,
                     transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
@@ -511,7 +511,7 @@ const Comics = () => {
                     src={vignetteManyFaces}
                     alt="The many faces - God of Lies"
                     className="h-full w-auto object-contain"
-                    style={{ maxHeight: isWidescreen ? 'calc(100vh - 100px)' : 'calc(100vh - 120px)' }}
+                    style={{ maxHeight: isWidescreen ? 'calc(100vh - 80px)' : 'calc(100vh - 120px)' }}
                   />
                 </div>
                 
@@ -585,9 +585,9 @@ const Comics = () => {
                   </div>
                 </div>
                 
-                {/* RIGHT SIDE - Two images stacked (apartments top larger, boardgame bottom) */}
+                {/* RIGHT SIDE - Two images stacked (apartments top, boardgame bottom) */}
                 <div 
-                  className={`w-[46%] h-full flex flex-col gap-2 sm:gap-3 ${isWidescreen ? 'py-12 pt-16' : 'py-6'}`}
+                  className={`w-[46%] h-full flex flex-col gap-2 sm:gap-3 ${isWidescreen ? 'py-8 pt-12' : 'py-6'}`}
                   style={{
                     transform: `translateX(${currentSection >= 1 ? (currentSection >= 2 ? 150 * sectionProgress : 0) : 100}%)`,
                     transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
@@ -599,7 +599,7 @@ const Comics = () => {
                       src={vignetteApartments}
                       alt="The neighborhood - God of Lies"
                       className="w-auto h-full object-contain"
-                      style={{ maxHeight: isWidescreen ? '40vh' : '48vh' }}
+                      style={{ maxHeight: isWidescreen ? '41vh' : '48vh' }}
                     />
                   </div>
                   {/* Bottom right - Boardgame (same size as top) */}
@@ -793,12 +793,12 @@ const Comics = () => {
             style={{ height: 'calc(100vh - 64px)' }}
             onClick={() => setPendragonCaptionVisible(!pendragonCaptionVisible)}
           >
-            {/* Desktop image */}
+            {/* Desktop image - widescreen uses object-position top to align with header */}
             <img 
               src={surnamePendragonBanner}
               alt="Surname Pendragon"
               className="hidden sm:block absolute inset-0 w-full h-full object-cover"
-              style={{ objectPosition: 'center 20%' }}
+              style={{ objectPosition: isWidescreen ? 'center top' : 'center 20%' }}
             />
             {/* Mobile image */}
             <img 
