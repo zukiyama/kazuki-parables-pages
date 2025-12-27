@@ -349,7 +349,7 @@ const Music = () => {
     return () => window.removeEventListener('scroll', handleScrollForBanner);
   }, [isWidescreen]);
 
-  // Widescreen only: Show banner when mouse ENTERS banner area from outside, hide when it leaves
+  // Widescreen only: Show banner when mouse ENTERS banner area from outside, hide when cursor goes below covers
   useEffect(() => {
     if (!isWidescreen) return;
 
@@ -358,35 +358,31 @@ const Music = () => {
       const nav = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
       const navBottom = nav ? nav.getBoundingClientRect().bottom : 64;
       
-      // Banner trigger area for SHOWING: from nav bottom to ~100px below
-      const bannerTriggerTop = navBottom;
-      const bannerTriggerBottom = navBottom + 100;
+      // Trigger area for SHOWING banner: from nav bottom to ~100px below (near top of page)
+      const showTriggerTop = navBottom;
+      const showTriggerBottom = navBottom + 100;
       
-      // For HIDING: find the bottom of the album covers in the banner
-      // Album covers are approximately 80px tall, positioned ~10px from top of banner
-      const albumCoversBottom = navBottom + 90; // nav + ~90px to clear album covers
+      // Threshold for HIDING banner: bottom edge of album covers
+      // Album covers are approximately 80-90px tall from the banner top
+      const albumCoversBottom = navBottom + 95;
       
-      const isInTriggerArea = e.clientY >= bannerTriggerTop && e.clientY <= bannerTriggerBottom;
+      const isInShowTriggerArea = e.clientY >= showTriggerTop && e.clientY <= showTriggerBottom;
       
-      if (isInTriggerArea) {
-        // Only show banner if cursor ENTERED from outside AND banner wasn't just clicked
+      // SHOWING logic: cursor enters the trigger area near top
+      if (isInShowTriggerArea) {
         if (cursorWasOutsideBannerRef.current && !bannerClickedRef.current && !bannerVisible) {
           setBannerVisible(true);
         }
         cursorWasOutsideBannerRef.current = false;
         bannerClickedRef.current = false;
       } else {
-        // Cursor is outside banner trigger area
-        if (!cursorWasOutsideBannerRef.current) {
-          // Cursor just LEFT the banner area
-          // Only hide if cursor moved DOWN BELOW the album covers, not UP (into header)
-          // And not if at/near top of page
-          if (window.scrollY > 50 && e.clientY > albumCoversBottom) {
-            setBannerVisible(false);
-          }
-        }
         cursorWasOutsideBannerRef.current = true;
         bannerClickedRef.current = false;
+      }
+      
+      // HIDING logic (separate from showing): if banner is visible and cursor goes below covers
+      if (bannerVisible && window.scrollY > 50 && e.clientY > albumCoversBottom) {
+        setBannerVisible(false);
       }
     };
 
