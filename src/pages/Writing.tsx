@@ -453,7 +453,9 @@ const Writing = () => {
   const cursorWasOutsideBannerRef = useRef(true);
   const bannerClickedRef = useRef(false); // Track if banner was just clicked
 
-  // Widescreen only: Show banner when mouse ENTERS banner area from outside, hide when it leaves
+  // Widescreen only: Separate trigger systems for banner appearance vs disappearance
+  // Trigger A: Top-edge proximity zone (for APPEARANCE only) - unchanged
+  // Trigger B: Actual banner DOM bottom edge (for DISAPPEARANCE only)
   useEffect(() => {
     if (!isWidescreen) return;
 
@@ -462,32 +464,39 @@ const Writing = () => {
       const nav = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
       const navBottom = nav ? nav.getBoundingClientRect().bottom : 64;
       
-      // Banner area is from nav bottom to approximately 100px below it (banner height)
-      const bannerAreaTop = navBottom;
-      const bannerAreaBottom = navBottom + 100; // Approximate banner height
+      // TRIGGER A: Top-edge hover zone for APPEARANCE (unchanged distance)
+      const appearanceZoneTop = navBottom;
+      const appearanceZoneBottom = navBottom + 100; // Original proximity zone
+      const isInAppearanceZone = e.clientY >= appearanceZoneTop && e.clientY <= appearanceZoneBottom;
       
-      const isInBannerArea = e.clientY >= bannerAreaTop && e.clientY <= bannerAreaBottom;
+      // TRIGGER B: Actual banner bottom edge for DISAPPEARANCE
+      // Query the real banner element to get its actual rendered bottom
+      const bannerElement = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
+      const bannerActualBottom = bannerElement ? bannerElement.getBoundingClientRect().bottom : navBottom + 150;
+      const isAboveBannerBottom = e.clientY <= bannerActualBottom;
       
-      if (isInBannerArea) {
-        // Only show banner if cursor ENTERED from outside AND banner wasn't just clicked
+      if (isInAppearanceZone) {
+        // TRIGGER A: Cursor in appearance zone - show banner if entering from outside
         if (cursorWasOutsideBannerRef.current && !bannerClickedRef.current && !bannerVisible) {
           setBannerVisible(true);
         }
         cursorWasOutsideBannerRef.current = false;
-        // Clear the click flag once we've processed a move inside
+        bannerClickedRef.current = false;
+      } else if (isAboveBannerBottom && bannerVisible) {
+        // Cursor is below appearance zone but still above banner bottom - keep banner visible
+        cursorWasOutsideBannerRef.current = false;
         bannerClickedRef.current = false;
       } else {
-        // Cursor is outside banner area
-        if (!cursorWasOutsideBannerRef.current) {
-          // Cursor just LEFT the banner area
-          // Only hide if cursor moved DOWN (below banner), not UP (into header)
-          // And not if at/near top of page
-          if (window.scrollY > 50 && e.clientY > bannerAreaBottom) {
+        // Cursor is below the actual banner bottom
+        if (!cursorWasOutsideBannerRef.current && bannerVisible) {
+          // TRIGGER B: Cursor just left the banner area (moved below actual bottom)
+          // Only hide if not at top of page
+          if (window.scrollY > 50) {
             setBannerVisible(false);
           }
         }
         cursorWasOutsideBannerRef.current = true;
-        bannerClickedRef.current = false; // Clear click flag when outside
+        bannerClickedRef.current = false;
       }
     };
 

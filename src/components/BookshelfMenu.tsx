@@ -235,6 +235,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
 
   return (
     <div 
+      data-banner="bookshelf"
       className={`fixed top-16 left-0 right-0 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-4 max-sm:pt-5 max-sm:pb-6 transition-all duration-500 ease-out ${
         isWidescreen && !bannerVisible 
           ? 'opacity-0 -translate-y-full pointer-events-none' 
