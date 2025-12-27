@@ -19,7 +19,6 @@ import vignetteApartments from "@/assets/god-of-lies-apartments.png";
 import vignetteBoardgame from "@/assets/god-of-lies-boardgame.png";
 import vignetteManyFaces from "@/assets/god-of-lies-many-faces.png";
 import comicPanelsBackground from "@/assets/comic-panels-background.png";
-import godOfLiesWebtoonCover from "@/assets/god-of-lies-webtoon-cover.jpeg";
 
 
 const Comics = () => {
@@ -694,7 +693,7 @@ const Comics = () => {
               <div className="w-full h-full flex items-center justify-center px-4 sm:px-6">
                 <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6 lg:gap-8 items-center">
                   
-                  {/* Main Image - Webtoon Cover - Slides in from LEFT */}
+                  {/* Main Image - Slides in from LEFT */}
                   <div 
                     className="lg:w-1/2 flex justify-center"
                     style={{
@@ -705,11 +704,11 @@ const Comics = () => {
                   >
                     <div 
                       className="relative cursor-pointer group"
-                      onClick={() => setZoomedImage({ src: godOfLiesWebtoonCover, alt: 'God of Lies - Webtoon Cover' })}
+                      onClick={() => setZoomedImage({ src: godOfLiesStreetScene, alt: 'The Masked Figure' })}
                     >
                       <img 
-                        src={godOfLiesWebtoonCover}
-                        alt="God of Lies - Webtoon Cover"
+                        src={godOfLiesStreetScene}
+                        alt="The Masked Figure following"
                         className="max-h-[65vh] object-contain shadow-xl transition-transform duration-300 group-hover:scale-[1.02]"
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
