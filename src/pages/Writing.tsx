@@ -462,13 +462,17 @@ const Writing = () => {
       const nav = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
       const navBottom = nav ? nav.getBoundingClientRect().bottom : 64;
       
-      // Banner area is from nav bottom to approximately 100px below it (banner height)
-      const bannerAreaTop = navBottom;
-      const bannerAreaBottom = navBottom + 100; // Approximate banner height
+      // Banner trigger area for SHOWING: from nav bottom to ~100px below
+      const bannerTriggerTop = navBottom;
+      const bannerTriggerBottom = navBottom + 100;
       
-      const isInBannerArea = e.clientY >= bannerAreaTop && e.clientY <= bannerAreaBottom;
+      // For HIDING: find the bottom of the book covers in the banner
+      // Book covers are approximately 80px tall, positioned ~10px from top of banner
+      const bookCoversBottom = navBottom + 90; // nav + ~90px to clear book covers
       
-      if (isInBannerArea) {
+      const isInTriggerArea = e.clientY >= bannerTriggerTop && e.clientY <= bannerTriggerBottom;
+      
+      if (isInTriggerArea) {
         // Only show banner if cursor ENTERED from outside AND banner wasn't just clicked
         if (cursorWasOutsideBannerRef.current && !bannerClickedRef.current && !bannerVisible) {
           setBannerVisible(true);
@@ -477,12 +481,12 @@ const Writing = () => {
         // Clear the click flag once we've processed a move inside
         bannerClickedRef.current = false;
       } else {
-        // Cursor is outside banner area
+        // Cursor is outside banner trigger area
         if (!cursorWasOutsideBannerRef.current) {
           // Cursor just LEFT the banner area
-          // Only hide if cursor moved DOWN (below banner), not UP (into header)
+          // Only hide if cursor moved DOWN BELOW the book covers, not UP (into header)
           // And not if at/near top of page
-          if (window.scrollY > 50 && e.clientY > bannerAreaBottom) {
+          if (window.scrollY > 50 && e.clientY > bookCoversBottom) {
             setBannerVisible(false);
           }
         }
