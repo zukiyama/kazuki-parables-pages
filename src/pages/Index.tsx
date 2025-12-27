@@ -211,6 +211,9 @@ const Index = () => {
               alt=""
               className="w-full h-full object-cover scale-150 md:scale-[1.55] opacity-0 animate-slow-fade-in-40 translate-y-4 md:translate-y-20"
             />
+            {/* Left and right gradient fades for widescreen - fade to white */}
+            <div className="hidden xl:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent pointer-events-none" />
+            <div className="hidden xl:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent pointer-events-none" />
           </div>
           <ScrollFadeUp id="book-announcement" className="text-center mb-8 relative z-10">
             <h2 className="font-heading text-3xl md:text-5xl mb-4 text-black">
