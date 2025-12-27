@@ -120,16 +120,16 @@ const About = () => {
               </div>
               
               {/* Small iPad portrait: Photo left, Title right side-by-side */}
-              <div className="hidden sm:flex lg:hidden gap-6 items-start mb-6">
+              <div className="hidden sm:flex lg:hidden gap-4 items-start mb-4">
                 <div className="flex-shrink-0">
                   <OptimizedImage 
                     src={artistPortrait}
                     alt="Kazuki Yamakawa portrait"
-                    className="w-48 md:w-56 aspect-square object-cover grayscale shadow-2xl"
+                    className="w-40 md:w-48 aspect-square object-cover grayscale shadow-2xl"
                   />
                 </div>
-                <div className="flex flex-col justify-start">
-                  <h1 className="font-heading text-5xl md:text-6xl text-black leading-[0.85] tracking-tight">
+                <div className="flex flex-col justify-start flex-1">
+                  <h1 className="font-heading text-4xl md:text-5xl text-black leading-[0.85] tracking-tight">
                     Kazuki
                     <br />
                     <span className="italic font-light">Yamakawa</span>
@@ -138,15 +138,15 @@ const About = () => {
               </div>
               
               {/* Small iPad portrait: Subheading beneath photo+title row */}
-              <div className="hidden sm:block lg:hidden mb-6">
-                <p className="font-body text-xl md:text-2xl text-black leading-snug">
+              <div className="hidden sm:block lg:hidden mb-4">
+                <p className="font-body text-lg md:text-xl text-black leading-snug">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
               </div>
               
               {/* Small iPad portrait: Body text moved up */}
               <div className="hidden sm:block lg:hidden">
-                <p className="font-body text-base md:text-lg text-black/80 leading-relaxed max-w-3xl">
+                <p className="font-body text-sm md:text-base text-black/80 leading-relaxed max-w-3xl">
                   A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
@@ -238,11 +238,11 @@ const About = () => {
             <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent pointer-events-none" />
           </div>
           
-          {/* Mobile phone only: Child portrait as background */}
+          {/* Mobile phone ONLY: Child portrait as background - hidden on small iPad */}
           <OptimizedImage
             src={childPortrait}
             alt=""
-            className="w-full h-auto object-cover sm:hidden"
+            className="w-full h-auto object-cover hidden max-sm:block"
           />
           
           {/* Tablet and Desktop: PNG overlay with transparent areas */}
@@ -289,8 +289,8 @@ const About = () => {
             </div>
           </div>
           
-          {/* Mobile phone only text overlay */}
-          <div className="sm:hidden absolute inset-0 bg-black/40 pointer-events-auto">
+          {/* Mobile phone ONLY text overlay - hidden on small iPad */}
+          <div className="hidden max-sm:block absolute inset-0 bg-black/40 pointer-events-auto">
             <div className="flex items-center justify-center h-full px-6 text-center">
               <p className="font-body text-xl text-white leading-relaxed max-w-md drop-shadow-lg">
                 A writer and composer exploring the spaces between form and possibility
