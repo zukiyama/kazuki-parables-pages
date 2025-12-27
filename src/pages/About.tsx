@@ -159,8 +159,12 @@ const About = () => {
                   <span className="italic font-light">Yamakawa</span>
                 </h1>
                 
-                <p className="font-body text-xl text-black leading-snug max-w-2xl mb-6">
+                <p className="font-body text-xl text-black leading-snug max-w-2xl mb-12">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
+                </p>
+                
+                <p className="font-body text-base text-black/80 leading-relaxed max-w-3xl -mt-6">
+                  A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
               
@@ -202,19 +206,12 @@ const About = () => {
       <div className="relative z-20 -mt-20">
         <div className="bg-neutral-900 pt-12 pb-8 px-8 md:px-16 lg:px-24">
           <div className="max-w-4xl mx-auto">
-            {/* Desktop/tablet: Original quote */}
-            <blockquote className="relative hidden sm:block">
+            <blockquote className="relative">
               <span className="absolute -top-6 -left-4 text-8xl text-white/20 font-serif">"</span>
               <p className="font-body text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed italic">
                 I have always had the flaw of describing myself through my interests... because I suppose that I don't feel I can be seen any other way. If it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk; if I had spent the summer revising rather than learning to hold an open A major on an old half size nylon-strung guitar—in short, if I hadn't have traded what I should be doing for what I love, achievement, elevation, and progress for erring, curiosity, and wonder, I should never have found this hapless grove in which I am so brightly sustained.
               </p>
             </blockquote>
-            {/* Mobile: Writer bio blurb */}
-            <div className="sm:hidden">
-              <p className="font-body text-base text-white/90 leading-relaxed">
-                A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
-              </p>
-            </div>
           </div>
         </div>
         {/* Short gradient fade from black to transparent */}
@@ -295,8 +292,8 @@ const About = () => {
           {/* Mobile phone ONLY text overlay - hidden on small iPad */}
           <div className="hidden max-sm:block absolute inset-0 bg-black/40 pointer-events-auto">
             <div className="flex items-center justify-center h-full px-6 text-center">
-              <p className="font-body text-xl text-white leading-relaxed max-w-md drop-shadow-lg italic">
-                Exploring the spaces between form and possibility
+              <p className="font-body text-xl text-white leading-relaxed max-w-md drop-shadow-lg">
+                A writer and composer exploring the spaces between form and possibility
               </p>
             </div>
           </div>
