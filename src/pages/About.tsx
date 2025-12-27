@@ -3,6 +3,7 @@ import { OptimizedImage } from "@/components/OptimizedImage";
 import Navigation from "@/components/Navigation";
 import { useScrollAnimation } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 import artistPortrait from "@/assets/artist-portrait-new.png";
 import parisSquare from "@/assets/paris-square-background.jpg";
 import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
@@ -13,6 +14,7 @@ import childPortrait from "@/assets/about-child-portrait.jpeg";
 const About = () => {
   useScrollToTop();
   const visibleElements = useScrollAnimation();
+  const isWidescreen = useWidescreenAspectRatio();
   const [showCityscape, setShowCityscape] = React.useState(false);
 
   React.useEffect(() => {
@@ -61,36 +63,72 @@ const About = () => {
         
         {/* Magazine-style text layout over background */}
         <div className="relative z-10 px-8 md:px-16 lg:px-24 pb-24 mt-4">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-            
-            {/* Large Editorial Title */}
-            <div className="lg:col-span-7">
-              <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-black leading-[0.9] tracking-tight mb-8">
-                Kazuki
-                <br />
-                <span className="italic font-light">Yamakawa</span>
-              </h1>
+          {/* Widescreen layout: Portrait left, text right */}
+          {isWidescreen ? (
+            <div className="grid grid-cols-12 gap-8 items-start">
+              {/* Left side: Portrait aligned with subtitle line */}
+              <div className="col-span-3 flex flex-col">
+                <OptimizedImage 
+                  src={artistPortrait}
+                  alt="Kazuki Yamakawa portrait"
+                  className="w-full max-w-[180px] aspect-square object-cover grayscale shadow-2xl"
+                />
+              </div>
               
-              {/* Lead paragraph - larger text */}
-              <p className="font-body text-xl md:text-2xl lg:text-3xl text-black leading-snug max-w-2xl mb-12">
-                A multi-disciplinary artist working in literature, music and visual storytelling.
-              </p>
+              {/* Center: Name headline (smaller) */}
+              <div className="col-span-5">
+                <h1 className="font-heading text-5xl xl:text-6xl text-black leading-[0.9] tracking-tight mb-6">
+                  Kazuki
+                  <br />
+                  <span className="italic font-light">Yamakawa</span>
+                </h1>
+                
+                {/* Lead paragraph */}
+                <p className="font-body text-xl xl:text-2xl text-black leading-snug max-w-xl">
+                  A multi-disciplinary artist working in literature, music and visual storytelling.
+                </p>
+              </div>
               
-              {/* Body text in columns */}
-              <p className="font-body text-base lg:text-lg text-black/80 leading-relaxed max-w-3xl -mt-6">
-                A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
-              </p>
+              {/* Right side: Body text in the vacated space */}
+              <div className="col-span-4 pt-4">
+                <p className="font-body text-base xl:text-lg text-black/80 leading-relaxed">
+                  A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                </p>
+              </div>
             </div>
-            
-            {/* Author Portrait - positioned on right */}
-            <div className="lg:col-span-5 flex justify-center lg:justify-end">
-              <OptimizedImage 
-                src={artistPortrait}
-                alt="Kazuki Yamakawa portrait"
-                className="w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 object-cover grayscale shadow-2xl"
-              />
+          ) : (
+            /* Standard layout for non-widescreen */
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+              
+              {/* Large Editorial Title */}
+              <div className="lg:col-span-7">
+                <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-black leading-[0.9] tracking-tight mb-8">
+                  Kazuki
+                  <br />
+                  <span className="italic font-light">Yamakawa</span>
+                </h1>
+                
+                {/* Lead paragraph - larger text */}
+                <p className="font-body text-xl md:text-2xl lg:text-3xl text-black leading-snug max-w-2xl mb-12">
+                  A multi-disciplinary artist working in literature, music and visual storytelling.
+                </p>
+                
+                {/* Body text in columns */}
+                <p className="font-body text-base lg:text-lg text-black/80 leading-relaxed max-w-3xl -mt-6">
+                  A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                </p>
+              </div>
+              
+              {/* Author Portrait - positioned on right */}
+              <div className="lg:col-span-5 flex justify-center lg:justify-end">
+                <OptimizedImage 
+                  src={artistPortrait}
+                  alt="Kazuki Yamakawa portrait"
+                  className="w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 object-cover grayscale shadow-2xl"
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
         
         {/* Gradient transition to dark section */}
