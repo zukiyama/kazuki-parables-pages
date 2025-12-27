@@ -40,12 +40,12 @@ const About = () => {
       
       {/* Hero Section with Paris Square Background */}
       <div className="relative min-h-screen">
-        {/* Full-screen Paris background */}
+        {/* Full-screen Paris background - zoomed on mobile phone to crop above pigeons */}
         <div className="absolute inset-0">
           <OptimizedImage 
             src={parisSquare}
             alt="Parisian square with pigeons"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover max-sm:scale-150 max-sm:origin-top"
             priority
           />
           {/* Subtle overlay to improve text readability */}
@@ -238,11 +238,11 @@ const About = () => {
             <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent pointer-events-none" />
           </div>
           
-          {/* Mobile phone ONLY: Child portrait as background - hidden on small iPad */}
+          {/* Mobile phone ONLY: Child portrait as background */}
           <OptimizedImage
             src={childPortrait}
             alt=""
-            className="w-full h-auto object-cover hidden max-sm:block"
+            className="w-full h-auto object-cover sm:hidden"
           />
           
           {/* Tablet and Desktop: PNG overlay with transparent areas */}
@@ -292,8 +292,8 @@ const About = () => {
           {/* Mobile phone ONLY text overlay - hidden on small iPad */}
           <div className="hidden max-sm:block absolute inset-0 bg-black/40 pointer-events-auto">
             <div className="flex items-center justify-center h-full px-6 text-center">
-              <p className="font-body text-xl text-white leading-relaxed max-w-md drop-shadow-lg">
-                A writer and composer exploring the spaces between form and possibility
+              <p className="font-body text-xl text-white leading-relaxed max-w-md drop-shadow-lg italic">
+                "Gardens grow whether you mean them to or not, and action figures grow taller than the boys that bury them."
               </p>
             </div>
           </div>
