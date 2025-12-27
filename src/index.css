@@ -1162,3 +1162,19 @@
   animation: circle-drift 6s ease-in-out infinite;
   animation-delay: -1.5s;
 }
+
+/* Typewriter cursor blink animation */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 0.8s step-end infinite;
+}
+
+/* Kaiju typewriter text styling */
+.kaiju-typewriter {
+  font-family: var(--font-body);
+  white-space: pre-wrap;
+}
