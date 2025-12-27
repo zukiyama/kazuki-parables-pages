@@ -789,27 +789,27 @@ const Comics = () => {
         >
           {/* Pendragon - the ONLY instance, sits behind pinned dissolve container */}
           <section 
-            className="relative w-full overflow-hidden cursor-pointer sm:mt-0 -mt-16"
+            className="relative w-full overflow-hidden cursor-pointer lg:mt-0 -mt-16"
             onClick={() => setPendragonCaptionVisible(!pendragonCaptionVisible)}
           >
             {/* Desktop image - widescreen shows full image without cropping */}
             <img 
               src={surnamePendragonBanner}
               alt="Surname Pendragon"
-              className={`hidden sm:block w-full ${isWidescreen ? 'h-auto object-contain' : 'h-[calc(100vh-64px)] object-cover'}`}
+              className={`hidden lg:block w-full ${isWidescreen ? 'h-auto object-contain' : 'h-[calc(100vh-64px)] object-cover'}`}
               style={{ objectPosition: isWidescreen ? undefined : 'center 20%' }}
             />
-            {/* Mobile image - full width, show entire horizontal extent, top aligned with header bottom */}
+            {/* Mobile + small iPad image - full width, show entire horizontal extent, top aligned with header bottom */}
             <img 
               src={surnamePendragonMobile}
               alt="Surname Pendragon"
-              className="sm:hidden w-full h-auto object-contain"
+              className="lg:hidden w-full h-auto object-contain"
             />
             {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            {/* Caption - positioned relative to bottom of image */}
+            {/* Caption - positioned relative to bottom of viewport on mobile/tablet, image on desktop */}
             <div 
-              className="absolute bottom-12 left-8 sm:bottom-16 sm:left-12 max-w-sm transition-all duration-500"
+              className="absolute left-8 lg:left-12 max-w-sm transition-all duration-500 bottom-[15vh] lg:bottom-16"
               style={{
                 opacity: pendragonCaptionVisible ? 1 : 0,
                 transform: pendragonCaptionVisible ? 'translateX(0)' : 'translateX(-20px)',
@@ -817,25 +817,25 @@ const Comics = () => {
               }}
             >
               <h4 
-                className="text-white/90 text-xs sm:text-sm uppercase tracking-[0.3em] mb-2 sm:mb-3"
+                className="text-white/90 text-sm md:text-base uppercase tracking-[0.3em] mb-2 lg:mb-3"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
                 Screenplay Adaptation
               </h4>
               <h3 
-                className="text-white text-lg sm:text-2xl lg:text-3xl font-light mb-2 sm:mb-3 tracking-wide"
+                className="text-white text-xl md:text-2xl lg:text-3xl font-light mb-2 lg:mb-3 tracking-wide"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 Surname Pendragon
               </h3>
               <p 
-                className="text-white/70 text-xs sm:text-sm sm:text-base leading-relaxed mb-3 sm:mb-4"
+                className="text-white/70 text-sm md:text-base leading-relaxed mb-3 lg:mb-4"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 A sweeping family saga spanning three generations, where legacy is both burden and blessing.
               </p>
               <p 
-                className="text-white/50 text-xs uppercase tracking-widest"
+                className="text-white/50 text-xs md:text-sm uppercase tracking-widest"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
                 Feature Film • Drama • In Development
