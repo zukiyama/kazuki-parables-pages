@@ -97,10 +97,13 @@ const About = () => {
                 </div>
               </div>
               
-              {/* Right column: Body text - aligned with photo top to subheading bottom */}
-              <div className="flex-1 max-w-[400px] xl:max-w-[450px] pt-1">
+              {/* Right column: Body text - moved down slightly */}
+              <div className="flex-1 max-w-[400px] xl:max-w-[450px] pt-8">
                 <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed">
-                  A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                  A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
+                </p>
+                <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed mt-4">
+                  The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
             </div>
