@@ -499,9 +499,9 @@ const Comics = () => {
               {/* DESKTOP VIGNETTES LAYOUT */}
               <div className="w-full h-full hidden sm:flex items-center px-4 sm:px-6 lg:px-8">
                 
-                {/* LEFT SIDE - Many Faces character collage (full height) */}
+              {/* LEFT SIDE - Many Faces character collage (full height) */}
                 <div 
-                  className="w-[40%] h-full flex items-center justify-center py-6"
+                  className={`w-[40%] h-full flex items-center justify-center ${isWidescreen ? 'py-12 pt-20' : 'py-6'}`}
                   style={{
                     transform: `translateX(${currentSection >= 1 ? (currentSection >= 2 ? -150 * sectionProgress : 0) : -100}%)`,
                     transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
@@ -511,7 +511,7 @@ const Comics = () => {
                     src={vignetteManyFaces}
                     alt="The many faces - God of Lies"
                     className="h-full w-auto object-contain"
-                    style={{ maxHeight: 'calc(100vh - 120px)' }}
+                    style={{ maxHeight: isWidescreen ? 'calc(100vh - 100px)' : 'calc(100vh - 120px)' }}
                   />
                 </div>
                 
@@ -587,28 +587,28 @@ const Comics = () => {
                 
                 {/* RIGHT SIDE - Two images stacked (apartments top larger, boardgame bottom) */}
                 <div 
-                  className="w-[46%] h-full flex flex-col gap-2 sm:gap-3 py-6"
+                  className={`w-[46%] h-full flex flex-col gap-2 sm:gap-3 ${isWidescreen ? 'py-12 pt-16' : 'py-6'}`}
                   style={{
                     transform: `translateX(${currentSection >= 1 ? (currentSection >= 2 ? 150 * sectionProgress : 0) : 100}%)`,
                     transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
-                  {/* Top right - Apartments (larger) */}
-                  <div className="flex-[1.1] flex items-end justify-center overflow-hidden">
+                  {/* Top right - Apartments */}
+                  <div className="flex-1 flex items-end justify-center overflow-hidden">
                     <img 
                       src={vignetteApartments}
                       alt="The neighborhood - God of Lies"
                       className="w-auto h-full object-contain"
-                      style={{ maxHeight: '48vh' }}
+                      style={{ maxHeight: isWidescreen ? '40vh' : '48vh' }}
                     />
                   </div>
-                  {/* Bottom right - Boardgame */}
+                  {/* Bottom right - Boardgame (same size as top) */}
                   <div className="flex-1 flex items-start justify-center overflow-hidden">
                     <img 
                       src={vignetteBoardgame}
                       alt="Family moments - God of Lies"
                       className="w-auto h-full object-contain"
-                      style={{ maxHeight: '42vh' }}
+                      style={{ maxHeight: isWidescreen ? '40vh' : '42vh' }}
                     />
                   </div>
                 </div>
