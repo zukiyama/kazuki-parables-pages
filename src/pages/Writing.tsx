@@ -453,7 +453,7 @@ const Writing = () => {
   const cursorWasOutsideBannerRef = useRef(true);
   const bannerClickedRef = useRef(false); // Track if banner was just clicked
 
-  // Widescreen only: Show banner when mouse ENTERS banner area from outside, hide when cursor goes below covers
+  // Widescreen only: Show banner when mouse ENTERS banner area from outside, hide when it leaves
   useEffect(() => {
     if (!isWidescreen) return;
 
@@ -462,31 +462,32 @@ const Writing = () => {
       const nav = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
       const navBottom = nav ? nav.getBoundingClientRect().bottom : 64;
       
-      // Trigger area for SHOWING banner: from nav bottom to ~100px below (near top of page)
-      const showTriggerTop = navBottom;
-      const showTriggerBottom = navBottom + 100;
+      // Banner area is from nav bottom to approximately 100px below it (banner height)
+      const bannerAreaTop = navBottom;
+      const bannerAreaBottom = navBottom + 100; // Approximate banner height
       
-      // Threshold for HIDING banner: bottom edge of book covers
-      // Book covers are approximately 80-90px tall from the banner top
-      const bookCoversBottom = navBottom + 95;
+      const isInBannerArea = e.clientY >= bannerAreaTop && e.clientY <= bannerAreaBottom;
       
-      const isInShowTriggerArea = e.clientY >= showTriggerTop && e.clientY <= showTriggerBottom;
-      
-      // SHOWING logic: cursor enters the trigger area near top
-      if (isInShowTriggerArea) {
+      if (isInBannerArea) {
+        // Only show banner if cursor ENTERED from outside AND banner wasn't just clicked
         if (cursorWasOutsideBannerRef.current && !bannerClickedRef.current && !bannerVisible) {
           setBannerVisible(true);
         }
         cursorWasOutsideBannerRef.current = false;
+        // Clear the click flag once we've processed a move inside
         bannerClickedRef.current = false;
       } else {
+        // Cursor is outside banner area
+        if (!cursorWasOutsideBannerRef.current) {
+          // Cursor just LEFT the banner area
+          // Only hide if cursor moved DOWN (below banner), not UP (into header)
+          // And not if at/near top of page
+          if (window.scrollY > 50 && e.clientY > bannerAreaBottom) {
+            setBannerVisible(false);
+          }
+        }
         cursorWasOutsideBannerRef.current = true;
-        bannerClickedRef.current = false;
-      }
-      
-      // HIDING logic (separate from showing): if banner is visible and cursor goes below covers
-      if (bannerVisible && window.scrollY > 50 && e.clientY > bookCoversBottom) {
-        setBannerVisible(false);
+        bannerClickedRef.current = false; // Clear click flag when outside
       }
     };
 

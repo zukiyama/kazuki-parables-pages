@@ -331,11 +331,11 @@ const Music = () => {
     const handleScrollForBanner = () => {
       const scrollTop = window.scrollY;
       
-      // If at or near the top (within 50px), show banner - matches Writing page
-      if (scrollTop <= 50) {
+      // If at or near the top (within 100px), show banner
+      if (scrollTop <= 100) {
         setBannerVisible(true);
-      } else if (scrollTop > lastScrollY && scrollTop > 50) {
-        // Scrolling down and past 50px from top - hide banner
+      } else if (scrollTop > lastScrollY && scrollTop > 100) {
+        // Scrolling down and past 100px from top - hide banner
         setBannerVisible(false);
       }
       
@@ -349,7 +349,7 @@ const Music = () => {
     return () => window.removeEventListener('scroll', handleScrollForBanner);
   }, [isWidescreen]);
 
-  // Widescreen only: Show banner when mouse ENTERS banner area from outside, hide when cursor goes below covers
+  // Widescreen only: Show banner when mouse ENTERS banner area from outside, hide when it leaves
   useEffect(() => {
     if (!isWidescreen) return;
 
@@ -358,31 +358,31 @@ const Music = () => {
       const nav = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
       const navBottom = nav ? nav.getBoundingClientRect().bottom : 64;
       
-      // Trigger area for SHOWING banner: from nav bottom to ~100px below (near top of page)
-      const showTriggerTop = navBottom;
-      const showTriggerBottom = navBottom + 100;
+      // Banner area is from nav bottom to approximately 100px below it (banner height)
+      const bannerAreaTop = navBottom;
+      const bannerAreaBottom = navBottom + 100;
       
-      // Threshold for HIDING banner: bottom edge of album covers
-      // Album covers are approximately 80-90px tall from the banner top
-      const albumCoversBottom = navBottom + 95;
+      const isInBannerArea = e.clientY >= bannerAreaTop && e.clientY <= bannerAreaBottom;
       
-      const isInShowTriggerArea = e.clientY >= showTriggerTop && e.clientY <= showTriggerBottom;
-      
-      // SHOWING logic: cursor enters the trigger area near top
-      if (isInShowTriggerArea) {
+      if (isInBannerArea) {
+        // Only show banner if cursor ENTERED from outside AND banner wasn't just clicked
         if (cursorWasOutsideBannerRef.current && !bannerClickedRef.current && !bannerVisible) {
           setBannerVisible(true);
         }
         cursorWasOutsideBannerRef.current = false;
         bannerClickedRef.current = false;
       } else {
+        // Cursor is outside banner area
+        if (!cursorWasOutsideBannerRef.current) {
+          // Cursor just LEFT the banner area
+          // Only hide if cursor moved DOWN (below banner), not UP (into header)
+          // And not if at/near top of page
+          if (window.scrollY > 100 && e.clientY > bannerAreaBottom) {
+            setBannerVisible(false);
+          }
+        }
         cursorWasOutsideBannerRef.current = true;
         bannerClickedRef.current = false;
-      }
-      
-      // HIDING logic (separate from showing): if banner is visible and cursor goes below covers
-      if (bannerVisible && window.scrollY > 50 && e.clientY > albumCoversBottom) {
-        setBannerVisible(false);
       }
     };
 
@@ -396,7 +396,7 @@ const Music = () => {
     if (!isWidescreen) return;
     
     // At or near the top of the page, don't allow hiding the banner
-    if (window.scrollY <= 50) return;
+    if (window.scrollY <= 100) return;
     
     // Don't toggle if clicking on interactive elements
     const target = e.target as HTMLElement;
