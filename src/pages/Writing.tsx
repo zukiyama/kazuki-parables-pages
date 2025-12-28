@@ -675,7 +675,7 @@ const Writing = () => {
                     isWidescreen={isWidescreen}
                   />
                 </div>
-                <div className={`transition-all duration-1000 delay-500 ${
+                <div className={`transition-all duration-1000 delay-500 lg:max-w-[90%] ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   
