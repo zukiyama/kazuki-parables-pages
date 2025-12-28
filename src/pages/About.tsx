@@ -119,21 +119,21 @@ const About = () => {
                 />
               </div>
               
-              {/* Small iPad portrait: Photo left, Title right side-by-side */}
+              {/* Small iPad portrait: Title left, Photo right side-by-side */}
               <div className="hidden sm:flex lg:hidden gap-4 items-start mb-4">
+                <div className="flex flex-col justify-start flex-1">
+                  <h1 className="font-heading text-5xl md:text-6xl text-black leading-[0.85] tracking-tight">
+                    Kazuki
+                    <br />
+                    <span className="italic font-light">Yamakawa</span>
+                  </h1>
+                </div>
                 <div className="flex-shrink-0">
                   <OptimizedImage 
                     src={artistPortrait}
                     alt="Kazuki Yamakawa portrait"
                     className="w-40 md:w-48 aspect-square object-cover grayscale shadow-2xl"
                   />
-                </div>
-                <div className="flex flex-col justify-start flex-1">
-                  <h1 className="font-heading text-4xl md:text-5xl text-black leading-[0.85] tracking-tight">
-                    Kazuki
-                    <br />
-                    <span className="italic font-light">Yamakawa</span>
-                  </h1>
                 </div>
               </div>
               
