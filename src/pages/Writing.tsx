@@ -465,6 +465,13 @@ const Writing = () => {
     if (!isWidescreen) return;
 
     const handleMouseMove = (e: MouseEvent) => {
+      // IGNORE if cursor is in scrollbar area (right edge of window)
+      // Scrollbar is typically ~17px wide, use 20px for safety margin
+      const scrollbarWidth = 20;
+      if (e.clientX >= window.innerWidth - scrollbarWidth) {
+        return; // Don't trigger any banner behavior when in scrollbar area
+      }
+      
       // Get the header/nav height
       const nav = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
       const navBottom = nav ? nav.getBoundingClientRect().bottom : 64;
@@ -632,10 +639,18 @@ const Writing = () => {
                 </h1>
               </div>
               
-              {/* The Parable Trilogy Introduction */}
-              <div className={`text-center mb-24 max-sm:mb-16 mt-8 max-sm:mt-6 transition-all duration-1000 delay-200 ${
-                visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}>
+              {/* The Parable Trilogy Introduction - fades out when scrolled past header */}
+              <div 
+                className={`text-center mb-24 max-sm:mb-16 mt-8 max-sm:mt-6 transition-all duration-1000 delay-200 ${
+                  visibleSections.has('kaiju') ? 'translate-y-0' : 'translate-y-10'
+                }`}
+                style={{
+                  opacity: visibleSections.has('kaiju') 
+                    ? Math.max(0, Math.min(1, 1 - (scrollY - 100) / 200))
+                    : 0,
+                  transition: 'opacity 0.3s ease-out, transform 1s ease-out'
+                }}
+              >
                 <h2 className="font-serif text-4xl max-sm:text-3xl font-bold text-yellow-300 mb-6">
                   The Parable Trilogy
                 </h2>
@@ -645,7 +660,10 @@ const Writing = () => {
               </div>
               
               {/* Book One Title - Centered above both cover and blurb */}
-              <div className={`text-center mb-14 max-sm:mb-10 transition-all duration-1000 delay-300 ${
+              {/* iPad: less padding (mb-10), Widescreen: normal padding (mb-14) */}
+              <div className={`text-center max-sm:mb-10 transition-all duration-1000 delay-300 ${
+                isWidescreen ? 'mb-14' : 'mb-10'
+              } ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 <span 
