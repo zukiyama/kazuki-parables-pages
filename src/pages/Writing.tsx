@@ -837,10 +837,10 @@ const Writing = () => {
                   </div>
                 </div>
               </div>
-              {/* iPad desktop: less top margin (lg:mt-6), mobile phone: less top margin (max-sm:mt-10) */}
+              {/* iPad desktop: significantly less top margin (lg:mt-2), mobile phone: less top margin (max-sm:mt-10) */}
               <p className={`font-serif leading-relaxed text-white italic text-center mt-14 max-sm:mt-10 mb-16 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              } ${isWidescreen ? 'text-lg' : 'text-xl lg:mt-6 max-sm:text-base'}`}>
+              } ${isWidescreen ? 'text-lg' : 'text-xl lg:mt-2 max-sm:text-base'}`}>
                 Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people in a 1979 that happened only for those who were there.
               </p>
             </div>
