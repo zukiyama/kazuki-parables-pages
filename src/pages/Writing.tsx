@@ -635,13 +635,12 @@ const Writing = () => {
                   The Parable Trilogy
                 </h2>
                 <p className="font-serif text-lg md:text-xl max-sm:text-base leading-relaxed text-white max-w-4xl mx-auto">
-                  A metaphysical saga unfolding across the shifting decades of an alternate 20th-century Japan, taking the reader from mysterious towns and abandoned film sets to mountain temples and secret research facilities far from this world. With a cast as varied as its setting, childhood wonder collides with philosophy and fantasy in this compelling trilogy that explores the boundaries between truth and fiction.
+                  A metaphysical saga unfolding across the shifting decades of an alternate 20th-century Japan, from mysterious towns and abandoned film sets to mountain temples and secret research facilities far from this world. With a cast as varied as its setting, childhood wonder collides with philosophy and fantasy in this compelling trilogy that explores the boundaries between truth and fiction.
                 </p>
               </div>
               
               {/* Book One Title - Centered above both cover and blurb */}
-              {/* Book One Title - Centered above both cover and blurb */}
-              <div className={`text-center mb-10 max-sm:mb-8 transition-all duration-1000 delay-300 ${
+              <div className={`text-center mb-14 max-sm:mb-10 transition-all duration-1000 delay-300 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 <span 
