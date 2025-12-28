@@ -314,15 +314,6 @@ const About = () => {
               <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-5" : ""}`} style={{ marginRight: '-15px', marginTop: '26px' }}>real</span>
             </div>
           </div>
-          
-          {/* Small iPad portrait ONLY: Kanji signature at bottom right */}
-          <div className="absolute bottom-[10%] right-[8%] hidden sm:block lg:hidden z-30">
-            <OptimizedImage 
-              src={signatureYamakawa}
-              alt="Yamakawa signature"
-              className="w-28 md:w-36 h-auto opacity-90"
-            />
-          </div>
         </div>
       </div>
       
