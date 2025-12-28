@@ -219,7 +219,10 @@ const Index = () => {
             <h2 className="font-heading text-3xl md:text-5xl mb-4 text-black">
               Book One of The Parable Trilogy
             </h2>
-            <h3 className="font-heading text-4xl md:text-6xl font-bold text-primary">
+            <h3 
+              className="text-4xl md:text-6xl font-light tracking-[0.15em] text-primary"
+              style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
+            >
               KAIJU
             </h3>
             <p className="font-handwriting text-3xl md:text-4xl text-black mt-6 inline-block rotate-[-2deg] handwriting-write">
