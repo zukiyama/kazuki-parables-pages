@@ -726,14 +726,14 @@ const Writing = () => {
                 ref={parableTrilogyRef}
                 className={`text-center mt-8 max-sm:mt-6 ${
                   visibleSections.has('kaiju') ? 'translate-y-0' : 'translate-y-10'
-                } ${isWidescreen ? 'mb-24' : 'mb-28 max-sm:mb-16'}`}
+                } ${isWidescreen ? 'mb-24' : 'mb-28 max-sm:mb-10'}`}
                 style={{
                   opacity: visibleSections.has('kaiju') ? (parableTrilogyVisible ? 1 : 0) : 0,
                   transition: 'opacity 1.2s ease-in-out, transform 1s ease-out'
                 }}
               >
-                {/* iPad: slightly larger text (text-5xl), Widescreen: same (text-5xl) */}
-                <h2 className={`font-serif font-bold text-yellow-300 mb-6 ${isWidescreen ? 'text-5xl' : 'text-5xl max-sm:text-3xl'}`}>
+                {/* iPad: slightly larger text (text-5xl), Widescreen: same (text-5xl), Mobile phone: larger (text-4xl) */}
+                <h2 className={`font-serif font-bold text-yellow-300 mb-6 ${isWidescreen ? 'text-5xl' : 'text-5xl max-sm:text-4xl'}`}>
                   The Parable Trilogy
                 </h2>
                 <p className={`font-serif leading-relaxed text-white max-w-4xl mx-auto ${isWidescreen ? 'text-xl' : 'text-lg md:text-xl max-sm:text-base'}`}>
