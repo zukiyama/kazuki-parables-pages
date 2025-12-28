@@ -785,12 +785,11 @@ const Comics = () => {
         {/* SCROLLABLE CONTENT - Pendragon sits behind pinned container, revealed when scroll unlocks */}
         <div 
           ref={scrollableContentRef}
-          className="sm:mt-16"
-          style={{ marginTop: typeof window !== 'undefined' && window.innerWidth < 640 ? '0px' : undefined }}
+          className="mt-16"
         >
           {/* Pendragon - the ONLY instance, sits behind pinned dissolve container */}
           <section 
-            className="relative w-full overflow-hidden cursor-pointer max-sm:pt-16"
+            className="relative w-full overflow-hidden cursor-pointer"
             onClick={() => setPendragonCaptionVisible(!pendragonCaptionVisible)}
           >
             {/* Desktop image - widescreen shows full image without cropping */}
