@@ -841,7 +841,7 @@ const Writing = () => {
               <p className={`font-serif leading-relaxed text-white italic text-center mt-14 max-sm:mt-10 mb-16 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               } ${isWidescreen ? 'text-lg' : 'text-xl lg:mt-2 max-sm:text-base'}`}>
-                Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people in a 1979 that happened only for those who were there.
+                Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people in a 1979 that only happened for those who were there.
               </p>
             </div>
           </div>
