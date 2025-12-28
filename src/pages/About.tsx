@@ -201,19 +201,125 @@ const About = () => {
       </div>
       
       {/* Dark Quote Section - First Quote Only */}
-      <div className="relative z-20 -mt-20">
+      <div 
+        className="relative z-20 -mt-20"
+        data-scroll-animation="quote-section"
+      >
         <div className="bg-neutral-900 pt-12 pb-8 px-8 md:px-16 lg:px-24">
           <div className="max-w-4xl mx-auto">
-            <blockquote className="relative">
-              <span className="absolute -top-6 -left-4 text-8xl text-white/20 font-serif">"</span>
-              {/* Mobile phone version - shorter quote */}
-              <p className="font-body text-lg text-white/90 leading-relaxed italic sm:hidden">
-                If it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk; if I had spent the summer revising rather than learning to hold an open A major on an old half size nylon-strung guitar—in short, if I hadn't have traded what I should be doing for what I love, I should never have found this hapless grove in which I am so brightly sustained.
-              </p>
-              {/* Tablet and desktop version - full quote */}
-              <p className="font-body hidden sm:block text-xl lg:text-2xl text-white/90 leading-relaxed italic">
-                I have always had the flaw of describing myself through my interests... because I suppose that I don't feel I can be seen any other way. If it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk; if I had spent the summer revising rather than learning to hold an open A major on an old half size nylon-strung guitar—in short, if I hadn't have traded what I should be doing for what I love, achievement, elevation, and progress for erring, curiosity, and wonder, I should never have found this hapless grove in which I am so brightly sustained.
-              </p>
+            <blockquote className="relative overflow-hidden">
+              <span 
+                className={`absolute -top-6 -left-4 text-8xl text-white/20 font-serif transition-all duration-700 ease-out ${
+                  visibleElements.has("quote-section") 
+                    ? "opacity-100 translate-x-0" 
+                    : "opacity-0 -translate-x-12"
+                }`}
+              >"</span>
+              {/* Mobile phone version - shorter quote with animations */}
+              <div className="font-body text-lg text-white/90 leading-relaxed italic sm:hidden">
+                <span 
+                  className={`block transition-all duration-700 ease-out delay-100 ${
+                    visibleElements.has("quote-section") 
+                      ? "opacity-100 translate-x-0" 
+                      : "opacity-0 -translate-x-16"
+                  }`}
+                >
+                  If it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk;
+                </span>
+                <span 
+                  className={`block transition-all duration-700 ease-out delay-300 ${
+                    visibleElements.has("quote-section") 
+                      ? "opacity-100 translate-x-0" 
+                      : "opacity-0 translate-x-16"
+                  }`}
+                >
+                  if I had spent the summer revising rather than learning to hold an open A major on an old half size nylon-strung guitar—
+                </span>
+                <span 
+                  className={`block transition-all duration-700 ease-out delay-500 ${
+                    visibleElements.has("quote-section") 
+                      ? "opacity-100 translate-x-0" 
+                      : "opacity-0 -translate-x-16"
+                  }`}
+                >
+                  in short, if I hadn't have traded what I should be doing for what I love,
+                </span>
+                <span 
+                  className={`block transition-all duration-700 ease-out delay-700 ${
+                    visibleElements.has("quote-section") 
+                      ? "opacity-100 translate-x-0" 
+                      : "opacity-0 translate-x-16"
+                  }`}
+                >
+                  I should never have found this hapless grove in which I am so brightly sustained.
+                </span>
+              </div>
+              {/* Tablet and desktop version - full quote with animations */}
+              <div className="font-body hidden sm:block text-xl lg:text-2xl text-white/90 leading-relaxed italic">
+                <span 
+                  className={`block transition-all duration-700 ease-out delay-100 ${
+                    visibleElements.has("quote-section") 
+                      ? "opacity-100 translate-x-0" 
+                      : "opacity-0 -translate-x-20"
+                  }`}
+                >
+                  I have always had the flaw of describing myself through my interests...
+                </span>
+                <span 
+                  className={`block transition-all duration-700 ease-out delay-200 ${
+                    visibleElements.has("quote-section") 
+                      ? "opacity-100 translate-x-0" 
+                      : "opacity-0 translate-x-20"
+                  }`}
+                >
+                  because I suppose that I don't feel I can be seen any other way.
+                </span>
+                <span 
+                  className={`block transition-all duration-700 ease-out delay-300 ${
+                    visibleElements.has("quote-section") 
+                      ? "opacity-100 translate-x-0" 
+                      : "opacity-0 -translate-x-20"
+                  }`}
+                >
+                  If it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk;
+                </span>
+                <span 
+                  className={`block transition-all duration-700 ease-out delay-400 ${
+                    visibleElements.has("quote-section") 
+                      ? "opacity-100 translate-x-0" 
+                      : "opacity-0 translate-x-20"
+                  }`}
+                >
+                  if I had spent the summer revising rather than learning to hold an open A major on an old half size nylon-strung guitar—
+                </span>
+                <span 
+                  className={`block transition-all duration-700 ease-out delay-500 ${
+                    visibleElements.has("quote-section") 
+                      ? "opacity-100 translate-x-0" 
+                      : "opacity-0 -translate-x-20"
+                  }`}
+                >
+                  in short, if I hadn't have traded what I should be doing for what I love,
+                </span>
+                <span 
+                  className={`block transition-all duration-700 ease-out delay-600 ${
+                    visibleElements.has("quote-section") 
+                      ? "opacity-100 translate-x-0" 
+                      : "opacity-0 translate-x-20"
+                  }`}
+                >
+                  achievement, elevation, and progress for erring, curiosity, and wonder,
+                </span>
+                <span 
+                  className={`block transition-all duration-700 ease-out delay-700 ${
+                    visibleElements.has("quote-section") 
+                      ? "opacity-100 translate-x-0" 
+                      : "opacity-0 -translate-x-20"
+                  }`}
+                >
+                  I should never have found this hapless grove in which I am so brightly sustained.
+                </span>
+              </div>
             </blockquote>
           </div>
         </div>
