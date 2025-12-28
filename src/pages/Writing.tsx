@@ -710,8 +710,8 @@ const Writing = () => {
           <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
               {/* Page Title */}
-              {/* Widescreen: larger mb (mb-20), iPad: larger mb (mb-20) */}
-              <div className={`text-center lg:pt-12 pt-8 ${isWidescreen ? 'mb-20' : 'mb-20'}`}>
+              {/* Widescreen: mb-20, iPad desktop: slightly more (mb-24) */}
+              <div className={`text-center lg:pt-12 pt-8 ${isWidescreen ? 'mb-20' : 'mb-24'}`}>
                 <h1 
                   className={`font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white transition-opacity duration-500 ${
                     visibleSections.has('kaiju') ? 'opacity-100' : 'opacity-0'
