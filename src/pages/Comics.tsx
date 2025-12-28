@@ -785,12 +785,11 @@ const Comics = () => {
         {/* SCROLLABLE CONTENT - Pendragon sits behind pinned container, revealed when scroll unlocks */}
         <div 
           ref={scrollableContentRef}
-          className="sm:mt-16"
-          style={{ marginTop: typeof window !== 'undefined' && window.innerWidth < 640 ? '0px' : undefined }}
+          className="xs:mt-16"
         >
           {/* Pendragon - the ONLY instance, sits behind pinned dissolve container */}
           <section 
-            className="relative w-full overflow-hidden cursor-pointer max-sm:pt-16"
+            className="relative w-full overflow-hidden cursor-pointer"
             onClick={() => setPendragonCaptionVisible(!pendragonCaptionVisible)}
           >
             {/* Desktop image - widescreen shows full image without cropping */}
@@ -800,11 +799,17 @@ const Comics = () => {
               className={`hidden lg:block w-full ${isWidescreen ? 'h-auto object-contain' : 'h-[calc(100vh-64px)] object-cover'}`}
               style={{ objectPosition: isWidescreen ? undefined : 'center 20%' }}
             />
-            {/* Mobile + small iPad image - full width, top edge aligned with header bottom */}
+            {/* Mobile phone image - mt-16 (64px) pushes it down to align with header bottom */}
             <img 
               src={surnamePendragonMobile}
               alt="Surname Pendragon"
-              className="lg:hidden w-full h-auto object-contain block"
+              className="xs:hidden w-full h-auto object-contain block mt-16"
+            />
+            {/* Small iPad portrait image - no extra margin needed */}
+            <img 
+              src={surnamePendragonMobile}
+              alt="Surname Pendragon"
+              className="hidden xs:block lg:hidden w-full h-auto object-contain"
             />
             {/* Gradient overlay - desktop only */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent hidden lg:block" />
