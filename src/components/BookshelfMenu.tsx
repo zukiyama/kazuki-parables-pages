@@ -139,9 +139,14 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       onBannerHide();
     }
     
-    const scrollToSection = () => {
+    // Use visualViewport.height on iOS for accurate measurements (ChatGPT suggestion)
+    const getViewportHeight = () => {
+      return window.visualViewport?.height ?? window.innerHeight;
+    };
+
+    const calculateSnapPosition = () => {
       const section = document.querySelector(`[data-section="${book.targetSection}"]`) as HTMLElement;
-      if (!section) return;
+      if (!section) return null;
 
       // Get fixed elements - use passed getHeaderBottom for widescreen, fallback otherwise
       const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
@@ -153,10 +158,10 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       const topOffset = headerBottom + bannerHeight;
-      const viewportHeight = window.innerHeight;
+      const viewportHeight = getViewportHeight();
       const availableHeight = viewportHeight - topOffset;
       
-      let targetScrollPosition;
+      let targetScrollPosition: number | undefined;
       
       if (book.targetSection === 'young-adult') {
         // For young-adult slideshow: use EXACT same logic as getCenterSnapPoint in Writing.tsx
@@ -209,6 +214,12 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
         }
       }
       
+      return targetScrollPosition;
+    };
+
+    const scrollToSection = () => {
+      const targetScrollPosition = calculateSnapPosition();
+      
       if (targetScrollPosition !== undefined) {
         // Check if we're already at or very close to the target position
         const currentScroll = window.scrollY;
@@ -217,6 +228,30 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
             top: Math.max(0, targetScrollPosition),
             behavior: 'smooth' 
           });
+          
+          // After smooth scroll ends, do a correction pass with fresh measurements
+          // This ensures we land exactly on the snap point (ChatGPT suggestion)
+          const correctionPass = () => {
+            // Wait for scroll to settle, then recalculate and correct if needed
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                const correctedPosition = calculateSnapPosition();
+                if (correctedPosition !== undefined) {
+                  const finalScroll = window.scrollY;
+                  // Only correct if we're off by more than 2px
+                  if (Math.abs(finalScroll - correctedPosition) > 2) {
+                    window.scrollTo({ 
+                      top: Math.max(0, correctedPosition),
+                      behavior: 'auto' // Instant correction
+                    });
+                  }
+                }
+              });
+            });
+          };
+          
+          // Wait for smooth scroll to finish (~500ms) then correct
+          setTimeout(correctionPass, 550);
         }
         // If we're already at the right position, don't scroll at all
       }

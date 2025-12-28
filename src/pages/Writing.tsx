@@ -148,6 +148,11 @@ const Writing = () => {
       return bookSections;
     };
 
+    // Use visualViewport.height on iOS for accurate measurements
+    const getViewportHeight = () => {
+      return window.visualViewport?.height ?? window.innerHeight;
+    };
+
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
       const headerBottom = getHeaderBottom();
       // For widescreen: ignore banner completely - snap is independent of banner visibility
@@ -155,7 +160,7 @@ const Writing = () => {
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       const topOffset = headerBottom + bannerHeight;
-      const viewportHeight = window.innerHeight;
+      const viewportHeight = getViewportHeight();
       const availableHeight = viewportHeight - topOffset;
       
       // Special handling for young-adult section
@@ -247,7 +252,7 @@ const Writing = () => {
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       const topOffset = headerBottom + bannerHeight;
-      const viewportHeight = window.innerHeight;
+      const viewportHeight = getViewportHeight();
       const availableViewport = viewportHeight - topOffset;
 
       // Find section that fills MOST of the screen (>50%)
