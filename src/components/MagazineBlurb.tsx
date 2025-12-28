@@ -54,7 +54,7 @@ export const MagazineBlurb: React.FC<MagazineBlurbProps> = ({
                 isVisible 
                   ? 'opacity-100 translate-x-0 blur-0' 
                   : `opacity-0 ${isEven ? '-translate-x-8' : 'translate-x-8'} blur-sm`
-              } ${isWidescreen ? 'text-sm' : 'text-base'}`}
+              } ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
               style={{ 
                 transitionDelay: `${delay}s`,
                 transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'

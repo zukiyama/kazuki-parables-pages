@@ -631,8 +631,8 @@ const Writing = () => {
               <div className={`text-center mb-16 mt-8 max-sm:mt-6 transition-all duration-1000 delay-200 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
-                <h2 className="font-serif text-4xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>
-                <p className="font-serif text-lg md:text-xl leading-relaxed text-white max-w-4xl mx-auto">
+                <h2 className="font-serif text-4xl max-sm:text-3xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>
+                <p className="font-serif text-lg md:text-xl max-sm:text-base leading-relaxed text-white max-w-4xl mx-auto">
                   A metaphysical saga unfolding across the shifting decades of an alternate 20th-century Japan, taking the reader from mysterious towns and abandoned film sets to mountain temples and secret research facilities far from this world. With a cast as varied as its setting, childhood wonder collides with philosophy and fantasy in this compelling trilogy that explores the boundaries between truth and fiction.
                 </p>
               </div>
@@ -660,13 +660,13 @@ const Writing = () => {
                     <h3 className={`font-serif text-yellow-300 mb-6 tracking-wide ${isWidescreen ? 'text-sm mb-4' : ''}`} style={{ fontSize: isWidescreen ? 'calc(0.875rem + 1pt)' : 'calc(1rem + 2pt)' }}>
                       Book One of The Parable Trilogy
                     </h3>
-                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                     </p>
-                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
                     </p>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
                     </p>
                   </div>
@@ -674,7 +674,7 @@ const Writing = () => {
               </div>
               <p className={`font-serif leading-relaxed text-white italic text-center mt-10 mb-16 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              } ${isWidescreen ? 'text-lg' : 'text-xl'}`}>
+              } ${isWidescreen ? 'text-lg' : 'text-xl max-sm:text-base'}`}>
                 Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people in a 1979 that happened only for those who were there.
               </p>
             </div>
@@ -729,16 +729,16 @@ const Writing = () => {
                       background: 'linear-gradient(180deg, #fffef5 0%, #fefce8 50%, #fef9c3 100%)',
                       boxShadow: '2px 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)'
                     }}>
-                      <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.9' }}>
+                      <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ lineHeight: '1.9' }}>
                         Peter Mayhew had hit rock bottom when he wrote Hoax, a pseudo-spiritual parody intended as his sign-off, a final insult to an industry he had grown to despise… and worst of all an overnight bestseller. He had finally made his name — and could never use it again.
                       </p>
-                      <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.9' }}>
+                      <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ lineHeight: '1.9' }}>
                         A year later, fleeing his reputation in an Australian motel, paralysed by writer's block, with his only opportunities those to write a sequel, he receives a phone call from someone who claims to be part of a cult modelled on his book.
                       </p>
-                      <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.9' }}>
+                      <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ lineHeight: '1.9' }}>
                         Walking into what feels like his own work come to life, Peter must convince a community it was all a hoax—but in doing so, he begins to question where his book truly came from.
                       </p>
-                      <p className={`font-serif leading-loose text-stone-600 italic ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ lineHeight: '1.9' }}>
+                      <p className={`font-serif leading-loose text-stone-600 italic ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ lineHeight: '1.9' }}>
                         A mind bending tale of literary fiction.
                       </p>
                     </div>
@@ -794,13 +794,13 @@ const Writing = () => {
                       <h2 className={`font-mono font-bold mb-4 text-cyan-300 tracking-tight ${isWidescreen ? 'text-3xl' : 'text-4xl'}`}>
                         THE MARKET
                       </h2>
-                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                         James Tarreden's new life on <em>Island</em>—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. In fact, everything is falling into place a little too easily…
                       </p>
-                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                         Under the wing of an enigmatic young CEO, James is inducted into the secrets behind his company's new technology, and with everything he knew about reality unravelling, finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of <em>Island</em>, one that gives an entirely new meaning to corporate survival.
                       </p>
-                      <p className={`font-sans italic text-cyan-200/80 ${isWidescreen ? 'text-xs' : 'text-sm'}`}>
+                      <p className={`font-sans italic text-cyan-200/80 ${isWidescreen ? 'text-xs' : 'text-sm max-sm:text-xs'}`}>
                         An existential psychological thriller.
                       </p>
                       <div className="mt-4 flex justify-between items-center text-cyan-400/50 text-xs font-mono">
@@ -901,25 +901,25 @@ const Writing = () => {
                   </h2>
                   {/* Original dark overlay style - same as AMYA */}
                   <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-4' : 'p-5'}`}>
-                    <p className={`font-serif leading-relaxed text-white italic mb-3 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                    <p className={`font-serif leading-relaxed text-white italic mb-3 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       "…the city was not the arrangement of many things but the shifting posture of one…"
                     </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       There is an America between Americas, an idea that every now and then is touched in the course of one life or another before fading, leaving behind a trace of itself and a sense of its own unreality on that which touched it.
                     </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       A physicist on his way to a conference, carrying in his head a theory too precious to document; as enemy agents close in, is this paranoia, or is paranoia how they operate?
                     </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       A pianist haunted by a melody from childhood, a song he has been chasing his entire life.
                     </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       A man unable to distinguish truth from fiction, whose words are so dangerous they can alter reality itself.
                     </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       A secret cabal of plumbers employed in an age old scheme that has evolved in the wastes beneath the cities they connect.
                     </p>
-                    <p className={`font-serif leading-relaxed text-white italic ${isWidescreen ? 'text-sm' : 'text-base'}`}>
+                    <p className={`font-serif leading-relaxed text-white italic ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       A novel of multitudes and convergences; a sequel to a story that doesn't exist; a portrait of time and place; all these and more describe a nation seen only at its margins.
                     </p>
                   </div>
@@ -976,7 +976,7 @@ const Writing = () => {
                         HOW
                       </h2>
                       <div className="w-16 h-px bg-stone-400/50 mx-auto mb-6"></div>
-                      <p className={`leading-loose text-stone-600 max-w-md mx-auto ${isWidescreen ? 'text-sm' : 'text-base'}`} style={{ fontFamily: 'Georgia, serif' }}>
+                      <p className={`leading-loose text-stone-600 max-w-md mx-auto ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ fontFamily: 'Georgia, serif' }}>
                         A philosophical exploration of understanding and wisdom. Through ancient teachings and modern perspectives, this book delves into the fundamental questions of existence, consciousness, and the path to enlightenment.
                       </p>
                       <div className="mt-8">
@@ -1015,7 +1015,7 @@ const Writing = () => {
                   </h2>
                   {/* Original dark overlay style */}
                   <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-5' : 'p-6'}`}>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-lg'}`}>
+                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-lg max-sm:text-sm'}`}>
                       A noir mystery set in the shadowy streets of a retro-futuristic metropolis. When detective Marcus Kane investigates a series of impossible crimes, he discovers that reality itself is not what it seems. In a world where identities can be stolen and memories can be traded, nothing is as it appears.
                     </p>
                   </div>
