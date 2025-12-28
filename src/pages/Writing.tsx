@@ -763,7 +763,7 @@ const Writing = () => {
                     }}></div>
                     
                     {/* Memo paper */}
-                    <div className={`shadow-lg ${isWidescreen ? 'p-6' : 'p-8'}`} style={{
+                    <div className={`shadow-lg ${isWidescreen ? 'p-6 pt-8' : 'p-8 pt-10'}`} style={{
                       background: 'linear-gradient(180deg, #fffef5 0%, #fefce8 50%, #fef9c3 100%)',
                       boxShadow: '2px 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)'
                     }}>
@@ -779,6 +779,38 @@ const Writing = () => {
                       <p className={`font-serif leading-loose text-stone-600 italic ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ lineHeight: '1.9' }}>
                         A mind bending tale of literary fiction.
                       </p>
+                    </div>
+                    
+                    {/* Decorative visa stamps overlapping corner */}
+                    <div className="absolute -top-4 -right-6 pointer-events-none" style={{ transform: 'rotate(12deg)' }}>
+                      {/* Main eye-pyramid stamp */}
+                      <div className="relative">
+                        <svg width="80" height="80" viewBox="0 0 80 80" className="opacity-60">
+                          <circle cx="40" cy="40" r="36" fill="none" stroke="#8B4513" strokeWidth="2" strokeDasharray="4 2" />
+                          <circle cx="40" cy="40" r="28" fill="none" stroke="#8B4513" strokeWidth="1" />
+                          {/* Pyramid */}
+                          <path d="M40 20 L58 55 L22 55 Z" fill="none" stroke="#8B4513" strokeWidth="1.5" />
+                          {/* Eye */}
+                          <ellipse cx="40" cy="42" rx="10" ry="6" fill="none" stroke="#8B4513" strokeWidth="1.5" />
+                          <circle cx="40" cy="42" r="3" fill="#8B4513" />
+                        </svg>
+                      </div>
+                      
+                      {/* Secondary smaller stamp */}
+                      <div className="absolute -bottom-6 -left-10" style={{ transform: 'rotate(-25deg)' }}>
+                        <svg width="50" height="50" viewBox="0 0 50 50" className="opacity-40">
+                          <rect x="5" y="5" width="40" height="40" fill="none" stroke="#654321" strokeWidth="2" />
+                          <text x="25" y="30" textAnchor="middle" fill="#654321" fontSize="10" fontFamily="serif">✦</text>
+                        </svg>
+                      </div>
+                      
+                      {/* Third circular mark */}
+                      <div className="absolute -top-2 -left-14" style={{ transform: 'rotate(5deg)' }}>
+                        <svg width="45" height="45" viewBox="0 0 45 45" className="opacity-35">
+                          <circle cx="22.5" cy="22.5" r="18" fill="none" stroke="#704214" strokeWidth="1.5" strokeDasharray="2 3" />
+                          <circle cx="22.5" cy="22.5" r="5" fill="none" stroke="#704214" strokeWidth="1" />
+                        </svg>
+                      </div>
                     </div>
                   </div>
                 </div>
