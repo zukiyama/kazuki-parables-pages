@@ -768,7 +768,7 @@ const Writing = () => {
                       boxShadow: '2px 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)'
                     }}>
                       <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ lineHeight: '1.9' }}>
-                        Peter Mayhew had hit rock bottom when he wrote Hoax, a pseudo-spiritual parody intended as his sign-off, a final insult to an industry he had grown to despise… and worst of all an overnight bestseller. He had finally made his name — and could never use it again.
+                        Peter Mayhew had hit rock bottom when he wrote Hoax, a mystical parody intended as his sign-off, a final insult to an industry he had grown to despise… and worst of all an overnight bestseller. He had finally made his name — and could never use it again.
                       </p>
                       <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ lineHeight: '1.9' }}>
                         A year later, fleeing his reputation in an Australian motel, paralysed by writer's block, with his only opportunities those to write a sequel, he receives a phone call from someone who claims to be part of a cult modelled on his book.
