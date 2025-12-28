@@ -980,30 +980,37 @@ const Writing = () => {
                   visibleSections.has('the-market') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   {/* Futuristic holographic display */}
-                  <div className="relative group">
-                    <div className="absolute inset-0 bg-cyan-400/20 blur-xl rounded-lg transition-all duration-500 group-hover:bg-cyan-400/30"></div>
-                    <div className={`relative bg-gradient-to-br from-slate-900/90 via-cyan-950/80 to-slate-900/90 rounded border border-cyan-400/40 transition-all duration-500 group-hover:border-cyan-400/70 ${isWidescreen ? 'p-5' : 'p-6'}`} style={{
+                  <div className="relative group cursor-pointer">
+                    {/* Outer glow layer - expands dramatically on hover */}
+                    <div className="absolute -inset-4 bg-cyan-400/10 blur-3xl rounded-2xl transition-all duration-700 ease-out group-hover:bg-cyan-400/40 group-hover:blur-[60px] group-hover:-inset-8"></div>
+                    {/* Inner glow layer */}
+                    <div className="absolute inset-0 bg-cyan-400/20 blur-xl rounded-lg transition-all duration-500 group-hover:bg-cyan-400/50 group-hover:blur-2xl"></div>
+                    {/* Scanning line effect on hover */}
+                    <div className="absolute inset-0 overflow-hidden rounded pointer-events-none">
+                      <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-[scan_2s_ease-in-out_infinite]" style={{ top: '0%' }}></div>
+                    </div>
+                    <div className={`relative bg-gradient-to-br from-slate-900/90 via-cyan-950/80 to-slate-900/90 rounded border border-cyan-400/40 transition-all duration-500 ease-out group-hover:border-cyan-400 group-hover:scale-[1.02] group-hover:shadow-[0_0_60px_rgba(34,211,238,0.5),0_0_100px_rgba(34,211,238,0.3),inset_0_1px_0_rgba(34,211,238,0.5)] ${isWidescreen ? 'p-5' : 'p-6'}`} style={{
                       boxShadow: '0 0 30px rgba(34, 211, 238, 0.2), inset 0 1px 0 rgba(34, 211, 238, 0.2)'
                     }}>
-                      <div className="flex items-center gap-2 mb-4 pb-3 border-b border-cyan-400/30 transition-all duration-500 group-hover:border-cyan-400/50">
-                        <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
-                        <span className="text-cyan-400/80 text-xs font-mono tracking-widest transition-all duration-500 group-hover:text-cyan-400">CORP_01 // CLASSIFIED</span>
+                      <div className="flex items-center gap-2 mb-4 pb-3 border-b border-cyan-400/30 transition-all duration-500 group-hover:border-cyan-400/70">
+                        <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse group-hover:w-3 group-hover:h-3 group-hover:shadow-[0_0_15px_rgba(34,211,238,0.8)] transition-all duration-300"></div>
+                        <span className="text-cyan-400/80 text-xs font-mono tracking-widest transition-all duration-500 group-hover:text-cyan-300 group-hover:tracking-[0.2em]">CORP_01 // CLASSIFIED</span>
                       </div>
-                      <h2 className={`font-mono font-bold mb-4 text-cyan-300 tracking-tight transition-all duration-500 group-hover:text-cyan-200 ${isWidescreen ? 'text-3xl' : 'text-4xl'}`}>
+                      <h2 className={`font-mono font-bold mb-4 text-cyan-300 tracking-tight transition-all duration-500 group-hover:text-cyan-100 group-hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] ${isWidescreen ? 'text-3xl' : 'text-4xl'}`}>
                         THE MARKET
                       </h2>
-                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 transition-all duration-500 group-hover:text-cyan-100 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
+                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 transition-all duration-500 group-hover:text-cyan-50 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                         James Tarreden's new life on <em>Island</em>—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. In fact, everything is falling into place a little too easily…
                       </p>
-                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 transition-all duration-500 group-hover:text-cyan-100 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
+                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 transition-all duration-500 group-hover:text-cyan-50 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                         Under the wing of an enigmatic young CEO, James is inducted into the secrets behind his company's new technology, and with everything he knew about reality unravelling, finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of <em>Island</em>, one that gives an entirely new meaning to corporate survival.
                       </p>
-                      <p className={`font-sans italic text-cyan-200/80 transition-all duration-500 group-hover:text-cyan-200 ${isWidescreen ? 'text-xs' : 'text-sm max-sm:text-xs'}`}>
+                      <p className={`font-sans italic text-cyan-200/80 transition-all duration-500 group-hover:text-cyan-100 group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.5)] ${isWidescreen ? 'text-xs' : 'text-sm max-sm:text-xs'}`}>
                         An existential psychological thriller.
                       </p>
-                      <div className="mt-4 flex justify-between items-center text-cyan-400/50 text-xs font-mono transition-all duration-500 group-hover:text-cyan-400/80">
-                        <span>ACCESS: LEVEL-7</span>
-                        <span className="animate-pulse">●●● LIVE</span>
+                      <div className="mt-4 flex justify-between items-center text-cyan-400/50 text-xs font-mono transition-all duration-500 group-hover:text-cyan-300">
+                        <span className="group-hover:animate-pulse">ACCESS: LEVEL-7</span>
+                        <span className="animate-pulse group-hover:text-cyan-200">●●● LIVE</span>
                       </div>
                     </div>
                   </div>
