@@ -710,7 +710,8 @@ const Writing = () => {
           <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
               {/* Page Title */}
-              <div className="text-center mb-16 lg:pt-12 pt-8">
+              {/* Widescreen: larger mb (mb-20), iPad: smaller mb (mb-16) */}
+              <div className={`text-center lg:pt-12 pt-8 ${isWidescreen ? 'mb-20' : 'mb-16'}`}>
                 <h1 
                   className={`font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white transition-opacity duration-500 ${
                     visibleSections.has('kaiju') ? 'opacity-100' : 'opacity-0'
@@ -725,13 +726,14 @@ const Writing = () => {
                 ref={parableTrilogyRef}
                 className={`text-center mt-8 max-sm:mt-6 ${
                   visibleSections.has('kaiju') ? 'translate-y-0' : 'translate-y-10'
-                } ${isWidescreen ? 'mb-20' : 'mb-28 max-sm:mb-16'}`}
+                } ${isWidescreen ? 'mb-24' : 'mb-28 max-sm:mb-16'}`}
                 style={{
                   opacity: visibleSections.has('kaiju') ? (parableTrilogyVisible ? 1 : 0) : 0,
                   transition: 'opacity 0.8s ease-in-out, transform 1s ease-out'
                 }}
               >
-                <h2 className={`font-serif font-bold text-yellow-300 mb-6 ${isWidescreen ? 'text-5xl' : 'text-4xl max-sm:text-3xl'}`}>
+                {/* iPad: slightly larger text (text-5xl), Widescreen: same (text-5xl) */}
+                <h2 className={`font-serif font-bold text-yellow-300 mb-6 ${isWidescreen ? 'text-5xl' : 'text-5xl max-sm:text-3xl'}`}>
                   The Parable Trilogy
                 </h2>
                 <p className={`font-serif leading-relaxed text-white max-w-4xl mx-auto ${isWidescreen ? 'text-xl' : 'text-lg md:text-xl max-sm:text-base'}`}>
@@ -740,9 +742,9 @@ const Writing = () => {
               </div>
               
               {/* Book One Title - Centered above both cover and blurb */}
-              {/* iPad: less padding (mb-8), Widescreen: normal padding (mb-14) */}
+              {/* iPad: less padding (mb-6), Widescreen: more padding (mb-16) */}
               <div className={`text-center max-sm:mb-10 transition-all duration-1000 delay-300 ${
-                isWidescreen ? 'mb-14' : 'mb-8'
+                isWidescreen ? 'mb-16' : 'mb-6'
               } ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
@@ -811,19 +813,19 @@ const Writing = () => {
                           <span 
                             className="float-left text-5xl max-sm:text-4xl mr-2 pr-0.5"
                             style={{ fontFamily: 'Baskerville, "Libre Baskerville", Georgia, serif', fontWeight: 400, color: 'rgb(180, 130, 130)', lineHeight: '0.85', marginTop: '0.05em' }}
-                          >W</span>hen an object crashes from the sky in <span className="italic text-white/80">Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
+                          >W</span>hen an object crashes from the sky in <span className="italic text-white/80">Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist <span className="italic">Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                         </p>
                         <p 
                           className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-sm'}`}
                           style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto' }}
                         >
-                          For Kenji, new to nearby <span className="italic text-white/80">Nakamura</span>, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
+                          For <span className="italic">Kenji</span>, new to nearby <span className="italic text-white/80">Nakamura</span>, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with <span className="italic">Masako</span>, <span className="italic">Kubo</span> and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
                         </p>
                         <p 
                           className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-sm'}`}
                           style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto' }}
                         >
-                          Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
+                          <span className="italic">Hinata Togawa</span>, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
                         </p>
                       </div>
                       
