@@ -675,11 +675,23 @@ const Writing = () => {
                 }`}>
                   
                   {/* Magazine-style white article card with gradient fade */}
+                  {/* Widths: Widescreen = "...Osaka, Japan" | iPad desktop = "...Osaka" | iPad portrait mobile = "...and a bizarre" */}
                   <div 
-                    className={`relative ${isWidescreen ? 'max-w-[340px]' : 'max-w-[380px]'}`}
+                    className={`relative mx-auto md:mx-0 ${
+                      isWidescreen 
+                        ? 'max-w-[400px]' 
+                        : 'max-w-[360px] max-md:max-w-[480px] max-sm:max-w-none'
+                    }`}
                   >
+                    {/* Top flourish */}
+                    <div className="flex justify-center items-center gap-3 mb-3 max-sm:hidden">
+                      <div className="h-px w-12 bg-gradient-to-r from-transparent to-stone-300" />
+                      <div className="text-stone-400 text-lg">❧</div>
+                      <div className="h-px w-12 bg-gradient-to-l from-transparent to-stone-300" />
+                    </div>
+                    
                     <div 
-                      className={`relative ${isWidescreen ? 'py-7 pl-6 pr-10' : 'py-7 px-6 pb-10 max-sm:py-5 max-sm:px-5 max-sm:pb-8'}`}
+                      className={`relative ${isWidescreen ? 'py-7 pl-6 pr-12' : 'py-7 px-6 pr-12 max-sm:py-5 max-sm:px-5'}`}
                       style={{
                         background: '#ffffff',
                         boxShadow: '0 4px 24px rgba(0,0,0,0.08)'
@@ -688,7 +700,7 @@ const Writing = () => {
                       {/* Article body - beautifully typeset with proper drop cap */}
                       <div className="space-y-5 max-sm:space-y-4">
                         <p 
-                          className={`leading-[1.85] text-stone-600 ${isWidescreen ? 'text-[13px]' : 'text-[15px] max-sm:text-sm'}`}
+                          className={`leading-[1.85] text-stone-600 ${isWidescreen ? 'text-[13px]' : 'text-[14px] max-md:text-[15px] max-sm:text-sm'}`}
                           style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
                         >
                           <span 
@@ -702,13 +714,13 @@ const Writing = () => {
                           >W</span>hen a foreign object crashes from the sky in <span className="italic" style={{ color: '#6B7280' }}>Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist <span style={{ color: '#78716C', fontWeight: 500 }}>Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                         </p>
                         <p 
-                          className={`leading-[1.85] text-stone-600 ${isWidescreen ? 'text-[13px]' : 'text-[15px] max-sm:text-sm'}`}
+                          className={`leading-[1.85] text-stone-600 ${isWidescreen ? 'text-[13px]' : 'text-[14px] max-md:text-[15px] max-sm:text-sm'}`}
                           style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
                         >
                           For <span style={{ color: '#78716C', fontWeight: 500 }}>Kenji</span>, new to nearby <span className="italic" style={{ color: '#6B7280' }}>Nakamura</span>, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with <span style={{ color: '#78716C', fontWeight: 500 }}>Masako</span>, <span style={{ color: '#78716C', fontWeight: 500 }}>Kubo</span> and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
                         </p>
                         <p 
-                          className={`leading-[1.85] text-stone-600 ${isWidescreen ? 'text-[13px]' : 'text-[15px] max-sm:text-sm'}`}
+                          className={`leading-[1.85] text-stone-600 ${isWidescreen ? 'text-[13px]' : 'text-[14px] max-md:text-[15px] max-sm:text-sm'}`}
                           style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
                         >
                           <span style={{ color: '#78716C', fontWeight: 500 }}>Hinata Togawa</span>, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
@@ -716,13 +728,18 @@ const Writing = () => {
                       </div>
                     </div>
                     
-                    {/* Gradient fade on right edge (desktop) or bottom edge (tablet portrait) */}
+                    {/* Bottom flourish */}
+                    <div className="flex justify-center items-center gap-3 mt-3 max-sm:hidden">
+                      <div className="h-px w-12 bg-gradient-to-r from-transparent to-stone-300" />
+                      <div className="text-stone-400 text-lg">❧</div>
+                      <div className="h-px w-12 bg-gradient-to-l from-transparent to-stone-300" />
+                    </div>
+                    
+                    {/* Gradient fade on right edge (all desktop/tablet versions) */}
                     <div 
-                      className={`absolute pointer-events-none ${isWidescreen ? 'top-0 right-0 w-16 h-full' : 'bottom-0 left-0 w-full h-16 max-sm:hidden'}`}
+                      className="absolute top-0 right-0 w-16 h-full pointer-events-none max-sm:hidden"
                       style={{
-                        background: isWidescreen 
-                          ? 'linear-gradient(to right, transparent, rgba(139, 69, 19, 0.15))'
-                          : 'linear-gradient(to bottom, transparent, rgba(139, 69, 19, 0.12))'
+                        background: 'linear-gradient(to right, transparent, rgba(139, 69, 19, 0.15))'
                       }}
                     />
                   </div>
