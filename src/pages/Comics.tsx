@@ -803,13 +803,13 @@ const Comics = () => {
             <img 
               src={surnamePendragonMobile}
               alt="Surname Pendragon"
-              className="lg:hidden w-full h-auto object-contain"
+              className="lg:hidden w-full h-auto object-contain block"
             />
             {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            {/* Caption - positioned relative to bottom of viewport on mobile/tablet, image on desktop */}
+            {/* Caption - positioned at bottom-left of image on mobile/tablet, bottom of viewport area on desktop */}
             <div 
-              className="absolute left-8 lg:left-12 max-w-sm transition-all duration-500 bottom-[15vh] lg:bottom-16"
+              className="absolute left-4 sm:left-6 lg:left-12 max-w-sm transition-all duration-500 bottom-4 sm:bottom-6 lg:bottom-16"
               style={{
                 opacity: pendragonCaptionVisible ? 1 : 0,
                 transform: pendragonCaptionVisible ? 'translateX(0)' : 'translateX(-20px)',
