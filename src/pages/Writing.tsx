@@ -631,10 +631,7 @@ const Writing = () => {
               <div className={`text-center mb-24 max-sm:mb-16 mt-8 max-sm:mt-6 transition-all duration-1000 delay-200 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
-                <h2 
-                  className="text-4xl max-sm:text-3xl font-light tracking-[0.15em] text-yellow-300 mb-6"
-                  style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
-                >
+                <h2 className="font-serif text-4xl max-sm:text-3xl font-bold text-yellow-300 mb-6">
                   The Parable Trilogy
                 </h2>
                 <p className="font-serif text-lg md:text-xl max-sm:text-base leading-relaxed text-white max-w-4xl mx-auto">
@@ -643,17 +640,18 @@ const Writing = () => {
               </div>
               
               {/* Book One Title - Centered above both cover and blurb */}
+              {/* Book One Title - Centered above both cover and blurb */}
               <div className={`text-center mb-10 max-sm:mb-8 transition-all duration-1000 delay-300 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 <span 
-                  className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
+                  className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'}`}
                   style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 400 }}
                 >
                   Book One of the Parable Trilogy
                 </span>
                 <h2 
-                  className={`font-light tracking-[0.15em] text-white ${isWidescreen ? 'text-5xl' : 'text-6xl max-sm:text-4xl'}`}
+                  className={`font-light tracking-[0.15em] text-white ${isWidescreen ? 'text-6xl' : 'text-7xl max-sm:text-5xl'}`}
                   style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
                 >
                   KAIJU
@@ -892,7 +890,7 @@ const Writing = () => {
                     title="AMYA"
                     paragraphs={[
                       "Set in Nairobi, Kenya. A linguist specialising in rare languages is seconded, reluctantly, to a village where there have been reports of an ancient undiscovered language still being spoken.",
-                      "The village, existing on the fringes of the forest, brings back memories of a childhood he has tried to bury in his urban adult life.",
+                      "Existing on the fringes of the forest, the village brings back memories of a childhood he has tried to bury in his adult academic life.",
                       "While there, he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive, awakening something that has lain silent in him for longer than he can remember.",
                       "Memories of the past interweave with the present as in attempting to help the young girl communicate, he discovers that he may have more to learn from her than she does from him."
                     ]}
@@ -946,10 +944,7 @@ const Writing = () => {
                       "…the city was not the arrangement of many things but the shifting posture of one…"
                     </p>
                     <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      There is an America between Americas, an idea that every now and then is touched in the course of one life or another before fading, leaving behind a trace of itself and a sense of its own unreality on that which touched it.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      A physicist on his way to a conference, carrying in his head a theory too precious to document; as enemy agents close in, is this paranoia, or is paranoia how they operate?
+                      A physicist on his way to a conference, carrying in his head a theory too fragile to document.
                     </p>
                     <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       A pianist haunted by a melody from childhood, a song he has been chasing his entire life.
