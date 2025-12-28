@@ -464,11 +464,15 @@ const Writing = () => {
   useEffect(() => {
     if (!isWidescreen) return;
 
+    // Helper to check if event is in scrollbar area
+    const isInScrollbarArea = (e: MouseEvent) => {
+      const scrollbarWidth = 20;
+      return e.clientX >= window.innerWidth - scrollbarWidth;
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
       // IGNORE if cursor is in scrollbar area (right edge of window)
-      // Scrollbar is typically ~17px wide, use 20px for safety margin
-      const scrollbarWidth = 20;
-      if (e.clientX >= window.innerWidth - scrollbarWidth) {
+      if (isInScrollbarArea(e)) {
         return; // Don't trigger any banner behavior when in scrollbar area
       }
       
@@ -512,9 +516,20 @@ const Writing = () => {
       }
     };
 
+    // Also ignore clicks in scrollbar area
+    const handleClick = (e: MouseEvent) => {
+      if (isInScrollbarArea(e)) {
+        e.stopPropagation();
+      }
+    };
+
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('click', handleClick, true); // Capture phase
     
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('click', handleClick, true);
+    };
   }, [isWidescreen, bannerVisible]);
 
   // Callback for when a book in banner is clicked (to prevent flickering)
@@ -639,35 +654,35 @@ const Writing = () => {
                 </h1>
               </div>
               
-              {/* The Parable Trilogy Introduction - fades out when scrolled past header */}
+              {/* The Parable Trilogy Introduction - fades out/in based on scroll trigger */}
               <div 
-                className={`text-center mb-24 max-sm:mb-16 mt-8 max-sm:mt-6 transition-all duration-1000 delay-200 ${
+                className={`text-center mt-8 max-sm:mt-6 transition-all duration-1000 delay-200 ${
                   visibleSections.has('kaiju') ? 'translate-y-0' : 'translate-y-10'
-                }`}
+                } ${isWidescreen ? 'mb-20' : 'mb-28 max-sm:mb-16'}`}
                 style={{
                   opacity: visibleSections.has('kaiju') 
-                    ? Math.max(0, Math.min(1, 1 - (scrollY - 100) / 200))
+                    ? (scrollY > 80 ? 0 : 1)
                     : 0,
-                  transition: 'opacity 0.3s ease-out, transform 1s ease-out'
+                  transition: 'opacity 0.5s ease-out, transform 1s ease-out'
                 }}
               >
-                <h2 className="font-serif text-4xl max-sm:text-3xl font-bold text-yellow-300 mb-6">
+                <h2 className={`font-serif font-bold text-yellow-300 mb-6 ${isWidescreen ? 'text-5xl' : 'text-4xl max-sm:text-3xl'}`}>
                   The Parable Trilogy
                 </h2>
-                <p className="font-serif text-lg md:text-xl max-sm:text-base leading-relaxed text-white max-w-4xl mx-auto">
+                <p className={`font-serif leading-relaxed text-white max-w-4xl mx-auto ${isWidescreen ? 'text-xl' : 'text-lg md:text-xl max-sm:text-base'}`}>
                   A metaphysical saga unfolding across the shifting decades of an alternate 20th-century Japan, from mysterious towns and abandoned film sets to mountain temples and secret research facilities far from this world. With a cast as varied as its setting, childhood wonder collides with philosophy and fantasy in this compelling trilogy that explores the boundaries between truth and fiction.
                 </p>
               </div>
               
               {/* Book One Title - Centered above both cover and blurb */}
-              {/* iPad: less padding (mb-10), Widescreen: normal padding (mb-14) */}
+              {/* iPad: less padding (mb-8), Widescreen: normal padding (mb-14) */}
               <div className={`text-center max-sm:mb-10 transition-all duration-1000 delay-300 ${
-                isWidescreen ? 'mb-14' : 'mb-10'
+                isWidescreen ? 'mb-14' : 'mb-8'
               } ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 <span 
-                  className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'}`}
+                  className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 ${isWidescreen ? 'text-lg' : 'text-xl max-sm:text-base'}`}
                   style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 400 }}
                 >
                   Book One of the Parable Trilogy
@@ -725,7 +740,7 @@ const Writing = () => {
                       {/* Article body - elegant magazine typesetting */}
                       <div className="space-y-3 max-sm:space-y-2">
                         <p 
-                          className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'}`}
+                          className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-sm'}`}
                           style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto' }}
                         >
                           <span 
@@ -734,13 +749,13 @@ const Writing = () => {
                           >W</span>hen an object crashes from the sky in <span className="italic text-white/80">Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                         </p>
                         <p 
-                          className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'}`}
+                          className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-sm'}`}
                           style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto' }}
                         >
                           For Kenji, new to nearby <span className="italic text-white/80">Nakamura</span>, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
                         </p>
                         <p 
-                          className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'}`}
+                          className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-sm'}`}
                           style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto' }}
                         >
                           Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
