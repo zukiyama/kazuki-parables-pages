@@ -119,32 +119,32 @@ const About = () => {
                 />
               </div>
               
-              {/* Small iPad portrait: Photo on LEFT, Title on RIGHT at TOP */}
-              <div className="hidden sm:flex lg:hidden items-start mb-4">
-                {/* Photo - positioned on left, aligned top */}
-                <div className="flex-shrink-0">
-                  <OptimizedImage 
-                    src={artistPortrait}
-                    alt="Kazuki Yamakawa portrait"
-                    className="w-44 md:w-52 aspect-square object-cover grayscale shadow-2xl"
-                  />
-                </div>
-                {/* Title - positioned to right of photo */}
-                <div className="flex-1 ml-4 pt-0">
-                  <h1 className="font-heading text-6xl md:text-7xl text-black leading-[0.85] tracking-tight">
+              {/* Small iPad portrait: Title on LEFT, Photo on RIGHT at TOP */}
+              <div className="hidden sm:flex lg:hidden items-start gap-6 mb-4">
+                {/* Title - positioned on left */}
+                <div className="flex-1 pt-0">
+                  <h1 className="font-heading text-7xl md:text-8xl text-black leading-[0.85] tracking-tight">
                     Kazuki
                     <br />
                     <span className="italic font-light">Yamakawa</span>
                   </h1>
                 </div>
+                {/* Photo - positioned on right, aligned top */}
+                <div className="flex-shrink-0">
+                  <OptimizedImage 
+                    src={artistPortrait}
+                    alt="Kazuki Yamakawa portrait"
+                    className="w-56 md:w-64 aspect-square object-cover grayscale shadow-2xl"
+                  />
+                </div>
               </div>
               
               {/* Small iPad portrait: Subheading + Body text moved up beneath photo+title */}
               <div className="hidden sm:block lg:hidden">
-                <p className="font-body text-lg md:text-xl text-black leading-snug mb-3">
+                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-4">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
-                <p className="font-body text-sm md:text-base text-black/80 leading-relaxed max-w-3xl">
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl">
                   A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
               </div>

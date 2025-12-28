@@ -496,8 +496,8 @@ const Comics = () => {
                 transition: 'opacity 0.5s ease-out'
               }}
             >
-              {/* DESKTOP VIGNETTES LAYOUT */}
-              <div className="w-full h-full hidden sm:flex items-center px-4 sm:px-6 lg:px-8">
+              {/* DESKTOP VIGNETTES LAYOUT - only large screens */}
+              <div className="w-full h-full hidden lg:flex items-center px-4 sm:px-6 lg:px-8">
                 
               {/* LEFT SIDE - Many Faces character collage (full height) */}
                 <div 
@@ -614,8 +614,8 @@ const Comics = () => {
                 </div>
               </div>
               
-              {/* MOBILE VIGNETTES LAYOUT - Full screen image with overlaid text */}
-              <div className="w-full h-full flex sm:hidden items-center justify-center relative">
+              {/* MOBILE + SMALL IPAD VIGNETTES LAYOUT - Full screen image with overlaid text */}
+              <div className="w-full h-full flex lg:hidden items-center justify-center relative">
                 {/* Full page Many Faces image with padding */}
                 <div 
                   className="absolute inset-0 flex items-center justify-center p-6"
@@ -808,6 +808,38 @@ const Comics = () => {
             />
             {/* Gradient overlay - desktop only */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent hidden lg:block" />
+            {/* Small iPad portrait: Caption overlay at bottom-left of image - no black box */}
+            <div 
+              className="absolute left-4 bottom-4 max-w-xs hidden sm:block lg:hidden"
+              style={{
+                textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.6)'
+              }}
+            >
+              <h4 
+                className="text-white/95 text-sm uppercase tracking-[0.25em] mb-1"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Screenplay Adaptation
+              </h4>
+              <h3 
+                className="text-white text-2xl md:text-3xl font-light mb-1.5 tracking-wide"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                Surname Pendragon
+              </h3>
+              <p 
+                className="text-white/85 text-base md:text-lg leading-relaxed mb-2"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                A sweeping family saga spanning three generations, where legacy is both burden and blessing.
+              </p>
+              <p 
+                className="text-white/70 text-xs uppercase tracking-widest"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Feature Film • Drama • In Development
+              </p>
+            </div>
             {/* Caption - positioned at bottom-left of image on DESKTOP ONLY */}
             <div 
               className="absolute left-12 max-w-sm transition-all duration-500 bottom-16 hidden lg:block"
@@ -844,29 +876,29 @@ const Comics = () => {
             </div>
           </section>
 
-          {/* Mobile + Small iPad Caption Panel - black background between Pendragon and Stories */}
-          <section className="bg-black py-8 px-6 sm:px-8 lg:hidden">
+          {/* Mobile phone ONLY Caption Panel - black background between Pendragon and Stories */}
+          <section className="bg-black py-8 px-6 sm:hidden">
             <div className="max-w-md">
               <h4 
-                className="text-white/90 text-sm sm:text-base uppercase tracking-[0.3em] mb-2"
+                className="text-white/90 text-sm uppercase tracking-[0.3em] mb-2"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
                 Screenplay Adaptation
               </h4>
               <h3 
-                className="text-white text-xl sm:text-2xl font-light mb-2 tracking-wide"
+                className="text-white text-xl font-light mb-2 tracking-wide"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 Surname Pendragon
               </h3>
               <p 
-                className="text-white/70 text-sm sm:text-base leading-relaxed mb-3"
+                className="text-white/70 text-sm leading-relaxed mb-3"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 A sweeping family saga spanning three generations, where legacy is both burden and blessing.
               </p>
               <p 
-                className="text-white/50 text-xs sm:text-sm uppercase tracking-widest"
+                className="text-white/50 text-xs uppercase tracking-widest"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
                 Feature Film • Drama • In Development
@@ -893,7 +925,7 @@ const Comics = () => {
           </section>
 
           {/* Forthcoming Comics Grid */}
-          <section className="pb-8 sm:pb-24 px-4 sm:px-8 lg:px-6 bg-white relative">
+          <section className="pb-4 sm:pb-8 lg:pb-24 px-4 sm:px-8 lg:px-6 bg-white relative">
             {topSectionsLoaded && (
               <div 
                 ref={row1Ref}
