@@ -120,10 +120,10 @@ const About = () => {
               </div>
               
               {/* Small iPad portrait: Title on LEFT, Photo on RIGHT at TOP */}
-              <div className="hidden sm:flex lg:hidden items-start gap-6 mb-4">
+              <div className="hidden sm:flex lg:hidden items-start gap-6 mb-6">
                 {/* Title - positioned on left */}
                 <div className="flex-1 pt-0">
-                  <h1 className="font-heading text-7xl md:text-8xl text-black leading-[0.85] tracking-tight">
+                  <h1 className="font-heading text-6xl md:text-7xl text-black leading-[0.85] tracking-tight">
                     Kazuki
                     <br />
                     <span className="italic font-light">Yamakawa</span>
@@ -134,17 +134,17 @@ const About = () => {
                   <OptimizedImage 
                     src={artistPortrait}
                     alt="Kazuki Yamakawa portrait"
-                    className="w-56 md:w-64 aspect-square object-cover grayscale shadow-2xl"
+                    className="w-48 md:w-56 aspect-square object-cover grayscale shadow-2xl"
                   />
                 </div>
               </div>
               
-              {/* Small iPad portrait: Subheading + Body text moved up beneath photo+title */}
+              {/* Small iPad portrait: Subheading + Body text */}
               <div className="hidden sm:block lg:hidden">
-                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-4">
+                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
-                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl">
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl mt-4">
                   A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
@@ -301,10 +301,10 @@ const About = () => {
             </div>
           </div>
           
-          {/* Tablet and Desktop text at bottom right - word by word fade in */}
+          {/* Desktop ONLY text at bottom right - word by word fade in - hidden on small iPad */}
           <div 
             data-scroll-animation="bottom-right-text"
-            className={`absolute bottom-[14%] right-[12%] pointer-events-auto hidden sm:block z-30 overflow-visible ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
+            className={`absolute bottom-[14%] right-[12%] pointer-events-auto hidden lg:block z-30 overflow-visible ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
           >
             <div className="font-body text-2xl sm:text-3xl lg:text-4xl text-white italic flex flex-col items-end tracking-wide overflow-visible">
               <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-1" : ""}`} style={{ marginRight: '20px' }}>None</span>
@@ -313,6 +313,15 @@ const About = () => {
               <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-4" : ""}`} style={{ marginRight: '0px', marginTop: '12px' }}>is</span>
               <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-5" : ""}`} style={{ marginRight: '-15px', marginTop: '26px' }}>real</span>
             </div>
+          </div>
+          
+          {/* Small iPad portrait ONLY: Kanji signature at bottom right */}
+          <div className="absolute bottom-[10%] right-[8%] hidden sm:block lg:hidden z-30">
+            <OptimizedImage 
+              src={signatureYamakawa}
+              alt="Yamakawa signature"
+              className="w-28 md:w-36 h-auto opacity-90"
+            />
           </div>
         </div>
       </div>
