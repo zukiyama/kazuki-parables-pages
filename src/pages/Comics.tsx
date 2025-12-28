@@ -964,7 +964,7 @@ const Comics = () => {
       </main>
       
       {/* Footer */}
-      <footer className={`bg-[#1a1a1a] py-10 max-sm:py-6 relative overflow-visible ${isScrollLocked ? 'hidden' : ''}`}>
+      <footer className={`bg-black/80 backdrop-blur-sm border-t border-white/20 py-10 max-sm:py-6 relative overflow-visible ${isScrollLocked ? 'hidden' : ''}`}>
         <img 
           src={comicsFooterCharacter}
           alt="Comics mascot"
@@ -976,8 +976,8 @@ const Comics = () => {
           }}
         />
         <div className="container mx-auto px-6 text-center">
-          <h3 className="font-heading text-xl mb-3 text-[#e8d9a0]">Contact</h3>
-          <p className="font-serif text-[#e8d9a0]/80 text-sm">
+          <h3 className="font-heading text-xl mb-3 text-white">Contact</h3>
+          <p className="font-serif text-white text-sm">
             kazuki@kazukiyamakawa.com
           </p>
         </div>
