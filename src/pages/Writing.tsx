@@ -1220,7 +1220,7 @@ const Writing = () => {
                   </h2>
                   {/* Original dark overlay style */}
                   <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-5' : 'p-6'}`}>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-lg max-sm:text-sm'}`}>
+                    <p className={`font-typewriter leading-relaxed text-white ${isWidescreen ? 'text-base' : 'text-xl max-sm:text-base'}`}>
                       A noir mystery set in the shadowy streets of a retro-futuristic metropolis. When detective Marcus Kane investigates a series of impossible crimes, he discovers that reality itself is not what it seems. In a world where identities can be stolen and memories can be traded, nothing is as it appears.
                     </p>
                   </div>
