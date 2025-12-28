@@ -729,7 +729,7 @@ const Writing = () => {
                 } ${isWidescreen ? 'mb-24' : 'mb-28 max-sm:mb-16'}`}
                 style={{
                   opacity: visibleSections.has('kaiju') ? (parableTrilogyVisible ? 1 : 0) : 0,
-                  transition: 'opacity 0.8s ease-in-out, transform 1s ease-out'
+                  transition: 'opacity 1.2s ease-in-out, transform 1s ease-out'
                 }}
               >
                 {/* iPad: slightly larger text (text-5xl), Widescreen: same (text-5xl) */}
