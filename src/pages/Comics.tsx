@@ -785,7 +785,7 @@ const Comics = () => {
         {/* SCROLLABLE CONTENT - Pendragon sits behind pinned container, revealed when scroll unlocks */}
         <div 
           ref={scrollableContentRef}
-          className="mt-16 max-sm:mt-20"
+          className="mt-16 max-sm:mt-[4.5rem]"
         >
           {/* Pendragon - the ONLY instance, sits behind pinned dissolve container */}
           <section 
