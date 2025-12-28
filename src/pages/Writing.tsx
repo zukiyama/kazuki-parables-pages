@@ -692,21 +692,21 @@ const Writing = () => {
                         style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
                       >
                         <span 
-                          className="float-left text-5xl max-sm:text-4xl leading-none mr-2 mt-1 text-teal-700"
-                          style={{ fontFamily: 'Playfair Display, Georgia, serif', fontWeight: 400 }}
-                        >W</span>hen a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
+                          className="float-left text-5xl max-sm:text-4xl leading-none mr-2 mt-1"
+                          style={{ fontFamily: 'Playfair Display, Georgia, serif', fontWeight: 400, color: '#9B4A4A' }}
+                        >W</span>hen a foreign object crashes from the sky in <span className="italic" style={{ color: '#6B7280' }}>Osaka, Japan</span>, and a strange figure steps from the wreckage, psychiatrist <span style={{ color: '#78716C', fontWeight: 500 }}>Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                       </p>
                       <p 
                         className={`leading-relaxed text-stone-600 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
                         style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
                       >
-                        For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
+                        For <span style={{ color: '#78716C', fontWeight: 500 }}>Kenji</span>, new to nearby <span className="italic" style={{ color: '#6B7280' }}>Nakamura</span>, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with <span style={{ color: '#78716C', fontWeight: 500 }}>Masako</span>, <span style={{ color: '#78716C', fontWeight: 500 }}>Kubo</span> and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
                       </p>
                       <p 
                         className={`leading-relaxed text-stone-600 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
                         style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
                       >
-                        Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
+                        <span style={{ color: '#78716C', fontWeight: 500 }}>Hinata Togawa</span>, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
                       </p>
                     </div>
                     
