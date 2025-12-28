@@ -710,8 +710,8 @@ const Writing = () => {
           <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
               {/* Page Title */}
-              {/* Widescreen: larger mb (mb-20), iPad: smaller mb (mb-16) */}
-              <div className={`text-center lg:pt-12 pt-8 ${isWidescreen ? 'mb-20' : 'mb-16'}`}>
+              {/* Widescreen: larger mb (mb-20), iPad: larger mb (mb-20) */}
+              <div className={`text-center lg:pt-12 pt-8 ${isWidescreen ? 'mb-20' : 'mb-20'}`}>
                 <h1 
                   className={`font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white transition-opacity duration-500 ${
                     visibleSections.has('kaiju') ? 'opacity-100' : 'opacity-0'
@@ -742,9 +742,9 @@ const Writing = () => {
               </div>
               
               {/* Book One Title - Centered above both cover and blurb */}
-              {/* iPad: less padding (mb-6), Widescreen: more padding (mb-16) */}
+              {/* iPad: less padding (mb-4), Widescreen: more padding (mb-16) */}
               <div className={`text-center max-sm:mb-10 transition-all duration-1000 delay-300 ${
-                isWidescreen ? 'mb-16' : 'mb-6'
+                isWidescreen ? 'mb-16' : 'mb-4'
               } ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
