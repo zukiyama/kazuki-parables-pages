@@ -674,39 +674,57 @@ const Writing = () => {
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   
-                  {/* Magazine-style white article card */}
+                  {/* Magazine-style white article card with gradient fade */}
                   <div 
-                    className={`relative ${isWidescreen ? 'p-6' : 'p-6 max-sm:p-5'}`}
-                    style={{
-                      background: '#ffffff',
-                      boxShadow: '0 4px 24px rgba(0,0,0,0.08)'
-                    }}
+                    className={`relative ${isWidescreen ? 'max-w-[340px]' : 'max-w-[380px]'}`}
                   >
-                    {/* Article body - beautifully typeset with manual drop cap */}
-                    <div className="space-y-4 max-sm:space-y-3">
-                      <p 
-                        className={`leading-relaxed text-stone-600 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
-                        style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
-                      >
-                        <span 
-                          className="float-left text-5xl max-sm:text-4xl leading-none mr-2 mt-1"
-                          style={{ fontFamily: 'Playfair Display, Georgia, serif', fontWeight: 400, color: '#9B4A4A' }}
-                        >W</span>hen a foreign object crashes from the sky in <span className="italic" style={{ color: '#6B7280' }}>Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist <span style={{ color: '#78716C', fontWeight: 500 }}>Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
-                      </p>
-                      <p 
-                        className={`leading-relaxed text-stone-600 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
-                        style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
-                      >
-                        For <span style={{ color: '#78716C', fontWeight: 500 }}>Kenji</span>, new to nearby <span className="italic" style={{ color: '#6B7280' }}>Nakamura</span>, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with <span style={{ color: '#78716C', fontWeight: 500 }}>Masako</span>, <span style={{ color: '#78716C', fontWeight: 500 }}>Kubo</span> and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
-                      </p>
-                      <p 
-                        className={`leading-relaxed text-stone-600 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
-                        style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
-                      >
-                        <span style={{ color: '#78716C', fontWeight: 500 }}>Hinata Togawa</span>, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
-                      </p>
+                    <div 
+                      className={`relative ${isWidescreen ? 'py-7 pl-6 pr-10' : 'py-7 px-6 pb-10 max-sm:py-5 max-sm:px-5 max-sm:pb-8'}`}
+                      style={{
+                        background: '#ffffff',
+                        boxShadow: '0 4px 24px rgba(0,0,0,0.08)'
+                      }}
+                    >
+                      {/* Article body - beautifully typeset with proper drop cap */}
+                      <div className="space-y-5 max-sm:space-y-4">
+                        <p 
+                          className={`leading-[1.85] text-stone-600 ${isWidescreen ? 'text-[13px]' : 'text-[15px] max-sm:text-sm'}`}
+                          style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
+                        >
+                          <span 
+                            className="float-left text-[3.2rem] max-sm:text-[2.8rem] mr-2 -mt-1"
+                            style={{ 
+                              fontFamily: 'Cormorant Garamond, Playfair Display, Georgia, serif', 
+                              fontWeight: 600, 
+                              color: '#9B4A4A',
+                              lineHeight: 0.85
+                            }}
+                          >W</span>hen a foreign object crashes from the sky in <span className="italic" style={{ color: '#6B7280' }}>Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist <span style={{ color: '#78716C', fontWeight: 500 }}>Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
+                        </p>
+                        <p 
+                          className={`leading-[1.85] text-stone-600 ${isWidescreen ? 'text-[13px]' : 'text-[15px] max-sm:text-sm'}`}
+                          style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
+                        >
+                          For <span style={{ color: '#78716C', fontWeight: 500 }}>Kenji</span>, new to nearby <span className="italic" style={{ color: '#6B7280' }}>Nakamura</span>, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with <span style={{ color: '#78716C', fontWeight: 500 }}>Masako</span>, <span style={{ color: '#78716C', fontWeight: 500 }}>Kubo</span> and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
+                        </p>
+                        <p 
+                          className={`leading-[1.85] text-stone-600 ${isWidescreen ? 'text-[13px]' : 'text-[15px] max-sm:text-sm'}`}
+                          style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
+                        >
+                          <span style={{ color: '#78716C', fontWeight: 500 }}>Hinata Togawa</span>, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
+                        </p>
+                      </div>
                     </div>
                     
+                    {/* Gradient fade on right edge (desktop) or bottom edge (tablet portrait) */}
+                    <div 
+                      className={`absolute pointer-events-none ${isWidescreen ? 'top-0 right-0 w-16 h-full' : 'bottom-0 left-0 w-full h-16 max-sm:hidden'}`}
+                      style={{
+                        background: isWidescreen 
+                          ? 'linear-gradient(to right, transparent, rgba(139, 69, 19, 0.15))'
+                          : 'linear-gradient(to bottom, transparent, rgba(139, 69, 19, 0.12))'
+                      }}
+                    />
                   </div>
                 </div>
               </div>
