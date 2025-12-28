@@ -742,9 +742,9 @@ const Writing = () => {
               </div>
               
               {/* Book One Title - Centered above both cover and blurb */}
-              {/* iPad: less padding (mb-4), Widescreen: more padding (mb-16) */}
-              <div className={`text-center max-sm:mb-10 transition-all duration-1000 delay-300 ${
-                isWidescreen ? 'mb-16' : 'mb-4'
+              {/* iPad desktop: less padding (mb-4), Widescreen: more padding (mb-16), iPad portrait mobile: more padding (sm:mb-8) */}
+              <div className={`text-center max-sm:mb-10 sm:mb-8 transition-all duration-1000 delay-300 ${
+                isWidescreen ? 'mb-16' : 'lg:mb-4'
               } ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
@@ -755,7 +755,7 @@ const Writing = () => {
                   Book One of the Parable Trilogy
                 </span>
                 <h2 
-                  className={`font-light tracking-[0.15em] text-white ${isWidescreen ? 'text-6xl' : 'text-7xl max-sm:text-5xl'}`}
+                  className={`font-light tracking-[0.15em] text-white ${isWidescreen ? 'text-6xl' : 'text-7xl max-sm:text-6xl'}`}
                   style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
                 >
                   KAIJU
@@ -837,9 +837,10 @@ const Writing = () => {
                   </div>
                 </div>
               </div>
-              <p className={`font-serif leading-relaxed text-white italic text-center mt-14 mb-16 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
+              {/* iPad desktop: less top margin (lg:mt-10), mobile phone: less top margin (max-sm:mt-10) */}
+              <p className={`font-serif leading-relaxed text-white italic text-center mt-14 max-sm:mt-10 mb-16 max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              } ${isWidescreen ? 'text-lg' : 'text-xl max-sm:text-base'}`}>
+              } ${isWidescreen ? 'text-lg' : 'text-xl lg:mt-10 max-sm:text-base'}`}>
                 Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people in a 1979 that happened only for those who were there.
               </p>
             </div>
