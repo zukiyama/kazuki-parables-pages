@@ -675,21 +675,25 @@ const Writing = () => {
                     isWidescreen={isWidescreen}
                   />
                 </div>
-                <div className={`transition-all duration-1000 delay-500 lg:max-w-[85%] ${
+                <div className={`transition-all duration-1000 delay-500 lg:max-w-[80%] ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   
-                  {/* Magazine-style article with frosted glass background */}
-                  <div className="relative backdrop-blur-md bg-black/40 rounded-lg p-6 max-sm:p-5 border border-white/10">
-                    {/* Top ornamental divider with meteor symbol */}
-                    <div className="flex items-center justify-center gap-4 mb-6">
-                      <div className="h-px w-12 bg-gradient-to-r from-transparent to-yellow-400/60"></div>
-                      <span className="text-yellow-400/80 text-lg">☄</span>
-                      <div className="h-px w-12 bg-gradient-to-l from-transparent to-yellow-400/60"></div>
+                  {/* Magazine-style article with frosted glass background - compact height */}
+                  <div className="relative backdrop-blur-md bg-black/40 rounded-lg p-5 max-sm:p-4 border border-white/10">
+                    {/* Top ornamental divider with comet symbol */}
+                    <div className="flex items-center justify-center gap-2 mb-5">
+                      <div className="h-px w-10 bg-gradient-to-r from-transparent to-yellow-400/50"></div>
+                      <div className="flex items-center">
+                        <span className="text-yellow-400/70 text-xs">────</span>
+                        <span className="text-yellow-400/80 text-sm mx-1">✦</span>
+                        <span className="text-yellow-400/70 text-[10px]">›</span>
+                      </div>
+                      <div className="h-px w-10 bg-gradient-to-l from-transparent to-yellow-400/50"></div>
                     </div>
                     
                     {/* Article body - beautifully typeset with drop cap */}
-                    <div className="space-y-5 max-sm:space-y-4">
+                    <div className="space-y-4 max-sm:space-y-3">
                       <p 
                         className={`leading-relaxed text-white/95 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
                         style={{ fontFamily: 'Georgia, serif', textAlign: 'left', hyphens: 'none', wordBreak: 'keep-all', overflowWrap: 'normal' }}
@@ -697,7 +701,7 @@ const Writing = () => {
                         <span 
                           className="float-left text-6xl max-sm:text-5xl leading-none mr-3 mt-1"
                           style={{ fontFamily: 'Playfair Display, Georgia, serif', fontWeight: 400, color: '#FBBF24', textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
-                        >W</span>hen a foreign object crashes from the sky in <span className="italic text-yellow-200">Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist <span className="text-yellow-100 font-medium">Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
+                        >W</span>hen an object crashes from the sky in <span className="italic text-yellow-200">Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist <span className="text-yellow-100 font-medium">Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                       </p>
                       <p 
                         className={`leading-relaxed text-white/95 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
@@ -714,9 +718,9 @@ const Writing = () => {
                     </div>
                     
                     {/* Bottom ornamental divider */}
-                    <div className="flex items-center justify-center gap-3 mt-6">
+                    <div className="flex items-center justify-center gap-3 mt-5">
                       <div className="h-px w-8 bg-yellow-400/40"></div>
-                      <span className="text-yellow-400/60 text-lg">✦</span>
+                      <span className="text-yellow-400/60 text-sm">✦</span>
                       <div className="h-px w-8 bg-yellow-400/40"></div>
                     </div>
                   </div>
