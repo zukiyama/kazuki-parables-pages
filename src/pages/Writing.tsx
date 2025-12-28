@@ -657,58 +657,53 @@ const Writing = () => {
                   <div 
                     className={`relative ${isWidescreen ? 'p-6' : 'p-8 max-sm:p-5'}`}
                     style={{
-                      background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)',
-                      boxShadow: '0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08)'
+                      background: '#ffffff',
+                      boxShadow: '0 4px 24px rgba(0,0,0,0.08)'
                     }}
                   >
-                    {/* Decorative top border accent */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600" />
+                    {/* Subtle decorative line */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-stone-300" />
                     
                     {/* Magazine header with title */}
-                    <div className="text-center mb-6 max-sm:mb-4">
+                    <div className="text-center mt-4 mb-6 max-sm:mb-4">
                       <span 
-                        className={`uppercase tracking-[0.4em] text-amber-700/70 block mb-2 ${isWidescreen ? 'text-[10px]' : 'text-xs max-sm:text-[10px]'}`}
-                        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                        className={`uppercase tracking-[0.3em] text-stone-400 block mb-3 ${isWidescreen ? 'text-[10px]' : 'text-xs max-sm:text-[10px]'}`}
+                        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 400 }}
                       >
-                        Book One
+                        Book One of the Parable Trilogy
                       </span>
                       <h2 
-                        className={`font-bold tracking-wide text-stone-800 ${isWidescreen ? 'text-4xl mb-1' : 'text-5xl max-sm:text-3xl mb-2'}`}
+                        className={`font-light tracking-[0.15em] text-stone-800 ${isWidescreen ? 'text-4xl' : 'text-5xl max-sm:text-3xl'}`}
                         style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
                       >
                         KAIJU
                       </h2>
-                      <span 
-                        className={`italic text-stone-500 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
-                        style={{ fontFamily: 'Georgia, serif' }}
-                      >
-                        The Parable Trilogy
-                      </span>
                     </div>
                     
-                    {/* Elegant divider */}
-                    <div className="flex items-center justify-center gap-3 mb-6 max-sm:mb-4">
-                      <div className="w-12 h-px bg-stone-300" />
-                      <div className="w-1.5 h-1.5 rotate-45 bg-amber-600" />
-                      <div className="w-12 h-px bg-stone-300" />
+                    {/* Simple elegant divider */}
+                    <div className="flex justify-center mb-6 max-sm:mb-4">
+                      <div className="w-8 h-px bg-stone-300" />
                     </div>
                     
-                    {/* Article body - beautifully typeset */}
+                    {/* Article body - beautifully typeset with manual drop cap */}
                     <div className="space-y-4 max-sm:space-y-3">
                       <p 
-                        className={`leading-relaxed text-stone-700 first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:mt-1 first-letter:text-amber-700 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
+                        className={`leading-relaxed text-stone-600 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
                         style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
                       >
-                        When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
+                        <span 
+                          className="float-left text-5xl max-sm:text-4xl leading-none mr-2 mt-1 text-teal-700"
+                          style={{ fontFamily: 'Playfair Display, Georgia, serif', fontWeight: 400 }}
+                        >W</span>hen a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                       </p>
                       <p 
-                        className={`leading-relaxed text-stone-700 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
+                        className={`leading-relaxed text-stone-600 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
                         style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
                       >
                         For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
                       </p>
                       <p 
-                        className={`leading-relaxed text-stone-700 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
+                        className={`leading-relaxed text-stone-600 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
                         style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
                       >
                         Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
@@ -717,7 +712,7 @@ const Writing = () => {
                     
                     {/* Decorative bottom flourish */}
                     <div className="flex justify-center mt-6 max-sm:mt-4">
-                      <div className="flex items-center gap-2 text-stone-400">
+                      <div className="flex items-center gap-2 text-stone-300">
                         <span className="text-lg">✦</span>
                       </div>
                     </div>
