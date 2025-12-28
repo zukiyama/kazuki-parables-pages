@@ -754,7 +754,7 @@ const Music = () => {
                               >
                                 <span className="text-white font-palatino">{trackNumber}. {track}</span>
                                 <div className="text-white/60">
-                                  {currentTrackIndex === index ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                                  {currentTrackIndex === index ? <Pause className="w-4 h-4" fill="currentColor" /> : <Play className="w-4 h-4" fill="currentColor" />}
                                 </div>
                               </div>
                             </div>
