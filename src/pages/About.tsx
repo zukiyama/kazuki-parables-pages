@@ -119,32 +119,34 @@ const About = () => {
                 />
               </div>
               
-              {/* Small iPad portrait: Title left, Photo right side-by-side */}
-              <div className="hidden sm:flex lg:hidden gap-4 items-start mb-4">
-                <div className="flex flex-col justify-start flex-1">
-                  <h1 className="font-heading text-5xl md:text-6xl text-black leading-[0.85] tracking-tight">
+              {/* Small iPad portrait: Photo on RIGHT, Title on LEFT at TOP */}
+              <div className="hidden sm:flex lg:hidden items-start mb-6">
+                {/* Title - positioned at top left */}
+                <div className="flex-1 pt-0">
+                  <h1 className="font-heading text-6xl md:text-7xl text-black leading-[0.85] tracking-tight">
                     Kazuki
                     <br />
                     <span className="italic font-light">Yamakawa</span>
                   </h1>
                 </div>
-                <div className="flex-shrink-0">
+                {/* Photo - positioned on right */}
+                <div className="flex-shrink-0 ml-4">
                   <OptimizedImage 
                     src={artistPortrait}
                     alt="Kazuki Yamakawa portrait"
-                    className="w-40 md:w-48 aspect-square object-cover grayscale shadow-2xl"
+                    className="w-44 md:w-52 aspect-square object-cover grayscale shadow-2xl"
                   />
                 </div>
               </div>
               
-              {/* Small iPad portrait: Subheading beneath photo+title row */}
-              <div className="hidden sm:block lg:hidden mb-4">
+              {/* Small iPad portrait: Subheading immediately below photo+title */}
+              <div className="hidden sm:block lg:hidden mb-3 -mt-2">
                 <p className="font-body text-lg md:text-xl text-black leading-snug">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
               </div>
               
-              {/* Small iPad portrait: Body text moved up */}
+              {/* Small iPad portrait: Body text moved up closer */}
               <div className="hidden sm:block lg:hidden">
                 <p className="font-body text-sm md:text-base text-black/80 leading-relaxed max-w-3xl">
                   A writer in the games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
