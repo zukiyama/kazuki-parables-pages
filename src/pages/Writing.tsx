@@ -152,7 +152,7 @@ const Writing = () => {
       const headerBottom = getHeaderBottom();
       // For widescreen: ignore banner completely - snap is independent of banner visibility
       const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
-      const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
+      const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       const topOffset = headerBottom + bannerHeight;
       const viewportHeight = window.innerHeight;
@@ -244,7 +244,7 @@ const Writing = () => {
       const headerBottom = getHeaderBottom();
       // For widescreen: ignore banner completely - snap is independent of banner visibility
       const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
-      const banner = document.querySelector('.fixed.top-16:not(nav)') as HTMLElement;
+      const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       const topOffset = headerBottom + bannerHeight;
       const viewportHeight = window.innerHeight;
