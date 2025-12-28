@@ -747,7 +747,7 @@ const Writing = () => {
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 <span 
-                  className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 ${isWidescreen ? 'text-lg' : 'text-xl max-sm:text-base'}`}
+                  className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'}`}
                   style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 400 }}
                 >
                   Book One of the Parable Trilogy
