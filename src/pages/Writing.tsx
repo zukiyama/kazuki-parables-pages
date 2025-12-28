@@ -43,6 +43,7 @@ const Writing = () => {
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
   const [bannerVisible, setBannerVisible] = useState(true); // For widescreen banner toggle
+  const [parableTrilogyVisible, setParableTrilogyVisible] = useState(true); // For fade animation
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -60,6 +61,7 @@ const Writing = () => {
   const headerRef = useRef<HTMLElement | null>(null);
   const isSnapping = useRef(false);
   const isDraggingScrollbar = useRef(false);
+  const parableTrilogyRef = useRef<HTMLDivElement>(null);
 
   const location = useLocation();
 
@@ -355,6 +357,42 @@ const Writing = () => {
       clearTimeout(scrollTimeout);
     };
   }, [getHeaderBottom, isWidescreen]);
+
+  // Track Parable Trilogy visibility for fade animation
+  useEffect(() => {
+    const checkParableTrilogyVisibility = () => {
+      const headerBottom = getHeaderBottom();
+      
+      // If we're near the top of the page, always show
+      if (window.scrollY < 50) {
+        setParableTrilogyVisible(true);
+        return;
+      }
+      
+      if (!parableTrilogyRef.current) return;
+      
+      const rect = parableTrilogyRef.current.getBoundingClientRect();
+      const titleEl = parableTrilogyRef.current.querySelector('h2');
+      
+      if (titleEl) {
+        const titleRect = titleEl.getBoundingClientRect();
+        
+        // Fade OUT: when the title is completely above the header (scrolled past)
+        if (titleRect.bottom < headerBottom) {
+          setParableTrilogyVisible(false);
+        }
+        // Fade IN: when any part of the text container is visible below header
+        else if (rect.bottom > headerBottom) {
+          setParableTrilogyVisible(true);
+        }
+      }
+    };
+    
+    window.addEventListener('scroll', checkParableTrilogyVisibility, { passive: true });
+    checkParableTrilogyVisibility(); // Initial check
+    
+    return () => window.removeEventListener('scroll', checkParableTrilogyVisibility);
+  }, [getHeaderBottom]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -684,14 +722,13 @@ const Writing = () => {
               
               {/* The Parable Trilogy Introduction - fades out/in based on scroll trigger */}
               <div 
-                className={`text-center mt-8 max-sm:mt-6 transition-all duration-1000 delay-200 ${
+                ref={parableTrilogyRef}
+                className={`text-center mt-8 max-sm:mt-6 ${
                   visibleSections.has('kaiju') ? 'translate-y-0' : 'translate-y-10'
                 } ${isWidescreen ? 'mb-20' : 'mb-28 max-sm:mb-16'}`}
                 style={{
-                  opacity: visibleSections.has('kaiju') 
-                    ? (scrollY > 80 ? 0 : 1)
-                    : 0,
-                  transition: 'opacity 0.5s ease-out, transform 1s ease-out'
+                  opacity: visibleSections.has('kaiju') ? (parableTrilogyVisible ? 1 : 0) : 0,
+                  transition: 'opacity 0.8s ease-in-out, transform 1s ease-out'
                 }}
               >
                 <h2 className={`font-serif font-bold text-yellow-300 mb-6 ${isWidescreen ? 'text-5xl' : 'text-4xl max-sm:text-3xl'}`}>
