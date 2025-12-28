@@ -691,7 +691,7 @@ const Writing = () => {
                         <span 
                           className="float-left text-5xl max-sm:text-4xl leading-none mr-2 mt-1"
                           style={{ fontFamily: 'Playfair Display, Georgia, serif', fontWeight: 400, color: '#9B4A4A' }}
-                        >W</span>hen a foreign object crashes from the sky in <span className="italic" style={{ color: '#6B7280' }}>Osaka, Japan</span>, and a strange figure steps from the wreckage, psychiatrist <span style={{ color: '#78716C', fontWeight: 500 }}>Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
+                        >W</span>hen a foreign object crashes from the sky in <span className="italic" style={{ color: '#6B7280' }}>Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist <span style={{ color: '#78716C', fontWeight: 500 }}>Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                       </p>
                       <p 
                         className={`leading-relaxed text-stone-600 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
@@ -953,6 +953,9 @@ const Writing = () => {
                     </p>
                     <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       A secret cabal of plumbers employed in an age old scheme that has evolved in the wastes beneath the cities they connect.
+                    </p>
+                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
+                      And above it all, one long summer, from which nothing ever seems to emerge.
                     </p>
                     <p className={`font-serif leading-relaxed text-white italic ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       A novel of multitudes and convergences; a sequel to a story that doesn't exist; a portrait of time and place; all these and more describe a nation seen only at its margins.
