@@ -15,6 +15,11 @@ export const useScrollToTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
+    
+    // Also try scrolling the html element directly for iPad
+    if (document.scrollingElement) {
+      document.scrollingElement.scrollTop = 0;
+    }
   };
 
   // Disable browser's automatic scroll restoration on page load/refresh
@@ -33,7 +38,13 @@ export const useScrollToTop = () => {
 
   // Handle initial page load/refresh - runs once on mount
   useEffect(() => {
+    // Immediate scroll
     scrollToAbsoluteTop();
+    
+    // Use requestAnimationFrame for smoother timing with rendering
+    requestAnimationFrame(() => {
+      scrollToAbsoluteTop();
+    });
     
     // Multiple delayed attempts to counteract any viewport adjustments
     const t1 = setTimeout(scrollToAbsoluteTop, 0);
@@ -42,6 +53,7 @@ export const useScrollToTop = () => {
     const t4 = setTimeout(scrollToAbsoluteTop, 200);
     const t5 = setTimeout(scrollToAbsoluteTop, 300);
     const t6 = setTimeout(scrollToAbsoluteTop, 500);
+    const t7 = setTimeout(scrollToAbsoluteTop, 800);
 
     return () => {
       clearTimeout(t1);
@@ -50,6 +62,7 @@ export const useScrollToTop = () => {
       clearTimeout(t4);
       clearTimeout(t5);
       clearTimeout(t6);
+      clearTimeout(t7);
     };
   }, []);
 
@@ -61,6 +74,10 @@ export const useScrollToTop = () => {
     }
 
     scrollToAbsoluteTop();
+    
+    requestAnimationFrame(() => {
+      scrollToAbsoluteTop();
+    });
     
     const t1 = setTimeout(scrollToAbsoluteTop, 0);
     const t2 = setTimeout(scrollToAbsoluteTop, 50);

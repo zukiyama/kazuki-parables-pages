@@ -676,10 +676,10 @@ const Writing = () => {
                   />
                 </div>
                 {/* Animated wrapper - this moves, frost layer inside stays untransformed */}
-                {/* iPad: narrower (75%), Widescreen: wider (85%) and offset right */}
+                {/* iPad: narrower (73%), Widescreen: wider (88%) and offset right */}
                 <div 
                   className={`transition-all duration-1000 delay-500 will-change-transform ${
-                    isWidescreen ? 'lg:max-w-[85%] lg:ml-8' : 'lg:max-w-[75%]'
+                    isWidescreen ? 'lg:max-w-[88%] lg:ml-10' : 'lg:max-w-[73%]'
                   } ${
                     visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                   }`}
@@ -699,51 +699,39 @@ const Writing = () => {
                     
                     {/* Content layer - above the frost */}
                     <div className="relative z-10 p-5 max-sm:p-4">
-                      {/* Comet symbol - falling from upper right */}
-                      <div className="flex justify-center mb-5">
-                        <div className="relative">
-                          <div 
-                            className="absolute bottom-full right-1/2 mb-0.5 h-px w-5 bg-gradient-to-l from-white/60 to-transparent"
-                            style={{ transform: 'rotate(-25deg)', transformOrigin: 'right bottom' }}
-                          ></div>
-                          <span className="text-white/70 text-xs">✦</span>
-                        </div>
+                      {/* Simple horizontal rule - magazine style */}
+                      <div className="flex justify-center mb-4">
+                        <div className="w-12 h-px bg-white/30"></div>
                       </div>
                       
-                      {/* Article body - elegant magazine typesetting with dull red accent */}
-                      <div className="space-y-4 max-sm:space-y-3">
+                      {/* Article body - elegant magazine typesetting */}
+                      <div className="space-y-3 max-sm:space-y-2">
                         <p 
-                          className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
-                          style={{ fontFamily: 'Georgia, serif', textAlign: 'left', hyphens: 'none', wordBreak: 'keep-all', overflowWrap: 'normal' }}
+                          className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'}`}
+                          style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto' }}
                         >
                           <span 
-                            className="float-left text-5xl max-sm:text-4xl mr-2"
-                            style={{ fontFamily: 'Times New Roman, Times, serif', fontWeight: 400, color: 'rgba(255,255,255,0.95)', lineHeight: '1', marginTop: '-0.05em' }}
-                          >W</span>hen an object crashes from the sky in <span className="italic" style={{ color: 'rgb(180, 120, 120)' }}>Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist <span className="font-medium">Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
+                            className="float-left text-5xl max-sm:text-4xl mr-2 pr-0.5"
+                            style={{ fontFamily: 'Baskerville, "Libre Baskerville", Georgia, serif', fontWeight: 400, color: 'rgb(180, 130, 130)', lineHeight: '0.85', marginTop: '0.05em' }}
+                          >W</span>hen an object crashes from the sky in <span className="italic text-white/80">Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                         </p>
                         <p 
-                          className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
-                          style={{ fontFamily: 'Georgia, serif', textAlign: 'left', hyphens: 'none', wordBreak: 'keep-all', overflowWrap: 'normal' }}
+                          className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'}`}
+                          style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto' }}
                         >
-                          For <span className="font-medium">Kenji</span>, new to nearby <span className="italic" style={{ color: 'rgb(180, 120, 120)' }}>Nakamura</span>, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with <span className="font-medium">Masako</span>, <span className="font-medium">Kubo</span> and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
+                          For Kenji, new to nearby <span className="italic text-white/80">Nakamura</span>, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
                         </p>
                         <p 
-                          className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
-                          style={{ fontFamily: 'Georgia, serif', textAlign: 'left', hyphens: 'none', wordBreak: 'keep-all', overflowWrap: 'normal' }}
+                          className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'}`}
+                          style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto' }}
                         >
-                          <span className="font-medium">Hinata Togawa</span>, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
+                          Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
                         </p>
                       </div>
                       
-                      {/* Bottom comet - mirrored, rising to upper left */}
-                      <div className="flex justify-center mt-5">
-                        <div className="relative">
-                          <span className="text-white/70 text-xs">✦</span>
-                          <div 
-                            className="absolute top-full left-1/2 mt-0.5 h-px w-5 bg-gradient-to-r from-white/60 to-transparent"
-                            style={{ transform: 'rotate(25deg)', transformOrigin: 'left top' }}
-                          ></div>
-                        </div>
+                      {/* Simple horizontal rule - magazine style */}
+                      <div className="flex justify-center mt-4">
+                        <div className="w-12 h-px bg-white/30"></div>
                       </div>
                     </div>
                   </div>
