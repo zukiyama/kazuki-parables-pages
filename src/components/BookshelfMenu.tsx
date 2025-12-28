@@ -224,21 +224,39 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
         // Check if we're already at or very close to the target position
         const currentScroll = window.scrollY;
         if (Math.abs(currentScroll - targetScrollPosition) > 5) {
+          // Step 1: Disable scroll-snap during programmatic scroll (ChatGPT suggestion)
+          const scrollContainer = document.documentElement;
+          const originalSnapType = scrollContainer.style.scrollSnapType;
+          scrollContainer.style.scrollSnapType = 'none';
+          
+          // Step 2: Smooth scroll to target
           window.scrollTo({ 
             top: Math.max(0, targetScrollPosition),
             behavior: 'smooth' 
           });
           
-          // After smooth scroll ends, do a correction pass with fresh measurements
-          // This ensures we land exactly on the snap point (ChatGPT suggestion)
-          const correctionPass = () => {
-            // Wait for scroll to settle, then recalculate and correct if needed
-            requestAnimationFrame(() => {
-              requestAnimationFrame(() => {
+          // Step 3: Stabilization loop - wait for scroll to stop changing across 3+ frames
+          const stabilizeAndCorrect = () => {
+            let lastScrollY = window.scrollY;
+            let stableFrameCount = 0;
+            const requiredStableFrames = 3;
+            
+            const checkStability = () => {
+              const currentScrollY = window.scrollY;
+              
+              if (Math.abs(currentScrollY - lastScrollY) < 1) {
+                stableFrameCount++;
+              } else {
+                stableFrameCount = 0;
+              }
+              lastScrollY = currentScrollY;
+              
+              if (stableFrameCount >= requiredStableFrames) {
+                // Step 4: Scroll is stable - re-measure and correct
                 const correctedPosition = calculateSnapPosition();
                 if (correctedPosition !== undefined) {
                   const finalScroll = window.scrollY;
-                  // Only correct if we're off by more than 2px
+                  // Correct if we're off by more than 2px
                   if (Math.abs(finalScroll - correctedPosition) > 2) {
                     window.scrollTo({ 
                       top: Math.max(0, correctedPosition),
@@ -246,12 +264,34 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
                     });
                   }
                 }
-              });
-            });
+                
+                // Step 5: Re-enable scroll-snap after correction
+                scrollContainer.style.scrollSnapType = originalSnapType;
+                
+                // Step 6: One more correction after snap re-enable (prevents snap nudging)
+                requestAnimationFrame(() => {
+                  const postSnapPosition = calculateSnapPosition();
+                  if (postSnapPosition !== undefined) {
+                    const postSnapScroll = window.scrollY;
+                    if (Math.abs(postSnapScroll - postSnapPosition) > 2) {
+                      window.scrollTo({ 
+                        top: Math.max(0, postSnapPosition),
+                        behavior: 'auto'
+                      });
+                    }
+                  }
+                });
+              } else {
+                // Keep checking
+                requestAnimationFrame(checkStability);
+              }
+            };
+            
+            requestAnimationFrame(checkStability);
           };
           
-          // Wait for smooth scroll to finish (~500ms) then correct
-          setTimeout(correctionPass, 550);
+          // Wait for smooth scroll to mostly finish (~500ms) then run stabilization
+          setTimeout(stabilizeAndCorrect, 500);
         }
         // If we're already at the right position, don't scroll at all
       }
