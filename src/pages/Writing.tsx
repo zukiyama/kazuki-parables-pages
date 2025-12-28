@@ -984,10 +984,10 @@ const Writing = () => {
                       A man unable to distinguish truth from fiction, whose words are so dangerous they can alter reality itself.
                     </p>
                     <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      A secret cabal of plumbers employed in an age old scheme that has evolved in the wastes beneath the cities they connect.
+                      A secret cabal of plumbers employed in an age old scheme that has evolved in the wastes beneath the city.
                     </p>
                     <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      And above it all, one long summer, from which nothing ever seems to emerge.
+                      And above it all, one long summer, from which nothing ever seems to emerge...
                     </p>
                     <p className={`font-serif leading-relaxed text-white italic ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       A novel of multitudes and convergences; a sequel to a story that doesn't exist; a portrait of time and place; all these and more describe a nation seen only at its margins.
