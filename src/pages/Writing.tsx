@@ -59,6 +59,7 @@ const Writing = () => {
   const mainRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLElement | null>(null);
   const isSnapping = useRef(false);
+  const isDraggingScrollbar = useRef(false);
 
   const location = useLocation();
 
@@ -232,6 +233,8 @@ const Writing = () => {
       // Disable scroll snap on mobile/tablet (matches MOBILE_BREAKPOINT of 950px)
       if (window.innerWidth < 950) return;
       if (isSnapping.current) return;
+      // Disable scroll snap while dragging the scrollbar
+      if (isDraggingScrollbar.current) return;
       
       const bookSections = getBookSections();
       if (bookSections.length === 0) return;
@@ -315,15 +318,40 @@ const Writing = () => {
 
     const handleScroll = () => {
       if (isSnapping.current) return;
+      // Skip snap timeout if dragging scrollbar
+      if (isDraggingScrollbar.current) return;
       
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(handleScrollEnd, 150);
     };
 
+    // Detect scrollbar dragging: mousedown in scrollbar area + mouse movement
+    const scrollbarWidth = 20;
+    
+    const handleMouseDown = (e: MouseEvent) => {
+      if (e.clientX >= window.innerWidth - scrollbarWidth) {
+        isDraggingScrollbar.current = true;
+      }
+    };
+    
+    const handleMouseUp = () => {
+      if (isDraggingScrollbar.current) {
+        isDraggingScrollbar.current = false;
+        // After releasing scrollbar, allow snap to resume normally
+        // Clear any pending timeout and set a fresh one
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(handleScrollEnd, 300);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('mousedown', handleMouseDown, { passive: true });
+    window.addEventListener('mouseup', handleMouseUp, { passive: true });
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
       clearTimeout(scrollTimeout);
     };
   }, [getHeaderBottom, isWidescreen]);
