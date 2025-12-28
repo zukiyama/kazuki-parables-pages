@@ -675,39 +675,39 @@ const Writing = () => {
                     isWidescreen={isWidescreen}
                   />
                 </div>
-                <div className={`transition-all duration-1000 delay-500 lg:max-w-[90%] ${
+                <div className={`transition-all duration-1000 delay-500 lg:max-w-[85%] ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   
-                  {/* Magazine-style article without container - elegant typography on background */}
-                  <div className="relative">
-                    {/* Top ornamental divider */}
+                  {/* Magazine-style article with frosted glass background */}
+                  <div className="relative backdrop-blur-md bg-black/40 rounded-lg p-6 max-sm:p-5 border border-white/10">
+                    {/* Top ornamental divider with meteor symbol */}
                     <div className="flex items-center justify-center gap-4 mb-6">
                       <div className="h-px w-12 bg-gradient-to-r from-transparent to-yellow-400/60"></div>
-                      <span className="text-yellow-400/80 text-xs tracking-[0.3em] uppercase" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>Book One</span>
+                      <span className="text-yellow-400/80 text-lg">☄</span>
                       <div className="h-px w-12 bg-gradient-to-l from-transparent to-yellow-400/60"></div>
                     </div>
                     
                     {/* Article body - beautifully typeset with drop cap */}
                     <div className="space-y-5 max-sm:space-y-4">
                       <p 
-                        className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
-                        style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
+                        className={`leading-relaxed text-white/95 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
+                        style={{ fontFamily: 'Georgia, serif', textAlign: 'left', hyphens: 'none', wordBreak: 'keep-all', overflowWrap: 'normal' }}
                       >
                         <span 
                           className="float-left text-6xl max-sm:text-5xl leading-none mr-3 mt-1"
                           style={{ fontFamily: 'Playfair Display, Georgia, serif', fontWeight: 400, color: '#FBBF24', textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
-                        >W</span>hen a foreign object crashes from the sky in <span className="italic text-yellow-200/90">Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist <span className="text-yellow-100 font-medium">Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
+                        >W</span>hen a foreign object crashes from the sky in <span className="italic text-yellow-200">Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist <span className="text-yellow-100 font-medium">Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                       </p>
                       <p 
-                        className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
-                        style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
+                        className={`leading-relaxed text-white/95 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
+                        style={{ fontFamily: 'Georgia, serif', textAlign: 'left', hyphens: 'none', wordBreak: 'keep-all', overflowWrap: 'normal' }}
                       >
-                        For <span className="text-yellow-100 font-medium">Kenji</span>, new to nearby <span className="italic text-yellow-200/90">Nakamura</span>, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with <span className="text-yellow-100 font-medium">Masako</span>, <span className="text-yellow-100 font-medium">Kubo</span> and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
+                        For <span className="text-yellow-100 font-medium">Kenji</span>, new to nearby <span className="italic text-yellow-200">Nakamura</span>, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with <span className="text-yellow-100 font-medium">Masako</span>, <span className="text-yellow-100 font-medium">Kubo</span> and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
                       </p>
                       <p 
-                        className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
-                        style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
+                        className={`leading-relaxed text-white/95 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
+                        style={{ fontFamily: 'Georgia, serif', textAlign: 'left', hyphens: 'none', wordBreak: 'keep-all', overflowWrap: 'normal' }}
                       >
                         <span className="text-yellow-100 font-medium">Hinata Togawa</span>, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
                       </p>
