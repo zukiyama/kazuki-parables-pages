@@ -1119,19 +1119,20 @@ const Writing = () => {
         }`}>
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
-              <h2 className={`font-serif font-bold text-white mb-4 text-center tracking-wide transition-all duration-1000 ${
-                visibleSections.has('young-adult') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              {/* Use opacity-only reveal (no translate-y) to prevent layout shift during scroll navigation */}
+              <h2 className={`font-serif font-bold text-white mb-4 text-center tracking-wide transition-opacity duration-1000 ${
+                visibleSections.has('young-adult') ? 'opacity-100' : 'opacity-0'
               } ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
                 Young Adult Series
               </h2>
-              <p className={`font-serif text-yellow-300 mb-12 text-center transition-all duration-1000 delay-300 ${
-                visibleSections.has('young-adult') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              <p className={`font-serif text-yellow-300 mb-12 text-center transition-opacity duration-1000 delay-300 ${
+                visibleSections.has('young-adult') ? 'opacity-100' : 'opacity-0'
               } ${isWidescreen ? 'text-lg' : 'text-xl'}`}>
                 Books of imagination for any age
               </p>
               
-              <div className={`transition-all duration-1000 delay-500 ${
-                visibleSections.has('young-adult') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              <div className={`transition-opacity duration-1000 delay-500 ${
+                visibleSections.has('young-adult') ? 'opacity-100' : 'opacity-0'
               }`}>
                 <YoungAdultSlideshow 
                   ref={youngAdultSlideshowRef} 
