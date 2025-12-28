@@ -166,7 +166,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       if (book.targetSection === 'young-adult') {
         // For young-adult slideshow: use EXACT same logic as getCenterSnapPoint in Writing.tsx
         const titleEl = section.querySelector('h2') as HTMLElement;
-        const slideshowContainer = section.querySelector('.transition-all.duration-1000.delay-500') as HTMLElement;
+        const slideshowContainer = section.querySelector('.transition-opacity.duration-1000.delay-500') as HTMLElement;
         
         if (titleEl && slideshowContainer) {
           const titleRect = titleEl.getBoundingClientRect();
