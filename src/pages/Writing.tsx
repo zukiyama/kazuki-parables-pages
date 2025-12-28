@@ -653,37 +653,50 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  {/* Magazine-style white article card - clean and minimal */}
+                  {/* Magazine-style white article card */}
                   <div 
-                    className={`relative ${isWidescreen ? 'p-5' : 'p-6 max-sm:p-4'}`}
+                    className={`relative ${isWidescreen ? 'p-6' : 'p-8 max-sm:p-5'}`}
                     style={{
                       background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)',
-                      boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                      boxShadow: '0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08)'
                     }}
                   >
+                    {/* Decorative top border accent */}
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600" />
+                    
                     {/* Magazine header with title */}
-                    <div className="text-center mb-5 max-sm:mb-3">
+                    <div className="text-center mb-6 max-sm:mb-4">
+                      <span 
+                        className={`uppercase tracking-[0.4em] text-amber-700/70 block mb-2 ${isWidescreen ? 'text-[10px]' : 'text-xs max-sm:text-[10px]'}`}
+                        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                      >
+                        Book One
+                      </span>
                       <h2 
-                        className={`font-bold tracking-wide text-stone-800 ${isWidescreen ? 'text-3xl mb-1' : 'text-4xl max-sm:text-2xl mb-1'}`}
+                        className={`font-bold tracking-wide text-stone-800 ${isWidescreen ? 'text-4xl mb-1' : 'text-5xl max-sm:text-3xl mb-2'}`}
                         style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
                       >
                         KAIJU
                       </h2>
                       <span 
-                        className={`italic text-stone-500 ${isWidescreen ? 'text-xs' : 'text-sm max-sm:text-xs'}`}
+                        className={`italic text-stone-500 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
                         style={{ fontFamily: 'Georgia, serif' }}
                       >
-                        Book One of The Parable Trilogy
+                        The Parable Trilogy
                       </span>
                     </div>
                     
-                    {/* Simple divider line */}
-                    <div className="w-16 h-px bg-stone-300 mx-auto mb-5 max-sm:mb-3" />
+                    {/* Elegant divider */}
+                    <div className="flex items-center justify-center gap-3 mb-6 max-sm:mb-4">
+                      <div className="w-12 h-px bg-stone-300" />
+                      <div className="w-1.5 h-1.5 rotate-45 bg-amber-600" />
+                      <div className="w-12 h-px bg-stone-300" />
+                    </div>
                     
                     {/* Article body - beautifully typeset */}
-                    <div className="space-y-3 max-sm:space-y-2">
+                    <div className="space-y-4 max-sm:space-y-3">
                       <p 
-                        className={`leading-relaxed text-stone-700 first-letter:text-3xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:mt-0.5 first-letter:text-stone-800 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
+                        className={`leading-relaxed text-stone-700 first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:mt-1 first-letter:text-amber-700 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
                         style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
                       >
                         When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
@@ -700,6 +713,13 @@ const Writing = () => {
                       >
                         Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
                       </p>
+                    </div>
+                    
+                    {/* Decorative bottom flourish */}
+                    <div className="flex justify-center mt-6 max-sm:mt-4">
+                      <div className="flex items-center gap-2 text-stone-400">
+                        <span className="text-lg">✦</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -735,6 +755,11 @@ const Writing = () => {
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
+                {/* Title above the memo */}
+                  <h2 className={`font-serif font-bold mb-6 text-white tracking-wide drop-shadow-lg ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
+                    HOAX
+                  </h2>
+                  
                   {/* Memo sheet taped to page */}
                   <div className="relative">
                     {/* Tape corners */}
@@ -751,15 +776,11 @@ const Writing = () => {
                       background: 'linear-gradient(135deg, rgba(254, 249, 195, 0.9) 0%, rgba(253, 224, 71, 0.6) 100%)'
                     }}></div>
                     
-                    {/* Memo paper with centered title */}
+                    {/* Memo paper */}
                     <div className={`shadow-lg ${isWidescreen ? 'p-6' : 'p-8'}`} style={{
                       background: 'linear-gradient(180deg, #fffef5 0%, #fefce8 50%, #fef9c3 100%)',
                       boxShadow: '2px 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)'
                     }}>
-                      {/* Centered title */}
-                      <h2 className={`font-serif font-bold text-center mb-4 text-stone-700 tracking-wide ${isWidescreen ? 'text-3xl' : 'text-4xl'}`}>
-                        HOAX
-                      </h2>
                       <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ lineHeight: '1.9' }}>
                         Peter Mayhew had hit rock bottom when he wrote Hoax, a pseudo-spiritual parody intended as his sign-off, a final insult to an industry he had grown to despise… and worst of all an overnight bestseller. He had finally made his name — and could never use it again.
                       </p>
