@@ -20,7 +20,7 @@ export default {
 		extend: {
 			screens: {
 				'xs': '481px',
-				'sm': '950px',
+				'sm': '768px',
 			},
 		fontFamily: {
 			heading: ['Playfair Display', 'serif'],
