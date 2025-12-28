@@ -147,8 +147,12 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
       const headerBottom = getHeaderBottom ? getHeaderBottom() : 64;
       
-      // For widescreen: ignore banner in calculations (snap is independent of banner)
-      const topOffset = headerBottom; // No banner offset for widescreen
+      // For widescreen: the banner will disappear immediately after click, so calculate
+      // the scroll position as if the banner is already gone (topOffset = header only)
+      // For non-widescreen: include banner height in calculations since banner stays visible
+      const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
+      const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
+      const topOffset = headerBottom + bannerHeight;
       const viewportHeight = window.innerHeight;
       const availableHeight = viewportHeight - topOffset;
       
@@ -190,12 +194,15 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
           targetScrollPosition = titleTop - topOffset - 20;
         }
       } else {
-        // For individual books: ensure full book cover is visible
+        // For individual books: center the book cover in the available viewport
         const bookCoverImg = section.querySelector('img[alt*="Cover"]');
         if (bookCoverImg) {
           const imgRect = bookCoverImg.getBoundingClientRect();
+          const imgHeight = imgRect.height;
           const imgTop = imgRect.top + window.scrollY;
-          targetScrollPosition = imgTop - topOffset - 80;
+          const imgCenter = imgTop + (imgHeight / 2);
+          const desiredCenterY = topOffset + (availableHeight / 2);
+          targetScrollPosition = Math.max(0, imgCenter - desiredCenterY);
         } else {
           const sectionTop = section.getBoundingClientRect().top + window.scrollY;
           targetScrollPosition = sectionTop - topOffset - 80;
