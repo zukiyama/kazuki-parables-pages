@@ -710,12 +710,6 @@ const Writing = () => {
                       </p>
                     </div>
                     
-                    {/* Decorative bottom flourish */}
-                    <div className="flex justify-center mt-6 max-sm:mt-4">
-                      <div className="flex items-center gap-2 text-stone-300">
-                        <span className="text-lg">✦</span>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
