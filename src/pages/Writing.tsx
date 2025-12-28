@@ -653,38 +653,30 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
+                  {/* Title above the white container */}
+                  <div className="text-center mb-6 max-sm:mb-4">
+                    <span 
+                      className={`uppercase tracking-[0.3em] text-stone-300 block mb-3 ${isWidescreen ? 'text-[10px]' : 'text-xs max-sm:text-[10px]'}`}
+                      style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 400 }}
+                    >
+                      Book One of the Parable Trilogy
+                    </span>
+                    <h2 
+                      className={`font-light tracking-[0.15em] text-white ${isWidescreen ? 'text-4xl' : 'text-5xl max-sm:text-3xl'}`}
+                      style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
+                    >
+                      KAIJU
+                    </h2>
+                  </div>
+                  
                   {/* Magazine-style white article card */}
                   <div 
-                    className={`relative ${isWidescreen ? 'p-6' : 'p-8 max-sm:p-5'}`}
+                    className={`relative ${isWidescreen ? 'p-6' : 'p-6 max-sm:p-5'}`}
                     style={{
                       background: '#ffffff',
                       boxShadow: '0 4px 24px rgba(0,0,0,0.08)'
                     }}
                   >
-                    {/* Subtle decorative line */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-stone-300" />
-                    
-                    {/* Magazine header with title */}
-                    <div className="text-center mt-4 mb-6 max-sm:mb-4">
-                      <span 
-                        className={`uppercase tracking-[0.3em] text-stone-400 block mb-3 ${isWidescreen ? 'text-[10px]' : 'text-xs max-sm:text-[10px]'}`}
-                        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 400 }}
-                      >
-                        Book One of the Parable Trilogy
-                      </span>
-                      <h2 
-                        className={`font-light tracking-[0.15em] text-stone-800 ${isWidescreen ? 'text-4xl' : 'text-5xl max-sm:text-3xl'}`}
-                        style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
-                      >
-                        KAIJU
-                      </h2>
-                    </div>
-                    
-                    {/* Simple elegant divider */}
-                    <div className="flex justify-center mb-6 max-sm:mb-4">
-                      <div className="w-8 h-px bg-stone-300" />
-                    </div>
-                    
                     {/* Article body - beautifully typeset with manual drop cap */}
                     <div className="space-y-4 max-sm:space-y-3">
                       <p 
