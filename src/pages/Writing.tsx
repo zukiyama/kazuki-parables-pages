@@ -726,7 +726,7 @@ const Writing = () => {
                 ref={parableTrilogyRef}
                 className={`text-center mt-8 max-sm:mt-6 ${
                   visibleSections.has('kaiju') ? 'translate-y-0' : 'translate-y-10'
-                } ${isWidescreen ? 'mb-24' : 'mb-28 max-sm:mb-10'}`}
+                } ${isWidescreen ? 'mb-24' : 'mb-28 max-sm:mb-16'}`}
                 style={{
                   opacity: visibleSections.has('kaiju') ? (parableTrilogyVisible ? 1 : 0) : 0,
                   transition: 'opacity 1.2s ease-in-out, transform 1s ease-out'
@@ -749,7 +749,7 @@ const Writing = () => {
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
                 <span 
-                  className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'}`}
+                  className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 max-sm:mb-2 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'}`}
                   style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 400 }}
                 >
                   Book One of the Parable Trilogy
