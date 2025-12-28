@@ -48,8 +48,8 @@ const About = () => {
             className="w-full h-full object-cover"
             priority
           />
-          {/* Subtle overlay to improve text readability */}
-          <div className="absolute inset-0 bg-white/20" />
+          {/* Subtle overlay to improve text readability - more opacity on mobile for better text visibility */}
+          <div className="absolute inset-0 bg-white/20 max-sm:bg-white/50" />
         </div>
         
         {/* Editorial Top Bar */}
@@ -214,12 +214,12 @@ const About = () => {
             </blockquote>
           </div>
         </div>
-        {/* Short gradient fade from black to transparent */}
-        <div className="h-16 bg-gradient-to-b from-neutral-900 to-transparent" />
+        {/* Short gradient fade from black to transparent - hidden on mobile phone */}
+        <div className="h-16 bg-gradient-to-b from-neutral-900 to-transparent max-sm:hidden" />
       </div>
       
-      {/* Background Image Section from Original About - pulled up */}
-      <div className="relative z-10 -mt-8">
+      {/* Background Image Section from Original About - pulled up, no gap on mobile */}
+      <div className="relative z-10 -mt-8 max-sm:mt-0">
         <div 
           data-scroll-animation="background-image"
           className={`relative pointer-events-none overflow-hidden scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
@@ -293,7 +293,7 @@ const About = () => {
           <div className="hidden max-sm:block absolute inset-0 bg-black/40 pointer-events-auto">
             <div className="flex items-center justify-center h-full px-6 text-center">
               <p className="font-body text-xl text-white leading-relaxed max-w-md drop-shadow-lg">
-                A writer and composer exploring the spaces between form and possibility
+                "Gardens appear whether you mean them to or not, and action figures grow taller than the boys that bury them."
               </p>
             </div>
           </div>
