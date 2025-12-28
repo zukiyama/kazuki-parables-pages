@@ -726,7 +726,7 @@ const Writing = () => {
                 ref={parableTrilogyRef}
                 className={`text-center mt-8 max-sm:mt-6 ${
                   visibleSections.has('kaiju') ? 'translate-y-0' : 'translate-y-10'
-                } ${isWidescreen ? 'mb-24' : 'mb-28 max-sm:mb-16'}`}
+                } ${isWidescreen ? 'mb-24' : 'mb-28 max-sm:mb-8'}`}
                 style={{
                   opacity: visibleSections.has('kaiju') ? (parableTrilogyVisible ? 1 : 0) : 0,
                   transition: 'opacity 1.2s ease-in-out, transform 1s ease-out'
