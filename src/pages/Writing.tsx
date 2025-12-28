@@ -628,17 +628,40 @@ const Writing = () => {
               </div>
               
               {/* The Parable Trilogy Introduction */}
-              <div className={`text-center mb-16 mt-8 max-sm:mt-6 transition-all duration-1000 delay-200 ${
+              <div className={`text-center mb-24 max-sm:mb-16 mt-8 max-sm:mt-6 transition-all duration-1000 delay-200 ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
-                <h2 className="font-serif text-4xl max-sm:text-3xl font-bold text-yellow-300 mb-6">The Parable Trilogy</h2>
+                <h2 
+                  className="text-4xl max-sm:text-3xl font-light tracking-[0.15em] text-yellow-300 mb-6"
+                  style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
+                >
+                  The Parable Trilogy
+                </h2>
                 <p className="font-serif text-lg md:text-xl max-sm:text-base leading-relaxed text-white max-w-4xl mx-auto">
                   A metaphysical saga unfolding across the shifting decades of an alternate 20th-century Japan, taking the reader from mysterious towns and abandoned film sets to mountain temples and secret research facilities far from this world. With a cast as varied as its setting, childhood wonder collides with philosophy and fantasy in this compelling trilogy that explores the boundaries between truth and fiction.
                 </p>
               </div>
               
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
-                <div className={`transition-all duration-1000 delay-300 ${
+              {/* Book One Title - Centered above both cover and blurb */}
+              <div className={`text-center mb-10 max-sm:mb-8 transition-all duration-1000 delay-300 ${
+                visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}>
+                <span 
+                  className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
+                  style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 400 }}
+                >
+                  Book One of the Parable Trilogy
+                </span>
+                <h2 
+                  className={`font-light tracking-[0.15em] text-white ${isWidescreen ? 'text-5xl' : 'text-6xl max-sm:text-4xl'}`}
+                  style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
+                >
+                  KAIJU
+                </h2>
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center lg:px-8">
+                <div className={`transition-all duration-1000 delay-400 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
                   <BookCoverSlideshow 
@@ -653,21 +676,6 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  {/* Title above the white container */}
-                  <div className="text-center mb-6 max-sm:mb-4">
-                    <span 
-                      className={`uppercase tracking-[0.3em] text-stone-300 block mb-3 ${isWidescreen ? 'text-[10px]' : 'text-xs max-sm:text-[10px]'}`}
-                      style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 400 }}
-                    >
-                      Book One of the Parable Trilogy
-                    </span>
-                    <h2 
-                      className={`font-light tracking-[0.15em] text-white ${isWidescreen ? 'text-4xl' : 'text-5xl max-sm:text-3xl'}`}
-                      style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
-                    >
-                      KAIJU
-                    </h2>
-                  </div>
                   
                   {/* Magazine-style white article card */}
                   <div 
