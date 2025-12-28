@@ -676,8 +676,11 @@ const Writing = () => {
                   />
                 </div>
                 {/* Animated wrapper - this moves, frost layer inside stays untransformed */}
+                {/* iPad: narrower (75%), Widescreen: wider (85%) and offset right */}
                 <div 
-                  className={`transition-all duration-1000 delay-500 lg:max-w-[80%] will-change-transform ${
+                  className={`transition-all duration-1000 delay-500 will-change-transform ${
+                    isWidescreen ? 'lg:max-w-[85%] lg:ml-8' : 'lg:max-w-[75%]'
+                  } ${
                     visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                   }`}
                 >
@@ -696,33 +699,33 @@ const Writing = () => {
                     
                     {/* Content layer - above the frost */}
                     <div className="relative z-10 p-5 max-sm:p-4">
-                      {/* Shooting star symbol - angled tail at ~35° */}
+                      {/* Comet symbol - falling from upper right */}
                       <div className="flex justify-center mb-5">
                         <div className="relative">
-                          <span className="text-white/70 text-sm">✦</span>
                           <div 
-                            className="absolute top-1/2 left-full ml-0.5 h-px w-6 bg-gradient-to-r from-white/50 to-transparent"
-                            style={{ transform: 'rotate(35deg)', transformOrigin: 'left center' }}
+                            className="absolute bottom-full right-1/2 mb-0.5 h-px w-5 bg-gradient-to-l from-white/60 to-transparent"
+                            style={{ transform: 'rotate(-25deg)', transformOrigin: 'right bottom' }}
                           ></div>
+                          <span className="text-white/70 text-xs">✦</span>
                         </div>
                       </div>
                       
-                      {/* Article body - elegant magazine typesetting */}
+                      {/* Article body - elegant magazine typesetting with dull red accent */}
                       <div className="space-y-4 max-sm:space-y-3">
                         <p 
                           className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
                           style={{ fontFamily: 'Georgia, serif', textAlign: 'left', hyphens: 'none', wordBreak: 'keep-all', overflowWrap: 'normal' }}
                         >
                           <span 
-                            className="float-left text-6xl max-sm:text-5xl mr-3"
-                            style={{ fontFamily: 'Playfair Display, Georgia, serif', fontWeight: 400, color: 'rgba(255,255,255,0.95)', lineHeight: '0.8', marginTop: '0.1em' }}
-                          >W</span>hen an object crashes from the sky in <span className="italic text-white/80">Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist <span className="font-medium">Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
+                            className="float-left text-5xl max-sm:text-4xl mr-2"
+                            style={{ fontFamily: 'Times New Roman, Times, serif', fontWeight: 400, color: 'rgba(255,255,255,0.95)', lineHeight: '1', marginTop: '-0.05em' }}
+                          >W</span>hen an object crashes from the sky in <span className="italic" style={{ color: 'rgb(180, 120, 120)' }}>Osaka, Japan</span>, and a bizarre figure steps from the wreckage, psychiatrist <span className="font-medium">Shigemitsu</span> is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
                         </p>
                         <p 
                           className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
                           style={{ fontFamily: 'Georgia, serif', textAlign: 'left', hyphens: 'none', wordBreak: 'keep-all', overflowWrap: 'normal' }}
                         >
-                          For <span className="font-medium">Kenji</span>, new to nearby <span className="italic text-white/80">Nakamura</span>, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with <span className="font-medium">Masako</span>, <span className="font-medium">Kubo</span> and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
+                          For <span className="font-medium">Kenji</span>, new to nearby <span className="italic" style={{ color: 'rgb(180, 120, 120)' }}>Nakamura</span>, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with <span className="font-medium">Masako</span>, <span className="font-medium">Kubo</span> and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
                         </p>
                         <p 
                           className={`leading-relaxed text-white/90 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
@@ -732,14 +735,14 @@ const Writing = () => {
                         </p>
                       </div>
                       
-                      {/* Bottom ornamental divider */}
+                      {/* Bottom comet - mirrored, rising to upper left */}
                       <div className="flex justify-center mt-5">
                         <div className="relative">
+                          <span className="text-white/70 text-xs">✦</span>
                           <div 
-                            className="absolute bottom-1/2 right-full mr-0.5 h-px w-6 bg-gradient-to-l from-white/50 to-transparent"
-                            style={{ transform: 'rotate(-35deg)', transformOrigin: 'right center' }}
+                            className="absolute top-full left-1/2 mt-0.5 h-px w-5 bg-gradient-to-r from-white/60 to-transparent"
+                            style={{ transform: 'rotate(25deg)', transformOrigin: 'left top' }}
                           ></div>
-                          <span className="text-white/70 text-sm">✦</span>
                         </div>
                       </div>
                     </div>
