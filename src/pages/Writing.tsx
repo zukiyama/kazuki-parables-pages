@@ -653,22 +653,74 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('kaiju') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className="font-serif font-bold mb-2 text-white" style={{ fontSize: isWidescreen ? '2.5rem' : '3rem' }}>
-                    KAIJU
-                  </h2>
-                  <div className="bg-black/75 backdrop-blur-sm rounded-lg px-6 pt-4 pb-6 border border-white/20">
-                    <h3 className={`font-serif text-yellow-300 mb-6 tracking-wide ${isWidescreen ? 'text-sm mb-4' : ''}`} style={{ fontSize: isWidescreen ? 'calc(0.875rem + 1pt)' : 'calc(1rem + 2pt)' }}>
-                      Book One of The Parable Trilogy
-                    </h3>
-                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white mb-3 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
-                    </p>
+                  {/* Magazine-style white article card */}
+                  <div 
+                    className={`relative ${isWidescreen ? 'p-6' : 'p-8 max-sm:p-5'}`}
+                    style={{
+                      background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)',
+                      boxShadow: '0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08)'
+                    }}
+                  >
+                    {/* Decorative top border accent */}
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600" />
+                    
+                    {/* Magazine header with title */}
+                    <div className="text-center mb-6 max-sm:mb-4">
+                      <span 
+                        className={`uppercase tracking-[0.4em] text-amber-700/70 block mb-2 ${isWidescreen ? 'text-[10px]' : 'text-xs max-sm:text-[10px]'}`}
+                        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                      >
+                        Book One
+                      </span>
+                      <h2 
+                        className={`font-bold tracking-wide text-stone-800 ${isWidescreen ? 'text-4xl mb-1' : 'text-5xl max-sm:text-3xl mb-2'}`}
+                        style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
+                      >
+                        KAIJU
+                      </h2>
+                      <span 
+                        className={`italic text-stone-500 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
+                        style={{ fontFamily: 'Georgia, serif' }}
+                      >
+                        The Parable Trilogy
+                      </span>
+                    </div>
+                    
+                    {/* Elegant divider */}
+                    <div className="flex items-center justify-center gap-3 mb-6 max-sm:mb-4">
+                      <div className="w-12 h-px bg-stone-300" />
+                      <div className="w-1.5 h-1.5 rotate-45 bg-amber-600" />
+                      <div className="w-12 h-px bg-stone-300" />
+                    </div>
+                    
+                    {/* Article body - beautifully typeset */}
+                    <div className="space-y-4 max-sm:space-y-3">
+                      <p 
+                        className={`leading-relaxed text-stone-700 first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:mt-1 first-letter:text-amber-700 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
+                        style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
+                      >
+                        When a foreign object crashes from the sky in Osaka, Japan, and a strange figure steps from the wreckage, psychiatrist Shigemitsu is enlisted by the military to draw on what he remembers of a man he hasn't thought of in twenty years.
+                      </p>
+                      <p 
+                        className={`leading-relaxed text-stone-700 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
+                        style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
+                      >
+                        For Kenji, new to nearby Nakamura, all that matters is not being the only kid sitting alone in class. He soon finds himself friends with Masako, Kubo and a group of misfits, who realise that they each share a secret, and begin to suspect the town is not all it seems.
+                      </p>
+                      <p 
+                        className={`leading-relaxed text-stone-700 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}
+                        style={{ fontFamily: 'Georgia, serif', textAlign: 'justify', hyphens: 'auto' }}
+                      >
+                        Hinata Togawa, a policewoman relegated to a dead-end posting at a remote local station, is resigned to an uneventful career. But when a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption, she is forced to confront something far closer to home — and far more dangerous — than she ever imagined.
+                      </p>
+                    </div>
+                    
+                    {/* Decorative bottom flourish */}
+                    <div className="flex justify-center mt-6 max-sm:mt-4">
+                      <div className="flex items-center gap-2 text-stone-400">
+                        <span className="text-lg">✦</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
