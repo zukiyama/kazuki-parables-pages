@@ -979,28 +979,28 @@ const Writing = () => {
                   visibleSections.has('the-market') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
                   {/* Futuristic holographic display */}
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-cyan-400/20 blur-xl rounded-lg"></div>
-                    <div className={`relative bg-gradient-to-br from-slate-900/90 via-cyan-950/80 to-slate-900/90 rounded border border-cyan-400/40 ${isWidescreen ? 'p-5' : 'p-6'}`} style={{
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-cyan-400/20 blur-xl rounded-lg transition-all duration-500 group-hover:bg-cyan-400/30"></div>
+                    <div className={`relative bg-gradient-to-br from-slate-900/90 via-cyan-950/80 to-slate-900/90 rounded border border-cyan-400/40 transition-all duration-500 group-hover:border-cyan-400/70 ${isWidescreen ? 'p-5' : 'p-6'}`} style={{
                       boxShadow: '0 0 30px rgba(34, 211, 238, 0.2), inset 0 1px 0 rgba(34, 211, 238, 0.2)'
                     }}>
-                      <div className="flex items-center gap-2 mb-4 pb-3 border-b border-cyan-400/30">
+                      <div className="flex items-center gap-2 mb-4 pb-3 border-b border-cyan-400/30 transition-all duration-500 group-hover:border-cyan-400/50">
                         <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
-                        <span className="text-cyan-400/80 text-xs font-mono tracking-widest">CORP_01 // CLASSIFIED</span>
+                        <span className="text-cyan-400/80 text-xs font-mono tracking-widest transition-all duration-500 group-hover:text-cyan-400">CORP_01 // CLASSIFIED</span>
                       </div>
-                      <h2 className={`font-mono font-bold mb-4 text-cyan-300 tracking-tight ${isWidescreen ? 'text-3xl' : 'text-4xl'}`}>
+                      <h2 className={`font-mono font-bold mb-4 text-cyan-300 tracking-tight transition-all duration-500 group-hover:text-cyan-200 ${isWidescreen ? 'text-3xl' : 'text-4xl'}`}>
                         THE MARKET
                       </h2>
-                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
+                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 transition-all duration-500 group-hover:text-cyan-100 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                         James Tarreden's new life on <em>Island</em>—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. In fact, everything is falling into place a little too easily…
                       </p>
-                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
+                      <p className={`font-sans leading-relaxed text-cyan-100/90 mb-3 transition-all duration-500 group-hover:text-cyan-100 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                         Under the wing of an enigmatic young CEO, James is inducted into the secrets behind his company's new technology, and with everything he knew about reality unravelling, finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of <em>Island</em>, one that gives an entirely new meaning to corporate survival.
                       </p>
-                      <p className={`font-sans italic text-cyan-200/80 ${isWidescreen ? 'text-xs' : 'text-sm max-sm:text-xs'}`}>
+                      <p className={`font-sans italic text-cyan-200/80 transition-all duration-500 group-hover:text-cyan-200 ${isWidescreen ? 'text-xs' : 'text-sm max-sm:text-xs'}`}>
                         An existential psychological thriller.
                       </p>
-                      <div className="mt-4 flex justify-between items-center text-cyan-400/50 text-xs font-mono">
+                      <div className="mt-4 flex justify-between items-center text-cyan-400/50 text-xs font-mono transition-all duration-500 group-hover:text-cyan-400/80">
                         <span>ACCESS: LEVEL-7</span>
                         <span className="animate-pulse">●●● LIVE</span>
                       </div>
