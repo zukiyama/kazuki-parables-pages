@@ -742,8 +742,8 @@ const Writing = () => {
               </div>
               
               {/* Book One Title - Centered above both cover and blurb */}
-              {/* iPad desktop: less padding (mb-4), Widescreen: more padding (mb-16), iPad portrait mobile: more padding (sm:mb-8) */}
-              <div className={`text-center max-sm:mb-10 sm:mb-8 transition-all duration-1000 delay-300 ${
+              {/* iPad desktop: less padding (mb-4), Widescreen: more padding (mb-16), iPad portrait mobile: more padding (sm:mb-10), reduce top margin on iPad portrait (sm:mt-[-8px]) */}
+              <div className={`text-center max-sm:mb-10 sm:mb-10 sm:mt-[-4px] transition-all duration-1000 delay-300 ${
                 isWidescreen ? 'mb-16' : 'lg:mb-4'
               } ${
                 visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
