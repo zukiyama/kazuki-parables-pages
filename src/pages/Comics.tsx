@@ -785,11 +785,12 @@ const Comics = () => {
         {/* SCROLLABLE CONTENT - Pendragon sits behind pinned container, revealed when scroll unlocks */}
         <div 
           ref={scrollableContentRef}
-          style={{ marginTop: '64px' }} // Align with header bottom
+          className="sm:mt-16"
+          style={{ marginTop: typeof window !== 'undefined' && window.innerWidth < 640 ? '0px' : undefined }}
         >
           {/* Pendragon - the ONLY instance, sits behind pinned dissolve container */}
           <section 
-            className="relative w-full overflow-hidden cursor-pointer"
+            className="relative w-full overflow-hidden cursor-pointer max-sm:pt-16"
             onClick={() => setPendragonCaptionVisible(!pendragonCaptionVisible)}
           >
             {/* Desktop image - widescreen shows full image without cropping */}
@@ -799,17 +800,17 @@ const Comics = () => {
               className={`hidden lg:block w-full ${isWidescreen ? 'h-auto object-contain' : 'h-[calc(100vh-64px)] object-cover'}`}
               style={{ objectPosition: isWidescreen ? undefined : 'center 20%' }}
             />
-            {/* Mobile + small iPad image - full width, top edge aligned with header bottom (top of viewport) */}
+            {/* Mobile + small iPad image - full width, top edge aligned with header bottom */}
             <img 
               src={surnamePendragonMobile}
               alt="Surname Pendragon"
               className="lg:hidden w-full h-auto object-contain block"
             />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            {/* Caption - positioned at bottom-left of image on mobile/tablet, bottom of viewport area on desktop */}
+            {/* Gradient overlay - desktop only */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent hidden lg:block" />
+            {/* Caption - positioned at bottom-left of image on DESKTOP ONLY */}
             <div 
-              className="absolute left-4 sm:left-6 lg:left-12 max-w-sm transition-all duration-500 bottom-4 sm:bottom-6 lg:bottom-16"
+              className="absolute left-12 max-w-sm transition-all duration-500 bottom-16 hidden lg:block"
               style={{
                 opacity: pendragonCaptionVisible ? 1 : 0,
                 transform: pendragonCaptionVisible ? 'translateX(0)' : 'translateX(-20px)',
@@ -817,25 +818,55 @@ const Comics = () => {
               }}
             >
               <h4 
-                className="text-white/90 text-sm md:text-base uppercase tracking-[0.3em] mb-2 lg:mb-3"
+                className="text-white/90 text-base uppercase tracking-[0.3em] mb-3"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
                 Screenplay Adaptation
               </h4>
               <h3 
-                className="text-white text-xl md:text-2xl lg:text-3xl font-light mb-2 lg:mb-3 tracking-wide"
+                className="text-white text-3xl font-light mb-3 tracking-wide"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 Surname Pendragon
               </h3>
               <p 
-                className="text-white/70 text-sm md:text-base leading-relaxed mb-3 lg:mb-4"
+                className="text-white/70 text-base leading-relaxed mb-4"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 A sweeping family saga spanning three generations, where legacy is both burden and blessing.
               </p>
               <p 
-                className="text-white/50 text-xs md:text-sm uppercase tracking-widest"
+                className="text-white/50 text-sm uppercase tracking-widest"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Feature Film • Drama • In Development
+              </p>
+            </div>
+          </section>
+
+          {/* Mobile + Small iPad Caption Panel - black background between Pendragon and Stories */}
+          <section className="bg-black py-8 px-6 sm:px-8 lg:hidden">
+            <div className="max-w-md">
+              <h4 
+                className="text-white/90 text-sm sm:text-base uppercase tracking-[0.3em] mb-2"
+                style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+              >
+                Screenplay Adaptation
+              </h4>
+              <h3 
+                className="text-white text-xl sm:text-2xl font-light mb-2 tracking-wide"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                Surname Pendragon
+              </h3>
+              <p 
+                className="text-white/70 text-sm sm:text-base leading-relaxed mb-3"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                A sweeping family saga spanning three generations, where legacy is both burden and blessing.
+              </p>
+              <p 
+                className="text-white/50 text-xs sm:text-sm uppercase tracking-widest"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
                 Feature Film • Drama • In Development
