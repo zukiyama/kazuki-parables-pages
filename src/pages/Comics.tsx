@@ -893,7 +893,7 @@ const Comics = () => {
           </section>
 
           {/* Forthcoming Comics Grid */}
-          <section className="pb-6 sm:pb-20 px-4 sm:px-6 bg-white relative">
+          <section className="pb-8 sm:pb-24 px-4 sm:px-8 lg:px-6 bg-white relative">
             {topSectionsLoaded && (
               <div 
                 ref={row1Ref}
@@ -902,7 +902,7 @@ const Comics = () => {
                   visibleRows.has('row1') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                 }`}
               >
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 xs:gap-4 sm:gap-4 lg:gap-6 max-w-4xl mx-auto">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 xs:gap-4 sm:gap-5 lg:gap-6 max-w-4xl mx-auto">
                   {smallShelfComics.map((comic, index) => (
                     <div 
                       key={comic.title} 
