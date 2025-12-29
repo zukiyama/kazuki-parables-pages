@@ -607,7 +607,7 @@ const Writing = () => {
 
   return (
     <div 
-      className="min-h-screen relative overflow-x-hidden"
+      className="min-h-screen-stable relative overflow-x-hidden"
       onClick={handlePageClick}
     >
       <Navigation />
@@ -621,8 +621,8 @@ const Writing = () => {
         getHeaderBottom={getHeaderBottom}
       />
       
-      {/* Stacked Background Images - All preloaded */}
-      <div className="fixed top-0 left-0 z-0" style={{ height: '100vh', width: '100vw' }}>
+      {/* Stacked Background Images - All preloaded, use stable viewport height */}
+      <div className="fixed top-0 left-0 z-0 w-screen h-screen-stable">
         <img 
           src={schoolBackground} 
           alt="School background"
