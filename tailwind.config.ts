@@ -31,7 +31,7 @@ export default {
 			'new-york': ['".New York"', '"Iowan Old Style"', 'Georgia', 'serif'],
 			'playfair': ['Playfair Display', 'serif'],
 			'merriweather': ['Merriweather', 'Georgia', 'serif'],
-			'typewriter': ['"Special Elite"', 'Courier New', 'monospace'],
+			'typewriter': ['"IBM Plex Mono"', 'Consolas', 'monospace'],
 		},
 			colors: {
 				border: 'hsl(var(--border))',
