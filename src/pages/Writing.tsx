@@ -621,8 +621,8 @@ const Writing = () => {
         getHeaderBottom={getHeaderBottom}
       />
       
-      {/* Stacked Background Images - All preloaded, use stable viewport height */}
-      <div className="fixed top-0 left-0 z-0 w-screen h-screen-stable">
+      {/* Stacked Background Images - GPU-accelerated fixed layer */}
+      <div className="bg-layer-fixed z-0">
         <img 
           src={schoolBackground} 
           alt="School background"
