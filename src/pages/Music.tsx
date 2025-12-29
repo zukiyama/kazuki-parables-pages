@@ -531,7 +531,7 @@ const Music = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 relative overflow-hidden" onClick={handlePageClick}>
+    <div className="min-h-screen-stable bg-slate-900 relative overflow-hidden" onClick={handlePageClick}>
       <Navigation />
       
       {/* Album Banner - Fixed at top */}  
@@ -546,8 +546,8 @@ const Music = () => {
         />
       </div>
       
-      {/* Two-Layer Crossfade Background System */}
-      <div className="fixed top-0 left-0" style={{ height: '100vh', width: '100vw' }}>
+      {/* Two-Layer Crossfade Background System - GPU-accelerated fixed layer */}
+      <div className="bg-layer-fixed">
         {/* Layer A */}
         <div 
           className="absolute inset-0 bg-cover transition-opacity duration-700 ease-in-out"

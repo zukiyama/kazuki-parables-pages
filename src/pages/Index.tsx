@@ -178,16 +178,20 @@ const Index = () => {
   }, [currentImage]);
 
   return (
-    <div className="relative min-h-screen flex flex-col overflow-hidden">
+    <div className="relative min-h-screen-stable flex flex-col overflow-hidden">
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
-      <section className="h-screen flex items-center justify-center relative overflow-hidden bg-background">
+      <section className="h-screen-stable flex items-center justify-center relative overflow-hidden bg-background">
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
           className="absolute inset-0 w-full h-full object-cover object-center bg-slate-100"
-          style={{ objectPosition: '50% center' }}
+          style={{ 
+            objectPosition: '50% center',
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden'
+          }}
         />
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-20 text-center px-6">
@@ -220,7 +224,7 @@ const Index = () => {
               Book One of The Parable Trilogy
             </h2>
             <h3 
-              className="text-4xl md:text-6xl font-light tracking-[0.15em] text-primary"
+              className="text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.15em] text-primary"
               style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
             >
               KAIJU
@@ -305,7 +309,7 @@ const Index = () => {
             <div className="embla__container">
               {images.map((image, index) => (
                 <div key={index} className="embla__slide">
-                  <div className="relative w-screen h-screen overflow-hidden">
+                  <div className="relative w-screen h-screen-stable overflow-hidden">
                     <img 
                       src={image}
                       alt={`Slide ${index + 1}`}
