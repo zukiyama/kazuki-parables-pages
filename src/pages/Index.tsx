@@ -4,7 +4,6 @@ import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useCirclePhysics } from "@/hooks/useCirclePhysics";
-import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 import { useIsMobile } from "@/hooks/use-mobile";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import officeView from "@/assets/office-window-view.jpg";
@@ -17,7 +16,6 @@ import useEmblaCarousel from "embla-carousel-react";
 const Index = () => {
   useScrollToTop();
   const isMobile = useIsMobile();
-  const isWidescreen = useWidescreenAspectRatio();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
@@ -221,7 +219,7 @@ const Index = () => {
             <div className="hidden xl:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent pointer-events-none" />
             <div className="hidden xl:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent pointer-events-none" />
           </div>
-          <ScrollFadeUp id="book-announcement" className={`text-center relative z-10 ${isWidescreen ? 'mb-16' : 'mb-8'}`}>
+          <ScrollFadeUp id="book-announcement" className="text-center mb-8 relative z-10">
             <h2 className="font-heading text-3xl md:text-5xl mb-4 text-black">
               Book One of The Parable Trilogy
             </h2>
@@ -234,7 +232,7 @@ const Index = () => {
             <p className="font-handwriting text-3xl md:text-4xl text-black mt-6 inline-block rotate-[-2deg] handwriting-write">
               A metaphysical fantasy
             </p>
-            <p className={`font-body text-xl text-black ${isWidescreen ? 'mt-8' : 'mt-6'}`}>
+            <p className="font-body text-xl text-black mt-6">
               Coming Soon
             </p>
           </ScrollFadeUp>
