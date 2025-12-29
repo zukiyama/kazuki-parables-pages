@@ -209,7 +209,7 @@ const Index = () => {
             <img 
               src={parableEyeBackground}
               alt=""
-              className="w-full h-full object-cover object-[center_70%] animate-eye-zoom-in"
+              className="w-full h-full object-cover object-[center_50%] animate-eye-zoom-in"
             />
             {/* Left and right gradient fades for widescreen - fade to white */}
             <div className="hidden xl:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent pointer-events-none" />
