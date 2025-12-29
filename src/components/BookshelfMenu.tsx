@@ -325,6 +325,10 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       }`}
     >
       <div className="container mx-auto px-6 max-sm:px-4 relative">
+        {/* Gradient fade overlays for mobile scroll - left and right */}
+        <div className="sm:hidden absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-black/80 to-transparent z-10 pointer-events-none"></div>
+        <div className="sm:hidden absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-black/80 to-transparent z-10 pointer-events-none"></div>
+        
         <div className="flex justify-center items-center gap-6 overflow-x-auto overflow-y-visible pb-2 max-sm:gap-4 max-sm:pb-1 max-sm:justify-start max-sm:overflow-x-scroll max-sm:overflow-y-visible scrollbar-hide">
           {books.map((book) => (
             <div

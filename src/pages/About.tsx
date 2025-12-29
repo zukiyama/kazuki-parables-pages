@@ -35,11 +35,11 @@ const About = () => {
   }, [showCityscape]);
   
   return (
-    <div className="min-h-screen-stable bg-neutral-100">
+    <div className="min-h-screen bg-neutral-100">
       <Navigation />
       
       {/* Hero Section with Paris Square Background */}
-      <div className="relative min-h-screen-stable">
+      <div className="relative min-h-screen">
         {/* Full-screen Paris background */}
         <div className="absolute inset-0">
           <OptimizedImage 

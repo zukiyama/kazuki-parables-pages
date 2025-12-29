@@ -418,7 +418,7 @@ const Comics = () => {
   // Pendragon is now ONLY in scrollable content - no pinned version
 
   return (
-    <div className={`min-h-screen-stable bg-white overflow-x-hidden transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
+    <div className={`min-h-screen bg-white overflow-x-hidden transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
       <Navigation />
 
       <main className="relative flex-1">
