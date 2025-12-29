@@ -152,16 +152,6 @@ export default {
 					'100%': {
 						opacity: '0.6'
 					}
-				},
-				'eye-zoom-in': {
-					'0%': {
-						opacity: '0',
-						transform: 'scale(1.35)'
-					},
-					'100%': {
-						opacity: '0.5',
-						transform: 'scale(1.75)'
-					}
 				}
 			},
 			animation: {
@@ -170,8 +160,7 @@ export default {
 				'float': 'float 3s ease-out forwards',
 				'slow-zoom': 'slow-zoom 30s ease-in-out infinite',
 				'quote-expand': 'quote-expand 30s ease-in-out infinite',
-				'cityscape-fade-in': 'cityscape-fade-in 10s ease-out forwards',
-				'eye-zoom-in': 'eye-zoom-in 8s ease-out forwards'
+				'cityscape-fade-in': 'cityscape-fade-in 10s ease-out forwards'
 			}
 		}
 	},
