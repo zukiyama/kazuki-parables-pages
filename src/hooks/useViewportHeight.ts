@@ -1,47 +1,71 @@
 import { useEffect } from 'react';
 
 /**
- * Sets a STABLE viewport height (--app-height) that does NOT change during scroll.
- * Updated only on load and orientation change.
+ * Sets a viewport height CSS variable (--app-height) with different behavior:
  * 
- * Background layers use OVERSCAN (taller than viewport) to prevent
+ * DESKTOP (hover + fine pointer): Updates on every resize for proper window resizing.
+ * MOBILE/TABLET: Updates only on load + orientation change to prevent zoom during scroll.
+ * 
+ * Background layers use OVERSCAN (taller than viewport) on mobile to prevent
  * white bar when browser UI collapses, without resizing/zooming.
  */
 export const useViewportHeight = () => {
   useEffect(() => {
+    // Detect desktop vs mobile/tablet based on input capabilities
+    const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    
+    let rafId: number | null = null;
     let stableWidth = 0;
 
-    const setStableHeight = () => {
-      // Use innerHeight - more stable than visualViewport during orientation change
+    const setHeight = () => {
       const height = window.innerHeight;
-      const width = window.innerWidth;
-      
       document.documentElement.style.setProperty('--app-height', `${height}px`);
-      stableWidth = width;
+      stableWidth = window.innerWidth;
     };
 
-    // Handle orientation change only
-    const handleOrientationChange = () => {
-      setTimeout(setStableHeight, 150);
+    // Desktop: update on every resize (throttled with rAF)
+    const handleDesktopResize = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        setHeight();
+        rafId = null;
+      });
     };
 
-    // Handle resize - only update on significant width change (orientation)
-    const handleResize = () => {
+    // Mobile: only update on significant width change (orientation)
+    const handleMobileResize = () => {
       const currentWidth = window.innerWidth;
+      // Only update if width changed significantly (indicates orientation change, not URL bar)
       if (Math.abs(currentWidth - stableWidth) > 50) {
-        setStableHeight();
+        setHeight();
       }
     };
 
-    // Initialize
-    setStableHeight();
+    // Handle orientation change (mobile only, with delay for layout settle)
+    const handleOrientationChange = () => {
+      setTimeout(setHeight, 150);
+    };
 
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('orientationchange', handleOrientationChange);
+    // Initialize
+    setHeight();
+
+    if (isDesktop) {
+      // Desktop: responsive to all window resizes
+      window.addEventListener('resize', handleDesktopResize);
+    } else {
+      // Mobile/tablet: only orientation changes
+      window.addEventListener('resize', handleMobileResize);
+      window.addEventListener('orientationchange', handleOrientationChange);
+    }
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('orientationchange', handleOrientationChange);
+      if (rafId) cancelAnimationFrame(rafId);
+      if (isDesktop) {
+        window.removeEventListener('resize', handleDesktopResize);
+      } else {
+        window.removeEventListener('resize', handleMobileResize);
+        window.removeEventListener('orientationchange', handleOrientationChange);
+      }
     };
   }, []);
 };
