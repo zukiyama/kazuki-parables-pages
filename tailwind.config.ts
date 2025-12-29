@@ -159,8 +159,8 @@ export default {
 						transform: 'scale(1.35)'
 					},
 					'100%': {
-						opacity: '1',
-						transform: 'scale(1.55)'
+						opacity: '0.5',
+						transform: 'scale(1.75)'
 					}
 				}
 			},
