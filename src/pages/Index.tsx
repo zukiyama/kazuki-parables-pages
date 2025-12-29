@@ -178,11 +178,11 @@ const Index = () => {
   }, [currentImage]);
 
   return (
-    <div className="relative min-h-screen flex flex-col overflow-hidden">
+    <div className="relative min-h-screen-stable flex flex-col overflow-hidden">
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
-      <section className="h-screen flex items-center justify-center relative overflow-hidden bg-background">
+      <section className="h-screen-stable flex items-center justify-center relative overflow-hidden bg-background">
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
@@ -305,7 +305,7 @@ const Index = () => {
             <div className="embla__container">
               {images.map((image, index) => (
                 <div key={index} className="embla__slide">
-                  <div className="relative w-screen h-screen overflow-hidden">
+                  <div className="relative w-screen h-screen-stable overflow-hidden">
                     <img 
                       src={image}
                       alt={`Slide ${index + 1}`}

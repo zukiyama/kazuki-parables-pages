@@ -123,6 +123,11 @@
     @apply border-border;
   }
 
+  /* Default --app-vh fallback before JS sets it */
+  :root {
+    --app-vh: 1vh;
+  }
+
   html, body {
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
@@ -151,6 +156,32 @@
   [role="button"] img,
   [data-slideshow-control] img {
     pointer-events: auto;
+  }
+
+  /* 
+   * Stable viewport height utilities - prevents background zoom on mobile 
+   * when browser bars hide/show. Uses svh with fallback to --app-vh variable.
+   */
+  .h-screen-stable {
+    height: 100vh; /* Fallback */
+    height: 100svh; /* Modern browsers: small viewport height */
+    height: calc(var(--app-vh, 1vh) * 100); /* JS-driven fallback */
+  }
+
+  .min-h-screen-stable {
+    min-height: 100vh; /* Fallback */
+    min-height: 100svh; /* Modern browsers */
+    min-height: calc(var(--app-vh, 1vh) * 100); /* JS-driven fallback */
+  }
+
+  /* For full-screen background containers that should NOT resize */
+  .bg-screen-fixed {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    height: calc(var(--app-vh, 1vh) * 100);
   }
 }
 
