@@ -5,6 +5,7 @@ import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useCirclePhysics } from "@/hooks/useCirclePhysics";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import officeView from "@/assets/office-window-view.jpg";
 import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
@@ -16,6 +17,7 @@ import useEmblaCarousel from "embla-carousel-react";
 const Index = () => {
   useScrollToTop();
   const isMobile = useIsMobile();
+  const isWidescreen = useWidescreenAspectRatio();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
@@ -186,9 +188,10 @@ const Index = () => {
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-cover object-center bg-slate-100"
+          className={`absolute inset-0 w-full h-full object-cover bg-slate-100 ${
+            isWidescreen ? 'object-[50%_15%]' : 'object-center'
+          }`}
           style={{ 
-            objectPosition: '50% center',
             transform: 'translateZ(0)',
             backfaceVisibility: 'hidden'
           }}
