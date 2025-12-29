@@ -1,61 +1,68 @@
 import { useEffect } from 'react';
 
 /**
- * Hook to set a stable viewport height CSS variable that doesn't change
- * when mobile browser UI bars appear/disappear.
+ * Hook to set a STABLE viewport height CSS variable that does NOT change
+ * when mobile browser UI bars appear/disappear during scroll.
  * 
- * Sets --app-vh to 1% of the visual viewport height.
- * Use with: min-height: calc(var(--app-vh, 1vh) * 100)
+ * Sets --app-height to the initial viewport height in pixels.
+ * This value is LOCKED on load and only updates on:
+ * - Orientation change (portrait <-> landscape)
+ * - Significant resize (e.g., desktop window resize, NOT mobile browser UI)
+ * 
+ * Use with: height: var(--app-height, 100svh)
  * 
  * This prevents the "zoom in/out" effect on background images when
  * scrolling on mobile browsers.
  */
 export const useViewportHeight = () => {
   useEffect(() => {
-    let rafId: number;
-    let lastHeight = 0;
+    let initialHeight = 0;
+    let initialWidth = 0;
 
-    const updateViewportHeight = () => {
-      // Use visualViewport API when available (most modern browsers)
-      // This gives us the actual visible viewport, accounting for browser UI
+    const setViewportHeight = () => {
+      // Use visualViewport when available, fallback to innerHeight
       const height = window.visualViewport?.height ?? window.innerHeight;
+      const width = window.visualViewport?.width ?? window.innerWidth;
       
-      // Only update if height actually changed (avoid unnecessary repaints)
-      if (Math.abs(height - lastHeight) > 1) {
-        lastHeight = height;
-        const vh = height * 0.01;
-        document.documentElement.style.setProperty('--app-vh', `${vh}px`);
+      document.documentElement.style.setProperty('--app-height', `${height}px`);
+      initialHeight = height;
+      initialWidth = width;
+    };
+
+    const handleResize = () => {
+      const currentWidth = window.visualViewport?.width ?? window.innerWidth;
+      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
+      
+      // Only update on SIGNIFICANT changes (orientation change or actual window resize)
+      // Ignore small height changes caused by browser UI showing/hiding
+      const widthChanged = Math.abs(currentWidth - initialWidth) > 50;
+      const isOrientationChange = widthChanged;
+      
+      // For height-only changes, only update if it's a MAJOR change (>20% of screen)
+      // This ignores browser bar show/hide but catches actual resize events
+      const heightDelta = Math.abs(currentHeight - initialHeight);
+      const isMajorHeightChange = heightDelta > initialHeight * 0.2;
+      
+      if (isOrientationChange || isMajorHeightChange) {
+        requestAnimationFrame(setViewportHeight);
       }
     };
 
-    const throttledUpdate = () => {
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-      }
-      rafId = requestAnimationFrame(updateViewportHeight);
-    };
+    // Set initial value immediately
+    setViewportHeight();
 
-    // Initial set
-    updateViewportHeight();
-
-    // Listen to visualViewport resize if available
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', throttledUpdate);
-    }
+    // Only listen to events that indicate real layout changes
+    window.addEventListener('orientationchange', () => {
+      // Delay slightly to let browser settle after orientation change
+      setTimeout(setViewportHeight, 100);
+    });
     
-    // Fallback/additional listeners
-    window.addEventListener('resize', throttledUpdate);
-    window.addEventListener('orientationchange', throttledUpdate);
+    // For desktop resize support
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-      }
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener('resize', throttledUpdate);
-      }
-      window.removeEventListener('resize', throttledUpdate);
-      window.removeEventListener('orientationchange', throttledUpdate);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', setViewportHeight);
     };
   }, []);
 };

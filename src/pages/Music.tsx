@@ -546,8 +546,8 @@ const Music = () => {
         />
       </div>
       
-      {/* Two-Layer Crossfade Background System - Use stable viewport height */}
-      <div className="fixed top-0 left-0 w-screen h-screen-stable">
+      {/* Two-Layer Crossfade Background System - GPU-accelerated fixed layer */}
+      <div className="bg-layer-fixed">
         {/* Layer A */}
         <div 
           className="absolute inset-0 bg-cover transition-opacity duration-700 ease-in-out"
