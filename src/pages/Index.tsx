@@ -220,7 +220,7 @@ const Index = () => {
               Book One of The Parable Trilogy
             </h2>
             <h3 
-              className="text-4xl md:text-6xl font-light tracking-[0.15em] text-primary"
+              className="text-5xl md:text-7xl lg:text-8xl font-light tracking-[0.15em] text-primary"
               style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
             >
               KAIJU
