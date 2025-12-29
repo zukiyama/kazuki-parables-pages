@@ -124,16 +124,14 @@
   }
 
   /* 
-   * Two-viewport CSS variables (set by JS):
-   * --app-height: STABLE, locked on load (for layout/scroll-snap)
-   * --dvh: DYNAMIC, updates when browser UI collapses (for backgrounds)
+   * STABLE viewport height - set by JS on load, only updates on orientation change.
+   * Does NOT change during scroll.
    */
   :root {
     --app-height: 100svh;
-    --dvh: 100dvh;
   }
 
-  /* Prevent white flash - set root backgrounds to match page themes */
+  /* Prevent white flash - match site background */
   html {
     background-color: hsl(var(--background));
   }
@@ -141,6 +139,7 @@
   html, body {
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
+    background-color: hsl(var(--background));
   }
 
   body {
@@ -185,18 +184,23 @@
   }
 
   /* 
-   * DYNAMIC background layer - fills visible viewport even when browser UI collapses.
-   * Uses --dvh which DOES update when browser bars hide/show.
-   * Uses inset:0 as primary, with height fallback.
+   * OVERSCAN background layer - frozen size with extra height to prevent
+   * white bar when browser UI collapses, without resizing.
+   * 
+   * Strategy: Make background taller than viewport by 240px total,
+   * offset by -120px top so it extends 120px above and below.
    */
   .bg-layer-fixed {
     position: fixed;
-    inset: 0; /* top/right/bottom/left: 0 - fills viewport automatically */
+    left: 0;
     width: 100%;
-    /* Fallback height for browsers that don't support inset properly */
-    height: 100vh;
-    height: 100dvh;
-    height: var(--dvh, 100dvh);
+    z-index: -1;
+    /* Overscan: stable height + 240px buffer */
+    top: -120px;
+    height: calc(100vh + 240px);
+    height: calc(100svh + 240px);
+    height: calc(var(--app-height, 100svh) + 240px);
+    /* GPU acceleration */
     transform: translateZ(0);
     will-change: transform;
     backface-visibility: hidden;
