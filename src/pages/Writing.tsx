@@ -1186,7 +1186,7 @@ const Writing = () => {
                         Part journal, part travelogue and part freeform reflection, here is the record of the wandering of the heretic Sho-Bi, which takes him from bandits and courtesans to <em>kō</em> matches with emperors, thought-contests with the great sages—including an enlightened rock that has been the subject of pilgrimage for more than a thousand years—and an audience with the gods themselves.
                       </p>
                       <p className={`leading-loose text-stone-600 max-w-md mx-auto ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ fontFamily: 'Georgia, serif' }}>
-                        Yet the greatest dialogue of all takes place between places, in Sho-bi's conversations with the grass, leaves, rivers, and wind, with the world and the knowing of it.
+                        Yet the greatest dialogue of all takes place between places, in Sho-Bi's conversations with the grass, leaves, rivers, and wind, with the world and the knowing of it.
                       </p>
                     </div>
                   </div>
