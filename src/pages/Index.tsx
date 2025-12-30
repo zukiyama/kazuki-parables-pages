@@ -229,9 +229,8 @@ const Index = () => {
             >
               KAIJU
             </h3>
-            <p className="text-3xl md:text-4xl text-black mt-6 inline-block rotate-[-2deg] handwriting-write">
-              <span style={{ fontFamily: 'Dancing Script, cursive' }} className="text-4xl md:text-5xl">A</span>
-              <span className="font-handwriting"> metaphysical fantasy</span>
+            <p style={{ fontFamily: 'Dancing Script, cursive' }} className="text-3xl md:text-4xl text-black mt-6 inline-block rotate-[-2deg] handwriting-write">
+              A metaphysical fantasy
             </p>
             <p className="font-body text-xl text-black mt-6">
               Coming Soon
