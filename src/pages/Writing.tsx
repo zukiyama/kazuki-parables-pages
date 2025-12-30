@@ -1173,10 +1173,7 @@ const Writing = () => {
                       borderTop: '3px solid rgba(120, 113, 108, 0.6)',
                       borderBottom: '3px solid rgba(120, 113, 108, 0.6)'
                     }}>
-                      <div className="mb-6">
-                        <span className="text-stone-500 text-2xl">道</span>
-                      </div>
-                      <h2 className={`font-light mb-6 text-stone-700 tracking-widest ${isWidescreen ? 'text-5xl' : 'text-6xl'}`} style={{ fontFamily: 'Palatino, Georgia, serif' }}>
+                      <h2 className={`font-light mb-4 text-stone-700 tracking-widest ${isWidescreen ? 'text-5xl' : 'text-6xl'}`} style={{ fontFamily: 'Palatino, Georgia, serif' }}>
                         HOW
                       </h2>
                       <p className={`leading-loose text-stone-600 max-w-md mx-auto mb-4 italic ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ fontFamily: 'Georgia, serif' }}>
