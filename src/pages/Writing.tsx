@@ -743,11 +743,14 @@ const Writing = () => {
               
               {/* Book One Title - Centered above both cover and blurb */}
               {/* iPad desktop: less padding (mb-4), Widescreen: more padding (mb-24), iPad portrait mobile: more padding (sm:mb-10), reduce top margin on iPad portrait (sm:mt-[-8px]) */}
-              <div className={`text-center max-sm:mb-10 sm:mb-10 sm:mt-[-4px] transition-all duration-1000 delay-300 ${
-                isWidescreen ? 'mb-24' : 'lg:mb-4'
-              } ${
-                visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}>
+              <div 
+                className={`text-center max-sm:mb-10 sm:mb-10 sm:mt-[-4px] transition-all duration-1000 delay-300 ${
+                  !isWidescreen ? 'lg:mb-4' : ''
+                } ${
+                  visibleSections.has('kaiju') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
+                style={isWidescreen ? { marginBottom: '6rem' } : undefined}
+              >
                 <span 
                   className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 max-sm:mb-2 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'}`}
                   style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 400 }}
