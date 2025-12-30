@@ -1109,7 +1109,7 @@ const Writing = () => {
                       "…the city was not the arrangement of many things but the shifting posture of one…"
                     </p>
                     <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      A physicist on his way to a conference, carrying in his head a theory too fragile to document.
+                      A physicist on his way to a conference, with agents of unknown enemies closing in, carrying in his head a theory too fragile to document.
                     </p>
                     <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
                       A pianist haunted by a melody from childhood, a song he has been chasing his entire life.
