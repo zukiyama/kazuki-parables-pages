@@ -1179,7 +1179,6 @@ const Writing = () => {
                       <h2 className={`font-light mb-6 text-stone-700 tracking-widest ${isWidescreen ? 'text-5xl' : 'text-6xl'}`} style={{ fontFamily: 'Palatino, Georgia, serif' }}>
                         HOW
                       </h2>
-                      <div className="w-16 h-px bg-stone-400/50 mx-auto mb-6"></div>
                       <p className={`leading-loose text-stone-600 max-w-md mx-auto mb-4 italic ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ fontFamily: 'Georgia, serif' }}>
                         This is how.
                       </p>
@@ -1187,11 +1186,11 @@ const Writing = () => {
                         With this realisation monk-shoemaker Shen Sho-Bi awakens from his trance of forty cycles, renounces the water-school of Luau and sets out on a journey to know the world.
                       </p>
                       <p className={`leading-loose text-stone-600 max-w-md mx-auto mb-4 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ fontFamily: 'Georgia, serif' }}>
-                        Part journal, part travelogue and part freeform reflection, here is the record of the wandering of the heretic Sho-Bi, which takes him from bandits and courtesans to kō matches with emperors, thought-contests with the seven great sages—including an enlightened rock that has been the subject of pilgrimage for more than a thousand years—and an audience with the gods themselves.
+                        Part journal, part travelogue and part freeform reflection, here is the record of the wandering of the heretic Sho-Bi, which takes him from bandits and courtesans to <em>kō</em> matches with emperors, thought-contests with the great sages—including an enlightened rock that has been the subject of pilgrimage for more than a thousand years—and an audience with the gods themselves.
                       </p>
-                      <div className="mt-8">
-                        <span className="text-stone-500 text-sm italic">Yet the greatest dialogue of all takes place between places, in Sho-bi's conversations with the grass, leaves, rivers, and wind, with the world's being and the knowing of it.</span>
-                      </div>
+                      <p className={`leading-loose text-stone-600 max-w-md mx-auto ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ fontFamily: 'Georgia, serif' }}>
+                        Yet the greatest dialogue of all takes place between places, in Sho-bi's conversations with the grass, leaves, rivers, and wind, with the world and the knowing of it.
+                      </p>
                     </div>
                   </div>
                 </div>
