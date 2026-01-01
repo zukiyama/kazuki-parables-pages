@@ -48,8 +48,8 @@ const About = () => {
             className="w-full h-full object-cover"
             priority
           />
-          {/* Subtle overlay to improve text readability - more opacity on mobile for better text visibility, fainter on widescreen */}
-          <div className="absolute inset-0 bg-white/20 max-sm:bg-white/50 xl:bg-white/35" />
+          {/* Subtle overlay to improve text readability - more opacity on mobile and iPad desktop for better text visibility */}
+          <div className="absolute inset-0 bg-white/20 max-sm:bg-white/50 lg:bg-white/45 2xl:bg-white/20 xl:bg-white/35" />
         </div>
         
         {/* Editorial Top Bar */}
