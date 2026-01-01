@@ -166,31 +166,40 @@ const About = () => {
                 </p>
               </div>
               
-              {/* Desktop large: Original grid layout */}
-              <div className="hidden lg:grid lg:grid-cols-12 gap-16 items-start">
-                <div className="lg:col-span-7">
-                  <h1 className="font-heading text-8xl xl:text-9xl text-black leading-[0.9] tracking-tight mb-8">
-                    Kazuki
-                    <br />
-                    <span className="italic font-light">Yamakawa</span>
-                  </h1>
+              {/* Desktop large: Photo left of title, body text right of title */}
+              <div className="hidden lg:flex flex-col">
+                {/* Top row: Photo + Title + Body text */}
+                <div className="flex items-start gap-6">
+                  {/* Photo - small, same height as title */}
+                  <div className="flex-shrink-0">
+                    <OptimizedImage 
+                      src={artistPortrait}
+                      alt="Kazuki Yamakawa portrait"
+                      className="w-[140px] xl:w-[160px] aspect-square object-cover grayscale shadow-2xl"
+                    />
+                  </div>
                   
-                  <p className="font-body text-2xl lg:text-3xl text-black leading-snug max-w-2xl mb-12">
-                    A multi-disciplinary artist working in literature, music and visual storytelling.
-                  </p>
+                  {/* Title */}
+                  <div className="flex-shrink-0">
+                    <h1 className="font-heading text-7xl xl:text-8xl text-black leading-[0.85] tracking-tight">
+                      Kazuki
+                      <br />
+                      <span className="italic font-light">Yamakawa</span>
+                    </h1>
+                  </div>
                   
-                  <p className="font-body text-lg text-black/80 leading-relaxed max-w-3xl -mt-6">
-                    A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
-                  </p>
+                  {/* Body text - right of title */}
+                  <div className="flex-1 max-w-[380px] xl:max-w-[420px] pt-1">
+                    <p className="font-body text-base xl:text-lg text-black/80 leading-relaxed">
+                      A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                    </p>
+                  </div>
                 </div>
                 
-                <div className="lg:col-span-5 flex justify-end">
-                  <OptimizedImage 
-                    src={artistPortrait}
-                    alt="Kazuki Yamakawa portrait"
-                    className="w-96 h-96 object-cover grayscale shadow-2xl"
-                  />
-                </div>
+                {/* Subheading below */}
+                <p className="font-body text-2xl lg:text-3xl text-black leading-snug max-w-2xl mt-8">
+                  A multi-disciplinary artist working in literature, music and visual storytelling.
+                </p>
               </div>
             </div>
           )}
