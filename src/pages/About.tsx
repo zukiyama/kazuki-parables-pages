@@ -160,36 +160,33 @@ const About = () => {
                 </p>
               </div>
               
-              {/* iPad DESKTOP only (lg to 2xl): Magazine editorial layout - includes 12.9" iPad and 10.9" landscape */}
+              {/* iPad DESKTOP only (lg to 2xl): Photo + Title row, subheading + body below */}
               <div className="hidden lg:flex 2xl:hidden flex-col">
-                {/* Header row: Title + Photo */}
-                <div className="flex items-start justify-between">
-                  {/* Left: Large title */}
-                  <div className="flex-1 pr-8">
-                    <h1 className="font-heading text-[8rem] text-black leading-[0.75] tracking-tight">
+                {/* Header row: Photo on left, Title on right */}
+                <div className="flex items-start gap-6 mb-10">
+                  {/* Photo - positioned on left, aligned top */}
+                  <div className="flex-shrink-0">
+                    <img 
+                      src={artistPortrait}
+                      alt="Kazuki Yamakawa portrait"
+                      className="w-48 md:w-56 lg:w-64 aspect-square object-cover grayscale shadow-2xl"
+                    />
+                  </div>
+                  {/* Title - positioned on right */}
+                  <div className="flex-1 pt-0">
+                    <h1 className="font-heading text-7xl md:text-8xl lg:text-[8rem] text-black leading-[0.85] tracking-tight">
                       Kazuki
                       <br />
                       <span className="italic font-light">Yamakawa</span>
                     </h1>
                   </div>
-                  
-                  {/* Right: Larger portrait photo - no border */}
-                  <div className="flex-shrink-0">
-                    <img 
-                      src={artistPortrait}
-                      alt="Kazuki Yamakawa portrait"
-                      className="w-[300px] aspect-square object-cover grayscale shadow-2xl"
-                    />
-                  </div>
                 </div>
                 
-                {/* Subheading beneath title - much larger, tighter to title */}
-                <p className="font-body text-3xl text-black/80 leading-snug border-l-2 border-black/30 pl-4 max-w-[65%] mt-2">
+                {/* Subheading + Body text below */}
+                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-10">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
-                
-                {/* Body text - larger, single flowing block, same spacing as above */}
-                <p className="font-body text-lg text-black/70 leading-relaxed max-w-[55%] mt-4">
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl mt-8">
                   A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
