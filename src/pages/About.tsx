@@ -168,33 +168,28 @@ const About = () => {
               
               {/* Desktop large: Magazine-style layout */}
               <div className="hidden lg:block xl:hidden">
-                {/* Two-column magazine layout */}
-                <div className="grid grid-cols-12 gap-4">
-                  {/* Left column: Photo - larger */}
-                  <div className="col-span-6">
-                    <OptimizedImage 
-                      src={artistPortrait}
-                      alt="Kazuki Yamakawa portrait"
-                      className="w-full aspect-[3/4] object-cover grayscale shadow-2xl"
-                    />
-                    {/* Subheading directly under photo */}
-                    <p className="font-body text-lg text-black leading-snug mt-2 border-l-4 border-black/20 pl-4">
-                      A multi-disciplinary artist working in literature, music and visual storytelling.
-                    </p>
-                  </div>
-                  
-                  {/* Right column: Title and body */}
-                  <div className="col-span-6 flex flex-col">
-                    <h1 className="font-heading text-9xl text-black leading-[0.85] tracking-tight mb-8">
-                      Kazuki
-                      <br />
-                      <span className="italic font-light">Yamakawa</span>
-                    </h1>
-                    
-                    <p className="font-body text-sm text-black/75 leading-relaxed">
-                      A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
-                    </p>
-                  </div>
+                {/* Large title on left */}
+                <h1 className="font-heading text-[10rem] text-black leading-[0.85] tracking-tight mb-2">
+                  Kazuki
+                  <br />
+                  <span className="italic font-light">Yamakawa</span>
+                </h1>
+                
+                {/* Subheading - full width, small gap from title */}
+                <p className="font-body text-xl text-black leading-snug mb-6 border-l-4 border-black/20 pl-4 max-w-full">
+                  A multi-disciplinary artist working in literature, music and visual storytelling.
+                </p>
+                
+                {/* Body text with floated photo on right */}
+                <div>
+                  <OptimizedImage 
+                    src={artistPortrait}
+                    alt="Kazuki Yamakawa portrait"
+                    className="float-right w-48 aspect-[3/4] object-cover grayscale shadow-2xl ml-6 mb-4"
+                  />
+                  <p className="font-body text-base text-black/75 leading-relaxed">
+                    A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                  </p>
                 </div>
               </div>
               
