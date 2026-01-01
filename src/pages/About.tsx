@@ -160,23 +160,23 @@ const About = () => {
                 </p>
               </div>
               
-              {/* iPad DESKTOP only (lg to xl): Two-column layout with photo top-right */}
-              <div className="hidden lg:flex xl:hidden gap-10">
+              {/* iPad DESKTOP only (lg to 2xl): Two-column layout with photo top-right - includes 12.9" iPad */}
+              <div className="hidden lg:flex 2xl:hidden gap-16">
                 {/* LEFT COLUMN: Large title + subheading */}
                 <div className="flex-1">
-                  <h1 className="font-heading text-[10rem] text-black leading-[0.75] tracking-tight mb-3">
+                  <h1 className="font-heading text-[11rem] text-black leading-[0.75] tracking-tight mb-2">
                     Kazuki
                     <br />
                     <span className="italic font-light">Yamakawa</span>
                   </h1>
                   
-                  <p className="font-body text-xl text-black leading-snug border-l-4 border-black/20 pl-4">
+                  <p className="font-body text-xl text-black leading-snug border-l-4 border-black/20 pl-4 mt-4">
                     A multi-disciplinary artist working in literature, music and visual storytelling.
                   </p>
                 </div>
                 
                 {/* RIGHT COLUMN: Photo at top + body text below */}
-                <div className="w-[320px] flex-shrink-0 pl-2">
+                <div className="w-[360px] flex-shrink-0">
                   <img 
                     src={artistPortrait}
                     alt="Kazuki Yamakawa portrait"
@@ -189,8 +189,8 @@ const About = () => {
                 </div>
               </div>
               
-              {/* Widescreen: Original horizontal layout */}
-              <div className="hidden xl:flex flex-col">
+              {/* Widescreen (2xl and up): Original horizontal layout */}
+              <div className="hidden 2xl:flex flex-col">
                 {/* Top row: Photo + Title + Body text */}
                 <div className="flex items-start gap-6">
                   {/* Photo - small, same height as title */}
