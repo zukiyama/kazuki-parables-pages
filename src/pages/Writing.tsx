@@ -1644,7 +1644,7 @@ const Writing = () => {
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
-                      The great grey sprawling granite of a tenement block somewhere in Eastern Europe, a strange stateless mechanism of the lives within it. Until one day strange lights begin to appear to some of the residents...
+                      The great grey sprawling granite of a tenement block in Eastern Europe, a strange mechanism of the stateless lives within it. Until one day, lights begin to appear to some of the residents…
                     </p>
                   </div>
                 </article>
