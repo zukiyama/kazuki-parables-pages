@@ -65,47 +65,30 @@ const About = () => {
         <div className="relative z-10 px-8 md:px-16 lg:px-24 pb-24 mt-4">
           {/* Widescreen layout: Photo + Name + Subheading on left, Body text on right */}
           {isWidescreen ? (
-            <div className="flex gap-10 items-start">
-              {/* Left column: Photo + Title + Subheading */}
-              <div className="flex flex-col">
-                {/* Photo and Title row - same height */}
-                <div className="flex items-stretch gap-6">
-                  {/* Artist photo */}
-                  <div className="flex-shrink-0">
-                    <OptimizedImage 
-                      src={artistPortrait}
-                      alt="Kazuki Yamakawa portrait"
-                      className="w-[200px] xl:w-[220px] 2xl:w-[240px] aspect-square object-cover grayscale shadow-2xl"
-                    />
-                  </div>
-                  
-                  {/* Name headline - fills photo height */}
-                  <div className="flex flex-col justify-between py-1">
-                    <h1 className="font-heading text-[4.5rem] xl:text-[5.5rem] 2xl:text-[6.5rem] text-black leading-[0.82] tracking-tight">
-                      Kazuki
-                      <br />
-                      <span className="italic font-light">Yamakawa</span>
-                    </h1>
-                  </div>
-                </div>
-                
-                {/* Subheading - same width as photo + title */}
-                <div className="mt-4">
-                  <p className="font-body text-xl xl:text-2xl text-black leading-snug">
-                    A multi-disciplinary artist working in literature,<br />music and visual storytelling.
-                  </p>
-                </div>
-              </div>
+            <div className="relative">
+              {/* Photo floated to top-right */}
+              <img 
+                src={artistPortrait}
+                alt="Kazuki Yamakawa portrait"
+                className="float-right w-[200px] xl:w-[220px] 2xl:w-[240px] aspect-square object-cover grayscale shadow-2xl ml-8 mb-4"
+              />
               
-              {/* Right column: Body text - moved down slightly */}
-              <div className="flex-1 max-w-[400px] xl:max-w-[450px] pt-8">
-                <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed">
-                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
-                </p>
-                <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed mt-4">
-                  The best way to get to know his music is to head over to the music page.
-                </p>
-              </div>
+              {/* Title on left */}
+              <h1 className="font-heading text-[4.5rem] xl:text-[5.5rem] 2xl:text-[6.5rem] text-black leading-[0.82] tracking-tight mb-4">
+                Kazuki
+                <br />
+                <span className="italic font-light">Yamakawa</span>
+              </h1>
+              
+              {/* Subheading below title */}
+              <p className="font-body text-xl xl:text-2xl text-black leading-snug mb-6">
+                A multi-disciplinary artist working in literature,<br />music and visual storytelling.
+              </p>
+              
+              {/* Body text wraps around photo */}
+              <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed">
+                A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+              </p>
             </div>
           ) : (
             /* Standard layout for non-widescreen */
@@ -119,32 +102,29 @@ const About = () => {
                 />
               </div>
               
-              {/* Small iPad portrait: Photo on LEFT, Title on RIGHT at TOP */}
-              <div className="hidden sm:flex lg:hidden items-start gap-6 mb-10">
-                {/* Photo - positioned on left, aligned top */}
-                <div className="flex-shrink-0">
-                  <OptimizedImage 
-                    src={artistPortrait}
-                    alt="Kazuki Yamakawa portrait"
-                    className="w-48 md:w-56 aspect-square object-cover grayscale shadow-2xl"
-                  />
-                </div>
-                {/* Title - positioned on right */}
-                <div className="flex-1 pt-0">
-                  <h1 className="font-heading text-7xl md:text-8xl text-black leading-[0.85] tracking-tight">
-                    Kazuki
-                    <br />
-                    <span className="italic font-light">Yamakawa</span>
-                  </h1>
-                </div>
-              </div>
-              
-              {/* Small iPad portrait: Subheading + Body text */}
-              <div className="hidden sm:block lg:hidden">
-                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-10">
+              {/* Small iPad portrait: Photo floated to top-right */}
+              <div className="hidden sm:block lg:hidden relative">
+                {/* Photo floated to top-right */}
+                <img 
+                  src={artistPortrait}
+                  alt="Kazuki Yamakawa portrait"
+                  className="float-right w-48 md:w-56 aspect-square object-cover grayscale shadow-2xl ml-6 mb-4"
+                />
+                
+                {/* Title on left */}
+                <h1 className="font-heading text-7xl md:text-8xl text-black leading-[0.85] tracking-tight mb-4">
+                  Kazuki
+                  <br />
+                  <span className="italic font-light">Yamakawa</span>
+                </h1>
+                
+                {/* Subheading below title */}
+                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
-                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl mt-8">
+                
+                {/* Body text wraps around photo */}
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed">
                   A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
