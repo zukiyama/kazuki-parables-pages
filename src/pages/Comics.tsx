@@ -587,19 +587,19 @@ const Comics = () => {
                 
                 {/* RIGHT SIDE - Two images stacked (apartments top, boardgame bottom) */}
                 <div 
-                  className={`w-[46%] h-full flex flex-col gap-2 sm:gap-3 ${isWidescreen ? 'py-6 pt-20' : 'py-6'}`}
+                  className={`w-[46%] h-full flex flex-col gap-2 sm:gap-3 ${isWidescreen ? 'py-6 pt-20' : 'py-6 pt-16'}`}
                   style={{
                     transform: `translateX(${currentSection >= 1 ? (currentSection >= 2 ? 150 * sectionProgress : 0) : 100}%)`,
                     transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
-                  {/* Top right - Apartments */}
+                  {/* Top right - Apartments - slightly larger on iPad to match bottom */}
                   <div className="flex-1 flex items-end justify-center overflow-hidden">
                     <img 
                       src={vignetteApartments}
                       alt="The neighborhood - God of Lies"
                       className="w-auto h-full object-contain"
-                      style={{ maxHeight: isWidescreen ? '42vh' : '48vh' }}
+                      style={{ maxHeight: isWidescreen ? '42vh' : '50vh' }}
                     />
                   </div>
                   {/* Bottom right - Boardgame (same size as top) */}
