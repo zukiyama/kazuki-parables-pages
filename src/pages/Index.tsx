@@ -75,57 +75,37 @@ const Index = () => {
     return () => clearInterval(interval);
   }, [showParableBanner]);
 
-  // Intersection Observer for staggered banner reveals
+  // Simple scroll-based triggers with staggering
   useEffect(() => {
-    const parableObserver = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !showParableBanner) {
-          setShowParableBanner(true);
-        }
-      },
-      { threshold: 0.1, rootMargin: '100px 0px 0px 0px' }
-    );
-
-    const circlesObserver = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !showCirclesBanner) {
-          // Add delay so Circles banner appears after Parable finishes animating
-          setTimeout(() => {
-            setShowCirclesBanner(true);
-          }, 600);
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px 0px 0px 0px' }
-    );
-
-    if (parableBannerRef.current) {
-      parableObserver.observe(parableBannerRef.current);
-    }
-    if (circlesBannerRef.current) {
-      circlesObserver.observe(circlesBannerRef.current);
-    }
-
-    return () => {
-      parableObserver.disconnect();
-      circlesObserver.disconnect();
-    };
-  }, [showParableBanner, showCirclesBanner]);
-
-  // Scroll-based triggers for magazine and quote
-  useEffect(() => {
+    let parableTriggered = false;
+    let circlesTriggered = false;
+    
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
       
-      // Show magazine when scrolled past 80% of viewport
-      if (scrollY > viewportHeight * 0.8) {
-        console.log('[SLIDESHOW] Setting showMagazine to true');
+      // Show Parable banner when scrolled just 10% (triggers early)
+      if (!parableTriggered && scrollY > viewportHeight * 0.1) {
+        parableTriggered = true;
+        setShowParableBanner(true);
+      }
+      
+      // Show Circles banner 600ms after Parable triggers, or when scrolled past 25%
+      if (!circlesTriggered && parableTriggered) {
+        circlesTriggered = true;
+        setTimeout(() => {
+          setShowCirclesBanner(true);
+        }, 600);
+      }
+      
+      // Show magazine when scrolled past 60% of viewport
+      if (scrollY > viewportHeight * 0.6) {
         setShowMagazine(true);
         showMagazineRef.current = true;
       }
       
-      // Show quote when scrolled past 60% of viewport
-      if (scrollY > viewportHeight * 0.6) {
+      // Show quote when scrolled past 50% of viewport
+      if (scrollY > viewportHeight * 0.5) {
         setShowQuote(true);
       }
     };
