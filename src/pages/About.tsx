@@ -160,36 +160,37 @@ const About = () => {
                 </p>
               </div>
               
-              {/* iPad DESKTOP only (lg to 2xl): Magazine layout - includes 12.9" iPad and 10.9" landscape */}
-              <div className="hidden lg:flex 2xl:hidden flex-col">
-                {/* Top row: Photo + Title side by side */}
-                <div className="flex items-start gap-8">
-                  {/* Artist photo - square, positioned top right */}
-                  <div className="order-2 flex-shrink-0">
-                    <img 
-                      src={artistPortrait}
-                      alt="Kazuki Yamakawa portrait"
-                      className="w-[180px] aspect-square object-cover grayscale shadow-2xl"
-                    />
-                  </div>
-                  
-                  {/* Title + Subheading */}
-                  <div className="order-1 flex-1">
-                    <h1 className="font-heading text-[7rem] text-black leading-[0.75] tracking-tight mb-4">
+              {/* iPad DESKTOP only (lg to 2xl): Magazine editorial layout - includes 12.9" iPad and 10.9" landscape */}
+              <div className="hidden lg:flex 2xl:hidden flex-col gap-6">
+                {/* Magazine-style header row */}
+                <div className="flex items-start justify-between">
+                  {/* Left: Title block */}
+                  <div className="flex-1 pr-8">
+                    <h1 className="font-heading text-[5.5rem] text-black leading-[0.8] tracking-tight">
                       Kazuki
                       <br />
                       <span className="italic font-light">Yamakawa</span>
                     </h1>
-                    
-                    <p className="font-body text-2xl text-black leading-snug border-l-4 border-black/20 pl-4">
-                      A multi-disciplinary artist working in literature, music and visual storytelling.
-                    </p>
+                  </div>
+                  
+                  {/* Right: Portrait photo - elegant square */}
+                  <div className="flex-shrink-0">
+                    <img 
+                      src={artistPortrait}
+                      alt="Kazuki Yamakawa portrait"
+                      className="w-[140px] aspect-square object-cover grayscale shadow-xl border-4 border-white/50"
+                    />
                   </div>
                 </div>
                 
-                {/* Body text below in columns - positioned to avoid pigeons */}
-                <div className="mt-8 columns-2 gap-8 max-w-[70%]">
-                  <p className="font-body text-base text-black/75 leading-relaxed">
+                {/* Subheading - editorial style with left border */}
+                <p className="font-body text-lg text-black/80 leading-relaxed border-l-2 border-black/30 pl-4 max-w-[60%]">
+                  A multi-disciplinary artist working in literature, music and visual storytelling.
+                </p>
+                
+                {/* Body text - three columns, positioned left to avoid pigeons */}
+                <div className="columns-3 gap-6 max-w-[55%] mt-2">
+                  <p className="font-body text-sm text-black/70 leading-relaxed text-justify">
                     A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                   </p>
                 </div>
