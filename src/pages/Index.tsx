@@ -20,6 +20,7 @@ const Index = () => {
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
+  const [showParableBanner, setShowParableBanner] = useState(false);
   const [showCirclesBanner, setShowCirclesBanner] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
   const [showTvText, setShowTvText] = useState(false);
@@ -30,6 +31,7 @@ const Index = () => {
   
   // Parable banner slideshow state
   const [parableBannerSlide, setParableBannerSlide] = useState(0);
+  const parableBannerRef = useRef<HTMLDivElement>(null);
   
   // Circle sensitivities - many more circles to fill the background
   const circleSensitivities = useMemo(() => [
@@ -63,34 +65,39 @@ const Index = () => {
   
   // Parable banner auto-advance every 8 seconds
   useEffect(() => {
-    if (!showCirclesBanner) return;
+    if (!showParableBanner) return;
     
     const interval = setInterval(() => {
       setParableBannerSlide(prev => (prev + 1) % 2);
     }, 8000);
     
     return () => clearInterval(interval);
-  }, [showCirclesBanner]);
+  }, [showParableBanner]);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
       
-      // Show Circles banner when scrolled past 50% of viewport
-      if (scrollY > viewportHeight * 0.5) {
+      // Show Parable banner very early - at 10% scroll
+      if (scrollY > viewportHeight * 0.1) {
+        setShowParableBanner(true);
+      }
+      
+      // Show Circles banner slightly after - at 15% scroll
+      if (scrollY > viewportHeight * 0.15) {
         setShowCirclesBanner(true);
       }
       
-      // Show magazine when scrolled past 80% of viewport
-      if (scrollY > viewportHeight * 0.8) {
+      // Show magazine when scrolled past 50% of viewport
+      if (scrollY > viewportHeight * 0.5) {
         console.log('[SLIDESHOW] Setting showMagazine to true');
         setShowMagazine(true);
         showMagazineRef.current = true;
       }
       
-      // Show quote quickly when scrolled past 60% of viewport
-      if (scrollY > viewportHeight * 0.6) {
+      // Show quote quickly when scrolled past 40% of viewport
+      if (scrollY > viewportHeight * 0.4) {
         setShowQuote(true);
       }
     };
@@ -225,7 +232,27 @@ const Index = () => {
       <section className="relative bg-background">
         {/* Parable Banner Slideshow - Full Width */}
         <div
-          className={`relative w-full overflow-hidden magazine-slide ${showCirclesBanner ? "visible" : ""}`}
+          ref={parableBannerRef}
+          className={`relative w-full overflow-hidden magazine-slide ${showParableBanner ? "visible" : ""}`}
+          onTouchStart={(e) => {
+            const touch = e.touches[0];
+            (parableBannerRef.current as any).touchStartX = touch.clientX;
+          }}
+          onTouchEnd={(e) => {
+            if (!parableBannerRef.current) return;
+            const touchStartX = (parableBannerRef.current as any).touchStartX;
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+              if (diff > 0) {
+                // Swipe left - next
+                setParableBannerSlide(prev => (prev + 1) % 2);
+              } else {
+                // Swipe right - prev
+                setParableBannerSlide(prev => (prev - 1 + 2) % 2);
+              }
+            }
+          }}
         >
           {/* Slide 1: Parable Trilogy */}
           <div 
@@ -336,16 +363,16 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Slideshow indicator dots */}
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+          {/* Slideshow indicator - bar for active, dot for inactive */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
             <button 
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); setParableBannerSlide(0); }}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${parableBannerSlide === 0 ? 'bg-slate-800' : 'bg-slate-400 hover:bg-slate-600'}`}
+              className={`transition-all duration-300 ${parableBannerSlide === 0 ? 'w-6 h-2 rounded-full bg-slate-800' : 'w-2 h-2 rounded-full bg-slate-400 hover:bg-slate-600'}`}
               aria-label="View Parable Trilogy"
             />
             <button 
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); setParableBannerSlide(1); }}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${parableBannerSlide === 1 ? 'bg-slate-800' : 'bg-slate-400 hover:bg-slate-600'}`}
+              className={`transition-all duration-300 ${parableBannerSlide === 1 ? 'w-6 h-2 rounded-full bg-slate-800' : 'w-2 h-2 rounded-full bg-slate-400 hover:bg-slate-600'}`}
               aria-label="View God of Lies"
             />
           </div>
