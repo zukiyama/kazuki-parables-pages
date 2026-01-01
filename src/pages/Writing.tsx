@@ -1282,7 +1282,7 @@ const Writing = () => {
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-2`}>
                       Finding himself the chased, with a new—more deadly—type of biotech hitting the streets, in order to survive <em>Oz</em> must solve the most bizarre case he has ever worked on: Who killed Oswald T?
                     </p>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-3 italic`}>
+                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-3`}>
                       A strange noir where bioengineered worker species, aquatic telephones and sentient corporations are part of everyday life.
                     </p>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-3 italic`}>
