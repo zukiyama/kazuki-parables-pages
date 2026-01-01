@@ -183,8 +183,8 @@ const About = () => {
                   </div>
                 </div>
                 
-                {/* Subheading beneath title - much larger, even spacing */}
-                <p className="font-body text-3xl text-black/80 leading-snug border-l-2 border-black/30 pl-4 max-w-[65%] mt-4">
+                {/* Subheading beneath title - much larger, tighter to title */}
+                <p className="font-body text-3xl text-black/80 leading-snug border-l-2 border-black/30 pl-4 max-w-[65%] mt-2">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
                 
