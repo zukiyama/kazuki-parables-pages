@@ -48,8 +48,8 @@ const About = () => {
             className="w-full h-full object-cover"
             priority
           />
-          {/* Subtle overlay to improve text readability - more opacity on mobile for better text visibility */}
-          <div className="absolute inset-0 bg-white/20 max-sm:bg-white/50" />
+          {/* Subtle overlay to improve text readability - more opacity on mobile for better text visibility, fainter on widescreen */}
+          <div className="absolute inset-0 bg-white/20 max-sm:bg-white/50 xl:bg-white/35" />
         </div>
         
         {/* Editorial Top Bar */}
@@ -161,10 +161,10 @@ const About = () => {
               </div>
               
               {/* iPad DESKTOP only (lg to xl): Two-column layout with photo top-right */}
-              <div className="hidden lg:flex xl:hidden gap-12">
+              <div className="hidden lg:flex xl:hidden gap-10">
                 {/* LEFT COLUMN: Large title + subheading */}
                 <div className="flex-1">
-                  <h1 className="font-heading text-[9rem] text-black leading-[0.75] tracking-tight mb-6">
+                  <h1 className="font-heading text-[10rem] text-black leading-[0.75] tracking-tight mb-3">
                     Kazuki
                     <br />
                     <span className="italic font-light">Yamakawa</span>
@@ -176,11 +176,11 @@ const About = () => {
                 </div>
                 
                 {/* RIGHT COLUMN: Photo at top + body text below */}
-                <div className="w-[280px] flex-shrink-0">
+                <div className="w-[320px] flex-shrink-0 pl-2">
                   <img 
                     src={artistPortrait}
                     alt="Kazuki Yamakawa portrait"
-                    className="w-full aspect-[3/4] object-cover grayscale shadow-2xl mb-6"
+                    className="w-full aspect-[3/4] object-cover grayscale shadow-2xl mb-5"
                   />
                   
                   <p className="font-body text-base text-black/75 leading-relaxed">
