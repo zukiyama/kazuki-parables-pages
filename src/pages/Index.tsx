@@ -11,6 +11,7 @@ import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
 import circlesSingleCover from "@/assets/circles-single-cover.png";
 import parableEyeBackground from "@/assets/parable-eye-background-new.png";
+import godOfLiesManyFacesBanner from "@/assets/god-of-lies-many-faces-banner.png";
 import useEmblaCarousel from "embla-carousel-react";
 
 const Index = () => {
@@ -26,6 +27,9 @@ const Index = () => {
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
   const showMagazineRef = useRef(false);
+  
+  // Parable banner slideshow state
+  const [parableBannerSlide, setParableBannerSlide] = useState(0);
   
   // Circle sensitivities - many more circles to fill the background
   const circleSensitivities = useMemo(() => [
@@ -50,10 +54,23 @@ const Index = () => {
     kyotoTvShop
   ];
   
+  // Bottom slideshow carousel with fade effect (no sliding)
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     loop: true,
-    duration: 40
+    duration: 0, // Instant for fade effect
+    watchDrag: true // Still allow touch/drag detection
   });
+  
+  // Parable banner auto-advance every 8 seconds
+  useEffect(() => {
+    if (!showCirclesBanner) return;
+    
+    const interval = setInterval(() => {
+      setParableBannerSlide(prev => (prev + 1) % 2);
+    }, 8000);
+    
+    return () => clearInterval(interval);
+  }, [showCirclesBanner]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -206,37 +223,132 @@ const Index = () => {
 
       {/* Content Section */}
       <section className="relative bg-background">
-        {/* Book Announcement */}
-        <div className="container mx-auto px-6 pt-12 pb-6 relative">
-          {/* Eye background image - fades in slowly */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-            <img 
-              src={parableEyeBackground}
-              alt=""
-              className="w-full h-full object-cover scale-150 md:scale-[1.55] opacity-0 animate-slow-fade-in-40 translate-y-4 md:translate-y-20"
-            />
-            {/* Left and right gradient fades for widescreen - fade to white */}
-            <div className="hidden xl:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent pointer-events-none" />
-            <div className="hidden xl:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent pointer-events-none" />
+        {/* Parable Banner Slideshow - Full Width */}
+        <div
+          className={`relative w-full overflow-hidden magazine-slide ${showCirclesBanner ? "visible" : ""}`}
+        >
+          {/* Slide 1: Parable Trilogy */}
+          <div 
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${parableBannerSlide === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+          >
+            <div className="container mx-auto px-6 py-8 md:py-10 relative">
+              {/* Eye background image - fades in slowly */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+                <img 
+                  src={parableEyeBackground}
+                  alt=""
+                  className="w-full h-full object-cover scale-150 md:scale-[1.55] opacity-0 animate-slow-fade-in-40 translate-y-4 md:translate-y-20"
+                />
+                {/* Left and right gradient fades for widescreen - fade to white */}
+                <div className="hidden xl:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent pointer-events-none" />
+                <div className="hidden xl:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent pointer-events-none" />
+              </div>
+              <ScrollFadeUp id="book-announcement" className="text-center relative z-10">
+                <h2 className="font-heading text-3xl md:text-5xl mb-4 text-black">
+                  Book One of The Parable Trilogy
+                </h2>
+                <h3 
+                  className="text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.15em] text-primary"
+                  style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
+                >
+                  KAIJU
+                </h3>
+                <p className="text-3xl md:text-4xl text-black mt-6 inline-block rotate-[-2deg] handwriting-write">
+                  <span style={{ fontFamily: 'Allura, cursive', fontSize: '1.3em' }}>A</span>
+                  <span style={{ fontFamily: 'Great Vibes, cursive' }}> metaphysical fantasy</span>
+                </p>
+                <p className="font-body text-xl text-black mt-6">
+                  Coming Soon
+                </p>
+              </ScrollFadeUp>
+            </div>
           </div>
-          <ScrollFadeUp id="book-announcement" className="text-center mb-8 relative z-10">
-            <h2 className="font-heading text-3xl md:text-5xl mb-4 text-black">
-              Book One of The Parable Trilogy
-            </h2>
-            <h3 
-              className="text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.15em] text-primary"
-              style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
-            >
-              KAIJU
-            </h3>
-            <p className="text-3xl md:text-4xl text-black mt-6 inline-block rotate-[-2deg] handwriting-write">
-              <span style={{ fontFamily: 'Allura, cursive', fontSize: '1.3em' }}>A</span>
-              <span style={{ fontFamily: 'Great Vibes, cursive' }}> metaphysical fantasy</span>
-            </p>
-            <p className="font-body text-xl text-black mt-6">
-              Coming Soon
-            </p>
-          </ScrollFadeUp>
+          
+          {/* Slide 2: God of Lies */}
+          <Link
+            to="/comics"
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${parableBannerSlide === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+          >
+            <div className="relative w-full h-full">
+              <img 
+                src={godOfLiesManyFacesBanner}
+                alt="God of Lies - Many Faces"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/10" />
+              {/* Text overlay with white background */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="bg-white/95 px-6 py-4 md:px-8 md:py-5 text-center shadow-lg">
+                  <p 
+                    className="text-xs md:text-sm text-slate-500 uppercase tracking-[0.2em] mb-2"
+                    style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                  >
+                    Featured Comic
+                  </p>
+                  <div className="flex flex-col items-center gap-0.5 md:gap-1">
+                    <span 
+                      className="text-2xl md:text-4xl lg:text-5xl text-slate-900"
+                      style={{ 
+                        fontFamily: 'Playfair Display, Georgia, serif',
+                        fontWeight: 700,
+                        letterSpacing: '0.08em',
+                        lineHeight: 1.1
+                      }}
+                    >
+                      GOD
+                    </span>
+                    <span 
+                      className="text-base md:text-lg lg:text-xl text-slate-600 italic"
+                      style={{ 
+                        fontFamily: 'Playfair Display, Georgia, serif',
+                        fontWeight: 400,
+                        letterSpacing: '0.2em',
+                        lineHeight: 1
+                      }}
+                    >
+                      of
+                    </span>
+                    <span 
+                      className="text-2xl md:text-4xl lg:text-5xl text-slate-900"
+                      style={{ 
+                        fontFamily: 'Playfair Display, Georgia, serif',
+                        fontWeight: 700,
+                        letterSpacing: '0.08em',
+                        lineHeight: 1.1
+                      }}
+                    >
+                      LIES
+                    </span>
+                  </div>
+                  <div className="w-12 md:w-16 h-0.5 bg-red-600 mx-auto mt-3" />
+                </div>
+              </div>
+            </div>
+          </Link>
+          
+          {/* Slideshow height placeholder - matches banner height */}
+          <div className="py-8 md:py-10 invisible">
+            <div className="text-center">
+              <h2 className="font-heading text-3xl md:text-5xl mb-4">Placeholder</h2>
+              <h3 className="text-4xl md:text-6xl lg:text-7xl">KAIJU</h3>
+              <p className="text-3xl md:text-4xl mt-6">A metaphysical fantasy</p>
+              <p className="font-body text-xl mt-6">Coming Soon</p>
+            </div>
+          </div>
+          
+          {/* Slideshow indicator dots */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+            <button 
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setParableBannerSlide(0); }}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${parableBannerSlide === 0 ? 'bg-slate-800' : 'bg-slate-400 hover:bg-slate-600'}`}
+              aria-label="View Parable Trilogy"
+            />
+            <button 
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setParableBannerSlide(1); }}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${parableBannerSlide === 1 ? 'bg-slate-800' : 'bg-slate-400 hover:bg-slate-600'}`}
+              aria-label="View God of Lies"
+            />
+          </div>
         </div>
 
         {/* Music Banner - Full Width Edge to Edge - slide in on scroll */}
@@ -270,7 +382,7 @@ const Index = () => {
             <div className="absolute -right-12 -top-8 w-40 h-40 rounded-full bg-[hsla(32,75%,68%,0.30)] md:bg-[hsla(35,85%,55%,0.30)] animate-drift-2"></div>
           </div>
 
-          <Link to="/music" className="group relative z-10 block w-full py-10 md:py-14">
+          <Link to="/music" className="group relative z-10 block w-full py-8 md:py-10">
 
             {/* Main content */}
             <div className="relative z-10 flex items-center justify-center gap-8 md:gap-12 px-4">
@@ -301,73 +413,100 @@ const Index = () => {
           </Link>
         </div>
 
-        {/* Magazine Cover Section */}
+        {/* Magazine Cover Section - Dissolve Slideshow */}
         <div 
-          className={`magazine-slide ${showMagazine ? "visible" : ""} embla cursor-pointer`}
+          className={`magazine-slide ${showMagazine ? "visible" : ""} cursor-pointer relative`}
           onClick={() => navigate('/writing#kaiju')}
+          onTouchStart={(e) => {
+            const touch = e.touches[0];
+            (e.currentTarget as any).touchStartX = touch.clientX;
+          }}
+          onTouchEnd={(e) => {
+            const touchStartX = (e.currentTarget as any).touchStartX;
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+              if (diff > 0) {
+                // Swipe left - next
+                if (emblaApi) emblaApi.scrollNext();
+              } else {
+                // Swipe right - prev
+                if (emblaApi) emblaApi.scrollPrev();
+              }
+            }
+          }}
         >
-          <div className="embla__viewport" ref={emblaRef}>
+          {/* Hidden embla for state management */}
+          <div className="hidden" ref={emblaRef}>
             <div className="embla__container">
-              {images.map((image, index) => (
-                <div key={index} className="embla__slide">
-                  <div className="relative w-screen h-screen-stable overflow-hidden">
-                    <img 
-                      src={image}
-                      alt={`Slide ${index + 1}`}
-                      className={`absolute inset-0 w-full h-full object-cover ${index === 0 && currentImage === 0 && isCarouselReady ? "animate-slow-zoom" : ""} ${index === 1 && currentImage === 1 && isCarouselReady ? "animate-slow-zoom-out" : ""}`}
-                      style={{ objectPosition: 'center' }}
-                    />
-                    <div className="absolute inset-0 bg-black/20"></div>
-                    
-                    {/* PARABLE falling text - only on second image */}
-                    {index === 1 && currentImage === 1 && isCarouselReady && (
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div className="flex gap-2 md:gap-4 text-white font-bold tracking-wider" style={{ fontFamily: 'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif' }}>
-                          <span className="text-6xl md:text-9xl animate-letter-fall-1 opacity-0">P</span>
-                          <span className="text-6xl md:text-9xl animate-letter-fall-4 opacity-0">A</span>
-                          <span className="text-6xl md:text-9xl animate-letter-fall-2 opacity-0">R</span>
-                          <span className="text-6xl md:text-9xl animate-letter-fall-6 opacity-0">A</span>
-                          <span className="text-6xl md:text-9xl animate-letter-fall-3 opacity-0">B</span>
-                          <span className="text-6xl md:text-9xl animate-letter-fall-5 opacity-0">L</span>
-                          <span className="text-6xl md:text-9xl animate-letter-fall-7 opacity-0">E</span>
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* Floating Quote - only appears on first image */}
-                    {showQuote && index === 0 && (
-                      <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%]">
-                        <blockquote className="literary-quote text-white/90 leading-relaxed">
-                          <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
-                        </blockquote>
-                      </div>
-                    )}
-                    
-                    {/* Text overlay for TV shop image */}
-                    {showQuote && index === 2 && (
-                      <div className="absolute top-1/3 left-1/4 max-w-md max-sm:left-[8%] max-sm:max-w-[80%]">
-                        <div className={`tv-shop-text-reveal ${animateTvText ? 'visible' : ''} text-white/90 leading-relaxed max-sm:text-sm`}>
-                          <h2 className="font-heading text-3xl md:text-4xl mb-2 max-sm:text-2xl">summer 1979</h2>
-                          <h3 className="font-heading text-2xl md:text-3xl mb-4 max-sm:text-xl">Osaka Japan</h3>
-                          <div className="border-t border-white/30 pt-4">
-                            <h4 className="font-heading text-2xl md:text-3xl font-bold mb-2">KAIJU</h4>
-                            <div className="font-body text-sm md:text-base text-white/80">
-                              <span className="italic">noun</span> /ˈkaɪdʒuː/<br/>
-                              <span className="font-medium">mysterious beast</span>
-                            </div>
-                          </div>
-                          <div className="mt-8 text-center">
-                            <div className="font-mono text-2xl md:text-4xl font-bold text-white animate-pulse tracking-wider">
-                              <span className="filter blur-[0.5px] opacity-90">SOMETHING IS COMING</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+              {images.map((_, index) => (
+                <div key={index} className="embla__slide" />
               ))}
             </div>
+          </div>
+          
+          {/* Dissolve slides */}
+          <div className="relative w-screen h-screen-stable overflow-hidden">
+            {images.map((image, index) => (
+              <div 
+                key={index} 
+                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${currentImage === index ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+              >
+                <img 
+                  src={image}
+                  alt={`Slide ${index + 1}`}
+                  className={`absolute inset-0 w-full h-full object-cover ${index === 0 && currentImage === 0 && isCarouselReady ? "animate-slow-zoom" : ""} ${index === 1 && currentImage === 1 && isCarouselReady ? "animate-slow-zoom-out" : ""}`}
+                  style={{ objectPosition: 'center' }}
+                />
+                <div className="absolute inset-0 bg-black/20"></div>
+                
+                {/* PARABLE falling text - only on second image */}
+                {index === 1 && currentImage === 1 && isCarouselReady && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="flex gap-2 md:gap-4 text-white font-bold tracking-wider" style={{ fontFamily: 'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif' }}>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-1 opacity-0">P</span>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-4 opacity-0">A</span>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-2 opacity-0">R</span>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-6 opacity-0">A</span>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-3 opacity-0">B</span>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-5 opacity-0">L</span>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-7 opacity-0">E</span>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Floating Quote - only appears on first image */}
+                {showQuote && index === 0 && currentImage === 0 && (
+                  <div className="absolute top-1/4 right-1/4 max-w-md max-sm:right-[5%] max-sm:max-w-[80%]">
+                    <blockquote className="literary-quote text-white/90 leading-relaxed">
+                      <div className="text-4xl md:text-5xl font-bold max-sm:text-2xl">'Feelings are the thoughts of the heart.'</div>
+                    </blockquote>
+                  </div>
+                )}
+                
+                {/* Text overlay for TV shop image */}
+                {showQuote && index === 2 && currentImage === 2 && (
+                  <div className="absolute top-1/3 left-1/4 max-w-md max-sm:left-[8%] max-sm:max-w-[80%]">
+                    <div className={`tv-shop-text-reveal ${animateTvText ? 'visible' : ''} text-white/90 leading-relaxed max-sm:text-sm`}>
+                      <h2 className="font-heading text-3xl md:text-4xl mb-2 max-sm:text-2xl">summer 1979</h2>
+                      <h3 className="font-heading text-2xl md:text-3xl mb-4 max-sm:text-xl">Osaka Japan</h3>
+                      <div className="border-t border-white/30 pt-4">
+                        <h4 className="font-heading text-2xl md:text-3xl font-bold mb-2">KAIJU</h4>
+                        <div className="font-body text-sm md:text-base text-white/80">
+                          <span className="italic">noun</span> /ˈkaɪdʒuː/<br/>
+                          <span className="font-medium">mysterious beast</span>
+                        </div>
+                      </div>
+                      <div className="mt-8 text-center">
+                        <div className="font-mono text-2xl md:text-4xl font-bold text-white animate-pulse tracking-wider">
+                          <span className="filter blur-[0.5px] opacity-90">SOMETHING IS COMING</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
