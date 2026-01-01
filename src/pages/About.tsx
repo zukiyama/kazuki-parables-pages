@@ -65,8 +65,8 @@ const About = () => {
         <div className="relative z-10 px-8 md:px-16 lg:px-24 pb-24 mt-4">
           {/* Widescreen layout: Photo + Name + Subheading on left, Body text on right */}
           {isWidescreen ? (
-            <div className="flex gap-16 items-start">
-              {/* Left column: Photo + Title with Subheading beside title */}
+            <div className="flex gap-8 items-start">
+              {/* Left column: Photo + Title with Subheading aligned to photo bottom */}
               <div className="flex-shrink-0">
                 {/* Photo and Title row */}
                 <div className="flex items-start gap-6">
@@ -79,22 +79,22 @@ const About = () => {
                     />
                   </div>
                   
-                  {/* Title + Subheading stacked to right of photo */}
-                  <div className="flex flex-col justify-start py-1">
+                  {/* Title + Subheading - subheading aligned to bottom of photo */}
+                  <div className="flex flex-col justify-between h-[200px] xl:h-[220px] 2xl:h-[240px] py-1">
                     <h1 className="font-heading text-[4.5rem] xl:text-[5.5rem] 2xl:text-[6.5rem] text-black leading-[0.82] tracking-tight">
                       Kazuki
                       <br />
                       <span className="italic font-light">Yamakawa</span>
                     </h1>
-                    {/* Subheading directly under title */}
-                    <p className="font-body text-xl xl:text-2xl text-black leading-snug mt-3">
+                    {/* Subheading at bottom, aligned with photo bottom */}
+                    <p className="font-body text-xl xl:text-2xl text-black leading-snug">
                       A multi-disciplinary artist working in literature,<br />music and visual storytelling.
                     </p>
                   </div>
                 </div>
               </div>
               
-              {/* Right column: Body text - aligned to top of title */}
+              {/* Right column: Body text - aligned to top */}
               <div className="flex-1 max-w-[400px] xl:max-w-[450px] pt-0">
                 <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed">
                   A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
@@ -160,31 +160,33 @@ const About = () => {
                 </p>
               </div>
               
-              {/* Desktop large: Magazine-style layout */}
-              <div className="hidden lg:block xl:hidden relative">
-                {/* Photo floated to top-right - using plain img to ensure float works */}
-                <img 
-                  src={artistPortrait}
-                  alt="Kazuki Yamakawa portrait"
-                  className="float-right w-56 aspect-[3/4] object-cover grayscale shadow-2xl ml-8 mb-4"
-                />
+              {/* iPad DESKTOP only (lg to xl): Two-column layout with photo top-right */}
+              <div className="hidden lg:flex xl:hidden gap-12">
+                {/* LEFT COLUMN: Large title + subheading */}
+                <div className="flex-1">
+                  <h1 className="font-heading text-[9rem] text-black leading-[0.75] tracking-tight mb-6">
+                    Kazuki
+                    <br />
+                    <span className="italic font-light">Yamakawa</span>
+                  </h1>
+                  
+                  <p className="font-body text-xl text-black leading-snug border-l-4 border-black/20 pl-4">
+                    A multi-disciplinary artist working in literature, music and visual storytelling.
+                  </p>
+                </div>
                 
-                {/* Large title filling left space */}
-                <h1 className="font-heading text-[11rem] text-black leading-[0.8] tracking-tight mb-3">
-                  Kazuki
-                  <br />
-                  <span className="italic font-light">Yamakawa</span>
-                </h1>
-                
-                {/* Subheading - small gap from title, spans title width */}
-                <p className="font-body text-xl text-black leading-snug mb-8 border-l-4 border-black/20 pl-4 clear-none">
-                  A multi-disciplinary artist working in literature, music and visual storytelling.
-                </p>
-                
-                {/* Body text wraps around photo */}
-                <p className="font-body text-base text-black/75 leading-relaxed">
-                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
-                </p>
+                {/* RIGHT COLUMN: Photo at top + body text below */}
+                <div className="w-[280px] flex-shrink-0">
+                  <img 
+                    src={artistPortrait}
+                    alt="Kazuki Yamakawa portrait"
+                    className="w-full aspect-[3/4] object-cover grayscale shadow-2xl mb-6"
+                  />
+                  
+                  <p className="font-body text-base text-black/75 leading-relaxed">
+                    A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                  </p>
+                </div>
               </div>
               
               {/* Widescreen: Original horizontal layout */}
