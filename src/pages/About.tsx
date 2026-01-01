@@ -168,8 +168,8 @@ const About = () => {
               
               {/* Desktop large: Magazine-style layout */}
               <div className="hidden lg:block xl:hidden relative">
-                {/* Photo floated to top-right of entire section */}
-                <OptimizedImage 
+                {/* Photo floated to top-right - using plain img to ensure float works */}
+                <img 
                   src={artistPortrait}
                   alt="Kazuki Yamakawa portrait"
                   className="float-right w-56 aspect-[3/4] object-cover grayscale shadow-2xl ml-8 mb-4"
