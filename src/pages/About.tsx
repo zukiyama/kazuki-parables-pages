@@ -65,30 +65,47 @@ const About = () => {
         <div className="relative z-10 px-8 md:px-16 lg:px-24 pb-24 mt-4">
           {/* Widescreen layout: Photo + Name + Subheading on left, Body text on right */}
           {isWidescreen ? (
-            <div className="relative">
-              {/* Photo floated to top-right */}
-              <img 
-                src={artistPortrait}
-                alt="Kazuki Yamakawa portrait"
-                className="float-right w-[200px] xl:w-[220px] 2xl:w-[240px] aspect-square object-cover grayscale shadow-2xl ml-8 mb-4"
-              />
+            <div className="flex gap-10 items-start">
+              {/* Left column: Photo + Title + Subheading */}
+              <div className="flex flex-col">
+                {/* Photo and Title row - same height */}
+                <div className="flex items-stretch gap-6">
+                  {/* Artist photo */}
+                  <div className="flex-shrink-0">
+                    <OptimizedImage 
+                      src={artistPortrait}
+                      alt="Kazuki Yamakawa portrait"
+                      className="w-[200px] xl:w-[220px] 2xl:w-[240px] aspect-square object-cover grayscale shadow-2xl"
+                    />
+                  </div>
+                  
+                  {/* Name headline - fills photo height */}
+                  <div className="flex flex-col justify-between py-1">
+                    <h1 className="font-heading text-[4.5rem] xl:text-[5.5rem] 2xl:text-[6.5rem] text-black leading-[0.82] tracking-tight">
+                      Kazuki
+                      <br />
+                      <span className="italic font-light">Yamakawa</span>
+                    </h1>
+                  </div>
+                </div>
+                
+                {/* Subheading - same width as photo + title */}
+                <div className="mt-4">
+                  <p className="font-body text-xl xl:text-2xl text-black leading-snug">
+                    A multi-disciplinary artist working in literature,<br />music and visual storytelling.
+                  </p>
+                </div>
+              </div>
               
-              {/* Title on left */}
-              <h1 className="font-heading text-[4.5rem] xl:text-[5.5rem] 2xl:text-[6.5rem] text-black leading-[0.82] tracking-tight mb-4">
-                Kazuki
-                <br />
-                <span className="italic font-light">Yamakawa</span>
-              </h1>
-              
-              {/* Subheading below title */}
-              <p className="font-body text-xl xl:text-2xl text-black leading-snug mb-6">
-                A multi-disciplinary artist working in literature,<br />music and visual storytelling.
-              </p>
-              
-              {/* Body text wraps around photo */}
-              <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed">
-                A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
-              </p>
+              {/* Right column: Body text - moved down slightly */}
+              <div className="flex-1 max-w-[400px] xl:max-w-[450px] pt-8">
+                <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed">
+                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
+                </p>
+                <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed mt-4">
+                  The best way to get to know his music is to head over to the music page.
+                </p>
+              </div>
             </div>
           ) : (
             /* Standard layout for non-widescreen */
