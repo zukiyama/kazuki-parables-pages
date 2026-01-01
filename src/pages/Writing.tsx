@@ -735,11 +735,18 @@ const Writing = () => {
           className="absolute inset-0 transition-all duration-1000 ease-in-out"
           style={{ 
             opacity: backgroundOpacities.otherWorks,
-            backgroundColor: otherWorksWhiteMode ? 'white' : 'black'
+            backgroundColor: otherWorksWhiteMode ? '#ffffff' : '#000000'
           }}
         />
         
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
+        <div 
+          className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+          style={{ 
+            opacity: otherWorksWhiteMode ? 0 : 1 
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
+        </div>
       </div>
       
       {/* Main content - FIXED padding for widescreen, independent of banner visibility */}
