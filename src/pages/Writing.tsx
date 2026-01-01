@@ -36,20 +36,6 @@ import professorBarnabasCover from "@/assets/professor-barnabas-cover-new.png";
 import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
 import toFlyCover from "@/assets/to-fly-cover-new.png";
 
-// Vignette images for Other Works section
-import vignetteDesertLeft from "@/assets/vignette-desert-left.png";
-import vignetteDesertRight from "@/assets/vignette-desert-right.png";
-import vignetteLightsLeft from "@/assets/vignette-lights-left.png";
-import vignetteLightsRight from "@/assets/vignette-lights-right.png";
-import vignetteFasterLeft from "@/assets/vignette-faster-left.png";
-import vignetteFasterRight from "@/assets/vignette-faster-right.png";
-import vignettePlasticLeft from "@/assets/vignette-plastic-left.png";
-import vignettePlasticRight from "@/assets/vignette-plastic-right.png";
-import vignetteRevisionsLeft from "@/assets/vignette-revisions-left.png";
-import vignetteRevisionsRight from "@/assets/vignette-revisions-right.png";
-import vignetteSyphonsLeft from "@/assets/vignette-syphons-left.png";
-import vignetteSyphonsRight from "@/assets/vignette-syphons-right.png";
-
 const Writing = () => {
   useScrollToTop();
   const isWidescreen = useWidescreenAspectRatio();
@@ -58,14 +44,6 @@ const Writing = () => {
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
   const [bannerVisible, setBannerVisible] = useState(true); // For widescreen banner toggle
   const [parableTrilogyVisible, setParableTrilogyVisible] = useState(true); // For fade animation
-  
-  // Other Works section state
-  const [slideshowOpacity, setSlideshowOpacity] = useState(1);
-  const [otherWorksContentOpacity, setOtherWorksContentOpacity] = useState(0);
-  const [otherWorksWhiteMode, setOtherWorksWhiteMode] = useState(false);
-  const [expandedWork, setExpandedWork] = useState<string | null>(null);
-  const [activeVignette, setActiveVignette] = useState<string | null>(null);
-  
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
     hoax: 0,
@@ -76,8 +54,7 @@ const Writing = () => {
     viceVersa: 0,
     victorianLondon: 0,
     wasteland: 0,
-    deepSpace: 0,
-    otherWorks: 0
+    deepSpace: 0
   });
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
   const mainRef = useRef<HTMLElement>(null);
@@ -448,21 +425,11 @@ const Writing = () => {
         viceVersa: 0,
         victorianLondon: 0,
         wasteland: 0,
-        deepSpace: 0,
-        otherWorks: 0
+        deepSpace: 0
       };
 
-      if (newVisibleSections.has('other-works')) {
-        newOpacities.otherWorks = 1;
-        setSlideshowOpacity(0);
-        setOtherWorksContentOpacity(1);
-      } else if (newVisibleSections.has('vice-versa')) {
+      if (newVisibleSections.has('vice-versa')) {
         newOpacities.viceVersa = 1;
-        setSlideshowOpacity(1);
-        setOtherWorksContentOpacity(0);
-        setOtherWorksWhiteMode(false);
-        setExpandedWork(null);
-        setActiveVignette(null);
       } else if (newVisibleSections.has('how')) {
         newOpacities.how = 1;
       } else if (newVisibleSections.has('states-of-motion')) {
@@ -474,11 +441,6 @@ const Writing = () => {
       } else if (newVisibleSections.has('hoax')) {
         newOpacities.hoax = 1;
       } else if (newVisibleSections.has('young-adult')) {
-        setSlideshowOpacity(1);
-        setOtherWorksContentOpacity(0);
-        setOtherWorksWhiteMode(false);
-        setExpandedWork(null);
-        setActiveVignette(null);
         // Show different backgrounds based on current young adult book
         if (currentYoungAdultBook === 0) {
           newOpacities.victorianLondon = 1; // Professor Barnabas
@@ -730,15 +692,6 @@ const Writing = () => {
           loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.deepSpace }}
-        />
-        
-        {/* Background for Other Works section - transitions from black to white */}
-        <div 
-          className="absolute inset-0 transition-all duration-1000 ease-in-out"
-          style={{ 
-            opacity: backgroundOpacities.otherWorks,
-            backgroundColor: otherWorksWhiteMode ? '#ffffff' : '#000000'
-          }}
         />
         
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
@@ -1321,367 +1274,12 @@ const Writing = () => {
             </div>
           </div>
         </section>
-        {/* Other Works Section */}
-        <section data-section="other-works" className={`flex items-center justify-center relative min-h-screen ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : ''
-        }`}>
-          {/* Vignette images - positioned on sides with gradient fade */}
-          {/* Desert vignettes */}
-          <img 
-            src={vignetteDesertLeft} 
-            alt="" 
-            className="fixed left-0 top-1/2 -translate-y-1/2 h-[60vh] w-auto object-cover pointer-events-none transition-opacity duration-700"
-            style={{ 
-              opacity: activeVignette === 'desert' ? 0.8 : 0,
-              maskImage: 'linear-gradient(to right, black 0%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, black 0%, transparent 100%)'
-            }}
-          />
-          <img 
-            src={vignetteDesertRight} 
-            alt="" 
-            className="fixed right-0 top-1/2 -translate-y-1/2 h-[60vh] w-auto object-cover pointer-events-none transition-opacity duration-700"
-            style={{ 
-              opacity: activeVignette === 'desert' ? 0.8 : 0,
-              maskImage: 'linear-gradient(to left, black 0%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, black 0%, transparent 100%)'
-            }}
-          />
-          
-          {/* Elephant (lights) vignettes */}
-          <img 
-            src={vignetteLightsLeft} 
-            alt="" 
-            className="fixed left-0 top-1/2 -translate-y-1/2 h-[60vh] w-auto object-cover pointer-events-none transition-opacity duration-700"
-            style={{ 
-              opacity: activeVignette === 'elephant' ? 0.8 : 0,
-              maskImage: 'linear-gradient(to right, black 0%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, black 0%, transparent 100%)'
-            }}
-          />
-          <img 
-            src={vignetteLightsRight} 
-            alt="" 
-            className="fixed right-0 top-1/2 -translate-y-1/2 h-[60vh] w-auto object-cover pointer-events-none transition-opacity duration-700"
-            style={{ 
-              opacity: activeVignette === 'elephant' ? 0.8 : 0,
-              maskImage: 'linear-gradient(to left, black 0%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, black 0%, transparent 100%)'
-            }}
-          />
-          
-          {/* Faster vignettes */}
-          <img 
-            src={vignetteFasterLeft} 
-            alt="" 
-            className="fixed left-0 top-1/2 -translate-y-1/2 h-[60vh] w-auto object-cover pointer-events-none transition-opacity duration-700"
-            style={{ 
-              opacity: activeVignette === 'faster' ? 0.8 : 0,
-              maskImage: 'linear-gradient(to right, black 0%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, black 0%, transparent 100%)'
-            }}
-          />
-          <img 
-            src={vignetteFasterRight} 
-            alt="" 
-            className="fixed right-0 top-1/2 -translate-y-1/2 h-[60vh] w-auto object-cover pointer-events-none transition-opacity duration-700"
-            style={{ 
-              opacity: activeVignette === 'faster' ? 0.8 : 0,
-              maskImage: 'linear-gradient(to left, black 0%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, black 0%, transparent 100%)'
-            }}
-          />
-          
-          {/* Plastic vignettes */}
-          <img 
-            src={vignettePlasticLeft} 
-            alt="" 
-            className="fixed left-0 top-1/2 -translate-y-1/2 h-[60vh] w-auto object-cover pointer-events-none transition-opacity duration-700"
-            style={{ 
-              opacity: activeVignette === 'plastic' ? 0.8 : 0,
-              maskImage: 'linear-gradient(to right, black 0%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, black 0%, transparent 100%)'
-            }}
-          />
-          <img 
-            src={vignettePlasticRight} 
-            alt="" 
-            className="fixed right-0 top-1/2 -translate-y-1/2 h-[60vh] w-auto object-cover pointer-events-none transition-opacity duration-700"
-            style={{ 
-              opacity: activeVignette === 'plastic' ? 0.8 : 0,
-              maskImage: 'linear-gradient(to left, black 0%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, black 0%, transparent 100%)'
-            }}
-          />
-          
-          {/* Revisions vignettes */}
-          <img 
-            src={vignetteRevisionsLeft} 
-            alt="" 
-            className="fixed left-0 top-1/2 -translate-y-1/2 h-[60vh] w-auto object-cover pointer-events-none transition-opacity duration-700"
-            style={{ 
-              opacity: activeVignette === 'revisions' ? 0.8 : 0,
-              maskImage: 'linear-gradient(to right, black 0%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, black 0%, transparent 100%)'
-            }}
-          />
-          <img 
-            src={vignetteRevisionsRight} 
-            alt="" 
-            className="fixed right-0 top-1/2 -translate-y-1/2 h-[60vh] w-auto object-cover pointer-events-none transition-opacity duration-700"
-            style={{ 
-              opacity: activeVignette === 'revisions' ? 0.8 : 0,
-              maskImage: 'linear-gradient(to left, black 0%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, black 0%, transparent 100%)'
-            }}
-          />
-          
-          {/* Syphons vignettes */}
-          <img 
-            src={vignetteSyphonsLeft} 
-            alt="" 
-            className="fixed left-0 top-1/2 -translate-y-1/2 h-[60vh] w-auto object-cover pointer-events-none transition-opacity duration-700"
-            style={{ 
-              opacity: activeVignette === 'syphons' ? 0.8 : 0,
-              maskImage: 'linear-gradient(to right, black 0%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, black 0%, transparent 100%)'
-            }}
-          />
-          <img 
-            src={vignetteSyphonsRight} 
-            alt="" 
-            className="fixed right-0 top-1/2 -translate-y-1/2 h-[60vh] w-auto object-cover pointer-events-none transition-opacity duration-700"
-            style={{ 
-              opacity: activeVignette === 'syphons' ? 0.8 : 0,
-              maskImage: 'linear-gradient(to left, black 0%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, black 0%, transparent 100%)'
-            }}
-          />
-
-          {/* Main Content Container */}
-          <div 
-            className="container mx-auto px-6 py-24 transition-opacity duration-1000"
-            style={{ opacity: otherWorksContentOpacity }}
-          >
-            <div className="max-w-4xl mx-auto">
-              {/* Elegant Magazine Header */}
-              <div className="text-center mb-16">
-                <p className={`font-serif text-sm tracking-[0.3em] uppercase mb-4 transition-colors duration-700 ${
-                  otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-400'
-                }`}>
-                  Short Stories · Novellas · Experimental Fiction
-                </p>
-                <h2 className={`font-serif text-5xl md:text-6xl font-bold tracking-tight transition-colors duration-700 ${
-                  otherWorksWhiteMode ? 'text-black' : 'text-white'
-                }`}>
-                  Other Works
-                </h2>
-              </div>
-              
-              {/* Day/Night Toggle Button */}
-              <div className="flex justify-center mb-8">
-                <button 
-                  onClick={() => setOtherWorksWhiteMode(prev => !prev)}
-                  className={`relative w-6 h-6 transition-all duration-700 ease-in-out ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`}
-                  style={{ 
-                    transform: otherWorksWhiteMode ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                    transformStyle: 'preserve-3d'
-                  }}
-                  aria-label={otherWorksWhiteMode ? 'Switch to night mode' : 'Switch to daylight mode'}
-                >
-                  {/* Sun icon */}
-                  <svg 
-                    className="absolute inset-0 w-full h-full transition-opacity duration-300"
-                    style={{ opacity: otherWorksWhiteMode ? 0 : 1 }}
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <circle cx="12" cy="12" r="5" strokeWidth="2"/>
-                    <path strokeWidth="2" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                  </svg>
-                  {/* Moon icon */}
-                  <svg 
-                    className="absolute inset-0 w-full h-full transition-opacity duration-300"
-                    style={{ opacity: otherWorksWhiteMode ? 1 : 0, transform: 'rotateY(180deg)' }}
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeWidth="2" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-                  </svg>
-                </button>
-              </div>
-              
-              {/* Click for more details instruction */}
-              <p className={`text-center text-sm italic mb-12 transition-colors duration-700 ${
-                otherWorksWhiteMode ? 'text-neutral-400' : 'text-neutral-500'
-              }`}>
-                click for more details
-              </p>
-              
-              {/* Interactive Title List */}
-              <div className="space-y-8">
-                {/* Things That Happen in the Desert */}
-                <div 
-                  onClick={() => {
-                    const isClosing = expandedWork === 'desert';
-                    setExpandedWork(isClosing ? null : 'desert');
-                    setActiveVignette(isClosing ? null : 'desert');
-                  }}
-                  className="group cursor-pointer"
-                >
-                  <h3 className={`font-serif text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 ${
-                    otherWorksWhiteMode 
-                      ? 'text-black group-hover:text-neutral-600' 
-                      : 'text-white group-hover:text-neutral-300'
-                  } ${expandedWork === 'desert' ? 'italic' : ''}`}>
-                    Things That Happen in the Desert
-                  </h3>
-                  <p className={`font-serif text-base leading-relaxed mt-3 overflow-hidden transition-all duration-500 ${
-                    otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'
-                  } ${expandedWork === 'desert' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                    An anthology—two boys in diving helmets wandering the dunes; a holiday where people go to war; an actor who becomes lost in the character he's playing; a writer revising the same page only to find reality shifting with each draft; and an oncoming invasion where we must create a defence force to counter them—blueprints our only hope, with help from a previously defeated people.
-                  </p>
-                </div>
-                
-                {/* Elephant */}
-                <div 
-                  onClick={() => {
-                    const isClosing = expandedWork === 'elephant';
-                    setExpandedWork(isClosing ? null : 'elephant');
-                    setActiveVignette(isClosing ? null : 'elephant');
-                  }}
-                  className="group cursor-pointer"
-                >
-                  <h3 className={`font-serif text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 ${
-                    otherWorksWhiteMode 
-                      ? 'text-black group-hover:text-neutral-600' 
-                      : 'text-white group-hover:text-neutral-300'
-                  } ${expandedWork === 'elephant' ? 'italic' : ''}`}>
-                    Elephant
-                  </h3>
-                  <p className={`font-serif text-base leading-relaxed mt-3 overflow-hidden transition-all duration-500 ${
-                    otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'
-                  } ${expandedWork === 'elephant' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                    A grey tenement block in Eastern Europe, abandoned yet inhabited by the elderly and forgotten—until mysterious lights begin to appear.
-                  </p>
-                </div>
-                
-                {/* The Revisions */}
-                <div 
-                  onClick={() => {
-                    const isClosing = expandedWork === 'revisions';
-                    setExpandedWork(isClosing ? null : 'revisions');
-                    setActiveVignette(isClosing ? null : 'revisions');
-                  }}
-                  className="group cursor-pointer"
-                >
-                  <h3 className={`font-serif text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 ${
-                    otherWorksWhiteMode 
-                      ? 'text-black group-hover:text-neutral-600' 
-                      : 'text-white group-hover:text-neutral-300'
-                  } ${expandedWork === 'revisions' ? 'italic' : ''}`}>
-                    The Revisions
-                  </h3>
-                  <p className={`font-serif text-base leading-relaxed mt-3 overflow-hidden transition-all duration-500 ${
-                    otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'
-                  } ${expandedWork === 'revisions' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                    Coming soon.
-                  </p>
-                </div>
-                
-                {/* Faster */}
-                <div 
-                  onClick={() => {
-                    const isClosing = expandedWork === 'faster';
-                    setExpandedWork(isClosing ? null : 'faster');
-                    setActiveVignette(isClosing ? null : 'faster');
-                  }}
-                  className="group cursor-pointer"
-                >
-                  <h3 className={`font-serif text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 ${
-                    otherWorksWhiteMode 
-                      ? 'text-black group-hover:text-neutral-600' 
-                      : 'text-white group-hover:text-neutral-300'
-                  } ${expandedWork === 'faster' ? 'italic' : ''}`}>
-                    Faster
-                  </h3>
-                  <p className={`font-serif text-base leading-relaxed mt-3 overflow-hidden transition-all duration-500 ${
-                    otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'
-                  } ${expandedWork === 'faster' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                    A man becomes part of an experimental device travelling beyond the speed of light—entering a blur where the psychological and the real merge, encountering forms of life that exist only at certain velocities.
-                  </p>
-                </div>
-                
-                {/* The Syphons */}
-                <div 
-                  onClick={() => {
-                    const isClosing = expandedWork === 'syphons';
-                    setExpandedWork(isClosing ? null : 'syphons');
-                    setActiveVignette(isClosing ? null : 'syphons');
-                  }}
-                  className="group cursor-pointer"
-                >
-                  <h3 className={`font-serif text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 ${
-                    otherWorksWhiteMode 
-                      ? 'text-black group-hover:text-neutral-600' 
-                      : 'text-white group-hover:text-neutral-300'
-                  } ${expandedWork === 'syphons' ? 'italic' : ''}`}>
-                    The Syphons
-                  </h3>
-                  <p className={`font-serif text-base leading-relaxed mt-3 overflow-hidden transition-all duration-500 ${
-                    otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'
-                  } ${expandedWork === 'syphons' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                    A man searching for a children's show he used to watch. He can't remember it clearly, and when he tries to look it up, he finds it doesn't exist. No record anywhere. No one else remembers it except him. This leads him on a trail into increasingly bizarre conclusions.
-                  </p>
-                </div>
-                
-                {/* Plastic */}
-                <div 
-                  onClick={() => {
-                    const isClosing = expandedWork === 'plastic';
-                    setExpandedWork(isClosing ? null : 'plastic');
-                    setActiveVignette(isClosing ? null : 'plastic');
-                  }}
-                  className="group cursor-pointer"
-                >
-                  <h3 className={`font-serif text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 ${
-                    otherWorksWhiteMode 
-                      ? 'text-black group-hover:text-neutral-600' 
-                      : 'text-white group-hover:text-neutral-300'
-                  } ${expandedWork === 'plastic' ? 'italic' : ''}`}>
-                    Plastic
-                  </h3>
-                  <p className={`font-serif text-base leading-relaxed mt-3 overflow-hidden transition-all duration-500 ${
-                    otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'
-                  } ${expandedWork === 'plastic' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                    Secret bases beneath the ocean. Inter-dimensional conspiracy. A strange story of paranoia and hidden depths.
-                  </p>
-                </div>
-              </div>
-              
-              {/* Elegant closing */}
-              <p className={`text-center font-serif text-lg italic mt-16 transition-colors duration-700 ${
-                otherWorksWhiteMode ? 'text-neutral-400' : 'text-neutral-500'
-              }`}>
-                & more to come
-              </p>
-            </div>
-          </div>
-        </section>
       </main>
       
-      <footer className={`backdrop-blur-sm border-t py-12 mt-20 max-sm:mt-12 relative z-10 transition-colors duration-700 ${
-        otherWorksWhiteMode ? 'bg-white/80 border-black/20' : 'bg-black/80 border-white/20'
-      }`}>
+      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-20 max-sm:mt-12 relative z-10">
         <div className="container mx-auto px-6 text-center">
-          <h3 className={`font-heading text-2xl mb-4 transition-colors duration-700 ${
-            otherWorksWhiteMode ? 'text-black' : 'text-white'
-          }`}>Contact</h3>
-          <p className={`font-serif transition-colors duration-700 ${
-            otherWorksWhiteMode ? 'text-black' : 'text-white'
-          }`}>
+          <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
+          <p className="font-serif text-white">
             kazuki@kazukiyamakawa.com
           </p>
         </div>
