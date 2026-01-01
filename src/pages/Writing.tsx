@@ -1273,20 +1273,14 @@ const Writing = () => {
                   </h2>
                   {/* Original dark overlay style */}
                   <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-5' : 'p-6'}`}>
-                    <p className={`font-serif italic leading-relaxed text-white/90 mb-4 ${isWidescreen ? 'text-base' : 'text-xl max-sm:text-base'}`}>
-                      "I am a man without imagination…"
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
+                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-base' : 'text-xl max-sm:text-base'}`}>
                       Oswald T is a chaser at Prosper, one of the elite metacorporations that preside over the city world of Nexus. His job is to sniff out persona-users—undercover agents using black market technology to alter their personality. But when he is called in to a routine investigation of a rival company something seems amiss… and the trail leads to the last place he expected.
                     </p>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-3`}>
+                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-base' : 'text-xl max-sm:text-base'} mt-3`}>
                       Finding himself the chased, with a new—more deadly—type of biotech hitting the streets, in order to survive Oz must solve the most bizarre case he has ever worked on: Who killed Oswald T?
                     </p>
-                    <p className={`font-serif leading-relaxed text-white/80 ${isWidescreen ? 'text-xs' : 'text-sm max-sm:text-xs'} mt-4 italic`}>
+                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-base' : 'text-xl max-sm:text-base'} mt-4 italic`}>
                       A strange noir where bioengineered worker species, aquatic telephones and sentient corporations are part of everyday life.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white/70 ${isWidescreen ? 'text-xs' : 'text-sm max-sm:text-xs'} mt-2`}>
-                      In a world built on belief, the inability to imagine becomes the ultimate advantage.
                     </p>
                   </div>
                 </div>
