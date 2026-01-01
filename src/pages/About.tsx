@@ -48,8 +48,8 @@ const About = () => {
             className="w-full h-full object-cover"
             priority
           />
-          {/* Subtle overlay to improve text readability - more opacity on mobile for better text visibility */}
-          <div className="absolute inset-0 bg-white/20 max-sm:bg-white/50" />
+          {/* Subtle overlay to improve text readability - more opacity on mobile and widescreen for better text visibility */}
+          <div className="absolute inset-0 bg-white/20 max-sm:bg-white/50 xl:bg-white/40" />
         </div>
         
         {/* Editorial Top Bar */}
@@ -160,31 +160,40 @@ const About = () => {
                 </p>
               </div>
               
-              {/* iPad DESKTOP only (lg to xl): Two-column layout with photo top-right */}
-              <div className="hidden lg:flex xl:hidden gap-12">
-                {/* LEFT COLUMN: Large title + subheading */}
-                <div className="flex-1">
-                  <h1 className="font-heading text-[9rem] text-black leading-[0.75] tracking-tight mb-6">
-                    Kazuki
-                    <br />
-                    <span className="italic font-light">Yamakawa</span>
-                  </h1>
+              {/* iPad DESKTOP only (lg to xl): Magazine layout with photo LEFT, title RIGHT, two-column body text */}
+              <div className="hidden lg:block xl:hidden">
+                {/* Top row: Photo on LEFT, Title + Subheading on RIGHT */}
+                <div className="flex items-start gap-8 mb-12">
+                  {/* Photo - larger, on left */}
+                  <div className="flex-shrink-0">
+                    <img 
+                      src={artistPortrait}
+                      alt="Kazuki Yamakawa portrait"
+                      className="w-[280px] aspect-[3/4] object-cover grayscale shadow-2xl"
+                    />
+                  </div>
                   
-                  <p className="font-body text-xl text-black leading-snug border-l-4 border-black/20 pl-4">
-                    A multi-disciplinary artist working in literature, music and visual storytelling.
-                  </p>
+                  {/* Title + Subheading - fills space to right, vertically aligned within photo height */}
+                  <div className="flex flex-col justify-between" style={{ height: 'calc(280px * 4 / 3)' }}>
+                    <h1 className="font-heading text-[7rem] text-black leading-[0.75] tracking-tight">
+                      Kazuki
+                      <br />
+                      <span className="italic font-light">Yamakawa</span>
+                    </h1>
+                    
+                    <p className="font-body text-xl text-black leading-snug border-l-4 border-black/20 pl-4">
+                      A multi-disciplinary artist working in literature, music and visual storytelling.
+                    </p>
+                  </div>
                 </div>
                 
-                {/* RIGHT COLUMN: Photo at top + body text below */}
-                <div className="w-[280px] flex-shrink-0">
-                  <img 
-                    src={artistPortrait}
-                    alt="Kazuki Yamakawa portrait"
-                    className="w-full aspect-[3/4] object-cover grayscale shadow-2xl mb-6"
-                  />
-                  
+                {/* Body text in two columns, spread evenly across the page */}
+                <div className="grid grid-cols-2 gap-8">
                   <p className="font-body text-base text-black/75 leading-relaxed">
-                    A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                    A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
+                  </p>
+                  <p className="font-body text-base text-black/75 leading-relaxed">
+                    The best way to get to know his music is to head over to the music page. His work spans novels, short stories, and an ever-growing catalogue of original compositions that blend classical sensibilities with modern electronic textures.
                   </p>
                 </div>
               </div>
