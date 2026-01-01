@@ -162,23 +162,23 @@ const About = () => {
               
               {/* iPad DESKTOP only (lg to 2xl): Photo + Title row, subheading + body below */}
               <div className="hidden lg:flex 2xl:hidden flex-col">
-                {/* Header row: Photo on left, Title on right */}
+                {/* Header row: Title on left, Photo on right */}
                 <div className="flex items-start gap-6 mb-10">
-                  {/* Photo - positioned on left, aligned top */}
-                  <div className="flex-shrink-0">
-                    <img 
-                      src={artistPortrait}
-                      alt="Kazuki Yamakawa portrait"
-                      className="w-48 md:w-56 lg:w-64 aspect-square object-cover grayscale shadow-2xl"
-                    />
-                  </div>
-                  {/* Title - positioned on right */}
+                  {/* Title - positioned on left */}
                   <div className="flex-1 pt-0">
                     <h1 className="font-heading text-7xl md:text-8xl lg:text-[8rem] text-black leading-[0.85] tracking-tight">
                       Kazuki
                       <br />
                       <span className="italic font-light">Yamakawa</span>
                     </h1>
+                  </div>
+                  {/* Photo - positioned on right, aligned top */}
+                  <div className="flex-shrink-0">
+                    <img 
+                      src={artistPortrait}
+                      alt="Kazuki Yamakawa portrait"
+                      className="w-48 md:w-56 lg:w-64 aspect-square object-cover grayscale shadow-2xl"
+                    />
                   </div>
                 </div>
                 
