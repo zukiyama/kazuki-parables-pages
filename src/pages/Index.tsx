@@ -79,25 +79,25 @@ const Index = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
       
-      // Show Parable banner very early - at 10% scroll
-      if (scrollY > viewportHeight * 0.1) {
+      // Show Parable banner when scrolled past 50% of viewport
+      if (scrollY > viewportHeight * 0.5) {
         setShowParableBanner(true);
       }
       
-      // Show Circles banner slightly after - at 15% scroll
-      if (scrollY > viewportHeight * 0.15) {
+      // Show Circles banner when scrolled past 50% of viewport (same timing)
+      if (scrollY > viewportHeight * 0.5) {
         setShowCirclesBanner(true);
       }
       
-      // Show magazine when scrolled past 50% of viewport
-      if (scrollY > viewportHeight * 0.5) {
+      // Show magazine when scrolled past 80% of viewport
+      if (scrollY > viewportHeight * 0.8) {
         console.log('[SLIDESHOW] Setting showMagazine to true');
         setShowMagazine(true);
         showMagazineRef.current = true;
       }
       
-      // Show quote quickly when scrolled past 40% of viewport
-      if (scrollY > viewportHeight * 0.4) {
+      // Show quote when scrolled past 60% of viewport
+      if (scrollY > viewportHeight * 0.6) {
         setShowQuote(true);
       }
     };
