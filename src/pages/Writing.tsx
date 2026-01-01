@@ -1273,14 +1273,20 @@ const Writing = () => {
                   </h2>
                   {/* Original dark overlay style */}
                   <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-5' : 'p-6'}`}>
+                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-base' : 'text-xl max-sm:text-base'} italic mb-3`}>
+                      "I am a man without imagination…"
+                    </p>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-base' : 'text-xl max-sm:text-base'}`}>
-                      Oswald T is a chaser at Prosper, one of the elite metacorporations that preside over the city world of Nexus. His job is to sniff out persona-users—undercover agents using black market technology to alter their personality. But when he is called in to a routine investigation of a rival company something seems amiss… and the trail leads to the last place he expected.
+                      <em>Oswald T</em> is a chaser at Prosper, one of the elite metacorporations that preside over the city world of <em>Nexus</em>. His job is to sniff out persona-users—undercover agents using black market technology to alter their personality. But when he is called in to a routine investigation of a rival company something seems amiss… and the trail leads to the last place he expected.
                     </p>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-base' : 'text-xl max-sm:text-base'} mt-3`}>
-                      Finding himself the chased, with a new—more deadly—type of biotech hitting the streets, in order to survive Oz must solve the most bizarre case he has ever worked on: Who killed Oswald T?
+                      Finding himself the chased, with a new—more deadly—type of biotech hitting the streets, in order to survive <em>Oz</em> must solve the most bizarre case he has ever worked on: Who killed Oswald T?
                     </p>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-base' : 'text-xl max-sm:text-base'} mt-4 italic`}>
                       A strange noir where bioengineered worker species, aquatic telephones and sentient corporations are part of everyday life.
+                    </p>
+                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-base' : 'text-xl max-sm:text-base'} mt-4 italic`}>
+                      In a world built on belief, the inability to imagine becomes the ultimate advantage.
                     </p>
                   </div>
                 </div>
