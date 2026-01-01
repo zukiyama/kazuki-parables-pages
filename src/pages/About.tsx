@@ -161,7 +161,7 @@ const About = () => {
               </div>
               
               {/* iPad DESKTOP only (lg to 2xl): Magazine editorial layout - includes 12.9" iPad and 10.9" landscape */}
-              <div className="hidden lg:flex 2xl:hidden flex-col gap-4">
+              <div className="hidden lg:flex 2xl:hidden flex-col gap-3">
                 {/* Header row: Title + Photo */}
                 <div className="flex items-start justify-between">
                   {/* Left: Large title */}
@@ -173,23 +173,23 @@ const About = () => {
                     </h1>
                   </div>
                   
-                  {/* Right: Large portrait photo - no border */}
+                  {/* Right: Larger portrait photo - no border */}
                   <div className="flex-shrink-0">
                     <img 
                       src={artistPortrait}
                       alt="Kazuki Yamakawa portrait"
-                      className="w-[240px] aspect-square object-cover grayscale shadow-2xl"
+                      className="w-[300px] aspect-square object-cover grayscale shadow-2xl"
                     />
                   </div>
                 </div>
                 
-                {/* Subheading beneath title */}
-                <p className="font-body text-xl text-black/80 leading-relaxed border-l-2 border-black/30 pl-4 max-w-[65%]">
+                {/* Subheading beneath title - much larger */}
+                <p className="font-body text-3xl text-black/80 leading-snug border-l-2 border-black/30 pl-4 max-w-[65%]">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
                 
-                {/* Body text - single flowing block, positioned left to avoid pigeons */}
-                <p className="font-body text-base text-black/70 leading-relaxed max-w-[55%] mt-2">
+                {/* Body text - larger, single flowing block */}
+                <p className="font-body text-lg text-black/70 leading-relaxed max-w-[55%]">
                   A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
