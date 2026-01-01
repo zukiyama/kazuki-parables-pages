@@ -1282,7 +1282,7 @@ const Writing = () => {
                       <em>Oswald T</em> is a chaser at <em>Prosper</em>, one of the elite metacorporations that preside over <em>Nexus</em>, his job to sniff out persona-users—undercover agents using black market technology to alter their personality. But when he is called in to a routine investigation of a rival company, something seems amiss… and the trail leads to the last place he expected.
                     </p>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-2`}>
-                      With a new—more deadly—form of biotech hitting the streets, <em>Oz</em> finds himself the hunted. To survive, he must solve the most bizarre case of his career: who killed Oswald T.?
+                      With a new—more deadly—form of biotech hitting the streets, <em>Oz</em> finds himself the hunted. To survive, he must solve the most bizarre case of his career: who killed Oswald T?
                     </p>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-3`}>
                       A strange noir where bioengineered worker species, aquatic telephones and sentient corporations are part of everyday life.
