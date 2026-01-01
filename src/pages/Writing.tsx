@@ -1277,7 +1277,7 @@ const Writing = () => {
                       "I am a man without imagination…"
                     </p>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-base' : 'text-xl max-sm:text-base'}`}>
-                      <em>Oswald T</em> is a chaser at Prosper, one of the elite metacorporations that preside over the city world of <em>Nexus</em>. His job is to sniff out persona-users—undercover agents using black market technology to alter their personality. But when he is called in to a routine investigation of a rival company something seems amiss… and the trail leads to the last place he expected.
+                      <em>Oswald T</em> is a chaser at <em>Prosper</em>, one of the elite metacorporations that preside over <em>Nexus</em>, his job to sniff out persona-users—undercover agents using black market technology to alter their personality. But when he is called in to a routine investigation of a rival company something seems amiss… and the trail leads to the last place he expected.
                     </p>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-base' : 'text-xl max-sm:text-base'} mt-3`}>
                       Finding himself the chased, with a new—more deadly—type of biotech hitting the streets, in order to survive <em>Oz</em> must solve the most bizarre case he has ever worked on: Who killed Oswald T?
