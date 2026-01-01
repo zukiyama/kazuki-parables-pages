@@ -1273,14 +1273,16 @@ const Writing = () => {
                   </h2>
                   {/* Original dark overlay style */}
                   <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-4' : 'p-5'}`}>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} italic mb-2`}>
-                      "I am a man without imagination…"
-                    </p>
+                    <blockquote className={`border-l-2 border-white/40 pl-4 mb-3 ${isWidescreen ? 'py-1' : 'py-2'}`}>
+                      <p className={`font-serif leading-relaxed text-white/90 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'} italic`}>
+                        "I am a man without imagination…"
+                      </p>
+                    </blockquote>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      <em>Oswald T</em> is a chaser at <em>Prosper</em>, one of the elite metacorporations that preside over <em>Nexus</em>, his job to sniff out persona-users—undercover agents using black market technology to alter their personality. But when he is called in to a routine investigation of a rival company something seems amiss… and the trail leads to the last place he expected.
+                      <em>Oswald T</em> is a chaser at <em>Prosper</em>, one of the elite metacorporations that preside over <em>Nexus</em>, his job to sniff out persona-users—undercover agents using black market technology to alter their personality. But when he is called in to a routine investigation of a rival company, something seems amiss… and the trail leads to the last place he expected.
                     </p>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-2`}>
-                      Finding himself the chased, with a new—more deadly—type of biotech hitting the streets, in order to survive <em>Oz</em> must solve the most bizarre case he has ever worked on: Who killed Oswald T?
+                      With a new—more deadly—form of biotech hitting the streets, <em>Oz</em> finds himself the hunted. To survive, he must solve the most bizarre case of his career: who killed Oswald T.?
                     </p>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-3`}>
                       A strange noir where bioengineered worker species, aquatic telephones and sentient corporations are part of everyday life.
