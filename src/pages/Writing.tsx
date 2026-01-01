@@ -1331,7 +1331,7 @@ const Writing = () => {
           {/* Vignette images - positioned on sides with gradient fade */}
           {/* Desert vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-32 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteDesertLeft})`,
@@ -1344,7 +1344,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-32 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteDesertRight})`,
@@ -1359,7 +1359,7 @@ const Writing = () => {
           
           {/* Elephant (lights) vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-32 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'elephant' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteLightsLeft})`,
@@ -1372,7 +1372,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-32 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'elephant' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteLightsRight})`,
@@ -1387,7 +1387,7 @@ const Writing = () => {
           
           {/* Faster vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-32 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'faster' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteFasterLeft})`,
@@ -1400,7 +1400,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-32 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'faster' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteFasterRight})`,
@@ -1415,7 +1415,7 @@ const Writing = () => {
           
           {/* Plastic vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-32 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'plastic' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignettePlasticLeft})`,
@@ -1428,7 +1428,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-32 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'plastic' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignettePlasticRight})`,
@@ -1443,7 +1443,7 @@ const Writing = () => {
           
           {/* Revisions vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-32 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'revisions' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteRevisionsLeft})`,
@@ -1456,7 +1456,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-32 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'revisions' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteRevisionsRight})`,
@@ -1471,7 +1471,7 @@ const Writing = () => {
           
           {/* Syphons vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-32 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'syphons' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteSyphonsLeft})`,
@@ -1484,7 +1484,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-32 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'syphons' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteSyphonsRight})`,
