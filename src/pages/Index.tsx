@@ -79,13 +79,13 @@ const Index = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
       
-      // Show Parable banner when scrolled past 50% of viewport
-      if (scrollY > viewportHeight * 0.5) {
+      // Show Parable banner when scrolled past 30% of viewport
+      if (scrollY > viewportHeight * 0.3) {
         setShowParableBanner(true);
       }
       
-      // Show Circles banner when scrolled past 50% of viewport (same timing)
-      if (scrollY > viewportHeight * 0.5) {
+      // Show Circles banner when scrolled past 60% of viewport (staggered)
+      if (scrollY > viewportHeight * 0.6) {
         setShowCirclesBanner(true);
       }
       
@@ -256,7 +256,7 @@ const Index = () => {
         >
           {/* Slide 1: Parable Trilogy */}
           <div 
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${parableBannerSlide === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${parableBannerSlide === 0 ? 'translate-x-0 z-10' : '-translate-x-full z-0'}`}
           >
             <div className="container mx-auto px-6 py-8 md:py-10 relative">
               {/* Eye background image - fades in slowly */}
@@ -294,7 +294,7 @@ const Index = () => {
           {/* Slide 2: God of Lies */}
           <Link
             to="/comics"
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${parableBannerSlide === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${parableBannerSlide === 1 ? 'translate-x-0 z-10' : 'translate-x-full z-0'}`}
           >
             <div className="relative w-full h-full">
               <img 
@@ -482,7 +482,7 @@ const Index = () => {
                 <img 
                   src={image}
                   alt={`Slide ${index + 1}`}
-                  className={`absolute inset-0 w-full h-full object-cover ${index === 0 && currentImage === 0 && isCarouselReady ? "animate-slow-zoom" : ""} ${index === 1 && currentImage === 1 && isCarouselReady ? "animate-slow-zoom-out" : ""}`}
+                  className={`absolute inset-0 w-full h-full object-cover ${index === 0 && isCarouselReady ? "animate-slow-zoom-hold" : ""} ${index === 1 && currentImage === 1 && isCarouselReady ? "animate-slow-zoom-out" : ""}`}
                   style={{ objectPosition: 'center' }}
                 />
                 <div className="absolute inset-0 bg-black/20"></div>

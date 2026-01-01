@@ -418,6 +418,11 @@
   100% { transform: scale(1.1); }
 }
 
+@keyframes slowZoomHold {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.1); }
+}
+
 @keyframes slowZoomMeteor {
   0% { transform: scale(1); }
   100% { transform: scale(1.2); }
@@ -610,6 +615,11 @@
 
 .animate-slow-zoom {
   animation: slowZoom 12.6s ease-out forwards;
+}
+
+.animate-slow-zoom-hold {
+  animation: slowZoomHold 12.6s ease-out forwards;
+  animation-fill-mode: forwards;
 }
 
 .animate-slow-zoom-meteor {
