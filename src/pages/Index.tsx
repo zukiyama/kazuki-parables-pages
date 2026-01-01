@@ -32,6 +32,7 @@ const Index = () => {
   // Parable banner slideshow state
   const [parableBannerSlide, setParableBannerSlide] = useState(0);
   const parableBannerRef = useRef<HTMLDivElement>(null);
+  const circlesBannerRef = useRef<HTMLDivElement>(null);
   
   // Circle sensitivities - many more circles to fill the background
   const circleSensitivities = useMemo(() => [
@@ -74,20 +75,47 @@ const Index = () => {
     return () => clearInterval(interval);
   }, [showParableBanner]);
 
+  // Intersection Observer for staggered banner reveals
+  useEffect(() => {
+    const parableObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !showParableBanner) {
+          setShowParableBanner(true);
+        }
+      },
+      { threshold: 0.1, rootMargin: '100px 0px 0px 0px' }
+    );
+
+    const circlesObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !showCirclesBanner) {
+          // Add delay so Circles banner appears after Parable finishes animating
+          setTimeout(() => {
+            setShowCirclesBanner(true);
+          }, 600);
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px 0px 0px 0px' }
+    );
+
+    if (parableBannerRef.current) {
+      parableObserver.observe(parableBannerRef.current);
+    }
+    if (circlesBannerRef.current) {
+      circlesObserver.observe(circlesBannerRef.current);
+    }
+
+    return () => {
+      parableObserver.disconnect();
+      circlesObserver.disconnect();
+    };
+  }, [showParableBanner, showCirclesBanner]);
+
+  // Scroll-based triggers for magazine and quote
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
-      
-      // Show Parable banner when scrolled past 30% of viewport
-      if (scrollY > viewportHeight * 0.3) {
-        setShowParableBanner(true);
-      }
-      
-      // Show Circles banner when scrolled past 60% of viewport (staggered)
-      if (scrollY > viewportHeight * 0.6) {
-        setShowCirclesBanner(true);
-      }
       
       // Show magazine when scrolled past 80% of viewport
       if (scrollY > viewportHeight * 0.8) {
@@ -380,6 +408,7 @@ const Index = () => {
 
         {/* Music Banner - Full Width Edge to Edge - slide in on scroll */}
         <div
+          ref={circlesBannerRef}
           className={`relative w-full overflow-hidden border-t border-amber-200/50 bg-[#F5EBD8] magazine-slide ${showCirclesBanner ? "visible" : ""}`}
         >
           {/* Bokeh circles background */}
