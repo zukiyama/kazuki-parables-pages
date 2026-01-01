@@ -1721,7 +1721,7 @@ const Writing = () => {
                     className="group cursor-pointer"
                   >
                     <h3 className={`font-serif text-xl md:text-2xl font-light tracking-wide transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-700 hover:text-neutral-900' : 'text-neutral-200 hover:text-white'}`} style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
-                      Plastic
+                      ???
                     </h3>
                   </button>
                   <div 
