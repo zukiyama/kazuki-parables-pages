@@ -166,8 +166,40 @@ const About = () => {
                 </p>
               </div>
               
-              {/* Desktop large: Photo left of title, body text right of title */}
-              <div className="hidden lg:flex flex-col">
+              {/* Desktop large: Magazine-style layout */}
+              <div className="hidden lg:block xl:hidden">
+                {/* Two-column magazine layout */}
+                <div className="grid grid-cols-12 gap-8">
+                  {/* Left column: Photo */}
+                  <div className="col-span-4">
+                    <OptimizedImage 
+                      src={artistPortrait}
+                      alt="Kazuki Yamakawa portrait"
+                      className="w-full aspect-[3/4] object-cover grayscale shadow-2xl"
+                    />
+                  </div>
+                  
+                  {/* Right column: Title, subheading, body */}
+                  <div className="col-span-8 flex flex-col justify-center">
+                    <h1 className="font-heading text-7xl text-black leading-[0.85] tracking-tight mb-6">
+                      Kazuki
+                      <br />
+                      <span className="italic font-light">Yamakawa</span>
+                    </h1>
+                    
+                    <p className="font-body text-xl text-black leading-snug mb-6 border-l-4 border-black/20 pl-4">
+                      A multi-disciplinary artist working in literature, music and visual storytelling.
+                    </p>
+                    
+                    <p className="font-body text-base text-black/75 leading-relaxed">
+                      A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Widescreen: Original horizontal layout */}
+              <div className="hidden xl:flex flex-col">
                 {/* Top row: Photo + Title + Body text */}
                 <div className="flex items-start gap-6">
                   {/* Photo - small, same height as title */}
@@ -175,13 +207,13 @@ const About = () => {
                     <OptimizedImage 
                       src={artistPortrait}
                       alt="Kazuki Yamakawa portrait"
-                      className="w-[140px] xl:w-[160px] aspect-square object-cover grayscale shadow-2xl"
+                      className="w-[160px] aspect-square object-cover grayscale shadow-2xl"
                     />
                   </div>
                   
                   {/* Title */}
                   <div className="flex-shrink-0">
-                    <h1 className="font-heading text-7xl xl:text-8xl text-black leading-[0.85] tracking-tight">
+                    <h1 className="font-heading text-8xl text-black leading-[0.85] tracking-tight">
                       Kazuki
                       <br />
                       <span className="italic font-light">Yamakawa</span>
@@ -189,15 +221,15 @@ const About = () => {
                   </div>
                   
                   {/* Body text - right of title */}
-                  <div className="flex-1 max-w-[380px] xl:max-w-[420px] pt-1">
-                    <p className="font-body text-base xl:text-lg text-black/80 leading-relaxed">
+                  <div className="flex-1 max-w-[420px] pt-1">
+                    <p className="font-body text-lg text-black/80 leading-relaxed">
                       A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                     </p>
                   </div>
                 </div>
                 
                 {/* Subheading below */}
-                <p className="font-body text-2xl lg:text-3xl text-black leading-snug max-w-2xl mt-8">
+                <p className="font-body text-3xl text-black leading-snug max-w-2xl mt-8">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
               </div>
