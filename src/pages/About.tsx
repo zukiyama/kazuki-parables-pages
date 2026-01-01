@@ -167,30 +167,30 @@ const About = () => {
               </div>
               
               {/* Desktop large: Magazine-style layout */}
-              <div className="hidden lg:block xl:hidden">
-                {/* Large title on left */}
-                <h1 className="font-heading text-[10rem] text-black leading-[0.85] tracking-tight mb-2">
+              <div className="hidden lg:block xl:hidden relative">
+                {/* Photo floated to top-right of entire section */}
+                <OptimizedImage 
+                  src={artistPortrait}
+                  alt="Kazuki Yamakawa portrait"
+                  className="float-right w-56 aspect-[3/4] object-cover grayscale shadow-2xl ml-8 mb-4"
+                />
+                
+                {/* Large title filling left space */}
+                <h1 className="font-heading text-[11rem] text-black leading-[0.8] tracking-tight mb-3">
                   Kazuki
                   <br />
                   <span className="italic font-light">Yamakawa</span>
                 </h1>
                 
-                {/* Subheading - full width, small gap from title */}
-                <p className="font-body text-xl text-black leading-snug mb-6 border-l-4 border-black/20 pl-4 max-w-full">
+                {/* Subheading - small gap from title, spans title width */}
+                <p className="font-body text-xl text-black leading-snug mb-8 border-l-4 border-black/20 pl-4 clear-none">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
                 
-                {/* Body text with floated photo on right */}
-                <div>
-                  <OptimizedImage 
-                    src={artistPortrait}
-                    alt="Kazuki Yamakawa portrait"
-                    className="float-right w-48 aspect-[3/4] object-cover grayscale shadow-2xl ml-6 mb-4"
-                  />
-                  <p className="font-body text-base text-black/75 leading-relaxed">
-                    A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
-                  </p>
-                </div>
+                {/* Body text wraps around photo */}
+                <p className="font-body text-base text-black/75 leading-relaxed">
+                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                </p>
               </div>
               
               {/* Widescreen: Original horizontal layout */}
