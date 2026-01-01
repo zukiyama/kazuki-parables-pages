@@ -24,6 +24,20 @@ import victorianLondonBackground from "@/assets/victorian-london-winter-backgrou
 import deepSpaceBackground from "@/assets/to-fly-space-battle-background.jpg";
 import professorBarnabasBackground from "@/assets/professor-barnabas-background.jpg";
 
+// Vignette images for Other Works section
+import vignetteDesertLeft from "@/assets/vignette-desert-left.png";
+import vignetteDesertRight from "@/assets/vignette-desert-right.png";
+import vignetteLightsLeft from "@/assets/vignette-lights-left.png";
+import vignetteLightsRight from "@/assets/vignette-lights-right.png";
+import vignetteFasterLeft from "@/assets/vignette-faster-left.png";
+import vignetteFasterRight from "@/assets/vignette-faster-right.png";
+import vignettePlasticLeft from "@/assets/vignette-plastic-left.png";
+import vignettePlasticRight from "@/assets/vignette-plastic-right.png";
+import vignetteRevisionsLeft from "@/assets/vignette-revisions-left.png";
+import vignetteRevisionsRight from "@/assets/vignette-revisions-right.png";
+import vignetteSyphonsLeft from "@/assets/vignette-syphons-left.png";
+import vignetteSyphonsRight from "@/assets/vignette-syphons-right.png";
+
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-new.jpg";
 import hoaxCover from "@/assets/hoax-cover.jpg";
@@ -54,8 +68,16 @@ const Writing = () => {
     viceVersa: 0,
     victorianLondon: 0,
     wasteland: 0,
-    deepSpace: 0
+    deepSpace: 0,
+    otherWorks: 0
   });
+  
+  // Other Works section state
+  const [slideshowOpacity, setSlideshowOpacity] = useState(1);
+  const [otherWorksContentOpacity, setOtherWorksContentOpacity] = useState(0);
+  const [otherWorksWhiteMode, setOtherWorksWhiteMode] = useState(false);
+  const [expandedWork, setExpandedWork] = useState<string | null>(null);
+  const [activeVignette, setActiveVignette] = useState<string | null>(null);
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
   const mainRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLElement | null>(null);
@@ -425,8 +447,22 @@ const Writing = () => {
         viceVersa: 0,
         victorianLondon: 0,
         wasteland: 0,
-        deepSpace: 0
+        deepSpace: 0,
+        otherWorks: 0
       };
+      
+      // Handle Other Works section visibility
+      if (newVisibleSections.has('other-works')) {
+        newOpacities.otherWorks = 1;
+        setSlideshowOpacity(0);
+        setOtherWorksContentOpacity(1);
+      } else {
+        setSlideshowOpacity(1);
+        setOtherWorksContentOpacity(0);
+        setOtherWorksWhiteMode(false);
+        setExpandedWork(null);
+        setActiveVignette(null);
+      }
 
       if (newVisibleSections.has('vice-versa')) {
         newOpacities.viceVersa = 1;
@@ -692,6 +728,15 @@ const Writing = () => {
           loading="eager"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.deepSpace }}
+        />
+        
+        {/* Background for Other Works section - transitions from black to white */}
+        <div 
+          className="absolute inset-0 transition-all duration-1000 ease-in-out"
+          style={{ 
+            opacity: backgroundOpacities.otherWorks,
+            backgroundColor: otherWorksWhiteMode ? 'white' : 'black'
+          }}
         />
         
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
@@ -1245,9 +1290,13 @@ const Writing = () => {
 
 
         {/* Young Adult Books Section */}
-        <section data-section="young-adult" className={`flex items-center justify-center relative ${
-          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
-        }`}>
+        <section 
+          data-section="young-adult" 
+          className={`flex items-center justify-center relative ${
+            isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
+          }`}
+          style={{ opacity: slideshowOpacity, transition: 'opacity 1000ms ease-in-out' }}
+        >
           <div className="container mx-auto px-6 py-24">
             <div className="max-w-6xl mx-auto">
               {/* Use opacity-only reveal (no translate-y) to prevent layout shift during scroll navigation */}
@@ -1270,6 +1319,416 @@ const Writing = () => {
                   onBookChange={setCurrentYoungAdultBook}
                   isWidescreen={isWidescreen}
                 />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Other Works Section */}
+        <section data-section="other-works" className={`flex items-center justify-center relative ${
+          isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
+        }`}>
+          {/* Vignette images - positioned on sides with gradient fade */}
+          {/* Desert vignettes */}
+          <div 
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
+              backgroundImage: `url(${vignetteDesertLeft})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center right',
+              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
+          <div 
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
+              backgroundImage: `url(${vignetteDesertRight})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center left',
+              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
+          
+          {/* Elephant (lights) vignettes */}
+          <div 
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: activeVignette === 'elephant' ? otherWorksContentOpacity : 0,
+              backgroundImage: `url(${vignetteLightsLeft})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center right',
+              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
+          <div 
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: activeVignette === 'elephant' ? otherWorksContentOpacity : 0,
+              backgroundImage: `url(${vignetteLightsRight})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center left',
+              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
+          
+          {/* Faster vignettes */}
+          <div 
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: activeVignette === 'faster' ? otherWorksContentOpacity : 0,
+              backgroundImage: `url(${vignetteFasterLeft})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center right',
+              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
+          <div 
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: activeVignette === 'faster' ? otherWorksContentOpacity : 0,
+              backgroundImage: `url(${vignetteFasterRight})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center left',
+              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
+          
+          {/* Plastic vignettes */}
+          <div 
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: activeVignette === 'plastic' ? otherWorksContentOpacity : 0,
+              backgroundImage: `url(${vignettePlasticLeft})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center right',
+              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
+          <div 
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: activeVignette === 'plastic' ? otherWorksContentOpacity : 0,
+              backgroundImage: `url(${vignettePlasticRight})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center left',
+              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
+          
+          {/* Revisions vignettes */}
+          <div 
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: activeVignette === 'revisions' ? otherWorksContentOpacity : 0,
+              backgroundImage: `url(${vignetteRevisionsLeft})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center right',
+              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
+          <div 
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: activeVignette === 'revisions' ? otherWorksContentOpacity : 0,
+              backgroundImage: `url(${vignetteRevisionsRight})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center left',
+              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
+          
+          {/* Syphons vignettes */}
+          <div 
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: activeVignette === 'syphons' ? otherWorksContentOpacity : 0,
+              backgroundImage: `url(${vignetteSyphonsLeft})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center right',
+              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
+          <div 
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: activeVignette === 'syphons' ? otherWorksContentOpacity : 0,
+              backgroundImage: `url(${vignetteSyphonsRight})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center left',
+              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
+          
+          {/* Main Content Container */}
+          <div 
+            className="relative z-20 container mx-auto px-6 py-24 transition-opacity duration-700 ease-in-out"
+            style={{ opacity: otherWorksContentOpacity }}
+          >
+            <div className="max-w-xl mx-auto">
+              {/* Elegant Magazine Header */}
+              <header className="text-center mb-4">
+                <div className="inline-block">
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <span className={`text-[0.75rem] tracking-[0.25em] uppercase transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`} style={{ fontVariant: 'small-caps' }}>Short Stories</span>
+                    <span className={`transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-400' : 'text-neutral-600'}`}>·</span>
+                    <span className={`text-[0.75rem] tracking-[0.25em] uppercase transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`} style={{ fontVariant: 'small-caps' }}>Novellas</span>
+                    <span className={`transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-400' : 'text-neutral-600'}`}>·</span>
+                    <span className={`text-[0.75rem] tracking-[0.25em] uppercase transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`} style={{ fontVariant: 'small-caps' }}>Experimental Fiction</span>
+                  </div>
+                  <h2 className={`font-serif text-5xl md:text-6xl font-extralight tracking-tight transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-900' : 'text-white'}`} style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+                    Other Works
+                  </h2>
+                </div>
+              </header>
+
+              {/* Day/Night Toggle Button */}
+              <div className="flex justify-center mt-4 mb-4" style={{ perspective: '200px' }}>
+                <button
+                  onClick={() => setOtherWorksWhiteMode(prev => !prev)}
+                  className={`relative w-6 h-6 transition-all duration-700 ease-in-out ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`}
+                  style={{ 
+                    transform: otherWorksWhiteMode ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                    transformStyle: 'preserve-3d'
+                  }}
+                  aria-label={otherWorksWhiteMode ? 'Switch to night mode' : 'Switch to daylight mode'}
+                >
+                  {/* Sun icon */}
+                  <svg
+                    className={`absolute inset-0 w-6 h-6 transition-opacity duration-300 ${otherWorksWhiteMode ? 'opacity-0' : 'opacity-100'}`}
+                    style={{ backfaceVisibility: 'hidden' }}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2" />
+                    <path d="M12 20v2" />
+                    <path d="m4.93 4.93 1.41 1.41" />
+                    <path d="m17.66 17.66 1.41 1.41" />
+                    <path d="M2 12h2" />
+                    <path d="M20 12h2" />
+                    <path d="m6.34 17.66-1.41 1.41" />
+                    <path d="m19.07 4.93-1.41 1.41" />
+                  </svg>
+                  {/* Moon icon (crescent moon outline) */}
+                  <svg
+                    className={`absolute inset-0 w-4 h-4 m-1 transition-opacity duration-300 ${otherWorksWhiteMode ? 'opacity-100' : 'opacity-0'}`}
+                    style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Click for more details instruction */}
+              <p className={`text-center font-serif text-[0.7rem] tracking-[0.2em] uppercase mb-12 transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`}>
+                click for more details
+              </p>
+
+              {/* Interactive Title List */}
+              <div className="space-y-6">
+                {/* Things That Happen in the Desert */}
+                <article className="text-center">
+                  <button 
+                    onClick={() => {
+                      const isClosing = expandedWork === 'desert';
+                      setExpandedWork(isClosing ? null : 'desert');
+                      setActiveVignette(isClosing ? null : 'desert');
+                    }}
+                    className="group cursor-pointer"
+                  >
+                    <h3 className={`font-serif text-xl md:text-2xl font-light tracking-wide transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-700 hover:text-neutral-900' : 'text-neutral-200 hover:text-white'}`} style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+                      Things That Happen in the Desert
+                    </h3>
+                  </button>
+                  <div 
+                    className={`overflow-hidden transition-all duration-500 ease-out ${
+                      expandedWork === 'desert' ? 'max-h-64 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
+                    }`}
+                  >
+                    <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
+                      An anthology—two boys in diving helmets wandering the dunes; a holiday where people go to war; an actor who becomes lost in the character he's playing; a writer revising the same page only to find reality shifting with each draft; and an oncoming invasion where we must create a defence force to counter them—blueprints our only hope, with help from a previously defeated people.
+                    </p>
+                  </div>
+                </article>
+
+                {/* Elephant */}
+                <article className="text-center">
+                  <button 
+                    onClick={() => {
+                      const isClosing = expandedWork === 'elephant';
+                      setExpandedWork(isClosing ? null : 'elephant');
+                      setActiveVignette(isClosing ? null : 'elephant');
+                    }}
+                    className="group cursor-pointer"
+                  >
+                    <h3 className={`font-serif text-xl md:text-2xl font-light tracking-wide transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-700 hover:text-neutral-900' : 'text-neutral-200 hover:text-white'}`} style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+                      Elephant
+                    </h3>
+                  </button>
+                  <div 
+                    className={`overflow-hidden transition-all duration-500 ease-out ${
+                      expandedWork === 'elephant' ? 'max-h-32 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
+                    }`}
+                  >
+                    <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
+                      A grey tenement block in Eastern Europe, abandoned yet inhabited by the elderly and forgotten—until mysterious lights begin to appear.
+                    </p>
+                  </div>
+                </article>
+
+                {/* The Revisions */}
+                <article className="text-center">
+                  <button 
+                    onClick={() => {
+                      const isClosing = expandedWork === 'revisions';
+                      setExpandedWork(isClosing ? null : 'revisions');
+                      setActiveVignette(isClosing ? null : 'revisions');
+                    }}
+                    className="group cursor-pointer"
+                  >
+                    <h3 className={`font-serif text-xl md:text-2xl font-light tracking-wide transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-700 hover:text-neutral-900' : 'text-neutral-200 hover:text-white'}`} style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+                      The Revisions
+                    </h3>
+                  </button>
+                  <div 
+                    className={`overflow-hidden transition-all duration-500 ease-out ${
+                      expandedWork === 'revisions' ? 'max-h-32 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
+                    }`}
+                  >
+                    <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
+                      Coming soon.
+                    </p>
+                  </div>
+                </article>
+
+                {/* Faster */}
+                <article className="text-center">
+                  <button 
+                    onClick={() => {
+                      const isClosing = expandedWork === 'faster';
+                      setExpandedWork(isClosing ? null : 'faster');
+                      setActiveVignette(isClosing ? null : 'faster');
+                    }}
+                    className="group cursor-pointer"
+                  >
+                    <h3 className={`font-serif text-xl md:text-2xl font-light tracking-wide transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-700 hover:text-neutral-900' : 'text-neutral-200 hover:text-white'}`} style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+                      Faster
+                    </h3>
+                  </button>
+                  <div 
+                    className={`overflow-hidden transition-all duration-500 ease-out ${
+                      expandedWork === 'faster' ? 'max-h-32 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
+                    }`}
+                  >
+                    <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
+                      A man becomes part of an experimental device travelling beyond the speed of light—entering a blur where the psychological and the real merge, encountering forms of life that exist only at certain velocities.
+                    </p>
+                  </div>
+                </article>
+
+                {/* The Syphons */}
+                <article className="text-center">
+                  <button 
+                    onClick={() => {
+                      const isClosing = expandedWork === 'syphons';
+                      setExpandedWork(isClosing ? null : 'syphons');
+                      setActiveVignette(isClosing ? null : 'syphons');
+                    }}
+                    className="group cursor-pointer"
+                  >
+                    <h3 className={`font-serif text-xl md:text-2xl font-light tracking-wide transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-700 hover:text-neutral-900' : 'text-neutral-200 hover:text-white'}`} style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+                      The Syphons
+                    </h3>
+                  </button>
+                  <div 
+                    className={`overflow-hidden transition-all duration-500 ease-out ${
+                      expandedWork === 'syphons' ? 'max-h-40 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
+                    }`}
+                  >
+                    <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
+                      A man searching for a children's show he used to watch. He can't remember it clearly, and when he tries to look it up, he finds it doesn't exist. No record anywhere. No one else remembers it except him. This leads him on a trail into increasingly bizarre conclusions.
+                    </p>
+                  </div>
+                </article>
+
+                {/* Plastic */}
+                <article className="text-center">
+                  <button 
+                    onClick={() => {
+                      const isClosing = expandedWork === 'plastic';
+                      setExpandedWork(isClosing ? null : 'plastic');
+                      setActiveVignette(isClosing ? null : 'plastic');
+                    }}
+                    className="group cursor-pointer"
+                  >
+                    <h3 className={`font-serif text-xl md:text-2xl font-light tracking-wide transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-700 hover:text-neutral-900' : 'text-neutral-200 hover:text-white'}`} style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+                      Plastic
+                    </h3>
+                  </button>
+                  <div 
+                    className={`overflow-hidden transition-all duration-500 ease-out ${
+                      expandedWork === 'plastic' ? 'max-h-32 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
+                    }`}
+                  >
+                    <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
+                      Secret bases beneath the ocean. Inter-dimensional conspiracy. A strange story of paranoia and hidden depths.
+                    </p>
+                  </div>
+                </article>
+              </div>
+
+              {/* Elegant closing */}
+              <div className="text-center mt-24">
+                <div className={`w-px h-8 mx-auto mb-4 transition-colors duration-700 ${otherWorksWhiteMode ? 'bg-neutral-400' : 'bg-neutral-600'}`} />
+                <span className={`font-serif text-[0.6rem] tracking-[0.4em] uppercase transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`}>& more to come</span>
               </div>
             </div>
           </div>
