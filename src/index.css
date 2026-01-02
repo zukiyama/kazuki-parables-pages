@@ -433,26 +433,32 @@
   100% { transform: scale(1); }
 }
 
-/* Falling letter animations for PARABLE text */
+/* Falling letter animations for PARABLE text - smooth floating settle */
 @keyframes letterFall {
   0% { 
     transform: translateY(-150vh);
     opacity: 0;
   }
-  10% {
+  8% {
     opacity: 1;
   }
-  80% {
+  60% {
     transform: translateY(0);
   }
-  85% {
-    transform: translateY(-20px);
+  68% {
+    transform: translateY(-25px);
   }
-  90% {
-    transform: translateY(0);
+  76% {
+    transform: translateY(8px);
   }
-  95% {
-    transform: translateY(-8px);
+  84% {
+    transform: translateY(-12px);
+  }
+  91% {
+    transform: translateY(4px);
+  }
+  96% {
+    transform: translateY(-5px);
   }
   100% { 
     transform: translateY(0);
@@ -461,31 +467,31 @@
 }
 
 .animate-letter-fall-1 {
-  animation: letterFall 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
+  animation: letterFall 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s forwards;
 }
 
 .animate-letter-fall-2 {
-  animation: letterFall 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s forwards;
+  animation: letterFall 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.8s forwards;
 }
 
 .animate-letter-fall-3 {
-  animation: letterFall 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 1.3s forwards;
+  animation: letterFall 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 1.3s forwards;
 }
 
 .animate-letter-fall-4 {
-  animation: letterFall 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s forwards;
+  animation: letterFall 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.6s forwards;
 }
 
 .animate-letter-fall-5 {
-  animation: letterFall 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 1.6s forwards;
+  animation: letterFall 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 1.6s forwards;
 }
 
 .animate-letter-fall-6 {
-  animation: letterFall 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 1.1s forwards;
+  animation: letterFall 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 1.1s forwards;
 }
 
 .animate-letter-fall-7 {
-  animation: letterFall 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 1.9s forwards;
+  animation: letterFall 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 1.9s forwards;
 }
 
 @keyframes slide-in-from-left-scroll {
