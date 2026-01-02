@@ -11,6 +11,7 @@ import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
 import circlesSingleCover from "@/assets/circles-single-cover.png";
 import godOfLiesManyFacesBanner from "@/assets/god-of-lies-many-faces-banner.png";
+import parableBoysStreet from "@/assets/parable-boys-street.jpeg";
 import useEmblaCarousel from "embla-carousel-react";
 
 const Index = () => {
@@ -265,25 +266,33 @@ const Index = () => {
           <div 
             className={`absolute inset-0 transition-transform duration-700 ease-in-out ${parableBannerSlide === 0 ? 'translate-x-0 z-10' : '-translate-x-full z-0'}`}
           >
-            <div className="container mx-auto px-6 py-8 md:py-10 relative">
-              <ScrollFadeUp id="book-announcement" className="text-center">
-                <h2 className="font-heading text-3xl md:text-5xl mb-4 text-black">
-                  Book One of The Parable Trilogy
-                </h2>
-                <h3 
-                  className="text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.15em] text-primary"
-                  style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
-                >
-                  KAIJU
-                </h3>
-                <p className="text-3xl md:text-4xl text-black mt-6 inline-block rotate-[-2deg] font-handwriting handwriting-write">
-                  <span style={{ fontFamily: 'Allura, cursive', fontSize: '1.3em' }}>A</span>
-                  <span style={{ fontFamily: 'Great Vibes, cursive' }}> metaphysical fantasy</span>
-                </p>
-                <p className="font-body text-xl text-black mt-6">
-                  Coming Soon
-                </p>
-              </ScrollFadeUp>
+            <div className="relative w-full h-full">
+              <img 
+                src={parableBoysStreet}
+                alt="Parable Trilogy background"
+                className="absolute inset-0 w-full h-full object-cover object-bottom"
+              />
+              <div className="absolute inset-0 bg-black/40" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <ScrollFadeUp id="book-announcement" className="text-center">
+                  <h2 className="font-heading text-3xl md:text-5xl mb-4 text-white drop-shadow-lg">
+                    Book One of The Parable Trilogy
+                  </h2>
+                  <h3 
+                    className="text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.15em] text-amber-200 drop-shadow-lg"
+                    style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
+                  >
+                    KAIJU
+                  </h3>
+                  <p className="text-3xl md:text-4xl text-white mt-6 inline-block rotate-[-2deg] font-handwriting handwriting-write drop-shadow-lg">
+                    <span style={{ fontFamily: 'Allura, cursive', fontSize: '1.3em' }}>A</span>
+                    <span style={{ fontFamily: 'Great Vibes, cursive' }}> metaphysical fantasy</span>
+                  </p>
+                  <p className="font-body text-xl text-white mt-6 drop-shadow-lg">
+                    Coming Soon
+                  </p>
+                </ScrollFadeUp>
+              </div>
             </div>
           </div>
           
@@ -297,6 +306,7 @@ const Index = () => {
                 src={godOfLiesManyFacesBanner}
                 alt="God of Lies - Many Faces"
                 className="absolute inset-0 w-full h-full object-cover"
+                style={{ objectPosition: '40% center' }}
               />
               <div className="absolute inset-0 bg-black/10" />
               {/* Text overlay with white background */}
@@ -349,15 +359,8 @@ const Index = () => {
             </div>
           </Link>
           
-          {/* Slideshow height placeholder - matches banner height */}
-          <div className="py-8 md:py-10 invisible">
-            <div className="text-center">
-              <h2 className="font-heading text-3xl md:text-5xl mb-4">Placeholder</h2>
-              <h3 className="text-4xl md:text-6xl lg:text-7xl">KAIJU</h3>
-              <p className="text-3xl md:text-4xl mt-6">A metaphysical fantasy</p>
-              <p className="font-body text-xl mt-6">Coming Soon</p>
-            </div>
-          </div>
+          {/* Slideshow height placeholder - matches Circles banner height */}
+          <div className="h-[280px] md:h-[320px] invisible" />
           
           {/* Slideshow indicator - bar for active, dot for inactive */}
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
