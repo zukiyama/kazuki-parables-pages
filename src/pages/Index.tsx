@@ -269,7 +269,7 @@ const Index = () => {
   }, [currentImage]);
 
   return (
-    <div className="relative min-h-screen-stable flex flex-col overflow-hidden bg-white">
+    <div className="relative min-h-screen-stable flex flex-col overflow-hidden">
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
@@ -277,7 +277,7 @@ const Index = () => {
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-cover object-center bg-white"
+          className="absolute inset-0 w-full h-full object-cover object-center bg-slate-100"
           style={{ 
             objectPosition: '50% center',
             transform: 'translateZ(0)',
@@ -300,17 +300,17 @@ const Index = () => {
         {/* Parable Banner Slideshow - Full Width with Embla Carousel */}
         <div
           ref={parableBannerRef}
-          className="relative w-full overflow-hidden"
+          className="relative w-full"
         >
-          <div className="overflow-hidden w-full" ref={parableEmblaRef}>
+          <div className="overflow-hidden" ref={parableEmblaRef}>
             <div className="flex">
               {/* Slide 1: Parable Trilogy */}
-              <div className="flex-[0_0_100vw] min-w-0 relative h-[280px] md:h-[320px]">
+              <div className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px]">
                 <img 
                   src={parableBoysStreet}
                   alt="Parable Trilogy background"
                   className="absolute inset-0 w-full h-full object-cover object-bottom"
-                  style={{ transform: 'scale(1.005)' }}
+                  style={{ objectPosition: '52% bottom', transform: 'scale(1.02)' }}
                 />
                 <div className="absolute inset-0 bg-black/40" />
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -344,7 +344,7 @@ const Index = () => {
                   src={godOfLiesManyFacesBanner}
                   alt="God of Lies - Many Faces"
                   className="absolute inset-0 w-full h-full object-cover"
-                  style={{ objectPosition: '52% center', transform: 'scale(1.02)' }}
+                  style={{ objectPosition: '40% center' }}
                   loading="eager"
                   fetchPriority="high"
                 />
