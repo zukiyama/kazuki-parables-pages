@@ -931,7 +931,7 @@
 
 .section-slide-up {
   opacity: 0;
-  animation: sectionSlideUp 0.8s ease-out forwards;
+  animation: sectionSlideUp 0.5s ease-out forwards;
 }
 
 /* Staggered animations */
@@ -975,7 +975,7 @@
 }
 
 .footer-slide-up.visible {
-  animation: footerSlideUp 0.8s ease-out forwards;
+  animation: footerSlideUp 0.5s ease-out forwards;
 }
 
 /* Subtle background zoom on scroll */
