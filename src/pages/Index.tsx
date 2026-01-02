@@ -300,16 +300,17 @@ const Index = () => {
         {/* Parable Banner Slideshow - Full Width with Embla Carousel */}
         <div
           ref={parableBannerRef}
-          className="relative w-full"
+          className="relative w-full overflow-hidden"
         >
-          <div className="overflow-hidden" ref={parableEmblaRef}>
+          <div className="overflow-hidden w-full" ref={parableEmblaRef}>
             <div className="flex">
               {/* Slide 1: Parable Trilogy */}
-              <div className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px]">
+              <div className="flex-[0_0_100vw] min-w-0 relative h-[280px] md:h-[320px]">
                 <img 
                   src={parableBoysStreet}
                   alt="Parable Trilogy background"
                   className="absolute inset-0 w-full h-full object-cover object-bottom"
+                  style={{ transform: 'scale(1.005)' }}
                 />
                 <div className="absolute inset-0 bg-black/40" />
                 <div className="absolute inset-0 flex items-center justify-center">
