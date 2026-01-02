@@ -84,8 +84,8 @@ const Index = () => {
     let magazineTriggered = false;
     
     // Use IntersectionObserver for sequential triggering
-    // Trigger when element is 200px from entering viewport (earlier than before, but still visible)
-    const observerOptions = { threshold: 0.01, rootMargin: '200px 0px 0px 0px' };
+    // Trigger 400px before element enters viewport for earlier appearance
+    const observerOptions = { threshold: 0.01, rootMargin: '400px 0px 0px 0px' };
     
     const parableObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -93,22 +93,22 @@ const Index = () => {
           parableTriggered = true;
           setShowParableBanner(true);
           
-          // Trigger Circles 500ms after Parable
+          // Trigger Circles 250ms after Parable (faster sequence)
           setTimeout(() => {
             if (!circlesTriggered) {
               circlesTriggered = true;
               setShowCirclesBanner(true);
               
-              // Trigger Magazine 500ms after Circles
+              // Trigger Magazine 250ms after Circles
               setTimeout(() => {
                 if (!magazineTriggered) {
                   magazineTriggered = true;
                   setShowMagazine(true);
                   showMagazineRef.current = true;
                 }
-              }, 500);
+              }, 250);
             }
-          }, 500);
+          }, 250);
         }
       });
     }, observerOptions);
