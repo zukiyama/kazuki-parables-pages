@@ -19,7 +19,6 @@ const Index = () => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
-  const [slideKey, setSlideKey] = useState(0); // Key to force animation restart
   const [showMagazine, setShowMagazine] = useState(false);
   const [showParableBanner, setShowParableBanner] = useState(false);
   const [showCirclesBanner, setShowCirclesBanner] = useState(false);
@@ -32,9 +31,6 @@ const Index = () => {
   
   // Parable banner slideshow state
   const [parableBannerSlide, setParableBannerSlide] = useState(0);
-  const [parableDragOffset, setParableDragOffset] = useState(0);
-  const [isDraggingParable, setIsDraggingParable] = useState(false);
-  const [parableSlideDirection, setParableSlideDirection] = useState<'forward' | 'backward'>('forward');
   const parableBannerRef = useRef<HTMLDivElement>(null);
   const circlesBannerRef = useRef<HTMLDivElement>(null);
   
@@ -68,12 +64,11 @@ const Index = () => {
     watchDrag: true // Still allow touch/drag detection
   });
   
-  // Parable banner auto-advance every 8 seconds - always forward direction
+  // Parable banner auto-advance every 8 seconds
   useEffect(() => {
     if (!showParableBanner) return;
     
     const interval = setInterval(() => {
-      setParableSlideDirection('forward');
       setParableBannerSlide(prev => (prev + 1) % 2);
     }, 8000);
     
@@ -149,10 +144,7 @@ const Index = () => {
     };
     
     emblaApi.on('select', () => {
-      const newSlide = emblaApi.selectedScrollSnap();
-      setCurrentImage(newSlide);
-      // Increment key to restart animations when slide changes
-      setSlideKey(prev => prev + 1);
+      setCurrentImage(emblaApi.selectedScrollSnap());
     });
     
     emblaApi.on('pointerDown', onPointerDown);
@@ -183,16 +175,14 @@ const Index = () => {
       const currentSlide = emblaApi.selectedScrollSnap();
       console.log('[SLIDESHOW] Starting auto-advance interval for image:', currentSlide);
       
-      // Duration: image 0 = 12.6s, image 1 = 11.4s, image 2 (last) = 84s (twice as long)
-      const duration = currentSlide === 0 ? 12600 : currentSlide === 1 ? 11400 : 84000;
+      // Calculate duration based on current slide
+      const duration = currentSlide === 0 ? 12600 : currentSlide === 1 ? 11400 : 42000;
       
       const interval = setInterval(() => {
         const slideBeforeAdvance = emblaApi.selectedScrollSnap();
         console.log('[SLIDESHOW] Auto-advancing from image:', slideBeforeAdvance);
-        setIsManualDrag(false);
-        // Loop back to first after last
-        const nextSlide = (slideBeforeAdvance + 1) % images.length;
-        emblaApi.scrollTo(nextSlide);
+        setIsManualDrag(false); // Ensure we know this is automatic
+        emblaApi.scrollNext();
       }, duration);
       
       return () => {
@@ -251,60 +241,34 @@ const Index = () => {
         {/* Parable Banner Slideshow - Full Width */}
         <div
           ref={parableBannerRef}
-          className="relative w-full overflow-hidden touch-pan-y"
+          className="relative w-full overflow-hidden"
           onTouchStart={(e) => {
             const touch = e.touches[0];
-            const ref = parableBannerRef.current as any;
-            ref.touchStartX = touch.clientX;
-            ref.touchStartY = touch.clientY;
-            ref.isHorizontalSwipe = null;
-            setIsDraggingParable(true);
-          }}
-          onTouchMove={(e) => {
-            if (!parableBannerRef.current) return;
-            const ref = parableBannerRef.current as any;
-            const touch = e.touches[0];
-            const diffX = touch.clientX - ref.touchStartX;
-            const diffY = touch.clientY - ref.touchStartY;
-            
-            // Determine swipe direction on first significant movement
-            if (ref.isHorizontalSwipe === null && (Math.abs(diffX) > 10 || Math.abs(diffY) > 10)) {
-              ref.isHorizontalSwipe = Math.abs(diffX) > Math.abs(diffY);
-            }
-            
-            // Only track horizontal drag
-            if (ref.isHorizontalSwipe) {
-              setParableDragOffset(diffX);
-            }
+            (parableBannerRef.current as any).touchStartX = touch.clientX;
           }}
           onTouchEnd={(e) => {
             if (!parableBannerRef.current) return;
-            const ref = parableBannerRef.current as any;
+            const touchStartX = (parableBannerRef.current as any).touchStartX;
             const touchEndX = e.changedTouches[0].clientX;
-            const diff = ref.touchStartX - touchEndX;
-            
-            setIsDraggingParable(false);
-            setParableDragOffset(0);
-            
-            // Only toggle if horizontal swipe threshold met
-            if (ref.isHorizontalSwipe && Math.abs(diff) > 50) {
-              // Set direction based on swipe
-              setParableSlideDirection(diff > 0 ? 'forward' : 'backward');
-              setParableBannerSlide(prev => (prev + 1) % 2);
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+              if (diff > 0) {
+                // Swipe left - next
+                setParableBannerSlide(prev => (prev + 1) % 2);
+              } else {
+                // Swipe right - prev
+                setParableBannerSlide(prev => (prev - 1 + 2) % 2);
+              }
             }
           }}
         >
-          {/* Slide 1: Parable Trilogy */}
+          {/* Slide 1: Parable Trilogy - always slides left when exiting */}
           <div 
-            className={`absolute inset-0 ${isDraggingParable ? '' : 'transition-transform duration-700 ease-in-out'}`}
-            style={{
-              transform: parableBannerSlide === 0 
-                ? `translateX(${parableDragOffset}px)` 
-                : parableSlideDirection === 'forward'
-                  ? `translateX(calc(-100% + ${parableDragOffset}px))`
-                  : `translateX(calc(100% + ${parableDragOffset}px))`,
-              zIndex: parableBannerSlide === 0 ? 10 : 0
-            }}
+            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${
+              parableBannerSlide === 0 
+                ? 'translate-x-0 z-10' 
+                : '-translate-x-full z-0'
+            }`}
           >
             <div className="relative w-full h-full">
               <img 
@@ -336,24 +300,21 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Slide 2: God of Lies */}
+          {/* Slide 2: God of Lies - always enters from right */}
           <Link
             to="/comics"
-            className={`absolute inset-0 ${isDraggingParable ? '' : 'transition-transform duration-700 ease-in-out'}`}
-            style={{
-              transform: parableBannerSlide === 1 
-                ? `translateX(${parableDragOffset}px)` 
-                : parableSlideDirection === 'forward'
-                  ? `translateX(calc(100% + ${parableDragOffset}px))`
-                  : `translateX(calc(-100% + ${parableDragOffset}px))`,
-              zIndex: parableBannerSlide === 1 ? 10 : 0
-            }}
+            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${
+              parableBannerSlide === 1 
+                ? 'translate-x-0 z-10' 
+                : 'translate-x-full z-0'
+            }`}
           >
             <div className="relative w-full h-full">
               <img 
                 src={godOfLiesManyFacesBanner}
                 alt="God of Lies - Many Faces"
                 className="absolute inset-0 w-full h-full object-cover"
+                style={{ objectPosition: '40% center' }}
               />
               <div className="absolute inset-0 bg-black/10" />
               {/* Text overlay with white background */}
@@ -523,13 +484,13 @@ const Index = () => {
           <div className="relative w-screen h-screen-stable overflow-hidden">
             {images.map((image, index) => (
               <div 
-                key={`${index}-${currentImage === index ? slideKey : 'hidden'}`} 
+                key={index} 
                 className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${currentImage === index ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
               >
                 <img 
                   src={image}
                   alt={`Slide ${index + 1}`}
-                  className={`absolute inset-0 w-full h-full object-cover ${index === 0 && currentImage === 0 ? "animate-slow-zoom-hold" : ""} ${index === 1 && currentImage === 1 ? "animate-slow-zoom-out" : ""}`}
+                  className={`absolute inset-0 w-full h-full object-cover ${index === 0 && isCarouselReady ? "animate-slow-zoom-hold" : ""} ${index === 1 && isCarouselReady ? "animate-slow-zoom-out" : ""}`}
                   style={{ objectPosition: 'center' }}
                 />
                 <div className="absolute inset-0 bg-black/20"></div>
