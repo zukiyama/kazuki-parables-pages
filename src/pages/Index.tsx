@@ -84,8 +84,8 @@ const Index = () => {
     let magazineTriggered = false;
     
     // Use IntersectionObserver for sequential triggering
-    // Trigger much earlier - 50% below viewport means sections trigger before they're visible
-    const observerOptions = { threshold: 0.01, rootMargin: '0px 0px 50% 0px' };
+    // Trigger when element is 200px from entering viewport (earlier than before, but still visible)
+    const observerOptions = { threshold: 0.01, rootMargin: '200px 0px 0px 0px' };
     
     const parableObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
