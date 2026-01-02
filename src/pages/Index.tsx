@@ -75,34 +75,52 @@ const Index = () => {
     return () => clearInterval(interval);
   }, [showParableBanner]);
 
-  // Simple scroll-based triggers with staggering
+  const magazineRef = useRef<HTMLDivElement>(null);
+  
+  // Sequential scroll-based triggers - ensures correct order regardless of scroll speed
   useEffect(() => {
     let parableTriggered = false;
     let circlesTriggered = false;
+    let magazineTriggered = false;
     
+    // Use IntersectionObserver for sequential triggering
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -10% 0px' };
+    
+    const parableObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !parableTriggered) {
+          parableTriggered = true;
+          setShowParableBanner(true);
+          
+          // Trigger Circles 500ms after Parable
+          setTimeout(() => {
+            if (!circlesTriggered) {
+              circlesTriggered = true;
+              setShowCirclesBanner(true);
+              
+              // Trigger Magazine 500ms after Circles
+              setTimeout(() => {
+                if (!magazineTriggered) {
+                  magazineTriggered = true;
+                  setShowMagazine(true);
+                  showMagazineRef.current = true;
+                }
+              }, 500);
+            }
+          }, 500);
+        }
+      });
+    }, observerOptions);
+    
+    // Observe the Parable banner as the trigger point
+    if (parableBannerRef.current) {
+      parableObserver.observe(parableBannerRef.current);
+    }
+    
+    // Fallback scroll handler for quote visibility
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
-      
-      // Show Parable banner when scrolled just 10% (triggers early)
-      if (!parableTriggered && scrollY > viewportHeight * 0.1) {
-        parableTriggered = true;
-        setShowParableBanner(true);
-      }
-      
-      // Show Circles banner 600ms after Parable triggers, or when scrolled past 25%
-      if (!circlesTriggered && parableTriggered) {
-        circlesTriggered = true;
-        setTimeout(() => {
-          setShowCirclesBanner(true);
-        }, 600);
-      }
-      
-      // Show magazine when scrolled past 60% of viewport
-      if (scrollY > viewportHeight * 0.6) {
-        setShowMagazine(true);
-        showMagazineRef.current = true;
-      }
       
       // Show quote when scrolled past 50% of viewport
       if (scrollY > viewportHeight * 0.5) {
@@ -110,11 +128,12 @@ const Index = () => {
       }
     };
 
-    // Check on mount in case page loads already scrolled
-    handleScroll();
-
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    return () => {
+      parableObserver.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   // Sync embla with currentImage state and track manual dragging
@@ -450,6 +469,7 @@ const Index = () => {
 
         {/* Magazine Cover Section - Dissolve Slideshow */}
         <div 
+          ref={magazineRef}
           className={`magazine-slide ${showMagazine ? "visible" : ""} cursor-pointer relative`}
           onClick={() => navigate('/writing#kaiju')}
           onTouchStart={(e) => {
