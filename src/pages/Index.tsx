@@ -77,56 +77,45 @@ const Index = () => {
 
   const magazineRef = useRef<HTMLDivElement>(null);
   
-  // Individual scroll-based triggers - each section triggers when IT enters viewport
-  // but only after the previous section has been triggered (maintains order)
+  // Sequential scroll-based triggers - ensures correct order regardless of scroll speed
   useEffect(() => {
     let parableTriggered = false;
     let circlesTriggered = false;
     let magazineTriggered = false;
     
-    // Trigger when element is 30% into viewport (earlier appearance)
-    const observerOptions = { threshold: 0.01, rootMargin: '0px 0px -70% 0px' };
+    // Use IntersectionObserver for sequential triggering
+    // Trigger when element is 200px from entering viewport (earlier than before, but still visible)
+    const observerOptions = { threshold: 0.01, rootMargin: '200px 0px 0px 0px' };
     
-    // Parable observer - triggers first, no dependencies
     const parableObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && !parableTriggered) {
           parableTriggered = true;
           setShowParableBanner(true);
+          
+          // Trigger Circles 500ms after Parable
+          setTimeout(() => {
+            if (!circlesTriggered) {
+              circlesTriggered = true;
+              setShowCirclesBanner(true);
+              
+              // Trigger Magazine 500ms after Circles
+              setTimeout(() => {
+                if (!magazineTriggered) {
+                  magazineTriggered = true;
+                  setShowMagazine(true);
+                  showMagazineRef.current = true;
+                }
+              }, 500);
+            }
+          }, 500);
         }
       });
     }, observerOptions);
     
-    // Circles observer - only triggers if Parable has triggered
-    const circlesObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && parableTriggered && !circlesTriggered) {
-          circlesTriggered = true;
-          setShowCirclesBanner(true);
-        }
-      });
-    }, observerOptions);
-    
-    // Magazine observer - only triggers if Circles has triggered
-    const magazineObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && circlesTriggered && !magazineTriggered) {
-          magazineTriggered = true;
-          setShowMagazine(true);
-          showMagazineRef.current = true;
-        }
-      });
-    }, observerOptions);
-    
-    // Observe each section independently
+    // Observe the Parable banner as the trigger point
     if (parableBannerRef.current) {
       parableObserver.observe(parableBannerRef.current);
-    }
-    if (circlesBannerRef.current) {
-      circlesObserver.observe(circlesBannerRef.current);
-    }
-    if (magazineRef.current) {
-      magazineObserver.observe(magazineRef.current);
     }
     
     // Fallback scroll handler for quote visibility
@@ -144,8 +133,6 @@ const Index = () => {
     
     return () => {
       parableObserver.disconnect();
-      circlesObserver.disconnect();
-      magazineObserver.disconnect();
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
