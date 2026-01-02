@@ -310,7 +310,7 @@ const Index = () => {
                   src={parableBoysStreet}
                   alt="Parable Trilogy background"
                   className="absolute inset-0 w-full h-full object-cover object-bottom"
-                  style={{ objectPosition: '48% bottom' }}
+                  style={{ objectPosition: '52% bottom', transform: 'scale(1.02)' }}
                 />
                 <div className="absolute inset-0 bg-black/40" />
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -345,6 +345,8 @@ const Index = () => {
                   alt="God of Lies - Many Faces"
                   className="absolute inset-0 w-full h-full object-cover"
                   style={{ objectPosition: '40% center' }}
+                  loading="eager"
+                  fetchPriority="high"
                 />
                 <div className="absolute inset-0 bg-black/10" />
                 {/* Text overlay with white background */}
