@@ -1279,10 +1279,10 @@ const Writing = () => {
                       </p>
                     </blockquote>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      <em>Oswald T</em> is a chaser, an investigator at one of the elite metacorporations that preside over <em>Nexus</em>, tasked with sniffing out undercover operatives using black market technology to alter their personality. But when he is called in to a routine investigation of a rival company, something seems amiss… and the trail leads to the last place he expected.
+                      <em>Oswald T</em> is a chaser, an investigator at one of the elite metacorporations that preside over <em>Nexus</em>, tasked with sniffing out undercover agents using black market technology to alter their personality. But when he is called in to a routine investigation of a rival company, something seems amiss… and the trail leads to the last place he expected.
                     </p>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-2`}>
-                      With a new—more deadly—form of biotech hitting the streets, <em>Oz</em> finds himself the one who is chased. To survive, he must solve the most bizarre case of his career: who killed Oswald T?
+                      With a new—more deadly—form of biotech hitting the streets, <em>Oz</em> finds himself the hunted. To survive, he must solve the most bizarre case of his career: who killed Oswald T?
                     </p>
                     <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-3`}>
                       A strange noir where bioengineered worker species, aquatic telephones and sentient corporations are part of everyday life.
@@ -1644,7 +1644,7 @@ const Writing = () => {
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
-                      The great grey sprawling granite of a tenement block in Eastern Europe, a strange mechanism of the stateless lives within it. Until one day, lights begin to appear to some of the residents…
+                      The great grey sprawling granite of a tenement block in Eastern Europe, a strange stateless mechanism of the lives within it. Until one day, lights begin to appear to some of the residents…
                     </p>
                   </div>
                 </article>
