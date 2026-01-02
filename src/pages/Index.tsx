@@ -269,7 +269,7 @@ const Index = () => {
   }, [currentImage]);
 
   return (
-    <div className="relative min-h-screen-stable flex flex-col overflow-hidden">
+    <div className="relative min-h-screen-stable flex flex-col overflow-hidden bg-white">
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
@@ -277,7 +277,7 @@ const Index = () => {
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-cover object-center bg-slate-100"
+          className="absolute inset-0 w-full h-full object-cover object-center bg-white"
           style={{ 
             objectPosition: '50% center',
             transform: 'translateZ(0)',
@@ -344,7 +344,7 @@ const Index = () => {
                   src={godOfLiesManyFacesBanner}
                   alt="God of Lies - Many Faces"
                   className="absolute inset-0 w-full h-full object-cover"
-                  style={{ objectPosition: '40% center' }}
+                  style={{ objectPosition: '52% center', transform: 'scale(1.02)' }}
                   loading="eager"
                   fetchPriority="high"
                 />
