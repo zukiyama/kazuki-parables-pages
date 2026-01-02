@@ -31,6 +31,8 @@ const Index = () => {
   
   // Parable banner slideshow state
   const [parableBannerSlide, setParableBannerSlide] = useState(0);
+  const [parableDragOffset, setParableDragOffset] = useState(0);
+  const [isDraggingParable, setIsDraggingParable] = useState(false);
   const parableBannerRef = useRef<HTMLDivElement>(null);
   const circlesBannerRef = useRef<HTMLDivElement>(null);
   
@@ -241,34 +243,57 @@ const Index = () => {
         {/* Parable Banner Slideshow - Full Width */}
         <div
           ref={parableBannerRef}
-          className="relative w-full overflow-hidden"
+          className="relative w-full overflow-hidden touch-pan-y"
           onTouchStart={(e) => {
             const touch = e.touches[0];
-            (parableBannerRef.current as any).touchStartX = touch.clientX;
+            const ref = parableBannerRef.current as any;
+            ref.touchStartX = touch.clientX;
+            ref.touchStartY = touch.clientY;
+            ref.isHorizontalSwipe = null;
+            setIsDraggingParable(true);
+          }}
+          onTouchMove={(e) => {
+            if (!parableBannerRef.current) return;
+            const ref = parableBannerRef.current as any;
+            const touch = e.touches[0];
+            const diffX = touch.clientX - ref.touchStartX;
+            const diffY = touch.clientY - ref.touchStartY;
+            
+            // Determine swipe direction on first significant movement
+            if (ref.isHorizontalSwipe === null && (Math.abs(diffX) > 10 || Math.abs(diffY) > 10)) {
+              ref.isHorizontalSwipe = Math.abs(diffX) > Math.abs(diffY);
+            }
+            
+            // Only track horizontal drag
+            if (ref.isHorizontalSwipe) {
+              setParableDragOffset(diffX);
+            }
           }}
           onTouchEnd={(e) => {
             if (!parableBannerRef.current) return;
-            const touchStartX = (parableBannerRef.current as any).touchStartX;
+            const ref = parableBannerRef.current as any;
             const touchEndX = e.changedTouches[0].clientX;
-            const diff = touchStartX - touchEndX;
-            if (Math.abs(diff) > 50) {
-              if (diff > 0) {
-                // Swipe left - next
-                setParableBannerSlide(prev => (prev + 1) % 2);
-              } else {
-                // Swipe right - prev
-                setParableBannerSlide(prev => (prev - 1 + 2) % 2);
-              }
+            const diff = ref.touchStartX - touchEndX;
+            
+            setIsDraggingParable(false);
+            setParableDragOffset(0);
+            
+            // Only toggle if horizontal swipe threshold met
+            if (ref.isHorizontalSwipe && Math.abs(diff) > 50) {
+              // Either direction toggles (2 slides)
+              setParableBannerSlide(prev => (prev + 1) % 2);
             }
           }}
         >
-          {/* Slide 1: Parable Trilogy - always slides left when exiting */}
+          {/* Slide 1: Parable Trilogy */}
           <div 
-            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${
-              parableBannerSlide === 0 
-                ? 'translate-x-0 z-10' 
-                : '-translate-x-full z-0'
-            }`}
+            className={`absolute inset-0 ${isDraggingParable ? '' : 'transition-transform duration-700 ease-in-out'}`}
+            style={{
+              transform: parableBannerSlide === 0 
+                ? `translateX(${parableDragOffset}px)` 
+                : `translateX(calc(-100% + ${parableDragOffset}px))`,
+              zIndex: parableBannerSlide === 0 ? 10 : 0
+            }}
           >
             <div className="relative w-full h-full">
               <img 
@@ -300,14 +325,16 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Slide 2: God of Lies - always enters from right */}
+          {/* Slide 2: God of Lies */}
           <Link
             to="/comics"
-            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${
-              parableBannerSlide === 1 
-                ? 'translate-x-0 z-10' 
-                : 'translate-x-full z-0'
-            }`}
+            className={`absolute inset-0 ${isDraggingParable ? '' : 'transition-transform duration-700 ease-in-out'}`}
+            style={{
+              transform: parableBannerSlide === 1 
+                ? `translateX(${parableDragOffset}px)` 
+                : `translateX(calc(100% + ${parableDragOffset}px))`,
+              zIndex: parableBannerSlide === 1 ? 10 : 0
+            }}
           >
             <div className="relative w-full h-full">
               <img 
