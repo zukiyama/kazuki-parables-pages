@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useCirclePhysics } from "@/hooks/useCirclePhysics";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -265,8 +266,7 @@ const Index = () => {
             className={`absolute inset-0 transition-transform duration-700 ease-in-out ${parableBannerSlide === 0 ? 'translate-x-0 z-10' : '-translate-x-full z-0'}`}
           >
             <div className="container mx-auto px-6 py-8 md:py-10 relative">
-              {/* Text content with fade/slide animation */}
-              <div className={`text-center transition-all duration-700 ease-out ${showParableBanner ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+              <ScrollFadeUp id="book-announcement" className="text-center">
                 <h2 className="font-heading text-3xl md:text-5xl mb-4 text-black">
                   Book One of The Parable Trilogy
                 </h2>
@@ -276,14 +276,14 @@ const Index = () => {
                 >
                   KAIJU
                 </h3>
-                <p className="text-3xl md:text-4xl text-black mt-6 inline-block rotate-[-2deg] handwriting-write">
+                <p className="text-3xl md:text-4xl text-black mt-6 inline-block rotate-[-2deg] font-handwriting handwriting-write">
                   <span style={{ fontFamily: 'Allura, cursive', fontSize: '1.3em' }}>A</span>
                   <span style={{ fontFamily: 'Great Vibes, cursive' }}> metaphysical fantasy</span>
                 </p>
                 <p className="font-body text-xl text-black mt-6">
                   Coming Soon
                 </p>
-              </div>
+              </ScrollFadeUp>
             </div>
           </div>
           
