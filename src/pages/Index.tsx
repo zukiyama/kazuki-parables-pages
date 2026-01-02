@@ -34,6 +34,7 @@ const Index = () => {
   const [parableBannerSlide, setParableBannerSlide] = useState(0);
   const [parableDragOffset, setParableDragOffset] = useState(0);
   const [isDraggingParable, setIsDraggingParable] = useState(false);
+  const [parableSlideDirection, setParableSlideDirection] = useState<'forward' | 'backward'>('forward');
   const parableBannerRef = useRef<HTMLDivElement>(null);
   const circlesBannerRef = useRef<HTMLDivElement>(null);
   
@@ -67,11 +68,12 @@ const Index = () => {
     watchDrag: true // Still allow touch/drag detection
   });
   
-  // Parable banner auto-advance every 8 seconds
+  // Parable banner auto-advance every 8 seconds - always forward direction
   useEffect(() => {
     if (!showParableBanner) return;
     
     const interval = setInterval(() => {
+      setParableSlideDirection('forward');
       setParableBannerSlide(prev => (prev + 1) % 2);
     }, 8000);
     
@@ -286,7 +288,8 @@ const Index = () => {
             
             // Only toggle if horizontal swipe threshold met
             if (ref.isHorizontalSwipe && Math.abs(diff) > 50) {
-              // Either direction toggles (2 slides)
+              // Set direction based on swipe
+              setParableSlideDirection(diff > 0 ? 'forward' : 'backward');
               setParableBannerSlide(prev => (prev + 1) % 2);
             }
           }}
@@ -297,7 +300,9 @@ const Index = () => {
             style={{
               transform: parableBannerSlide === 0 
                 ? `translateX(${parableDragOffset}px)` 
-                : `translateX(calc(-100% + ${parableDragOffset}px))`,
+                : parableSlideDirection === 'forward'
+                  ? `translateX(calc(-100% + ${parableDragOffset}px))`
+                  : `translateX(calc(100% + ${parableDragOffset}px))`,
               zIndex: parableBannerSlide === 0 ? 10 : 0
             }}
           >
@@ -338,7 +343,9 @@ const Index = () => {
             style={{
               transform: parableBannerSlide === 1 
                 ? `translateX(${parableDragOffset}px)` 
-                : `translateX(calc(100% + ${parableDragOffset}px))`,
+                : parableSlideDirection === 'forward'
+                  ? `translateX(calc(100% + ${parableDragOffset}px))`
+                  : `translateX(calc(-100% + ${parableDragOffset}px))`,
               zIndex: parableBannerSlide === 1 ? 10 : 0
             }}
           >
@@ -347,7 +354,6 @@ const Index = () => {
                 src={godOfLiesManyFacesBanner}
                 alt="God of Lies - Many Faces"
                 className="absolute inset-0 w-full h-full object-cover"
-                style={{ objectPosition: '40% center' }}
               />
               <div className="absolute inset-0 bg-black/10" />
               {/* Text overlay with white background */}
