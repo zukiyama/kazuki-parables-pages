@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
-import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useCirclePhysics } from "@/hooks/useCirclePhysics";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -10,7 +9,6 @@ import officeView from "@/assets/office-window-view.jpg";
 import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
 import circlesSingleCover from "@/assets/circles-single-cover.png";
-import parableEyeBackground from "@/assets/parable-eye-background-new.png";
 import godOfLiesManyFacesBanner from "@/assets/god-of-lies-many-faces-banner.png";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -241,7 +239,7 @@ const Index = () => {
         {/* Parable Banner Slideshow - Full Width */}
         <div
           ref={parableBannerRef}
-          className={`relative w-full overflow-hidden magazine-slide ${showParableBanner ? "visible" : ""}`}
+          className="relative w-full overflow-hidden"
           onTouchStart={(e) => {
             const touch = e.touches[0];
             (parableBannerRef.current as any).touchStartX = touch.clientX;
@@ -267,18 +265,8 @@ const Index = () => {
             className={`absolute inset-0 transition-transform duration-700 ease-in-out ${parableBannerSlide === 0 ? 'translate-x-0 z-10' : '-translate-x-full z-0'}`}
           >
             <div className="container mx-auto px-6 py-8 md:py-10 relative">
-              {/* Eye background image - fades in slowly */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-                <img 
-                  src={parableEyeBackground}
-                  alt=""
-                  className="w-full h-full object-cover scale-150 md:scale-[1.55] opacity-0 animate-slow-fade-in-40 translate-y-4 md:translate-y-20"
-                />
-                {/* Left and right gradient fades for widescreen - fade to white */}
-                <div className="hidden xl:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent pointer-events-none" />
-                <div className="hidden xl:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent pointer-events-none" />
-              </div>
-              <ScrollFadeUp id="book-announcement" className="text-center relative z-10">
+              {/* Text content with fade/slide animation */}
+              <div className={`text-center transition-all duration-700 ease-out ${showParableBanner ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
                 <h2 className="font-heading text-3xl md:text-5xl mb-4 text-black">
                   Book One of The Parable Trilogy
                 </h2>
@@ -295,7 +283,7 @@ const Index = () => {
                 <p className="font-body text-xl text-black mt-6">
                   Coming Soon
                 </p>
-              </ScrollFadeUp>
+              </div>
             </div>
           </div>
           
