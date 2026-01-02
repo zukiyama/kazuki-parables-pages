@@ -262,9 +262,13 @@ const Index = () => {
             }
           }}
         >
-          {/* Slide 1: Parable Trilogy */}
+          {/* Slide 1: Parable Trilogy - always slides left when exiting */}
           <div 
-            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${parableBannerSlide === 0 ? 'translate-x-0 z-10' : '-translate-x-full z-0'}`}
+            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${
+              parableBannerSlide === 0 
+                ? 'translate-x-0 z-10' 
+                : '-translate-x-full z-0'
+            }`}
           >
             <div className="relative w-full h-full">
               <img 
@@ -296,10 +300,14 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Slide 2: God of Lies */}
+          {/* Slide 2: God of Lies - always enters from right */}
           <Link
             to="/comics"
-            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${parableBannerSlide === 1 ? 'translate-x-0 z-10' : 'translate-x-full z-0'}`}
+            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${
+              parableBannerSlide === 1 
+                ? 'translate-x-0 z-10' 
+                : 'translate-x-full z-0'
+            }`}
           >
             <div className="relative w-full h-full">
               <img 
@@ -362,16 +370,16 @@ const Index = () => {
           {/* Slideshow height placeholder - matches Circles banner height */}
           <div className="h-[280px] md:h-[320px] invisible" />
           
-          {/* Slideshow indicator - bar for active, dot for inactive */}
+          {/* Slideshow indicator - clickable dots */}
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
             <button 
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); setParableBannerSlide(0); }}
-              className={`transition-all duration-300 ${parableBannerSlide === 0 ? 'w-6 h-2 rounded-full bg-slate-800' : 'w-2 h-2 rounded-full bg-slate-400 hover:bg-slate-600'}`}
+              className={`transition-all duration-300 cursor-pointer ${parableBannerSlide === 0 ? 'w-6 h-2 rounded-full bg-white' : 'w-2 h-2 rounded-full bg-white/60 hover:bg-white/90'}`}
               aria-label="View Parable Trilogy"
             />
             <button 
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); setParableBannerSlide(1); }}
-              className={`transition-all duration-300 ${parableBannerSlide === 1 ? 'w-6 h-2 rounded-full bg-slate-800' : 'w-2 h-2 rounded-full bg-slate-400 hover:bg-slate-600'}`}
+              className={`transition-all duration-300 cursor-pointer ${parableBannerSlide === 1 ? 'w-6 h-2 rounded-full bg-white' : 'w-2 h-2 rounded-full bg-white/60 hover:bg-white/90'}`}
               aria-label="View God of Lies"
             />
           </div>
