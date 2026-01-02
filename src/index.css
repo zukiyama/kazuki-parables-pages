@@ -18,7 +18,7 @@
 @layer base {
   :root {
     /* Literary palette inspired by traditional Japanese art */
-    --background: 45 15% 96%;
+    --background: 0 0% 100%;
     --foreground: 20 20% 15%;
 
     --card: 45 25% 98%;
