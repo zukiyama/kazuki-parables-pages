@@ -29,10 +29,17 @@ const Index = () => {
   const [isCarouselReady, setIsCarouselReady] = useState(false);
   const showMagazineRef = useRef(false);
   
-  // Parable banner slideshow state
+  // Parable banner slideshow state - using Embla for continuous right-scroll
   const [parableBannerSlide, setParableBannerSlide] = useState(0);
   const parableBannerRef = useRef<HTMLDivElement>(null);
   const circlesBannerRef = useRef<HTMLDivElement>(null);
+  
+  // Embla carousel for Parable/God of Lies banner
+  const [parableEmblaRef, parableEmblaApi] = useEmblaCarousel({ 
+    loop: true,
+    skipSnaps: false,
+    dragFree: false,
+  });
   
   // Circle sensitivities - many more circles to fill the background
   const circleSensitivities = useMemo(() => [
@@ -64,16 +71,48 @@ const Index = () => {
     watchDrag: true // Still allow touch/drag detection
   });
   
-  // Parable banner auto-advance every 8 seconds
+  // Parable banner auto-advance every 8 seconds - always scroll right
   useEffect(() => {
-    if (!showParableBanner) return;
+    if (!showParableBanner || !parableEmblaApi) return;
     
     const interval = setInterval(() => {
-      setParableBannerSlide(prev => (prev + 1) % 2);
+      parableEmblaApi.scrollNext();
     }, 8000);
     
     return () => clearInterval(interval);
-  }, [showParableBanner]);
+  }, [showParableBanner, parableEmblaApi]);
+  
+  // Sync Parable banner slide state with Embla
+  useEffect(() => {
+    if (!parableEmblaApi) return;
+    
+    const onSelect = () => {
+      setParableBannerSlide(parableEmblaApi.selectedScrollSnap());
+    };
+    
+    onSelect();
+    parableEmblaApi.on("select", onSelect);
+    return () => {
+      parableEmblaApi.off("select", onSelect);
+    };
+  }, [parableEmblaApi]);
+  
+  // Handle dot clicks - always scroll forward (right)
+  const scrollParableTo = (index: number) => {
+    if (!parableEmblaApi) return;
+    
+    const currentIndex = parableEmblaApi.selectedScrollSnap();
+    const totalSlides = 2;
+    
+    if (index !== currentIndex) {
+      const forwardSteps = (index - currentIndex + totalSlides) % totalSlides;
+      for (let i = 0; i < forwardSteps; i++) {
+        setTimeout(() => {
+          parableEmblaApi.scrollNext();
+        }, i * 50);
+      }
+    }
+  };
 
   const magazineRef = useRef<HTMLDivElement>(null);
   
@@ -258,147 +297,115 @@ const Index = () => {
 
       {/* Content Section */}
       <section className="relative bg-background">
-        {/* Parable Banner Slideshow - Full Width */}
+        {/* Parable Banner Slideshow - Full Width with Embla Carousel */}
         <div
           ref={parableBannerRef}
-          className="relative w-full overflow-hidden"
-          onTouchStart={(e) => {
-            const touch = e.touches[0];
-            (parableBannerRef.current as any).touchStartX = touch.clientX;
-          }}
-          onTouchEnd={(e) => {
-            if (!parableBannerRef.current) return;
-            const touchStartX = (parableBannerRef.current as any).touchStartX;
-            const touchEndX = e.changedTouches[0].clientX;
-            const diff = touchStartX - touchEndX;
-            if (Math.abs(diff) > 50) {
-              if (diff > 0) {
-                // Swipe left - next
-                setParableBannerSlide(prev => (prev + 1) % 2);
-              } else {
-                // Swipe right - prev
-                setParableBannerSlide(prev => (prev - 1 + 2) % 2);
-              }
-            }
-          }}
+          className="relative w-full"
         >
-          {/* Slide 1: Parable Trilogy - always slides left when exiting */}
-          <div 
-            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${
-              parableBannerSlide === 0 
-                ? 'translate-x-0 z-10' 
-                : '-translate-x-full z-0'
-            }`}
-          >
-            <div className="relative w-full h-full">
-              <img 
-                src={parableBoysStreet}
-                alt="Parable Trilogy background"
-                className="absolute inset-0 w-full h-full object-cover object-bottom"
-              />
-              <div className="absolute inset-0 bg-black/40" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <ScrollFadeUp id="book-announcement" className="text-center">
-                  <h2 className="font-heading text-3xl md:text-5xl mb-4 text-white drop-shadow-lg">
-                    Book One of The Parable Trilogy
-                  </h2>
-                  <h3 
-                    className="text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.15em] text-amber-200 drop-shadow-lg"
-                    style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
-                  >
-                    KAIJU
-                  </h3>
-                  <p className="text-3xl md:text-4xl text-white mt-6 inline-block rotate-[-2deg] font-handwriting handwriting-write drop-shadow-lg">
-                    <span style={{ fontFamily: 'Allura, cursive', fontSize: '1.3em' }}>A</span>
-                    <span style={{ fontFamily: 'Great Vibes, cursive' }}> metaphysical fantasy</span>
-                  </p>
-                  <p className="font-body text-xl text-white mt-6 drop-shadow-lg">
-                    Coming Soon
-                  </p>
-                </ScrollFadeUp>
+          <div className="overflow-hidden" ref={parableEmblaRef}>
+            <div className="flex">
+              {/* Slide 1: Parable Trilogy */}
+              <div className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px]">
+                <img 
+                  src={parableBoysStreet}
+                  alt="Parable Trilogy background"
+                  className="absolute inset-0 w-full h-full object-cover object-bottom"
+                />
+                <div className="absolute inset-0 bg-black/40" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <ScrollFadeUp id="book-announcement" className="text-center">
+                    <h2 className="font-heading text-3xl md:text-5xl mb-4 text-white drop-shadow-lg">
+                      Book One of The Parable Trilogy
+                    </h2>
+                    <h3 
+                      className="text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.15em] text-amber-200 drop-shadow-lg"
+                      style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
+                    >
+                      KAIJU
+                    </h3>
+                    <p className="text-3xl md:text-4xl text-white mt-6 inline-block rotate-[-2deg] font-handwriting handwriting-write drop-shadow-lg">
+                      <span style={{ fontFamily: 'Allura, cursive', fontSize: '1.3em' }}>A</span>
+                      <span style={{ fontFamily: 'Great Vibes, cursive' }}> metaphysical fantasy</span>
+                    </p>
+                    <p className="font-body text-xl text-white mt-6 drop-shadow-lg">
+                      Coming Soon
+                    </p>
+                  </ScrollFadeUp>
+                </div>
+              </div>
+              
+              {/* Slide 2: God of Lies */}
+              <div 
+                className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px] cursor-pointer"
+                onClick={() => navigate('/comics')}
+              >
+                <img 
+                  src={godOfLiesManyFacesBanner}
+                  alt="God of Lies - Many Faces"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{ objectPosition: '40% center' }}
+                />
+                <div className="absolute inset-0 bg-black/10" />
+                {/* Text overlay with white background */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="bg-white/95 px-6 py-4 md:px-8 md:py-5 text-center shadow-lg">
+                    <p 
+                      className="text-xs md:text-sm text-slate-500 uppercase tracking-[0.2em] mb-2"
+                      style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                    >
+                      Featured Comic
+                    </p>
+                    <div className="flex flex-col items-center gap-0.5 md:gap-1">
+                      <span 
+                        className="text-2xl md:text-4xl lg:text-5xl text-slate-900"
+                        style={{ 
+                          fontFamily: 'Playfair Display, Georgia, serif',
+                          fontWeight: 700,
+                          letterSpacing: '0.08em',
+                          lineHeight: 1.1
+                        }}
+                      >
+                        GOD
+                      </span>
+                      <span 
+                        className="text-base md:text-lg lg:text-xl text-slate-600 italic"
+                        style={{ 
+                          fontFamily: 'Playfair Display, Georgia, serif',
+                          fontWeight: 400,
+                          letterSpacing: '0.2em',
+                          lineHeight: 1
+                        }}
+                      >
+                        of
+                      </span>
+                      <span 
+                        className="text-2xl md:text-4xl lg:text-5xl text-slate-900"
+                        style={{ 
+                          fontFamily: 'Playfair Display, Georgia, serif',
+                          fontWeight: 700,
+                          letterSpacing: '0.08em',
+                          lineHeight: 1.1
+                        }}
+                      >
+                        LIES
+                      </span>
+                    </div>
+                    <div className="w-12 md:w-16 h-0.5 bg-red-600 mx-auto mt-3" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           
-          {/* Slide 2: God of Lies - always enters from right */}
-          <Link
-            to="/comics"
-            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${
-              parableBannerSlide === 1 
-                ? 'translate-x-0 z-10' 
-                : 'translate-x-full z-0'
-            }`}
-          >
-            <div className="relative w-full h-full">
-              <img 
-                src={godOfLiesManyFacesBanner}
-                alt="God of Lies - Many Faces"
-                className="absolute inset-0 w-full h-full object-cover"
-                style={{ objectPosition: '40% center' }}
-              />
-              <div className="absolute inset-0 bg-black/10" />
-              {/* Text overlay with white background */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-white/95 px-6 py-4 md:px-8 md:py-5 text-center shadow-lg">
-                  <p 
-                    className="text-xs md:text-sm text-slate-500 uppercase tracking-[0.2em] mb-2"
-                    style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                  >
-                    Featured Comic
-                  </p>
-                  <div className="flex flex-col items-center gap-0.5 md:gap-1">
-                    <span 
-                      className="text-2xl md:text-4xl lg:text-5xl text-slate-900"
-                      style={{ 
-                        fontFamily: 'Playfair Display, Georgia, serif',
-                        fontWeight: 700,
-                        letterSpacing: '0.08em',
-                        lineHeight: 1.1
-                      }}
-                    >
-                      GOD
-                    </span>
-                    <span 
-                      className="text-base md:text-lg lg:text-xl text-slate-600 italic"
-                      style={{ 
-                        fontFamily: 'Playfair Display, Georgia, serif',
-                        fontWeight: 400,
-                        letterSpacing: '0.2em',
-                        lineHeight: 1
-                      }}
-                    >
-                      of
-                    </span>
-                    <span 
-                      className="text-2xl md:text-4xl lg:text-5xl text-slate-900"
-                      style={{ 
-                        fontFamily: 'Playfair Display, Georgia, serif',
-                        fontWeight: 700,
-                        letterSpacing: '0.08em',
-                        lineHeight: 1.1
-                      }}
-                    >
-                      LIES
-                    </span>
-                  </div>
-                  <div className="w-12 md:w-16 h-0.5 bg-red-600 mx-auto mt-3" />
-                </div>
-              </div>
-            </div>
-          </Link>
-          
-          {/* Slideshow height placeholder - matches Circles banner height */}
-          <div className="h-[280px] md:h-[320px] invisible" />
-          
           {/* Slideshow indicator - clickable dots */}
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
             <button 
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setParableBannerSlide(0); }}
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); scrollParableTo(0); }}
               className={`transition-all duration-300 cursor-pointer ${parableBannerSlide === 0 ? 'w-6 h-2 rounded-full bg-white' : 'w-2 h-2 rounded-full bg-white/60 hover:bg-white/90'}`}
               aria-label="View Parable Trilogy"
             />
             <button 
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setParableBannerSlide(1); }}
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); scrollParableTo(1); }}
               className={`transition-all duration-300 cursor-pointer ${parableBannerSlide === 1 ? 'w-6 h-2 rounded-full bg-white' : 'w-2 h-2 rounded-full bg-white/60 hover:bg-white/90'}`}
               aria-label="View God of Lies"
             />
