@@ -21,9 +21,9 @@ export default {
 			screens: {
 				'xs': '481px',
 				'sm': '640px',
-				'md': '821px',     // Tablet breakpoint (821-1279px)
-				'lg': '1024px',
-				'xl': '1280px',    // Widescreen breakpoint (1280px+)
+				'md': '768px',     // Original md breakpoint - keep default behavior
+				'lg': '1024px',    // iPad 12.9" portrait and up - this is "tablet" tier in our system
+				'xl': '1280px',    // Widescreen (laptops/desktops)
 				'2xl': '1536px',
 			},
 		fontFamily: {
