@@ -20,7 +20,11 @@ export default {
 		extend: {
 			screens: {
 				'xs': '481px',
-				'sm': '768px',
+				'sm': '640px',
+				'md': '821px',     // Tablet breakpoint (821-1279px)
+				'lg': '1024px',
+				'xl': '1280px',    // Widescreen breakpoint (1280px+)
+				'2xl': '1536px',
 			},
 		fontFamily: {
 			heading: ['Playfair Display', 'serif'],
