@@ -1,44 +1,53 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 /**
  * Hook to detect if the current viewport has a widescreen aspect ratio.
- * This typically corresponds to laptops and HDTVs in landscape orientation.
+ * Uses hysteresis to prevent flickering when browser chrome causes minor viewport changes.
  * 
  * 16:10 ratio = 1.6
  * 16:9 ratio = 1.777...
- * Browser viewports are often even wider due to browser chrome reducing height.
  * 
- * We detect aspect ratios >= 1.6 (16:10 or wider) on desktop-sized screens (width >= 1024px)
- * This covers laptops, HDTVs, and browser windows where chrome makes viewport wider.
+ * Entry threshold: ratio >= 1.6 (to enter widescreen mode)
+ * Exit threshold: ratio < 1.5 (to exit widescreen mode)
+ * 
+ * This prevents flickering on devices like iPads where the browser bar
+ * appearing/disappearing causes the aspect ratio to hover around 1.43-1.5
  */
 export const useWidescreenAspectRatio = () => {
   const [isWidescreen, setIsWidescreen] = useState(false);
+  const isWidescreenRef = useRef(false);
 
   const checkAspectRatio = useCallback(() => {
     const width = window.innerWidth;
     const height = window.innerHeight;
     
-    // Only apply to true desktop-sized screens (laptops/monitors)
-    // 1280px excludes tablets like 10.9" iPads (~1180px) while including 13"+ laptops
-    if (width < 1280) {
-      setIsWidescreen(false);
-      return;
-    }
-    
     // Must be landscape orientation
     if (height >= width) {
+      isWidescreenRef.current = false;
       setIsWidescreen(false);
       return;
     }
     
     const ratio = width / height;
     
-    // 16:10 = 1.6, 16:9 = 1.777
-    // Detect anything 16:10 or wider (ratio >= 1.6)
-    // This catches laptops, HDTVs, and browser windows with chrome
-    const isWidescreenRatio = ratio >= 1.6;
+    // Hysteresis: different thresholds for entering vs exiting
+    // Enter widescreen: ratio >= 1.6 (16:10 or wider)
+    // Exit widescreen: ratio < 1.5 (clear exit point)
+    const currentlyWidescreen = isWidescreenRef.current;
     
-    setIsWidescreen(isWidescreenRatio);
+    let newWidescreen: boolean;
+    if (currentlyWidescreen) {
+      // Currently in widescreen - only exit if ratio drops below 1.5
+      newWidescreen = ratio >= 1.5;
+    } else {
+      // Not in widescreen - only enter if ratio reaches 1.6
+      newWidescreen = ratio >= 1.6;
+    }
+    
+    if (newWidescreen !== currentlyWidescreen) {
+      isWidescreenRef.current = newWidescreen;
+      setIsWidescreen(newWidescreen);
+    }
   }, []);
 
   useEffect(() => {
