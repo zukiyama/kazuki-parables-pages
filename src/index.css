@@ -618,8 +618,8 @@
 }
 
 .animate-slow-zoom-hold {
-  animation: slowZoomHold 12.6s ease-out both;
-  transform: scale(1); /* Initial state to prevent flash on mount */
+  animation: slowZoomHold 12.6s ease-out forwards;
+  animation-fill-mode: forwards;
 }
 
 .animate-slow-zoom-meteor {
@@ -627,8 +627,7 @@
 }
 
 .animate-slow-zoom-out {
-  animation: slowZoomOut 11.4s ease-out both;
-  transform: scale(1.15); /* Initial state to prevent flash on mount */
+  animation: slowZoomOut 11.4s ease-out forwards;
 }
 
 .scroll-slide-left {
