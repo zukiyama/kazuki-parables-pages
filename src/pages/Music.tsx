@@ -243,6 +243,9 @@ const Music = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const transitionRef = useRef<NodeJS.Timeout | null>(null);
   
+  // Track background image loading state
+  const [backgroundsLoaded, setBackgroundsLoaded] = useState(false);
+  
   // Zoom dialog for album covers
   const [isZoomDialogOpen, setIsZoomDialogOpen] = useState(false);
   
@@ -299,6 +302,7 @@ const Music = () => {
         });
       });
       await Promise.all(promises);
+      setBackgroundsLoaded(true);
     };
     preloadImages();
   }, []);
@@ -548,21 +552,25 @@ const Music = () => {
       
       {/* Two-Layer Crossfade Background System - GPU-accelerated fixed layer */}
       <div className="bg-layer-fixed">
+        {/* Loading placeholder until backgrounds are ready */}
+        {!backgroundsLoaded && (
+          <div className="absolute inset-0 bg-slate-900" />
+        )}
         {/* Layer A */}
         <div 
-          className="absolute inset-0 bg-cover transition-opacity duration-700 ease-in-out"
+          className={`absolute inset-0 bg-cover transition-opacity duration-700 ease-in-out ${backgroundsLoaded ? '' : 'opacity-0'}`}
           style={{ 
             backgroundImage: `url(${layerA.image})`,
-            opacity: layerA.opacity,
+            opacity: backgroundsLoaded ? layerA.opacity : 0,
             backgroundPosition: 'center top 40px'
           }}
         />
         {/* Layer B */}
         <div 
-          className="absolute inset-0 bg-cover transition-opacity duration-700 ease-in-out"
+          className={`absolute inset-0 bg-cover transition-opacity duration-700 ease-in-out ${backgroundsLoaded ? '' : 'opacity-0'}`}
           style={{ 
             backgroundImage: `url(${layerB.image})`,
-            opacity: layerB.opacity,
+            opacity: backgroundsLoaded ? layerB.opacity : 0,
             backgroundPosition: 'center top 40px'
           }}
         />
