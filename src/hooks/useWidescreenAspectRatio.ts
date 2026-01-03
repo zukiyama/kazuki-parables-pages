@@ -1,33 +1,38 @@
 import { useState, useEffect, useCallback } from 'react';
 
 /**
- * Hook to detect if the current viewport is a widescreen desktop.
+ * Hook to detect if the current viewport is a widescreen DESKTOP.
  * 
- * Uses WIDTH ONLY to avoid layout shifts when mobile browser bars
- * expand/collapse (which changes height but not width).
+ * Uses WIDTH + INPUT TYPE to distinguish desktops from large tablets:
+ * - Width >= 1280px (typical laptop/monitor width)
+ * - AND has mouse/trackpad (hover: hover, pointer: fine)
  * 
- * Widescreen desktop: width >= 1280px (typical laptop/monitor width)
+ * This excludes iPads and tablets which have touch as primary input,
+ * even if they have large screens (iPad Pro 12.9" is ~1366px wide in landscape).
+ * 
+ * Does NOT use height to avoid layout shifts from mobile browser bars.
  */
 export const useWidescreenAspectRatio = () => {
   const [isWidescreen, setIsWidescreen] = useState(false);
 
-  const checkWidth = useCallback(() => {
+  const checkWidescreen = useCallback(() => {
     const width = window.innerWidth;
     
-    // Only use width - 1280px covers laptops and monitors
-    // Avoids height-based calculations that break on mobile scroll
-    setIsWidescreen(width >= 1280);
+    // Must be desktop-width AND have mouse/trackpad (excludes tablets)
+    const isDesktopInput = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    
+    setIsWidescreen(width >= 1280 && isDesktopInput);
   }, []);
 
   useEffect(() => {
-    checkWidth();
+    checkWidescreen();
     
-    window.addEventListener('resize', checkWidth);
+    window.addEventListener('resize', checkWidescreen);
     
     return () => {
-      window.removeEventListener('resize', checkWidth);
+      window.removeEventListener('resize', checkWidescreen);
     };
-  }, [checkWidth]);
+  }, [checkWidescreen]);
 
   return isWidescreen;
 };
