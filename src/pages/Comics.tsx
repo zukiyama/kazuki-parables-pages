@@ -533,7 +533,7 @@ const Comics = () => {
                     </p>
                     
                     {/* Vertical GOD OF LIES with distinct font */}
-                    <div className="flex flex-col items-center gap-1 my-2">
+                    <div className="flex flex-col items-center gap-3 sm:gap-4 lg:gap-5 my-2">
                       <span 
                         className="text-2xl sm:text-3xl lg:text-5xl text-slate-900"
                         style={{ 
