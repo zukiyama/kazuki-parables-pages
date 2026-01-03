@@ -18,8 +18,9 @@ export const useWidescreenAspectRatio = () => {
     const width = window.innerWidth;
     const height = window.innerHeight;
     
-    // Only apply to desktop-sized screens (laptops/monitors)
-    if (width < 1024) {
+    // Only apply to true desktop-sized screens (laptops/monitors)
+    // 1280px excludes tablets like 10.9" iPads (~1180px) while including 13"+ laptops
+    if (width < 1280) {
       setIsWidescreen(false);
       return;
     }
