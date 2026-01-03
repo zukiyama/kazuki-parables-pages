@@ -248,6 +248,10 @@ const Music = () => {
   
   // Zoom dialog for album covers
   const [isZoomDialogOpen, setIsZoomDialogOpen] = useState(false);
+  const zoomDialogJustClosedRef = useRef(false);
+  
+  // Track when banner was programmatically hidden (to prevent scroll handler from re-showing)
+  const bannerManuallyHiddenRef = useRef(false);
   
   // Track when logo has loaded to show music text in correct position
   const [logoLoaded, setLogoLoaded] = useState(false);
@@ -339,10 +343,15 @@ const Music = () => {
       const isScrollingDown = scrollTop > lastScrollY;
       
       // If at or near the top (within 50px), show banner
+      // BUT only if we didn't just manually hide it (e.g., by clicking an album cover in banner)
       if (isAtTop) {
-        setBannerVisible(true);
+        if (!bannerManuallyHiddenRef.current) {
+          setBannerVisible(true);
+        }
         wasAtTop = true;
       } else if (isScrollingDown && wasAtTop) {
+        // Clear the manual hide flag once we've scrolled away from top
+        bannerManuallyHiddenRef.current = false;
         // Only hide banner when scrolling DOWN from the top area
         setBannerVisible(false);
         wasAtTop = false;
@@ -417,21 +426,28 @@ const Music = () => {
   const handlePageClick = (e: React.MouseEvent) => {
     if (!isWidescreen) return;
     
-    // Don't toggle if zoom dialog is open (clicking to close it)
-    if (isZoomDialogOpen) return;
+    // Don't toggle if zoom dialog is open OR just closed (clicking to close it)
+    if (isZoomDialogOpen || zoomDialogJustClosedRef.current) {
+      zoomDialogJustClosedRef.current = false;
+      return;
+    }
     
     // At or near the top of the page, don't allow hiding the banner
     if (window.scrollY <= 50) return;
     
     // Don't toggle if clicking on interactive elements or elements that trigger other actions
     const target = e.target as HTMLElement;
+    
+    // Check if clicking on a clickable album cover (in track listing, not the decorative ones)
+    const isClickableAlbumCover = target.closest('.hover\\:scale-105.cursor-pointer');
+    
     if (
       target.closest('button') ||
       target.closest('a') ||
       target.closest('nav') ||
       target.closest('[role="button"]') ||
       target.closest('.fixed.top-16') ||
-      target.closest('img') || // Album covers and other clickable images
+      isClickableAlbumCover || // Only exclude clickable album covers, not the logo
       target.closest('[role="dialog"]') || // Dialogs (zoom view, etc.)
       target.closest('[data-radix-dialog-overlay]') || // Dialog overlays
       target.closest('[data-radix-dialog-content]') || // Dialog content
@@ -443,11 +459,25 @@ const Music = () => {
     
     setBannerVisible(prev => !prev);
   };
+  
+  // Track when zoom dialog closes to prevent click-to-close from toggling banner
+  const handleZoomDialogChange = (open: boolean) => {
+    if (!open && isZoomDialogOpen) {
+      // Dialog is closing - set flag to prevent next click from toggling banner
+      zoomDialogJustClosedRef.current = true;
+      // Clear flag after a short delay
+      setTimeout(() => {
+        zoomDialogJustClosedRef.current = false;
+      }, 100);
+    }
+    setIsZoomDialogOpen(open);
+  };
 
   // Callback for when an album in banner is clicked (to prevent flickering)
   const handleBannerAlbumClick = () => {
     bannerClickedRef.current = true;
     cursorWasOutsideBannerRef.current = false;
+    bannerManuallyHiddenRef.current = true; // Prevent scroll handler from re-showing banner at top
     setBannerVisible(false);
   };
 
@@ -844,7 +874,7 @@ const Music = () => {
       </footer>
       
       {/* Album Cover Zoom Dialog */}
-      <Dialog open={isZoomDialogOpen} onOpenChange={setIsZoomDialogOpen}>
+      <Dialog open={isZoomDialogOpen} onOpenChange={handleZoomDialogChange}>
         <DialogContent 
           className={`p-0 bg-transparent border-none focus:outline-none ${
             isWidescreen 

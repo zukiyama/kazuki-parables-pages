@@ -57,6 +57,7 @@ const Writing = () => {
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
   const [bannerVisible, setBannerVisible] = useState(true); // For widescreen banner toggle
+  const bannerManuallyHiddenRef = useRef(false); // Track when banner was programmatically hidden
   const [parableTrilogyVisible, setParableTrilogyVisible] = useState(true); // For fade animation
   const [backgroundOpacities, setBackgroundOpacities] = useState({
     school: 1,
@@ -542,10 +543,15 @@ const Writing = () => {
       const isScrollingDown = scrollTop > lastScrollY;
       
       // If at or near the top (within 50px), show banner
+      // BUT only if we didn't just manually hide it (e.g., by clicking a book cover in banner)
       if (isAtTop) {
-        setBannerVisible(true);
+        if (!bannerManuallyHiddenRef.current) {
+          setBannerVisible(true);
+        }
         wasAtTop = true;
       } else if (isScrollingDown && wasAtTop) {
+        // Clear the manual hide flag once we've scrolled away from top
+        bannerManuallyHiddenRef.current = false;
         // Only hide banner when scrolling DOWN from the top area
         setBannerVisible(false);
         wasAtTop = false;
@@ -646,6 +652,7 @@ const Writing = () => {
   const handleBannerBookClick = useCallback(() => {
     bannerClickedRef.current = true;
     cursorWasOutsideBannerRef.current = false; // Cursor is inside since we clicked there
+    bannerManuallyHiddenRef.current = true; // Prevent scroll handler from re-showing banner at top
     setBannerVisible(false);
   }, []);
 
