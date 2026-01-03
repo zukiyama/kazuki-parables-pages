@@ -315,6 +315,11 @@ const Index = () => {
                   className="absolute right-0 top-0 w-1/3 h-full z-10 cursor-pointer"
                   onClick={() => scrollParableTo(1)}
                 />
+                {/* Center click zone navigates to Writing page */}
+                <div 
+                  className="absolute left-1/3 top-0 w-1/3 h-full z-10 cursor-pointer"
+                  onClick={() => navigate('/writing#kaiju')}
+                />
                 <img 
                   src={parableBoysStreet}
                   alt="Parable Trilogy background"
@@ -425,12 +430,12 @@ const Index = () => {
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
             <button 
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); scrollParableTo(0); }}
-              className={`transition-all duration-300 cursor-pointer ${parableBannerSlide === 0 ? 'w-6 h-2 rounded-full bg-slate-600' : 'w-2 h-2 rounded-full bg-slate-500/50 hover:bg-slate-500/80'}`}
+              className={`transition-all duration-300 cursor-pointer ${parableBannerSlide === 0 ? 'w-6 h-2 rounded-full bg-white' : 'w-2 h-2 rounded-full bg-white/60 hover:bg-white/90'}`}
               aria-label="View Parable Trilogy"
             />
             <button 
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); scrollParableTo(1); }}
-              className={`transition-all duration-300 cursor-pointer ${parableBannerSlide === 1 ? 'w-6 h-2 rounded-full bg-slate-600' : 'w-2 h-2 rounded-full bg-slate-500/50 hover:bg-slate-500/80'}`}
+              className={`transition-all duration-300 cursor-pointer ${parableBannerSlide === 1 ? 'w-6 h-2 rounded-full bg-white' : 'w-2 h-2 rounded-full bg-white/60 hover:bg-white/90'}`}
               aria-label="View God of Lies"
             />
           </div>
