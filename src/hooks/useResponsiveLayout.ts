@@ -1,69 +1,64 @@
 import { useState, useEffect, useCallback } from 'react';
 
 /**
- * Responsive layout hook using width-only breakpoints.
+ * Responsive layout hook with 3-tier system:
  * 
- * 3-tier layout system (PRIORITY: iPad 12.9" landscape = widescreen):
- * - Mobile: 0-820px (phones + narrow tablets like 10.9" iPad portrait)
- * - Tablet: 821-1023px (10.9" iPad landscape, smaller tablets)
- * - Widescreen: 1024px+ (iPad 12.9" portrait/landscape, laptops/desktops)
+ * 1. Mobile: width <= 820px (phones, narrow tablets like 10.9" iPad portrait)
+ * 2. Desktop: width > 820px AND aspect ratio < 1.5 (iPad 12.9" landscape at ~1.33:1)
+ * 3. Widescreen: width > 820px AND aspect ratio >= 1.5 (laptops at 16:9 or wider)
  * 
- * The user built this site on iPad 12.9" landscape (1366px), so that
- * device MUST always get the widescreen layout.
- * 
- * Uses width only - no height, aspect-ratio, or Safari bar-sensitive measurements.
- * This prevents layout flickering when Safari's address bar shows/hides.
+ * Mobile detection uses width-only to prevent Safari bar flicker.
+ * Widescreen uses aspect ratio because iPad 12.9" needs different layout than laptops.
  */
 
-const MOBILE_MAX = 820;      // Mobile layout: 0-820px
-const TABLET_MAX = 1023;     // Tablet layout: 821-1023px
-                              // Widescreen: 1024px+ (includes iPad 12.9" portrait at 1024px)
+const MOBILE_MAX = 820;
+const WIDESCREEN_ASPECT_RATIO = 1.5; // 16:9 = 1.78, iPad 12.9" = 1.33
 
-export type LayoutTier = 'mobile' | 'tablet' | 'widescreen';
+export type LayoutTier = 'mobile' | 'desktop' | 'widescreen';
 
-function getLayoutTier(width: number): LayoutTier {
+function getLayoutTier(width: number, height: number): LayoutTier {
   if (width <= MOBILE_MAX) return 'mobile';
-  if (width <= TABLET_MAX) return 'tablet';
-  return 'widescreen';
+  const aspectRatio = width / height;
+  if (aspectRatio >= WIDESCREEN_ASPECT_RATIO) return 'widescreen';
+  return 'desktop';
 }
 
 export const useResponsiveLayout = () => {
   const [layoutTier, setLayoutTier] = useState<LayoutTier>(() => {
     if (typeof window !== 'undefined') {
-      return getLayoutTier(window.innerWidth);
+      return getLayoutTier(window.innerWidth, window.innerHeight);
     }
     return 'mobile';
   });
 
-  const checkWidth = useCallback(() => {
-    const newTier = getLayoutTier(window.innerWidth);
+  const checkLayout = useCallback(() => {
+    const newTier = getLayoutTier(window.innerWidth, window.innerHeight);
     setLayoutTier(prev => prev !== newTier ? newTier : prev);
   }, []);
 
   useEffect(() => {
-    checkWidth();
+    checkLayout();
     
-    window.addEventListener('resize', checkWidth);
-    window.addEventListener('orientationchange', checkWidth);
+    window.addEventListener('resize', checkLayout);
+    window.addEventListener('orientationchange', checkLayout);
     
     return () => {
-      window.removeEventListener('resize', checkWidth);
-      window.removeEventListener('orientationchange', checkWidth);
+      window.removeEventListener('resize', checkLayout);
+      window.removeEventListener('orientationchange', checkLayout);
     };
-  }, [checkWidth]);
+  }, [checkLayout]);
 
   return {
     layoutTier,
     isMobile: layoutTier === 'mobile',
-    isTablet: layoutTier === 'tablet',
+    isDesktop: layoutTier === 'desktop',
     isWidescreen: layoutTier === 'widescreen',
-    isDesktopOrTablet: layoutTier !== 'mobile',
+    isDesktopOrWidescreen: layoutTier !== 'mobile',
   };
 };
 
 /**
  * @deprecated Use useResponsiveLayout().isMobile instead
- * Kept for backward compatibility
  */
 export const useIsMobile = () => {
   const { isMobile } = useResponsiveLayout();
@@ -72,7 +67,7 @@ export const useIsMobile = () => {
 
 /**
  * @deprecated Use useResponsiveLayout().isWidescreen instead
- * Kept for backward compatibility - now uses width-only detection
+ * Returns true only for widescreen (16:9+) displays, NOT for iPad 12.9"
  */
 export const useWidescreenAspectRatio = () => {
   const { isWidescreen } = useResponsiveLayout();
