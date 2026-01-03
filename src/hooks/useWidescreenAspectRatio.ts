@@ -1,38 +1,56 @@
 import { useState, useEffect, useCallback } from 'react';
 
 /**
- * Hook to detect if the current viewport is a widescreen DESKTOP.
+ * Hook to detect if the current viewport has a widescreen aspect ratio.
+ * This typically corresponds to laptops and HDTVs in landscape orientation.
  * 
- * Uses WIDTH + INPUT TYPE to distinguish desktops from large tablets:
- * - Width >= 1280px (typical laptop/monitor width)
- * - AND has mouse/trackpad (hover: hover, pointer: fine)
+ * 16:10 ratio = 1.6
+ * 16:9 ratio = 1.777...
+ * Browser viewports are often even wider due to browser chrome reducing height.
  * 
- * This excludes iPads and tablets which have touch as primary input,
- * even if they have large screens (iPad Pro 12.9" is ~1366px wide in landscape).
- * 
- * Does NOT use height to avoid layout shifts from mobile browser bars.
+ * We detect aspect ratios >= 1.6 (16:10 or wider) on desktop-sized screens (width >= 1024px)
+ * This covers laptops, HDTVs, and browser windows where chrome makes viewport wider.
  */
 export const useWidescreenAspectRatio = () => {
   const [isWidescreen, setIsWidescreen] = useState(false);
 
-  const checkWidescreen = useCallback(() => {
+  const checkAspectRatio = useCallback(() => {
     const width = window.innerWidth;
+    const height = window.innerHeight;
     
-    // Must be desktop-width AND have mouse/trackpad (excludes tablets)
-    const isDesktopInput = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    // Only apply to desktop-sized screens (laptops/monitors)
+    if (width < 1024) {
+      setIsWidescreen(false);
+      return;
+    }
     
-    setIsWidescreen(width >= 1280 && isDesktopInput);
+    // Must be landscape orientation
+    if (height >= width) {
+      setIsWidescreen(false);
+      return;
+    }
+    
+    const ratio = width / height;
+    
+    // 16:10 = 1.6, 16:9 = 1.777
+    // Detect anything 16:10 or wider (ratio >= 1.6)
+    // This catches laptops, HDTVs, and browser windows with chrome
+    const isWidescreenRatio = ratio >= 1.6;
+    
+    setIsWidescreen(isWidescreenRatio);
   }, []);
 
   useEffect(() => {
-    checkWidescreen();
+    checkAspectRatio();
     
-    window.addEventListener('resize', checkWidescreen);
+    window.addEventListener('resize', checkAspectRatio);
+    window.addEventListener('orientationchange', checkAspectRatio);
     
     return () => {
-      window.removeEventListener('resize', checkWidescreen);
+      window.removeEventListener('resize', checkAspectRatio);
+      window.removeEventListener('orientationchange', checkAspectRatio);
     };
-  }, [checkWidescreen]);
+  }, [checkAspectRatio]);
 
   return isWidescreen;
 };
