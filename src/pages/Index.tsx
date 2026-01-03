@@ -518,12 +518,21 @@ const Index = () => {
                 key={index} 
                 className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${currentImage === index ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
               >
-                <img 
-                  src={image}
-                  alt={`Slide ${index + 1}`}
-                  className={`absolute inset-0 w-full h-full object-cover ${index === 0 && currentImage === 0 && isCarouselReady ? "animate-slow-zoom-hold" : ""} ${index === 1 && currentImage === 1 && isCarouselReady ? "animate-slow-zoom-out" : ""}`}
-                  style={{ objectPosition: 'center' }}
-                />
+                {/* Animation wrapper - key changes when slide becomes active to restart animation */}
+                <div 
+                  key={currentImage === index ? `active-${index}` : `paused-${index}`}
+                  className="absolute inset-0"
+                >
+                  <img 
+                    src={image}
+                    alt={`Slide ${index + 1}`}
+                    className={`absolute inset-0 w-full h-full object-cover ${index === 0 && isCarouselReady ? "animate-slow-zoom-hold" : ""} ${index === 1 && isCarouselReady ? "animate-slow-zoom-out" : ""}`}
+                    style={{ 
+                      objectPosition: 'center',
+                      animationPlayState: currentImage === index ? 'running' : 'paused'
+                    }}
+                  />
+                </div>
                 <div className="absolute inset-0 bg-black/20"></div>
                 
                 {/* PARABLE falling text - only on second image */}
