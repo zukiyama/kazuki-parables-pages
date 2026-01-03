@@ -4,7 +4,6 @@ const MOBILE_BREAKPOINT = 950
 
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean>(() => {
-    // Initialize with actual value if window is available (client-side)
     if (typeof window !== 'undefined') {
       return window.innerWidth < MOBILE_BREAKPOINT
     }
@@ -12,13 +11,30 @@ export function useIsMobile() {
   })
 
   React.useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
-    const onChange = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+    let lastWidth = window.innerWidth
+    let wasPortrait = window.innerHeight > window.innerWidth
+
+    const checkAndUpdate = () => {
+      const currentWidth = window.innerWidth
+      const isPortrait = window.innerHeight > window.innerWidth
+      const orientationChanged = wasPortrait !== isPortrait
+      const widthChanged = Math.abs(currentWidth - lastWidth) > 5
+
+      // Only update if width changed significantly OR orientation changed
+      if (widthChanged || orientationChanged) {
+        lastWidth = currentWidth
+        wasPortrait = isPortrait
+        setIsMobile(currentWidth < MOBILE_BREAKPOINT)
+      }
     }
-    mql.addEventListener("change", onChange)
-    setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    return () => mql.removeEventListener("change", onChange)
+
+    window.addEventListener('resize', checkAndUpdate)
+    window.addEventListener('orientationchange', checkAndUpdate)
+    
+    return () => {
+      window.removeEventListener('resize', checkAndUpdate)
+      window.removeEventListener('orientationchange', checkAndUpdate)
+    }
   }, [])
 
   return isMobile
