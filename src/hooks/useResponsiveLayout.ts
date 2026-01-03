@@ -1,32 +1,25 @@
 import { useState, useEffect, useCallback } from 'react';
 
 /**
- * Responsive layout hook with 3-tier system (hybrid width + aspect ratio):
+ * Responsive layout hook with 3-tier system:
  * 
- * 1. Mobile: width <= 820px
- * 2. Desktop: width 821-1279px, OR width >= 1280px but aspect ratio < 1.58 (catches iPad 12.9" at 1366px)
- * 3. Widescreen: width >= 1280px AND aspect ratio >= 1.58 (laptops with 16:10 or wider viewports)
+ * 1. Mobile: width <= 820px (phones, narrow tablets like 10.9" iPad portrait)
+ * 2. Desktop: width > 820px AND aspect ratio < 1.5 (iPad 12.9" landscape at ~1.33:1)
+ * 3. Widescreen: width > 820px AND aspect ratio >= 1.5 (laptops at 16:9 or wider)
  * 
- * Width is primary check; aspect ratio handles edge case of iPad 12.9" which is 1366px wide
- * but has ~1.33-1.50 aspect ratio vs laptops at 1.6+ aspect ratio.
+ * Mobile detection uses width-only to prevent Safari bar flicker.
+ * Widescreen uses aspect ratio because iPad 12.9" needs different layout than laptops.
  */
 
 const MOBILE_MAX = 820;
-const WIDESCREEN_MIN_WIDTH = 1280;
-const WIDESCREEN_MIN_ASPECT = 1.58; // Above iPad 10.9" max (~1.55), below MacBook 16:10 (1.6)
+const WIDESCREEN_ASPECT_RATIO = 1.52; // 16:9 = 1.78, iPad 10.9" = ~1.44-1.60, iPad 12.9" = ~1.33-1.50
 
 export type LayoutTier = 'mobile' | 'desktop' | 'widescreen';
 
 function getLayoutTier(width: number, height: number): LayoutTier {
   if (width <= MOBILE_MAX) return 'mobile';
-  
-  // Primary: width check
-  if (width < WIDESCREEN_MIN_WIDTH) return 'desktop';
-  
-  // Secondary: for wide screens, check aspect ratio to catch iPad 12.9" (1366px wide, ~1.33 aspect)
   const aspectRatio = width / height;
-  if (aspectRatio >= WIDESCREEN_MIN_ASPECT) return 'widescreen';
-  
+  if (aspectRatio >= WIDESCREEN_ASPECT_RATIO) return 'widescreen';
   return 'desktop';
 }
 
