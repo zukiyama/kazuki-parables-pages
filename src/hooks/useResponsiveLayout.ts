@@ -3,18 +3,21 @@ import { useState, useEffect, useCallback } from 'react';
 /**
  * Responsive layout hook using width-only breakpoints.
  * 
- * 3-tier layout system:
+ * 3-tier layout system (PRIORITY: iPad 12.9" landscape = widescreen):
  * - Mobile: 0-820px (phones + narrow tablets like 10.9" iPad portrait)
- * - Tablet: 821-1279px (iPads landscape + larger tablets)
- * - Widescreen: 1280px+ (laptops/desktops)
+ * - Tablet: 821-1023px (10.9" iPad landscape, smaller tablets)
+ * - Widescreen: 1024px+ (iPad 12.9" portrait/landscape, laptops/desktops)
+ * 
+ * The user built this site on iPad 12.9" landscape (1366px), so that
+ * device MUST always get the widescreen layout.
  * 
  * Uses width only - no height, aspect-ratio, or Safari bar-sensitive measurements.
  * This prevents layout flickering when Safari's address bar shows/hides.
  */
 
 const MOBILE_MAX = 820;      // Mobile layout: 0-820px
-const TABLET_MAX = 1279;     // Tablet layout: 821-1279px
-                              // Widescreen: 1280px+
+const TABLET_MAX = 1023;     // Tablet layout: 821-1023px
+                              // Widescreen: 1024px+ (includes iPad 12.9" portrait at 1024px)
 
 export type LayoutTier = 'mobile' | 'tablet' | 'widescreen';
 
