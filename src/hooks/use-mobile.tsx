@@ -1,25 +1,5 @@
-import * as React from "react"
-
-const MOBILE_BREAKPOINT = 950
-
-export function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState<boolean>(() => {
-    // Initialize with actual value if window is available (client-side)
-    if (typeof window !== 'undefined') {
-      return window.innerWidth < MOBILE_BREAKPOINT
-    }
-    return false
-  })
-
-  React.useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
-    const onChange = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    }
-    mql.addEventListener("change", onChange)
-    setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    return () => mql.removeEventListener("change", onChange)
-  }, [])
-
-  return isMobile
-}
+/**
+ * @deprecated Import from useResponsiveLayout.ts instead
+ * This file is kept for backward compatibility with shadcn/ui components
+ */
+export { useIsMobile } from './useResponsiveLayout';
