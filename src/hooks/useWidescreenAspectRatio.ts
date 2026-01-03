@@ -1,56 +1,33 @@
 import { useState, useEffect, useCallback } from 'react';
 
 /**
- * Hook to detect if the current viewport has a widescreen aspect ratio.
- * This typically corresponds to laptops and HDTVs in landscape orientation.
+ * Hook to detect if the current viewport is a widescreen desktop.
  * 
- * 16:10 ratio = 1.6
- * 16:9 ratio = 1.777...
- * Browser viewports are often even wider due to browser chrome reducing height.
+ * Uses WIDTH ONLY to avoid layout shifts when mobile browser bars
+ * expand/collapse (which changes height but not width).
  * 
- * We detect aspect ratios >= 1.6 (16:10 or wider) on desktop-sized screens (width >= 1024px)
- * This covers laptops, HDTVs, and browser windows where chrome makes viewport wider.
+ * Widescreen desktop: width >= 1280px (typical laptop/monitor width)
  */
 export const useWidescreenAspectRatio = () => {
   const [isWidescreen, setIsWidescreen] = useState(false);
 
-  const checkAspectRatio = useCallback(() => {
+  const checkWidth = useCallback(() => {
     const width = window.innerWidth;
-    const height = window.innerHeight;
     
-    // Only apply to desktop-sized screens (laptops/monitors)
-    if (width < 1024) {
-      setIsWidescreen(false);
-      return;
-    }
-    
-    // Must be landscape orientation
-    if (height >= width) {
-      setIsWidescreen(false);
-      return;
-    }
-    
-    const ratio = width / height;
-    
-    // 16:10 = 1.6, 16:9 = 1.777
-    // Detect anything 16:10 or wider (ratio >= 1.6)
-    // This catches laptops, HDTVs, and browser windows with chrome
-    const isWidescreenRatio = ratio >= 1.6;
-    
-    setIsWidescreen(isWidescreenRatio);
+    // Only use width - 1280px covers laptops and monitors
+    // Avoids height-based calculations that break on mobile scroll
+    setIsWidescreen(width >= 1280);
   }, []);
 
   useEffect(() => {
-    checkAspectRatio();
+    checkWidth();
     
-    window.addEventListener('resize', checkAspectRatio);
-    window.addEventListener('orientationchange', checkAspectRatio);
+    window.addEventListener('resize', checkWidth);
     
     return () => {
-      window.removeEventListener('resize', checkAspectRatio);
-      window.removeEventListener('orientationchange', checkAspectRatio);
+      window.removeEventListener('resize', checkWidth);
     };
-  }, [checkAspectRatio]);
+  }, [checkWidth]);
 
   return isWidescreen;
 };
