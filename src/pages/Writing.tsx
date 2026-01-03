@@ -529,21 +529,29 @@ const Writing = () => {
     setBannerVisible(prev => !prev);
   }, [isWidescreen]);
 
-  // Widescreen only: Auto-show banner at top of page, hide on scroll down
+  // Widescreen only: Auto-show banner at top of page, hide only when scrolling DOWN from the top area
   useEffect(() => {
     if (!isWidescreen) return;
 
     let lastScrollY = window.scrollY;
+    let wasAtTop = window.scrollY <= 50;
 
     const handleScrollForBanner = () => {
       const scrollTop = window.scrollY;
+      const isAtTop = scrollTop <= 50;
+      const isScrollingDown = scrollTop > lastScrollY;
       
       // If at or near the top (within 50px), show banner
-      if (scrollTop <= 50) {
+      if (isAtTop) {
         setBannerVisible(true);
-      } else if (scrollTop > lastScrollY && scrollTop > 50) {
-        // Scrolling down and past initial area - hide banner
+        wasAtTop = true;
+      } else if (isScrollingDown && wasAtTop) {
+        // Only hide banner when scrolling DOWN from the top area
         setBannerVisible(false);
+        wasAtTop = false;
+      } else if (!isAtTop) {
+        // Once past the top, mark as no longer at top
+        wasAtTop = false;
       }
       
       lastScrollY = scrollTop;
