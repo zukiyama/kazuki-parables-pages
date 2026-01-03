@@ -9,7 +9,7 @@ import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
 
 const books = [
   {
-    title: "A Congress of Worlds",
+    title: "The Congress of Worlds",
     series: "Professor Barnabas and Darwin",
     subtitle: "",
     summary: "Set in Victorian London, twelve-year-old Darwin finds himself, despite his best efforts, working as errand-boy at a curiosity shop for the eccentric Professor Barnabas—who seems no more keen on the arrangement than Darwin himself. But it is there that he discovers a doorway to another London, one where people take a submarine to work, where wrens and robins can talk, and ancient kings of England might be found running the local tavern. |Undon| however is rarely what it seems, and when a delivery goes awry, Darwin will have to draw on all of his courage and invention to escape its clutches—and an early brush with the ingenious Renard—in this first of the adventures of Professor Barnabas and Darwin.",
