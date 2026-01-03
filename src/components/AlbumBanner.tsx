@@ -92,16 +92,30 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
 
   const currentItems = showEPs ? eps : albums;
 
+  // Stop page scroll when touching banner
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.stopPropagation();
+  };
+
   return (
-    <div data-banner="album" className="py-3 max-sm:py-4 bg-black/80 backdrop-blur-sm overflow-visible relative">
+    <div 
+      data-banner="album" 
+      className="py-3 max-sm:py-4 bg-black/80 backdrop-blur-sm overflow-visible relative"
+      onTouchStart={handleTouchStart}
+      onTouchMove={(e) => e.stopPropagation()}
+      style={{ touchAction: 'pan-x' }}
+    >
       <div className="container mx-auto px-6 max-sm:px-2 relative">
         <div className="flex justify-center items-center pb-2 relative overflow-y-visible">
-          {/* Items Container */}
-          <div className="flex justify-center items-center gap-8 overflow-visible max-sm:gap-3 max-sm:overflow-x-auto max-sm:overflow-y-visible max-sm:justify-start max-sm:flex-1 max-sm:scrollbar-hide max-sm:pb-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {/* Desktop view - with transitions */}
+          {/* Items Container - with right padding on tablet portrait to avoid toggle button overlap */}
+          <div 
+            className="flex justify-center items-center gap-8 overflow-visible max-sm:gap-3 max-sm:overflow-x-auto max-sm:overflow-y-visible max-sm:justify-start max-sm:flex-1 max-sm:scrollbar-hide max-sm:pb-1 max-sm:pr-20" 
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', overscrollBehavior: 'contain' }}
+          >
+            {/* Desktop view - with transitions, pr-20 for tablet portrait to avoid toggle button overlap */}
             <div
               ref={containerRef}
-              className={`hidden sm:flex justify-center items-center gap-8 transition-all duration-500 ${
+              className={`hidden sm:flex justify-center items-center gap-8 transition-all duration-500 pr-20 lg:pr-0 ${
                 isTransitioning ? 'translate-x-[-100%] opacity-0' : 'translate-x-0 opacity-100'
               }`}
             >
