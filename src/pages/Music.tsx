@@ -412,14 +412,20 @@ const Music = () => {
     // At or near the top of the page, don't allow hiding the banner
     if (window.scrollY <= 50) return;
     
-    // Don't toggle if clicking on interactive elements
+    // Don't toggle if clicking on interactive elements or elements that trigger other actions
     const target = e.target as HTMLElement;
     if (
       target.closest('button') ||
       target.closest('a') ||
       target.closest('nav') ||
       target.closest('[role="button"]') ||
-      target.closest('.fixed.top-16')
+      target.closest('.fixed.top-16') ||
+      target.closest('img') || // Album covers and other clickable images
+      target.closest('[role="dialog"]') || // Dialogs (zoom view, etc.)
+      target.closest('[data-radix-dialog-overlay]') || // Dialog overlays
+      target.closest('[data-radix-dialog-content]') || // Dialog content
+      target.closest('video') || // Video player
+      target.closest('[data-radix-scroll-area-viewport]') // Track listing scroll area
     ) {
       return;
     }
