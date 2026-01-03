@@ -92,43 +92,23 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
 
   const currentItems = showEPs ? eps : albums;
 
-  // Stop page scroll when touching banner
-  const handleTouchStart = (e: React.TouchEvent) => {
-    e.stopPropagation();
-  };
-
   return (
-    <div 
-      data-banner="album" 
-      className="py-3 max-sm:py-4 bg-black/80 backdrop-blur-sm overflow-visible relative"
-      onTouchStart={handleTouchStart}
-      onTouchMove={(e) => e.stopPropagation()}
-      style={{ touchAction: 'pan-x' }}
-    >
-      <div className="container mx-auto px-0 lg:px-6 max-sm:px-2 relative">
-        {/* Fade edges for scrollable mode - tablet portrait only (sm to lg) */}
-        {/* Left edge */}
-        <div className="hidden sm:block lg:hidden pointer-events-none absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-black/80 to-transparent z-10" />
-        {/* Right edge - positioned to left of toggle button */}
-        <div className="hidden sm:block lg:hidden pointer-events-none absolute right-16 top-0 bottom-0 w-12 bg-gradient-to-l from-black/80 to-transparent z-10" />
-        
-        <div className="flex justify-start lg:justify-center items-center pb-2 relative overflow-y-visible overflow-x-auto lg:overflow-x-visible">
-          {/* Items Container - scrollable on tablet portrait, centered on desktop */}
-          <div 
-            className="flex justify-start lg:justify-center items-center gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible overflow-y-visible scrollbar-hide pb-1 pl-4 pr-20 lg:pl-0 lg:pr-0 max-sm:gap-3 max-sm:pl-4 max-sm:pr-4" 
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', overscrollBehavior: 'contain' }}
-          >
-            {/* Desktop/Tablet view - with transitions */}
+    <div data-banner="album" className="py-3 max-sm:py-4 bg-black/80 backdrop-blur-sm overflow-visible relative">
+      <div className="container mx-auto px-6 max-sm:px-2 relative">
+        <div className="flex justify-center items-center pb-2 relative overflow-y-visible">
+          {/* Items Container */}
+          <div className="flex justify-center items-center gap-8 overflow-visible max-sm:gap-3 max-sm:overflow-x-auto max-sm:overflow-y-visible max-sm:justify-start max-sm:flex-1 max-sm:scrollbar-hide max-sm:pb-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {/* Desktop view - with transitions */}
             <div
               ref={containerRef}
-              className={`hidden sm:flex justify-start lg:justify-center items-center gap-6 lg:gap-8 transition-all duration-500 ${
+              className={`hidden sm:flex justify-center items-center gap-8 transition-all duration-500 ${
                 isTransitioning ? 'translate-x-[-100%] opacity-0' : 'translate-x-0 opacity-100'
               }`}
             >
               {currentItems.map((item) => (
                 <div
                   key={item.id}
-                  className="flex flex-col items-center cursor-pointer group flex-shrink-0"
+                  className="flex flex-col items-center cursor-pointer group"
                   onMouseEnter={() => setHoveredAlbum(item.id)}
                   onMouseLeave={() => setHoveredAlbum(null)}
                   onClick={() => handleAlbumClick(item)}
