@@ -11,7 +11,7 @@ const books = [
   {
     title: "Professor Barnabas and Darwin",
     subtitle: "The Congress of Worlds",
-    summary: "Set in Victorian London, twelve-year-old Darwin finds himself, despite his best efforts, working as errand-boy at a curiosity shop for the eccentric Professor Barnabas—who seems no more keen on the arrangement than Darwin himself. But it is there that he discovers a doorway to another London, one where people take a submarine to work, where wrens and robins can talk, and ancient kings of England might be found running the local tavern. {Undon} however is rarely what it seems, and when a delivery goes awry, Darwin will have to draw on all of his courage and invention to escape its clutches—and an early brush with the ingenious Renard—in this first of the adventures of Professor Barnabas and Darwin.",
+    summary: "A Victorian tale of an eccentric professor's mysterious shop filled with strange globes and bizarre telescopes. When young orphan Darwin comes to work there, he discovers the shop holds magical secrets beyond imagination.",
     cover: professorBarnabasCover,
     layout: "cover-left"
   },
@@ -120,15 +120,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
               <h4 className={subtitleClasses}>{book.subtitle}</h4>
             )}
             <p className={summaryClasses}>
-              {book.summary.includes('{Undon}') 
-                ? book.summary.split('{Undon}').map((part, i, arr) => (
-                    <span key={i}>
-                      {part}
-                      {i < arr.length - 1 && <em>Undon</em>}
-                    </span>
-                  ))
-                : book.summary
-              }
+              {book.summary}
             </p>
           </div>
         </div>
