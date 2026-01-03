@@ -9,14 +9,16 @@ import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
 
 const books = [
   {
-    title: "Professor Barnabas and Darwin",
-    subtitle: "The Congress of Worlds",
-    summary: "A Victorian tale of an eccentric professor's mysterious shop filled with strange globes and bizarre telescopes. When young orphan Darwin comes to work there, he discovers the shop holds magical secrets beyond imagination.",
+    title: "A Congress of Worlds",
+    series: "Professor Barnabas and Darwin",
+    subtitle: "",
+    summary: "Set in Victorian London, twelve-year-old Darwin finds himself, despite his best efforts, working as errand-boy at a curiosity shop for the eccentric Professor Barnabas—who seems no more keen on the arrangement than Darwin himself. But it is there that he discovers a doorway to another London, one where people take a submarine to work, where wrens and robins can talk, and ancient kings of England might be found running the local tavern. |Undon| however is rarely what it seems, and when a delivery goes awry, Darwin will have to draw on all of his courage and invention to escape its clutches—and an early brush with the ingenious Renard—in this first of the adventures of Professor Barnabas and Darwin.",
     cover: professorBarnabasCover,
     layout: "cover-left"
   },
   {
     title: "The Land is a Dream of the Sky",
+    series: "",
     subtitle: "",
     summary: "In a walled city within a great wasteland, a small blind boy with white eyes lives under the rule of his robot father. When a pilgrim arrives, everything the boy believed about his world comes into question, and disaster threatens his city.",
     cover: landDreamSkyCover,
@@ -24,6 +26,7 @@ const books = [
   },
   {
     title: "To Fly",
+    series: "",
     subtitle: "",
     summary: "Isaac can't believe he's been chosen for a prestigious school, but when he arrives, he discovers it's a TestFlight Academy. In a universe where the war is already over and humanity has lost, these boys are test pilots for experimental spaceships - humanity's last hope.",
     cover: toFlyCover,
@@ -84,17 +87,34 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     ? "h-[calc(65vh)] w-auto mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100"
     : "w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100 max-sm:max-w-[200px]";
 
+  const seriesClasses = isWidescreen
+    ? "font-serif text-xs uppercase tracking-widest text-yellow-300/80 mb-1 drop-shadow-lg"
+    : "font-serif text-sm uppercase tracking-widest text-yellow-300/80 mb-1 drop-shadow-lg max-sm:text-xs";
+
   const titleClasses = isWidescreen
-    ? "font-serif text-2xl font-bold text-white mb-1 drop-shadow-lg"
-    : "font-serif text-3xl font-bold text-white mb-2 drop-shadow-lg max-sm:text-xl max-sm:mb-1";
+    ? "font-serif text-xl font-bold text-white mb-2 drop-shadow-lg"
+    : "font-serif text-2xl font-bold text-white mb-2 drop-shadow-lg max-sm:text-lg max-sm:mb-1";
 
   const subtitleClasses = isWidescreen
-    ? "font-serif text-lg text-yellow-300 mb-2 drop-shadow-lg"
-    : "font-serif text-xl text-yellow-300 mb-4 drop-shadow-lg max-sm:text-base max-sm:mb-2";
+    ? "font-serif text-base text-yellow-300 mb-2 drop-shadow-lg"
+    : "font-serif text-lg text-yellow-300 mb-3 drop-shadow-lg max-sm:text-sm max-sm:mb-2";
 
   const summaryClasses = isWidescreen
-    ? "font-serif text-sm leading-relaxed text-white/90 drop-shadow-md"
-    : "font-serif text-lg leading-relaxed text-white/90 drop-shadow-md max-sm:text-sm max-sm:leading-normal";
+    ? "font-serif text-xs leading-relaxed text-white/90 drop-shadow-md max-w-[95%]"
+    : "font-serif text-sm leading-relaxed text-white/90 drop-shadow-md max-sm:text-xs max-sm:leading-normal max-w-[95%]";
+
+  // Helper to render summary with italic Undon
+  const renderSummary = (summary: string) => {
+    if (summary.includes('|Undon|')) {
+      const parts = summary.split('|Undon|');
+      return (
+        <>
+          {parts[0]}<em className="italic">Undon</em>{parts[1]}
+        </>
+      );
+    }
+    return summary;
+  };
 
   return (
     <div className={containerClasses}>
@@ -115,12 +135,15 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
           
           {/* Book Info */}
           <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-24 pl-8"} md:pl-24 md:pr-24 max-sm:px-0 ${isWidescreen ? "flex flex-col justify-center" : ""}`}>
+            {book.series && (
+              <p className={seriesClasses}>{book.series}</p>
+            )}
             <h3 className={titleClasses}>{book.title}</h3>
             {book.subtitle && (
               <h4 className={subtitleClasses}>{book.subtitle}</h4>
             )}
             <p className={summaryClasses}>
-              {book.summary}
+              {renderSummary(book.summary)}
             </p>
           </div>
         </div>
