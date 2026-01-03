@@ -289,25 +289,42 @@ const Music = () => {
   // Preload and decode all album backgrounds for smooth transitions
   useEffect(() => {
     const preloadImages = async () => {
+      const timeout = setTimeout(() => {
+        // Fallback: show backgrounds after 5 seconds even if not all loaded
+        setBackgroundsLoaded(true);
+      }, 5000);
+
       const promises = albums.map(album => {
         return new Promise<void>((resolve) => {
           const img = new Image();
-          img.src = album.background;
-          img.onload = async () => {
+          
+          const handleLoad = async () => {
             try {
               await img.decode();
-              resolve();
             } catch (error) {
-              console.error('Error decoding image:', error);
-              resolve(); // Resolve anyway to not block
+              // Decode failed, but image loaded - continue anyway
             }
+            resolve();
           };
-          img.onerror = () => resolve(); // Resolve even on error
+          
+          // Set handlers BEFORE setting src
+          img.onload = handleLoad;
+          img.onerror = () => resolve();
+          
+          img.src = album.background;
+          
+          // Handle already-cached images (complete is true immediately)
+          if (img.complete) {
+            handleLoad();
+          }
         });
       });
+      
       await Promise.all(promises);
+      clearTimeout(timeout);
       setBackgroundsLoaded(true);
     };
+    
     preloadImages();
   }, []);
 
