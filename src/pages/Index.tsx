@@ -518,12 +518,10 @@ const Index = () => {
                 key={index} 
                 className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${currentImage === index ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
               >
-                {/* Key includes currentImage to force animation restart when this slide becomes active */}
                 <img 
-                  key={currentImage === index ? `slide-${index}-active-${Date.now()}` : `slide-${index}-inactive`}
                   src={image}
                   alt={`Slide ${index + 1}`}
-                  className={`absolute inset-0 w-full h-full object-cover ${index === 0 && currentImage === 0 && isCarouselReady ? "animate-slow-zoom-hold" : ""} ${index === 1 && currentImage === 1 && isCarouselReady ? "animate-slow-zoom-out" : ""}`}
+                  className={`absolute inset-0 w-full h-full object-cover ${index === 0 && isCarouselReady ? "animate-slow-zoom-hold" : ""} ${index === 1 && isCarouselReady ? "animate-slow-zoom-out" : ""}`}
                   style={{ objectPosition: 'center' }}
                 />
                 <div className="absolute inset-0 bg-black/20"></div>
