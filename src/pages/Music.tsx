@@ -469,9 +469,11 @@ const Music = () => {
       target.closest('[data-radix-dialog-overlay]') || // Dialog overlays
       target.closest('[data-radix-dialog-content]') || // Dialog content
       target.closest('video') || // Video player
-      target.closest('[data-radix-scroll-area-viewport]') || // Track listing scroll area
+      target.closest('[data-radix-scroll-area-root]') || // ScrollArea root
+      target.closest('[data-radix-scroll-area-viewport]') || // Track listing scroll area viewport
       target.closest('[data-radix-scroll-area-scrollbar]') || // Scrollbar track
-      target.closest('[data-radix-scroll-area-thumb]') // Scrollbar thumb
+      target.closest('[data-radix-scroll-area-thumb]') || // Scrollbar thumb
+      target.closest('.h-\\[580px\\]') // Track listing container by class
     ) {
       return;
     }
