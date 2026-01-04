@@ -146,6 +146,13 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
     return width >= 700 && width <= 900 && aspectRatio > 1.3;
   };
 
+  // Detect if device is a mobile phone (not tablet)
+  // Phones are typically narrower than 700px
+  const isMobilePhone = (): boolean => {
+    const width = window.innerWidth;
+    return width < 700;
+  };
+
   const handleBookClick = (book: Book) => {
     // For widescreen: hide banner when clicking any book
     if (isWidescreen && onBannerHide) {
@@ -181,7 +188,13 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
         const titleEl = section.querySelector('h2') as HTMLElement;
         const slideshowContainer = section.querySelector('.transition-opacity.duration-1000.delay-500') as HTMLElement;
         
-        if (titleEl && slideshowContainer) {
+        // For mobile phones only: position slideshow container top just below banner with breathing room
+        if (isMobilePhone() && slideshowContainer) {
+          const slideshowRect = slideshowContainer.getBoundingClientRect();
+          const slideshowTop = slideshowRect.top + window.scrollY;
+          // Position so slideshow top is at topOffset + small breathing room (20px)
+          targetScrollPosition = Math.max(0, slideshowTop - topOffset - 20);
+        } else if (titleEl && slideshowContainer) {
           const titleRect = titleEl.getBoundingClientRect();
           const slideshowRect = slideshowContainer.getBoundingClientRect();
           
