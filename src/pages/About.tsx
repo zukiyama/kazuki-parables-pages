@@ -59,13 +59,10 @@ const About = () => {
     <div className="min-h-screen-stable bg-neutral-100">
       <Navigation />
       
-      {/* Hero Section with Paris Square Background - top aligned exactly to header bottom */}
+      {/* Hero Section with Paris Square Background - image starts at top of page, behind header */}
       <div className="relative min-h-screen-stable" style={{ marginTop: 0, paddingTop: 0 }}>
-        {/* Full-screen Paris background - positioned to start exactly at header bottom */}
-        <div 
-          className="absolute left-0 right-0 bottom-0"
-          style={{ top: headerHeight }}
-        >
+        {/* Full-screen Paris background - positioned to start at very top of page */}
+        <div className="absolute inset-0">
           <OptimizedImage 
             src={parisSquare}
             alt="Parisian square with pigeons"
