@@ -152,7 +152,7 @@ const Writing = () => {
     let lastSnappedSection: string | null = null;
     
     // Hysteresis for widescreen viewport height - prevents snap recalc when browser bar appears/disappears
-    const VIEWPORT_HEIGHT_HYSTERESIS = 80; // Browser bar is typically 50-80px
+    const VIEWPORT_HEIGHT_HYSTERESIS = 120; // Increased for iPad browser bar variations
     let stableViewportHeight: number | null = null;
     
     // Sections that should NOT have snap behavior (except young-adult which has special handling)
