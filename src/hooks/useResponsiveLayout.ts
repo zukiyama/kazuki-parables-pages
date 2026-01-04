@@ -19,6 +19,11 @@ const WIDESCREEN_MIN = 1280;
 // Use 900px to catch 10.9" portrait but not 12.9" portrait
 const IPAD_NARROW_PORTRAIT_MAX = 900;
 
+// iPad 10.9" landscape width is ~1180px, iPad 12.9" landscape is ~1366px
+// Use this band to catch 10.9" landscape and force it to widescreen
+const IPAD_10_9_LANDSCAPE_MIN = 1000;
+const IPAD_10_9_LANDSCAPE_MAX = 1200;
+
 export type LayoutTier = 'mobile' | 'ipadPortraitMobile' | 'desktop' | 'widescreen';
 
 // Detect iPad once on load - this is stable and won't change
@@ -81,7 +86,13 @@ function getLayoutTier(width: number): LayoutTier {
       return 'ipadPortraitMobile';
     }
     
-    // All other iPad scenarios (12.9" any orientation, 10.9" landscape) -> tablet/desktop
+    // 10.9" iPad landscape -> widescreen (width band: ~1000-1200px)
+    // 12.9" iPad landscape is ~1366px, so it stays in desktop
+    if (!isPortrait && width >= IPAD_10_9_LANDSCAPE_MIN && width <= IPAD_10_9_LANDSCAPE_MAX) {
+      return 'widescreen';
+    }
+    
+    // All other iPad scenarios (12.9" any orientation, 10.9" portrait outside band) -> tablet/desktop
     return 'desktop';
   }
   
