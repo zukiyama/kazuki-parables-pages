@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 
@@ -1812,14 +1813,7 @@ const Writing = () => {
         </section>
       </main>
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 relative z-10">
-        <div className="container mx-auto px-6 text-center">
-          <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
-          <p className="font-serif text-white">
-            kazuki@kazukiyamakawa.com
-          </p>
-        </div>
-      </footer>
+      <Footer variant="dark" showNavLinks={false} />
     </div>
   );
 };

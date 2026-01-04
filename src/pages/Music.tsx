@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -882,17 +883,16 @@ const Music = () => {
         </div>
       </main>
       
-      <footer className="bg-black/80 backdrop-blur-sm border-t border-white/20 py-12 mt-8 max-sm:mt-6 relative z-10">
-        <div className="container mx-auto px-6 text-center">
-          <h3 className="font-heading text-2xl mb-4 text-white">Contact</h3>
-          <p className="font-serif text-white">
-            kazuki@kazukiyamakawa.com
-          </p>
+      <Footer 
+        variant="dark" 
+        showNavLinks={false}
+        className="mt-8 max-sm:mt-6"
+        extraContent={
           <p className="font-serif text-white text-xs mt-3">
             All music copyright of Harper/Yamakawa
           </p>
-        </div>
-      </footer>
+        }
+      />
       
       {/* Album Cover Zoom Dialog */}
       <Dialog open={isZoomDialogOpen} onOpenChange={handleZoomDialogChange}>

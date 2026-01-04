@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { ScrollScale } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -963,25 +964,23 @@ const Comics = () => {
         </div>
       </main>
       
-      {/* Footer */}
-      <footer className={`bg-black/80 backdrop-blur-sm border-t border-white/20 py-10 max-sm:py-6 relative overflow-visible ${isScrollLocked ? 'hidden' : ''}`}>
-        <img 
-          src={comicsFooterCharacter}
-          alt="Comics mascot"
-          className="absolute w-auto pointer-events-none z-10 hidden xl:block"
-          style={{
-            height: '8.5cm',
-            bottom: '100%',
-            right: '-10px'
-          }}
-        />
-        <div className="container mx-auto px-6 text-center">
-          <h3 className="font-heading text-xl mb-3 text-white">Contact</h3>
-          <p className="font-serif text-white text-sm">
-            kazuki@kazukiyamakawa.com
-          </p>
-        </div>
-      </footer>
+      <Footer 
+        variant="dark" 
+        showNavLinks={false}
+        className={`py-10 max-sm:py-6 overflow-visible ${isScrollLocked ? 'hidden' : ''}`}
+        beforeFooter={
+          <img 
+            src={comicsFooterCharacter}
+            alt="Comics mascot"
+            className="absolute w-auto pointer-events-none z-10 hidden xl:block"
+            style={{
+              height: '8.5cm',
+              bottom: '100%',
+              right: '-10px'
+            }}
+          />
+        }
+      />
 
       {/* Comic Detail Modal */}
       {selectedComic && (
