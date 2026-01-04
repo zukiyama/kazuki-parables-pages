@@ -479,14 +479,14 @@ const Writing = () => {
         newOpacities.hoax = 1;
       } else if (newVisibleSections.has('young-adult')) {
         // Show different backgrounds based on current young adult book
-        if (currentYoungAdultBook === 0) {
-          newOpacities.victorianLondon = 1; // Professor Barnabas
-        } else if (currentYoungAdultBook === 1) {
-          newOpacities.wasteland = 1; // The Land is a Dream of the Sky
-        } else if (currentYoungAdultBook === 2) {
-          newOpacities.deepSpace = 1; // To Fly
-        } else {
-          newOpacities.school = 1; // Default school background
+        // Keep ALL young-adult backgrounds in their current opacity state initially
+        // Only the selected one will be set to 1, CSS transitions handle the crossfade
+        newOpacities.victorianLondon = currentYoungAdultBook === 0 ? 1 : 0;
+        newOpacities.wasteland = currentYoungAdultBook === 1 ? 1 : 0;
+        newOpacities.deepSpace = currentYoungAdultBook === 2 ? 1 : 0;
+        // If somehow out of range, show school background
+        if (currentYoungAdultBook < 0 || currentYoungAdultBook > 2) {
+          newOpacities.school = 1;
         }
       } else {
         newOpacities.school = 1;
@@ -498,7 +498,20 @@ const Writing = () => {
     window.addEventListener("scroll", handleScroll);
     handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [currentYoungAdultBook]);
+  }, []);
+
+  // Separate effect for young-adult book changes - only updates young-adult backgrounds
+  // This prevents black flash by updating only the relevant backgrounds
+  useEffect(() => {
+    if (!visibleSections.has('young-adult')) return;
+    
+    setBackgroundOpacities(prev => ({
+      ...prev,
+      victorianLondon: currentYoungAdultBook === 0 ? 1 : 0,
+      wasteland: currentYoungAdultBook === 1 ? 1 : 0,
+      deepSpace: currentYoungAdultBook === 2 ? 1 : 0
+    }));
+  }, [currentYoungAdultBook, visibleSections]);
 
   const handleBookClick = (bookId: string, slideToBook?: number) => {
     // If it's a young adult book, set the slideshow to show that book IMMEDIATELY
