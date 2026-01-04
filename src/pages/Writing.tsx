@@ -146,10 +146,14 @@ const Writing = () => {
 
 
   // Scroll snap logic - loose snapping, only when section fills most of screen, DESKTOP ONLY
-  // Viewport-responsive: re-centers content when browser bar shows/hides on widescreen devices
+  // With viewport height hysteresis for widescreen to handle browser bar show/hide
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let lastSnappedSection: string | null = null;
+    
+    // Hysteresis for widescreen viewport height - prevents snap recalc when browser bar appears/disappears
+    const VIEWPORT_HEIGHT_HYSTERESIS = 80; // Browser bar is typically 50-80px
+    let stableViewportHeight: number | null = null;
     
     // Sections that should NOT have snap behavior (except young-adult which has special handling)
     const noSnapSections = ['kaiju'];
@@ -175,19 +179,29 @@ const Writing = () => {
     };
 
     // Use visualViewport.height on iOS for accurate measurements
-    // No hysteresis - always use actual current viewport height
+    // With hysteresis for widescreen devices to handle browser bar show/hide
     const getViewportHeight = () => {
-      return window.visualViewport?.height ?? window.innerHeight;
+      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
+      const isWidescreenDevice = window.innerWidth / currentHeight >= 1.5; // Slightly lower threshold to catch transitional states
+      
+      // Only apply hysteresis on widescreen devices (iPad 10.9" in landscape triggers widescreen)
+      if (isWidescreenDevice) {
+        if (stableViewportHeight === null) {
+          // Initialize with current height
+          stableViewportHeight = currentHeight;
+        } else {
+          // Only update stable height if change exceeds hysteresis threshold
+          const heightDiff = Math.abs(currentHeight - stableViewportHeight);
+          if (heightDiff > VIEWPORT_HEIGHT_HYSTERESIS) {
+            stableViewportHeight = currentHeight;
+          }
+        }
+        return stableViewportHeight;
+      }
+      
+      // For non-widescreen devices, return actual height (no hysteresis needed)
+      return currentHeight;
     };
-    
-    // Check if device is widescreen (iPad 10.9" landscape, laptops, etc.)
-    const isWidescreenDevice = () => {
-      const height = window.visualViewport?.height ?? window.innerHeight;
-      return window.innerWidth / height >= 1.5;
-    };
-    
-    // Track last viewport height to detect browser bar changes
-    let lastViewportHeight = window.visualViewport?.height ?? window.innerHeight;
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
       const headerBottom = getHeaderBottom();
@@ -379,98 +393,14 @@ const Writing = () => {
       }
     };
 
-    // Force re-center the current section in the viewport
-    // Used when viewport height changes (browser bar show/hide)
-    const recenterCurrentSection = () => {
-      const sections = document.querySelectorAll('.book-section');
-      const viewportHeight = getViewportHeight();
-      const headerBottom = getHeaderBottom();
-      
-      let mostVisibleSection: HTMLElement | null = null;
-      let maxVisibility = 0;
-      
-      // Find the section that's most visible in the viewport
-      sections.forEach((section) => {
-        const rect = section.getBoundingClientRect();
-        const visibleTop = Math.max(rect.top, headerBottom);
-        const visibleBottom = Math.min(rect.bottom, viewportHeight);
-        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-        const visibility = visibleHeight / rect.height;
-        
-        if (visibility > maxVisibility) {
-          maxVisibility = visibility;
-          mostVisibleSection = section as HTMLElement;
-        }
-      });
-      
-      if (mostVisibleSection && maxVisibility > 0.3) {
-        const sectionName = mostVisibleSection.getAttribute('data-section-name') || '';
-        
-        // Skip if it's a no-snap section
-        if (noSnapSections.includes(sectionName)) return;
-        
-        // Calculate new center position with current viewport height
-        const snapPoint = getCenterSnapPoint(mostVisibleSection, sectionName);
-        
-        if (snapPoint !== null) {
-          const currentScroll = window.scrollY;
-          const diff = Math.abs(currentScroll - snapPoint);
-          
-          // Only re-center if we're significantly off (more than 10px)
-          if (diff > 10) {
-            isSnapping.current = true;
-            window.scrollTo({
-              top: snapPoint,
-              behavior: 'smooth'
-            });
-            
-            setTimeout(() => {
-              isSnapping.current = false;
-            }, 500);
-          }
-        }
-      }
-    };
-
-    // Handle viewport resize (browser bar show/hide on iOS Safari)
-    // Only for widescreen devices - triggers re-centering when viewport height changes
-    const handleViewportResize = () => {
-      // Only for widescreen devices
-      if (!isWidescreenDevice()) return;
-      if (isSnapping.current) return;
-      
-      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
-      const heightDiff = Math.abs(currentHeight - lastViewportHeight);
-      
-      // Respond to significant changes (browser bar show/hide is typically 50-80px)
-      if (heightDiff > 30 && heightDiff < 150) {
-        lastViewportHeight = currentHeight;
-        
-        // Wait for viewport to settle, then re-center
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(recenterCurrentSection, 150);
-      } else if (heightDiff >= 150) {
-        // Large change = orientation change, just update reference
-        lastViewportHeight = currentHeight;
-      }
-    };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('mousedown', handleMouseDown, { passive: true });
     window.addEventListener('mouseup', handleMouseUp, { passive: true });
-    
-    // Attach to visualViewport for iOS Safari browser bar detection
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', handleViewportResize);
-    }
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener('resize', handleViewportResize);
-      }
       clearTimeout(scrollTimeout);
     };
   }, [getHeaderBottom, isWidescreen]);
