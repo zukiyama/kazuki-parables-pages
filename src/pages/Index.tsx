@@ -277,9 +277,8 @@ const Index = () => {
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-cover bg-slate-100"
+          className="absolute inset-0 w-full h-full object-cover bg-slate-100 object-[center_65%] sm:object-[center_60%] md:object-[center_55%] lg:object-center"
           style={{ 
-            objectPosition: 'center top',
             transform: 'translateZ(0)',
             backfaceVisibility: 'hidden'
           }}
