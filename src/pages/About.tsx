@@ -5,7 +5,7 @@ import { useScrollAnimation } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 import artistPortrait from "@/assets/artist-portrait-new.png";
-import parisSquare from "@/assets/paris-square-background-extended.jpg";
+import parisSquare from "@/assets/paris-square-background.jpg";
 import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import backgroundSphere from "@/assets/about-background-new.png";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
@@ -59,10 +59,13 @@ const About = () => {
     <div className="min-h-screen-stable bg-neutral-100">
       <Navigation />
       
-      {/* Hero Section with Paris Square Background - image starts at top of page, behind header */}
+      {/* Hero Section with Paris Square Background - top aligned exactly to header bottom */}
       <div className="relative min-h-screen-stable" style={{ marginTop: 0, paddingTop: 0 }}>
-        {/* Full-screen Paris background - positioned to start at very top of page */}
-        <div className="absolute inset-0">
+        {/* Full-screen Paris background - positioned to start exactly at header bottom */}
+        <div 
+          className="absolute left-0 right-0 bottom-0"
+          style={{ top: headerHeight }}
+        >
           <OptimizedImage 
             src={parisSquare}
             alt="Parisian square with pigeons"
