@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useCirclePhysics } from "@/hooks/useCirclePhysics";
+import { useHeroHeight } from "@/hooks/useHeroHeight";
 import { useIsMobile } from "@/hooks/use-mobile";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import officeView from "@/assets/office-window-view.jpg";
@@ -16,6 +17,7 @@ import useEmblaCarousel from "embla-carousel-react";
 
 const Index = () => {
   useScrollToTop();
+  useHeroHeight();
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
@@ -273,7 +275,7 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
-      <section className="h-[calc(100vh-56px)] lg:h-[calc(100dvh-56px)] mt-14 flex items-center justify-center relative overflow-hidden bg-background">
+      <section className="h-[calc(100vh-56px)] lg:h-[calc(var(--hero-h,100dvh)-56px)] mt-14 flex items-center justify-center relative overflow-hidden bg-background">
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
