@@ -12,6 +12,7 @@ export const useScrollToTop = () => {
 
   const scrollToAbsoluteTop = () => {
     // Force scroll to absolute 0,0 using multiple methods
+    window.scrollTo(0, 0);
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
@@ -20,6 +21,14 @@ export const useScrollToTop = () => {
     if (document.scrollingElement) {
       document.scrollingElement.scrollTop = 0;
     }
+    
+    // Additional method for iOS/iPad Safari
+    if (window.visualViewport) {
+      window.scrollTo(0, 0);
+    }
+    
+    // Force layout recalculation
+    void document.documentElement.offsetHeight;
   };
 
   // Disable browser's automatic scroll restoration on page load/refresh
