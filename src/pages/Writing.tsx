@@ -216,51 +216,38 @@ const Writing = () => {
       
       // Special handling for young-adult section
       if (sectionName === 'young-adult') {
-        // Find the slideshow container
+        // Find the title element and slideshow container
+        const titleEl = section.querySelector('h2') as HTMLElement;
         const slideshowContainer = section.querySelector('.transition-opacity.duration-1000.delay-500') as HTMLElement;
         
-        if (!slideshowContainer) return null;
+        if (!titleEl || !slideshowContainer) return null;
         
+        const titleRect = titleEl.getBoundingClientRect();
         const slideshowRect = slideshowContainer.getBoundingClientRect();
+        
+        // Calculate total height of title + subtitle + slideshow (in viewport coords)
+        const titleTopInViewport = titleRect.top;
+        const slideshowBottomInViewport = slideshowRect.bottom;
+        const totalContentHeight = slideshowBottomInViewport - titleTopInViewport;
         
         // Recalculate available height dynamically (accounts for browser chrome changes)
         const currentAvailableHeight = viewportHeight - topOffset;
         
-        // For widescreen: always just center the slideshow container alone (not the title)
-        // For other devices: keep the dual-scenario logic
-        if (isWidescreenDevice) {
-          // Widescreen: only center the slideshow container
+        // Scenario A: Can fit all content (title + "Young Adult Series" text + slideshow)
+        if (currentAvailableHeight >= totalContentHeight + 40) { // 40px buffer
+          // Center the entire content in the available space
+          const titleTop = titleRect.top + window.scrollY;
+          const slideshowBottom = slideshowRect.bottom + window.scrollY;
+          const contentCenter = titleTop + ((slideshowBottom - titleTop) / 2);
+          const desiredCenterY = topOffset + (currentAvailableHeight / 2);
+          return Math.max(0, contentCenter - desiredCenterY);
+        } else {
+          // Scenario B: Can't fit all, just center the slideshow alone
           const slideshowTop = slideshowRect.top + window.scrollY;
           const slideshowHeight = slideshowRect.height;
           const slideshowCenter = slideshowTop + (slideshowHeight / 2);
           const desiredCenterY = topOffset + (currentAvailableHeight / 2);
           return Math.max(0, slideshowCenter - desiredCenterY);
-        } else {
-          // Non-widescreen: use the title + slideshow logic
-          const titleEl = section.querySelector('h2') as HTMLElement;
-          if (!titleEl) return null;
-          
-          const titleRect = titleEl.getBoundingClientRect();
-          const titleTopInViewport = titleRect.top;
-          const slideshowBottomInViewport = slideshowRect.bottom;
-          const totalContentHeight = slideshowBottomInViewport - titleTopInViewport;
-          
-          // Scenario A: Can fit all content (title + "Young Adult Series" text + slideshow)
-          if (currentAvailableHeight >= totalContentHeight + 40) { // 40px buffer
-            // Center the entire content in the available space
-            const titleTop = titleRect.top + window.scrollY;
-            const slideshowBottom = slideshowRect.bottom + window.scrollY;
-            const contentCenter = titleTop + ((slideshowBottom - titleTop) / 2);
-            const desiredCenterY = topOffset + (currentAvailableHeight / 2);
-            return Math.max(0, contentCenter - desiredCenterY);
-          } else {
-            // Scenario B: Can't fit all, just center the slideshow alone
-            const slideshowTop = slideshowRect.top + window.scrollY;
-            const slideshowHeight = slideshowRect.height;
-            const slideshowCenter = slideshowTop + (slideshowHeight / 2);
-            const desiredCenterY = topOffset + (currentAvailableHeight / 2);
-            return Math.max(0, slideshowCenter - desiredCenterY);
-          }
         }
       }
       
