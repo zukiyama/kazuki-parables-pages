@@ -12,7 +12,7 @@ import { useState, useEffect, useCallback } from 'react';
  */
 
 const MOBILE_MAX = 820;
-const WIDESCREEN_ASPECT_RATIO = 1.52; // 16:9 = 1.78, iPad 10.9" = ~1.44-1.60, iPad 12.9" = ~1.33-1.50
+const WIDESCREEN_ASPECT_RATIO = 1.55; // 16:9 = 1.78, iPad 10.9" = ~1.44-1.60, iPad 12.9" = ~1.33-1.50
 
 export type LayoutTier = 'mobile' | 'desktop' | 'widescreen';
 
