@@ -146,17 +146,50 @@ const Writing = () => {
 
 
   // Scroll snap logic - loose snapping, only when section fills most of screen, DESKTOP ONLY
-  // With viewport height hysteresis for widescreen to handle browser bar show/hide
+  // With LOCKED viewport height for widescreen to handle Safari address bar collapse/expand
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let lastSnappedSection: string | null = null;
     
-    // Hysteresis for widescreen viewport height - prevents snap recalc when browser bar appears/disappears
-    const VIEWPORT_HEIGHT_HYSTERESIS = 120; // Increased for iPad browser bar variations
-    let stableViewportHeight: number | null = null;
+    // WIDESCREEN ONLY: Lock viewport dimensions at initial load
+    // Only update on true layout changes (orientation/width change), NOT on address bar collapse
+    let lockedViewportHeight: number | null = null;
+    let lockedHeaderHeight: number | null = null;
+    let lockedContentHeight: number | null = null;
+    let lastKnownWidth: number = window.innerWidth;
+    const WIDTH_CHANGE_THRESHOLD = 100; // Significant width change indicating split view or rotation
     
     // Sections that should NOT have snap behavior (except young-adult which has special handling)
     const noSnapSections = ['kaiju'];
+
+    // Initialize locked dimensions for widescreen
+    const initializeLockedDimensions = () => {
+      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
+      const aspectRatio = window.innerWidth / currentHeight;
+      const isWidescreenDevice = aspectRatio >= 1.5;
+      
+      if (isWidescreenDevice) {
+        lockedViewportHeight = currentHeight;
+        const header = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
+        lockedHeaderHeight = header ? header.getBoundingClientRect().height : 64;
+        lockedContentHeight = lockedViewportHeight - lockedHeaderHeight;
+        lastKnownWidth = window.innerWidth;
+      }
+    };
+    
+    // Call on mount
+    initializeLockedDimensions();
+
+    // Handle true layout changes (orientation, significant width change)
+    const handleLayoutChange = () => {
+      const currentWidth = window.innerWidth;
+      const widthDiff = Math.abs(currentWidth - lastKnownWidth);
+      
+      // Only update locked dimensions if width changed significantly (rotation/split view)
+      if (widthDiff > WIDTH_CHANGE_THRESHOLD) {
+        initializeLockedDimensions();
+      }
+    };
 
     const getBookSections = () => {
       // Disable scroll snap on mobile
@@ -178,40 +211,74 @@ const Writing = () => {
       return bookSections;
     };
 
-    // Use visualViewport.height on iOS for accurate measurements
-    // With hysteresis for widescreen devices to handle browser bar show/hide
+    // Get stable viewport height for snap calculations
+    // WIDESCREEN: Use locked height (immune to address bar changes)
+    // NON-WIDESCREEN: Use live height (no locking needed)
     const getViewportHeight = () => {
       const currentHeight = window.visualViewport?.height ?? window.innerHeight;
-      const isWidescreenDevice = window.innerWidth / currentHeight >= 1.5; // Slightly lower threshold to catch transitional states
+      const aspectRatio = window.innerWidth / currentHeight;
+      const isWidescreenDevice = aspectRatio >= 1.5;
       
-      // Only apply hysteresis on widescreen devices (iPad 10.9" in landscape triggers widescreen)
-      if (isWidescreenDevice) {
-        if (stableViewportHeight === null) {
-          // Initialize with current height
-          stableViewportHeight = currentHeight;
-        } else {
-          // Only update stable height if change exceeds hysteresis threshold
-          const heightDiff = Math.abs(currentHeight - stableViewportHeight);
-          if (heightDiff > VIEWPORT_HEIGHT_HYSTERESIS) {
-            stableViewportHeight = currentHeight;
-          }
-        }
-        return stableViewportHeight;
+      // For widescreen devices, use the locked viewport height
+      if (isWidescreenDevice && lockedViewportHeight !== null) {
+        return lockedViewportHeight;
       }
       
-      // For non-widescreen devices, return actual height (no hysteresis needed)
+      // For non-widescreen devices, return actual height
       return currentHeight;
+    };
+    
+    // Get stable header height for snap calculations
+    const getLockedHeaderHeight = () => {
+      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
+      const aspectRatio = window.innerWidth / currentHeight;
+      const isWidescreenDevice = aspectRatio >= 1.5;
+      
+      if (isWidescreenDevice && lockedHeaderHeight !== null) {
+        return lockedHeaderHeight;
+      }
+      
+      // Fall back to dynamic measurement for non-widescreen
+      return getHeaderBottom();
+    };
+    
+    // Get stable content height (viewport minus header)
+    const getLockedContentHeight = () => {
+      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
+      const aspectRatio = window.innerWidth / currentHeight;
+      const isWidescreenDevice = aspectRatio >= 1.5;
+      
+      if (isWidescreenDevice && lockedContentHeight !== null) {
+        return lockedContentHeight;
+      }
+      
+      // Fall back to dynamic calculation for non-widescreen
+      return (window.visualViewport?.height ?? window.innerHeight) - getHeaderBottom();
     };
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
-      const headerBottom = getHeaderBottom();
-      // For widescreen: ignore banner completely - snap is independent of banner visibility
-      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
+      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
+      const aspectRatio = window.innerWidth / currentHeight;
+      const isWidescreenDevice = aspectRatio >= 1.5;
+      
+      // WIDESCREEN: Use locked dimensions for stable snap positioning
+      // NON-WIDESCREEN: Use live measurements
+      const headerHeight = isWidescreenDevice && lockedHeaderHeight !== null 
+        ? lockedHeaderHeight 
+        : getHeaderBottom();
+      
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
+      // For widescreen: ignore banner completely - snap is independent of banner visibility
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
-      const topOffset = headerBottom + bannerHeight;
-      const viewportHeight = getViewportHeight();
-      const availableHeight = viewportHeight - topOffset;
+      const topOffset = headerHeight + bannerHeight;
+      
+      // Use locked content height for widescreen, dynamic for others
+      const contentHeight = isWidescreenDevice && lockedContentHeight !== null
+        ? lockedContentHeight
+        : getViewportHeight() - topOffset;
+      
+      // Content viewport center = header height + (content height / 2)
+      const contentCenterY = topOffset + (contentHeight / 2);
       
       // Special handling for young-adult section
       if (sectionName === 'young-adult') {
@@ -229,24 +296,19 @@ const Writing = () => {
         const slideshowBottomInViewport = slideshowRect.bottom;
         const totalContentHeight = slideshowBottomInViewport - titleTopInViewport;
         
-        // Recalculate available height dynamically (accounts for browser chrome changes)
-        const currentAvailableHeight = viewportHeight - topOffset;
-        
         // Scenario A: Can fit all content (title + "Young Adult Series" text + slideshow)
-        if (currentAvailableHeight >= totalContentHeight + 40) { // 40px buffer
+        if (contentHeight >= totalContentHeight + 40) { // 40px buffer
           // Center the entire content in the available space
           const titleTop = titleRect.top + window.scrollY;
           const slideshowBottom = slideshowRect.bottom + window.scrollY;
-          const contentCenter = titleTop + ((slideshowBottom - titleTop) / 2);
-          const desiredCenterY = topOffset + (currentAvailableHeight / 2);
-          return Math.max(0, contentCenter - desiredCenterY);
+          const elementCenter = titleTop + ((slideshowBottom - titleTop) / 2);
+          return Math.max(0, elementCenter - contentCenterY);
         } else {
           // Scenario B: Can't fit all, just center the slideshow alone
           const slideshowTop = slideshowRect.top + window.scrollY;
           const slideshowHeight = slideshowRect.height;
-          const slideshowCenter = slideshowTop + (slideshowHeight / 2);
-          const desiredCenterY = topOffset + (currentAvailableHeight / 2);
-          return Math.max(0, slideshowCenter - desiredCenterY);
+          const elementCenter = slideshowTop + (slideshowHeight / 2);
+          return Math.max(0, elementCenter - contentCenterY);
         }
       }
       
@@ -259,10 +321,9 @@ const Writing = () => {
       const coverRect = bookCover.getBoundingClientRect();
       const coverHeight = coverRect.height;
       const coverTop = coverRect.top + window.scrollY;
-      const coverCenter = coverTop + (coverHeight / 2);
-      const desiredCenterY = topOffset + (availableHeight / 2);
+      const elementCenter = coverTop + (coverHeight / 2);
       
-      return Math.max(0, coverCenter - desiredCenterY);
+      return Math.max(0, elementCenter - contentCenterY);
     };
 
     const snapToPoint = (targetY: number, sectionName: string) => {
@@ -298,14 +359,25 @@ const Writing = () => {
         }
       }
 
-      const headerBottom = getHeaderBottom();
-      // For widescreen: ignore banner completely - snap is independent of banner visibility
-      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
+      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
+      const aspectRatio = window.innerWidth / currentHeight;
+      const isWidescreenDevice = aspectRatio >= 1.5;
+      
+      // WIDESCREEN: Use locked dimensions for stable visibility calculations
+      // NON-WIDESCREEN: Use live measurements
+      const headerHeight = isWidescreenDevice && lockedHeaderHeight !== null 
+        ? lockedHeaderHeight 
+        : getHeaderBottom();
+      
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
+      // For widescreen: ignore banner completely
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
-      const topOffset = headerBottom + bannerHeight;
+      const topOffset = headerHeight + bannerHeight;
+      
       const viewportHeight = getViewportHeight();
-      const availableViewport = viewportHeight - topOffset;
+      const availableViewport = isWidescreenDevice && lockedContentHeight !== null
+        ? lockedContentHeight
+        : viewportHeight - topOffset;
 
       // Find section that fills MOST of the screen (>50%)
       let bestSection: typeof bookSections[0] | null = null;
@@ -393,14 +465,26 @@ const Writing = () => {
       }
     };
 
+    // Listen for true layout changes (orientation, resize with width change)
+    const handleOrientationChange = () => {
+      // Delay to allow layout to settle after orientation change
+      setTimeout(() => {
+        initializeLockedDimensions();
+      }, 300);
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('mousedown', handleMouseDown, { passive: true });
     window.addEventListener('mouseup', handleMouseUp, { passive: true });
+    window.addEventListener('resize', handleLayoutChange, { passive: true });
+    window.addEventListener('orientationchange', handleOrientationChange);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('resize', handleLayoutChange);
+      window.removeEventListener('orientationchange', handleOrientationChange);
       clearTimeout(scrollTimeout);
     };
   }, [getHeaderBottom, isWidescreen]);
