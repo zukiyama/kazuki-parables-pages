@@ -272,20 +272,21 @@ const Index = () => {
     <div className="relative min-h-screen-stable flex flex-col overflow-hidden">
       <Navigation />
       
-      {/* Hero Section with Japanese Painting */}
-      <section className="h-screen-stable flex items-center justify-center relative overflow-hidden bg-background">
+      {/* Hero Section with Japanese Painting - uses stable clamped height */}
+      <section className="h-hero-stable relative overflow-hidden bg-background">
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-cover object-center bg-slate-100"
+          className="absolute inset-0 w-full h-full object-cover bg-slate-100"
           style={{ 
-            objectPosition: '50% center',
+            objectPosition: 'center top',
             transform: 'translateZ(0)',
             backfaceVisibility: 'hidden'
           }}
         />
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative z-20 text-center px-6">
+        {/* Overlay uses grid with padding for stable positioning */}
+        <div className="relative z-20 h-full flex flex-col items-center justify-center px-6 pt-16 md:pt-20 lg:pt-24">
           <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
             Kazuki Yamakawa
           </h1>
