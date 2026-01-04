@@ -273,7 +273,7 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
-      <section className="h-[calc(100vh-56px)] mt-14 flex items-center justify-center relative overflow-hidden bg-background">
+      <section className="h-[calc(100vh-56px)] lg:h-[calc(100dvh-56px)] mt-14 flex items-center justify-center relative overflow-hidden bg-background">
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
