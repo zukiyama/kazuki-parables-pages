@@ -379,6 +379,59 @@ const Writing = () => {
       }
     };
 
+    // Force re-center the current section in the viewport
+    // Used when viewport height changes (browser bar show/hide)
+    const recenterCurrentSection = () => {
+      const sections = document.querySelectorAll('.book-section');
+      const viewportHeight = getViewportHeight();
+      const headerBottom = getHeaderBottom();
+      
+      let mostVisibleSection: HTMLElement | null = null;
+      let maxVisibility = 0;
+      
+      // Find the section that's most visible in the viewport
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const visibleTop = Math.max(rect.top, headerBottom);
+        const visibleBottom = Math.min(rect.bottom, viewportHeight);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        const visibility = visibleHeight / rect.height;
+        
+        if (visibility > maxVisibility) {
+          maxVisibility = visibility;
+          mostVisibleSection = section as HTMLElement;
+        }
+      });
+      
+      if (mostVisibleSection && maxVisibility > 0.3) {
+        const sectionName = mostVisibleSection.getAttribute('data-section-name') || '';
+        
+        // Skip if it's a no-snap section
+        if (noSnapSections.includes(sectionName)) return;
+        
+        // Calculate new center position with current viewport height
+        const snapPoint = getCenterSnapPoint(mostVisibleSection, sectionName);
+        
+        if (snapPoint !== null) {
+          const currentScroll = window.scrollY;
+          const diff = Math.abs(currentScroll - snapPoint);
+          
+          // Only re-center if we're significantly off (more than 10px)
+          if (diff > 10) {
+            isSnapping.current = true;
+            window.scrollTo({
+              top: snapPoint,
+              behavior: 'smooth'
+            });
+            
+            setTimeout(() => {
+              isSnapping.current = false;
+            }, 500);
+          }
+        }
+      }
+    };
+
     // Handle viewport resize (browser bar show/hide on iOS Safari)
     // Only for widescreen devices - triggers re-centering when viewport height changes
     const handleViewportResize = () => {
@@ -393,9 +446,9 @@ const Writing = () => {
       if (heightDiff > 30 && heightDiff < 150) {
         lastViewportHeight = currentHeight;
         
-        // Re-center the current section by triggering scroll end handler
+        // Wait for viewport to settle, then re-center
         clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(handleScrollEnd, 50);
+        scrollTimeout = setTimeout(recenterCurrentSection, 150);
       } else if (heightDiff >= 150) {
         // Large change = orientation change, just update reference
         lastViewportHeight = currentHeight;
