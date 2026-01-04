@@ -298,18 +298,14 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
         </Button>
       </div>
       
-      {/* Clickable Book Navigation Dots */}
+      {/* Book Indicator */}
       <div className={`absolute left-1/2 transform -translate-x-1/2 flex space-x-2 ${isWidescreen ? "bottom-2" : "bottom-4"}`}>
         {books.map((_, index) => (
-          <button
+          <div
             key={index}
-            onClick={() => goToBook(index)}
-            className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer ${
-              index === currentBook 
-                ? 'bg-yellow-300' 
-                : 'bg-yellow-300/40 hover:bg-yellow-300/70'
+            className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+              index === currentBook ? 'bg-yellow-300' : 'bg-yellow-300/40'
             }`}
-            aria-label={`View book ${index + 1}: ${books[index].title}`}
           />
         ))}
       </div>
