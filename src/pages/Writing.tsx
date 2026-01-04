@@ -154,22 +154,6 @@ const Writing = () => {
     // Sections that should NOT have snap behavior (except young-adult which has special handling)
     const noSnapSections = ['kaiju'];
 
-    // Lock viewport height to prevent drift when Safari address bar collapses
-    // Only update on significant changes (orientation/real resize), not browser chrome
-    let lockedViewportHeight = window.visualViewport?.height ?? window.innerHeight;
-    const VIEWPORT_HYSTERESIS = 120; // Ignore changes smaller than this (browser chrome is ~100px)
-
-    const updateLockedHeight = (force = false) => {
-      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
-      if (force || Math.abs(currentHeight - lockedViewportHeight) > VIEWPORT_HYSTERESIS) {
-        lockedViewportHeight = currentHeight;
-      }
-    };
-
-    // Initialize locked height
-    updateLockedHeight(true);
-    requestAnimationFrame(() => updateLockedHeight(true));
-
     const getBookSections = () => {
       // Disable scroll snap on mobile
       if (window.innerWidth < 950) return [];
@@ -190,22 +174,9 @@ const Writing = () => {
       return bookSections;
     };
 
-    // Use LOCKED viewport height for snap calculations to prevent drift
-    // when Safari address bar collapses/expands
-    // Exception: young-adult section on iPad 12.9" (desktop tier) uses actual height
-    const getViewportHeight = (useActual = false) => {
-      if (useActual) {
-        return window.visualViewport?.height ?? window.innerHeight;
-      }
-      return lockedViewportHeight;
-    };
-
-    // Check if we're on iPad 12.9" desktop tier (not widescreen, but not mobile)
-    const isDesktopTier = () => {
-      const width = window.innerWidth;
-      const aspectRatio = width / window.innerHeight;
-      // Desktop tier: width > 820px but aspect ratio < 1.6 (not widescreen)
-      return width > 820 && aspectRatio < 1.6;
+    // Use visualViewport.height on iOS for accurate measurements
+    const getViewportHeight = () => {
+      return window.visualViewport?.height ?? window.innerHeight;
     };
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
@@ -215,15 +186,11 @@ const Writing = () => {
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       const topOffset = headerBottom + bannerHeight;
+      const viewportHeight = getViewportHeight();
+      const availableHeight = viewportHeight - topOffset;
       
       // Special handling for young-adult section
       if (sectionName === 'young-adult') {
-        // On iPad 12.9" (desktop tier), use ACTUAL viewport height for young-adult
-        // This allows the snap to adjust when browser bar collapses
-        const useActualHeight = isDesktopTier();
-        const viewportHeight = getViewportHeight(useActualHeight);
-        const availableHeight = viewportHeight - topOffset;
-        
         // Find the title element and slideshow container
         const titleEl = section.querySelector('h2') as HTMLElement;
         const slideshowContainer = section.querySelector('.transition-opacity.duration-1000.delay-500') as HTMLElement;
@@ -238,8 +205,8 @@ const Writing = () => {
         const slideshowBottomInViewport = slideshowRect.bottom;
         const totalContentHeight = slideshowBottomInViewport - titleTopInViewport;
         
-        // Use the appropriate height for available space calculation
-        const currentAvailableHeight = availableHeight;
+        // Recalculate available height dynamically (accounts for browser chrome changes)
+        const currentAvailableHeight = viewportHeight - topOffset;
         
         // Scenario A: Can fit all content (title + "Young Adult Series" text + slideshow)
         if (currentAvailableHeight >= totalContentHeight + 40) { // 40px buffer
@@ -258,10 +225,6 @@ const Writing = () => {
           return Math.max(0, slideshowCenter - desiredCenterY);
         }
       }
-      
-      // For all other sections, use locked viewport height
-      const viewportHeight = getViewportHeight();
-      const availableHeight = viewportHeight - topOffset;
       
       // For book sections: center the book cover
       const bookCover = section.querySelector('.book-cover-slideshow img, [data-book-cover], img[alt*="Cover"]') as HTMLElement;
@@ -406,30 +369,14 @@ const Writing = () => {
       }
     };
 
-    // Handle viewport resize with hysteresis - only update on real changes
-    const handleViewportResize = () => {
-      updateLockedHeight(false);
-    };
-
-    // Handle orientation change - force update locked height
-    const handleOrientationChange = () => {
-      setTimeout(() => {
-        updateLockedHeight(true);
-      }, 300);
-    };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('mousedown', handleMouseDown, { passive: true });
     window.addEventListener('mouseup', handleMouseUp, { passive: true });
-    window.visualViewport?.addEventListener('resize', handleViewportResize);
-    window.addEventListener('orientationchange', handleOrientationChange);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
-      window.visualViewport?.removeEventListener('resize', handleViewportResize);
-      window.removeEventListener('orientationchange', handleOrientationChange);
       clearTimeout(scrollTimeout);
     };
   }, [getHeaderBottom, isWidescreen]);
