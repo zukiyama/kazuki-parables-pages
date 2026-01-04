@@ -147,6 +147,7 @@ const Writing = () => {
 
   // Scroll snap logic - loose snapping, only when section fills most of screen, DESKTOP ONLY
   // With LOCKED viewport height for widescreen to handle Safari address bar collapse/expand
+  // Includes visualViewport.offsetTop for accurate centering when Safari UI changes
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let lastSnappedSection: string | null = null;
@@ -159,17 +160,25 @@ const Writing = () => {
     let lastKnownWidth: number = window.innerWidth;
     const WIDTH_CHANGE_THRESHOLD = 100; // Significant width change indicating split view or rotation
     
+    // Settle timer for visualViewport resize (address bar collapse/expand)
+    let settleTimeout: NodeJS.Timeout | null = null;
+    const SETTLE_DELAY = 200; // Wait 200ms after last resize before updating
+    
     // Sections that should NOT have snap behavior (except young-adult which has special handling)
     const noSnapSections = ['kaiju'];
 
-    // Initialize locked dimensions for widescreen
-    const initializeLockedDimensions = () => {
+    // Check if device is widescreen based on current dimensions
+    const isWidescreenDevice = () => {
       const currentHeight = window.visualViewport?.height ?? window.innerHeight;
       const aspectRatio = window.innerWidth / currentHeight;
-      const isWidescreenDevice = aspectRatio >= 1.5;
-      
-      if (isWidescreenDevice) {
-        lockedViewportHeight = currentHeight;
+      return aspectRatio >= 1.5;
+    };
+
+    // Initialize locked dimensions for widescreen
+    const initializeLockedDimensions = () => {
+      if (isWidescreenDevice()) {
+        const vv = window.visualViewport;
+        lockedViewportHeight = vv?.height ?? window.innerHeight;
         const header = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
         lockedHeaderHeight = header ? header.getBoundingClientRect().height : 64;
         lockedContentHeight = lockedViewportHeight - lockedHeaderHeight;
@@ -189,6 +198,63 @@ const Writing = () => {
       if (widthDiff > WIDTH_CHANGE_THRESHOLD) {
         initializeLockedDimensions();
       }
+    };
+
+    // WIDESCREEN ONLY: Handle visualViewport resize (Safari address bar collapse/expand)
+    // Uses a settle timer to update dimensions after UI change stops, then re-snaps
+    const handleVisualViewportResize = () => {
+      if (!isWidescreenDevice()) return;
+      
+      // Clear any pending settle timeout
+      if (settleTimeout) {
+        clearTimeout(settleTimeout);
+      }
+      
+      // Wait for resize to settle, then update dimensions and optionally re-snap
+      settleTimeout = setTimeout(() => {
+        const vv = window.visualViewport;
+        if (!vv) return;
+        
+        // Update locked dimensions with new viewport height
+        lockedViewportHeight = vv.height;
+        const header = document.querySelector('nav.fixed, [data-header]') as HTMLElement;
+        lockedHeaderHeight = header ? header.getBoundingClientRect().height : 64;
+        lockedContentHeight = lockedViewportHeight - lockedHeaderHeight;
+        
+        // Optionally re-snap to the currently visible section for perfect centering
+        if (!isSnapping.current) {
+          // Find the most visible section and re-snap to it
+          const bookSections = getBookSections();
+          if (bookSections.length > 0) {
+            const viewportHeight = lockedViewportHeight;
+            const headerHeight = lockedHeaderHeight;
+            let bestSection: typeof bookSections[0] | null = null;
+            let highestVisibility = 0;
+            
+            for (const section of bookSections) {
+              const rect = section.el.getBoundingClientRect();
+              const visibleTop = Math.max(rect.top, headerHeight);
+              const visibleBottom = Math.min(rect.bottom, viewportHeight);
+              const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+              const viewportFillRatio = visibleHeight / (viewportHeight - headerHeight);
+              
+              if (viewportFillRatio > highestVisibility) {
+                highestVisibility = viewportFillRatio;
+                bestSection = section;
+              }
+            }
+            
+            // Only re-snap if section fills >50% of viewport
+            if (bestSection && highestVisibility > 0.5) {
+              const snapPoint = getCenterSnapPoint(bestSection.el, bestSection.name);
+              const currentScroll = window.scrollY;
+              if (snapPoint !== null && Math.abs(currentScroll - snapPoint) > 10) {
+                snapToPoint(snapPoint, bestSection.name);
+              }
+            }
+          }
+        }
+      }, SETTLE_DELAY);
     };
 
     const getBookSections = () => {
@@ -212,29 +278,21 @@ const Writing = () => {
     };
 
     // Get stable viewport height for snap calculations
-    // WIDESCREEN: Use locked height (immune to address bar changes)
+    // WIDESCREEN: Use locked height (immune to address bar changes during scroll)
     // NON-WIDESCREEN: Use live height (no locking needed)
     const getViewportHeight = () => {
-      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
-      const aspectRatio = window.innerWidth / currentHeight;
-      const isWidescreenDevice = aspectRatio >= 1.5;
-      
       // For widescreen devices, use the locked viewport height
-      if (isWidescreenDevice && lockedViewportHeight !== null) {
+      if (isWidescreenDevice() && lockedViewportHeight !== null) {
         return lockedViewportHeight;
       }
       
       // For non-widescreen devices, return actual height
-      return currentHeight;
+      return window.visualViewport?.height ?? window.innerHeight;
     };
     
     // Get stable header height for snap calculations
     const getLockedHeaderHeight = () => {
-      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
-      const aspectRatio = window.innerWidth / currentHeight;
-      const isWidescreenDevice = aspectRatio >= 1.5;
-      
-      if (isWidescreenDevice && lockedHeaderHeight !== null) {
+      if (isWidescreenDevice() && lockedHeaderHeight !== null) {
         return lockedHeaderHeight;
       }
       
@@ -244,41 +302,49 @@ const Writing = () => {
     
     // Get stable content height (viewport minus header)
     const getLockedContentHeight = () => {
-      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
-      const aspectRatio = window.innerWidth / currentHeight;
-      const isWidescreenDevice = aspectRatio >= 1.5;
-      
-      if (isWidescreenDevice && lockedContentHeight !== null) {
+      if (isWidescreenDevice() && lockedContentHeight !== null) {
         return lockedContentHeight;
       }
       
       // Fall back to dynamic calculation for non-widescreen
       return (window.visualViewport?.height ?? window.innerHeight) - getHeaderBottom();
     };
+    
+    // Get visualViewport.offsetTop for accurate center line calculation
+    // This accounts for Safari address bar position changes
+    const getViewportOffsetTop = () => {
+      if (isWidescreenDevice() && window.visualViewport) {
+        return window.visualViewport.offsetTop;
+      }
+      return 0;
+    };
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
-      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
-      const aspectRatio = window.innerWidth / currentHeight;
-      const isWidescreenDevice = aspectRatio >= 1.5;
+      const isWidescreen = isWidescreenDevice();
       
       // WIDESCREEN: Use locked dimensions for stable snap positioning
       // NON-WIDESCREEN: Use live measurements
-      const headerHeight = isWidescreenDevice && lockedHeaderHeight !== null 
+      const headerHeight = isWidescreen && lockedHeaderHeight !== null 
         ? lockedHeaderHeight 
         : getHeaderBottom();
       
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       // For widescreen: ignore banner completely - snap is independent of banner visibility
-      const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
+      const bannerHeight = (banner && !isWidescreen) ? banner.offsetHeight : 0;
       const topOffset = headerHeight + bannerHeight;
       
       // Use locked content height for widescreen, dynamic for others
-      const contentHeight = isWidescreenDevice && lockedContentHeight !== null
+      const contentHeight = isWidescreen && lockedContentHeight !== null
         ? lockedContentHeight
         : getViewportHeight() - topOffset;
       
-      // Content viewport center = header height + (content height / 2)
-      const contentCenterY = topOffset + (contentHeight / 2);
+      // WIDESCREEN: Include visualViewport.offsetTop for accurate centering
+      // When Safari's address bar collapses, offsetTop may change
+      const vvOffsetTop = getViewportOffsetTop();
+      
+      // Content viewport center = offsetTop + header height + (content height / 2)
+      // The offsetTop accounts for Safari address bar position changes
+      const contentCenterY = vvOffsetTop + topOffset + (contentHeight / 2);
       
       // Special handling for young-adult section
       if (sectionName === 'young-adult') {
@@ -479,13 +545,24 @@ const Writing = () => {
     window.addEventListener('resize', handleLayoutChange, { passive: true });
     window.addEventListener('orientationchange', handleOrientationChange);
     
+    // WIDESCREEN ONLY: Listen for visualViewport resize (Safari address bar collapse/expand)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleVisualViewportResize);
+    }
+    
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
       window.removeEventListener('resize', handleLayoutChange);
       window.removeEventListener('orientationchange', handleOrientationChange);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleVisualViewportResize);
+      }
       clearTimeout(scrollTimeout);
+      if (settleTimeout) {
+        clearTimeout(settleTimeout);
+      }
     };
   }, [getHeaderBottom, isWidescreen]);
 
