@@ -16,6 +16,27 @@ const About = () => {
   const visibleElements = useScrollAnimation();
   const isWidescreen = useWidescreenAspectRatio();
   const [showCityscape, setShowCityscape] = React.useState(false);
+  const [headerHeight, setHeaderHeight] = React.useState(0);
+
+  // Measure header height on mount and orientation change
+  React.useEffect(() => {
+    const measureHeader = () => {
+      const header = document.querySelector('[data-header="true"]');
+      if (header) {
+        const height = header.getBoundingClientRect().height;
+        setHeaderHeight(height);
+      }
+    };
+
+    measureHeader();
+    window.addEventListener('resize', measureHeader);
+    window.addEventListener('orientationchange', measureHeader);
+    
+    return () => {
+      window.removeEventListener('resize', measureHeader);
+      window.removeEventListener('orientationchange', measureHeader);
+    };
+  }, []);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -38,10 +59,13 @@ const About = () => {
     <div className="min-h-screen-stable bg-neutral-100">
       <Navigation />
       
-      {/* Hero Section with Paris Square Background */}
-      <div className="relative min-h-screen-stable">
-        {/* Full-screen Paris background */}
-        <div className="absolute inset-0">
+      {/* Hero Section with Paris Square Background - top aligned exactly to header bottom */}
+      <div className="relative min-h-screen-stable" style={{ marginTop: 0, paddingTop: 0 }}>
+        {/* Full-screen Paris background - positioned to start exactly at header bottom */}
+        <div 
+          className="absolute left-0 right-0 bottom-0"
+          style={{ top: headerHeight }}
+        >
           <OptimizedImage 
             src={parisSquare}
             alt="Parisian square with pigeons"
@@ -52,8 +76,8 @@ const About = () => {
           <div className="absolute inset-0 bg-white/20 max-sm:bg-white/50 lg:bg-white/45 2xl:bg-white/20 xl:bg-white/35" />
         </div>
         
-        {/* Editorial Top Bar */}
-        <div className="relative z-10 pt-24 px-8 md:px-16 lg:px-24">
+        {/* Editorial Top Bar - dynamically positioned below header */}
+        <div className="relative z-10 px-8 md:px-16 lg:px-24" style={{ paddingTop: headerHeight + 16 }}>
           <div className="border-b-2 border-black pb-4 mb-8">
             <span className="font-body text-sm tracking-[0.3em] uppercase text-black">
               Author · Composer
