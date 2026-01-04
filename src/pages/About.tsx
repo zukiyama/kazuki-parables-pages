@@ -187,7 +187,10 @@ const About = () => {
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
                 <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl">
-                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
+                </p>
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl mt-4">
+                  The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
               
