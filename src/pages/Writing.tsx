@@ -1560,11 +1560,11 @@ const Writing = () => {
               <header className="text-center mb-4">
                 <div className="inline-block">
                   <div className="flex items-center justify-center gap-3 mb-4">
-                    <span className={`text-[0.75rem] tracking-[0.25em] uppercase transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`} style={{ fontVariant: 'small-caps' }}>Short Stories</span>
+                    <span className={`text-[0.75rem] tracking-[0.25em] uppercase transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`} style={{ fontVariant: 'small-caps' }}><span className="max-sm:hidden">Short Stories</span><span className="sm:hidden">Shorts</span></span>
                     <span className={`transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-400' : 'text-neutral-600'}`}>·</span>
                     <span className={`text-[0.75rem] tracking-[0.25em] uppercase transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`} style={{ fontVariant: 'small-caps' }}>Novellas</span>
                     <span className={`transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-400' : 'text-neutral-600'}`}>·</span>
-                    <span className={`text-[0.75rem] tracking-[0.25em] uppercase transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`} style={{ fontVariant: 'small-caps' }}>Experimental Fiction</span>
+                    <span className={`text-[0.75rem] tracking-[0.25em] uppercase transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`} style={{ fontVariant: 'small-caps' }}><span className="max-sm:hidden">Experimental Fiction</span><span className="sm:hidden">Experimental</span></span>
                   </div>
                   <h2 className={`font-serif text-5xl md:text-6xl font-extralight tracking-tight transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-900' : 'text-white'}`} style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
                     Other Works
