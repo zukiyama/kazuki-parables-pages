@@ -153,142 +153,38 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
     return width < 700;
   };
 
-  // Helper functions for visual viewport calculations (ChatGPT fix for iPad Safari)
-  const getVV = () => window.visualViewport || null;
-  
-  const getVVCenterInDocY = () => {
-    const vv = getVV();
-    const top = vv ? vv.offsetTop : 0;
-    const h = vv ? vv.height : window.innerHeight;
-    return top + h / 2;
-  };
-  
-  const getVVTop = () => {
-    const vv = getVV();
-    return vv ? vv.offsetTop : 0;
-  };
-  
-  const getVVHeight = () => {
-    const vv = getVV();
-    return vv ? vv.height : window.innerHeight;
-  };
-
-  // Wait until visual viewport stops changing (toolbar collapse/expand finished)
-  const waitForViewportStable = (stableMs = 150, maxWaitMs = 800): Promise<void> => {
-    return new Promise((resolve) => {
-      const vv = getVV();
-      if (!vv) return resolve();
-      
-      let lastH = vv.height;
-      let lastTop = vv.offsetTop;
-      let startTime = performance.now();
-      let lastChange = performance.now();
-      
-      const tick = () => {
-        const now = performance.now();
-        const h = vv.height;
-        const top = vv.offsetTop;
-        
-        if (h !== lastH || top !== lastTop) {
-          lastH = h;
-          lastTop = top;
-          lastChange = now;
-        }
-        
-        if (now - lastChange >= stableMs || now - startTime >= maxWaitMs) {
-          resolve();
-        } else {
-          requestAnimationFrame(tick);
-        }
-      };
-      
-      requestAnimationFrame(tick);
-    });
-  };
-
-  // Debug overlay for widescreen iPad Safari
-  const showDebugOverlay = (data: {
-    scrollY: number;
-    vvHeight: number;
-    vvOffsetTop: number;
-    vvCenter: number;
-    elCenter: number;
-    target: number;
-    phase: string;
-  }) => {
-    // Only show debug overlay on widescreen
-    const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
-    if (!isWidescreenDevice) return;
-    
-    // Remove existing overlay
-    const existing = document.getElementById('snap-debug-overlay');
-    if (existing) existing.remove();
-    
-    const overlay = document.createElement('div');
-    overlay.id = 'snap-debug-overlay';
-    overlay.style.cssText = `
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      background: rgba(0,0,0,0.9);
-      color: #0f0;
-      font-family: monospace;
-      font-size: 11px;
-      padding: 10px;
-      border-radius: 4px;
-      z-index: 99999;
-      pointer-events: none;
-      white-space: pre;
-    `;
-    overlay.textContent = `[${data.phase}]
-scrollY: ${data.scrollY.toFixed(1)}
-vv.height: ${data.vvHeight.toFixed(1)}
-vv.offsetTop: ${data.vvOffsetTop.toFixed(1)}
-vvCenter: ${data.vvCenter.toFixed(1)}
-elCenter: ${data.elCenter.toFixed(1)}
-target: ${data.target.toFixed(1)}`;
-    document.body.appendChild(overlay);
-    
-    // Auto-remove after 5 seconds
-    setTimeout(() => overlay.remove(), 5000);
-  };
-
-  const handleBookClick = async (book: Book) => {
+  const handleBookClick = (book: Book) => {
     // For widescreen: hide banner when clicking any book
     if (isWidescreen && onBannerHide) {
       onBannerHide();
     }
     
-    const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
+    // Use visualViewport.height on iOS for accurate measurements (ChatGPT suggestion)
+    const getViewportHeight = () => {
+      return window.visualViewport?.height ?? window.innerHeight;
+    };
 
-    // Calculate snap position using visual viewport (ChatGPT fix)
-    const calculateSnapPositionVisualViewport = () => {
+    const calculateSnapPosition = () => {
       const section = document.querySelector(`[data-section="${book.targetSection}"]`) as HTMLElement;
       if (!section) return null;
 
       // Get fixed elements - use passed getHeaderBottom for widescreen, fallback otherwise
+      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
       const headerBottom = getHeaderBottom ? getHeaderBottom() : 64;
       
-      // For widescreen: the banner will disappear immediately after click
-      // For non-widescreen: include banner height
+      // For widescreen: the banner will disappear immediately after click, so calculate
+      // the scroll position as if the banner is already gone (topOffset = header only)
+      // For non-widescreen: include banner height in calculations since banner stays visible
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       const topOffset = headerBottom + bannerHeight;
-      
-      // Use visual viewport for accurate measurements
-      const vvHeight = getVVHeight();
-      const vvOffsetTop = getVVTop();
-      const availableHeight = vvHeight - topOffset;
-      
-      // Calculate visual viewport center in document coordinates
-      // This is the key fix: use offsetTop + height/2, not just height/2
-      const vvCenterInDocY = window.scrollY + vvOffsetTop + (vvHeight / 2);
+      const viewportHeight = getViewportHeight();
+      const availableHeight = viewportHeight - topOffset;
       
       let targetScrollPosition: number | undefined;
-      let elementCenterDocY: number = 0;
       
       if (book.targetSection === 'young-adult') {
-        // For young-adult slideshow
+        // For young-adult slideshow: use EXACT same logic as getCenterSnapPoint in Writing.tsx
         const titleEl = section.querySelector('h2') as HTMLElement;
         const slideshowContainer = section.querySelector('.transition-opacity.duration-1000.delay-500') as HTMLElement;
         
@@ -296,212 +192,152 @@ target: ${data.target.toFixed(1)}`;
         if (isMobilePhone() && slideshowContainer) {
           const slideshowRect = slideshowContainer.getBoundingClientRect();
           const slideshowTop = slideshowRect.top + window.scrollY;
+          // Position so slideshow top is at topOffset + small breathing room (20px)
           targetScrollPosition = Math.max(0, slideshowTop - topOffset - 20);
-          elementCenterDocY = slideshowTop;
         } else if (titleEl && slideshowContainer) {
           const titleRect = titleEl.getBoundingClientRect();
           const slideshowRect = slideshowContainer.getBoundingClientRect();
           
+          // Calculate total height of title + subtitle + slideshow (in viewport coords)
           const titleTopInViewport = titleRect.top;
           const slideshowBottomInViewport = slideshowRect.bottom;
           const totalContentHeight = slideshowBottomInViewport - titleTopInViewport;
           
-          // Use visual viewport-based centering for widescreen
-          if (isWidescreenDevice) {
-            // Scenario A: Can fit all content
-            if (availableHeight >= totalContentHeight + 40) {
-              const titleTop = titleRect.top + window.scrollY;
-              const slideshowBottom = slideshowRect.bottom + window.scrollY;
-              elementCenterDocY = titleTop + ((slideshowBottom - titleTop) / 2);
-              
-              // Target = elementCenter - (vvOffsetTop + topOffset + availableHeight/2)
-              const desiredCenterInDocY = vvOffsetTop + topOffset + (availableHeight / 2);
-              targetScrollPosition = Math.max(0, elementCenterDocY - desiredCenterInDocY + window.scrollY);
-            } else {
-              // Scenario B: Center slideshow alone
-              const slideshowTop = slideshowRect.top + window.scrollY;
-              const slideshowHeight = slideshowRect.height;
-              elementCenterDocY = slideshowTop + (slideshowHeight / 2);
-              
-              const desiredCenterInDocY = vvOffsetTop + topOffset + (availableHeight / 2);
-              targetScrollPosition = Math.max(0, elementCenterDocY - desiredCenterInDocY + window.scrollY);
-            }
+          // Scenario A: Can fit all content (title + "Young Adult Series" text + slideshow)
+          if (availableHeight >= totalContentHeight + 40) { // 40px buffer
+            // Center the entire content in the available space
+            const titleTop = titleRect.top + window.scrollY;
+            const slideshowBottom = slideshowRect.bottom + window.scrollY;
+            const contentCenter = titleTop + ((slideshowBottom - titleTop) / 2);
+            const desiredCenterY = topOffset + (availableHeight / 2);
+            targetScrollPosition = Math.max(0, contentCenter - desiredCenterY);
           } else {
-            // Non-widescreen fallback
-            if (availableHeight >= totalContentHeight + 40) {
-              const titleTop = titleRect.top + window.scrollY;
-              const slideshowBottom = slideshowRect.bottom + window.scrollY;
-              const contentCenter = titleTop + ((slideshowBottom - titleTop) / 2);
-              const desiredCenterY = topOffset + (availableHeight / 2);
-              targetScrollPosition = Math.max(0, contentCenter - desiredCenterY);
-              elementCenterDocY = contentCenter;
-            } else {
-              const slideshowTop = slideshowRect.top + window.scrollY;
-              const slideshowHeight = slideshowRect.height;
-              const slideshowCenter = slideshowTop + (slideshowHeight / 2);
-              const desiredCenterY = topOffset + (availableHeight / 2);
-              targetScrollPosition = Math.max(0, slideshowCenter - desiredCenterY);
-              elementCenterDocY = slideshowCenter;
-            }
+            // Scenario B: Can't fit all, just center the slideshow alone
+            const slideshowTop = slideshowRect.top + window.scrollY;
+            const slideshowHeight = slideshowRect.height;
+            const slideshowCenter = slideshowTop + (slideshowHeight / 2);
+            const desiredCenterY = topOffset + (availableHeight / 2);
+            targetScrollPosition = Math.max(0, slideshowCenter - desiredCenterY);
           }
         } else if (titleEl) {
+          // Fallback to simple positioning
           const titleTop = titleEl.getBoundingClientRect().top + window.scrollY;
           targetScrollPosition = titleTop - topOffset - 20;
-          elementCenterDocY = titleTop;
         }
       } else {
-        // For individual books: center the book cover
+        // For individual books: center the book cover in the available viewport
         const bookCoverImg = section.querySelector('img[alt*="Cover"]');
         if (bookCoverImg) {
           const imgRect = bookCoverImg.getBoundingClientRect();
           const imgHeight = imgRect.height;
           const imgTop = imgRect.top + window.scrollY;
-          elementCenterDocY = imgTop + (imgHeight / 2);
+          const imgCenter = imgTop + (imgHeight / 2);
           
-          // For iPad 10.9" portrait mode only
+          // For iPad 10.9" portrait mode only: shift the target higher to give more breathing room
+          // The book covers appear too low in the viewport on this device
           const tabletPortraitOffset = isTabletPortrait() ? 50 : 0;
           
-          if (isWidescreenDevice) {
-            // Use visual viewport center: elCenter - vvCenter
-            const vvCenter = getVVCenterInDocY();
-            targetScrollPosition = Math.max(0, elementCenterDocY - vvCenter + window.scrollY);
-          } else {
-            const desiredCenterY = topOffset + (availableHeight / 2) - tabletPortraitOffset;
-            targetScrollPosition = Math.max(0, elementCenterDocY - desiredCenterY);
-          }
+          const desiredCenterY = topOffset + (availableHeight / 2) - tabletPortraitOffset;
+          targetScrollPosition = Math.max(0, imgCenter - desiredCenterY);
         } else {
           const sectionTop = section.getBoundingClientRect().top + window.scrollY;
           targetScrollPosition = sectionTop - topOffset - 80;
-          elementCenterDocY = sectionTop;
         }
       }
       
-      return { targetScrollPosition, elementCenterDocY, vvOffsetTop, vvHeight };
+      return targetScrollPosition;
     };
 
-    const scrollToSection = async () => {
-      // For widescreen: wait for visual viewport to stabilize before calculating
-      if (isWidescreenDevice) {
-        await waitForViewportStable(150, 800);
-      }
+    const scrollToSection = () => {
+      const targetScrollPosition = calculateSnapPosition();
       
-      const result = calculateSnapPositionVisualViewport();
-      if (!result || result.targetScrollPosition === undefined) return;
-      
-      const { targetScrollPosition, elementCenterDocY, vvOffsetTop, vvHeight } = result;
-      const vvCenter = getVVCenterInDocY();
-      
-      // Show debug overlay BEFORE snap
-      if (isWidescreenDevice) {
-        showDebugOverlay({
-          scrollY: window.scrollY,
-          vvHeight,
-          vvOffsetTop,
-          vvCenter,
-          elCenter: elementCenterDocY,
-          target: targetScrollPosition,
-          phase: 'BEFORE'
-        });
-      }
-      
-      const currentScroll = window.scrollY;
-      if (Math.abs(currentScroll - targetScrollPosition) > 5) {
-        // Disable scroll-snap during programmatic scroll
-        const scrollContainer = document.documentElement;
-        const originalSnapType = scrollContainer.style.scrollSnapType;
-        scrollContainer.style.scrollSnapType = 'none';
-        
-        // Smooth scroll to target
-        window.scrollTo({ 
-          top: Math.max(0, targetScrollPosition),
-          behavior: 'smooth' 
-        });
-        
-        // Stabilization loop
-        const stabilizeAndCorrect = async () => {
-          let lastScrollY = window.scrollY;
-          let stableFrameCount = 0;
-          const requiredStableFrames = 3;
+      if (targetScrollPosition !== undefined) {
+        // Check if we're already at or very close to the target position
+        const currentScroll = window.scrollY;
+        if (Math.abs(currentScroll - targetScrollPosition) > 5) {
+          // Step 1: Disable scroll-snap during programmatic scroll (ChatGPT suggestion)
+          const scrollContainer = document.documentElement;
+          const originalSnapType = scrollContainer.style.scrollSnapType;
+          scrollContainer.style.scrollSnapType = 'none';
           
-          const checkStability = async () => {
-            const currentScrollY = window.scrollY;
+          // Step 2: Smooth scroll to target
+          window.scrollTo({ 
+            top: Math.max(0, targetScrollPosition),
+            behavior: 'smooth' 
+          });
+          
+          // Step 3: Stabilization loop - wait for scroll to stop changing across 3+ frames
+          const stabilizeAndCorrect = () => {
+            let lastScrollY = window.scrollY;
+            let stableFrameCount = 0;
+            const requiredStableFrames = 3;
             
-            if (Math.abs(currentScrollY - lastScrollY) < 1) {
-              stableFrameCount++;
-            } else {
-              stableFrameCount = 0;
-            }
-            lastScrollY = currentScrollY;
-            
-            if (stableFrameCount >= requiredStableFrames) {
-              // Wait for viewport to stabilize again before correction
-              if (isWidescreenDevice) {
-                await waitForViewportStable(100, 400);
+            const checkStability = () => {
+              const currentScrollY = window.scrollY;
+              
+              if (Math.abs(currentScrollY - lastScrollY) < 1) {
+                stableFrameCount++;
+              } else {
+                stableFrameCount = 0;
               }
+              lastScrollY = currentScrollY;
               
-              // Re-measure and correct
-              const correctedResult = calculateSnapPositionVisualViewport();
-              if (correctedResult && correctedResult.targetScrollPosition !== undefined) {
-                const finalScroll = window.scrollY;
-                const correctedPosition = correctedResult.targetScrollPosition;
-                
-                // Show debug overlay AFTER snap
-                if (isWidescreenDevice) {
-                  showDebugOverlay({
-                    scrollY: finalScroll,
-                    vvHeight: correctedResult.vvHeight,
-                    vvOffsetTop: correctedResult.vvOffsetTop,
-                    vvCenter: getVVCenterInDocY(),
-                    elCenter: correctedResult.elementCenterDocY,
-                    target: correctedPosition,
-                    phase: 'AFTER'
-                  });
-                }
-                
-                if (Math.abs(finalScroll - correctedPosition) > 2) {
-                  window.scrollTo({ 
-                    top: Math.max(0, correctedPosition),
-                    behavior: 'auto'
-                  });
-                }
-              }
-              
-              // Re-enable scroll-snap
-              scrollContainer.style.scrollSnapType = originalSnapType;
-              
-              // One more correction after snap re-enable
-              requestAnimationFrame(() => {
-                const postResult = calculateSnapPositionVisualViewport();
-                if (postResult && postResult.targetScrollPosition !== undefined) {
-                  const postSnapScroll = window.scrollY;
-                  if (Math.abs(postSnapScroll - postResult.targetScrollPosition) > 2) {
+              if (stableFrameCount >= requiredStableFrames) {
+                // Step 4: Scroll is stable - re-measure and correct
+                const correctedPosition = calculateSnapPosition();
+                if (correctedPosition !== undefined) {
+                  const finalScroll = window.scrollY;
+                  // Correct if we're off by more than 2px
+                  if (Math.abs(finalScroll - correctedPosition) > 2) {
                     window.scrollTo({ 
-                      top: Math.max(0, postResult.targetScrollPosition),
-                      behavior: 'auto'
+                      top: Math.max(0, correctedPosition),
+                      behavior: 'auto' // Instant correction
                     });
                   }
                 }
-              });
-            } else {
-              requestAnimationFrame(() => checkStability());
-            }
+                
+                // Step 5: Re-enable scroll-snap after correction
+                scrollContainer.style.scrollSnapType = originalSnapType;
+                
+                // Step 6: One more correction after snap re-enable (prevents snap nudging)
+                requestAnimationFrame(() => {
+                  const postSnapPosition = calculateSnapPosition();
+                  if (postSnapPosition !== undefined) {
+                    const postSnapScroll = window.scrollY;
+                    if (Math.abs(postSnapScroll - postSnapPosition) > 2) {
+                      window.scrollTo({ 
+                        top: Math.max(0, postSnapPosition),
+                        behavior: 'auto'
+                      });
+                    }
+                  }
+                });
+              } else {
+                // Keep checking
+                requestAnimationFrame(checkStability);
+              }
+            };
+            
+            requestAnimationFrame(checkStability);
           };
           
-          requestAnimationFrame(() => checkStability());
-        };
-        
-        setTimeout(stabilizeAndCorrect, 500);
+          // Wait for smooth scroll to mostly finish (~500ms) then run stabilization
+          setTimeout(stabilizeAndCorrect, 500);
+        }
+        // If we're already at the right position, don't scroll at all
       }
     };
 
-    // Set slideshow book IMMEDIATELY if it's a slideshow book
+    // Set slideshow book IMMEDIATELY if it's a slideshow book to prevent flickering
     if (onBookClick && book.slideToBook !== undefined) {
       onBookClick(book.id, book.slideToBook);
       
+      // Small delay to let slideshow update, then scroll only if needed
       requestAnimationFrame(() => {
         scrollToSection();
       });
     } else {
+      // For non-slideshow books, scroll immediately
       scrollToSection();
       
       if (onBookClick) {
