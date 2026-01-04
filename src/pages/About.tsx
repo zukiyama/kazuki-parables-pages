@@ -5,7 +5,7 @@ import { useScrollAnimation } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 import artistPortrait from "@/assets/artist-portrait-new.png";
-import parisSquare from "@/assets/paris-square-background.jpg";
+import parisSquare from "@/assets/paris-square-background-extended.jpg";
 import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
 import backgroundSphere from "@/assets/about-background-new.png";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
