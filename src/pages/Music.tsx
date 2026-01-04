@@ -352,14 +352,14 @@ const Music = () => {
     if (!isWidescreen) return;
 
     let lastScrollY = window.scrollY;
-    let wasAtTop = window.scrollY <= 1;
+    let wasAtTop = window.scrollY <= 50;
 
     const handleScrollForBanner = () => {
       const scrollTop = window.scrollY;
-      const isAtTop = scrollTop <= 1;
+      const isAtTop = scrollTop <= 50;
       const isScrollingDown = scrollTop > lastScrollY;
       
-      // If at the very top (within 1px), show banner
+      // If at or near the top (within 50px), show banner
       // BUT only if we didn't just manually hide it (e.g., by clicking an album cover in banner)
       if (isAtTop) {
         if (!bannerManuallyHiddenRef.current) {
