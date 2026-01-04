@@ -146,10 +146,14 @@ const Writing = () => {
 
 
   // Scroll snap logic - loose snapping, only when section fills most of screen, DESKTOP ONLY
-  // DISABLED for 16:9/16:10 widescreen devices
+  // With viewport height hysteresis for widescreen to handle browser bar show/hide
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let lastSnappedSection: string | null = null;
+    
+    // Hysteresis for widescreen viewport height - prevents snap recalc when browser bar appears/disappears
+    const VIEWPORT_HEIGHT_HYSTERESIS = 80; // Browser bar is typically 50-80px
+    let stableViewportHeight: number | null = null;
     
     // Sections that should NOT have snap behavior (except young-adult which has special handling)
     const noSnapSections = ['kaiju'];
@@ -175,8 +179,28 @@ const Writing = () => {
     };
 
     // Use visualViewport.height on iOS for accurate measurements
+    // With hysteresis for widescreen devices to handle browser bar show/hide
     const getViewportHeight = () => {
-      return window.visualViewport?.height ?? window.innerHeight;
+      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
+      const isWidescreenDevice = window.innerWidth / currentHeight >= 1.5; // Slightly lower threshold to catch transitional states
+      
+      // Only apply hysteresis on widescreen devices (iPad 10.9" in landscape triggers widescreen)
+      if (isWidescreenDevice) {
+        if (stableViewportHeight === null) {
+          // Initialize with current height
+          stableViewportHeight = currentHeight;
+        } else {
+          // Only update stable height if change exceeds hysteresis threshold
+          const heightDiff = Math.abs(currentHeight - stableViewportHeight);
+          if (heightDiff > VIEWPORT_HEIGHT_HYSTERESIS) {
+            stableViewportHeight = currentHeight;
+          }
+        }
+        return stableViewportHeight;
+      }
+      
+      // For non-widescreen devices, return actual height (no hysteresis needed)
+      return currentHeight;
     };
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
