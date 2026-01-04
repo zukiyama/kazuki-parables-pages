@@ -45,9 +45,11 @@ export interface YoungAdultSlideshowRef {
 
 export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdultSlideshowProps>(({ onBookChange, isWidescreen = false }, ref) => {
   const [currentBook, setCurrentBookState] = useState(0);
+  const [translateX, setTranslateX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const touchStartX = useRef<number | null>(null);
-  const touchEndX = useRef<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const slidesRef = useRef<HTMLDivElement>(null);
 
   const setCurrentBook = (index: number) => {
     setCurrentBookState(index);
@@ -71,50 +73,63 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     });
   }, []);
 
+  const goToBook = (index: number) => {
+    const clampedIndex = Math.max(0, Math.min(index, books.length - 1));
+    setCurrentBook(clampedIndex);
+  };
+
   const nextBook = () => {
-    const newIndex = (currentBook + 1) % books.length;
-    setCurrentBook(newIndex);
+    if (currentBook < books.length - 1) {
+      goToBook(currentBook + 1);
+    }
   };
 
   const prevBook = () => {
-    const newIndex = (currentBook - 1 + books.length) % books.length;
-    setCurrentBook(newIndex);
+    if (currentBook > 0) {
+      goToBook(currentBook - 1);
+    }
   };
 
-  // Touch/swipe handlers for mobile
+  // Touch/swipe handlers for smooth mobile sliding
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
-    touchEndX.current = null;
+    setIsDragging(true);
+    setTranslateX(0);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
+    if (touchStartX.current === null) return;
+    
+    const currentX = e.touches[0].clientX;
+    const diff = currentX - touchStartX.current;
+    
+    // Add resistance at edges
+    if ((currentBook === 0 && diff > 0) || (currentBook === books.length - 1 && diff < 0)) {
+      setTranslateX(diff * 0.3); // Reduced movement at edges
+    } else {
+      setTranslateX(diff);
+    }
   };
 
   const handleTouchEnd = () => {
-    if (touchStartX.current === null || touchEndX.current === null) return;
+    if (touchStartX.current === null) return;
     
-    const swipeDistance = touchStartX.current - touchEndX.current;
-    const minSwipeDistance = 50; // Minimum swipe distance to trigger navigation
+    const swipeThreshold = 50;
     
-    if (Math.abs(swipeDistance) > minSwipeDistance) {
-      if (swipeDistance > 0) {
-        // Swiped left - go to next book
-        nextBook();
-      } else {
-        // Swiped right - go to previous book
-        prevBook();
-      }
+    if (translateX < -swipeThreshold && currentBook < books.length - 1) {
+      // Swiped left - go to next book
+      goToBook(currentBook + 1);
+    } else if (translateX > swipeThreshold && currentBook > 0) {
+      // Swiped right - go to previous book
+      goToBook(currentBook - 1);
     }
     
+    setTranslateX(0);
+    setIsDragging(false);
     touchStartX.current = null;
-    touchEndX.current = null;
   };
 
-  const book = books[currentBook];
-
   // Widescreen: scale the entire slideshow to fit viewport WITHOUT banner (80vh matches book cover heights)
-  // max-w-5xl adds breathing space on wider screens
   const containerClasses = isWidescreen
     ? "relative w-full max-w-5xl mx-auto bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20 h-[calc(80vh)] flex flex-col"
     : "relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20";
@@ -125,8 +140,8 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
 
   // Widescreen book covers: larger to fill the container better
   const imageClasses = isWidescreen
-    ? "h-[calc(65vh)] w-auto mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100"
-    : "w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg transition-opacity duration-100 max-sm:max-w-[200px]";
+    ? "h-[calc(65vh)] w-auto mx-auto object-contain rounded-lg shadow-lg"
+    : "w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg max-sm:max-w-[200px]";
 
   const seriesClasses = isWidescreen
     ? "font-serif text-xs uppercase tracking-widest text-yellow-300/80 mb-1 drop-shadow-lg"
@@ -165,35 +180,53 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div className={contentPadding}>
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 items-center max-sm:gap-4 ${
-          book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
-        } ${isWidescreen ? "h-full" : ""}`}>
-          {/* Book Cover */}
-          <div className={book.layout === "cover-right" ? "lg:col-start-2" : ""}>
-            <img 
-              key={`cover-${currentBook}`}
-              src={book.cover} 
-              alt={book.title}
-              className={imageClasses}
-              loading="eager"
-            />
+      {/* Slides container - all slides rendered, positioned side by side */}
+      <div 
+        ref={slidesRef}
+        className="flex w-full h-full"
+        style={{
+          transform: `translateX(calc(-${currentBook * 100}% + ${translateX}px))`,
+          transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          willChange: 'transform'
+        }}
+      >
+        {books.map((book, index) => (
+          <div 
+            key={index}
+            className="flex-shrink-0 w-full h-full"
+          >
+            <div className={contentPadding}>
+              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 items-center max-sm:gap-4 ${
+                book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
+              } ${isWidescreen ? "h-full" : ""}`}>
+                {/* Book Cover */}
+                <div className={book.layout === "cover-right" ? "lg:col-start-2" : ""}>
+                  <img 
+                    src={book.cover} 
+                    alt={book.title}
+                    className={imageClasses}
+                    loading="eager"
+                    draggable={false}
+                  />
+                </div>
+                
+                {/* Book Info */}
+                <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-24 pl-8"} md:pl-24 md:pr-24 max-sm:px-0 ${isWidescreen ? "flex flex-col justify-center" : ""}`}>
+                  {book.series && (
+                    <p className={seriesClasses}>{book.series}</p>
+                  )}
+                  <h3 className={titleClasses}>{book.title}</h3>
+                  {book.subtitle && (
+                    <h4 className={subtitleClasses}>{book.subtitle}</h4>
+                  )}
+                  <p className={summaryClasses}>
+                    {renderSummary(book.summary)}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-          
-          {/* Book Info */}
-          <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-24 pl-8"} md:pl-24 md:pr-24 max-sm:px-0 ${isWidescreen ? "flex flex-col justify-center" : ""}`}>
-            {book.series && (
-              <p className={seriesClasses}>{book.series}</p>
-            )}
-            <h3 className={titleClasses}>{book.title}</h3>
-            {book.subtitle && (
-              <h4 className={subtitleClasses}>{book.subtitle}</h4>
-            )}
-            <p className={summaryClasses}>
-              {renderSummary(book.summary)}
-            </p>
-          </div>
-        </div>
+        ))}
       </div>
       
       {/* Navigation - hidden on mobile, use swipe instead */}
@@ -202,7 +235,8 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
           variant="outline"
           size="lg"
           onClick={prevBook}
-          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl"
+          disabled={currentBook === 0}
+          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl disabled:opacity-30"
         >
           <ChevronLeft className="w-6 h-6" />
         </Button>
@@ -212,7 +246,8 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
           variant="outline"
           size="lg"
           onClick={nextBook}
-          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl"
+          disabled={currentBook === books.length - 1}
+          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl disabled:opacity-30"
         >
           <ChevronRight className="w-6 h-6" />
         </Button>
@@ -223,7 +258,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
         {books.map((_, index) => (
           <div
             key={index}
-            className={`w-2 h-2 rounded-full ${
+            className={`w-2 h-2 rounded-full transition-colors duration-300 ${
               index === currentBook ? 'bg-yellow-300' : 'bg-yellow-300/40'
             }`}
           />
