@@ -542,7 +542,11 @@ const Index = () => {
               {images.map((_, index) => (
                 <button 
                   key={index}
-                  onClick={() => emblaApi?.scrollTo(index)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    emblaApi?.scrollTo(index);
+                  }}
                   className={`transition-all duration-300 cursor-pointer ${currentImage === index ? 'w-6 h-2 rounded-full bg-white' : 'w-2 h-2 rounded-full bg-white/60 hover:bg-white/90'}`}
                   aria-label={`View slide ${index + 1}`}
                 />
