@@ -133,6 +133,19 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
     });
   });
 
+  // Detect if device is iPad 10.9" in portrait mode (not a phone)
+  // iPad 10.9" portrait is approximately 820x1180 with aspect ratio ~1.44
+  // Phones are typically narrower (< 500px) or have different aspect ratios
+  const isTabletPortrait = (): boolean => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const aspectRatio = height / width;
+    
+    // Tablet portrait: width between 700-900px and aspect ratio > 1.3 (taller than wide)
+    // This excludes phones which are typically narrower
+    return width >= 700 && width <= 900 && aspectRatio > 1.3;
+  };
+
   const handleBookClick = (book: Book) => {
     // For widescreen: hide banner when clicking any book
     if (isWidescreen && onBannerHide) {
@@ -206,7 +219,12 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
           const imgHeight = imgRect.height;
           const imgTop = imgRect.top + window.scrollY;
           const imgCenter = imgTop + (imgHeight / 2);
-          const desiredCenterY = topOffset + (availableHeight / 2);
+          
+          // For iPad 10.9" portrait mode only: shift the target higher to give more breathing room
+          // The book covers appear too low in the viewport on this device
+          const tabletPortraitOffset = isTabletPortrait() ? 50 : 0;
+          
+          const desiredCenterY = topOffset + (availableHeight / 2) - tabletPortraitOffset;
           targetScrollPosition = Math.max(0, imgCenter - desiredCenterY);
         } else {
           const sectionTop = section.getBoundingClientRect().top + window.scrollY;
