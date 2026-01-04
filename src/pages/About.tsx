@@ -87,7 +87,7 @@ const About = () => {
                       <span className="italic font-light">Yamakawa</span>
                     </h1>
                     {/* Subheading at bottom, aligned with photo bottom */}
-                    <p className="font-body text-xl xl:text-2xl text-black leading-snug">
+                    <p className="font-body text-xl xl:text-2xl text-black leading-snug mt-4">
                       A multi-disciplinary artist working in literature,<br />music and visual storytelling.
                     </p>
                   </div>
