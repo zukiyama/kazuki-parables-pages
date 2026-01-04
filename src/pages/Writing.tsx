@@ -572,14 +572,14 @@ const Writing = () => {
     if (!isWidescreen) return;
 
     let lastScrollY = window.scrollY;
-    let wasAtTop = window.scrollY <= 50;
+    let wasAtTop = window.scrollY <= 1;
 
     const handleScrollForBanner = () => {
       const scrollTop = window.scrollY;
-      const isAtTop = scrollTop <= 50;
+      const isAtTop = scrollTop <= 1;
       const isScrollingDown = scrollTop > lastScrollY;
       
-      // If at or near the top (within 50px), show banner
+      // If at the very top (within 1px), show banner
       // BUT only if we didn't just manually hide it (e.g., by clicking a book cover in banner)
       if (isAtTop) {
         if (!bannerManuallyHiddenRef.current) {
