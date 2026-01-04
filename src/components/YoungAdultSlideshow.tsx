@@ -180,7 +180,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     : "relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20";
 
   const contentPadding = isWidescreen
-    ? "relative px-20 py-4 md:px-16 lg:px-12 pb-10 max-sm:px-8 max-sm:py-4 max-sm:pb-12 flex-1"
+    ? "relative px-20 pt-8 md:px-16 lg:px-12 pb-10 max-sm:px-8 max-sm:py-4 max-sm:pb-12 flex-1 flex items-center"
     : "relative px-20 py-8 md:px-16 lg:px-12 pb-16 max-sm:px-4 max-sm:py-4 max-sm:pb-12";
 
   // Widescreen book covers: larger to fill the container better
