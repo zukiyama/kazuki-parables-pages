@@ -5,7 +5,7 @@ import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useCirclePhysics } from "@/hooks/useCirclePhysics";
 import { useHeroHeight } from "@/hooks/useHeroHeight";
-import { useResponsiveLayout } from "@/hooks/useResponsiveLayout";
+import { useIsMobile } from "@/hooks/use-mobile";
 import japaneseBackground from "@/assets/japanese-painting-background.jpg";
 import officeView from "@/assets/office-window-view.jpg";
 import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
@@ -18,7 +18,7 @@ import useEmblaCarousel from "embla-carousel-react";
 const Index = () => {
   useScrollToTop();
   useHeroHeight();
-  const { isMobile, isWidescreen } = useResponsiveLayout();
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
   const [showMagazine, setShowMagazine] = useState(false);
@@ -537,23 +537,21 @@ const Index = () => {
           
           {/* Dissolve slides */}
           <div className="relative w-screen h-screen-stable overflow-hidden">
-            {/* Navigation dots - widescreen with mouse only */}
-            {isWidescreen && (
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 items-center gap-2 z-30 hidden pointer-fine:flex">
-                {images.map((_, index) => (
-                  <button 
-                    key={index}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      emblaApi?.scrollTo(index);
-                    }}
-                    className={`transition-all duration-300 cursor-pointer ${currentImage === index ? 'w-6 h-2 rounded-full bg-white' : 'w-2 h-2 rounded-full bg-white/60 hover:bg-white/90'}`}
-                    aria-label={`View slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-            )}
+            {/* Navigation dots - desktop only */}
+            <div className="hidden lg:flex absolute bottom-8 left-1/2 -translate-x-1/2 items-center gap-2 z-30">
+              {images.map((_, index) => (
+                <button 
+                  key={index}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    emblaApi?.scrollTo(index);
+                  }}
+                  className={`transition-all duration-300 cursor-pointer ${currentImage === index ? 'w-6 h-2 rounded-full bg-white' : 'w-2 h-2 rounded-full bg-white/60 hover:bg-white/90'}`}
+                  aria-label={`View slide ${index + 1}`}
+                />
+              ))}
+            </div>
             {images.map((image, index) => (
               <div 
                 key={index} 
