@@ -1,4 +1,4 @@
-import { useState, forwardRef, useImperativeHandle, useEffect } from "react";
+import { useState, forwardRef, useImperativeHandle, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -45,6 +45,9 @@ export interface YoungAdultSlideshowRef {
 
 export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdultSlideshowProps>(({ onBookChange, isWidescreen = false }, ref) => {
   const [currentBook, setCurrentBookState] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const setCurrentBook = (index: number) => {
     setCurrentBookState(index);
@@ -60,6 +63,14 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     onBookChange?.(0);
   }, [onBookChange]);
 
+  // Preload all book covers immediately
+  useEffect(() => {
+    books.forEach(book => {
+      const img = new Image();
+      img.src = book.cover;
+    });
+  }, []);
+
   const nextBook = () => {
     const newIndex = (currentBook + 1) % books.length;
     setCurrentBook(newIndex);
@@ -68,6 +79,36 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
   const prevBook = () => {
     const newIndex = (currentBook - 1 + books.length) % books.length;
     setCurrentBook(newIndex);
+  };
+
+  // Touch/swipe handlers for mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = null;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    
+    const swipeDistance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50; // Minimum swipe distance to trigger navigation
+    
+    if (Math.abs(swipeDistance) > minSwipeDistance) {
+      if (swipeDistance > 0) {
+        // Swiped left - go to next book
+        nextBook();
+      } else {
+        // Swiped right - go to previous book
+        prevBook();
+      }
+    }
+    
+    touchStartX.current = null;
+    touchEndX.current = null;
   };
 
   const book = books[currentBook];
@@ -80,7 +121,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
 
   const contentPadding = isWidescreen
     ? "relative px-20 py-4 md:px-16 lg:px-12 pb-10 max-sm:px-8 max-sm:py-4 max-sm:pb-12 flex-1"
-    : "relative px-20 py-8 md:px-16 lg:px-12 pb-16 max-sm:px-8 max-sm:py-4 max-sm:pb-12";
+    : "relative px-20 py-8 md:px-16 lg:px-12 pb-16 max-sm:px-4 max-sm:py-4 max-sm:pb-12";
 
   // Widescreen book covers: larger to fill the container better
   const imageClasses = isWidescreen
@@ -117,7 +158,13 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
   };
 
   return (
-    <div className={containerClasses}>
+    <div 
+      ref={containerRef}
+      className={containerClasses}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <div className={contentPadding}>
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 items-center max-sm:gap-4 ${
           book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
@@ -149,25 +196,25 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
         </div>
       </div>
       
-      {/* Navigation */}
-      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 max-sm:left-2">
+      {/* Navigation - hidden on mobile, use swipe instead */}
+      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 max-sm:hidden">
         <Button
           variant="outline"
           size="lg"
           onClick={prevBook}
-          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl max-sm:w-8 max-sm:h-8"
+          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl"
         >
-          <ChevronLeft className="w-6 h-6 max-sm:w-4 max-sm:h-4" />
+          <ChevronLeft className="w-6 h-6" />
         </Button>
       </div>
-      <div className="absolute right-4 top-1/2 transform -translate-y-1/2 max-sm:right-2">
+      <div className="absolute right-4 top-1/2 transform -translate-y-1/2 max-sm:hidden">
         <Button
           variant="outline"
           size="lg"
           onClick={nextBook}
-          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl max-sm:w-8 max-sm:h-8"
+          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl"
         >
-          <ChevronRight className="w-6 h-6 max-sm:w-4 max-sm:h-4" />
+          <ChevronRight className="w-6 h-6" />
         </Button>
       </div>
       
