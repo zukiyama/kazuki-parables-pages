@@ -47,9 +47,16 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
   const [currentBook, setCurrentBookState] = useState(0);
   const [translateX, setTranslateX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isSwipeActive, setIsSwipeActive] = useState(false);
   const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const swipeDecided = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const slidesRef = useRef<HTMLDivElement>(null);
+  
+  // Thresholds for swipe detection
+  const SWIPE_START_THRESHOLD = 15; // Minimum horizontal movement to start tracking swipe
+  const SWIPE_COMPLETE_THRESHOLD = 50; // Minimum to complete a slide change
 
   const setCurrentBook = (index: number) => {
     setCurrentBookState(index);
@@ -90,43 +97,81 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     }
   };
 
-  // Touch/swipe handlers for smooth mobile sliding
+  // Touch/swipe handlers - only activate on intentional horizontal swipes
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
-    setIsDragging(true);
+    touchStartY.current = e.touches[0].clientY;
+    swipeDecided.current = false;
+    setIsSwipeActive(false);
+    setIsDragging(false);
     setTranslateX(0);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
+    if (touchStartX.current === null || touchStartY.current === null) return;
     
     const currentX = e.touches[0].clientX;
-    const diff = currentX - touchStartX.current;
+    const currentY = e.touches[0].clientY;
+    const diffX = currentX - touchStartX.current;
+    const diffY = currentY - touchStartY.current;
+    
+    // If we haven't decided yet whether this is a swipe or scroll
+    if (!swipeDecided.current) {
+      const absDiffX = Math.abs(diffX);
+      const absDiffY = Math.abs(diffY);
+      
+      // Need minimum movement before deciding
+      if (absDiffX < SWIPE_START_THRESHOLD && absDiffY < SWIPE_START_THRESHOLD) {
+        return; // Not enough movement yet, don't do anything
+      }
+      
+      // Decide: if horizontal movement is greater than vertical, it's a swipe
+      if (absDiffX > absDiffY && absDiffX >= SWIPE_START_THRESHOLD) {
+        swipeDecided.current = true;
+        setIsSwipeActive(true);
+        setIsDragging(true);
+      } else {
+        // Vertical scroll - ignore this touch sequence for swiping
+        swipeDecided.current = true;
+        setIsSwipeActive(false);
+        return;
+      }
+    }
+    
+    // Only track horizontal movement if we decided this is a swipe
+    if (!isSwipeActive && !swipeDecided.current) return;
+    if (swipeDecided.current && !isSwipeActive) return;
     
     // Add resistance at edges
-    if ((currentBook === 0 && diff > 0) || (currentBook === books.length - 1 && diff < 0)) {
-      setTranslateX(diff * 0.3); // Reduced movement at edges
+    if ((currentBook === 0 && diffX > 0) || (currentBook === books.length - 1 && diffX < 0)) {
+      setTranslateX(diffX * 0.3); // Reduced movement at edges
     } else {
-      setTranslateX(diff);
+      setTranslateX(diffX);
     }
   };
 
   const handleTouchEnd = () => {
-    if (touchStartX.current === null) return;
+    if (touchStartX.current === null) {
+      return;
+    }
     
-    const swipeThreshold = 50;
-    
-    if (translateX < -swipeThreshold && currentBook < books.length - 1) {
-      // Swiped left - go to next book
-      goToBook(currentBook + 1);
-    } else if (translateX > swipeThreshold && currentBook > 0) {
-      // Swiped right - go to previous book
-      goToBook(currentBook - 1);
+    // Only process swipe if we were actively swiping
+    if (isSwipeActive) {
+      if (translateX < -SWIPE_COMPLETE_THRESHOLD && currentBook < books.length - 1) {
+        // Swiped left - go to next book
+        goToBook(currentBook + 1);
+      } else if (translateX > SWIPE_COMPLETE_THRESHOLD && currentBook > 0) {
+        // Swiped right - go to previous book
+        goToBook(currentBook - 1);
+      }
     }
     
     setTranslateX(0);
     setIsDragging(false);
+    setIsSwipeActive(false);
     touchStartX.current = null;
+    touchStartY.current = null;
+    swipeDecided.current = false;
   };
 
   // Widescreen: scale the entire slideshow to fit viewport WITHOUT banner (80vh matches book cover heights)
