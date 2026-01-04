@@ -184,6 +184,14 @@
   }
 
   /* 
+   * HERO stable height - uses clamp to prevent layout shifts on iPad
+   * when browser bars collapse/expand. Does NOT depend on viewport changes.
+   */
+  .h-hero-stable {
+    height: clamp(460px, 70svh, 820px);
+  }
+
+  /* 
    * OVERSCAN background layer - frozen size with extra height to prevent
    * white bar when browser UI collapses, without resizing.
    * 
