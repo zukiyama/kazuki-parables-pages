@@ -154,6 +154,38 @@ const Writing = () => {
     // Sections that should NOT have snap behavior (except young-adult which has special handling)
     const noSnapSections = ['kaiju'];
 
+    // Detect 12.9" iPad (1024x1366 portrait / 1366x1024 landscape) - exclude from locked height fix
+    const is129iPad = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const maxDim = Math.max(w, h);
+      const minDim = Math.min(w, h);
+      // 12.9" iPad: ~1024x1366 (allow some tolerance for browser chrome)
+      return (maxDim >= 1300 && maxDim <= 1400) && (minDim >= 1000 && minDim <= 1100);
+    };
+
+    // Lock viewport height to prevent drift when Safari address bar collapses
+    // Only update on significant changes (orientation/real resize), not browser chrome
+    // This fix is NOT applied to 12.9" iPad
+    let lockedViewportHeight = window.visualViewport?.height ?? window.innerHeight;
+    const VIEWPORT_HYSTERESIS = 120; // Ignore changes smaller than this (browser chrome is ~100px)
+
+    const updateLockedHeight = (force = false) => {
+      // Skip locked height logic for 12.9" iPad - use live height instead
+      if (is129iPad()) {
+        lockedViewportHeight = window.visualViewport?.height ?? window.innerHeight;
+        return;
+      }
+      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
+      if (force || Math.abs(currentHeight - lockedViewportHeight) > VIEWPORT_HYSTERESIS) {
+        lockedViewportHeight = currentHeight;
+      }
+    };
+
+    // Initialize locked height
+    updateLockedHeight(true);
+    requestAnimationFrame(() => updateLockedHeight(true));
+
     const getBookSections = () => {
       // Disable scroll snap on mobile
       if (window.innerWidth < 950) return [];
@@ -174,9 +206,10 @@ const Writing = () => {
       return bookSections;
     };
 
-    // Use visualViewport.height on iOS for accurate measurements
+    // Use LOCKED viewport height for snap calculations to prevent drift
+    // when Safari address bar collapses/expands (except on 12.9" iPad)
     const getViewportHeight = () => {
-      return window.visualViewport?.height ?? window.innerHeight;
+      return lockedViewportHeight;
     };
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
@@ -369,14 +402,30 @@ const Writing = () => {
       }
     };
 
+    // Handle viewport resize with hysteresis - only update on real changes
+    const handleViewportResize = () => {
+      updateLockedHeight(false);
+    };
+
+    // Handle orientation change - force update locked height
+    const handleOrientationChange = () => {
+      setTimeout(() => {
+        updateLockedHeight(true);
+      }, 300);
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('mousedown', handleMouseDown, { passive: true });
     window.addEventListener('mouseup', handleMouseUp, { passive: true });
+    window.visualViewport?.addEventListener('resize', handleViewportResize);
+    window.addEventListener('orientationchange', handleOrientationChange);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
+      window.visualViewport?.removeEventListener('resize', handleViewportResize);
+      window.removeEventListener('orientationchange', handleOrientationChange);
       clearTimeout(scrollTimeout);
     };
   }, [getHeaderBottom, isWidescreen]);
