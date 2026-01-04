@@ -146,14 +146,11 @@ const Writing = () => {
 
 
   // Scroll snap logic - loose snapping, only when section fills most of screen, DESKTOP ONLY
-  // With viewport height hysteresis for widescreen to handle browser bar show/hide
+  // Fixed for iPad Safari: always use current visualViewport.height at snap time
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let lastSnappedSection: string | null = null;
-    
-    // Hysteresis for widescreen viewport height - prevents snap recalc when browser bar appears/disappears
-    const VIEWPORT_HEIGHT_HYSTERESIS = 80; // Browser bar is typically 50-80px
-    let stableViewportHeight: number | null = null;
+    let visualViewportResizeTimeout: NodeJS.Timeout;
     
     // Sections that should NOT have snap behavior (except young-adult which has special handling)
     const noSnapSections = ['kaiju'];
@@ -179,28 +176,10 @@ const Writing = () => {
     };
 
     // Use visualViewport.height on iOS for accurate measurements
-    // With hysteresis for widescreen devices to handle browser bar show/hide
+    // NO hysteresis - always use current viewport height for accurate snap positioning
+    // This fixes iPad Safari where browser bar collapse was causing snaps to land too low
     const getViewportHeight = () => {
-      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
-      const isWidescreenDevice = window.innerWidth / currentHeight >= 1.5; // Slightly lower threshold to catch transitional states
-      
-      // Only apply hysteresis on widescreen devices (iPad 10.9" in landscape triggers widescreen)
-      if (isWidescreenDevice) {
-        if (stableViewportHeight === null) {
-          // Initialize with current height
-          stableViewportHeight = currentHeight;
-        } else {
-          // Only update stable height if change exceeds hysteresis threshold
-          const heightDiff = Math.abs(currentHeight - stableViewportHeight);
-          if (heightDiff > VIEWPORT_HEIGHT_HYSTERESIS) {
-            stableViewportHeight = currentHeight;
-          }
-        }
-        return stableViewportHeight;
-      }
-      
-      // For non-widescreen devices, return actual height (no hysteresis needed)
-      return currentHeight;
+      return window.visualViewport?.height ?? window.innerHeight;
     };
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
@@ -393,15 +372,35 @@ const Writing = () => {
       }
     };
 
+    // Safari visualViewport resize handler - re-trigger snap when browser bar collapses/expands
+    // This fixes iPad 10.9" landscape where snap positions were calculated with old viewport height
+    const handleVisualViewportResize = () => {
+      // Only apply to widescreen devices
+      const isWidescreenDevice = window.innerWidth / (window.visualViewport?.height ?? window.innerHeight) >= 1.5;
+      if (!isWidescreenDevice) return;
+      
+      // Debounce to wait for viewport transition to settle
+      clearTimeout(visualViewportResizeTimeout);
+      visualViewportResizeTimeout = setTimeout(() => {
+        // Re-trigger snap calculation with new viewport dimensions
+        if (!isSnapping.current && !isDraggingScrollbar.current) {
+          handleScrollEnd();
+        }
+      }, 160); // ~160ms for Safari bar animation to finish
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('mousedown', handleMouseDown, { passive: true });
     window.addEventListener('mouseup', handleMouseUp, { passive: true });
+    window.visualViewport?.addEventListener('resize', handleVisualViewportResize);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
+      window.visualViewport?.removeEventListener('resize', handleVisualViewportResize);
       clearTimeout(scrollTimeout);
+      clearTimeout(visualViewportResizeTimeout);
     };
   }, [getHeaderBottom, isWidescreen]);
 
