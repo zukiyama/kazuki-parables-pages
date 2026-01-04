@@ -40,8 +40,8 @@ const About = () => {
       
       {/* Hero Section with Paris Square Background */}
       <div className="relative min-h-screen-stable">
-        {/* Full-screen Paris background - positioned below header */}
-        <div className="absolute inset-0 top-[60px] sm:top-[64px]">
+        {/* Full-screen Paris background */}
+        <div className="absolute inset-0">
           <OptimizedImage 
             src={parisSquare}
             alt="Parisian square with pigeons"
