@@ -537,6 +537,17 @@ const Index = () => {
           
           {/* Dissolve slides */}
           <div className="relative w-screen h-screen-stable overflow-hidden">
+            {/* Navigation dots - desktop only */}
+            <div className="hidden lg:flex absolute bottom-8 left-1/2 -translate-x-1/2 items-center gap-2 z-30">
+              {images.map((_, index) => (
+                <button 
+                  key={index}
+                  onClick={() => emblaApi?.scrollTo(index)}
+                  className={`transition-all duration-300 cursor-pointer ${currentImage === index ? 'w-6 h-2 rounded-full bg-white' : 'w-2 h-2 rounded-full bg-white/60 hover:bg-white/90'}`}
+                  aria-label={`View slide ${index + 1}`}
+                />
+              ))}
+            </div>
             {images.map((image, index) => (
               <div 
                 key={index} 
