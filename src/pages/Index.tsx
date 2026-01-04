@@ -282,7 +282,7 @@ const Index = () => {
         />
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-20 text-center px-6">
-          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
+          <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 lg:mb-8 tracking-wide drop-shadow-md">
             Kazuki Yamakawa
           </h1>
           <p className="font-body text-xl md:text-2xl text-foreground/80 animate-fade-in-delayed">
