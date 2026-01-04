@@ -60,12 +60,12 @@ const About = () => {
       <Navigation />
       
       {/* Hero Section with Paris Square Background - top aligned exactly to header bottom */}
-      <div className="relative min-h-screen-stable" style={{ marginTop: 0, paddingTop: 0 }}>
-        {/* Full-screen Paris background - positioned to start exactly at header bottom */}
-        <div 
-          className="absolute left-0 right-0 bottom-0"
-          style={{ top: headerHeight }}
-        >
+      <div 
+        className="relative min-h-screen-stable"
+        style={{ paddingTop: headerHeight }}
+      >
+        {/* Full-screen Paris background - covers entire section including under header */}
+        <div className="absolute inset-0" style={{ top: headerHeight }}>
           <OptimizedImage 
             src={parisSquare}
             alt="Parisian square with pigeons"
@@ -77,7 +77,7 @@ const About = () => {
         </div>
         
         {/* Editorial Top Bar - dynamically positioned below header */}
-        <div className="relative z-10 px-8 md:px-16 lg:px-24" style={{ paddingTop: headerHeight + 16 }}>
+        <div className="relative z-10 px-8 md:px-16 lg:px-24 pt-4">
           <div className="border-b-2 border-black pb-4 mb-8">
             <span className="font-body text-sm tracking-[0.3em] uppercase text-black">
               Author · Composer
