@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useCirclePhysics } from "@/hooks/useCirclePhysics";
@@ -613,29 +614,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer/Contact */}
-      <footer className="bg-card border-t border-border py-12 mt-auto shrink-0">
-        <div className="container mx-auto px-6 text-center">
-          <h3 className="font-heading text-2xl mb-6 text-ink-black">Contact</h3>
-          <p className="font-body text-muted-foreground">
-            kazuki@kazukiyamakawa.com
-          </p>
-          <div className="flex justify-center space-x-8 mt-8">
-            <Link to="/about" onClick={() => window.scrollTo(0, 0)} className="font-body text-ink-black hover:text-ink-black/80 transition-colors">
-              About
-            </Link>
-            <Link to="/writing" onClick={() => window.scrollTo(0, 0)} className="font-body text-ink-black hover:text-ink-black/80 transition-colors">
-              Writing
-            </Link>
-            <Link to="/music" onClick={() => window.scrollTo(0, 0)} className="font-body text-ink-black hover:text-ink-black/80 transition-colors">
-              Music
-            </Link>
-            <Link to="/comics" onClick={() => window.scrollTo(0, 0)} className="font-body text-ink-black hover:text-ink-black/80 transition-colors">
-              Comics & Scripts
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer variant="light" showNavLinks={true} />
     </div>
   );
 };
