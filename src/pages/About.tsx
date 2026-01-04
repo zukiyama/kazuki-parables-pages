@@ -41,11 +41,12 @@ const About = () => {
       {/* Hero Section with Paris Square Background */}
       <div className="relative min-h-screen-stable">
         {/* Full-screen Paris background */}
-        <div className="absolute inset-0 overflow-hidden">
-          <img 
+        <div className="absolute inset-0">
+          <OptimizedImage 
             src={parisSquare}
             alt="Parisian square with pigeons"
             className="w-full h-full object-cover"
+            priority
           />
           {/* Subtle overlay to improve text readability - more opacity on mobile and iPad desktop for better text visibility */}
           <div className="absolute inset-0 bg-white/20 max-sm:bg-white/50 lg:bg-white/45 2xl:bg-white/20 xl:bg-white/35" />
