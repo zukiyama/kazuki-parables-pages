@@ -180,11 +180,11 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   const currentItems = showEPs ? eps : albums;
 
   return (
-    <div data-banner="album" className="py-3 max-sm:py-4 bg-black/80 backdrop-blur-sm overflow-visible relative">
-      <div className="container mx-auto px-6 max-sm:px-0 relative">
-        <div className="flex justify-center items-center pb-2 relative overflow-y-visible">
-          {/* Desktop view - with transitions */}
-          <div className="hidden sm:flex justify-center items-center gap-8 overflow-visible">
+    <div data-banner="album" className="py-3 max-sm:py-2 bg-black/80 backdrop-blur-sm overflow-visible relative">
+      <div className="container mx-auto px-6 max-sm:px-0 relative overflow-visible">
+        <div className="flex justify-center items-center pb-2 max-sm:pb-0 relative overflow-visible">
+          {/* Desktop view - with transitions (hidden on iPad portrait) */}
+          <div className="hidden sm:flex portrait:[@media(min-width:768px)_and_(max-width:1024px)]:hidden justify-center items-center gap-8 overflow-visible">
             <div
               ref={containerRef}
               className={`flex justify-center items-center gap-8 transition-all duration-500 ${
@@ -241,11 +241,10 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             </div>
           </div>
 
-          {/* Mobile view - Swipeable carousel between Albums and EP */}
+          {/* Mobile view - Swipeable carousel between Albums and EP (also used for iPad portrait) */}
           <div 
             ref={carouselContainerRef}
-            className="flex sm:hidden w-full overflow-hidden relative"
-            style={{ minHeight: '90px' }}
+            className="flex sm:hidden portrait:[@media(min-width:768px)_and_(max-width:1024px)]:flex w-full overflow-visible relative"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -272,7 +271,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             >
               <div 
                 ref={epScrollRef}
-                className="flex items-center px-4 pb-3 w-full"
+                className="flex items-center px-4 pb-1 w-full overflow-visible"
               >
                 {/* Spacer for centering - same width as Albums indicator */}
                 <div className="w-16 flex-shrink-0"></div>
@@ -362,7 +361,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             >
               <div 
                 ref={albumsScrollRef}
-                className="flex items-start pl-4 pr-4 pb-3 overflow-x-auto scrollbar-hide"
+                className="flex items-start pl-4 pr-4 pb-1 overflow-x-auto overflow-y-visible scrollbar-hide"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {albums.map((item, index) => {
