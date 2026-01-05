@@ -38,7 +38,7 @@ export const Footer = ({
                   Subscribe for updates on new releases and projects
                 </p>
                 <a
-                  href="https://kazukiyamakawa.substack.com"
+                  href="https://kazukiyamakawa.substack.com/subscribe"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`inline-flex items-center gap-2 px-6 py-3 rounded-full font-body text-sm tracking-wide transition-all duration-300 ${
