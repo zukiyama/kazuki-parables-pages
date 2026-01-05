@@ -409,177 +409,131 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             </div>
           </div>
 
-          {/* iPad Portrait view - Swipeable with triangular button at far right */}
-          <div 
-            className="hidden portrait:[@media(min-width:768px)_and_(max-width:1366px)]:flex w-full overflow-visible relative"
-            style={{ height: '115px' }}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            {/* EP Banner - iPad Portrait */}
-            <div 
-              className={`w-full flex-shrink-0 will-change-transform transition-all duration-500 ease-out overflow-visible ${
-                !mobileShowingAlbums && animationPhase === 'idle' ? 'relative opacity-100 translate-x-0' :
-                !mobileShowingAlbums && animationPhase === 'preparing' ? 'relative opacity-100 translate-x-0' :
-                targetView === 'albums' && animationPhase === 'sliding' ? 'absolute inset-0 opacity-0 -translate-x-full' :
-                targetView === 'ep' && animationPhase === 'preparing' ? 'absolute inset-0 opacity-0 translate-x-full' :
-                targetView === 'ep' && animationPhase === 'sliding' ? 'absolute inset-0 opacity-100 translate-x-0' :
-                'absolute inset-0 opacity-0 translate-x-full pointer-events-none'
+          {/* iPad Portrait view - Uses same desktop system */}
+          <div className="hidden portrait:[@media(min-width:768px)_and_(max-width:1366px)]:flex justify-center items-center gap-8 overflow-visible">
+            <div
+              className={`flex justify-center items-center gap-8 transition-all duration-500 ${
+                isTransitioning ? 'translate-x-[-100%] opacity-0' : 'translate-x-0 opacity-100'
               }`}
-              onTransitionEnd={targetView === 'ep' && animationPhase === 'sliding' ? handleTransitionEnd : undefined}
             >
-              <div 
-                className="flex items-center pl-6 pr-4 overflow-x-auto overflow-y-hidden scrollbar-hide h-full"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', touchAction: 'pan-x' }}
-              >
-                {/* Spacer for centering EP */}
-                <div className="flex-1"></div>
-                
-                {/* EP Cover */}
-                {eps.map((item) => (
-                  <div
-                    key={`ipad-ep-${item.id}`}
-                    className="flex flex-col items-center cursor-pointer group overflow-visible flex-shrink-0"
-                    onClick={() => handleAlbumClick(item)}
-                  >
-                    <h3 className="font-palatino text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
-                      {item.title}
-                    </h3>
-                    <div className="relative overflow-visible">
-                      <img
-                        src={item.cover}
-                        alt={item.title}
-                        width="96"
-                        height="96"
-                        loading="eager"
-                        className={`w-24 h-24 object-cover rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
-                          selectedAlbumId === item.id
-                            ? 'ring-2 ring-yellow-300/60 scale-105'
-                            : ''
-                        }`}
-                      />
-                      <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-                    </div>
-                  </div>
-                ))}
-
-                {/* Spacer for centering EP */}
-                <div className="flex-1"></div>
-
-                {/* Albums toggle button - inline at far right of scroll */}
-                <button
-                  onClick={() => {
-                    setIsRotating(true);
-                    setIsTransitioning(true);
-                    setTimeout(() => {
-                      switchToNext();
-                      setTimeout(() => setIsTransitioning(false), 50);
-                    }, 400);
-                  }}
-                  className="flex flex-col items-center gap-1 group hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-8"
-                  aria-label="Switch to Albums"
+              {currentItems.map((item) => (
+                <div
+                  key={`ipad-portrait-${item.id}`}
+                  className="flex flex-col items-center cursor-pointer group"
+                  onMouseEnter={() => setHoveredAlbum(item.id)}
+                  onMouseLeave={() => setHoveredAlbum(null)}
+                  onClick={() => handleAlbumClick(item)}
                 >
-                  <span className="font-palatino text-sm font-semibold text-yellow-300 whitespace-nowrap">
-                    Albums
-                  </span>
-                  <div className="w-14 h-14 flex items-center justify-center">
-                    <svg 
-                      width="48" 
-                      height="48" 
-                      viewBox="0 0 48 48" 
-                      fill="none" 
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={`text-yellow-300 ${isRotating ? 'animate-[spin-forward_0.6s_ease-in-out]' : ''}`}
-                    >
-                      <path d="M14 8 L38 24 L14 40 Z" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinejoin="round"/>
-                      <circle cx="20" cy="18" r="4.5" stroke="currentColor" strokeWidth="1.8" fill="none" opacity="0.65"/>
-                      <path d="M16 28 L24 30" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.7" strokeLinecap="round"/>
-                      <path d="M14 32 L22 34" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.5" strokeLinecap="round"/>
-                    </svg>
+                  <h3 className="font-palatino text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
+                    {item.title}
+                  </h3>
+                  
+                  <div className="relative">
+                    {item.cover ? (
+                      <>
+                        <img
+                          src={item.cover}
+                          alt={item.title}
+                          width="96"
+                          height="96"
+                          loading="eager"
+                          className={`w-24 h-24 object-cover rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
+                            selectedAlbumId === item.id
+                              ? 'ring-2 ring-yellow-300/60 scale-105'
+                              : hoveredAlbum === item.id 
+                              ? 'scale-105 shadow-2xl shadow-yellow-300/20' 
+                              : ''
+                          }`}
+                        />
+                        <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                      </>
+                    ) : (
+                      <div className={`w-24 h-24 rounded shadow-lg bg-black/40 border border-white/20 flex items-center justify-center transition-all duration-300 ${
+                        selectedAlbumId === item.id
+                          ? 'ring-2 ring-yellow-300/60 scale-105'
+                          : hoveredAlbum === item.id 
+                          ? 'scale-105 shadow-2xl shadow-yellow-300/20' 
+                          : ''
+                      }`}>
+                        <span className="text-white/60 text-xs font-semibold text-center px-2">
+                          Coming<br/>Soon
+                        </span>
+                      </div>
+                    )}
                   </div>
-                </button>
-              </div>
+                </div>
+              ))}
             </div>
-
-            {/* Albums Banner - iPad Portrait */}
-            <div 
-              className={`w-full flex-shrink-0 will-change-transform transition-all duration-500 ease-out overflow-visible ${
-                mobileShowingAlbums && animationPhase === 'idle' ? 'relative opacity-100 translate-x-0' :
-                mobileShowingAlbums && animationPhase === 'preparing' ? 'relative opacity-100 translate-x-0' :
-                targetView === 'ep' && animationPhase === 'sliding' ? 'absolute inset-0 opacity-0 -translate-x-full' :
-                targetView === 'albums' && animationPhase === 'preparing' ? 'absolute inset-0 opacity-0 translate-x-full' :
-                targetView === 'albums' && animationPhase === 'sliding' ? 'absolute inset-0 opacity-100 translate-x-0' :
-                'absolute inset-0 opacity-0 translate-x-full pointer-events-none'
-              }`}
-              onTransitionEnd={targetView === 'albums' && animationPhase === 'sliding' ? handleTransitionEnd : undefined}
+            
+            {/* Toggle Button - iPad Portrait */}
+            <button
+              onClick={handleToggle}
+              className="flex flex-col items-end gap-1 group hover:scale-105 transition-transform duration-200"
+              aria-label={showEPs ? "Switch to Albums" : "Switch to EPs"}
             >
-              <div 
-                className="flex items-center pl-4 pr-4 overflow-x-auto overflow-y-hidden scrollbar-hide h-full"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', touchAction: 'pan-x' }}
-              >
-                {albums.map((item, index) => (
-                  <div
-                    key={`ipad-album-${item.id}`}
-                    className="flex flex-col items-center cursor-pointer group flex-shrink-0 overflow-visible"
-                    onClick={() => item.cover && handleAlbumClick(item)}
-                    style={{ marginRight: index < albums.length - 1 ? '32px' : '0' }}
-                  >
-                    <h3 className="font-palatino text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
-                      {item.title}
-                    </h3>
-                    <div className="relative overflow-visible">
-                      <img
-                        src={item.cover}
-                        alt={item.title}
-                        width="96"
-                        height="96"
-                        loading="eager"
-                        className={`w-24 h-24 object-cover rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
-                          selectedAlbumId === item.id
-                            ? 'ring-2 ring-yellow-300/60 scale-105'
-                            : ''
-                        }`}
-                      />
-                      <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-                    </div>
-                  </div>
-                ))}
-
-                {/* EP toggle button - inline at end of scroll, not absolute */}
-                <button
-                  onClick={() => {
-                    setIsRotating(true);
-                    setIsTransitioning(true);
-                    setTimeout(() => {
-                      switchToNext();
-                      setTimeout(() => setIsTransitioning(false), 50);
-                    }, 400);
-                  }}
-                  className="flex flex-col items-center gap-1 group hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-8"
-                  aria-label="Switch to EPs"
+              <div className="relative h-5 mb-1 w-16 flex justify-center">
+                <span
+                  className={`absolute font-palatino text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
+                    showEPs ? 'opacity-100' : 'opacity-0'
+                  }`}
                 >
-                  <span className="font-palatino text-sm font-semibold text-yellow-300 whitespace-nowrap">
-                    EPs
-                  </span>
-                  <div className="w-14 h-14 flex items-center justify-center">
-                    <svg 
-                      width="48" 
-                      height="48" 
-                      viewBox="0 0 48 48" 
-                      fill="none" 
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={`text-yellow-300 ${isRotating ? 'animate-[spin-forward_0.6s_ease-in-out]' : ''}`}
-                    >
-                      <path d="M14 8 L38 24 L14 40 Z" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinejoin="round"/>
-                      <circle cx="20" cy="18" r="4.5" stroke="currentColor" strokeWidth="1.8" fill="none" opacity="0.65"/>
-                      <path d="M16 28 L24 30" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.7" strokeLinecap="round"/>
-                      <path d="M14 32 L22 34" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.5" strokeLinecap="round"/>
-                    </svg>
-                  </div>
-                </button>
+                  Albums
+                </span>
+                <span
+                  className={`absolute font-palatino text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
+                    showEPs ? 'opacity-0' : 'opacity-100'
+                  }`}
+                >
+                  EPs
+                </span>
               </div>
-            </div>
+              
+              <div className="w-14 h-14 flex items-center justify-center">
+                <svg 
+                  width="48" 
+                  height="48" 
+                  viewBox="0 0 48 48" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`text-yellow-300 ${
+                    isRotating ? 'animate-[spin-forward_0.6s_ease-in-out]' : ''
+                  }`}
+                >
+                  <path 
+                    d="M14 8 L38 24 L14 40 Z" 
+                    stroke="currentColor" 
+                    strokeWidth="2.5" 
+                    fill="none" 
+                    strokeLinejoin="round"
+                  />
+                  <circle 
+                    cx="20" 
+                    cy="18" 
+                    r="4.5" 
+                    stroke="currentColor" 
+                    strokeWidth="1.8" 
+                    fill="none" 
+                    opacity="0.65" 
+                  />
+                  <path 
+                    d="M16 28 L24 30" 
+                    stroke="currentColor" 
+                    strokeWidth="1.5" 
+                    fill="none" 
+                    opacity="0.7" 
+                    strokeLinecap="round"
+                  />
+                  <path 
+                    d="M14 32 L22 34" 
+                    stroke="currentColor" 
+                    strokeWidth="1.5" 
+                    fill="none" 
+                    opacity="0.5" 
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+            </button>
           </div>
 
           {/* Toggle Button - Desktop landscape only */}
