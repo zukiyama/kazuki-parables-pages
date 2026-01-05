@@ -181,10 +181,12 @@ const Writing = () => {
       return vv ? vv.height : window.innerHeight;
     };
     
-    // Get visualViewport offset (crucial for iOS Safari when browser bar is visible)
-    const getViewportOffsetTop = () => {
+    // Use visualViewport.pageTop (not offsetTop) - this is the absolute position on the page
+    // which stays truthful when Safari's browser bars animate, unlike offsetTop which lags
+    const getViewportPageTop = () => {
       const vv = window.visualViewport;
-      return vv ? vv.offsetTop : 0;
+      // pageTop is the visual viewport's absolute position on the page
+      return vv?.pageTop ?? window.scrollY;
     };
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
@@ -194,11 +196,18 @@ const Writing = () => {
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       
-      // Account for visualViewport offset (crucial on iOS Safari when browser bar is visible)
-      const vvOffsetTop = getViewportOffsetTop();
-      const topOffset = headerBottom + bannerHeight + vvOffsetTop;
       const viewportHeight = getViewportHeight();
-      const availableHeight = viewportHeight - (headerBottom + bannerHeight); // Don't subtract vvOffsetTop twice
+      const availableHeight = viewportHeight - (headerBottom + bannerHeight);
+      
+      // Use pageTop for the visual viewport's absolute position on the page
+      // This is more accurate on iOS Safari when browser bars are animating
+      const vvPageTop = getViewportPageTop();
+      const vvHeight = viewportHeight;
+      const vvCenterY = vvPageTop + vvHeight / 2;
+      
+      // Offset from viewport center to account for header/banner
+      const uiOffset = (headerBottom + bannerHeight) / 2;
+      const targetCenterY = vvCenterY + uiOffset;
       
       // Special handling for young-adult section
       if (sectionName === 'young-adult') {
@@ -210,30 +219,26 @@ const Writing = () => {
         
         const titleRect = titleEl.getBoundingClientRect();
         const slideshowRect = slideshowContainer.getBoundingClientRect();
+        const scrollY = window.scrollY;
         
-        // Calculate total height of title + subtitle + slideshow (in viewport coords)
+        // Calculate total height of title + subtitle + slideshow
         const titleTopInViewport = titleRect.top;
         const slideshowBottomInViewport = slideshowRect.bottom;
         const totalContentHeight = slideshowBottomInViewport - titleTopInViewport;
         
-        // Recalculate available height dynamically (accounts for browser chrome changes)
-        const currentAvailableHeight = viewportHeight - topOffset;
-        
         // Scenario A: Can fit all content (title + "Young Adult Series" text + slideshow)
-        if (currentAvailableHeight >= totalContentHeight + 40) { // 40px buffer
-          // Center the entire content in the available space
-          const titleTop = titleRect.top + window.scrollY;
-          const slideshowBottom = slideshowRect.bottom + window.scrollY;
+        if (availableHeight >= totalContentHeight + 40) { // 40px buffer
+          // Center the entire content
+          const titleTop = scrollY + titleRect.top;
+          const slideshowBottom = scrollY + slideshowRect.bottom;
           const contentCenter = titleTop + ((slideshowBottom - titleTop) / 2);
-          const desiredCenterY = topOffset + (currentAvailableHeight / 2);
-          return Math.max(0, contentCenter - desiredCenterY);
+          return Math.max(0, contentCenter - targetCenterY);
         } else {
           // Scenario B: Can't fit all, just center the slideshow alone
-          const slideshowTop = slideshowRect.top + window.scrollY;
+          const slideshowTop = scrollY + slideshowRect.top;
           const slideshowHeight = slideshowRect.height;
           const slideshowCenter = slideshowTop + (slideshowHeight / 2);
-          const desiredCenterY = topOffset + (currentAvailableHeight / 2);
-          return Math.max(0, slideshowCenter - desiredCenterY);
+          return Math.max(0, slideshowCenter - targetCenterY);
         }
       }
       
@@ -244,12 +249,12 @@ const Writing = () => {
       }
 
       const coverRect = bookCover.getBoundingClientRect();
+      const scrollY = window.scrollY;
       const coverHeight = coverRect.height;
-      const coverTop = coverRect.top + window.scrollY;
+      const coverTop = scrollY + coverRect.top;
       const coverCenter = coverTop + (coverHeight / 2);
-      const desiredCenterY = topOffset + (availableHeight / 2);
       
-      return Math.max(0, coverCenter - desiredCenterY);
+      return Math.max(0, coverCenter - targetCenterY);
     };
 
     const snapToPoint = (targetY: number, sectionName: string) => {
@@ -291,11 +296,9 @@ const Writing = () => {
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       
-      // Account for visualViewport offset (crucial on iOS Safari)
-      const vvOffsetTop = getViewportOffsetTop();
-      const topOffset = headerBottom + bannerHeight + vvOffsetTop;
       const viewportHeight = getViewportHeight();
-      const availableViewport = viewportHeight - (headerBottom + bannerHeight);
+      const topOffset = headerBottom + bannerHeight;
+      const availableViewport = viewportHeight - topOffset;
 
       // Find section that fills MOST of the screen (>50%)
       let bestSection: typeof bookSections[0] | null = null;
@@ -388,7 +391,7 @@ const Writing = () => {
     window.addEventListener('mouseup', handleMouseUp, { passive: true });
     
     // iOS Safari fix: Re-snap when visualViewport changes (browser bar show/hide)
-    // This is the key listener that ChatGPT identified as missing
+    // Uses DOUBLE requestAnimationFrame to let Safari finish its bar animation
     const handleVisualViewportResize = () => {
       if (isSnapping.current || isDraggingScrollbar.current) return;
       if (window.innerWidth < 950) return; // Only on desktop/widescreen
@@ -396,16 +399,19 @@ const Writing = () => {
       // Cancel any pending resnap
       if (pendingResnap) cancelAnimationFrame(pendingResnap);
       
-      // Schedule a resnap on next frame to let layout settle
+      // Double RAF: let Safari finish its UI animation before recalculating
       pendingResnap = requestAnimationFrame(() => {
-        handleScrollEnd();
-        pendingResnap = null;
+        requestAnimationFrame(() => {
+          handleScrollEnd();
+          pendingResnap = null;
+        });
       });
     };
     
-    // Attach to visualViewport if available (iOS Safari, Chrome)
+    // Attach to visualViewport resize AND scroll events (iOS Safari needs both)
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', handleVisualViewportResize);
+      window.visualViewport.addEventListener('scroll', handleVisualViewportResize);
     }
     
     return () => {
