@@ -230,10 +230,10 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             {/* Albums Banner */}
             <div 
               className={`w-full flex-shrink-0 transition-transform duration-300 ease-out will-change-transform ${
-                mobileSlideDirection === 'left' ? '-translate-x-full' : 
-                mobileSlideDirection === 'right' ? 'translate-x-full' : 
-                mobileShowingAlbums ? 'translate-x-0' : '-translate-x-full absolute'
-              } ${!mobileShowingAlbums && !mobileSlideDirection ? 'hidden' : ''}`}
+                mobileSlideDirection === 'left' && !mobileShowingAlbums ? 'translate-x-0' : 
+                mobileShowingAlbums && !mobileSlideDirection ? 'translate-x-0' : 
+                '-translate-x-full'
+              } ${!mobileShowingAlbums && !mobileSlideDirection ? 'hidden absolute' : ''}`}
               onTransitionEnd={mobileShowingAlbums || mobileSlideDirection === 'left' ? handleTransitionEnd : undefined}
             >
               <div 
@@ -302,18 +302,18 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             {/* EP Banner */}
             <div 
               className={`w-full flex-shrink-0 transition-transform duration-300 ease-out will-change-transform ${
-                mobileSlideDirection === 'left' && !mobileShowingAlbums ? '-translate-x-full' : 
                 mobileSlideDirection === 'left' && mobileShowingAlbums ? 'translate-x-0' : 
-                !mobileShowingAlbums ? 'translate-x-0' : 'translate-x-full absolute'
-              } ${mobileShowingAlbums && !mobileSlideDirection ? 'hidden' : ''}`}
-              onTransitionEnd={!mobileShowingAlbums ? handleTransitionEnd : undefined}
+                !mobileShowingAlbums && !mobileSlideDirection ? 'translate-x-0' : 
+                'translate-x-full'
+              } ${mobileShowingAlbums && !mobileSlideDirection ? 'hidden absolute' : ''}`}
+              onTransitionEnd={!mobileShowingAlbums || mobileSlideDirection === 'left' ? handleTransitionEnd : undefined}
             >
               <div 
                 ref={epScrollRef}
-                className="flex items-center justify-center px-4 pb-3"
+                className="flex items-center justify-between px-4 pb-3 w-full"
               >
-                {/* EP Cover - Centered with Albums indicator on the right */}
-                <div className="flex items-center justify-center gap-8">
+                {/* EP Cover - Centered */}
+                <div className="flex-1 flex justify-center">
                   {eps.map((item) => (
                     <div
                       key={`ep-${item.id}`}
@@ -358,18 +358,18 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                       </div>
                     </div>
                   ))}
+                </div>
 
-                  {/* Albums indicator on the right with breathing space */}
-                  <div 
-                    className="flex items-center justify-center h-16 mt-3 flex-shrink-0 cursor-pointer pl-4"
-                    onClick={switchToNext}
-                  >
-                    <div className="flex items-center gap-1">
-                      <span className="font-palatino text-[11px] font-semibold text-yellow-300 whitespace-nowrap">
-                        Albums
-                      </span>
-                      <ChevronRight className="w-4 h-4 text-yellow-300" />
-                    </div>
+                {/* Albums indicator on the far right */}
+                <div 
+                  className="flex items-center h-16 mt-3 flex-shrink-0 cursor-pointer pr-2"
+                  onClick={switchToNext}
+                >
+                  <div className="flex items-center gap-1">
+                    <span className="font-palatino text-[11px] font-semibold text-yellow-300 whitespace-nowrap">
+                      Albums
+                    </span>
+                    <ChevronRight className="w-4 h-4 text-yellow-300" />
                   </div>
                 </div>
               </div>
