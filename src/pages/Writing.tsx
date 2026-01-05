@@ -147,11 +147,11 @@ const Writing = () => {
 
 
   // Scroll snap logic - loose snapping, only when section fills most of screen, DESKTOP ONLY
-  // Fixed for iOS: uses visualViewport at snap time + listens to visualViewport resize
+  // Fixed for iOS: uses visualViewport at snap time, snaps only on scroll-end, with safety clamps
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let lastSnappedSection: string | null = null;
-    let pendingResnap: number | null = null;
+    let isProgrammaticScroll = false; // Prevent feedback loops
     
     // Sections that should NOT have snap behavior (except young-adult which has special handling)
     const noSnapSections = ['kaiju'];
@@ -175,16 +175,20 @@ const Writing = () => {
     };
 
     // Get LIVE viewport height at snap time - no caching/hysteresis
-    // This is the key fix: always use current visualViewport for accurate measurements
     const getViewportHeight = () => {
       const vv = window.visualViewport;
       return vv ? vv.height : window.innerHeight;
     };
     
-    // Get visualViewport offset (crucial for iOS Safari when browser bar is visible)
-    const getViewportOffsetTop = () => {
+    // Get visualViewport offset with clamping (crucial for iOS Safari)
+    // Clamp noisy offsetTop values - iPad can wobble during toolbar animation
+    const getStableViewportOffsetTop = () => {
       const vv = window.visualViewport;
-      return vv ? vv.offsetTop : 0;
+      if (!vv) return 0;
+      const offset = vv.offsetTop;
+      if (!Number.isFinite(offset)) return 0;
+      // Clamp to reasonable range to prevent wild values
+      return Math.max(0, Math.min(offset, 120));
     };
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
@@ -195,7 +199,7 @@ const Writing = () => {
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       
       // Account for visualViewport offset (crucial on iOS Safari when browser bar is visible)
-      const vvOffsetTop = getViewportOffsetTop();
+      const vvOffsetTop = getStableViewportOffsetTop();
       const topOffset = headerBottom + bannerHeight + vvOffsetTop;
       const viewportHeight = getViewportHeight();
       const availableHeight = viewportHeight - (headerBottom + bannerHeight); // Don't subtract vvOffsetTop twice
@@ -253,15 +257,31 @@ const Writing = () => {
     };
 
     const snapToPoint = (targetY: number, sectionName: string) => {
-      if (isSnapping.current) return;
+      if (isSnapping.current || isProgrammaticScroll) return;
+      
+      // Safety: clamp target to prevent insane jumps (teleporting to top)
+      const viewportHeight = getViewportHeight();
+      const maxScroll = Math.max(0, document.documentElement.scrollHeight - viewportHeight);
+      const clampedTarget = Math.max(0, Math.min(targetY, maxScroll));
+      
+      // Additional safety: don't allow jumps larger than 90% of scrollable area
+      const currentScroll = window.scrollY;
+      const jumpDistance = Math.abs(clampedTarget - currentScroll);
+      const maxAllowedJump = maxScroll * 0.9;
+      if (jumpDistance > maxAllowedJump) return;
+      
       isSnapping.current = true;
+      isProgrammaticScroll = true;
       lastSnappedSection = sectionName;
+      
       window.scrollTo({
-        top: targetY,
+        top: clampedTarget,
         behavior: 'smooth'
       });
+      
       setTimeout(() => {
         isSnapping.current = false;
+        isProgrammaticScroll = false;
       }, 600);
     };
 
@@ -292,7 +312,7 @@ const Writing = () => {
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       
       // Account for visualViewport offset (crucial on iOS Safari)
-      const vvOffsetTop = getViewportOffsetTop();
+      const vvOffsetTop = getStableViewportOffsetTop();
       const topOffset = headerBottom + bannerHeight + vvOffsetTop;
       const viewportHeight = getViewportHeight();
       const availableViewport = viewportHeight - (headerBottom + bannerHeight);
@@ -387,19 +407,25 @@ const Writing = () => {
     window.addEventListener('mousedown', handleMouseDown, { passive: true });
     window.addEventListener('mouseup', handleMouseUp, { passive: true });
     
-    // iOS Safari fix: Re-snap when visualViewport changes (browser bar show/hide)
-    // This is the key listener that ChatGPT identified as missing
+    // iOS Safari fix: When visualViewport resizes (browser bar show/hide),
+    // DON'T immediately re-snap (causes jitter). Instead, the next scroll-end will use updated values.
+    // We just "arm" for a resnap by clearing the last snapped section.
     const handleVisualViewportResize = () => {
-      if (isSnapping.current || isDraggingScrollbar.current) return;
+      if (isSnapping.current || isDraggingScrollbar.current || isProgrammaticScroll) return;
       if (window.innerWidth < 950) return; // Only on desktop/widescreen
       
-      // Cancel any pending resnap
-      if (pendingResnap) cancelAnimationFrame(pendingResnap);
+      // Clear last snapped section so next scroll-end can re-evaluate
+      lastSnappedSection = null;
       
-      // Schedule a resnap on next frame to let layout settle
-      pendingResnap = requestAnimationFrame(() => {
-        handleScrollEnd();
-        pendingResnap = null;
+      // Optional: trigger a delayed scroll-end check after toolbar animation settles
+      // Using double rAF as ChatGPT suggested for iOS timing
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (!isSnapping.current && !isProgrammaticScroll) {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(handleScrollEnd, 200);
+          }
+        });
       });
     };
     
@@ -415,7 +441,6 @@ const Writing = () => {
       if (window.visualViewport) {
         window.visualViewport.removeEventListener('resize', handleVisualViewportResize);
       }
-      if (pendingResnap) cancelAnimationFrame(pendingResnap);
       clearTimeout(scrollTimeout);
     };
   }, [getHeaderBottom, isWidescreen]);
