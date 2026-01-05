@@ -281,8 +281,7 @@ const Index = () => {
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-cover object-center bg-slate-100 [@media(min-width:768px)_and_(max-width:834px)_and_(orientation:portrait)]:object-bottom"
-          style={{ objectPosition: '50% center' }}
+          className="absolute inset-0 w-full h-full object-cover bg-slate-100 [object-position:50%_center] [@media(min-width:768px)_and_(max-width:834px)_and_(orientation:portrait)]:[object-position:50%_100%]"
         />
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-20 text-center px-6">
