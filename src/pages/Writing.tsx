@@ -147,14 +147,11 @@ const Writing = () => {
 
 
   // Scroll snap logic - loose snapping, only when section fills most of screen, DESKTOP ONLY
-  // With viewport height hysteresis for widescreen to handle browser bar show/hide
+  // Fixed for iOS: uses visualViewport at snap time + listens to visualViewport resize
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let lastSnappedSection: string | null = null;
-    
-    // Hysteresis for widescreen viewport height - prevents snap recalc when browser bar appears/disappears
-    const VIEWPORT_HEIGHT_HYSTERESIS = 80; // Browser bar is typically 50-80px
-    let stableViewportHeight: number | null = null;
+    let pendingResnap: number | null = null;
     
     // Sections that should NOT have snap behavior (except young-adult which has special handling)
     const noSnapSections = ['kaiju'];
@@ -162,8 +159,6 @@ const Writing = () => {
     const getBookSections = () => {
       // Disable scroll snap on mobile
       if (window.innerWidth < 950) return [];
-      
-      // Scroll snap is now enabled for widescreen devices as well
       
       const sections = document.querySelectorAll('[data-section]');
       const bookSections: { el: HTMLElement; name: string }[] = [];
@@ -179,29 +174,17 @@ const Writing = () => {
       return bookSections;
     };
 
-    // Use visualViewport.height on iOS for accurate measurements
-    // With hysteresis for widescreen devices to handle browser bar show/hide
+    // Get LIVE viewport height at snap time - no caching/hysteresis
+    // This is the key fix: always use current visualViewport for accurate measurements
     const getViewportHeight = () => {
-      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
-      const isWidescreenDevice = window.innerWidth / currentHeight >= 1.5; // Slightly lower threshold to catch transitional states
-      
-      // Only apply hysteresis on widescreen devices (iPad 10.9" in landscape triggers widescreen)
-      if (isWidescreenDevice) {
-        if (stableViewportHeight === null) {
-          // Initialize with current height
-          stableViewportHeight = currentHeight;
-        } else {
-          // Only update stable height if change exceeds hysteresis threshold
-          const heightDiff = Math.abs(currentHeight - stableViewportHeight);
-          if (heightDiff > VIEWPORT_HEIGHT_HYSTERESIS) {
-            stableViewportHeight = currentHeight;
-          }
-        }
-        return stableViewportHeight;
-      }
-      
-      // For non-widescreen devices, return actual height (no hysteresis needed)
-      return currentHeight;
+      const vv = window.visualViewport;
+      return vv ? vv.height : window.innerHeight;
+    };
+    
+    // Get visualViewport offset (crucial for iOS Safari when browser bar is visible)
+    const getViewportOffsetTop = () => {
+      const vv = window.visualViewport;
+      return vv ? vv.offsetTop : 0;
     };
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
@@ -210,9 +193,12 @@ const Writing = () => {
       const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
-      const topOffset = headerBottom + bannerHeight;
+      
+      // Account for visualViewport offset (crucial on iOS Safari when browser bar is visible)
+      const vvOffsetTop = getViewportOffsetTop();
+      const topOffset = headerBottom + bannerHeight + vvOffsetTop;
       const viewportHeight = getViewportHeight();
-      const availableHeight = viewportHeight - topOffset;
+      const availableHeight = viewportHeight - (headerBottom + bannerHeight); // Don't subtract vvOffsetTop twice
       
       // Special handling for young-adult section
       if (sectionName === 'young-adult') {
@@ -304,9 +290,12 @@ const Writing = () => {
       const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
-      const topOffset = headerBottom + bannerHeight;
+      
+      // Account for visualViewport offset (crucial on iOS Safari)
+      const vvOffsetTop = getViewportOffsetTop();
+      const topOffset = headerBottom + bannerHeight + vvOffsetTop;
       const viewportHeight = getViewportHeight();
-      const availableViewport = viewportHeight - topOffset;
+      const availableViewport = viewportHeight - (headerBottom + bannerHeight);
 
       // Find section that fills MOST of the screen (>50%)
       let bestSection: typeof bookSections[0] | null = null;
@@ -398,10 +387,35 @@ const Writing = () => {
     window.addEventListener('mousedown', handleMouseDown, { passive: true });
     window.addEventListener('mouseup', handleMouseUp, { passive: true });
     
+    // iOS Safari fix: Re-snap when visualViewport changes (browser bar show/hide)
+    // This is the key listener that ChatGPT identified as missing
+    const handleVisualViewportResize = () => {
+      if (isSnapping.current || isDraggingScrollbar.current) return;
+      if (window.innerWidth < 950) return; // Only on desktop/widescreen
+      
+      // Cancel any pending resnap
+      if (pendingResnap) cancelAnimationFrame(pendingResnap);
+      
+      // Schedule a resnap on next frame to let layout settle
+      pendingResnap = requestAnimationFrame(() => {
+        handleScrollEnd();
+        pendingResnap = null;
+      });
+    };
+    
+    // Attach to visualViewport if available (iOS Safari, Chrome)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleVisualViewportResize);
+    }
+    
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleVisualViewportResize);
+      }
+      if (pendingResnap) cancelAnimationFrame(pendingResnap);
       clearTimeout(scrollTimeout);
     };
   }, [getHeaderBottom, isWidescreen]);
