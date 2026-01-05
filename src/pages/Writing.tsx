@@ -189,13 +189,8 @@ const Writing = () => {
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
       const headerBottom = getHeaderBottom();
-      // STABLE: Use layout-tier flag, NOT live aspect ratio - prevents branch switching when iOS browser bar changes
-      const isWidescreenDevice = isWidescreen;
-      
-      // Debug logging to verify stable branch selection
-      const liveAspectRatio = window.innerWidth / window.innerHeight;
-      console.log(`[SNAP getCenterSnapPoint] layoutTier isWidescreen=${isWidescreen}, liveAspect=${liveAspectRatio.toFixed(3)}, innerW=${window.innerWidth}, innerH=${window.innerHeight}, branch=${isWidescreenDevice ? 'WIDESCREEN' : 'NON-WIDESCREEN'}`);
-      
+      // For widescreen: ignore banner completely - snap is independent of banner visibility
+      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       
@@ -291,13 +286,8 @@ const Writing = () => {
       }
 
       const headerBottom = getHeaderBottom();
-      // STABLE: Use layout-tier flag, NOT live aspect ratio - prevents branch switching when iOS browser bar changes
-      const isWidescreenDevice = isWidescreen;
-      
-      // Debug logging to verify stable branch selection
-      const liveAspectRatio = window.innerWidth / window.innerHeight;
-      console.log(`[SNAP handleScrollEnd] layoutTier isWidescreen=${isWidescreen}, liveAspect=${liveAspectRatio.toFixed(3)}, innerW=${window.innerWidth}, innerH=${window.innerHeight}, branch=${isWidescreenDevice ? 'WIDESCREEN' : 'NON-WIDESCREEN'}`);
-      
+      // For widescreen: ignore banner completely - snap is independent of banner visibility
+      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       
