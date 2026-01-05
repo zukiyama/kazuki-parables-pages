@@ -187,8 +187,7 @@ const Writing = () => {
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
       const headerBottom = getHeaderBottom();
       // For widescreen: ignore banner completely - snap is independent of banner visibility
-      // Use width-only detection (not aspect ratio) to prevent flipping when browser bar changes
-      const isWidescreenDevice = window.matchMedia("(min-width: 1024px)").matches;
+      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       
@@ -292,8 +291,7 @@ const Writing = () => {
 
       const headerBottom = getHeaderBottom();
       // For widescreen: ignore banner completely - snap is independent of banner visibility
-      // Use width-only detection (not aspect ratio) to prevent flipping when browser bar changes
-      const isWidescreenDevice = window.matchMedia("(min-width: 1024px)").matches;
+      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
       
