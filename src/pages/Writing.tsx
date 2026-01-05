@@ -187,18 +187,29 @@ const Writing = () => {
       return vv ? vv.offsetTop : 0;
     };
 
-    const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
+    const getCenterSnapPoint = (section: HTMLElement, sectionName: string, isWidescreenStable: boolean) => {
       const headerBottom = getHeaderBottom();
-      // For widescreen: ignore banner completely - snap is independent of banner visibility
-      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
+      // Use stable isWidescreen flag instead of live aspect ratio calculation
+      // This prevents snap branch flipping when browser bar collapses on 10.9" iPad
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
-      const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
+      const bannerHeight = (banner && !isWidescreenStable) ? banner.offsetHeight : 0;
       
       // Account for visualViewport offset (crucial on iOS Safari when browser bar is visible)
       const vvOffsetTop = getViewportOffsetTop();
       const topOffset = headerBottom + bannerHeight + vvOffsetTop;
       const viewportHeight = getViewportHeight();
       const availableHeight = viewportHeight - (headerBottom + bannerHeight); // Don't subtract vvOffsetTop twice
+      
+      // DEBUG: Remove after testing
+      console.log('[SNAP DEBUG] getCenterSnapPoint:', {
+        isWidescreenStable,
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight,
+        liveAspectRatio: (window.innerWidth / window.innerHeight).toFixed(3),
+        viewportHeight,
+        bannerHeight,
+        sectionName
+      });
       
       // Special handling for young-adult section
       if (sectionName === 'young-adult') {
@@ -286,16 +297,25 @@ const Writing = () => {
       }
 
       const headerBottom = getHeaderBottom();
-      // For widescreen: ignore banner completely - snap is independent of banner visibility
-      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
+      // Use stable isWidescreen flag instead of live aspect ratio calculation
+      // This prevents snap branch flipping when browser bar collapses on 10.9" iPad
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
-      const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
+      const bannerHeight = (banner && !isWidescreen) ? banner.offsetHeight : 0;
       
       // Account for visualViewport offset (crucial on iOS Safari)
       const vvOffsetTop = getViewportOffsetTop();
       const topOffset = headerBottom + bannerHeight + vvOffsetTop;
       const viewportHeight = getViewportHeight();
       const availableViewport = viewportHeight - (headerBottom + bannerHeight);
+      
+      // DEBUG: Remove after testing
+      console.log('[SNAP DEBUG] handleScrollEnd:', {
+        isWidescreenStable: isWidescreen,
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight,
+        liveAspectRatio: (window.innerWidth / window.innerHeight).toFixed(3),
+        snapBranch: isWidescreen ? 'WIDESCREEN (no banner)' : 'DESKTOP (with banner)'
+      });
 
       // Find section that fills MOST of the screen (>50%)
       let bestSection: typeof bookSections[0] | null = null;
@@ -344,7 +364,7 @@ const Writing = () => {
           }
         }
         
-        const snapPoint = getCenterSnapPoint(bestSection.el, bestSection.name);
+        const snapPoint = getCenterSnapPoint(bestSection.el, bestSection.name, isWidescreen);
         const currentScroll = window.scrollY;
         if (snapPoint !== null && Math.abs(currentScroll - snapPoint) > 15) {
           snapToPoint(snapPoint, bestSection.name);
