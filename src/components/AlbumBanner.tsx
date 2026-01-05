@@ -76,7 +76,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   const containerRef = useRef<HTMLDivElement>(null);
   
   // Mobile carousel state
-  const [mobileShowingAlbums, setMobileShowingAlbums] = useState(true);
+  const [mobileShowingAlbums, setMobileShowingAlbums] = useState(false); // Start with EP banner
   const [mobileSlideDirection, setMobileSlideDirection] = useState<'left' | 'right' | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
@@ -101,24 +101,17 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
     setTimeout(() => setIsRotating(false), 600);
   };
 
-  // Mobile: Switch to EP banner
-  const switchToEP = useCallback(() => {
+  // Mobile: Switch to next banner (always slides left, circular)
+  const switchToNext = useCallback(() => {
     if (mobileSlideDirection) return; // Prevent double-trigger
     setMobileSlideDirection('left');
-  }, [mobileSlideDirection]);
-
-  // Mobile: Switch to Albums banner
-  const switchToAlbums = useCallback(() => {
-    if (mobileSlideDirection) return; // Prevent double-trigger
-    setMobileSlideDirection('right');
   }, [mobileSlideDirection]);
 
   // Handle transition end to update state cleanly
   const handleTransitionEnd = useCallback(() => {
     if (mobileSlideDirection === 'left') {
-      setMobileShowingAlbums(false);
-    } else if (mobileSlideDirection === 'right') {
-      setMobileShowingAlbums(true);
+      // Toggle between albums and EP
+      setMobileShowingAlbums(prev => !prev);
     }
     setMobileSlideDirection(null);
   }, [mobileSlideDirection]);
@@ -147,13 +140,13 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
       if (scrollContainer) {
         const isAtEnd = scrollContainer.scrollLeft + scrollContainer.clientWidth >= scrollContainer.scrollWidth - 10;
         if (isAtEnd && dragDistance > threshold) {
-          switchToEP();
+          switchToNext();
         }
       }
     } else {
-      // On EP banner - check if dragged right to go back to albums
-      if (dragDistance < -threshold) {
-        switchToAlbums();
+      // On EP banner - swipe left to go to albums (same direction, circular)
+      if (dragDistance > threshold) {
+        switchToNext();
       }
     }
     
@@ -294,7 +287,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                 {/* EP indicator at the end of albums */}
                 <div 
                   className="flex items-center justify-center px-4 h-16 mt-3 flex-shrink-0 cursor-pointer"
-                  onClick={switchToEP}
+                  onClick={switchToNext}
                 >
                   <div className="flex items-center gap-1">
                     <span className="font-palatino text-[11px] font-semibold text-yellow-300 whitespace-nowrap">
@@ -309,72 +302,74 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
             {/* EP Banner */}
             <div 
               className={`w-full flex-shrink-0 transition-transform duration-300 ease-out will-change-transform ${
-                mobileSlideDirection === 'right' ? '-translate-x-full' : 
-                mobileSlideDirection === 'left' ? 'translate-x-0' : 
+                mobileSlideDirection === 'left' && !mobileShowingAlbums ? '-translate-x-full' : 
+                mobileSlideDirection === 'left' && mobileShowingAlbums ? 'translate-x-0' : 
                 !mobileShowingAlbums ? 'translate-x-0' : 'translate-x-full absolute'
               } ${mobileShowingAlbums && !mobileSlideDirection ? 'hidden' : ''}`}
-              onTransitionEnd={!mobileShowingAlbums || mobileSlideDirection === 'right' ? handleTransitionEnd : undefined}
+              onTransitionEnd={!mobileShowingAlbums ? handleTransitionEnd : undefined}
             >
               <div 
                 ref={epScrollRef}
-                className="flex items-start justify-center px-4 pb-3"
+                className="flex items-center justify-center px-4 pb-3"
               >
-                {/* EP Cover - Centered */}
-                {eps.map((item) => (
-                  <div
-                    key={`ep-${item.id}`}
-                    className="flex flex-col items-center cursor-pointer group flex-shrink-0"
-                    onClick={() => handleAlbumClick(item)}
-                    style={{ width: '64px' }}
-                  >
-                    <h3 className={`font-palatino text-[10px] font-semibold mb-0.5 text-center transition-colors duration-300 whitespace-nowrap overflow-visible ${
-                      selectedAlbumId === item.id ? 'text-yellow-300' : 'text-white group-active:text-yellow-300'
-                    }`}>
-                      {item.title}
-                    </h3>
-                    
-                    <div className="relative w-16 h-16 flex-shrink-0" style={{ aspectRatio: '1 / 1' }}>
-                      {item.cover ? (
-                        <>
-                          <img
-                            src={item.cover}
-                            alt={item.title}
-                            width="64"
-                            height="64"
-                            loading="eager"
-                            className={`w-full h-full object-cover rounded transition-all duration-300 ${
-                              selectedAlbumId === item.id
-                                ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
-                                : 'shadow-lg'
-                            }`}
-                          />
-                          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-                        </>
-                      ) : (
-                        <div className={`w-16 h-16 rounded bg-black/40 border border-white/20 flex items-center justify-center transition-all duration-300 ${
-                          selectedAlbumId === item.id
-                            ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
-                            : 'shadow-lg'
-                        }`}>
-                          <span className="text-white/60 text-[10px] font-semibold text-center px-2">
-                            Coming<br/>Soon
-                          </span>
-                        </div>
-                      )}
+                {/* EP Cover - Centered with Albums indicator on the right */}
+                <div className="flex items-center justify-center gap-8">
+                  {eps.map((item) => (
+                    <div
+                      key={`ep-${item.id}`}
+                      className="flex flex-col items-center cursor-pointer group flex-shrink-0"
+                      onClick={() => handleAlbumClick(item)}
+                      style={{ width: '64px' }}
+                    >
+                      <h3 className={`font-palatino text-[10px] font-semibold mb-0.5 text-center transition-colors duration-300 whitespace-nowrap overflow-visible ${
+                        selectedAlbumId === item.id ? 'text-yellow-300' : 'text-white group-active:text-yellow-300'
+                      }`}>
+                        {item.title}
+                      </h3>
+                      
+                      <div className="relative w-16 h-16 flex-shrink-0" style={{ aspectRatio: '1 / 1' }}>
+                        {item.cover ? (
+                          <>
+                            <img
+                              src={item.cover}
+                              alt={item.title}
+                              width="64"
+                              height="64"
+                              loading="eager"
+                              className={`w-full h-full object-cover rounded transition-all duration-300 ${
+                                selectedAlbumId === item.id
+                                  ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
+                                  : 'shadow-lg'
+                              }`}
+                            />
+                            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                          </>
+                        ) : (
+                          <div className={`w-16 h-16 rounded bg-black/40 border border-white/20 flex items-center justify-center transition-all duration-300 ${
+                            selectedAlbumId === item.id
+                              ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
+                              : 'shadow-lg'
+                          }`}>
+                            <span className="text-white/60 text-[10px] font-semibold text-center px-2">
+                              Coming<br/>Soon
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
 
-                {/* Albums indicator on the right only */}
-                <div 
-                  className="flex items-center justify-center px-4 h-16 mt-3 flex-shrink-0 cursor-pointer ml-8"
-                  onClick={switchToAlbums}
-                >
-                  <div className="flex items-center gap-1">
-                    <span className="font-palatino text-[11px] font-semibold text-yellow-300 whitespace-nowrap">
-                      Albums
-                    </span>
-                    <ChevronRight className="w-4 h-4 text-yellow-300" />
+                  {/* Albums indicator on the right with breathing space */}
+                  <div 
+                    className="flex items-center justify-center h-16 mt-3 flex-shrink-0 cursor-pointer pl-4"
+                    onClick={switchToNext}
+                  >
+                    <div className="flex items-center gap-1">
+                      <span className="font-palatino text-[11px] font-semibold text-yellow-300 whitespace-nowrap">
+                        Albums
+                      </span>
+                      <ChevronRight className="w-4 h-4 text-yellow-300" />
+                    </div>
                   </div>
                 </div>
               </div>
