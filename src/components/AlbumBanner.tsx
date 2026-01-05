@@ -413,13 +413,13 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
           <div className="hidden [@media(min-width:768px)_and_(orientation:portrait)]:flex w-full overflow-hidden relative justify-center items-center">
             {/* Content container with desktop-style transition */}
             <div
-              className={`flex-1 transition-all duration-500 ${
+              className={`w-full transition-all duration-500 ${
                 isTransitioning ? 'translate-x-[-100%] opacity-0' : 'translate-x-0 opacity-100'
               }`}
             >
               {showEPs ? (
                 /* EPs View */
-                <div className="flex items-center justify-center gap-6 px-6 pb-2 pr-24">
+                <div className="flex items-center justify-center gap-6 px-6 pb-2 relative">
                   {/* Flower EP - centered */}
                   {eps.map((item) => (
                     <div
@@ -452,11 +452,68 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                       </div>
                     </div>
                   ))}
+                  
+                  {/* Albums Toggle Button - positioned at far right */}
+                  <button
+                    onClick={handleToggle}
+                    className="flex flex-col items-center gap-1 group hover:scale-105 transition-transform duration-200 flex-shrink-0 absolute right-6"
+                    aria-label="Switch to Albums"
+                  >
+                    <span className="font-palatino text-sm font-semibold text-yellow-300 whitespace-nowrap">
+                      Albums
+                    </span>
+                    
+                    <div className="w-14 h-14 flex items-center justify-center">
+                      <svg 
+                        width="48" 
+                        height="48" 
+                        viewBox="0 0 48 48" 
+                        fill="none" 
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`text-yellow-300 ${
+                          isRotating ? 'animate-[spin-forward_0.6s_ease-in-out]' : ''
+                        }`}
+                      >
+                        <path 
+                          d="M14 8 L38 24 L14 40 Z" 
+                          stroke="currentColor" 
+                          strokeWidth="2.5" 
+                          fill="none" 
+                          strokeLinejoin="round"
+                        />
+                        <circle 
+                          cx="20" 
+                          cy="18" 
+                          r="4.5" 
+                          stroke="currentColor" 
+                          strokeWidth="1.8" 
+                          fill="none" 
+                          opacity="0.65" 
+                        />
+                        <path 
+                          d="M16 28 L24 30" 
+                          stroke="currentColor" 
+                          strokeWidth="1.5" 
+                          fill="none" 
+                          opacity="0.7" 
+                          strokeLinecap="round"
+                        />
+                        <path 
+                          d="M14 32 L22 34" 
+                          stroke="currentColor" 
+                          strokeWidth="1.5" 
+                          fill="none" 
+                          opacity="0.5" 
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </div>
+                  </button>
                 </div>
               ) : (
                 /* Albums View */
                 <div 
-                  className="flex items-center gap-6 overflow-x-auto overflow-y-hidden px-6 pb-2 pr-24 scrollbar-hide"
+                  className="flex items-center gap-6 overflow-x-auto overflow-y-hidden px-6 pb-2 scrollbar-hide"
                   style={{ 
                     scrollbarWidth: 'none', 
                     msOverflowStyle: 'none',
@@ -494,80 +551,66 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                       </div>
                     </div>
                   ))}
+                  
+                  {/* EPs Toggle Button - at far right of scroll */}
+                  <button
+                    onClick={handleToggle}
+                    className="flex flex-col items-center gap-1 group hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-4"
+                    aria-label="Switch to EPs"
+                  >
+                    <span className="font-palatino text-sm font-semibold text-yellow-300 whitespace-nowrap">
+                      EPs
+                    </span>
+                    
+                    <div className="w-14 h-14 flex items-center justify-center">
+                      <svg 
+                        width="48" 
+                        height="48" 
+                        viewBox="0 0 48 48" 
+                        fill="none" 
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`text-yellow-300 ${
+                          isRotating ? 'animate-[spin-forward_0.6s_ease-in-out]' : ''
+                        }`}
+                      >
+                        <path 
+                          d="M14 8 L38 24 L14 40 Z" 
+                          stroke="currentColor" 
+                          strokeWidth="2.5" 
+                          fill="none" 
+                          strokeLinejoin="round"
+                        />
+                        <circle 
+                          cx="20" 
+                          cy="18" 
+                          r="4.5" 
+                          stroke="currentColor" 
+                          strokeWidth="1.8" 
+                          fill="none" 
+                          opacity="0.65" 
+                        />
+                        <path 
+                          d="M16 28 L24 30" 
+                          stroke="currentColor" 
+                          strokeWidth="1.5" 
+                          fill="none" 
+                          opacity="0.7" 
+                          strokeLinecap="round"
+                        />
+                        <path 
+                          d="M14 32 L22 34" 
+                          stroke="currentColor" 
+                          strokeWidth="1.5" 
+                          fill="none" 
+                          opacity="0.5" 
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </div>
+                  </button>
                 </div>
               )}
             </div>
-            
-            {/* Toggle Button - Fixed position at right, same as desktop */}
-            <button
-              onClick={handleToggle}
-              className="absolute right-6 flex flex-col items-center gap-1 group hover:scale-105 transition-transform duration-200"
-              aria-label={showEPs ? "Switch to Albums" : "Switch to EPs"}
-            >
-              {/* Label with smooth transition - centered */}
-              <div className="relative h-5 mb-1 w-16 flex justify-center">
-                <span
-                  className={`absolute font-palatino text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
-                    showEPs ? 'opacity-100' : 'opacity-0'
-                  }`}
-                >
-                  Albums
-                </span>
-                <span
-                  className={`absolute font-palatino text-sm font-semibold text-yellow-300 transition-all duration-200 whitespace-nowrap ${
-                    showEPs ? 'opacity-0' : 'opacity-100'
-                  }`}
-                >
-                  EPs
-                </span>
-              </div>
-              
-              <div className="w-14 h-14 flex items-center justify-center">
-                <svg 
-                  width="48" 
-                  height="48" 
-                  viewBox="0 0 48 48" 
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`text-yellow-300 ${
-                    isRotating ? 'animate-[spin-forward_0.6s_ease-in-out]' : ''
-                  }`}
-                >
-                  <path 
-                    d="M14 8 L38 24 L14 40 Z" 
-                    stroke="currentColor" 
-                    strokeWidth="2.5" 
-                    fill="none" 
-                    strokeLinejoin="round"
-                  />
-                  <circle 
-                    cx="20" 
-                    cy="18" 
-                    r="4.5" 
-                    stroke="currentColor" 
-                    strokeWidth="1.8" 
-                    fill="none" 
-                    opacity="0.65" 
-                  />
-                  <path 
-                    d="M16 28 L24 30" 
-                    stroke="currentColor" 
-                    strokeWidth="1.5" 
-                    fill="none" 
-                    opacity="0.7" 
-                    strokeLinecap="round"
-                  />
-                  <path 
-                    d="M14 32 L22 34" 
-                    stroke="currentColor" 
-                    strokeWidth="1.5" 
-                    fill="none" 
-                    opacity="0.5" 
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-            </button>
           </div>
 
           {/* Toggle Button - Desktop landscape only */}
