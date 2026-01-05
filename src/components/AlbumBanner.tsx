@@ -103,21 +103,25 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
 
   // Mobile: Switch to EP banner
   const switchToEP = useCallback(() => {
+    if (mobileSlideDirection) return; // Prevent double-trigger
     setMobileSlideDirection('left');
-    setTimeout(() => {
-      setMobileShowingAlbums(false);
-      setMobileSlideDirection(null);
-    }, 300);
-  }, []);
+  }, [mobileSlideDirection]);
 
   // Mobile: Switch to Albums banner
   const switchToAlbums = useCallback(() => {
+    if (mobileSlideDirection) return; // Prevent double-trigger
     setMobileSlideDirection('right');
-    setTimeout(() => {
+  }, [mobileSlideDirection]);
+
+  // Handle transition end to update state cleanly
+  const handleTransitionEnd = useCallback(() => {
+    if (mobileSlideDirection === 'left') {
+      setMobileShowingAlbums(false);
+    } else if (mobileSlideDirection === 'right') {
       setMobileShowingAlbums(true);
-      setMobileSlideDirection(null);
-    }, 300);
-  }, []);
+    }
+    setMobileSlideDirection(null);
+  }, [mobileSlideDirection]);
 
   // Handle touch/drag for mobile carousel switching
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -232,15 +236,16 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
           >
             {/* Albums Banner */}
             <div 
-              className={`w-full flex-shrink-0 transition-transform duration-300 ease-out ${
+              className={`w-full flex-shrink-0 transition-transform duration-300 ease-out will-change-transform ${
                 mobileSlideDirection === 'left' ? '-translate-x-full' : 
                 mobileSlideDirection === 'right' ? 'translate-x-full' : 
                 mobileShowingAlbums ? 'translate-x-0' : '-translate-x-full absolute'
               } ${!mobileShowingAlbums && !mobileSlideDirection ? 'hidden' : ''}`}
+              onTransitionEnd={mobileShowingAlbums || mobileSlideDirection === 'left' ? handleTransitionEnd : undefined}
             >
               <div 
                 ref={albumsScrollRef}
-                className="flex items-start pl-4 pr-4 overflow-x-auto scrollbar-hide"
+                className="flex items-start pl-4 pr-4 pb-3 overflow-x-auto scrollbar-hide"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {albums.map((item, index) => {
@@ -303,29 +308,17 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
 
             {/* EP Banner */}
             <div 
-              className={`w-full flex-shrink-0 transition-transform duration-300 ease-out ${
+              className={`w-full flex-shrink-0 transition-transform duration-300 ease-out will-change-transform ${
                 mobileSlideDirection === 'right' ? '-translate-x-full' : 
                 mobileSlideDirection === 'left' ? 'translate-x-0' : 
                 !mobileShowingAlbums ? 'translate-x-0' : 'translate-x-full absolute'
               } ${mobileShowingAlbums && !mobileSlideDirection ? 'hidden' : ''}`}
+              onTransitionEnd={!mobileShowingAlbums || mobileSlideDirection === 'right' ? handleTransitionEnd : undefined}
             >
               <div 
                 ref={epScrollRef}
-                className="flex items-start justify-center px-4"
+                className="flex items-start justify-center px-4 pb-3"
               >
-                {/* Albums indicator at the start */}
-                <div 
-                  className="flex items-center justify-center px-4 h-16 mt-3 flex-shrink-0 cursor-pointer mr-8"
-                  onClick={switchToAlbums}
-                >
-                  <div className="flex items-center gap-1">
-                    <ChevronRight className="w-4 h-4 text-yellow-300 rotate-180" />
-                    <span className="font-palatino text-[11px] font-semibold text-yellow-300 whitespace-nowrap">
-                      Albums
-                    </span>
-                  </div>
-                </div>
-
                 {/* EP Cover - Centered */}
                 {eps.map((item) => (
                   <div
@@ -372,7 +365,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                   </div>
                 ))}
 
-                {/* Albums indicator at the end */}
+                {/* Albums indicator on the right only */}
                 <div 
                   className="flex items-center justify-center px-4 h-16 mt-3 flex-shrink-0 cursor-pointer ml-8"
                   onClick={switchToAlbums}
