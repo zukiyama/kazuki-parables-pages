@@ -217,13 +217,6 @@
 }
 
 @layer components {
-  /* iPad 10.9" portrait mode - align hero image to bottom of viewport */
-  @media (min-width: 768px) and (max-width: 834px) and (orientation: portrait) {
-    .hero-image-ipad-portrait {
-      object-position: 50% 100% !important;
-    }
-  }
-
   .literary-quote {
     font-family: var(--font-accent);
     font-style: italic;
