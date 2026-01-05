@@ -77,7 +77,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   
   // Mobile carousel state
   const [mobileShowingAlbums, setMobileShowingAlbums] = useState(false); // Start with EP banner
-  const [mobileSlideDirection, setMobileSlideDirection] = useState<'left' | 'right' | null>(null);
+  const [mobileSlideDirection, setMobileSlideDirection] = useState<'preparing' | 'sliding' | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragCurrentX, setDragCurrentX] = useState(0);
@@ -101,20 +101,39 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
     setTimeout(() => setIsRotating(false), 600);
   };
 
-  // Mobile: Switch to next banner (always slides left, circular)
+  // Mobile: Switch to next banner (always slides from right, circular)
   const switchToNext = useCallback(() => {
     if (mobileSlideDirection) return; // Prevent double-trigger
-    setMobileSlideDirection('left');
+    
+    // First, prepare the next banner off-screen to the right
+    setMobileSlideDirection('preparing');
+    
+    // Use requestAnimationFrame to ensure the preparation is rendered before animating
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setMobileSlideDirection('sliding');
+      });
+    });
   }, [mobileSlideDirection]);
 
   // Handle transition end to update state cleanly
   const handleTransitionEnd = useCallback(() => {
-    if (mobileSlideDirection === 'left') {
+    if (mobileSlideDirection === 'sliding') {
       // Toggle between albums and EP
       setMobileShowingAlbums(prev => !prev);
+      setMobileSlideDirection(null);
+      
+      // Reset albums scroll to left when switching to albums
+      if (!mobileShowingAlbums) {
+        // We're switching TO albums, so reset scroll
+        setTimeout(() => {
+          if (albumsScrollRef.current) {
+            albumsScrollRef.current.scrollLeft = 0;
+          }
+        }, 50);
+      }
     }
-    setMobileSlideDirection(null);
-  }, [mobileSlideDirection]);
+  }, [mobileSlideDirection, mobileShowingAlbums]);
 
   // Handle touch/drag for mobile carousel switching
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -229,12 +248,21 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
           >
             {/* Albums Banner */}
             <div 
-              className={`w-full flex-shrink-0 transition-transform duration-300 ease-out will-change-transform ${
-                mobileSlideDirection === 'left' && !mobileShowingAlbums ? 'translate-x-0' : 
-                mobileShowingAlbums && !mobileSlideDirection ? 'translate-x-0' : 
-                '-translate-x-full'
-              } ${!mobileShowingAlbums && !mobileSlideDirection ? 'hidden absolute' : ''}`}
-              onTransitionEnd={mobileShowingAlbums || mobileSlideDirection === 'left' ? handleTransitionEnd : undefined}
+              className={`w-full flex-shrink-0 will-change-transform ${
+                mobileSlideDirection === 'sliding' ? 'transition-transform duration-300 ease-out' : ''
+              } ${
+                // When showing albums normally
+                mobileShowingAlbums && !mobileSlideDirection ? 'translate-x-0' :
+                // When preparing to slide in albums (position off-screen right)
+                !mobileShowingAlbums && mobileSlideDirection === 'preparing' ? 'translate-x-full' :
+                // When sliding albums in from right
+                !mobileShowingAlbums && mobileSlideDirection === 'sliding' ? 'translate-x-0' :
+                // When albums is sliding out to left
+                mobileShowingAlbums && mobileSlideDirection === 'sliding' ? '-translate-x-full' :
+                // Hidden when not needed
+                'translate-x-full hidden absolute'
+              }`}
+              onTransitionEnd={mobileSlideDirection === 'sliding' ? handleTransitionEnd : undefined}
             >
               <div 
                 ref={albumsScrollRef}
@@ -274,7 +302,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                           loading="eager"
                           className={`w-full h-full object-cover rounded transition-all duration-300 ${
                             selectedAlbumId === item.id
-                              ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
+                              ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_4px_12px_rgba(253,224,71,0.15)]'
                               : 'shadow-lg'
                           }`}
                         />
@@ -301,18 +329,30 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
 
             {/* EP Banner */}
             <div 
-              className={`w-full flex-shrink-0 transition-transform duration-300 ease-out will-change-transform ${
-                mobileSlideDirection === 'left' && mobileShowingAlbums ? 'translate-x-0' : 
-                !mobileShowingAlbums && !mobileSlideDirection ? 'translate-x-0' : 
-                'translate-x-full'
-              } ${mobileShowingAlbums && !mobileSlideDirection ? 'hidden absolute' : ''}`}
-              onTransitionEnd={!mobileShowingAlbums || mobileSlideDirection === 'left' ? handleTransitionEnd : undefined}
+              className={`w-full flex-shrink-0 will-change-transform ${
+                mobileSlideDirection === 'sliding' ? 'transition-transform duration-300 ease-out' : ''
+              } ${
+                // When showing EP normally
+                !mobileShowingAlbums && !mobileSlideDirection ? 'translate-x-0' :
+                // When preparing to slide in EP (position off-screen right)
+                mobileShowingAlbums && mobileSlideDirection === 'preparing' ? 'translate-x-full' :
+                // When sliding EP in from right
+                mobileShowingAlbums && mobileSlideDirection === 'sliding' ? 'translate-x-0' :
+                // When EP is sliding out to left
+                !mobileShowingAlbums && mobileSlideDirection === 'sliding' ? '-translate-x-full' :
+                // Hidden when not needed
+                'translate-x-full hidden absolute'
+              }`}
+              onTransitionEnd={mobileSlideDirection === 'sliding' ? handleTransitionEnd : undefined}
             >
               <div 
                 ref={epScrollRef}
-                className="flex items-center justify-between px-4 pb-3 w-full"
+                className="flex items-center px-4 pb-3 w-full"
               >
-                {/* EP Cover - Centered */}
+                {/* Spacer for centering - same width as Albums indicator */}
+                <div className="w-16 flex-shrink-0"></div>
+                
+                {/* EP Cover - True center */}
                 <div className="flex-1 flex justify-center">
                   {eps.map((item) => (
                     <div
@@ -338,7 +378,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                               loading="eager"
                               className={`w-full h-full object-cover rounded transition-all duration-300 ${
                                 selectedAlbumId === item.id
-                                  ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
+                                  ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_4px_12px_rgba(253,224,71,0.15)]'
                                   : 'shadow-lg'
                               }`}
                             />
@@ -347,7 +387,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                         ) : (
                           <div className={`w-16 h-16 rounded bg-black/40 border border-white/20 flex items-center justify-center transition-all duration-300 ${
                             selectedAlbumId === item.id
-                              ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_10px_30px_rgba(253,224,71,0.3)]'
+                              ? 'shadow-[0_0_0_2px_rgba(253,224,71,0.6),0_4px_12px_rgba(253,224,71,0.15)]'
                               : 'shadow-lg'
                           }`}>
                             <span className="text-white/60 text-[10px] font-semibold text-center px-2">
