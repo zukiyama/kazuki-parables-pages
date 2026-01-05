@@ -419,55 +419,65 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
           >
             {/* EP Banner - iPad Portrait */}
             <div 
-              className={`w-full flex-shrink-0 will-change-transform transition-opacity duration-300 ease-out overflow-visible ${
-                !mobileShowingAlbums && animationPhase === 'idle' ? 'relative opacity-100' :
-                !mobileShowingAlbums && animationPhase === 'preparing' ? 'relative opacity-100' :
-                targetView === 'albums' && animationPhase === 'sliding' ? 'absolute inset-0 opacity-0' :
-                targetView === 'ep' && animationPhase === 'preparing' ? 'absolute inset-0 opacity-0' :
-                targetView === 'ep' && animationPhase === 'sliding' ? 'absolute inset-0 opacity-100' :
-                'absolute inset-0 opacity-0 pointer-events-none'
+              className={`w-full flex-shrink-0 will-change-transform transition-all duration-500 ease-out overflow-visible ${
+                !mobileShowingAlbums && animationPhase === 'idle' ? 'relative opacity-100 translate-x-0' :
+                !mobileShowingAlbums && animationPhase === 'preparing' ? 'relative opacity-100 translate-x-0' :
+                targetView === 'albums' && animationPhase === 'sliding' ? 'absolute inset-0 opacity-0 -translate-x-full' :
+                targetView === 'ep' && animationPhase === 'preparing' ? 'absolute inset-0 opacity-0 translate-x-full' :
+                targetView === 'ep' && animationPhase === 'sliding' ? 'absolute inset-0 opacity-100 translate-x-0' :
+                'absolute inset-0 opacity-0 translate-x-full pointer-events-none'
               }`}
               onTransitionEnd={targetView === 'ep' && animationPhase === 'sliding' ? handleTransitionEnd : undefined}
             >
-              <div className="flex items-center justify-center w-full px-6 relative overflow-visible h-full">
-                {/* EP Cover - centered */}
-                <div className="flex justify-center items-center gap-8 flex-1 overflow-visible">
-                  {eps.map((item) => (
-                    <div
-                      key={`ipad-ep-${item.id}`}
-                      className="flex flex-col items-center cursor-pointer group overflow-visible"
-                      onClick={() => handleAlbumClick(item)}
-                    >
-                      <h3 className="font-palatino text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
-                        {item.title}
-                      </h3>
-                      <div className="relative overflow-visible">
-                        <img
-                          src={item.cover}
-                          alt={item.title}
-                          width="96"
-                          height="96"
-                          loading="eager"
-                          className={`w-24 h-24 object-cover rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
-                            selectedAlbumId === item.id
-                              ? 'ring-2 ring-yellow-300/60 scale-105'
-                              : ''
-                          }`}
-                        />
-                        <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-                      </div>
+              <div 
+                className="flex items-center pl-6 pr-4 overflow-x-auto overflow-y-hidden scrollbar-hide h-full"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', touchAction: 'pan-x' }}
+              >
+                {/* Spacer for centering EP */}
+                <div className="flex-1"></div>
+                
+                {/* EP Cover */}
+                {eps.map((item) => (
+                  <div
+                    key={`ipad-ep-${item.id}`}
+                    className="flex flex-col items-center cursor-pointer group overflow-visible flex-shrink-0"
+                    onClick={() => handleAlbumClick(item)}
+                  >
+                    <h3 className="font-palatino text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
+                      {item.title}
+                    </h3>
+                    <div className="relative overflow-visible">
+                      <img
+                        src={item.cover}
+                        alt={item.title}
+                        width="96"
+                        height="96"
+                        loading="eager"
+                        className={`w-24 h-24 object-cover rounded shadow-lg transition-all duration-300 group-hover:shadow-xl ${
+                          selectedAlbumId === item.id
+                            ? 'ring-2 ring-yellow-300/60 scale-105'
+                            : ''
+                        }`}
+                      />
+                      <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
 
-                {/* Albums toggle button - fixed right position */}
+                {/* Spacer for centering EP */}
+                <div className="flex-1"></div>
+
+                {/* Albums toggle button - inline at far right of scroll */}
                 <button
                   onClick={() => {
                     setIsRotating(true);
-                    setTimeout(() => setIsRotating(false), 600);
-                    switchToNext();
+                    setIsTransitioning(true);
+                    setTimeout(() => {
+                      switchToNext();
+                      setTimeout(() => setIsTransitioning(false), 50);
+                    }, 400);
                   }}
-                  className="absolute right-4 flex flex-col items-center gap-1 group hover:scale-105 transition-transform duration-200"
+                  className="flex flex-col items-center gap-1 group hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-8"
                   aria-label="Switch to Albums"
                 >
                   <span className="font-palatino text-sm font-semibold text-yellow-300 whitespace-nowrap">
@@ -480,7 +490,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                       viewBox="0 0 48 48" 
                       fill="none" 
                       xmlns="http://www.w3.org/2000/svg"
-                      className={`text-yellow-300 transition-transform duration-500 ${isRotating ? 'rotate-[360deg]' : ''}`}
+                      className={`text-yellow-300 ${isRotating ? 'animate-[spin-forward_0.6s_ease-in-out]' : ''}`}
                     >
                       <path d="M14 8 L38 24 L14 40 Z" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinejoin="round"/>
                       <circle cx="20" cy="18" r="4.5" stroke="currentColor" strokeWidth="1.8" fill="none" opacity="0.65"/>
@@ -494,18 +504,18 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
 
             {/* Albums Banner - iPad Portrait */}
             <div 
-              className={`w-full flex-shrink-0 will-change-transform transition-opacity duration-300 ease-out overflow-visible ${
-                mobileShowingAlbums && animationPhase === 'idle' ? 'relative opacity-100' :
-                mobileShowingAlbums && animationPhase === 'preparing' ? 'relative opacity-100' :
-                targetView === 'ep' && animationPhase === 'sliding' ? 'absolute inset-0 opacity-0' :
-                targetView === 'albums' && animationPhase === 'preparing' ? 'absolute inset-0 opacity-0' :
-                targetView === 'albums' && animationPhase === 'sliding' ? 'absolute inset-0 opacity-100' :
-                'absolute inset-0 opacity-0 pointer-events-none'
+              className={`w-full flex-shrink-0 will-change-transform transition-all duration-500 ease-out overflow-visible ${
+                mobileShowingAlbums && animationPhase === 'idle' ? 'relative opacity-100 translate-x-0' :
+                mobileShowingAlbums && animationPhase === 'preparing' ? 'relative opacity-100 translate-x-0' :
+                targetView === 'ep' && animationPhase === 'sliding' ? 'absolute inset-0 opacity-0 -translate-x-full' :
+                targetView === 'albums' && animationPhase === 'preparing' ? 'absolute inset-0 opacity-0 translate-x-full' :
+                targetView === 'albums' && animationPhase === 'sliding' ? 'absolute inset-0 opacity-100 translate-x-0' :
+                'absolute inset-0 opacity-0 translate-x-full pointer-events-none'
               }`}
               onTransitionEnd={targetView === 'albums' && animationPhase === 'sliding' ? handleTransitionEnd : undefined}
             >
               <div 
-                className="flex items-center pl-4 pr-20 overflow-x-auto overflow-y-hidden scrollbar-hide h-full"
+                className="flex items-center pl-4 pr-4 overflow-x-auto overflow-y-hidden scrollbar-hide h-full"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', touchAction: 'pan-x' }}
               >
                 {albums.map((item, index) => (
@@ -536,14 +546,17 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                   </div>
                 ))}
 
-                {/* EP toggle button at end of scroll - same position as Albums button */}
+                {/* EP toggle button - inline at end of scroll, not absolute */}
                 <button
                   onClick={() => {
                     setIsRotating(true);
-                    setTimeout(() => setIsRotating(false), 600);
-                    switchToNext();
+                    setIsTransitioning(true);
+                    setTimeout(() => {
+                      switchToNext();
+                      setTimeout(() => setIsTransitioning(false), 50);
+                    }, 400);
                   }}
-                  className="absolute right-4 flex flex-col items-center gap-1 group hover:scale-105 transition-transform duration-200"
+                  className="flex flex-col items-center gap-1 group hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-8"
                   aria-label="Switch to EPs"
                 >
                   <span className="font-palatino text-sm font-semibold text-yellow-300 whitespace-nowrap">
@@ -556,7 +569,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                       viewBox="0 0 48 48" 
                       fill="none" 
                       xmlns="http://www.w3.org/2000/svg"
-                      className={`text-yellow-300 transition-transform duration-500 ${isRotating ? 'rotate-[360deg]' : ''}`}
+                      className={`text-yellow-300 ${isRotating ? 'animate-[spin-forward_0.6s_ease-in-out]' : ''}`}
                     >
                       <path d="M14 8 L38 24 L14 40 Z" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinejoin="round"/>
                       <circle cx="20" cy="18" r="4.5" stroke="currentColor" strokeWidth="1.8" fill="none" opacity="0.65"/>
