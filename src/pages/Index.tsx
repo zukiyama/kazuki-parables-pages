@@ -277,8 +277,8 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
-      {/* iPad portrait (768px+ portrait) and desktop (lg+) use --hero-h for perfect bottom alignment */}
-      <section className="h-[calc(100vh-56px)] [@media(min-width:768px)_and_(orientation:portrait)]:h-[calc(var(--hero-h,100dvh)-56px)] lg:h-[calc(var(--hero-h,100dvh)-56px)] mt-14 flex items-center justify-center relative overflow-hidden bg-background">
+      {/* All devices use --hero-h for perfect bottom alignment */}
+      <section className="h-[calc(var(--hero-h,100dvh)-56px)] mt-14 flex items-center justify-center relative overflow-hidden bg-background">
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
