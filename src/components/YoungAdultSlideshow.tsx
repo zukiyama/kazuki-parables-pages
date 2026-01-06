@@ -12,7 +12,7 @@ const books = [
     title: "The Congress of Worlds",
     series: "Professor Barnabas and Darwin",
     subtitle: "",
-    summary: "Set in Victorian London, twelve-year-old Darwin finds himself, despite his best efforts, working as errand-boy at a curiosity shop for the eccentric Professor Barnabas—who seems no more keen on the arrangement than Darwin himself. But it is there that he discovers a doorway to another London, one where people take a submarine to work, where wrens and robins can talk, and ancient kings of England might be found running the local tavern. |Undon| however is rarely what it seems, and when a delivery goes awry, Darwin will have to draw on all of his courage and invention to escape its clutches—and an early brush with the ingenious Renard—in this first of the adventures of Professor Barnabas and Darwin.",
+    summary: "Set in Victorian London, twelve-year-old Darwin finds himself—despite his best efforts—working as an errand boy at a curiosity shop for the eccentric |Professor Barnabas|, who seems no more keen on the arrangement than Darwin himself.|BREAK|But it is there that he discovers a doorway to another London: one where people take a submarine to work, where wrens and robins can talk, and where ancient kings of England might be found running the local tavern. |Undon|, however, is rarely what it seems, and when a delivery goes awry, Darwin will have to draw on all of his courage and invention to escape its clutches—and an early brush with the ingenious |Renard|—in this first of the adventures of |Professor Barnabas and Darwin|.",
     cover: professorBarnabasCover,
     layout: "cover-left"
   },
@@ -201,20 +201,56 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     : "font-serif text-lg text-yellow-300 mb-3 drop-shadow-lg max-sm:text-sm max-sm:mb-2";
 
   const summaryClasses = isWidescreen
-    ? "font-serif text-xs leading-relaxed text-white/90 drop-shadow-md max-w-[95%]"
+    ? "font-serif text-xs leading-relaxed text-white/90 drop-shadow-md max-w-full"
     : "font-serif text-sm leading-relaxed text-white/90 drop-shadow-md max-sm:text-xs max-sm:leading-normal max-w-[95%]";
 
-  // Helper to render summary with italic Undon
+  // Helper to render summary with italic words and paragraph breaks
   const renderSummary = (summary: string) => {
-    if (summary.includes('|Undon|')) {
-      const parts = summary.split('|Undon|');
+    // Split by paragraph break first
+    const paragraphs = summary.split('|BREAK|');
+    
+    // Process each paragraph to handle italic markers
+    const processText = (text: string): React.ReactNode[] => {
+      const parts: React.ReactNode[] = [];
+      let remaining = text;
+      let key = 0;
+      
+      // Find all italic markers |word| and process them
+      const italicPattern = /\|([^|]+)\|/g;
+      let lastIndex = 0;
+      let match;
+      
+      while ((match = italicPattern.exec(text)) !== null) {
+        // Add text before the match
+        if (match.index > lastIndex) {
+          parts.push(text.substring(lastIndex, match.index));
+        }
+        // Add the italic word
+        parts.push(<em key={key++} className="italic">{match[1]}</em>);
+        lastIndex = match.index + match[0].length;
+      }
+      
+      // Add remaining text
+      if (lastIndex < text.length) {
+        parts.push(text.substring(lastIndex));
+      }
+      
+      return parts;
+    };
+    
+    if (paragraphs.length > 1) {
       return (
         <>
-          {parts[0]}<em className="italic">Undon</em>{parts[1]}
+          {paragraphs.map((para, idx) => (
+            <span key={idx} className={idx > 0 ? "block mt-3" : ""}>
+              {processText(para)}
+            </span>
+          ))}
         </>
       );
     }
-    return summary;
+    
+    return processText(summary);
   };
 
   return (
@@ -256,7 +292,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
                 </div>
                 
                 {/* Book Info */}
-                <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-24 pl-8"} md:pl-24 md:pr-24 max-sm:px-0 ${isWidescreen ? "flex flex-col justify-center" : ""}`}>
+                <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-12 pl-8"} md:pl-16 md:pr-12 max-sm:px-0 ${isWidescreen ? "flex flex-col justify-center" : ""}`}>
                   {book.series && (
                     <p className={seriesClasses}>{book.series}</p>
                   )}
