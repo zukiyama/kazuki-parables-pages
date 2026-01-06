@@ -191,7 +191,7 @@ const About = () => {
                 <div className="flex items-start gap-6 mb-10">
                   {/* Title - positioned on left */}
                   <div className="flex-1 pt-0">
-                    <h1 className="font-heading text-7xl md:text-8xl lg:text-[8.5rem] text-black leading-[0.85] tracking-tight">
+                    <h1 className="font-heading text-7xl md:text-8xl lg:text-[8rem] text-black leading-[0.85] tracking-tight">
                       Kazuki
                       <br />
                       <span className="italic font-light">Yamakawa</span>
@@ -211,10 +211,10 @@ const About = () => {
                 <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
-                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl ml-auto text-right">
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl">
                   A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
                 </p>
-                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl ml-auto text-right mt-4">
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl mt-4">
                   The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
