@@ -292,7 +292,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
                 </div>
                 
                 {/* Book Info */}
-                <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-12 pl-8"} md:pl-16 md:pr-12 max-sm:px-0 ${isWidescreen ? "flex flex-col justify-center" : ""}`}>
+                <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-12 pl-8"} md:pl-16 md:pr-12 max-sm:px-4 max-sm:text-center ${isWidescreen ? "flex flex-col justify-center" : ""}`}>
                   {book.series && (
                     <p className={seriesClasses}>{book.series}</p>
                   )}
