@@ -387,35 +387,10 @@ const Writing = () => {
     window.addEventListener('mousedown', handleMouseDown, { passive: true });
     window.addEventListener('mouseup', handleMouseUp, { passive: true });
     
-    // iOS Safari fix: Re-snap when visualViewport changes (browser bar show/hide)
-    // This is the key listener that ChatGPT identified as missing
-    const handleVisualViewportResize = () => {
-      if (isSnapping.current || isDraggingScrollbar.current) return;
-      if (window.innerWidth < 950) return; // Only on desktop/widescreen
-      
-      // Cancel any pending resnap
-      if (pendingResnap) cancelAnimationFrame(pendingResnap);
-      
-      // Schedule a resnap on next frame to let layout settle
-      pendingResnap = requestAnimationFrame(() => {
-        handleScrollEnd();
-        pendingResnap = null;
-      });
-    };
-    
-    // Attach to visualViewport if available (iOS Safari, Chrome)
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', handleVisualViewportResize);
-    }
-    
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener('resize', handleVisualViewportResize);
-      }
-      if (pendingResnap) cancelAnimationFrame(pendingResnap);
       clearTimeout(scrollTimeout);
     };
   }, [getHeaderBottom, isWidescreen]);
