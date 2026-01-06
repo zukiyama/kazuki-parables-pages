@@ -96,11 +96,9 @@ interface BookshelfMenuProps {
   bannerVisible?: boolean;
   onBannerHide?: () => void; // Callback to hide banner on widescreen
   getHeaderBottom?: () => number; // Get header bottom position for snap calculations
-  onNavigationStart?: () => void; // Signal programmatic navigation started
-  onNavigationEnd?: () => void; // Signal programmatic navigation ended
 }
 
-export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultBook = 0, isWidescreen = false, bannerVisible = true, onBannerHide, getHeaderBottom, onNavigationStart, onNavigationEnd }: BookshelfMenuProps) => {
+export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultBook = 0, isWidescreen = false, bannerVisible = true, onBannerHide, getHeaderBottom }: BookshelfMenuProps) => {
   const [hoveredBook, setHoveredBook] = useState<string | null>(null);
   
   // Determine which book should be highlighted based on visible sections
@@ -257,9 +255,6 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
         // Check if we're already at or very close to the target position
         const currentScroll = window.scrollY;
         if (Math.abs(currentScroll - targetScrollPosition) > 5) {
-          // Signal navigation start to prevent Writing.tsx scroll-end snap from competing
-          onNavigationStart?.();
-          
           // Step 1: Disable scroll-snap during programmatic scroll (ChatGPT suggestion)
           const scrollContainer = document.documentElement;
           const originalSnapType = scrollContainer.style.scrollSnapType;
@@ -316,8 +311,6 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
                       });
                     }
                   }
-                  // Signal navigation complete - Writing.tsx scroll-end snap can resume
-                  onNavigationEnd?.();
                 });
               } else {
                 // Keep checking

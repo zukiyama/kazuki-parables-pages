@@ -85,7 +85,6 @@ const Writing = () => {
   const headerRef = useRef<HTMLElement | null>(null);
   const isSnapping = useRef(false);
   const isDraggingScrollbar = useRef(false);
-  const programmaticNavigationInProgress = useRef(false); // Flag to prevent snap during banner navigation
   const parableTrilogyRef = useRef<HTMLDivElement>(null);
 
   const location = useLocation();
@@ -273,8 +272,6 @@ const Writing = () => {
       if (isSnapping.current) return;
       // Disable scroll snap while dragging the scrollbar
       if (isDraggingScrollbar.current) return;
-      // Disable scroll snap during programmatic banner navigation (prevents double-snap)
-      if (programmaticNavigationInProgress.current) return;
       
       const bookSections = getBookSections();
       if (bookSections.length === 0) return;
@@ -708,8 +705,6 @@ const Writing = () => {
         bannerVisible={bannerVisible}
         onBannerHide={handleBannerBookClick}
         getHeaderBottom={getHeaderBottom}
-        onNavigationStart={() => { programmaticNavigationInProgress.current = true; }}
-        onNavigationEnd={() => { programmaticNavigationInProgress.current = false; }}
       />
       
       {/* Stacked Background Images - GPU-accelerated fixed layer */}
