@@ -168,18 +168,20 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       const section = document.querySelector(`[data-section="${book.targetSection}"]`) as HTMLElement;
       if (!section) return null;
 
-      // Get fixed elements - use passed getHeaderBottom for widescreen, fallback otherwise
-      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
+      // FIXED: Use stable isWidescreen prop instead of live aspect ratio calculation
+      // This prevents snap branch from changing when browser bar collapses/expands on iPad
+      console.log('[BANNER CLICK DEBUG] calculateSnapPosition - isWidescreen:', isWidescreen, 'innerWidth:', window.innerWidth, 'innerHeight:', window.innerHeight, 'visualViewport.height:', window.visualViewport?.height);
       const headerBottom = getHeaderBottom ? getHeaderBottom() : 64;
       
       // For widescreen: the banner will disappear immediately after click, so calculate
       // the scroll position as if the banner is already gone (topOffset = header only)
       // For non-widescreen: include banner height in calculations since banner stays visible
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
-      const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
+      const bannerHeight = (banner && !isWidescreen) ? banner.offsetHeight : 0;
       const topOffset = headerBottom + bannerHeight;
       const viewportHeight = getViewportHeight();
       const availableHeight = viewportHeight - topOffset;
+      console.log('[BANNER CLICK DEBUG] topOffset:', topOffset, 'viewportHeight:', viewportHeight, 'availableHeight:', availableHeight, 'bannerHeight:', bannerHeight);
       
       let targetScrollPosition: number | undefined;
       
