@@ -473,39 +473,42 @@ const Writing = () => {
         newOpacities.otherWorks = 1;
         setSlideshowOpacity(0);
         setOtherWorksContentOpacity(1);
+        // IMPORTANT: When other-works is visible, do NOT set any other background opacity
+        // This prevents the KAIJU (school) background from flashing during the transition
       } else {
         setSlideshowOpacity(1);
         setOtherWorksContentOpacity(0);
         setOtherWorksWhiteMode(false);
         setExpandedWork(null);
         setActiveVignette(null);
-      }
-
-      if (newVisibleSections.has('vice-versa')) {
-        newOpacities.viceVersa = 1;
-      } else if (newVisibleSections.has('how')) {
-        newOpacities.how = 1;
-      } else if (newVisibleSections.has('states-of-motion')) {
-        newOpacities.statesOfMotion = 1;
-      } else if (newVisibleSections.has('oba')) {
-        newOpacities.oba = 1;
-      } else if (newVisibleSections.has('the-market')) {
-        newOpacities.theMarket = 1;
-      } else if (newVisibleSections.has('hoax')) {
-        newOpacities.hoax = 1;
-      } else if (newVisibleSections.has('young-adult')) {
-        // Show different backgrounds based on current young adult book
-        // Keep ALL young-adult backgrounds in their current opacity state initially
-        // Only the selected one will be set to 1, CSS transitions handle the crossfade
-        newOpacities.victorianLondon = currentYoungAdultBook === 0 ? 1 : 0;
-        newOpacities.wasteland = currentYoungAdultBook === 1 ? 1 : 0;
-        newOpacities.deepSpace = currentYoungAdultBook === 2 ? 1 : 0;
-        // If somehow out of range, show school background
-        if (currentYoungAdultBook < 0 || currentYoungAdultBook > 2) {
+        
+        // Only determine which section background to show when NOT in other-works
+        if (newVisibleSections.has('vice-versa')) {
+          newOpacities.viceVersa = 1;
+        } else if (newVisibleSections.has('how')) {
+          newOpacities.how = 1;
+        } else if (newVisibleSections.has('states-of-motion')) {
+          newOpacities.statesOfMotion = 1;
+        } else if (newVisibleSections.has('oba')) {
+          newOpacities.oba = 1;
+        } else if (newVisibleSections.has('the-market')) {
+          newOpacities.theMarket = 1;
+        } else if (newVisibleSections.has('hoax')) {
+          newOpacities.hoax = 1;
+        } else if (newVisibleSections.has('young-adult')) {
+          // Show different backgrounds based on current young adult book
+          // Keep ALL young-adult backgrounds in their current opacity state initially
+          // Only the selected one will be set to 1, CSS transitions handle the crossfade
+          newOpacities.victorianLondon = currentYoungAdultBook === 0 ? 1 : 0;
+          newOpacities.wasteland = currentYoungAdultBook === 1 ? 1 : 0;
+          newOpacities.deepSpace = currentYoungAdultBook === 2 ? 1 : 0;
+          // If somehow out of range, show school background
+          if (currentYoungAdultBook < 0 || currentYoungAdultBook > 2) {
+            newOpacities.school = 1;
+          }
+        } else {
           newOpacities.school = 1;
         }
-      } else {
-        newOpacities.school = 1;
       }
 
       setBackgroundOpacities(newOpacities);
