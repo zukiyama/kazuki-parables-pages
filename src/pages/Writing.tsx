@@ -706,6 +706,12 @@ const Writing = () => {
     cursorWasOutsideBannerRef.current = false; // Cursor is inside since we clicked there
     bannerManuallyHiddenRef.current = true; // Prevent scroll handler from re-showing banner at top
     setBannerVisible(false);
+    
+    // Clear the manual hide flag after programmatic scroll completes (~800ms)
+    // This allows manual scrolling back to top to show the banner
+    setTimeout(() => {
+      bannerManuallyHiddenRef.current = false;
+    }, 800);
   }, []);
 
   return (
