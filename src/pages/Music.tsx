@@ -501,6 +501,12 @@ const Music = () => {
     cursorWasOutsideBannerRef.current = false;
     bannerManuallyHiddenRef.current = true; // Prevent scroll handler from re-showing banner at top
     setBannerVisible(false);
+    
+    // Clear the manual hide flag after programmatic scroll completes (~800ms)
+    // This allows manual scrolling back to top to show the banner
+    setTimeout(() => {
+      bannerManuallyHiddenRef.current = false;
+    }, 800);
   };
 
   const handleAlbumSelect = async (albumId: number) => {
