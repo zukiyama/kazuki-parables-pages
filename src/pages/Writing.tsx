@@ -189,10 +189,11 @@ const Writing = () => {
 
     const getCenterSnapPoint = (section: HTMLElement, sectionName: string) => {
       const headerBottom = getHeaderBottom();
-      // For widescreen: ignore banner completely - snap is independent of banner visibility
-      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
+      // FIXED: Use stable isWidescreen from hook instead of live aspect ratio calculation
+      // This prevents snap branch from changing when browser bar collapses/expands on iPad
+      console.log('[SNAP DEBUG] getCenterSnapPoint - isWidescreen:', isWidescreen, 'innerWidth:', window.innerWidth, 'innerHeight:', window.innerHeight);
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
-      const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
+      const bannerHeight = (banner && !isWidescreen) ? banner.offsetHeight : 0;
       
       // Account for visualViewport offset (crucial on iOS Safari when browser bar is visible)
       const vvOffsetTop = getViewportOffsetTop();
@@ -286,10 +287,11 @@ const Writing = () => {
       }
 
       const headerBottom = getHeaderBottom();
-      // For widescreen: ignore banner completely - snap is independent of banner visibility
-      const isWidescreenDevice = window.innerWidth / window.innerHeight >= 1.6;
+      // FIXED: Use stable isWidescreen from hook instead of live aspect ratio calculation
+      // This prevents snap branch from changing when browser bar collapses/expands on iPad
+      console.log('[SNAP DEBUG] handleScrollEnd - isWidescreen:', isWidescreen, 'innerWidth:', window.innerWidth, 'innerHeight:', window.innerHeight, 'branch:', isWidescreen ? 'WIDESCREEN' : 'DESKTOP');
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
-      const bannerHeight = (banner && !isWidescreenDevice) ? banner.offsetHeight : 0;
+      const bannerHeight = (banner && !isWidescreen) ? banner.offsetHeight : 0;
       
       // Account for visualViewport offset (crucial on iOS Safari)
       const vvOffsetTop = getViewportOffsetTop();
