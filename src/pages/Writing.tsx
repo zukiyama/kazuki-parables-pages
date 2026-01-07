@@ -191,7 +191,6 @@ const Writing = () => {
       const headerBottom = getHeaderBottom();
       // FIXED: Use stable isWidescreen from hook instead of live aspect ratio calculation
       // This prevents snap branch from changing when browser bar collapses/expands on iPad
-      console.log('[SNAP DEBUG] getCenterSnapPoint - isWidescreen:', isWidescreen, 'innerWidth:', window.innerWidth, 'innerHeight:', window.innerHeight);
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreen) ? banner.offsetHeight : 0;
       
@@ -289,7 +288,6 @@ const Writing = () => {
       const headerBottom = getHeaderBottom();
       // FIXED: Use stable isWidescreen from hook instead of live aspect ratio calculation
       // This prevents snap branch from changing when browser bar collapses/expands on iPad
-      console.log('[SNAP DEBUG] handleScrollEnd - isWidescreen:', isWidescreen, 'innerWidth:', window.innerWidth, 'innerHeight:', window.innerHeight, 'branch:', isWidescreen ? 'WIDESCREEN' : 'DESKTOP');
       const banner = document.querySelector('[data-banner="bookshelf"]') as HTMLElement;
       const bannerHeight = (banner && !isWidescreen) ? banner.offsetHeight : 0;
       
@@ -402,8 +400,6 @@ const Writing = () => {
       
       const heightDelta = Math.abs(currentHeight - lastViewportHeight);
       
-      console.log('[SNAP DEBUG] viewportResize - isDesktopTier:', isDesktopTier, 'aspectRatio:', aspectRatio.toFixed(2), 'lastHeight:', lastViewportHeight, 'currentHeight:', currentHeight, 'delta:', heightDelta);
-      
       // Only re-snap if height changed significantly (browser bar show/hide ~50-100px)
       if (heightDelta > 40) {
         lastViewportHeight = currentHeight;
@@ -422,7 +418,6 @@ const Writing = () => {
               if (isSnapping.current) return;
               const snapPoint = getCenterSnapPoint(youngAdultSection, 'young-adult');
               const currentScroll = window.scrollY;
-              console.log('[SNAP DEBUG] viewportResize re-snap - snapPoint:', snapPoint, 'currentScroll:', currentScroll);
               if (snapPoint !== null && Math.abs(currentScroll - snapPoint) > 15) {
                 snapToPoint(snapPoint, 'young-adult');
               }
@@ -1458,7 +1453,7 @@ const Writing = () => {
         {/* Other Works Section */}
         <section 
           data-section="other-works" 
-          className={`flex items-center justify-center relative ${
+          className={`flex items-start justify-center relative ${
             isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
           }`}
           style={{ marginBottom: 0, paddingBottom: 0 }}
@@ -1466,7 +1461,7 @@ const Writing = () => {
           {/* Vignette images - positioned on sides with gradient fade */}
           {/* Desert vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out will-change-[opacity] transform-gpu"
             style={{
               opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteDesertLeft})`,
@@ -1479,7 +1474,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out will-change-[opacity] transform-gpu"
             style={{
               opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteDesertRight})`,
@@ -1494,7 +1489,7 @@ const Writing = () => {
           
           {/* Elephant (lights) vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out will-change-[opacity] transform-gpu"
             style={{
               opacity: activeVignette === 'elephant' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteLightsLeft})`,
@@ -1507,7 +1502,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out will-change-[opacity] transform-gpu"
             style={{
               opacity: activeVignette === 'elephant' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteLightsRight})`,
@@ -1522,7 +1517,7 @@ const Writing = () => {
           
           {/* Faster vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out will-change-[opacity] transform-gpu"
             style={{
               opacity: activeVignette === 'faster' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteFasterLeft})`,
@@ -1535,7 +1530,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out will-change-[opacity] transform-gpu"
             style={{
               opacity: activeVignette === 'faster' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteFasterRight})`,
@@ -1550,7 +1545,7 @@ const Writing = () => {
           
           {/* Plastic vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out will-change-[opacity] transform-gpu"
             style={{
               opacity: activeVignette === 'plastic' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignettePlasticLeft})`,
@@ -1563,7 +1558,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out will-change-[opacity] transform-gpu"
             style={{
               opacity: activeVignette === 'plastic' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignettePlasticRight})`,
@@ -1578,7 +1573,7 @@ const Writing = () => {
           
           {/* Revisions vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out will-change-[opacity] transform-gpu"
             style={{
               opacity: activeVignette === 'revisions' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteRevisionsLeft})`,
@@ -1591,7 +1586,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out will-change-[opacity] transform-gpu"
             style={{
               opacity: activeVignette === 'revisions' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteRevisionsRight})`,
@@ -1606,7 +1601,7 @@ const Writing = () => {
           
           {/* Syphons vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out will-change-[opacity] transform-gpu"
             style={{
               opacity: activeVignette === 'syphons' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteSyphonsLeft})`,
@@ -1619,7 +1614,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out will-change-[opacity] transform-gpu"
             style={{
               opacity: activeVignette === 'syphons' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteSyphonsRight})`,
@@ -1714,8 +1709,11 @@ const Writing = () => {
                   <button 
                     onClick={() => {
                       const isClosing = expandedWork === 'desert';
-                      setExpandedWork(isClosing ? null : 'desert');
-                      setActiveVignette(isClosing ? null : 'desert');
+                      const next = isClosing ? null : 'desert';
+                      setActiveVignette(next);
+                      requestAnimationFrame(() => {
+                        setExpandedWork(next);
+                      });
                     }}
                     className="group cursor-pointer"
                   >
@@ -1724,8 +1722,8 @@ const Writing = () => {
                     </h3>
                   </button>
                   <div 
-                    className={`overflow-hidden transition-all duration-500 ease-out ${
-                      expandedWork === 'desert' ? 'max-h-64 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
+                    className={`overflow-hidden mt-5 transition-[max-height,opacity] duration-500 ease-out ${
+                      expandedWork === 'desert' ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
@@ -1739,8 +1737,11 @@ const Writing = () => {
                   <button 
                     onClick={() => {
                       const isClosing = expandedWork === 'elephant';
-                      setExpandedWork(isClosing ? null : 'elephant');
-                      setActiveVignette(isClosing ? null : 'elephant');
+                      const next = isClosing ? null : 'elephant';
+                      setActiveVignette(next);
+                      requestAnimationFrame(() => {
+                        setExpandedWork(next);
+                      });
                     }}
                     className="group cursor-pointer"
                   >
@@ -1749,8 +1750,8 @@ const Writing = () => {
                     </h3>
                   </button>
                   <div 
-                    className={`overflow-hidden transition-all duration-500 ease-out ${
-                      expandedWork === 'elephant' ? 'max-h-32 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
+                    className={`overflow-hidden mt-5 transition-[max-height,opacity] duration-500 ease-out ${
+                      expandedWork === 'elephant' ? 'max-h-32 opacity-100' : 'max-h-0 opacity-0'
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
@@ -1764,8 +1765,11 @@ const Writing = () => {
                   <button 
                     onClick={() => {
                       const isClosing = expandedWork === 'revisions';
-                      setExpandedWork(isClosing ? null : 'revisions');
-                      setActiveVignette(isClosing ? null : 'revisions');
+                      const next = isClosing ? null : 'revisions';
+                      setActiveVignette(next);
+                      requestAnimationFrame(() => {
+                        setExpandedWork(next);
+                      });
                     }}
                     className="group cursor-pointer"
                   >
@@ -1774,8 +1778,8 @@ const Writing = () => {
                     </h3>
                   </button>
                   <div 
-                    className={`overflow-hidden transition-all duration-500 ease-out ${
-                      expandedWork === 'revisions' ? 'max-h-32 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
+                    className={`overflow-hidden mt-5 transition-[max-height,opacity] duration-500 ease-out ${
+                      expandedWork === 'revisions' ? 'max-h-32 opacity-100' : 'max-h-0 opacity-0'
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
@@ -1789,8 +1793,11 @@ const Writing = () => {
                   <button 
                     onClick={() => {
                       const isClosing = expandedWork === 'faster';
-                      setExpandedWork(isClosing ? null : 'faster');
-                      setActiveVignette(isClosing ? null : 'faster');
+                      const next = isClosing ? null : 'faster';
+                      setActiveVignette(next);
+                      requestAnimationFrame(() => {
+                        setExpandedWork(next);
+                      });
                     }}
                     className="group cursor-pointer"
                   >
@@ -1799,8 +1806,8 @@ const Writing = () => {
                     </h3>
                   </button>
                   <div 
-                    className={`overflow-hidden transition-all duration-500 ease-out ${
-                      expandedWork === 'faster' ? 'max-h-32 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
+                    className={`overflow-hidden mt-5 transition-[max-height,opacity] duration-500 ease-out ${
+                      expandedWork === 'faster' ? 'max-h-32 opacity-100' : 'max-h-0 opacity-0'
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
@@ -1814,8 +1821,11 @@ const Writing = () => {
                   <button 
                     onClick={() => {
                       const isClosing = expandedWork === 'syphons';
-                      setExpandedWork(isClosing ? null : 'syphons');
-                      setActiveVignette(isClosing ? null : 'syphons');
+                      const next = isClosing ? null : 'syphons';
+                      setActiveVignette(next);
+                      requestAnimationFrame(() => {
+                        setExpandedWork(next);
+                      });
                     }}
                     className="group cursor-pointer"
                   >
@@ -1824,8 +1834,8 @@ const Writing = () => {
                     </h3>
                   </button>
                   <div 
-                    className={`overflow-hidden transition-all duration-500 ease-out ${
-                      expandedWork === 'syphons' ? 'max-h-40 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
+                    className={`overflow-hidden mt-5 transition-[max-height,opacity] duration-500 ease-out ${
+                      expandedWork === 'syphons' ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
@@ -1839,8 +1849,11 @@ const Writing = () => {
                   <button 
                     onClick={() => {
                       const isClosing = expandedWork === 'plastic';
-                      setExpandedWork(isClosing ? null : 'plastic');
-                      setActiveVignette(isClosing ? null : 'plastic');
+                      const next = isClosing ? null : 'plastic';
+                      setActiveVignette(next);
+                      requestAnimationFrame(() => {
+                        setExpandedWork(next);
+                      });
                     }}
                     className="group cursor-pointer"
                   >
@@ -1849,8 +1862,8 @@ const Writing = () => {
                     </h3>
                   </button>
                   <div 
-                    className={`overflow-hidden transition-all duration-500 ease-out ${
-                      expandedWork === 'plastic' ? 'max-h-32 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
+                    className={`overflow-hidden mt-5 transition-[max-height,opacity] duration-500 ease-out ${
+                      expandedWork === 'plastic' ? 'max-h-32 opacity-100' : 'max-h-0 opacity-0'
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
