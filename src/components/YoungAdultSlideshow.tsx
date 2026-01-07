@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Book covers
 import professorBarnabasCover from "@/assets/professor-barnabas-cover-new.png";
-import toFlyCover from "@/assets/to-fly-cover-new.png";
+import toFlyCover from "@/assets/to-fly-cover-new.jpeg";
 import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
 
 const books = [
@@ -25,8 +25,8 @@ const books = [
     layout: "cover-left"
   },
   {
-    title: "To Fly",
-    series: "",
+    title: "We Become Starpilots!",
+    series: "To Fly",
     subtitle: "",
     summary: "|The war is over. And we lost.||BREAK|Humans and Angels have coexisted for two hundred years, with humanity long accepting its status as subject to the extragalactic species. Now something is changing, inside space itself…|BREAK||Isaak| failed the tests. Crashed every simulation. So he can barely believe it when he's selected for a place at the elite |Harmann School of Aviation|. But his selection was no accident—and the war is far from over.|BREAK|In this first instalment in the series, rivalries and allegiances are forged as |Isaak| struggles to find his place among the gifted students. When a training mission turns into a perilous encounter, he learns that friends and rivals are not always what they first seem…",
     cover: toFlyCover,
