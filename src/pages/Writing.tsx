@@ -1409,11 +1409,9 @@ const Writing = () => {
           {/* Vignette images - positioned on sides with gradient fade */}
           {/* Desert vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
-              transition: 'opacity 0.4s ease',
-              transform: 'scale(1)',
               backgroundImage: `url(${vignetteDesertLeft})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center right',
@@ -1424,11 +1422,9 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
-              transition: 'opacity 0.4s ease',
-              transform: 'scale(1)',
               backgroundImage: `url(${vignetteDesertRight})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center left',
@@ -1441,11 +1437,9 @@ const Writing = () => {
           
           {/* Elephant (lights) vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'elephant' ? otherWorksContentOpacity : 0,
-              transition: 'opacity 0.4s ease',
-              transform: 'scale(1)',
               backgroundImage: `url(${vignetteLightsLeft})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center right',
@@ -1456,11 +1450,9 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'elephant' ? otherWorksContentOpacity : 0,
-              transition: 'opacity 0.4s ease',
-              transform: 'scale(1)',
               backgroundImage: `url(${vignetteLightsRight})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center left',
@@ -1473,11 +1465,9 @@ const Writing = () => {
           
           {/* Faster vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'faster' ? otherWorksContentOpacity : 0,
-              transition: 'opacity 0.4s ease',
-              transform: 'scale(1)',
               backgroundImage: `url(${vignetteFasterLeft})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center right',
@@ -1488,11 +1478,9 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'faster' ? otherWorksContentOpacity : 0,
-              transition: 'opacity 0.4s ease',
-              transform: 'scale(1)',
               backgroundImage: `url(${vignetteFasterRight})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center left',
@@ -1505,11 +1493,9 @@ const Writing = () => {
           
           {/* Plastic vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'plastic' ? otherWorksContentOpacity : 0,
-              transition: 'opacity 0.4s ease',
-              transform: 'scale(1)',
               backgroundImage: `url(${vignettePlasticLeft})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center right',
@@ -1520,11 +1506,9 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'plastic' ? otherWorksContentOpacity : 0,
-              transition: 'opacity 0.4s ease',
-              transform: 'scale(1)',
               backgroundImage: `url(${vignettePlasticRight})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center left',
@@ -1537,11 +1521,9 @@ const Writing = () => {
           
           {/* Revisions vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'revisions' ? otherWorksContentOpacity : 0,
-              transition: 'opacity 0.4s ease',
-              transform: 'scale(1)',
               backgroundImage: `url(${vignetteRevisionsLeft})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center right',
@@ -1552,11 +1534,9 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'revisions' ? otherWorksContentOpacity : 0,
-              transition: 'opacity 0.4s ease',
-              transform: 'scale(1)',
               backgroundImage: `url(${vignetteRevisionsRight})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center left',
@@ -1569,11 +1549,9 @@ const Writing = () => {
           
           {/* Syphons vignettes */}
           <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none"
+            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'syphons' ? otherWorksContentOpacity : 0,
-              transition: 'opacity 0.4s ease',
-              transform: 'scale(1)',
               backgroundImage: `url(${vignetteSyphonsLeft})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center right',
@@ -1584,11 +1562,9 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none"
+            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'syphons' ? otherWorksContentOpacity : 0,
-              transition: 'opacity 0.4s ease',
-              transform: 'scale(1)',
               backgroundImage: `url(${vignetteSyphonsRight})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center left',
