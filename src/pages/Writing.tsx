@@ -151,7 +151,7 @@ const Writing = () => {
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
     let lastSnappedSection: string | null = null;
-    let pendingResnap: number | null = null;
+    let lastViewportHeight: number = window.visualViewport?.height ?? window.innerHeight;
     
     // Sections that should NOT have snap behavior (except young-adult which has special handling)
     const noSnapSections = ['kaiju'];
@@ -385,14 +385,57 @@ const Writing = () => {
       }
     };
 
+    // iPad 12.9" desktop: re-snap when browser bar shows/hides (viewport height changes)
+    // This enables two snap points for young-adult section based on available space
+    const handleViewportResize = () => {
+      // Only for desktop (iPad 12.9" landscape), not mobile or widescreen
+      if (window.innerWidth < 950 || isWidescreen) return;
+      
+      const currentHeight = window.visualViewport?.height ?? window.innerHeight;
+      const heightDelta = Math.abs(currentHeight - lastViewportHeight);
+      
+      // Only re-snap if height changed significantly (browser bar show/hide)
+      if (heightDelta > 50) {
+        lastViewportHeight = currentHeight;
+        
+        // Check if we're on the young-adult section
+        const youngAdultSection = document.querySelector('[data-section="young-adult"]') as HTMLElement;
+        if (youngAdultSection) {
+          const rect = youngAdultSection.getBoundingClientRect();
+          const viewportHeight = currentHeight;
+          
+          // If young-adult section is mostly visible, re-calculate snap point
+          if (rect.top < viewportHeight * 0.5 && rect.bottom > viewportHeight * 0.3) {
+            // Small delay to let layout settle
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+              const snapPoint = getCenterSnapPoint(youngAdultSection, 'young-adult');
+              const currentScroll = window.scrollY;
+              if (snapPoint !== null && Math.abs(currentScroll - snapPoint) > 15) {
+                snapToPoint(snapPoint, 'young-adult');
+              }
+            }, 100);
+          }
+        }
+      }
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('mousedown', handleMouseDown, { passive: true });
     window.addEventListener('mouseup', handleMouseUp, { passive: true });
+    
+    // Listen to visualViewport resize for iPad browser bar changes
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleViewportResize);
+    }
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleViewportResize);
+      }
       clearTimeout(scrollTimeout);
     };
   }, [getHeaderBottom, isWidescreen]);
