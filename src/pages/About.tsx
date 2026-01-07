@@ -150,20 +150,20 @@ const About = () => {
                   className="float-right w-48 md:w-56 aspect-square object-cover grayscale shadow-2xl ml-6 mb-4"
                 />
                 
-                {/* Title on left */}
-                <h1 className="font-heading text-7xl md:text-8xl text-black leading-[0.85] tracking-tight mb-4">
+                {/* Title on left - extra top padding for 10.9" iPad portrait alignment */}
+                <h1 className="font-heading text-7xl md:text-8xl text-black leading-[0.85] tracking-tight mb-4 md:pt-3">
                   Kazuki
                   <br />
                   <span className="italic font-light">Yamakawa</span>
                 </h1>
                 
-                {/* Subheading below title */}
-                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6">
+                {/* Subheading below title - increased top margin for 10.9" iPad */}
+                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6 md:mt-4">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
                 
-                {/* Body text wraps around photo */}
-                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed">
+                {/* Body text wraps around photo - increased top margin for 10.9" iPad */}
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed md:mt-2">
                   A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
