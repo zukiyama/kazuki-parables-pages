@@ -205,7 +205,7 @@ const Writing = () => {
       if (sectionName === 'young-adult') {
         // Find the title element and slideshow container
         const titleEl = section.querySelector('h2') as HTMLElement;
-        const slideshowContainer = section.querySelector('.transition-opacity.duration-1000.delay-500') as HTMLElement;
+        const slideshowContainer = section.querySelector('[data-slideshow-container]') as HTMLElement;
         
         if (!titleEl || !slideshowContainer) return null;
         
@@ -390,13 +390,19 @@ const Writing = () => {
     let lastViewportHeight = window.visualViewport?.height ?? window.innerHeight;
     
     const handleViewportResize = () => {
-      // Only for desktop (iPad 12.9" landscape), not mobile or widescreen
-      if (window.innerWidth < 950 || isWidescreen) return;
-      
+      // Calculate live aspect ratio to determine if we're on desktop (iPad 12.9")
+      // This avoids stale closure issues with isWidescreen from hook
+      const width = window.innerWidth;
       const currentHeight = window.visualViewport?.height ?? window.innerHeight;
+      const aspectRatio = width / currentHeight;
+      
+      // Only for desktop tier: width >= 950 AND aspect ratio < 1.6 (not widescreen)
+      const isDesktopTier = width >= 950 && aspectRatio < 1.6;
+      if (!isDesktopTier) return;
+      
       const heightDelta = Math.abs(currentHeight - lastViewportHeight);
       
-      console.log('[SNAP DEBUG] viewportResize - lastHeight:', lastViewportHeight, 'currentHeight:', currentHeight, 'delta:', heightDelta);
+      console.log('[SNAP DEBUG] viewportResize - isDesktopTier:', isDesktopTier, 'aspectRatio:', aspectRatio.toFixed(2), 'lastHeight:', lastViewportHeight, 'currentHeight:', currentHeight, 'delta:', heightDelta);
       
       // Only re-snap if height changed significantly (browser bar show/hide ~50-100px)
       if (heightDelta > 40) {
@@ -1434,9 +1440,11 @@ const Writing = () => {
                 Books of imagination for any age
               </p>
               
-              <div className={`transition-opacity duration-1000 delay-500 ${
-                visibleSections.has('young-adult') ? 'opacity-100' : 'opacity-0'
-              }`}>
+              <div 
+                data-slideshow-container
+                className={`transition-opacity duration-1000 delay-500 ${
+                  visibleSections.has('young-adult') ? 'opacity-100' : 'opacity-0'
+                }`}>
                 <YoungAdultSlideshow 
                   ref={youngAdultSlideshowRef} 
                   onBookChange={setCurrentYoungAdultBook}
