@@ -28,7 +28,7 @@ const books = [
     title: "To Fly",
     series: "",
     subtitle: "",
-    summary: "Isaac can't believe he's been chosen for a prestigious school, but when he arrives, he discovers it's a TestFlight Academy. In a universe where the war is already over and humanity has lost, these boys are test pilots for experimental spaceships - humanity's last hope.",
+    summary: "The war is over. And we lost.|BREAK||Isaak| failed the tests. Crashed every one of the simulations. So when the message arrives, he can barely believe what he is reading: he has been selected as one of the students at the elite |Eleven-Oh-Eleven Interstellar Aviation Academy|.|BREAK|But soon after arriving, he and the other students learn that this is no ordinary academy, their selection no accident—and that the war humanity believes ended centuries ago never ended at all.|BREAK|—|BREAK|Humans and the Angels have lived in peace for two hundred years, humanity long accepting its place as subject to the technologically advanced extragalactic species. But the seeds of rebellion have been growing in secret, buried somewhere deeper than space itself.|BREAK|In this first instalment in the series, rivalries are formed and allegiances forged as |Isaak| struggles to find his place in the ever-challenging academy. When a training mission turns into a perilous encounter, however, he learns that friends and rivals are not always what they first seem…|BREAK||A coming-of-age story that sets the grandeur of cosmic war against the lives of a young boy and his disparate group of friends.|",
     cover: toFlyCover,
     layout: "cover-left"
   }
