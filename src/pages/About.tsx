@@ -185,7 +185,7 @@ const About = () => {
                 </p>
               </div>
               
-              {/* iPad DESKTOP only (lg to 2xl): Photo + Title row, subheading below, body text right-aligned */}
+              {/* iPad DESKTOP only (lg to 2xl): Photo + Title row, subheading + body below */}
               <div className="hidden lg:flex 2xl:hidden flex-col">
                 {/* Header row: Title on left, Photo on right */}
                 <div className="flex items-start gap-6 mb-10">
@@ -207,23 +207,16 @@ const About = () => {
                   </div>
                 </div>
                 
-                {/* Subheading on left, Body text on right - magazine layout */}
-                <div className="flex items-start justify-between gap-12">
-                  {/* Left: Subheading */}
-                  <p className="font-body text-2xl md:text-3xl text-black leading-snug max-w-md">
-                    A multi-disciplinary artist working in literature, music and visual storytelling.
-                  </p>
-                  
-                  {/* Right: Body text - positioned to right edge */}
-                  <div className="text-right max-w-sm">
-                    <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed text-left">
-                      A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
-                    </p>
-                    <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed text-left mt-4">
-                      The best way to get to know his music is to head over to the music page.
-                    </p>
-                  </div>
-                </div>
+                {/* Subheading + Body text below */}
+                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6">
+                  A multi-disciplinary artist working in literature, music and visual storytelling.
+                </p>
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl">
+                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
+                </p>
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl mt-4">
+                  The best way to get to know his music is to head over to the music page.
+                </p>
               </div>
               
               {/* Widescreen (2xl and up): Original horizontal layout */}
