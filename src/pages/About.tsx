@@ -158,12 +158,12 @@ const About = () => {
                 </h1>
                 
                 {/* Subheading below title - increased top margin for 10.9" iPad */}
-                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6 md:mt-8">
+                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6 md:mt-6">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
                 
                 {/* Body text wraps around photo - increased top margin for 10.9" iPad */}
-                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed md:mt-6">
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed md:mt-4">
                   A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
