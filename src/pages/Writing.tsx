@@ -10,6 +10,7 @@ import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
 import { BookshelfMenu } from "@/components/BookshelfMenu";
 import { FloatingQuote } from "@/components/FloatingQuote";
 import { MagazineBlurb } from "@/components/MagazineBlurb";
+import { VignetteCrossfade } from "@/components/VignetteCrossfade";
 
 // Background images
 import schoolBackground from "@/assets/school-background-montage.jpg";
@@ -1449,173 +1450,18 @@ const Writing = () => {
           }`}
           style={{ marginBottom: 0, paddingBottom: 0 }}
         >
-          {/* Vignette images - positioned on sides with gradient fade */}
-          {/* Desert vignettes */}
-          <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignetteDesertLeft})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center right',
-              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignetteDesertRight})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center left',
-              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          
-          {/* Elephant (lights) vignettes */}
-          <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'elephant' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignetteLightsLeft})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center right',
-              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'elephant' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignetteLightsRight})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center left',
-              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          
-          {/* Faster vignettes */}
-          <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'faster' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignetteFasterLeft})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center right',
-              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'faster' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignetteFasterRight})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center left',
-              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          
-          {/* Plastic vignettes */}
-          <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'plastic' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignettePlasticLeft})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center right',
-              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'plastic' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignettePlasticRight})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center left',
-              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          
-          {/* Revisions vignettes */}
-          <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'revisions' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignetteRevisionsLeft})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center right',
-              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'revisions' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignetteRevisionsRight})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center left',
-              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          
-          {/* Syphons vignettes */}
-          <div 
-            className="absolute left-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'syphons' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignetteSyphonsLeft})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center right',
-              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          <div 
-            className="absolute right-0 top-0 bottom-0 w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'syphons' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignetteSyphonsRight})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center left',
-              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
+          {/* Vignette crossfade system - smooth transitions without layout shifts */}
+          <VignetteCrossfade
+            images={[
+              { key: 'desert', left: vignetteDesertLeft, right: vignetteDesertRight },
+              { key: 'elephant', left: vignetteLightsLeft, right: vignetteLightsRight },
+              { key: 'faster', left: vignetteFasterLeft, right: vignetteFasterRight },
+              { key: 'plastic', left: vignettePlasticLeft, right: vignettePlasticRight },
+              { key: 'revisions', left: vignetteRevisionsLeft, right: vignetteRevisionsRight },
+              { key: 'syphons', left: vignetteSyphonsLeft, right: vignetteSyphonsRight },
+            ]}
+            activeKey={activeVignette}
+            opacity={otherWorksContentOpacity}
           />
           
           {/* Main Content Container */}
