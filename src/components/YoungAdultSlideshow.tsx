@@ -18,9 +18,9 @@ const books = [
   },
   {
     title: "The Land is a Dream of the Sky",
-    series: "",
+    series: "The Waste Trilogy",
     subtitle: "",
-    summary: "In a walled city within a great wasteland, a small blind boy with white eyes lives under the rule of his robot father. When a pilgrim arrives, everything the boy believed about his world comes into question, and disaster threatens his city.",
+    summary: "Deep in the endless wastes, a blind child-prince lives in a walled city with his machine father. The only human among its inhabitants, |Piotr| has never questioned his place in the world—until the arrival of a group of pilgrims from beyond the walls.|BREAK|Among them is |Flim|, a wilful, glitchy automaton the same age as |Piotr|, who shows little respect for the city or its ruler. Their rivalry unsettles |Piotr|, awakening a dangerous question he has never dared to ask: why is he the only living boy?|BREAK|On the night he seeks answers, a terrifying attack befalls the town. Cast into the vast and unforgiving wastes, |Piotr| and |Flim| must work together if they are to cross the forgotten lands and their ancient dangers, toward the truth of |Piotr|'s origins.",
     cover: landDreamSkyCover,
     layout: "cover-left"
   },
