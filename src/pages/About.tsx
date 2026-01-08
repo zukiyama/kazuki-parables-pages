@@ -119,8 +119,8 @@ const About = () => {
                 </div>
               </div>
               
-              {/* Right column: Body text - aligned to top */}
-              <div className="flex-1 max-w-[400px] xl:max-w-[450px] pt-0">
+              {/* Right column: Body text - aligned to top, 2/3 width editorial column */}
+              <div className="flex-1 w-2/3 max-w-[400px] xl:max-w-[450px] pt-0 text-left">
                 <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed">
                   A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
                 </p>
