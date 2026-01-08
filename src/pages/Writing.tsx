@@ -89,6 +89,12 @@ const Writing = () => {
 
   const location = useLocation();
 
+  // Defensive cleanup: Reset scroll state on mount to prevent stale states after hot-reloads
+  useEffect(() => {
+    isSnapping.current = false;
+    isDraggingScrollbar.current = false;
+  }, []);
+
   // Get dynamic header bottom position
   const getHeaderBottom = useCallback(() => {
     if (!headerRef.current) {
@@ -1404,7 +1410,7 @@ const Writing = () => {
           className={`flex items-start justify-center relative ${
             isWidescreen ? 'h-[calc(100vh-4rem)]' : 'h-screen'
           }`}
-          style={{ marginBottom: 0, paddingBottom: 0, overflow: 'hidden' }}
+          style={{ marginBottom: 0, paddingBottom: 0, touchAction: 'manipulation' }}
         >
           {/* Vignette images - positioned on sides with gradient fade */}
           {/* Desert vignettes */}
