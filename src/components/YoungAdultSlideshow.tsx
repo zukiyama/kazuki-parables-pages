@@ -277,7 +277,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
             className="flex-shrink-0 w-full h-full"
           >
             <div className={contentPadding}>
-              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 items-center max-sm:gap-4 ${
+              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 items-center max-sm:gap-4 ${
                 book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
               } ${isWidescreen ? "h-full" : ""}`}>
                 {/* Book Cover */}
