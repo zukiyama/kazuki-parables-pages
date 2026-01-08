@@ -1823,7 +1823,7 @@ const Writing = () => {
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
-                      Secret bases beneath the ocean. Inter-dimensional conspiracy. A strange story of paranoia and hidden depths.
+                      A children's toy franchise. Secret bases beneath the ocean. Inter-dimensional conspiracy.
                     </p>
                   </div>
                 </article>
