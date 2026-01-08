@@ -106,7 +106,7 @@ const About = () => {
                   
                   {/* Title + Subheading - subheading aligned to bottom of photo */}
                   <div className="flex flex-col justify-between h-[200px] xl:h-[220px] 2xl:h-[240px] py-1">
-                    <h1 className="font-heading text-[5rem] xl:text-[6rem] 2xl:text-[7rem] text-black leading-[0.82] tracking-tight">
+                    <h1 className="font-heading text-[5.5rem] xl:text-[6.5rem] 2xl:text-[7.5rem] text-black leading-[0.82] tracking-tight">
                       Kazuki
                       <br />
                       <span className="italic font-light">Yamakawa</span>
