@@ -1252,11 +1252,3 @@
   animation: circle-drift 6s ease-in-out infinite;
   animation-delay: -1.5s;
 }
-
-/* IPAD PORTRAIT SPACING: Extra margin between Professor Barnabas and Waste Trilogy in banner */
-/* iPad portrait range: 768px-1024px width with portrait orientation */
-@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
-  .ipad-portrait-spacing {
-    margin-left: 1rem; /* Add extra spacing before Waste Trilogy */
-  }
-}
