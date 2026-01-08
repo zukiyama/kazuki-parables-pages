@@ -1401,10 +1401,10 @@ const Writing = () => {
         {/* Other Works Section */}
         <section 
           data-section="other-works" 
-          className={`flex items-center justify-center relative ${
-            isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
+          className={`flex items-start justify-center relative ${
+            isWidescreen ? 'h-[calc(100vh-4rem)]' : 'h-screen'
           }`}
-          style={{ marginBottom: 0, paddingBottom: 0 }}
+          style={{ marginBottom: 0, paddingBottom: 0, overflow: 'hidden' }}
         >
           {/* Vignette images - positioned on sides with gradient fade */}
           {/* Desert vignettes */}
@@ -1577,7 +1577,7 @@ const Writing = () => {
           
           {/* Main Content Container */}
           <div 
-            className="relative z-20 container mx-auto px-6 py-24 transition-opacity duration-700 ease-in-out"
+            className="relative z-20 container mx-auto px-6 pt-24 pb-32 transition-opacity duration-700 ease-in-out h-full overflow-y-auto"
             style={{ opacity: otherWorksContentOpacity }}
           >
             <div className="max-w-xl mx-auto">
