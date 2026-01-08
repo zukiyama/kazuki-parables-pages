@@ -972,7 +972,7 @@ const Comics = () => {
           <img 
             src={comicsFooterCharacter}
             alt="Comics mascot"
-            className="absolute w-auto pointer-events-none z-10 hidden lg:block"
+            className="absolute w-auto pointer-events-none z-10 hidden md:block"
             style={{
               height: '8.5cm',
               bottom: '100%',
