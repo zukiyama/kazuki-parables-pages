@@ -189,19 +189,19 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     : "w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg max-sm:max-w-[200px]";
 
   const seriesClasses = isWidescreen
-    ? "font-serif text-sm uppercase tracking-widest text-yellow-300/80 mb-2 drop-shadow-lg"
+    ? "font-serif text-xs uppercase tracking-widest text-yellow-300/80 mb-1.5 drop-shadow-lg"
     : "font-serif text-sm uppercase tracking-widest text-yellow-300/80 mb-1 drop-shadow-lg max-sm:text-xs";
 
   const titleClasses = isWidescreen
-    ? "font-serif text-2xl font-bold text-white mb-3 drop-shadow-lg"
+    ? "font-serif text-lg font-bold text-white mb-2 drop-shadow-lg"
     : "font-serif text-2xl font-bold text-white mb-2 drop-shadow-lg max-sm:text-lg max-sm:mb-1";
 
   const subtitleClasses = isWidescreen
-    ? "font-serif text-lg text-yellow-300 mb-3 drop-shadow-lg"
+    ? "font-serif text-sm text-yellow-300 mb-2 drop-shadow-lg"
     : "font-serif text-lg text-yellow-300 mb-3 drop-shadow-lg max-sm:text-sm max-sm:mb-2";
 
   const summaryClasses = isWidescreen
-    ? "font-serif text-base leading-relaxed text-white/90 drop-shadow-md max-w-full"
+    ? "font-serif text-sm leading-relaxed text-white/90 drop-shadow-md max-w-full"
     : "font-serif text-sm leading-relaxed text-white/90 drop-shadow-md max-sm:text-xs max-sm:leading-normal max-w-[95%]";
 
   // Helper to render summary with italic words and paragraph breaks
