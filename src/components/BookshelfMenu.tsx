@@ -370,7 +370,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
               {/* Book Title - extra bottom margin for Professor Barnabas and Waste Trilogy on iPad portrait */}
               <h3 className={`font-palatino text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] max-sm:whitespace-normal max-sm:leading-tight max-sm:min-h-[32px] max-sm:flex max-sm:items-center max-sm:justify-center ${
                 activeBook === book.id ? 'text-yellow-300' : 'text-white'
-              } ${(book.id === 'professor-barnabas' || book.id === 'land-dream') ? 'md:mb-2' : ''}`}>
+              } ${(book.id === 'professor-barnabas' || book.id === 'land-dream') ? 'md:mb-3' : ''}`}>
                 {book.title}
               </h3>
               
