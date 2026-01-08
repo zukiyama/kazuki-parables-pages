@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungAdultSlideshow";
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
@@ -81,6 +82,9 @@ const Writing = () => {
   const [expandedWork, setExpandedWork] = useState<string | null>(null);
   const [activeVignette, setActiveVignette] = useState<string | null>(null);
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
+  
+  // Zoom dialog state for book covers
+  const [zoomImage, setZoomImage] = useState<{ src: string; alt: string } | null>(null);
   const mainRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLElement | null>(null);
   const isSnapping = useRef(false);
@@ -881,6 +885,7 @@ const Writing = () => {
                     title="KAIJU"
                     loading="eager"
                     isWidescreen={isWidescreen}
+                    onCoverClick={(src, alt) => setZoomImage({ src, alt })}
                   />
                 </div>
                 {/* Animated wrapper - this moves, frost layer inside stays untransformed */}
@@ -972,6 +977,7 @@ const Writing = () => {
                     title="HOAX"
                     loading="lazy"
                     isWidescreen={isWidescreen}
+                    onCoverClick={(src, alt) => setZoomImage({ src, alt })}
                   />
                 </div>
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
@@ -1082,6 +1088,7 @@ const Writing = () => {
                     title="THE MARKET"
                     loading="lazy"
                     isWidescreen={isWidescreen}
+                    onCoverClick={(src, alt) => setZoomImage({ src, alt })}
                   />
                 </div>
                 <div className={`transition-all duration-1000 delay-500 ${
@@ -1151,6 +1158,7 @@ const Writing = () => {
                     title="AMYA"
                     loading="lazy"
                     isWidescreen={isWidescreen}
+                    onCoverClick={(src, alt) => setZoomImage({ src, alt })}
                   />
                 </div>
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
@@ -1200,6 +1208,7 @@ const Writing = () => {
                     title="STATES OF MOTION"
                     loading="lazy"
                     isWidescreen={isWidescreen}
+                    onCoverClick={(src, alt) => setZoomImage({ src, alt })}
                   />
                 </div>
                 <div className={`transition-all duration-1000 delay-500 ${
@@ -1265,6 +1274,7 @@ const Writing = () => {
                     title="HOW"
                     loading="lazy"
                     isWidescreen={isWidescreen}
+                    onCoverClick={(src, alt) => setZoomImage({ src, alt })}
                   />
                 </div>
                 <div className={`transition-all duration-1000 delay-500 ${
@@ -1355,6 +1365,7 @@ const Writing = () => {
                     title="VICE VERSA"
                     loading="lazy"
                     isWidescreen={isWidescreen}
+                    onCoverClick={(src, alt) => setZoomImage({ src, alt })}
                   />
                 </div>
               </div>
@@ -1392,6 +1403,7 @@ const Writing = () => {
                   ref={youngAdultSlideshowRef} 
                   onBookChange={setCurrentYoungAdultBook}
                   isWidescreen={isWidescreen}
+                  onCoverClick={(src, alt) => setZoomImage({ src, alt })}
                 />
               </div>
             </div>
@@ -1814,6 +1826,30 @@ const Writing = () => {
       </main>
       
       <Footer variant="dark" showNavLinks={false} />
+      
+      {/* Book Cover Zoom Dialog */}
+      <Dialog open={!!zoomImage} onOpenChange={(open) => !open && setZoomImage(null)}>
+        <DialogContent 
+          className={`p-0 bg-transparent border-none focus:outline-none ${
+            isWidescreen 
+              ? 'max-w-[90vh] w-auto' 
+              : 'max-w-4xl w-full'
+          }`} 
+          hideCloseButton
+        >
+          {zoomImage && (
+            <img 
+              src={zoomImage.src} 
+              alt={zoomImage.alt}
+              className={`rounded-lg outline-none ring-0 ${
+                isWidescreen 
+                  ? 'h-[calc(100vh-4rem)] w-auto object-contain' 
+                  : 'w-full h-auto'
+              }`}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
