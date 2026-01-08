@@ -1577,7 +1577,7 @@ const Writing = () => {
           
           {/* Main Content Container */}
           <div 
-            className="relative z-20 container mx-auto px-6 pt-24 pb-32 transition-opacity duration-700 ease-in-out h-full overflow-y-auto"
+            className="relative z-20 container mx-auto px-6 py-24 transition-opacity duration-700 ease-in-out"
             style={{ opacity: otherWorksContentOpacity }}
           >
             <div className="max-w-xl mx-auto">
