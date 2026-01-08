@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Book cover images for banner
 import kaijuCover from "@/assets/kaiju-cover-new.jpg";
@@ -88,6 +88,34 @@ const books: Book[] = [
   }
 ];
 
+// Hook to detect iPad portrait orientation
+const useIpadPortrait = () => {
+  const [isIpadPortrait, setIsIpadPortrait] = useState(false);
+
+  useEffect(() => {
+    const checkIpadPortrait = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      // iPad 10.9" is ~820px wide in portrait, iPad 12.9" is ~1024px wide in portrait
+      // Check for portrait orientation (height > width) and iPad-like widths
+      const isPortrait = height > width;
+      const isIpadWidth = width >= 768 && width <= 1024;
+      setIsIpadPortrait(isPortrait && isIpadWidth);
+    };
+
+    checkIpadPortrait();
+    window.addEventListener('resize', checkIpadPortrait);
+    window.addEventListener('orientationchange', checkIpadPortrait);
+
+    return () => {
+      window.removeEventListener('resize', checkIpadPortrait);
+      window.removeEventListener('orientationchange', checkIpadPortrait);
+    };
+  }, []);
+
+  return isIpadPortrait;
+};
+
 interface BookshelfMenuProps {
   onBookClick?: (bookId: string, slideToBook?: number) => void;
   visibleSections?: Set<string>;
@@ -100,6 +128,7 @@ interface BookshelfMenuProps {
 
 export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultBook = 0, isWidescreen = false, bannerVisible = true, onBannerHide, getHeaderBottom }: BookshelfMenuProps) => {
   const [hoveredBook, setHoveredBook] = useState<string | null>(null);
+  const isIpadPortrait = useIpadPortrait();
   
   // Determine which book should be highlighted based on visible sections
   const getActiveBook = () => {
@@ -367,10 +396,13 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
               onMouseLeave={() => setHoveredBook(null)}
               onClick={() => handleBookClick(book)}
             >
-              {/* Book Title - extra bottom margin for Professor Barnabas and Waste Trilogy on iPad portrait */}
+              {/* Book Title - extra bottom margin for Professor Barnabas and Waste Trilogy on iPad portrait only */}
               <h3 className={`font-palatino text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] max-sm:whitespace-normal max-sm:leading-tight max-sm:min-h-[32px] max-sm:flex max-sm:items-center max-sm:justify-center ${
                 activeBook === book.id ? 'text-yellow-300' : 'text-white'
-              } ${(book.id === 'professor-barnabas' || book.id === 'land-dream') ? 'md:mb-3' : ''}`}>
+              }`}
+              style={{
+                marginBottom: isIpadPortrait && (book.id === 'professor-barnabas' || book.id === 'land-dream') ? '12px' : undefined
+              }}>
                 {book.title}
               </h3>
               
