@@ -1413,33 +1413,50 @@ const Writing = () => {
           style={{ marginBottom: 0, paddingBottom: 0, touchAction: 'manipulation' }}
         >
           {/* Vignette images - positioned on sides with gradient fade */}
-          {/* Desert vignettes */}
+          {/* DESERT VIGNETTE LEFT CROP ADJUST */}
           <div 
-            className="absolute left-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute left-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out overflow-hidden"
             style={{
               opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignetteDesertLeft})`,
-              backgroundSize: '180%',
-              backgroundPosition: '85% center',
               maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
               WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
               maskComposite: 'intersect',
               WebkitMaskComposite: 'source-in'
             }}
-          />
+          >
+            <img 
+              src={vignetteDesertLeft}
+              alt=""
+              className="absolute w-full h-full"
+              style={{
+                objectFit: 'cover',
+                objectPosition: '100% center',
+                transform: 'scale(2.2) translateX(15%)'
+              }}
+            />
+          </div>
+          {/* DESERT VIGNETTE RIGHT CROP ADJUST */}
           <div 
-            className="absolute right-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out overflow-hidden"
             style={{
               opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignetteDesertRight})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'right center',
               maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
               WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
               maskComposite: 'intersect',
               WebkitMaskComposite: 'source-in'
             }}
-          />
+          >
+            <img 
+              src={vignetteDesertRight}
+              alt=""
+              className="absolute w-full h-full"
+              style={{
+                objectFit: 'cover',
+                objectPosition: '70% center',
+                transform: 'scale(0.95) translateX(5%)'
+              }}
+            />
+          </div>
           
           {/* Elephant (lights) vignettes */}
           <div 
