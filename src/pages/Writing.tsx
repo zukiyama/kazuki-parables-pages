@@ -1798,7 +1798,7 @@ const Writing = () => {
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
-                      A man searching for a children's show he used to watch. He can't remember it clearly, and when he tries to look it up, he finds it doesn't exist. No record anywhere. No one else remembers it except him. This leads him on a trail into increasingly bizarre conclusions.
+                      When Elliot Park looks up an eerie TV show from his childhood, he finds no mention of it anywhere. He asks his friends and parents but they don't seem to remember it either. It's as though it never existed. But the memories are so vivid, and with them other things start coming back to him as well…
                     </p>
                   </div>
                 </article>
