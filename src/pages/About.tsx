@@ -119,8 +119,8 @@ const About = () => {
                 </div>
               </div>
               
-              {/* Right column: Body text - 2/3 width editorial column */}
-              <div className="w-2/3 max-w-[450px] xl:max-w-[500px] pt-0 text-left">
+              {/* Right column: Body text - aligned to top */}
+              <div className="flex-1 max-w-[400px] xl:max-w-[450px] pt-0">
                 <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed">
                   A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
                 </p>
@@ -211,14 +211,12 @@ const About = () => {
                 <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
-                <div className="w-2/3 text-left">
-                  <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed">
-                    A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
-                  </p>
-                  <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed mt-4">
-                    The best way to get to know his music is to head over to the music page.
-                  </p>
-                </div>
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl">
+                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
+                </p>
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl mt-4">
+                  The best way to get to know his music is to head over to the music page.
+                </p>
               </div>
               
               {/* Widescreen (2xl and up): Original horizontal layout */}
