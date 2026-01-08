@@ -37,13 +37,14 @@ const books = [
 interface YoungAdultSlideshowProps {
   onBookChange?: (index: number) => void;
   isWidescreen?: boolean;
+  onCoverClick?: (image: string, alt: string) => void;
 }
 
 export interface YoungAdultSlideshowRef {
   setCurrentBook: (index: number) => void;
 }
 
-export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdultSlideshowProps>(({ onBookChange, isWidescreen = false }, ref) => {
+export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdultSlideshowProps>(({ onBookChange, isWidescreen = false, onCoverClick }, ref) => {
   const [currentBook, setCurrentBookState] = useState(0);
   const [translateX, setTranslateX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -285,9 +286,10 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
                   <img 
                     src={book.cover} 
                     alt={book.title}
-                    className={imageClasses}
+                    className={imageClasses + " cursor-pointer hover:scale-105 transition-transform"}
                     loading="eager"
                     draggable={false}
+                    onClick={() => onCoverClick?.(book.cover, book.title)}
                   />
                 </div>
                 

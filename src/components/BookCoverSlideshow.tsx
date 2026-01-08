@@ -12,9 +12,10 @@ interface BookCoverSlideshowProps {
   className?: string;
   loading?: "lazy" | "eager";
   isWidescreen?: boolean;
+  onCoverClick?: (image: string, alt: string) => void;
 }
 
-export const BookCoverSlideshow = ({ covers, title, className = "", loading = "eager", isWidescreen = false }: BookCoverSlideshowProps) => {
+export const BookCoverSlideshow = ({ covers, title, className = "", loading = "eager", isWidescreen = false, onCoverClick }: BookCoverSlideshowProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
@@ -68,8 +69,9 @@ export const BookCoverSlideshow = ({ covers, title, className = "", loading = "e
         <img 
           src={covers[0]?.image} 
           alt={covers[0]?.alt || title}
-          className={imageClasses + " transition-opacity duration-300"}
+          className={imageClasses + " transition-opacity duration-300 cursor-pointer hover:scale-105 transition-transform"}
           loading={loading}
+          onClick={() => onCoverClick?.(covers[0]?.image, covers[0]?.alt || title)}
         />
       </div>
     );
@@ -87,8 +89,9 @@ export const BookCoverSlideshow = ({ covers, title, className = "", loading = "e
               <img 
                 src={cover.image} 
                 alt={cover.alt}
-                className={imageClasses}
+                className={imageClasses + " cursor-pointer hover:scale-105 transition-transform"}
                 loading={loading}
+                onClick={() => onCoverClick?.(cover.image, cover.alt)}
               />
             </div>
           ))}
