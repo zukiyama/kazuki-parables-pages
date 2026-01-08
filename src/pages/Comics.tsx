@@ -50,6 +50,8 @@ const Comics = () => {
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
   const storiesSectionRef = useRef<HTMLElement>(null);
+  const comicGridRef = useRef<HTMLDivElement>(null);
+  const [showFooterCharacter, setShowFooterCharacter] = useState(false);
 
   const maxPinnedSection = 2; // After section 2 (Cream), normal scrolling begins - Pendragon is in scrollable content
 
@@ -351,6 +353,48 @@ const Comics = () => {
 
     return () => observer.disconnect();
   }, [topSectionsLoaded]);
+
+  // Check if there's enough horizontal space for the footer character
+  // Character should only appear when there's room between comic grid and screen edge
+  useEffect(() => {
+    const checkFooterCharacterSpace = () => {
+      // Don't show on mobile at all
+      if (isMobile) {
+        setShowFooterCharacter(false);
+        return;
+      }
+
+      const gridElement = document.querySelector('.max-w-4xl.mx-auto');
+      if (!gridElement) {
+        setShowFooterCharacter(false);
+        return;
+      }
+
+      const gridRect = gridElement.getBoundingClientRect();
+      const screenWidth = window.innerWidth;
+      const gridRightEdge = gridRect.right;
+      const spaceOnRight = screenWidth - gridRightEdge;
+      
+      // Character is 8.5cm tall, estimate width around 4cm = ~151px
+      // Need breathing space on both sides (at least 20px each side)
+      const characterWidth = 151;
+      const breathingSpace = 40; // 20px on each side
+      const minRequiredSpace = characterWidth + breathingSpace;
+      
+      setShowFooterCharacter(spaceOnRight >= minRequiredSpace);
+    };
+
+    checkFooterCharacterSpace();
+    window.addEventListener('resize', checkFooterCharacterSpace);
+    
+    // Also check when scroll lock changes (content becomes visible)
+    const timeout = setTimeout(checkFooterCharacterSpace, 100);
+    
+    return () => {
+      window.removeEventListener('resize', checkFooterCharacterSpace);
+      clearTimeout(timeout);
+    };
+  }, [isMobile, isScrollLocked, topSectionsLoaded]);
 
   const smallShelfComics = [
     {
@@ -969,16 +1013,18 @@ const Comics = () => {
         showNavLinks={false}
         className={`mt-8 max-sm:mt-6 overflow-visible ${isScrollLocked ? 'hidden' : ''}`}
         beforeFooter={
-          <img 
-            src={comicsFooterCharacter}
-            alt="Comics mascot"
-            className="absolute w-auto pointer-events-none z-10 hidden md:block"
-            style={{
-              height: '8.5cm',
-              bottom: '100%',
-              right: '-10px'
-            }}
-          />
+          showFooterCharacter ? (
+            <img 
+              src={comicsFooterCharacter}
+              alt="Comics mascot"
+              className="absolute w-auto pointer-events-none z-10"
+              style={{
+                height: '8.5cm',
+                bottom: '100%',
+                right: '-10px'
+              }}
+            />
+          ) : null
         }
       />
 
