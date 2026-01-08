@@ -1414,6 +1414,7 @@ const Writing = () => {
         >
           {/* Vignette images - positioned on sides with gradient fade */}
           {/* DESERT VIGNETTE LEFT CROP ADJUST */}
+          {/* DESERT LEFT vignette: shift left for widescreen + iPad 12.9 landscape desktop */}
           <div 
             className="absolute left-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out overflow-hidden"
             style={{
@@ -1430,8 +1431,8 @@ const Writing = () => {
               className="absolute w-full h-full"
               style={{
                 objectFit: 'cover',
-                objectPosition: '100% center',
-                transform: 'scale(2.2) translateX(15%)'
+                objectPosition: '30% center',
+                transform: 'scale(2.2) translateX(-5%)'
               }}
             />
           </div>
