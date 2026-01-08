@@ -19,7 +19,7 @@ export const Footer = ({
   const isDark = variant === "dark";
   
   return (
-    <>
+    <div className="relative">
       {beforeFooter}
       <footer className={`${isDark ? 'bg-black/80 backdrop-blur-sm border-t border-white/20' : 'bg-card border-t border-border'} relative z-10 ${className}`}>
         <div className="py-12 max-sm:py-8">
@@ -95,7 +95,7 @@ export const Footer = ({
           </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 };
 
