@@ -362,7 +362,10 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
           {books.map((book) => (
             <div
               key={book.id}
-              className="flex flex-col items-center cursor-pointer group min-w-[80px] max-sm:min-w-[64px]"
+              className={`flex flex-col items-center cursor-pointer group min-w-[80px] max-sm:min-w-[64px] ${
+                /* IPAD PORTRAIT SPACING: Extra margin-top on Waste Trilogy to separate from Professor Barnabas */
+                book.id === 'land-dream' ? 'ipad-portrait-spacing' : ''
+              }`}
               onMouseEnter={() => setHoveredBook(book.id)}
               onMouseLeave={() => setHoveredBook(null)}
               onClick={() => handleBookClick(book)}
