@@ -1447,14 +1447,15 @@ const Writing = () => {
               WebkitMaskComposite: 'source-in'
             }}
           >
+            {/* DESERT RIGHT vignette: ensure full coverage beyond mask fade (hide image edges) */}
             <img 
               src={vignetteDesertRight}
               alt=""
               className="absolute w-full h-full"
               style={{
                 objectFit: 'cover',
-                objectPosition: '70% center',
-                transform: 'scale(0.95) translateX(5%)'
+                objectPosition: '60% center',
+                transform: 'scale(1.15) translateX(-2%)'
               }}
             />
           </div>
