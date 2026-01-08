@@ -1408,9 +1408,9 @@ const Writing = () => {
         <section 
           data-section="other-works" 
           className={`flex items-start justify-center relative ${
-            isWidescreen ? 'h-[calc(100vh-4rem)]' : 'h-screen'
+            isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-screen'
           }`}
-          style={{ marginBottom: 0, paddingBottom: 0, touchAction: 'manipulation' }}
+          style={{ touchAction: 'manipulation' }}
         >
           {/* Vignette images - positioned on sides with gradient fade */}
           {/* DESERT VIGNETTE LEFT CROP ADJUST */}
