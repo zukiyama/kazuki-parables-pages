@@ -26,8 +26,8 @@ import deepSpaceBackground from "@/assets/to-fly-space-battle-background.jpg";
 import professorBarnabasBackground from "@/assets/professor-barnabas-background.jpg";
 
 // Vignette images for Other Works section
-import vignetteDesertLeft from "@/assets/vignette-desert-left.png";
-import vignetteDesertRight from "@/assets/vignette-desert-right-new.jpeg";
+import vignetteDesertLeftAlt from "@/assets/vignette-desert-left-alt.jpeg";
+import vignetteDesertRightEdited from "@/assets/vignette-desert-right-edited.jpeg";
 import vignetteLightsLeft from "@/assets/vignette-lights-left.png";
 import vignetteLightsRight from "@/assets/vignette-lights-right.png";
 import vignetteFasterLeft from "@/assets/vignette-faster-left.png";
@@ -1425,8 +1425,9 @@ const Writing = () => {
               WebkitMaskComposite: 'source-in'
             }}
           >
+            {/* DESERT LEFT vignette: uses separate image file showing left side */}
             <img 
-              src={vignetteDesertRight}
+              src={vignetteDesertLeftAlt}
               alt=""
               className="absolute w-full h-full"
               style={{
@@ -1447,9 +1448,9 @@ const Writing = () => {
               WebkitMaskComposite: 'source-in'
             }}
           >
-            {/* DESERT RIGHT vignette: ensure full coverage beyond mask fade (hide image edges) */}
+            {/* DESERT RIGHT vignette: uses edited image with boys in diving helmets */}
             <img 
-              src={vignetteDesertRight}
+              src={vignetteDesertRightEdited}
               alt=""
               className="absolute w-full h-full"
               style={{
