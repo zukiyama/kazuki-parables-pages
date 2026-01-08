@@ -362,15 +362,17 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
           {books.map((book) => (
             <div
               key={book.id}
-              className="flex flex-col items-center cursor-pointer group min-w-[80px] max-sm:min-w-[64px]"
+              className={`flex flex-col items-center cursor-pointer group min-w-[80px] max-sm:min-w-[64px] ${
+                book.id === 'land-dream' ? 'ipad-portrait-waste-trilogy' : ''
+              }`}
               onMouseEnter={() => setHoveredBook(book.id)}
               onMouseLeave={() => setHoveredBook(null)}
               onClick={() => handleBookClick(book)}
             >
-              {/* Book Title - extra bottom margin for Professor Barnabas and Waste Trilogy on iPad portrait */}
+              {/* Book Title */}
               <h3 className={`font-palatino text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] max-sm:whitespace-normal max-sm:leading-tight max-sm:min-h-[32px] max-sm:flex max-sm:items-center max-sm:justify-center ${
                 activeBook === book.id ? 'text-yellow-300' : 'text-white'
-              } ${(book.id === 'professor-barnabas' || book.id === 'land-dream') ? 'md:mb-2' : ''}`}>
+              }`}>
                 {book.title}
               </h3>
               
