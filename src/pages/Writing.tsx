@@ -27,7 +27,7 @@ import professorBarnabasBackground from "@/assets/professor-barnabas-background.
 
 // Vignette images for Other Works section
 import vignetteDesertLeft from "@/assets/vignette-desert-left.png";
-import vignetteDesertRight from "@/assets/vignette-desert-right.png";
+import vignetteDesertRight from "@/assets/vignette-desert-right-new.jpeg";
 import vignetteLightsLeft from "@/assets/vignette-lights-left.png";
 import vignetteLightsRight from "@/assets/vignette-lights-right.png";
 import vignetteFasterLeft from "@/assets/vignette-faster-left.png";
