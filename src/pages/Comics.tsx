@@ -967,7 +967,7 @@ const Comics = () => {
       <Footer 
         variant="dark" 
         showNavLinks={false}
-        className={`py-10 max-sm:py-6 overflow-visible ${isScrollLocked ? 'hidden' : ''}`}
+        className={`mt-8 max-sm:mt-6 overflow-visible ${isScrollLocked ? 'hidden' : ''}`}
         beforeFooter={
           <img 
             src={comicsFooterCharacter}
