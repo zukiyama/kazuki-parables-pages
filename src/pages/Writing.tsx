@@ -1419,8 +1419,8 @@ const Writing = () => {
             style={{
               opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteDesertLeft})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'right center',
+              backgroundSize: '180%',
+              backgroundPosition: '85% center',
               maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
               WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
               maskComposite: 'intersect',
