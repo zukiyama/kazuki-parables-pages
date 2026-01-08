@@ -47,12 +47,24 @@ export const useScrollToTop = () => {
 
   // Handle initial page load/refresh - runs once on mount
   useEffect(() => {
+    // Force scroll restoration to manual immediately
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    
     // Immediate scroll
     scrollToAbsoluteTop();
     
     // Use requestAnimationFrame for smoother timing with rendering
     requestAnimationFrame(() => {
       scrollToAbsoluteTop();
+    });
+    
+    // Double RAF to ensure we run after browser's initial layout
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        scrollToAbsoluteTop();
+      });
     });
     
     // Multiple delayed attempts to counteract any viewport adjustments
@@ -63,6 +75,7 @@ export const useScrollToTop = () => {
     const t5 = setTimeout(scrollToAbsoluteTop, 300);
     const t6 = setTimeout(scrollToAbsoluteTop, 500);
     const t7 = setTimeout(scrollToAbsoluteTop, 800);
+    const t8 = setTimeout(scrollToAbsoluteTop, 1000);
 
     return () => {
       clearTimeout(t1);
@@ -72,6 +85,7 @@ export const useScrollToTop = () => {
       clearTimeout(t5);
       clearTimeout(t6);
       clearTimeout(t7);
+      clearTimeout(t8);
     };
   }, []);
 
