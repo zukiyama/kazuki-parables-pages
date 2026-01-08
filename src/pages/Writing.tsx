@@ -1484,7 +1484,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="absolute right-0 top-[5%] h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'faster' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteFasterRight})`,
