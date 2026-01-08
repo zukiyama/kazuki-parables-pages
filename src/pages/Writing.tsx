@@ -1414,9 +1414,9 @@ const Writing = () => {
         >
           {/* Vignette images - positioned on sides with gradient fade */}
           {/* DESERT VIGNETTE LEFT CROP ADJUST */}
-          {/* DESERT LEFT vignette: shift left for widescreen + iPad 12.9 landscape desktop */}
+          {/* DESERT LEFT vignette: uses same image as right but framed to left side (landscape only) */}
           <div 
-            className="absolute left-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out overflow-hidden"
+            className="absolute left-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out overflow-hidden hidden md:block"
             style={{
               opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
               maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
@@ -1426,13 +1426,13 @@ const Writing = () => {
             }}
           >
             <img 
-              src={vignetteDesertLeft}
+              src={vignetteDesertRight}
               alt=""
               className="absolute w-full h-full"
               style={{
                 objectFit: 'cover',
-                objectPosition: '30% center',
-                transform: 'scale(2.2) translateX(-5%)'
+                objectPosition: '25% center',
+                transform: 'scale(1.15) translateX(2%)'
               }}
             />
           </div>
