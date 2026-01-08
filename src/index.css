@@ -1256,6 +1256,6 @@
 /* iPad Portrait Only: Add spacing before Waste Trilogy banner entry */
 @media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
   .ipad-portrait-waste-trilogy {
-    margin-left: 0.75rem;
+    margin-left: 0.5rem;
   }
 }
