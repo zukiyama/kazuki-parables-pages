@@ -1798,7 +1798,7 @@ const Writing = () => {
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
-                      When Elliot Park looks up an eerie TV show from his childhood, he finds no mention of it anywhere. He asks his friends and parents but they don't remember it at all. It's as though it never existed. But the memories are so vivid, and with them other things start returning to him as well…
+                      When Elliot Park looks up an eerie TV show from his childhood, he finds no mention of it anywhere. His friends and parents don't remember it at all. But the memories are so vivid, and with them other things start returning to him as well…
                     </p>
                   </div>
                 </article>
