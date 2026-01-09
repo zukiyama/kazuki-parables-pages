@@ -552,19 +552,30 @@ const Comics = () => {
                     transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
+                <div className="relative h-full">
                   <img 
                     src={vignetteManyFaces}
                     alt="The many faces - God of Lies"
                     className="h-full w-auto object-contain"
                     style={{ maxHeight: isWidescreen ? 'calc(100vh - 80px)' : 'calc(100vh - 120px)' }}
                   />
-                  {/* MANGA • WEBTOON label at bottom of left vignette */}
-                  <p 
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-[0.15em]"
-                    style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                  {/* MANGA • WEBTOON label overlaid at bottom of left vignette */}
+                  <div 
+                    className="absolute bottom-6 left-0 right-0 flex justify-center"
                   >
-                    Manga <span className="mx-1">•</span> Webtoon
-                  </p>
+                    <p 
+                      className="text-[10px] sm:text-[11px] text-white/90 uppercase tracking-[0.25em] px-4 py-1.5"
+                      style={{ 
+                        fontFamily: 'Helvetica Neue, Arial, sans-serif',
+                        fontWeight: 300,
+                        textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.6)',
+                        letterSpacing: '0.3em'
+                      }}
+                    >
+                      Manga <span className="mx-2 opacity-70">•</span> Webtoon
+                    </p>
+                  </div>
+                </div>
                 </div>
                 
                 {/* CENTER - Summary text with distinct vertical GOD OF LIES title */}
@@ -626,13 +637,13 @@ const Comics = () => {
                       className="text-[9px] sm:text-[11px] text-slate-600 leading-relaxed mb-2"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
-                      a psychological manga of deception, betrayal and redemption
+                      A psychological manga of deception, betrayal and redemption
                     </p>
                     <p 
                       className="text-[8px] sm:text-[10px] text-blue-700 uppercase tracking-[0.15em]"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
-                      2026
+                      New <span className="mx-1">•</span> 2026
                     </p>
                   </div>
                 </div>
@@ -654,13 +665,13 @@ const Comics = () => {
                       style={{ maxHeight: isWidescreen ? '40vh' : '42vh' }}
                     />
                   </div>
-                  {/* Bottom right - Boardgame (matched size to top) */}
+                  {/* Bottom right - Boardgame (slightly larger to match top) */}
                   <div className="flex-1 flex items-start justify-center overflow-hidden">
                     <img 
                       src={vignetteBoardgame}
                       alt="Family moments - God of Lies"
                       className="w-auto h-full object-contain"
-                      style={{ maxHeight: isWidescreen ? '40vh' : '42vh' }}
+                      style={{ maxHeight: isWidescreen ? '42vh' : '44vh' }}
                     />
                   </div>
                 </div>
@@ -719,13 +730,13 @@ const Comics = () => {
                       className="text-[11px] text-white/80 leading-relaxed mb-1"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
-                      a psychological manga of deception, betrayal and redemption
+                      A psychological manga of deception, betrayal and redemption
                     </p>
                     <p 
                       className="text-[9px] text-blue-300 uppercase tracking-[0.15em]"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
-                      2026
+                      New <span className="mx-1">•</span> 2026
                     </p>
                   </div>
                 </div>
@@ -778,6 +789,21 @@ const Comics = () => {
                       transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s, opacity 0.5s ease-out 0.1s'
                     }}
                   >
+                    {/* Magazine-style title header */}
+                    <div className="mb-4 lg:mb-6">
+                      <h2 
+                        className="text-2xl lg:text-4xl text-slate-800 mb-3"
+                        style={{ 
+                          fontFamily: 'Playfair Display, Georgia, serif',
+                          fontWeight: 700,
+                          letterSpacing: '0.08em'
+                        }}
+                      >
+                        GOD <span className="italic font-normal text-lg lg:text-2xl">of</span> LIES
+                      </h2>
+                      <div className="w-full h-0.5 bg-red-600" />
+                    </div>
+                    
                     <p 
                       className="text-slate-700 text-sm lg:text-lg leading-relaxed first-letter:text-4xl lg:first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2 lg:first-letter:mr-3 first-letter:text-amber-800"
                       style={{ fontFamily: 'Georgia, serif' }}
