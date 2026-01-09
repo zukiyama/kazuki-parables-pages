@@ -1769,11 +1769,11 @@ const Writing = () => {
                   </button>
                   <div 
                     className={`overflow-hidden transition-all duration-500 ease-out ${
-                      expandedWork === 'faster' ? 'max-h-32 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
+                      expandedWork === 'faster' ? 'max-h-48 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
-                      A man becomes part of an experimental device travelling beyond the speed of light—entering a blur where the psychological and the real merge, encountering forms of life that exist only at certain velocities.
+                      A former astronaut is called up to a secret project to test an experimental device that pushes the speed of light. Half pilot, half subject, he enters a zone where the physical and psychological blur—encountering beings that exist only at certain velocities.
                     </p>
                   </div>
                 </article>
