@@ -791,34 +791,34 @@ const Comics = () => {
                     }}
                   >
                     {/* Magazine-style title header */}
-                    <div className="mb-2 sm:mb-3 lg:mb-6">
+                    <div className="mb-2 sm:mb-4 lg:mb-6">
                       <h2 
-                        className="text-[1.4rem] sm:text-2xl lg:text-4xl text-slate-800 mb-1.5 sm:mb-3"
+                        className="text-[1.4rem] sm:text-3xl lg:text-4xl text-slate-800 mb-1.5 sm:mb-3"
                         style={{ 
                           fontFamily: 'Playfair Display, Georgia, serif',
                           fontWeight: 700,
                           letterSpacing: '0.08em'
                         }}
                       >
-                        GOD <span className="italic font-normal text-[1.1rem] sm:text-lg lg:text-2xl">of</span> LIES
+                        GOD <span className="italic font-normal text-[1.1rem] sm:text-xl lg:text-2xl">of</span> LIES
                       </h2>
                       <div className="w-full h-0.5 bg-red-600" />
                     </div>
                     
                     <p 
-                      className="text-slate-700 text-[0.8rem] sm:text-sm lg:text-lg leading-relaxed first-letter:text-[2rem] sm:first-letter:text-4xl lg:first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-1.5 sm:first-letter:mr-2 lg:first-letter:mr-3 first-letter:text-amber-800"
+                      className="text-slate-700 text-[0.8rem] sm:text-base lg:text-lg leading-relaxed first-letter:text-[2rem] sm:first-letter:text-5xl lg:first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-1.5 sm:first-letter:mr-3 lg:first-letter:mr-3 first-letter:text-amber-800"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
                       Con-man <em>Yi Chang-Min</em> has had to lie and cheat to get by his whole life. Even his landlady—and the young woman who has just moved in with them—have no idea what he does for a living. But while impersonating a shaman for a bereaved couple, he inadvertently raises <em>Seok-seol</em>, the god of lies. As he struggles to rid himself of his less-than-divine companion, <em>Chang-min</em> realises that having a deity of illusion at his beck and call may not be the worst thing for someone who makes his living deceiving others...
                     </p>
                     <p 
-                      className="text-slate-700 text-[0.8rem] sm:text-sm lg:text-lg leading-relaxed mt-1.5 sm:mt-3 lg:mt-5 hidden sm:block italic"
+                      className="text-slate-700 text-[0.8rem] sm:text-base lg:text-lg leading-relaxed mt-1.5 sm:mt-4 lg:mt-5 hidden sm:block italic"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
                       A supernatural psychological manga packed with twists and reversals.
                     </p>
                     <p 
-                      className="text-amber-800 text-[11px] sm:text-xs uppercase tracking-widest mt-1.5 sm:mt-3 lg:mt-5"
+                      className="text-amber-800 text-[11px] sm:text-sm uppercase tracking-widest mt-1.5 sm:mt-4 lg:mt-5"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
                       Manga • Webtoon • 2026
