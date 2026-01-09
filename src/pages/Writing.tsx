@@ -1748,7 +1748,7 @@ const Writing = () => {
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
-                      Coming soon.
+                      A collection of modernist writing, whose title piece concerns an author working under pressure from a deadline, rewriting the same chapter each day.
                     </p>
                   </div>
                 </article>

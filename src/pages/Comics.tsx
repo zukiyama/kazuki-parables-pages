@@ -561,7 +561,7 @@ const Comics = () => {
                   />
                   {/* MANGA • WEBTOON label overlaid at bottom of left vignette */}
                   <div 
-                    className="absolute bottom-6 left-0 right-0 flex justify-center"
+                    className="absolute bottom-20 left-0 right-0 flex justify-center"
                   >
                     <p 
                       className="text-[10px] sm:text-[11px] text-white/90 uppercase tracking-[0.25em] px-4 py-1.5"
@@ -808,13 +808,13 @@ const Comics = () => {
                       className="text-slate-700 text-sm lg:text-lg leading-relaxed first-letter:text-4xl lg:first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2 lg:first-letter:mr-3 first-letter:text-amber-800"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
-                      Con-man Yi Chang-Min has had to lie and cheat to get by his whole life. Even his landlady—and the young woman who has just moved in with them—have no idea what he does for a living. But while impersonating a shaman for a bereaved couple, he inadvertently raises Seok-seol, the god of lies. As he struggles to rid himself of his less-than-divine companion, Chang-min realises that having a god of illusion as at his beck and call may not be the worst thing for someone who makes his living deceiving others...
+                      Con-man Yi Chang-Min has had to lie and cheat to get by his whole life. Even his landlady—and the young woman who has just moved in with them—have no idea what he does for a living. But while impersonating a shaman for a bereaved couple, he inadvertently raises Seok-seol, the god of lies. As he struggles to rid himself of his less-than-divine companion, Chang-min realises that having a deity of illusion at his beck and call may not be the worst thing for someone who makes his living deceiving others...
                     </p>
                     <p 
                       className="text-slate-700 text-sm lg:text-lg leading-relaxed mt-3 lg:mt-5 hidden sm:block"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
-                      A supernatural psychological manga packed with twists, reversals and revelations.
+                      Packed with twists and reversals.
                     </p>
                     <p 
                       className="text-amber-800 text-xs uppercase tracking-widest mt-3 lg:mt-5"
