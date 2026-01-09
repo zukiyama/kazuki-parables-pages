@@ -1064,16 +1064,19 @@ const Comics = () => {
       {/* Comic Detail Modal */}
       {selectedComic && (
         <div 
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-6 max-sm:p-4"
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6 max-sm:p-4 cursor-pointer"
           onClick={handleCloseModal}
         >
           <div 
-            className={`bg-white rounded-xl shadow-2xl w-full grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 max-sm:p-4 max-sm:gap-4 max-sm:max-h-[90vh] max-sm:overflow-y-auto animate-scale-in ${
+            className={`bg-gradient-to-br from-stone-50 via-amber-50/30 to-stone-100 rounded-sm shadow-2xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 max-sm:gap-5 max-sm:max-h-[90vh] max-sm:overflow-y-auto animate-scale-in cursor-default ${
               isWidescreen 
-                ? 'max-w-4xl max-h-[85vh]' 
-                : 'max-w-5xl'
+                ? 'max-w-4xl max-h-[85vh] p-10' 
+                : 'max-w-5xl p-8 max-sm:p-5'
             }`}
             onClick={(e) => e.stopPropagation()}
+            style={{
+              boxShadow: '0 25px 80px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(139, 69, 19, 0.1)'
+            }}
           >
             <div className={`flex items-center justify-center max-sm:max-h-[40vh] ${
               isWidescreen ? 'max-h-[70vh]' : ''
@@ -1081,29 +1084,59 @@ const Comics = () => {
               <img 
                 src={selectedComic.cover}
                 alt={`${selectedComic.title} comic cover`}
-                className={`w-full shadow-2xl rounded-lg max-sm:max-h-full max-sm:object-contain ${
+                className={`w-full shadow-2xl max-sm:max-h-full max-sm:object-contain ${
                   isWidescreen 
                     ? 'max-w-sm max-h-[65vh] object-contain' 
                     : 'max-w-md'
                 }`}
+                style={{
+                  boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.4)'
+                }}
               />
             </div>
             <div className="flex flex-col justify-center">
-              <h3 
-                className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 max-sm:text-xl"
-                style={{ fontFamily: 'Boogaloo, cursive' }}
+              {/* Magazine-style header */}
+              <div className="mb-6 max-sm:mb-4">
+                <p 
+                  className="text-amber-700 text-xs uppercase tracking-[0.3em] mb-2"
+                  style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                >
+                  Featured Story
+                </p>
+                <h3 
+                  className="text-3xl md:text-4xl text-slate-800 mb-3 max-sm:text-2xl tracking-wide"
+                  style={{ 
+                    fontFamily: 'Playfair Display, Georgia, serif',
+                    fontWeight: 600,
+                    lineHeight: 1.2
+                  }}
+                >
+                  {selectedComic.title === "Gods!" ? "GODS!" : selectedComic.title}
+                </h3>
+                <div className="w-16 h-0.5 bg-amber-600" />
+              </div>
+              
+              {/* Magazine-style description */}
+              <p 
+                className="text-slate-700 text-sm md:text-base leading-relaxed max-sm:text-sm first-letter:text-3xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-amber-800 first-letter:leading-none"
+                style={{ 
+                  fontFamily: 'Georgia, serif',
+                  textAlign: 'justify',
+                  hyphens: 'auto'
+                }}
               >
-                {selectedComic.title}
-              </h3>
-              <p className="font-serif text-sm md:text-base text-slate-700 leading-relaxed mb-4 max-sm:text-sm">
                 {selectedComic.description}
               </p>
-              <button
-                onClick={handleCloseModal}
-                className="self-start px-5 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors"
-              >
-                Close
-              </button>
+              
+              {/* Subtle footer */}
+              <div className="mt-6 pt-4 border-t border-amber-200/50 max-sm:mt-4 max-sm:pt-3">
+                <p 
+                  className="text-slate-500 text-xs uppercase tracking-widest"
+                  style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                >
+                  Tap outside to close
+                </p>
+              </div>
             </div>
           </div>
         </div>
