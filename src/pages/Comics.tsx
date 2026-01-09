@@ -638,13 +638,13 @@ const Comics = () => {
                     transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
-                  {/* Top right - Apartments - slightly larger on iPad to match bottom */}
+                  {/* Top right - Apartments - matched to bottom size */}
                   <div className="flex-1 flex items-end justify-center overflow-hidden">
                     <img 
                       src={vignetteApartments}
                       alt="The neighborhood - God of Lies"
                       className="w-auto h-full object-contain"
-                      style={{ maxHeight: isWidescreen ? '42vh' : '50vh' }}
+                      style={{ maxHeight: isWidescreen ? '40vh' : '42vh' }}
                     />
                   </div>
                   {/* Bottom right - Boardgame (same size as top) */}
