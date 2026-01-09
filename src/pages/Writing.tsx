@@ -1698,7 +1698,7 @@ const Writing = () => {
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
-                      An anthology—two boys in diving helmets wandering the dunes; a holiday where people go to war; an actor who becomes convinced that the character he's playing is real; and an oncoming invasion in which the only defence is a set of blueprints left by the previously defeated—these and other stories bend perception and undo perspective.
+                      An anthology—two boys in diving helmets wandering the dunes; a holiday where people go to war; an actor who becomes convinced that the character he's playing is real; and an oncoming invasion in which the only defence is a set of blueprints left by the previously defeated—these and other stories that play with reason and bend perception.
                     </p>
                   </div>
                 </article>
