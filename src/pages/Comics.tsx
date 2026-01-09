@@ -887,19 +887,19 @@ const Comics = () => {
                 Surname Pendragon
               </h3>
               <p 
-                className="text-white text-base md:text-lg leading-relaxed mb-2"
+                className="text-white/85 text-base md:text-lg leading-relaxed mb-2"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 A modern retelling of Arthurian legend. Invoking a very British mysticism, this high concept drama fuses 60s retro-future espionage with contemporary fantasy.
               </p>
               <p 
-                className="text-white text-base md:text-lg leading-relaxed mb-2"
+                className="text-white/85 text-base md:text-lg leading-relaxed mb-2"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 Starting his new job at <em>Camelot Enterprises</em>, Arthur Drake has never cared much for career—or adventure—but that's about to change. After misplacing a set of sensitive documents and a chance encounter with a deranged homeless man, he is drawn into a bizarre netherworld and a legacy he'd rather avoid.
               </p>
               <p 
-                className="text-white/80 text-xs uppercase tracking-widest"
+                className="text-white/70 text-xs uppercase tracking-widest"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
                 Feature Film • Drama • In Development
@@ -927,19 +927,19 @@ const Comics = () => {
                 Surname Pendragon
               </h3>
               <p 
-                className="text-white/90 text-base leading-relaxed mb-4"
+                className="text-white/70 text-base leading-relaxed mb-4"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 A modern retelling of Arthurian legend. Invoking a very British mysticism, this high concept drama fuses 60s retro-future espionage with contemporary fantasy.
               </p>
               <p 
-                className="text-white/90 text-base leading-relaxed mb-4"
+                className="text-white/70 text-base leading-relaxed mb-4"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 Starting his new job at <em>Camelot Enterprises</em>, Arthur Drake has never cared much for career—or adventure—but that's about to change. After misplacing a set of sensitive documents and a chance encounter with a deranged homeless man, he is drawn into a bizarre netherworld and a legacy he'd rather avoid.
               </p>
               <p 
-                className="text-white/70 text-sm uppercase tracking-widest"
+                className="text-white/50 text-sm uppercase tracking-widest"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
                 Feature Film • Drama • In Development
@@ -963,19 +963,19 @@ const Comics = () => {
                 Surname Pendragon
               </h3>
               <p 
-                className="text-white/95 text-sm leading-relaxed mb-3"
+                className="text-white/70 text-sm leading-relaxed mb-3"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 A modern retelling of Arthurian legend. Invoking a very British mysticism, this high concept drama fuses 60s retro-future espionage with contemporary fantasy.
               </p>
               <p 
-                className="text-white/95 text-sm leading-relaxed mb-3"
+                className="text-white/70 text-sm leading-relaxed mb-3"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 Starting his new job at <em>Camelot Enterprises</em>, Arthur Drake has never cared much for career—or adventure—but that's about to change. After misplacing a set of sensitive documents and a chance encounter with a deranged homeless man, he is drawn into a bizarre netherworld and a legacy he'd rather avoid.
               </p>
               <p 
-                className="text-white/75 text-xs uppercase tracking-widest"
+                className="text-white/50 text-xs uppercase tracking-widest"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
                 Feature Film • Drama • In Development
