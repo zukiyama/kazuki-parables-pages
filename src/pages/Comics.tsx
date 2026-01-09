@@ -791,34 +791,34 @@ const Comics = () => {
                     }}
                   >
                     {/* Magazine-style title header */}
-                    <div className="mb-4 lg:mb-6">
+                    <div className="mb-3 lg:mb-6">
                       <h2 
-                        className="text-2xl lg:text-4xl text-slate-800 mb-3"
+                        className="text-xl sm:text-2xl lg:text-4xl text-slate-800 mb-2 sm:mb-3"
                         style={{ 
                           fontFamily: 'Playfair Display, Georgia, serif',
                           fontWeight: 700,
                           letterSpacing: '0.08em'
                         }}
                       >
-                        GOD <span className="italic font-normal text-lg lg:text-2xl">of</span> LIES
+                        GOD <span className="italic font-normal text-base sm:text-lg lg:text-2xl">of</span> LIES
                       </h2>
                       <div className="w-full h-0.5 bg-red-600" />
                     </div>
                     
                     <p 
-                      className="text-slate-700 text-sm lg:text-lg leading-relaxed first-letter:text-4xl lg:first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2 lg:first-letter:mr-3 first-letter:text-amber-800"
+                      className="text-slate-700 text-xs sm:text-sm lg:text-lg leading-relaxed first-letter:text-3xl sm:first-letter:text-4xl lg:first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2 lg:first-letter:mr-3 first-letter:text-amber-800"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
                       Con-man Yi Chang-Min has had to lie and cheat to get by his whole life. Even his landlady—and the young woman who has just moved in with them—have no idea what he does for a living. But while impersonating a shaman for a bereaved couple, he inadvertently raises Seok-seol, the god of lies. As he struggles to rid himself of his less-than-divine companion, Chang-min realises that having a deity of illusion at his beck and call may not be the worst thing for someone who makes his living deceiving others...
                     </p>
                     <p 
-                      className="text-slate-700 text-sm lg:text-lg leading-relaxed mt-3 lg:mt-5 hidden sm:block"
+                      className="text-slate-700 text-xs sm:text-sm lg:text-lg leading-relaxed mt-2 sm:mt-3 lg:mt-5 hidden sm:block"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
                       A supernatural psychological manga packed with twists and reversals.
                     </p>
                     <p 
-                      className="text-amber-800 text-xs uppercase tracking-widest mt-3 lg:mt-5"
+                      className="text-amber-800 text-[10px] sm:text-xs uppercase tracking-widest mt-2 sm:mt-3 lg:mt-5"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
                       Manga • Webtoon • 2026
@@ -887,19 +887,19 @@ const Comics = () => {
                 Surname Pendragon
               </h3>
               <p 
-                className="text-white/85 text-base md:text-lg leading-relaxed mb-2"
+                className="text-white text-base md:text-lg leading-relaxed mb-2"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 A modern retelling of Arthurian legend. Invoking a very British mysticism, this high concept drama fuses 60s retro-future espionage with contemporary fantasy.
               </p>
               <p 
-                className="text-white/85 text-base md:text-lg leading-relaxed mb-2"
+                className="text-white text-base md:text-lg leading-relaxed mb-2"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 Starting his new job at <em>Camelot Enterprises</em>, Arthur Drake has never cared much for career—or adventure—but that's about to change. After misplacing a set of sensitive documents and a chance encounter with a deranged homeless man, he is drawn into a bizarre netherworld and a legacy he'd rather avoid.
               </p>
               <p 
-                className="text-white/70 text-xs uppercase tracking-widest"
+                className="text-white/80 text-xs uppercase tracking-widest"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
                 Feature Film • Drama • In Development
@@ -927,19 +927,19 @@ const Comics = () => {
                 Surname Pendragon
               </h3>
               <p 
-                className="text-white/70 text-base leading-relaxed mb-4"
+                className="text-white/90 text-base leading-relaxed mb-4"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 A modern retelling of Arthurian legend. Invoking a very British mysticism, this high concept drama fuses 60s retro-future espionage with contemporary fantasy.
               </p>
               <p 
-                className="text-white/70 text-base leading-relaxed mb-4"
+                className="text-white/90 text-base leading-relaxed mb-4"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 Starting his new job at <em>Camelot Enterprises</em>, Arthur Drake has never cared much for career—or adventure—but that's about to change. After misplacing a set of sensitive documents and a chance encounter with a deranged homeless man, he is drawn into a bizarre netherworld and a legacy he'd rather avoid.
               </p>
               <p 
-                className="text-white/50 text-sm uppercase tracking-widest"
+                className="text-white/70 text-sm uppercase tracking-widest"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
                 Feature Film • Drama • In Development
@@ -963,19 +963,19 @@ const Comics = () => {
                 Surname Pendragon
               </h3>
               <p 
-                className="text-white/70 text-sm leading-relaxed mb-3"
+                className="text-white/95 text-sm leading-relaxed mb-3"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 A modern retelling of Arthurian legend. Invoking a very British mysticism, this high concept drama fuses 60s retro-future espionage with contemporary fantasy.
               </p>
               <p 
-                className="text-white/70 text-sm leading-relaxed mb-3"
+                className="text-white/95 text-sm leading-relaxed mb-3"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 Starting his new job at <em>Camelot Enterprises</em>, Arthur Drake has never cared much for career—or adventure—but that's about to change. After misplacing a set of sensitive documents and a chance encounter with a deranged homeless man, he is drawn into a bizarre netherworld and a legacy he'd rather avoid.
               </p>
               <p 
-                className="text-white/50 text-xs uppercase tracking-widest"
+                className="text-white/75 text-xs uppercase tracking-widest"
                 style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
               >
                 Feature Film • Drama • In Development
