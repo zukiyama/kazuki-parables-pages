@@ -632,13 +632,13 @@ const Comics = () => {
                 
                 {/* RIGHT SIDE - Two images stacked (apartments top, boardgame bottom) */}
                 <div 
-                  className={`w-[46%] h-full flex flex-col gap-2 sm:gap-3 ${isWidescreen ? 'py-6 pt-20' : 'py-6 pt-16'}`}
+                  className={`w-[46%] h-full flex flex-col gap-2 sm:gap-3 ${isWidescreen ? 'py-6 pt-24' : 'py-6 pt-20'}`}
                   style={{
                     transform: `translateX(${currentSection >= 1 ? (currentSection >= 2 ? 150 * sectionProgress : 0) : 100}%)`,
                     transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
-                  {/* Top right - Apartments - matched to bottom size */}
+                  {/* Top right - Apartments */}
                   <div className="flex-1 flex items-end justify-center overflow-hidden">
                     <img 
                       src={vignetteApartments}
@@ -647,7 +647,7 @@ const Comics = () => {
                       style={{ maxHeight: isWidescreen ? '40vh' : '42vh' }}
                     />
                   </div>
-                  {/* Bottom right - Boardgame (same size as top) */}
+                  {/* Bottom right - Boardgame (matched size to top) */}
                   <div className="flex-1 flex items-start justify-center overflow-hidden">
                     <img 
                       src={vignetteBoardgame}
