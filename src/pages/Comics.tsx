@@ -561,19 +561,19 @@ const Comics = () => {
                   />
                   {/* MANGA • WEBTOON label overlaid at bottom of left vignette */}
                   <div 
-                    className="absolute bottom-20 left-4 right-0 flex justify-center"
+                    className="absolute bottom-20 left-8 right-0 flex justify-center"
                   >
                     <p 
-                      className="text-[10px] sm:text-[11px] text-white uppercase px-3 py-1"
+                      className="text-[11px] sm:text-[12px] text-white uppercase px-3 py-1"
                       style={{ 
-                        fontFamily: 'Didot, "Bodoni MT", "Times New Roman", serif',
-                        fontWeight: 600,
-                        letterSpacing: '0.3em',
-                        textShadow: '0 1px 3px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.7)',
+                        fontFamily: 'Playfair Display, Didot, "Bodoni MT", Georgia, serif',
+                        fontWeight: 700,
+                        letterSpacing: '0.25em',
+                        textShadow: '0 1px 2px rgba(0,0,0,1), 0 2px 6px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4)',
                         fontStyle: 'normal'
                       }}
                     >
-                      MANGA <span className="mx-1.5 opacity-70" style={{ fontSize: '0.6em' }}>◆</span> WEBTOON
+                      MANGA <span className="mx-1.5 opacity-80" style={{ fontSize: '0.55em' }}>◆</span> WEBTOON
                     </p>
                   </div>
                 </div>
