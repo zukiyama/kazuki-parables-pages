@@ -815,7 +815,7 @@ const Comics = () => {
                       className="text-slate-700 text-sm lg:text-lg leading-relaxed mt-3 lg:mt-5 hidden sm:block"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
-                      Packed with twists and reversals.
+                      A supernatural psychological manga packed with twists and reversals.
                     </p>
                     <p 
                       className="text-amber-800 text-xs uppercase tracking-widest mt-3 lg:mt-5"
