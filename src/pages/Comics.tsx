@@ -812,7 +812,7 @@ const Comics = () => {
                       Con-man <em>Yi Chang-Min</em> has had to lie and cheat to get by his whole life. Even his landlady—and the young woman who has just moved in with them—have no idea what he does for a living. But while impersonating a shaman for a bereaved couple, he inadvertently raises <em>Seok-seol</em>, the god of lies. As he struggles to rid himself of his less-than-divine companion, <em>Chang-min</em> realises that having a deity of illusion at his beck and call may not be the worst thing for someone who makes his living deceiving others...
                     </p>
                     <p 
-                      className="text-slate-700 text-[0.8rem] sm:text-base lg:text-lg leading-relaxed mt-1.5 sm:mt-4 lg:mt-5 hidden sm:block italic"
+                      className="text-slate-700 text-[0.8rem] sm:text-base lg:text-lg leading-relaxed mt-1.5 sm:mt-4 lg:mt-5 hidden sm:block"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
                       A supernatural psychological manga packed with twists and reversals.
