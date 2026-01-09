@@ -424,7 +424,7 @@ const Comics = () => {
     {
       cover: scriptedCover,
       title: "Scripted",
-      description: "A group of actors are fated to meet in every drama they appear in, each time forgetting their previous roles and relationships—until, as a traumatised character, one of them visits a hypnotherapist and begins to glimpse flashes of their previous lives. From then on, the past starts to seep into the stories of the present: unfinished narratives, buried secrets, scenes that seem to have played out before. But who are they really, and what is it that keeps drawing them together?",
+      description: "A group of actors are fated to meet in every drama they appear in, each time forgetting their previous roles and relationships—until, as a traumatised character, one of them visits a hypnotherapist and begins to glimpse flashes of their previous lives. From then on, the past starts to seep into the present: unfinished stories, buried secrets, scenes that seem to have played out before. But who are they really and why do they keep being drawn together?",
       teaser: "Reality blurs when every life feels like a performance."
     },
     {
