@@ -558,6 +558,13 @@ const Comics = () => {
                     className="h-full w-auto object-contain"
                     style={{ maxHeight: isWidescreen ? 'calc(100vh - 80px)' : 'calc(100vh - 120px)' }}
                   />
+                  {/* MANGA • WEBTOON label at bottom of left vignette */}
+                  <p 
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-[0.15em]"
+                    style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+                  >
+                    Manga <span className="mx-1">•</span> Webtoon
+                  </p>
                 </div>
                 
                 {/* CENTER - Summary text with distinct vertical GOD OF LIES title */}
@@ -619,13 +626,13 @@ const Comics = () => {
                       className="text-[9px] sm:text-[11px] text-slate-600 leading-relaxed mb-2"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
-                      A psychological manga about deception and truth
+                      a psychological manga of deception, betrayal and redemption
                     </p>
                     <p 
                       className="text-[8px] sm:text-[10px] text-blue-700 uppercase tracking-[0.15em]"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
-                      Manga • 2026
+                      2026
                     </p>
                   </div>
                 </div>
@@ -712,13 +719,13 @@ const Comics = () => {
                       className="text-[11px] text-white/80 leading-relaxed mb-1"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
-                      A psychological manga about deception and truth
+                      a psychological manga of deception, betrayal and redemption
                     </p>
                     <p 
                       className="text-[9px] text-blue-300 uppercase tracking-[0.15em]"
                       style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
-                      Manga • 2026
+                      2026
                     </p>
                   </div>
                 </div>
@@ -771,36 +778,17 @@ const Comics = () => {
                       transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s, opacity 0.5s ease-out 0.1s'
                     }}
                   >
-                    <div className="text-center lg:text-left mb-4 lg:mb-6">
-                      <p 
-                        className="text-xs uppercase tracking-[0.4em] text-amber-800/70 mb-2"
-                        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                      >
-                        Featured Series
-                      </p>
-                      <h2 
-                        className="text-2xl lg:text-5xl font-bold text-slate-900 mb-2 lg:mb-3"
-                        style={{ fontFamily: 'Bangers, cursive', letterSpacing: '0.02em' }}
-                      >
-                        GOD OF LIES
-                      </h2>
-                      <div className="w-20 lg:w-24 h-1 bg-amber-700 mx-auto lg:mx-0" />
-                    </div>
-
                     <p 
                       className="text-slate-700 text-sm lg:text-lg leading-relaxed first-letter:text-4xl lg:first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2 lg:first-letter:mr-3 first-letter:text-amber-800"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
-                      In a world where truth is currency, one man discovers he can make anyone believe anything. 
-                      <span className="text-red-700 font-semibold"> Takeshi Mori</span> has mastered the art of deception—manipulating politicians, businessmen, and entire corporations with surgical precision.
+                      Con-man Yi Chang-Min has had to lie and cheat to get by his whole life. Even his landlady—and the young woman who has just moved in with them—have no idea what he does for a living. But while impersonating a shaman for a bereaved couple, he inadvertently raises Seok-seol, the god of lies. As he struggles to rid himself of his less-than-divine companion, Chang-min realises that having a god of illusion as at his beck and call may not be the worst thing for someone who makes his living deceiving others...
                     </p>
                     <p 
                       className="text-slate-700 text-sm lg:text-lg leading-relaxed mt-3 lg:mt-5 hidden sm:block"
                       style={{ fontFamily: 'Georgia, serif' }}
                     >
-                      For years, he operated in the shadows, a phantom pulling strings that shaped nations. But when a 
-                      <span className="text-blue-700 font-semibold"> single child</span> sees through his carefully constructed lies, 
-                      his empire of illusions begins to crumble.
+                      A supernatural psychological manga packed with twists, reversals and revelations.
                     </p>
                     <p 
                       className="text-amber-800 text-xs uppercase tracking-widest mt-3 lg:mt-5"
