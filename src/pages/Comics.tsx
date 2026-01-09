@@ -16,7 +16,7 @@ import scriptedCover from "@/assets/scripted-cover-new.png";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
 import comicsFooterCharacter from "@/assets/comics-footer-character.png";
 import godOfLiesStreetScene from "@/assets/god-of-lies-street-scene.png";
-import vignetteApartments from "@/assets/god-of-lies-apartments.png";
+import vignetteApartments from "@/assets/god-of-lies-vignette-masked-figure.png";
 import vignetteBoardgame from "@/assets/god-of-lies-boardgame.png";
 import vignetteManyFaces from "@/assets/god-of-lies-characters.png";
 import comicPanelsBackground from "@/assets/comic-panels-background.png";
