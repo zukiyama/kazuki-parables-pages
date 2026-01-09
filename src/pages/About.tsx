@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { useScrollAnimation } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
+import { SlideInQuote } from "@/components/SlideInQuote";
 import artistPortrait from "@/assets/artist-portrait-new.png";
 import parisSquare from "@/assets/paris-square-background.jpg";
 import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
@@ -268,14 +269,42 @@ const About = () => {
           <div className="max-w-4xl mx-auto">
             <blockquote className="relative">
               <span className="absolute -top-6 -left-4 text-8xl text-white/20 font-serif">"</span>
-              {/* Mobile phone version - shorter quote */}
-              <p className="font-body text-lg text-white/90 leading-relaxed italic sm:hidden">
-                If it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk; if I had spent the summer revising rather than learning to hold an open A major on an old half size nylon-strung guitar—in short, if I hadn't have traded what I should be doing for what I love, I should never have found this hapless grove in which I am so brightly sustained.
-              </p>
-              {/* Tablet and desktop version - full quote */}
-              <p className="font-body hidden sm:block text-xl lg:text-2xl text-white/90 leading-relaxed italic">
-                I have always had the flaw of describing myself through my interests... because I suppose that I don't feel I can be seen any other way. If it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk; if I had spent the summer revising rather than learning to hold an open A major on an old half size nylon-strung guitar—in short, if I hadn't have traded what I should be doing for what I love, achievement, elevation, and progress for erring, curiosity, and wonder, I should never have found this hapless grove in which I am so brightly sustained.
-              </p>
+              {/* Mobile phone version - shorter quote with slide-in animation */}
+              <div className="sm:hidden">
+                <SlideInQuote 
+                  lines={[
+                    "If it weren't for the hours I had wasted",
+                    "burying action figures and reading comics",
+                    "behind the computer monitor on my desk;",
+                    "if I had spent the summer revising",
+                    "rather than learning to hold an open A major",
+                    "on an old half size nylon-strung guitar—",
+                    "in short, if I hadn't have traded",
+                    "what I should be doing for what I love,",
+                    "I should never have found this hapless grove",
+                    "in which I am so brightly sustained."
+                  ]}
+                  className="font-body text-lg text-white/90 leading-relaxed italic"
+                />
+              </div>
+              {/* Tablet and desktop version - full quote with slide-in animation */}
+              <div className="hidden sm:block">
+                <SlideInQuote 
+                  lines={[
+                    "I have always had the flaw of describing myself through my interests...",
+                    "because I suppose that I don't feel I can be seen any other way.",
+                    "If it weren't for the hours I had wasted burying action figures",
+                    "and reading comics behind the computer monitor on my desk;",
+                    "if I had spent the summer revising rather than learning to hold",
+                    "an open A major on an old half size nylon-strung guitar—",
+                    "in short, if I hadn't have traded what I should be doing for what I love,",
+                    "achievement, elevation, and progress for erring, curiosity, and wonder,",
+                    "I should never have found this hapless grove",
+                    "in which I am so brightly sustained."
+                  ]}
+                  className="font-body text-xl lg:text-2xl text-white/90 leading-relaxed italic"
+                />
+              </div>
             </blockquote>
           </div>
         </div>
