@@ -1773,7 +1773,7 @@ const Writing = () => {
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
-                      A former astronaut is called up to a secret project to test an experimental device that pushes the speed of light. Half pilot, half subject, he enters a zone where the physical and psychological blur—encountering beings that exist only at certain velocities.
+                      A former astronaut joins a project to test an experimental device that travels near the speed of light. Entering a zone where the physical and psychological blur, he encounters beings that exist only at certain velocities.
                     </p>
                   </div>
                 </article>
@@ -1798,7 +1798,7 @@ const Writing = () => {
                     }`}
                   >
                     <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
-                      When Elliot Park looks up an eerie TV show from his childhood, he finds no mention of it anywhere. He asks his friends and parents but they don't seem to remember it either. It's as though it never existed. But the memories are so vivid, and with them other things start coming back to him as well…
+                      When Elliot Park looks up an eerie TV show from his childhood, he finds no mention of it anywhere. He asks his friends and parents but they don't remember it at all. It's as though it never existed. But the memories are so vivid, and with them other things start returning to him as well…
                     </p>
                   </div>
                 </article>
