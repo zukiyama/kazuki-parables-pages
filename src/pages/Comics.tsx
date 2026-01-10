@@ -411,7 +411,7 @@ const Comics = () => {
     },
     {
       cover: soulTiedCover,
-      title: "Soul Tied",
+      title: "Soul-Tied",
       description: "Two men, bound by fate yet worlds apart in their choices. One embraces chaos with casual indifference, while the other fights desperately to maintain control. Their intertwined destinies force them to confront what it means to be truly connected to another soul.",
       teaser: "Destiny binds two souls in chaos and control."
     },
