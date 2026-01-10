@@ -88,6 +88,7 @@ const Writing = () => {
   const isDraggingScrollbar = useRef(false);
   const parableTrilogyRef = useRef<HTMLDivElement>(null);
   const userInteractedRef = useRef(false);
+  const isBootingRef = useRef(true);
 
   const location = useLocation();
 
@@ -108,7 +109,12 @@ const Writing = () => {
   useLayoutEffect(() => {
     // Reset state on route change
     userInteractedRef.current = false;
+    isBootingRef.current = true;
     setPageReady(false);
+    
+    // Force banner to known state during boot
+    setBannerVisible(true);
+    bannerManuallyHiddenRef.current = false;
     
     let alive = true;
     let raf = 0;
@@ -135,9 +141,10 @@ const Writing = () => {
       requestAnimationFrame(() => {
         if (!alive) return;
         setPageReady(true);
-        // Stop actively locking after initial settle
+        // Release boot gate after Safari has settled
         setTimeout(() => {
           window.removeEventListener("scroll", onScroll);
+          isBootingRef.current = false;
         }, 250);
       });
     });
@@ -636,6 +643,9 @@ const Writing = () => {
     let wasAtTop = window.scrollY <= 50;
 
     const handleScrollForBanner = () => {
+      // Don't react to scroll during boot to prevent flicker
+      if (isBootingRef.current) return;
+      
       const scrollTop = window.scrollY;
       const isAtTop = scrollTop <= 50;
       const isScrollingDown = scrollTop > lastScrollY;
@@ -662,8 +672,8 @@ const Writing = () => {
     };
 
     window.addEventListener('scroll', handleScrollForBanner, { passive: true });
-    // Check initial position
-    handleScrollForBanner();
+    // Check initial position only if not booting
+    if (!isBootingRef.current) handleScrollForBanner();
     
     return () => window.removeEventListener('scroll', handleScrollForBanner);
   }, [isWidescreen]);
@@ -685,6 +695,9 @@ const Writing = () => {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
+      // Don't react to mouse during boot to prevent flicker
+      if (isBootingRef.current) return;
+      
       // IGNORE if cursor is in scrollbar area (right edge of window)
       if (isInScrollbarArea(e)) {
         return; // Don't trigger any banner behavior when in scrollbar area
