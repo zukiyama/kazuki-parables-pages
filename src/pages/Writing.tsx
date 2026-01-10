@@ -52,7 +52,7 @@ import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
 import toFlyCover from "@/assets/to-fly-cover-new.png";
 
 const Writing = () => {
-  // REMOVED: useScrollToTop() - Writing handles its own scroll behavior to avoid conflicts
+  useScrollToTop();
   const isWidescreen = useWidescreenAspectRatio();
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
@@ -86,10 +86,6 @@ const Writing = () => {
   const isSnapping = useRef(false);
   const isDraggingScrollbar = useRef(false);
   const parableTrilogyRef = useRef<HTMLDivElement>(null);
-  
-  // Safari viewport fix: Boot-gate to wait for viewport to stabilize after navigation
-  const isBootingRef = useRef(true);
-  const hasUserInteractedRef = useRef(false);
 
   const location = useLocation();
 
@@ -97,76 +93,6 @@ const Writing = () => {
   useEffect(() => {
     isSnapping.current = false;
     isDraggingScrollbar.current = false;
-    isBootingRef.current = true;
-    hasUserInteractedRef.current = false;
-  }, []);
-  
-  // Safari viewport fix: Boot-gate effect - wait for viewport to stabilize before enabling scroll features
-  useEffect(() => {
-    // Disable browser scroll restoration
-    if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual';
-    }
-    
-    let resizeTimer: NodeJS.Timeout;
-    let bootCompleteTimer: NodeJS.Timeout;
-    
-    const onViewportStable = () => {
-      // Only scroll to top and enable features after viewport is stable
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-      isBootingRef.current = false;
-    };
-    
-    const handleViewportResize = () => {
-      // Reset the timer on each resize - viewport still changing
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(onViewportStable, 200);
-    };
-    
-    // Initial scroll to top immediately
-    window.scrollTo(0, 0);
-    
-    // Listen to visualViewport resize (Safari browser bar changes)
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', handleViewportResize);
-    }
-    window.addEventListener('resize', handleViewportResize);
-    
-    // After 2 RAF + 200ms delay, consider boot complete even if no resize events
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        bootCompleteTimer = setTimeout(onViewportStable, 200);
-      });
-    });
-    
-    return () => {
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener('resize', handleViewportResize);
-      }
-      window.removeEventListener('resize', handleViewportResize);
-      clearTimeout(resizeTimer);
-      clearTimeout(bootCompleteTimer);
-      if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'auto';
-      }
-    };
-  }, []);
-  
-  // Track user interaction to enable scroll snap only after user scrolls
-  useEffect(() => {
-    const handleUserInteraction = () => {
-      hasUserInteractedRef.current = true;
-    };
-    
-    window.addEventListener('wheel', handleUserInteraction, { passive: true, once: true });
-    window.addEventListener('touchstart', handleUserInteraction, { passive: true, once: true });
-    
-    return () => {
-      window.removeEventListener('wheel', handleUserInteraction);
-      window.removeEventListener('touchstart', handleUserInteraction);
-    };
   }, []);
 
   // Get dynamic header bottom position
@@ -182,36 +108,20 @@ const Writing = () => {
 
 
   // Handle hash navigation to scroll to Parable Trilogy section
-  // Only run AFTER boot is complete to avoid Safari viewport issues
   useEffect(() => {
-    if (isBootingRef.current) {
-      // Wait for boot to complete, then handle hash
-      const checkBoot = setInterval(() => {
-        if (!isBootingRef.current) {
-          clearInterval(checkBoot);
-          if (location.hash === '#kaiju') {
-            setTimeout(() => {
-              const parableTrilogy = document.querySelector('[data-section="kaiju"] h2');
-              if (parableTrilogy) {
-                const rect = parableTrilogy.getBoundingClientRect();
-                const scrollTop = window.pageYOffset + rect.top - 100;
-                window.scrollTo({ top: scrollTop, behavior: 'smooth' });
-              }
-            }, 100);
-          }
-          // No else scroll-to-top needed - boot-gate already did it
-        }
-      }, 50);
-      return () => clearInterval(checkBoot);
-    } else if (location.hash === '#kaiju') {
+    if (location.hash === '#kaiju') {
+      // Small delay to ensure DOM is rendered
       setTimeout(() => {
         const parableTrilogy = document.querySelector('[data-section="kaiju"] h2');
         if (parableTrilogy) {
           const rect = parableTrilogy.getBoundingClientRect();
-          const scrollTop = window.pageYOffset + rect.top - 100;
+          const scrollTop = window.pageYOffset + rect.top - 100; // 100px offset for nav
           window.scrollTo({ top: scrollTop, behavior: 'smooth' });
         }
       }, 100);
+    } else {
+      // Scroll to top for non-hash navigation
+      window.scrollTo(0, 0);
     }
   }, [location]);
 
@@ -363,9 +273,6 @@ const Writing = () => {
     };
 
     const handleScrollEnd = () => {
-      // Safari fix: Don't snap during boot or before user interaction
-      if (isBootingRef.current) return;
-      if (!hasUserInteractedRef.current) return;
       // Disable scroll snap on mobile/tablet (matches MOBILE_BREAKPOINT of 950px)
       if (window.innerWidth < 950) return;
       if (isSnapping.current) return;
@@ -376,13 +283,11 @@ const Writing = () => {
       if (bookSections.length === 0) return;
 
       // Check if we're in the no-snap zone (before HOAX)
-      // Safari fix: Use visualViewport for consistent behavior
-      const viewportHeight = getViewportHeight();
       const hoaxSection = document.querySelector('[data-section="hoax"]') as HTMLElement;
       if (hoaxSection) {
         const hoaxRect = hoaxSection.getBoundingClientRect();
         // If HOAX is below the viewport center, we're still in the no-snap zone
-        if (hoaxRect.top > viewportHeight * 0.7) {
+        if (hoaxRect.top > window.innerHeight * 0.7) {
           return; // Don't snap
         }
       }
@@ -397,7 +302,7 @@ const Writing = () => {
       // Account for visualViewport offset (crucial on iOS Safari)
       const vvOffsetTop = getViewportOffsetTop();
       const topOffset = headerBottom + bannerHeight + vvOffsetTop;
-      // viewportHeight already declared above
+      const viewportHeight = getViewportHeight();
       const availableViewport = viewportHeight - (headerBottom + bannerHeight);
 
       // Find section that fills MOST of the screen (>50%)
@@ -540,8 +445,6 @@ const Writing = () => {
       setScrollY(currentScrollY);
 
       // Check which sections are visible
-      // Safari fix: Use visualViewport.height for consistent behavior across browser bar states
-      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
       const sections = document.querySelectorAll('[data-section]');
       const newVisibleSections = new Set<string>();
       
@@ -549,7 +452,7 @@ const Writing = () => {
         const rect = section.getBoundingClientRect();
         const sectionId = section.getAttribute('data-section');
         
-        if (rect.top < viewportHeight * 0.7 && rect.bottom > viewportHeight * 0.3) {
+        if (rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) {
           if (sectionId) newVisibleSections.add(sectionId);
         }
       });
