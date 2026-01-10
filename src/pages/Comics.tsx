@@ -406,7 +406,7 @@ const Comics = () => {
     {
       cover: mrMiracleCoverNew,
       title: "Mr. Miracle", 
-      description: "A mysterious 40-year-old man moves into a tight-knit neighborhood where everyone knows everyone's business. Unmarried and with no known background, he becomes the subject of intense gossip among the local ladies. But as the community slowly gets to know him, perceptions begin to change in unexpected ways.",
+      description: "A mysterious 40-year-old man moves into a tight-knit neighborhood where everyone knows everyone's business. Unmarried and with no known background, he becomes the subject of intense gossip among the elderly local ladies. But as the community slowly gets to know him, perceptions begin to change in unexpected ways.",
       teaser: "Sometimes the most ordinary man holds extraordinary secrets."
     },
     {
