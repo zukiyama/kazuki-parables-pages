@@ -2,8 +2,8 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
+import { useViewportStable } from "@/hooks/useViewportStable";
 
 import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungAdultSlideshow";
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
@@ -52,8 +52,11 @@ import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
 import toFlyCover from "@/assets/to-fly-cover-new.png";
 
 const Writing = () => {
-  useScrollToTop();
+  // NOTE: Removed useScrollToTop() - Writing has its own scroll handling via hash effect
+  // This prevents conflicting scroll-to-top mechanisms that cause offset on iOS Safari
   const isWidescreen = useWidescreenAspectRatio();
+  const isViewportStable = useViewportStable(200); // Wait for viewport to stabilize after navigation
+  const hasUserScrolled = useRef(false); // Gate for scroll snap - only after user interaction
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
@@ -93,6 +96,23 @@ const Writing = () => {
   useEffect(() => {
     isSnapping.current = false;
     isDraggingScrollbar.current = false;
+    hasUserScrolled.current = false;
+  }, []);
+
+  // Detect actual user scroll interaction (wheel or touch)
+  // This gates scroll snap to prevent phantom snaps during mount/settle
+  useEffect(() => {
+    const handleUserScroll = () => {
+      hasUserScrolled.current = true;
+    };
+
+    window.addEventListener('wheel', handleUserScroll, { passive: true, once: true });
+    window.addEventListener('touchstart', handleUserScroll, { passive: true, once: true });
+
+    return () => {
+      window.removeEventListener('wheel', handleUserScroll);
+      window.removeEventListener('touchstart', handleUserScroll);
+    };
   }, []);
 
   // Get dynamic header bottom position
@@ -108,7 +128,10 @@ const Writing = () => {
 
 
   // Handle hash navigation to scroll to Parable Trilogy section
+  // Wait for viewport to stabilize before scrolling (prevents iOS Safari offset)
   useEffect(() => {
+    if (!isViewportStable) return;
+
     if (location.hash === '#kaiju') {
       // Small delay to ensure DOM is rendered
       setTimeout(() => {
@@ -120,10 +143,10 @@ const Writing = () => {
         }
       }, 100);
     } else {
-      // Scroll to top for non-hash navigation
+      // Scroll to top for non-hash navigation - only run once after stabilization
       window.scrollTo(0, 0);
     }
-  }, [location]);
+  }, [location, isViewportStable]);
 
   // Preload all background images and book covers at once
   useEffect(() => {
@@ -278,6 +301,10 @@ const Writing = () => {
       if (isSnapping.current) return;
       // Disable scroll snap while dragging the scrollbar
       if (isDraggingScrollbar.current) return;
+      // Gate: Only snap after user has actually scrolled (prevents phantom snap during mount)
+      if (!hasUserScrolled.current) return;
+      // Gate: Only snap after viewport has stabilized (prevents iOS Safari navigation offset)
+      if (!isViewportStable) return;
       
       const bookSections = getBookSections();
       if (bookSections.length === 0) return;
@@ -401,7 +428,7 @@ const Writing = () => {
       window.removeEventListener('mouseup', handleMouseUp);
       clearTimeout(scrollTimeout);
     };
-  }, [getHeaderBottom, isWidescreen]);
+  }, [getHeaderBottom, isWidescreen, isViewportStable]);
 
   // Track Parable Trilogy visibility for fade animation
   useEffect(() => {
@@ -448,11 +475,15 @@ const Writing = () => {
       const sections = document.querySelectorAll('[data-section]');
       const newVisibleSections = new Set<string>();
       
+      // Use visualViewport.height for consistent behavior on iOS Safari
+      // when browser UI is collapsed vs expanded
+      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+      
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
         const sectionId = section.getAttribute('data-section');
         
-        if (rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) {
+        if (rect.top < viewportHeight * 0.7 && rect.bottom > viewportHeight * 0.3) {
           if (sectionId) newVisibleSections.add(sectionId);
         }
       });
