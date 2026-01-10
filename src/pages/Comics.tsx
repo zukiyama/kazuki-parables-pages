@@ -412,7 +412,7 @@ const Comics = () => {
     {
       cover: soulTiedCover,
       title: "Soul-Tied",
-      description: <>An idle ghost and an up-and-coming lawyer find their fates intertwined in this soul-searching supernatural comedy.<br /><br />In a crowded Seoul bar, the hopeless spirit of <em>Eun-yeong</em> is used to people passing right through him—until he collides with young lawyer <em>Jae-seong</em>, causing him to spill his coffee all over himself. The two opposing personalities discover that they are soul-tied: bound together in the spirit-realm, unable to be separated for all eternity. As they work together to sever their bond, they soon discover that <em>Eun-yeong</em> is not the only spirit unable to move on…</>,
+      description: <>An idle ghost and an up-and-coming lawyer find their fates intertwined in this soul-searching supernatural comedy.<br /><br />In a crowded Seoul bar, the hopeless spirit of <em>Eun-yeong</em> is used to people passing right through him—until he collides with young lawyer <em>Jae-seong</em>, causing him to spill his coffee all over himself. The two opposing personalities discover that they are soul-tied: bound together in the spirit-realm, unable to be separated for all eternity. As they work together to sever their bond, they soon learn that <em>Eun-yeong</em> is not the only spirit unable to move on…</>,
       teaser: "Destiny binds two souls in chaos and control."
     },
     {
