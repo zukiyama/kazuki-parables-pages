@@ -1068,15 +1068,12 @@ const Comics = () => {
           onClick={handleCloseModal}
         >
           <div 
-            className={`bg-gradient-to-br from-stone-50 via-amber-50/30 to-stone-100 rounded-sm shadow-2xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 max-sm:gap-5 max-sm:max-h-[90vh] max-sm:overflow-y-auto animate-scale-in cursor-default ${
+            className={`bg-white rounded-lg shadow-2xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 max-sm:gap-5 max-sm:max-h-[90vh] max-sm:overflow-y-auto animate-scale-in cursor-default ${
               isWidescreen 
                 ? 'max-w-4xl max-h-[85vh] p-10' 
                 : 'max-w-5xl p-8 max-sm:p-5'
             }`}
             onClick={(e) => e.stopPropagation()}
-            style={{
-              boxShadow: '0 25px 80px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(139, 69, 19, 0.1)'
-            }}
           >
             <div className={`flex items-center justify-center max-sm:max-h-[40vh] ${
               isWidescreen ? 'max-h-[70vh]' : ''
@@ -1084,59 +1081,26 @@ const Comics = () => {
               <img 
                 src={selectedComic.cover}
                 alt={`${selectedComic.title} comic cover`}
-                className={`w-full shadow-2xl max-sm:max-h-full max-sm:object-contain ${
+                className={`w-full shadow-xl max-sm:max-h-full max-sm:object-contain ${
                   isWidescreen 
                     ? 'max-w-sm max-h-[65vh] object-contain' 
                     : 'max-w-md'
                 }`}
-                style={{
-                  boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.4)'
-                }}
               />
             </div>
             <div className="flex flex-col justify-center">
-              {/* Magazine-style header */}
-              <div className="mb-6 max-sm:mb-4">
-                <p 
-                  className="text-amber-700 text-xs uppercase tracking-[0.3em] mb-2"
-                  style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                >
-                  Featured Story
-                </p>
-                <h3 
-                  className="text-3xl md:text-4xl text-slate-800 mb-3 max-sm:text-2xl tracking-wide"
-                  style={{ 
-                    fontFamily: 'Playfair Display, Georgia, serif',
-                    fontWeight: 600,
-                    lineHeight: 1.2
-                  }}
-                >
-                  {selectedComic.title === "Gods!" ? "GODS!" : selectedComic.title}
-                </h3>
-                <div className="w-16 h-0.5 bg-amber-600" />
-              </div>
-              
-              {/* Magazine-style description */}
-              <p 
-                className="text-slate-700 text-sm md:text-base leading-relaxed max-sm:text-sm first-letter:text-3xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-amber-800 first-letter:leading-none"
+              <h3 
+                className="text-2xl md:text-3xl text-neutral-800 mb-4 max-sm:text-xl"
                 style={{ 
-                  fontFamily: 'Georgia, serif',
-                  textAlign: 'justify',
-                  hyphens: 'auto'
+                  fontFamily: 'Playfair Display, Georgia, serif',
+                  fontWeight: 600
                 }}
               >
+                {selectedComic.title === "Gods!" ? "GODS!" : selectedComic.title}
+              </h3>
+              <p className="text-neutral-700 text-sm md:text-base leading-relaxed max-sm:text-sm">
                 {selectedComic.description}
               </p>
-              
-              {/* Subtle footer */}
-              <div className="mt-6 pt-4 border-t border-amber-200/50 max-sm:mt-4 max-sm:pt-3">
-                <p 
-                  className="text-slate-500 text-xs uppercase tracking-widest"
-                  style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                >
-                  Tap outside to close
-                </p>
-              </div>
             </div>
           </div>
         </div>
