@@ -400,7 +400,7 @@ const Comics = () => {
     {
       cover: burdenCoverNew,
       title: "The Burden",
-      description: "A touching story about a young man who must care for his aging mother, exploring themes of family duty, sacrifice, and the weight of responsibility. As memories float between past and present, both son and mother navigate the delicate balance between independence and care.",
+      description: <>When <em>Hiroshi</em> receives a phone call from a sister that he hasn't seen in twenty years, telling him that he needs to look after their abusive mother, he's about to hang up. But learning that she now has dementia and can no longer care for herself, he is forced to take in the woman who destroyed his childhood. As his mother's memory slips away, he starts to see his own in a new light and discover the weight they both carry.</>,
       teaser: "Family duty weighs heavier than expected burdens."
     },
     {
