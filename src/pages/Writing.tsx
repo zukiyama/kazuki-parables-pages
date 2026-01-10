@@ -1671,9 +1671,9 @@ const Writing = () => {
                 </button>
               </div>
 
-              {/* Click for more details instruction */}
+              {/* Click for details instruction */}
               <p className={`text-center font-serif text-[0.7rem] tracking-[0.2em] uppercase mb-12 transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`}>
-                click for more details
+                CLICK FOR DETAILS
               </p>
 
               {/* Interactive Title List */}
