@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -86,13 +86,20 @@ const Writing = () => {
   const isSnapping = useRef(false);
   const isDraggingScrollbar = useRef(false);
   const parableTrilogyRef = useRef<HTMLDivElement>(null);
+  const bootingRef = useRef(true); // Boot gate to prevent scroll snap during initial load
 
   const location = useLocation();
 
   // Defensive cleanup: Reset scroll state on mount to prevent stale states after hot-reloads
+  // Boot gate: block scroll snap for 300ms after mount to prevent competing scroll behaviors
   useEffect(() => {
     isSnapping.current = false;
     isDraggingScrollbar.current = false;
+    bootingRef.current = true;
+    const t = setTimeout(() => {
+      bootingRef.current = false;
+    }, 300);
+    return () => clearTimeout(t);
   }, []);
 
   // Get dynamic header bottom position
@@ -119,10 +126,9 @@ const Writing = () => {
           window.scrollTo({ top: scrollTop, behavior: 'smooth' });
         }
       }, 100);
-    } else {
-      // Scroll to top for non-hash navigation
-      window.scrollTo(0, 0);
     }
+    // Removed else branch - let useScrollToTop handle scroll restoration
+    // Having multiple scroll-to-top systems causes competing positions/flicker
   }, [location]);
 
   // Preload all background images and book covers at once
@@ -273,6 +279,8 @@ const Writing = () => {
     };
 
     const handleScrollEnd = () => {
+      // Boot gate: don't snap during initial page load
+      if (bootingRef.current) return;
       // Disable scroll snap on mobile/tablet (matches MOBILE_BREAKPOINT of 950px)
       if (window.innerWidth < 950) return;
       if (isSnapping.current) return;
@@ -364,6 +372,8 @@ const Writing = () => {
     };
 
     const handleScroll = () => {
+      // Boot gate: don't process scroll during initial load
+      if (bootingRef.current) return;
       if (isSnapping.current) return;
       // Skip snap timeout if dragging scrollbar
       if (isDraggingScrollbar.current) return;
@@ -439,7 +449,9 @@ const Writing = () => {
     return () => window.removeEventListener('scroll', checkParableTrilogyVisibility);
   }, [getHeaderBottom]);
 
-  useEffect(() => {
+  // Use useLayoutEffect to compute visibleSections BEFORE first paint
+  // This prevents the Novels title from appearing invisible for a frame then fading in
+  useLayoutEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
@@ -521,7 +533,7 @@ const Writing = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
+    handleScroll(); // Initial check - runs synchronously before paint
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
