@@ -57,6 +57,7 @@ const Writing = () => {
   const isWidescreen = useWidescreenAspectRatio();
   const isViewportStable = useViewportStable(200); // Wait for viewport to stabilize after navigation
   const hasUserScrolled = useRef(false); // Gate for scroll snap - only after user interaction
+  const [hasMounted, setHasMounted] = useState(false); // Gate transitions until after first render
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
@@ -98,6 +99,9 @@ const Writing = () => {
     isDraggingScrollbar.current = false;
     hasUserScrolled.current = false;
   }, []);
+
+  // Gate transitions until after mount to prevent "slide down" on initial render
+  useEffect(() => setHasMounted(true), []);
 
   // Top-lock effect: When Safari's viewport resizes (bar expands/collapses) and we're at the top,
   // force scroll back to 0 to cancel the "delta scroll" Safari introduces during navigation
@@ -881,7 +885,8 @@ const Writing = () => {
       </div>
       
       {/* Main content - FIXED padding for widescreen, independent of banner visibility */}
-      <main ref={mainRef} className={`relative z-10 transition-all duration-500 ${
+      {/* Gate transitions until after mount to prevent "slide down" on initial Safari render */}
+      <main ref={mainRef} className={`relative z-10 ${hasMounted ? 'transition-all duration-500' : ''} ${
         isWidescreen 
           ? 'pt-56' 
           : 'pt-52 max-sm:pt-52'
