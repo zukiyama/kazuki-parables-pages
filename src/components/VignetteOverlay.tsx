@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 
 // Vignette images
@@ -29,13 +29,103 @@ const vignetteImages: Record<string, { left: string; right: string }> = {
   syphons: { left: vignetteSyphonsLeft, right: vignetteSyphonsRight },
 };
 
+// Hysteresis constants - only for vignette overlay
+const HYSTERESIS_PX = 32;
+const SETTLE_MS = 140;
+
 export const VignetteOverlay = ({ activeVignette, sectionRef }: VignetteOverlayProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isSectionInView, setIsSectionInView] = useState(false);
   const [displayedVignette, setDisplayedVignette] = useState<string | null>(null);
   const [imageOpacity, setImageOpacity] = useState(0);
+  const [stableCenterY, setStableCenterY] = useState<number | null>(null);
+  
   const observerRef = useRef<IntersectionObserver | null>(null);
   const transitionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const settleTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+
+  // Compute current viewport center (overlay-specific)
+  const computeViewportCenter = useCallback(() => {
+    const vv = window.visualViewport;
+    if (vv) {
+      return vv.offsetTop + vv.height / 2;
+    }
+    return window.innerHeight / 2;
+  }, []);
+
+  // Apply center Y to overlay via CSS variable
+  const applyCenterY = useCallback((centerY: number) => {
+    if (overlayRef.current) {
+      overlayRef.current.style.setProperty('--vv-center-y', `${centerY}px`);
+    }
+  }, []);
+
+  // Hysteresis update logic - only affects vignette overlay
+  const updateStableCenterY = useCallback((immediate = false) => {
+    const currentCenter = computeViewportCenter();
+    
+    setStableCenterY(prevStable => {
+      // First time or immediate update
+      if (prevStable === null || immediate) {
+        applyCenterY(currentCenter);
+        return currentCenter;
+      }
+      
+      // Only update if change exceeds hysteresis threshold
+      if (Math.abs(currentCenter - prevStable) > HYSTERESIS_PX) {
+        applyCenterY(currentCenter);
+        return currentCenter;
+      }
+      
+      // Keep stable, don't update
+      return prevStable;
+    });
+  }, [computeViewportCenter, applyCenterY]);
+
+  // Debounced settle - catches up after browser bars finish animating
+  const scheduleSettle = useCallback(() => {
+    if (settleTimerRef.current) {
+      clearTimeout(settleTimerRef.current);
+    }
+    settleTimerRef.current = setTimeout(() => {
+      updateStableCenterY(true); // Force update after settle
+    }, SETTLE_MS);
+  }, [updateStableCenterY]);
+
+  // Handle viewport/scroll events for hysteresis
+  useEffect(() => {
+    const handleViewportChange = () => {
+      updateStableCenterY(false);
+      scheduleSettle();
+    };
+
+    // Initialize stable center
+    updateStableCenterY(true);
+
+    // Listen to visualViewport events (crucial for iOS Safari)
+    const vv = window.visualViewport;
+    if (vv) {
+      vv.addEventListener('resize', handleViewportChange);
+      vv.addEventListener('scroll', handleViewportChange);
+    }
+    
+    // Fallback scroll listener
+    window.addEventListener('scroll', handleViewportChange, { passive: true });
+    window.addEventListener('resize', handleViewportChange, { passive: true });
+
+    return () => {
+      if (vv) {
+        vv.removeEventListener('resize', handleViewportChange);
+        vv.removeEventListener('scroll', handleViewportChange);
+      }
+      window.removeEventListener('scroll', handleViewportChange);
+      window.removeEventListener('resize', handleViewportChange);
+      if (settleTimerRef.current) {
+        clearTimeout(settleTimerRef.current);
+      }
+    };
+  }, [updateStableCenterY, scheduleSettle]);
 
   // Track section visibility with IntersectionObserver
   useEffect(() => {
@@ -45,7 +135,7 @@ export const VignetteOverlay = ({ activeVignette, sectionRef }: VignetteOverlayP
       ([entry]) => {
         setIsSectionInView(entry.isIntersecting);
       },
-      { threshold: 0.05 } // Trigger when at least 5% visible
+      { threshold: 0.05 }
     );
 
     observerRef.current.observe(sectionRef.current);
@@ -57,40 +147,32 @@ export const VignetteOverlay = ({ activeVignette, sectionRef }: VignetteOverlayP
 
   // Handle dissolve transitions between vignettes
   useEffect(() => {
-    // Clear any pending transition
     if (transitionTimeoutRef.current) {
       clearTimeout(transitionTimeoutRef.current);
     }
 
     if (activeVignette && isSectionInView) {
-      // Fade in new vignette or dissolve to new one
       if (displayedVignette !== activeVignette) {
-        // First fade out current images
         setImageOpacity(0);
         
-        // After fade out, switch images and fade in
         transitionTimeoutRef.current = setTimeout(() => {
           setDisplayedVignette(activeVignette);
           setIsVisible(true);
-          // Small delay before fade in for smooth transition
           requestAnimationFrame(() => {
             setImageOpacity(1);
           });
-        }, 400); // Match the CSS transition duration
+        }, 400);
       } else {
-        // Same vignette, just ensure visible
         setIsVisible(true);
         setImageOpacity(1);
       }
     } else if (!activeVignette) {
-      // Fade out when no vignette selected
       setImageOpacity(0);
       transitionTimeoutRef.current = setTimeout(() => {
         setIsVisible(false);
         setDisplayedVignette(null);
       }, 400);
     } else if (!isSectionInView) {
-      // Section scrolled away, fade out
       setImageOpacity(0);
       setIsVisible(false);
     }
@@ -104,7 +186,7 @@ export const VignetteOverlay = ({ activeVignette, sectionRef }: VignetteOverlayP
 
   const currentImages = displayedVignette ? vignetteImages[displayedVignette] : null;
 
-  // Mask gradients - fade from visible edge inward, with top/bottom fade
+  // Mask gradients
   const leftMaskStyle = {
     maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
     WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
@@ -121,18 +203,25 @@ export const VignetteOverlay = ({ activeVignette, sectionRef }: VignetteOverlayP
 
   const overlayContent = (
     <div
+      ref={overlayRef}
       id="vignetteOverlay"
       className={`fixed inset-0 pointer-events-none transition-opacity duration-500 ease-in-out ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
-      style={{ zIndex: 20 }}
+      style={{ 
+        zIndex: 20,
+        // CSS variable for hysteresis-controlled center, fallback to 50vh
+        '--vv-center-y': stableCenterY !== null ? `${stableCenterY}px` : '50vh',
+      } as React.CSSProperties}
       aria-hidden="true"
     >
-      {/* Left Vignette - aligned to left edge of screen */}
+      {/* Left Vignette - uses hysteresis center */}
       <div
-        className="absolute left-0 top-1/2 -translate-y-1/2 w-1/3 h-[90vh] overflow-hidden hidden md:block"
+        className="absolute left-0 w-1/3 h-[90vh] overflow-hidden hidden md:block"
         style={{
           left: 0,
+          top: 'var(--vv-center-y)',
+          transform: 'translateY(-50%)',
           ...leftMaskStyle,
         }}
       >
@@ -151,11 +240,13 @@ export const VignetteOverlay = ({ activeVignette, sectionRef }: VignetteOverlayP
         )}
       </div>
 
-      {/* Right Vignette - aligned to right edge of screen */}
+      {/* Right Vignette - uses hysteresis center */}
       <div
-        className="absolute right-0 top-1/2 -translate-y-1/2 w-1/3 h-[90vh] overflow-hidden"
+        className="absolute right-0 w-1/3 h-[90vh] overflow-hidden"
         style={{
           right: 0,
+          top: 'var(--vv-center-y)',
+          transform: 'translateY(-50%)',
           ...rightMaskStyle,
         }}
       >
@@ -176,7 +267,6 @@ export const VignetteOverlay = ({ activeVignette, sectionRef }: VignetteOverlayP
     </div>
   );
 
-  // Use portal to append near end of body
   return createPortal(overlayContent, document.body);
 };
 
