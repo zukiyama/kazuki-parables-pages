@@ -1259,3 +1259,12 @@
     margin-left: 0.5rem;
   }
 }
+
+/* Writing page: Disable scroll anchoring to prevent Safari from shifting scroll
+   when the browser UI expands/collapses during navigation */
+.writing-page {
+  overflow-anchor: none;
+}
+.writing-page * {
+  overflow-anchor: none;
+}

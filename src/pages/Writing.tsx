@@ -99,6 +99,47 @@ const Writing = () => {
     hasUserScrolled.current = false;
   }, []);
 
+  // Top-lock effect: When Safari's viewport resizes (bar expands/collapses) and we're at the top,
+  // force scroll back to 0 to cancel the "delta scroll" Safari introduces during navigation
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+
+    let raf = 0;
+    let active = true;
+
+    const nudgeToTopIfAtTop = () => {
+      if (!active) return;
+
+      // Only correct if we're essentially at the top already
+      if (window.scrollY <= 2) {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          // instant, not smooth (avoid visible motion)
+          window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        });
+      }
+    };
+
+    // Run once on mount
+    nudgeToTopIfAtTop();
+
+    // Run when Safari UI changes viewport
+    vv.addEventListener('resize', nudgeToTopIfAtTop);
+    vv.addEventListener('scroll', nudgeToTopIfAtTop);
+
+    // Stop after initial settle window (1.2s)
+    const t = setTimeout(() => { active = false; }, 1200);
+
+    return () => {
+      active = false;
+      clearTimeout(t);
+      vv.removeEventListener('resize', nudgeToTopIfAtTop);
+      vv.removeEventListener('scroll', nudgeToTopIfAtTop);
+      cancelAnimationFrame(raf);
+    };
+  }, [location.key]);
+
   // Detect actual user scroll interaction (wheel or touch)
   // This gates scroll snap to prevent phantom snaps during mount/settle
   useEffect(() => {
@@ -733,7 +774,7 @@ const Writing = () => {
 
   return (
     <div 
-      className="min-h-screen-stable relative overflow-x-hidden"
+      className="writing-page min-h-screen-stable relative overflow-x-hidden"
       onClick={handlePageClick}
     >
       <Navigation />
