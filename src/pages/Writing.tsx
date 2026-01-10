@@ -1803,30 +1803,6 @@ const Writing = () => {
                   </div>
                 </article>
 
-                {/* Plastic */}
-                <article className="text-center">
-                  <button 
-                    onClick={() => {
-                      const isClosing = expandedWork === 'plastic';
-                      setExpandedWork(isClosing ? null : 'plastic');
-                      setActiveVignette(isClosing ? null : 'plastic');
-                    }}
-                    className="group cursor-pointer"
-                  >
-                    <h3 className={`font-serif text-xl md:text-2xl font-light tracking-wide transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-700 hover:text-neutral-900' : 'text-neutral-200 hover:text-white'}`} style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
-                      ???
-                    </h3>
-                  </button>
-                  <div 
-                    className={`overflow-hidden transition-all duration-500 ease-out ${
-                      expandedWork === 'plastic' ? 'max-h-32 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'
-                    }`}
-                  >
-                    <p className={`font-serif text-sm leading-relaxed max-w-md mx-auto transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-600' : 'text-neutral-400'}`}>
-                      A children's toy franchise. Secret bases beneath the ocean. Inter-dimensional conspiracy.
-                    </p>
-                  </div>
-                </article>
               </div>
 
               {/* Elegant closing */}
