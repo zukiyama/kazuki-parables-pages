@@ -26,7 +26,7 @@ const Comics = () => {
   useScrollToTop();
   const isMobile = useIsMobile();
   const isWidescreen = useWidescreenAspectRatio();
-  const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: string; teaser?: string} | null>(null);
+  const [selectedComic, setSelectedComic] = useState<{cover: string; title: string; description: React.ReactNode; teaser?: string} | null>(null);
   const [zoomedImage, setZoomedImage] = useState<{src: string; alt: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [showGodOfLiesDescription, setShowGodOfLiesDescription] = useState(false);
@@ -418,7 +418,7 @@ const Comics = () => {
     {
       cover: godsCover,
       title: "Gods!",
-      description: "It is the worst day of Hyeon Qi-Ling's career. Set on a cosmic space station where idol-gods from different galaxies meet for a rare celestial gathering. When disaster strikes and invasion threatens, a cynical female security officer who despises idols and their fanatical followers must protect the beings she most detests... if not from invaders, then from their own scheming.",
+      description: <>It is the worst day of <em>Hyeon Qi-Ling's</em> career. Set on a cosmic space station where idol-gods from different galaxies meet for a rare celestial gathering. When disaster strikes and invasion threatens, a cynical female security officer who despises idols and their fanatical followers must protect the beings she most detests... if not from invaders, then from their own scheming.</>,
       teaser: "When gods need saving, who do you call?"
     },
     {
@@ -430,12 +430,12 @@ const Comics = () => {
     {
       cover: orangesGoldCoverNew,
       title: "Oranges are Made of Gold",
-      description: "A 99-year-old Korean CEO controls a vast orange empire built on rare oranges that grow only on Jeju Island. Instead of naming an heir, he forces his two sons to compete - whoever makes the most profit in one year inherits everything. A tale spanning generations, exploring family legacy, competition, and the price of empire.",
+      description: <>A 99-year-old Korean CEO controls a vast orange empire built on rare oranges that grow only on Jeju Island. Instead of naming an heir, he forces his two sons to compete—whoever makes the most profit in one year inherits everything. <em>Ji-won</em> is an astute businessman who has spent his life working his way up in his father's company, whereas <em>Hye-il</em> left the family home, has little money, and prefers to sleep under the stars. The result seems a foregone conclusion—but as their father says: oranges rarely roll in a straight line.</>,
       teaser: "In Jeju's orchards, family rivalry grows sweeter than gold."
     }
   ];
 
-  const handleComicClick = (comic: {cover: string; title: string; description: string; teaser?: string}) => {
+  const handleComicClick = (comic: {cover: string; title: string; description: React.ReactNode; teaser?: string}) => {
     setSelectedComic(comic);
   };
 
