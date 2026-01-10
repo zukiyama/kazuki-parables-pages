@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -55,6 +55,7 @@ const Writing = () => {
   useScrollToTop();
   const isWidescreen = useWidescreenAspectRatio();
   const [scrollY, setScrollY] = useState(0);
+  const [pageReady, setPageReady] = useState(false);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
   const [bannerVisible, setBannerVisible] = useState(true); // For widescreen banner toggle
@@ -103,42 +104,47 @@ const Writing = () => {
     };
   }, []);
 
-  // Boot top-lock: prevent Safari scroll restoration from nudging page down after paint
-  useEffect(() => {
-    // Reset user interaction flag on route change
+  // Boot top-lock using useLayoutEffect: prevent Safari scroll restoration BEFORE first paint
+  useLayoutEffect(() => {
+    // Reset state on route change
     userInteractedRef.current = false;
+    setPageReady(false);
     
     let alive = true;
     let raf = 0;
 
-    const forceTopIfNoUserScroll = () => {
+    const lockTopNow = () => {
       if (!alive) return;
       if (userInteractedRef.current) return;
 
-      // If Safari nudged us down by a bit, cancel it
+      // Only correct small accidental offsets
       if (window.scrollY > 0 && window.scrollY < 250) {
-        cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(() => {
-          window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
-        });
+        window.scrollTo(0, 0);
       }
     };
 
-    // Run a few times during the risky window
-    forceTopIfNoUserScroll();
-    const onScroll = () => forceTopIfNoUserScroll();
+    lockTopNow();
 
-    window.addEventListener('scroll', onScroll, { passive: true });
+    // Also run for a very short settle window (covers iOS collapsed bar transitions)
+    const onScroll = () => lockTopNow();
+    window.addEventListener("scroll", onScroll, { passive: true });
 
-    const t1 = setTimeout(forceTopIfNoUserScroll, 50);
-    const t2 = setTimeout(forceTopIfNoUserScroll, 150);
-    const t3 = setTimeout(forceTopIfNoUserScroll, 350);
-    const t4 = setTimeout(() => { alive = false; }, 800);
+    raf = requestAnimationFrame(() => {
+      lockTopNow();
+      // Mark ready after one frame (or two for extra safety)
+      requestAnimationFrame(() => {
+        if (!alive) return;
+        setPageReady(true);
+        // Stop actively locking after initial settle
+        setTimeout(() => {
+          window.removeEventListener("scroll", onScroll);
+        }, 250);
+      });
+    });
 
     return () => {
       alive = false;
-      window.removeEventListener('scroll', onScroll);
-      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4);
+      window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
     };
   }, [location.key]);
@@ -757,6 +763,7 @@ const Writing = () => {
   return (
     <div 
       className="min-h-screen-stable relative overflow-x-hidden"
+      style={{ visibility: pageReady ? "visible" : "hidden" }}
       onClick={handlePageClick}
     >
       <Navigation />
