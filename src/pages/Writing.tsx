@@ -86,8 +86,62 @@ const Writing = () => {
   const isSnapping = useRef(false);
   const isDraggingScrollbar = useRef(false);
   const parableTrilogyRef = useRef<HTMLDivElement>(null);
+  const userInteractedRef = useRef(false);
 
   const location = useLocation();
+
+  // Track user interaction to prevent boot top-lock from interfering with intentional scrolls
+  useEffect(() => {
+    const mark = () => { userInteractedRef.current = true; };
+    window.addEventListener('touchstart', mark, { passive: true });
+    window.addEventListener('wheel', mark, { passive: true });
+    window.addEventListener('keydown', mark);
+    return () => {
+      window.removeEventListener('touchstart', mark);
+      window.removeEventListener('wheel', mark);
+      window.removeEventListener('keydown', mark);
+    };
+  }, []);
+
+  // Boot top-lock: prevent Safari scroll restoration from nudging page down after paint
+  useEffect(() => {
+    // Reset user interaction flag on route change
+    userInteractedRef.current = false;
+    
+    let alive = true;
+    let raf = 0;
+
+    const forceTopIfNoUserScroll = () => {
+      if (!alive) return;
+      if (userInteractedRef.current) return;
+
+      // If Safari nudged us down by a bit, cancel it
+      if (window.scrollY > 0 && window.scrollY < 250) {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+        });
+      }
+    };
+
+    // Run a few times during the risky window
+    forceTopIfNoUserScroll();
+    const onScroll = () => forceTopIfNoUserScroll();
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    const t1 = setTimeout(forceTopIfNoUserScroll, 50);
+    const t2 = setTimeout(forceTopIfNoUserScroll, 150);
+    const t3 = setTimeout(forceTopIfNoUserScroll, 350);
+    const t4 = setTimeout(() => { alive = false; }, 800);
+
+    return () => {
+      alive = false;
+      window.removeEventListener('scroll', onScroll);
+      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4);
+      cancelAnimationFrame(raf);
+    };
+  }, [location.key]);
 
   // Defensive cleanup: Reset scroll state on mount to prevent stale states after hot-reloads
   useEffect(() => {
@@ -119,10 +173,8 @@ const Writing = () => {
           window.scrollTo({ top: scrollTop, behavior: 'smooth' });
         }
       }, 100);
-    } else {
-      // Scroll to top for non-hash navigation
-      window.scrollTo(0, 0);
     }
+    // Removed the else branch - useScrollToTop handles scroll-to-top
   }, [location]);
 
   // Preload all background images and book covers at once
@@ -275,6 +327,8 @@ const Writing = () => {
     const handleScrollEnd = () => {
       // Disable scroll snap on mobile/tablet (matches MOBILE_BREAKPOINT of 950px)
       if (window.innerWidth < 950) return;
+      // Prevent snap from running before user interaction (avoid phantom snap on load/transition)
+      if (!userInteractedRef.current) return;
       if (isSnapping.current) return;
       // Disable scroll snap while dragging the scrollbar
       if (isDraggingScrollbar.current) return;
