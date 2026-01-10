@@ -32,7 +32,10 @@ const vignetteImages: Record<string, { left: string; right: string }> = {
 export const VignetteOverlay = ({ activeVignette, sectionRef }: VignetteOverlayProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isSectionInView, setIsSectionInView] = useState(false);
+  const [displayedVignette, setDisplayedVignette] = useState<string | null>(null);
+  const [imageOpacity, setImageOpacity] = useState(0);
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const transitionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Track section visibility with IntersectionObserver
   useEffect(() => {
@@ -52,18 +55,56 @@ export const VignetteOverlay = ({ activeVignette, sectionRef }: VignetteOverlayP
     };
   }, [sectionRef]);
 
-  // Show overlay when both conditions met: section in view AND a vignette is selected
+  // Handle dissolve transitions between vignettes
   useEffect(() => {
-    if (isSectionInView && activeVignette) {
-      setIsVisible(true);
-    } else {
+    // Clear any pending transition
+    if (transitionTimeoutRef.current) {
+      clearTimeout(transitionTimeoutRef.current);
+    }
+
+    if (activeVignette && isSectionInView) {
+      // Fade in new vignette or dissolve to new one
+      if (displayedVignette !== activeVignette) {
+        // First fade out current images
+        setImageOpacity(0);
+        
+        // After fade out, switch images and fade in
+        transitionTimeoutRef.current = setTimeout(() => {
+          setDisplayedVignette(activeVignette);
+          setIsVisible(true);
+          // Small delay before fade in for smooth transition
+          requestAnimationFrame(() => {
+            setImageOpacity(1);
+          });
+        }, 400); // Match the CSS transition duration
+      } else {
+        // Same vignette, just ensure visible
+        setIsVisible(true);
+        setImageOpacity(1);
+      }
+    } else if (!activeVignette) {
+      // Fade out when no vignette selected
+      setImageOpacity(0);
+      transitionTimeoutRef.current = setTimeout(() => {
+        setIsVisible(false);
+        setDisplayedVignette(null);
+      }, 400);
+    } else if (!isSectionInView) {
+      // Section scrolled away, fade out
+      setImageOpacity(0);
       setIsVisible(false);
     }
-  }, [isSectionInView, activeVignette]);
 
-  const currentImages = activeVignette ? vignetteImages[activeVignette] : null;
+    return () => {
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current);
+      }
+    };
+  }, [activeVignette, isSectionInView, displayedVignette]);
 
-  // Common mask gradient styles
+  const currentImages = displayedVignette ? vignetteImages[displayedVignette] : null;
+
+  // Mask gradients - fade from visible edge inward, with top/bottom fade
   const leftMaskStyle = {
     maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
     WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
@@ -87,11 +128,11 @@ export const VignetteOverlay = ({ activeVignette, sectionRef }: VignetteOverlayP
       style={{ zIndex: 20 }}
       aria-hidden="true"
     >
-      {/* Left Vignette */}
+      {/* Left Vignette - aligned to left edge of screen */}
       <div
         className="absolute left-0 top-1/2 -translate-y-1/2 w-1/3 h-[90vh] overflow-hidden hidden md:block"
         style={{
-          left: 'clamp(8px, 3vw, 32px)',
+          left: 0,
           ...leftMaskStyle,
         }}
       >
@@ -99,20 +140,22 @@ export const VignetteOverlay = ({ activeVignette, sectionRef }: VignetteOverlayP
           <img
             src={currentImages.left}
             alt=""
-            className="w-full h-full object-cover transition-opacity duration-700"
+            className="w-full h-full object-cover"
             style={{
-              objectPosition: activeVignette === 'desert' ? '25% center' : 'center right',
-              transform: activeVignette === 'desert' ? 'scale(1.15) translateX(2%)' : undefined,
+              opacity: imageOpacity,
+              transition: 'opacity 400ms ease-in-out',
+              objectPosition: displayedVignette === 'desert' ? '25% center' : 'center right',
+              transform: displayedVignette === 'desert' ? 'scale(1.15) translateX(2%)' : undefined,
             }}
           />
         )}
       </div>
 
-      {/* Right Vignette */}
+      {/* Right Vignette - aligned to right edge of screen */}
       <div
         className="absolute right-0 top-1/2 -translate-y-1/2 w-1/3 h-[90vh] overflow-hidden"
         style={{
-          right: 'clamp(8px, 3vw, 32px)',
+          right: 0,
           ...rightMaskStyle,
         }}
       >
@@ -120,10 +163,12 @@ export const VignetteOverlay = ({ activeVignette, sectionRef }: VignetteOverlayP
           <img
             src={currentImages.right}
             alt=""
-            className="w-full h-full object-cover transition-opacity duration-700"
+            className="w-full h-full object-cover"
             style={{
-              objectPosition: activeVignette === 'desert' ? '60% center' : 'center left',
-              transform: activeVignette === 'desert' ? 'scale(1.15) translateX(-2%)' : undefined,
+              opacity: imageOpacity,
+              transition: 'opacity 400ms ease-in-out',
+              objectPosition: displayedVignette === 'desert' ? '60% center' : 'center left',
+              transform: displayedVignette === 'desert' ? 'scale(1.15) translateX(-2%)' : undefined,
             }}
           />
         )}
