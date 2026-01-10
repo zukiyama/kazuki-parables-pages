@@ -1090,15 +1090,22 @@ const Comics = () => {
             </div>
             <div className="flex flex-col justify-center">
               <h3 
-                className="text-2xl md:text-3xl text-neutral-800 mb-4 max-sm:text-xl"
+                className="text-3xl md:text-4xl text-neutral-700 mb-5 max-sm:text-2xl tracking-wide"
                 style={{ 
-                  fontFamily: 'Playfair Display, Georgia, serif',
-                  fontWeight: 600
+                  fontFamily: 'Georgia, Times New Roman, serif',
+                  fontWeight: 400,
+                  letterSpacing: '0.02em'
                 }}
               >
                 {selectedComic.title === "Gods!" ? "GODS!" : selectedComic.title}
               </h3>
-              <p className="text-neutral-700 text-sm md:text-base leading-relaxed max-sm:text-sm">
+              <p 
+                className="text-neutral-600 text-sm md:text-base leading-relaxed max-sm:text-sm"
+                style={{
+                  fontFamily: 'Georgia, serif',
+                  lineHeight: 1.7
+                }}
+              >
                 {selectedComic.description}
               </p>
             </div>
