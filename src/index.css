@@ -1259,20 +1259,3 @@
     margin-left: 0.5rem;
   }
 }
-
-/* Disable scroll anchoring globally to prevent Safari from shifting scroll
-   when the browser UI expands/collapses during navigation */
-html, body {
-  overflow-anchor: none;
-}
-
-main {
-  overflow-anchor: none;
-}
-
-.writing-page {
-  overflow-anchor: none;
-}
-.writing-page * {
-  overflow-anchor: none;
-}

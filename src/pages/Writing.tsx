@@ -2,8 +2,8 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
-import { useViewportStable } from "@/hooks/useViewportStable";
 
 import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungAdultSlideshow";
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
@@ -52,12 +52,8 @@ import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
 import toFlyCover from "@/assets/to-fly-cover-new.png";
 
 const Writing = () => {
-  // NOTE: Removed useScrollToTop() - Writing has its own scroll handling via hash effect
-  // This prevents conflicting scroll-to-top mechanisms that cause offset on iOS Safari
+  useScrollToTop();
   const isWidescreen = useWidescreenAspectRatio();
-  const isViewportStable = useViewportStable(200); // Wait for viewport to stabilize after navigation
-  const hasUserScrolled = useRef(false); // Gate for scroll snap - only after user interaction
-  const [hasMounted, setHasMounted] = useState(false); // Gate transitions until after first render
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
@@ -97,67 +93,6 @@ const Writing = () => {
   useEffect(() => {
     isSnapping.current = false;
     isDraggingScrollbar.current = false;
-    hasUserScrolled.current = false;
-  }, []);
-
-  // Gate transitions until after mount to prevent "slide down" on initial render
-  useEffect(() => setHasMounted(true), []);
-
-  // Top-lock effect: When Safari's viewport resizes (bar expands/collapses) and we're at the top,
-  // force scroll back to 0 to cancel the "delta scroll" Safari introduces during navigation
-  useEffect(() => {
-    const vv = window.visualViewport;
-    if (!vv) return;
-
-    let raf = 0;
-    let active = true;
-
-    const nudgeToTopIfAtTop = () => {
-      if (!active) return;
-
-      // Only correct if we're essentially at the top already
-      if (window.scrollY <= 2) {
-        cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(() => {
-          // instant, not smooth (avoid visible motion)
-          window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-        });
-      }
-    };
-
-    // Run once on mount
-    nudgeToTopIfAtTop();
-
-    // Run when Safari UI changes viewport
-    vv.addEventListener('resize', nudgeToTopIfAtTop);
-    vv.addEventListener('scroll', nudgeToTopIfAtTop);
-
-    // Stop after initial settle window (1.2s)
-    const t = setTimeout(() => { active = false; }, 1200);
-
-    return () => {
-      active = false;
-      clearTimeout(t);
-      vv.removeEventListener('resize', nudgeToTopIfAtTop);
-      vv.removeEventListener('scroll', nudgeToTopIfAtTop);
-      cancelAnimationFrame(raf);
-    };
-  }, [location.key]);
-
-  // Detect actual user scroll interaction (wheel or touch)
-  // This gates scroll snap to prevent phantom snaps during mount/settle
-  useEffect(() => {
-    const handleUserScroll = () => {
-      hasUserScrolled.current = true;
-    };
-
-    window.addEventListener('wheel', handleUserScroll, { passive: true, once: true });
-    window.addEventListener('touchstart', handleUserScroll, { passive: true, once: true });
-
-    return () => {
-      window.removeEventListener('wheel', handleUserScroll);
-      window.removeEventListener('touchstart', handleUserScroll);
-    };
   }, []);
 
   // Get dynamic header bottom position
@@ -173,10 +108,7 @@ const Writing = () => {
 
 
   // Handle hash navigation to scroll to Parable Trilogy section
-  // Wait for viewport to stabilize before scrolling (prevents iOS Safari offset)
   useEffect(() => {
-    if (!isViewportStable) return;
-
     if (location.hash === '#kaiju') {
       // Small delay to ensure DOM is rendered
       setTimeout(() => {
@@ -188,10 +120,10 @@ const Writing = () => {
         }
       }, 100);
     } else {
-      // Scroll to top for non-hash navigation - only run once after stabilization
+      // Scroll to top for non-hash navigation
       window.scrollTo(0, 0);
     }
-  }, [location, isViewportStable]);
+  }, [location]);
 
   // Preload all background images and book covers at once
   useEffect(() => {
@@ -346,10 +278,6 @@ const Writing = () => {
       if (isSnapping.current) return;
       // Disable scroll snap while dragging the scrollbar
       if (isDraggingScrollbar.current) return;
-      // Gate: Only snap after user has actually scrolled (prevents phantom snap during mount)
-      if (!hasUserScrolled.current) return;
-      // Gate: Only snap after viewport has stabilized (prevents iOS Safari navigation offset)
-      if (!isViewportStable) return;
       
       const bookSections = getBookSections();
       if (bookSections.length === 0) return;
@@ -473,7 +401,7 @@ const Writing = () => {
       window.removeEventListener('mouseup', handleMouseUp);
       clearTimeout(scrollTimeout);
     };
-  }, [getHeaderBottom, isWidescreen, isViewportStable]);
+  }, [getHeaderBottom, isWidescreen]);
 
   // Track Parable Trilogy visibility for fade animation
   useEffect(() => {
@@ -520,15 +448,11 @@ const Writing = () => {
       const sections = document.querySelectorAll('[data-section]');
       const newVisibleSections = new Set<string>();
       
-      // Use visualViewport.height for consistent behavior on iOS Safari
-      // when browser UI is collapsed vs expanded
-      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
-      
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
         const sectionId = section.getAttribute('data-section');
         
-        if (rect.top < viewportHeight * 0.7 && rect.bottom > viewportHeight * 0.3) {
+        if (rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) {
           if (sectionId) newVisibleSections.add(sectionId);
         }
       });
@@ -778,7 +702,7 @@ const Writing = () => {
 
   return (
     <div 
-      className="writing-page min-h-screen-stable relative overflow-x-hidden"
+      className="min-h-screen-stable relative overflow-x-hidden"
       onClick={handlePageClick}
     >
       <Navigation />
@@ -885,8 +809,7 @@ const Writing = () => {
       </div>
       
       {/* Main content - FIXED padding for widescreen, independent of banner visibility */}
-      {/* Gate transitions until after mount to prevent "slide down" on initial Safari render */}
-      <main ref={mainRef} className={`relative z-10 ${hasMounted ? 'transition-all duration-500' : ''} ${
+      <main ref={mainRef} className={`relative z-10 transition-all duration-500 ${
         isWidescreen 
           ? 'pt-56' 
           : 'pt-52 max-sm:pt-52'
