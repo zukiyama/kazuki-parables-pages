@@ -418,7 +418,7 @@ const Comics = () => {
     {
       cover: godsCover,
       title: "Gods!",
-      description: <>It is the worst day of <em>Hyeon Qi-Ling's</em> career. Set on a cosmic space station where idol-gods from different galaxies meet for a rare celestial gathering. When disaster strikes and invasion threatens, a cynical female security officer who despises idols and their fanatical followers must protect the beings she most detests... if not from invaders, then from their own scheming.</>,
+      description: <>It is the worst day of <em>Hyeon Qi-Ling's</em> career. Set on a cosmic space station where idol-gods from different galaxies meet for a rare celestial gathering. When disaster strikes and invasion threatens, a cynical female security officer who despises idols and their fanatical followers must protect the beings she most detests... if not from invaders, then from themselves.</>,
       teaser: "When gods need saving, who do you call?"
     },
     {
