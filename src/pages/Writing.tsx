@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState, useCallback, useLayoutEffect } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 
 import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungAdultSlideshow";
@@ -51,6 +52,7 @@ import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
 import toFlyCover from "@/assets/to-fly-cover-new.png";
 
 const Writing = () => {
+  useScrollToTop();
   const isWidescreen = useWidescreenAspectRatio();
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
@@ -87,55 +89,10 @@ const Writing = () => {
 
   const location = useLocation();
 
-  // Boot gate refs - prevent scroll handlers from running during initial page load
-  const isBootingRef = useRef(true);
-  const bootTimerRef = useRef<number | null>(null);
-  const raf1Ref = useRef<number | null>(null);
-  const raf2Ref = useRef<number | null>(null);
-  const scrollEndTimeoutRef = useRef<number | null>(null);
-
   // Defensive cleanup: Reset scroll state on mount to prevent stale states after hot-reloads
   useEffect(() => {
     isSnapping.current = false;
     isDraggingScrollbar.current = false;
-  }, []);
-
-  // A) Writing page: take control of scroll restoration (scoped to this page only)
-  useEffect(() => {
-    if (!('scrollRestoration' in history)) return;
-    const prev = history.scrollRestoration;
-    history.scrollRestoration = 'manual';
-    return () => {
-      history.scrollRestoration = prev;
-    };
-  }, []);
-
-  // C) Boot gate with proper cleanup - prevents scroll snap during initial load
-  useEffect(() => {
-    isBootingRef.current = true;
-
-    raf1Ref.current = requestAnimationFrame(() => {
-      raf2Ref.current = requestAnimationFrame(() => {
-        bootTimerRef.current = window.setTimeout(() => {
-          isBootingRef.current = false;
-        }, 150);
-      });
-    });
-
-    return () => {
-      isBootingRef.current = false;
-      if (raf1Ref.current) cancelAnimationFrame(raf1Ref.current);
-      if (raf2Ref.current) cancelAnimationFrame(raf2Ref.current);
-      if (bootTimerRef.current) window.clearTimeout(bootTimerRef.current);
-    };
-  }, []);
-
-  // G) Single scroll-to-top on mount (only if no hash)
-  useLayoutEffect(() => {
-    if (!location.hash) {
-      window.scrollTo(0, 0);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Get dynamic header bottom position
@@ -150,19 +107,23 @@ const Writing = () => {
   }, []);
 
 
-  // E) Handle hash navigation to scroll to Parable Trilogy section (removed redundant scroll-to-top)
+  // Handle hash navigation to scroll to Parable Trilogy section
   useEffect(() => {
-    if (location.hash !== '#kaiju') return;
-
-    const timer = window.setTimeout(() => {
-      const el = document.querySelector('[data-section="kaiju"] h2');
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      window.scrollTo({ top: window.pageYOffset + rect.top - 100, behavior: 'smooth' });
-    }, 200);
-
-    return () => window.clearTimeout(timer);
-  }, [location.hash]);
+    if (location.hash === '#kaiju') {
+      // Small delay to ensure DOM is rendered
+      setTimeout(() => {
+        const parableTrilogy = document.querySelector('[data-section="kaiju"] h2');
+        if (parableTrilogy) {
+          const rect = parableTrilogy.getBoundingClientRect();
+          const scrollTop = window.pageYOffset + rect.top - 100; // 100px offset for nav
+          window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      // Scroll to top for non-hash navigation
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
 
   // Preload all background images and book covers at once
   useEffect(() => {
@@ -312,8 +273,6 @@ const Writing = () => {
     };
 
     const handleScrollEnd = () => {
-      // D) Don't run scroll snap during initial page boot
-      if (isBootingRef.current) return;
       // Disable scroll snap on mobile/tablet (matches MOBILE_BREAKPOINT of 950px)
       if (window.innerWidth < 950) return;
       if (isSnapping.current) return;
@@ -405,18 +364,12 @@ const Writing = () => {
     };
 
     const handleScroll = () => {
-      // D) Cancel any pending scroll end timer
-      if (scrollEndTimeoutRef.current) window.clearTimeout(scrollEndTimeoutRef.current);
-      
-      // During boot, don't schedule snap
-      if (isBootingRef.current) return;
-      
       if (isSnapping.current) return;
       // Skip snap timeout if dragging scrollbar
       if (isDraggingScrollbar.current) return;
       
       clearTimeout(scrollTimeout);
-      scrollEndTimeoutRef.current = window.setTimeout(handleScrollEnd, 150);
+      scrollTimeout = setTimeout(handleScrollEnd, 150);
     };
 
     // Detect scrollbar dragging: mousedown in scrollbar area + mouse movement
@@ -486,8 +439,7 @@ const Writing = () => {
     return () => window.removeEventListener('scroll', checkParableTrilogyVisibility);
   }, [getHeaderBottom]);
 
-  // F) Populate visibleSections on mount using useLayoutEffect (runs before first paint)
-  useLayoutEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
@@ -568,8 +520,8 @@ const Writing = () => {
       setBackgroundOpacities(newOpacities);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Run IMMEDIATELY on mount to populate visibleSections before first paint
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
