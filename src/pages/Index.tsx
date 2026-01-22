@@ -273,7 +273,7 @@ const Index = () => {
   }, [currentImage]);
 
   return (
-    <div className="relative min-h-screen-stable flex flex-col overflow-hidden bg-black">
+    <div className="relative min-h-screen-stable flex flex-col overflow-hidden">
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
@@ -297,7 +297,7 @@ const Index = () => {
       </section>
 
       {/* Content Section */}
-      <section className="relative bg-black">
+      <section className="relative bg-background">
         {/* Parable Banner Slideshow - Full Width with Embla Carousel */}
         <div
           ref={parableBannerRef}
