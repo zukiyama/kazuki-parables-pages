@@ -30,6 +30,7 @@ const Index = () => {
   const [animateTvText, setAnimateTvText] = useState(false);
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
+  const [bannerImagesReady, setBannerImagesReady] = useState(false);
   const showMagazineRef = useRef(false);
   
   // Parable banner slideshow state - using Embla for continuous right-scroll
@@ -74,17 +75,44 @@ const Index = () => {
     watchDrag: true // Still allow touch/drag detection
   });
   
+  // Preload banner images before carousel initializes
+  useEffect(() => {
+    const imagesToPreload = [parableBoysStreet, godOfLiesManyFacesBanner];
+    let loadedCount = 0;
+    
+    imagesToPreload.forEach(src => {
+      const img = new Image();
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === imagesToPreload.length) {
+          setBannerImagesReady(true);
+        }
+      };
+      img.onerror = () => {
+        loadedCount++;
+        if (loadedCount === imagesToPreload.length) {
+          setBannerImagesReady(true);
+        }
+      };
+      img.src = src;
+    });
+    
+    // Fallback timeout in case images take too long
+    const timeout = setTimeout(() => setBannerImagesReady(true), 3000);
+    return () => clearTimeout(timeout);
+  }, []);
+
   // Parable banner auto-advance every 8 seconds - always scroll right
   // Adding parableBannerSlide to dependencies resets timer on manual transitions
   useEffect(() => {
-    if (!showParableBanner || !parableEmblaApi) return;
+    if (!showParableBanner || !parableEmblaApi || !bannerImagesReady) return;
     
     const interval = setInterval(() => {
       parableEmblaApi.scrollNext();
     }, 8000);
     
     return () => clearInterval(interval);
-  }, [showParableBanner, parableEmblaApi, parableBannerSlide]);
+  }, [showParableBanner, parableEmblaApi, parableBannerSlide, bannerImagesReady]);
   
   // Sync Parable banner slide state with Embla
   useEffect(() => {
@@ -303,10 +331,11 @@ const Index = () => {
           ref={parableBannerRef}
           className="relative w-full"
         >
-          <div className="overflow-hidden" ref={parableEmblaRef}>
-            <div className="flex">
-              {/* Slide 1: Parable Trilogy */}
-              <div className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px]">
+          {bannerImagesReady ? (
+            <div className="overflow-hidden" ref={parableEmblaRef}>
+              <div className="flex">
+                {/* Slide 1: Parable Trilogy */}
+                <div className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px]">
                 {/* Left/Right click zones for navigation */}
                 <div 
                   className="absolute left-0 top-0 w-1/3 h-full z-10 cursor-pointer"
@@ -373,7 +402,6 @@ const Index = () => {
                   className="absolute inset-0 w-full h-full object-cover"
                   style={{ objectPosition: '40% center' }}
                   loading="eager"
-                  fetchPriority="high"
                 />
                 <div className="absolute inset-0 bg-black/10" />
                 {/* Text overlay with white background */}
@@ -426,7 +454,9 @@ const Index = () => {
               </div>
             </div>
           </div>
-          
+          ) : (
+            <div className="relative h-[280px] md:h-[320px] bg-slate-200 animate-pulse" />
+          )}
           {/* Slideshow indicator - clickable dots */}
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
             <button 
