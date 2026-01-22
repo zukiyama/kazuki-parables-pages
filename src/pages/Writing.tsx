@@ -17,7 +17,6 @@ import hoaxBackground from "@/assets/hoax-background-desert-road.jpeg";
 import theMarketBackground from "@/assets/the-market-background-new.jpg";
 import howBackground from "@/assets/how-background.jpg";
 import viceVersaBackground from "@/assets/vice-versa-background.jpg";
-import amyaVillageBackground from "@/assets/amya-village-background.png";
 import amyaNewBackground from "@/assets/amya-new-background.png";
 import statesOfMotionBackground from "@/assets/states-of-motion-background.png";
 import wastelandCityBackground from "@/assets/land-dream-sky-background.png";
