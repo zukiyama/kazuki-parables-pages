@@ -273,7 +273,7 @@ const Index = () => {
   }, [currentImage]);
 
   return (
-    <div className="relative min-h-screen-stable flex flex-col overflow-hidden">
+    <div className="relative min-h-screen-stable flex flex-col overflow-hidden bg-black">
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
