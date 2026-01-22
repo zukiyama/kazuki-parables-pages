@@ -82,8 +82,10 @@ const Comics = () => {
           const animateFadeOut = (currentTime: number) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(1, elapsed / animationDuration);
-            // Use smooth sine easing for consistent dissolve feel
-            const eased = 0.5 - 0.5 * Math.cos(progress * Math.PI);
+            // Use smooth quadratic ease-in-out for buttery dissolve
+            const eased = progress < 0.5 
+              ? 2 * progress * progress 
+              : 1 - Math.pow(-2 * progress + 2, 2) / 2;
             setPinnedContainerOpacity(1 - eased);
             
             if (progress < 1) {
@@ -155,8 +157,10 @@ const Comics = () => {
           const animateFadeIn = (currentTime: number) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(1, elapsed / animationDuration);
-            // Use smooth sine easing for consistent dissolve feel
-            const eased = 0.5 - 0.5 * Math.cos(progress * Math.PI);
+            // Use smooth quadratic ease-in-out for buttery dissolve
+            const eased = progress < 0.5 
+              ? 2 * progress * progress 
+              : 1 - Math.pow(-2 * progress + 2, 2) / 2;
             setPinnedContainerOpacity(eased);
             
             if (progress < 1) {
@@ -223,8 +227,10 @@ const Comics = () => {
             const animateFadeIn = (currentTime: number) => {
               const elapsed = currentTime - startTime;
               const progress = Math.min(1, elapsed / animationDuration);
-              // Use smooth sine easing for consistent dissolve feel
-              const eased = 0.5 - 0.5 * Math.cos(progress * Math.PI);
+              // Use smooth quadratic ease-in-out for buttery dissolve
+              const eased = progress < 0.5 
+                ? 2 * progress * progress 
+                : 1 - Math.pow(-2 * progress + 2, 2) / 2;
               setPinnedContainerOpacity(eased);
               
               if (progress < 1) {
@@ -403,7 +409,7 @@ const Comics = () => {
     {
       cover: burdenCoverNew,
       title: "The Burden",
-      description: <>When <em>Hiroshi</em> receives a phone call from a sister he hasn't seen in twenty years asking him to take in their mother, he's about to hang up. But learning that she now has dementia and can no longer care for herself, he is forced to take in the woman who cast a shadow over his childhood. As his mother's memory slips away, he starts to see his own in a new light…</>,
+      description: <>When <em>Hiroshi</em> receives a phone call from a sister he hasn't seen in twenty years demanding that he look after their mother, he's about to hang up. But learning that she now has dementia and can no longer care for herself, he is forced to take in the woman who destroyed his childhood. As his mother's memory slips away, he starts to see his own in a new light…</>,
       teaser: "Family duty weighs heavier than expected burdens."
     },
     {
