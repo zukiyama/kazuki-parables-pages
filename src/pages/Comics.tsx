@@ -76,13 +76,14 @@ const Comics = () => {
         if (newSection > maxPinnedSection) {
           // Animate the dissolve from Cream to Pendragon
           setIsTransitioning(true);
-          const animationDuration = 600;
+          const animationDuration = 500;
           const startTime = performance.now();
           
           const animateFadeOut = (currentTime: number) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(1, elapsed / animationDuration);
-            const eased = 1 - Math.pow(1 - progress, 3);
+            // Use smooth sine easing for consistent dissolve feel
+            const eased = 0.5 - 0.5 * Math.cos(progress * Math.PI);
             setPinnedContainerOpacity(1 - eased);
             
             if (progress < 1) {
@@ -148,13 +149,14 @@ const Comics = () => {
           
           // Animate the dissolve back in (Pendragon fades, Cream appears)
           setIsTransitioning(true);
-          const animationDuration = 600;
+          const animationDuration = 500;
           const startTime = performance.now();
           
           const animateFadeIn = (currentTime: number) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(1, elapsed / animationDuration);
-            const eased = 1 - Math.pow(1 - progress, 3);
+            // Use smooth sine easing for consistent dissolve feel
+            const eased = 0.5 - 0.5 * Math.cos(progress * Math.PI);
             setPinnedContainerOpacity(eased);
             
             if (progress < 1) {
@@ -215,13 +217,14 @@ const Comics = () => {
             
             // Animate the dissolve back in
             setIsTransitioning(true);
-            const animationDuration = 600;
+            const animationDuration = 500;
             const startTime = performance.now();
             
             const animateFadeIn = (currentTime: number) => {
               const elapsed = currentTime - startTime;
               const progress = Math.min(1, elapsed / animationDuration);
-              const eased = 1 - Math.pow(1 - progress, 3);
+              // Use smooth sine easing for consistent dissolve feel
+              const eased = 0.5 - 0.5 * Math.cos(progress * Math.PI);
               setPinnedContainerOpacity(eased);
               
               if (progress < 1) {
