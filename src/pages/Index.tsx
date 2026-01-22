@@ -7,7 +7,7 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useCirclePhysics } from "@/hooks/useCirclePhysics";
 import { useHeroHeight } from "@/hooks/useHeroHeight";
 import { useIsMobile } from "@/hooks/use-mobile";
-import japaneseBackground from "@/assets/japanese-painting-background.jpg";
+import japaneseBackground from "@/assets/japanese-painting-background.webp";
 import officeView from "@/assets/office-window-view.jpg";
 import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
