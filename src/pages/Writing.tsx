@@ -30,8 +30,6 @@ import vignetteLightsLeft from "@/assets/vignette-lights-left.png";
 import vignetteLightsRight from "@/assets/vignette-lights-right.png";
 import vignetteFasterLeft from "@/assets/vignette-faster-left.png";
 import vignetteFasterRight from "@/assets/vignette-faster-right.png";
-import vignettePlasticLeft from "@/assets/vignette-threeqs-left.png";
-import vignettePlasticRight from "@/assets/vignette-threeqs-right.png";
 import vignetteRevisionsLeft from "@/assets/vignette-revisions-left.png";
 import vignetteRevisionsRight from "@/assets/vignette-revisions-right.png";
 import vignetteSyphonsLeft from "@/assets/vignette-syphons-left.png";
@@ -1580,34 +1578,6 @@ const Writing = () => {
             style={{
               opacity: activeVignette === 'faster' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteFasterRight})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center left',
-              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          
-          {/* Plastic vignettes */}
-          <div 
-            className="absolute left-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'plastic' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignettePlasticLeft})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center right',
-              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          <div 
-            className="absolute right-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: activeVignette === 'plastic' ? otherWorksContentOpacity : 0,
-              backgroundImage: `url(${vignettePlasticRight})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center left',
               maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
