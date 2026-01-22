@@ -297,7 +297,7 @@ const Index = () => {
       </section>
 
       {/* Content Section */}
-      <section className="relative bg-background">
+      <section className="relative bg-black">
         {/* Parable Banner Slideshow - Full Width with Embla Carousel */}
         <div
           ref={parableBannerRef}
