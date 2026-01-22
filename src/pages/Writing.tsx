@@ -20,7 +20,6 @@ import viceVersaBackground from "@/assets/vice-versa-background.jpg";
 import amyaNewBackground from "@/assets/amya-new-background.png";
 import statesOfMotionBackground from "@/assets/states-of-motion-background.png";
 import wastelandCityBackground from "@/assets/land-dream-sky-background.png";
-import victorianLondonBackground from "@/assets/victorian-london-winter-background.jpg";
 import deepSpaceBackground from "@/assets/to-fly-space-battle-background.jpg";
 import professorBarnabasBackground from "@/assets/professor-barnabas-background.jpg";
 

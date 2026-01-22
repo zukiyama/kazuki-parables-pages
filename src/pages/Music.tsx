@@ -13,7 +13,6 @@ import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
 
 // Background images for different themes
 import spaceshipBackground from "@/assets/spaceship-background.jpg";
-import floatingInstrumentsBackground from "@/assets/floating-instruments-background.jpg";
 import manOnFilmBackground from "@/assets/man-on-film-background-film-reels.png";
 import toDreamtManBackground from "@/assets/to-the-dreamt-man-background-final.png";
 import centreOfWorldBackground from "@/assets/centre-of-world-background-new.png";
