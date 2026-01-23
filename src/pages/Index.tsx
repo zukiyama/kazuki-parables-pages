@@ -8,12 +8,12 @@ import { useCirclePhysics } from "@/hooks/useCirclePhysics";
 import { useHeroHeight } from "@/hooks/useHeroHeight";
 import { useIsMobile } from "@/hooks/use-mobile";
 import japaneseBackground from "@/assets/japanese-painting-background.webp";
-import officeView from "@/assets/office-window-view.jpg";
-import boysTowerBlocks from "@/assets/boys-tower-blocks.jpeg";
-import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.jpg";
-import circlesSingleCover from "@/assets/circles-single-cover.png";
-import godOfLiesManyFacesBanner from "@/assets/god-of-lies-many-faces-banner.png";
-import parableBoysStreet from "@/assets/parable-boys-street.jpeg";
+import officeView from "@/assets/office-window-view.webp";
+import boysTowerBlocks from "@/assets/boys-tower-blocks.webp";
+import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.webp";
+import circlesSingleCover from "@/assets/circles-single-cover.webp";
+import godOfLiesManyFacesBanner from "@/assets/god-of-lies-many-faces-banner.webp";
+import parableBoysStreet from "@/assets/parable-boys-street.webp";
 import useEmblaCarousel from "embla-carousel-react";
 
 const Index = () => {

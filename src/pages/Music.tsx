@@ -32,7 +32,7 @@ import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album-ne
 import centreOfWorldAlbum from "@/assets/last-city-on-earth-album.jpeg";
 import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
 import flowerEpCover from "@/assets/flower-ep-cover-banner.jpeg";
-import circlesSingleCover from "@/assets/circles-single-cover.png";
+import circlesSingleCover from "@/assets/circles-single-cover.webp";
 
 const albums = [
   {
