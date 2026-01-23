@@ -284,6 +284,11 @@ const Index = () => {
           alt="Japanese painting background" 
           className="absolute inset-0 w-full h-full object-cover object-center bg-slate-100"
           style={{ objectPosition: '50% center' }}
+          loading="eager"
+          fetchPriority="high"
+          decoding="sync"
+          width={2560}
+          height={1440}
         />
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-20 text-center px-6">
@@ -326,6 +331,7 @@ const Index = () => {
                   alt="Parable Trilogy background"
                   className="absolute inset-0 w-full h-full object-cover object-bottom"
                   style={{ objectPosition: '52% bottom', transform: 'scale(1.02)' }}
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-black/40" />
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -372,8 +378,7 @@ const Index = () => {
                   alt="God of Lies - Many Faces"
                   className="absolute inset-0 w-full h-full object-cover"
                   style={{ objectPosition: '40% center' }}
-                  loading="eager"
-                  fetchPriority="high"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-black/10" />
                 {/* Text overlay with white background */}
@@ -484,6 +489,7 @@ const Index = () => {
                   src={circlesSingleCover}
                   alt="Circles single cover"
                   className="w-36 h-36 md:w-52 md:h-52 rounded-lg object-cover shadow-2xl group-hover:scale-105 transition-transform duration-300 ring-1 ring-black/5"
+                  loading="lazy"
                 />
               </div>
 
@@ -559,6 +565,7 @@ const Index = () => {
                       alt={`Slide ${index + 1}`}
                       className="absolute inset-0 w-full h-full object-cover"
                       style={{ objectPosition: 'center' }}
+                      loading="lazy"
                     />
                   </div>
                 </div>
