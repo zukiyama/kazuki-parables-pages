@@ -72,12 +72,22 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     onBookChange?.(0);
   }, [onBookChange]);
 
-  // Preload all book covers immediately
+  // Preload book covers when component mounts (triggered by IntersectionObserver in parent)
+  // This runs when the young-adult section approaches viewport
   useEffect(() => {
-    books.forEach(book => {
-      const img = new Image();
-      img.src = book.cover;
-    });
+    // Use requestIdleCallback to defer preloading until browser is idle
+    const preloadCovers = () => {
+      books.forEach(book => {
+        const img = new Image();
+        img.src = book.cover;
+      });
+    };
+    
+    if ('requestIdleCallback' in window) {
+      (window as typeof window & { requestIdleCallback: (cb: () => void) => number }).requestIdleCallback(preloadCovers);
+    } else {
+      setTimeout(preloadCovers, 100);
+    }
   }, []);
 
   const goToBook = (index: number) => {
@@ -285,8 +295,11 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
                   <img 
                     src={book.cover} 
                     alt={book.title}
+                    width={300}
+                    height={450}
                     className={imageClasses}
-                    loading="eager"
+                    loading="lazy"
+                    decoding="async"
                     draggable={false}
                   />
                 </div>

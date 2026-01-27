@@ -68,8 +68,11 @@ export const BookCoverSlideshow = ({ covers, title, className = "", loading = "e
         <img 
           src={covers[0]?.image} 
           alt={covers[0]?.alt || title}
+          width={400}
+          height={600}
           className={imageClasses + " transition-opacity duration-300"}
           loading={loading}
+          decoding={loading === "lazy" ? "async" : "auto"}
         />
       </div>
     );
@@ -87,8 +90,11 @@ export const BookCoverSlideshow = ({ covers, title, className = "", loading = "e
               <img 
                 src={cover.image} 
                 alt={cover.alt}
+                width={400}
+                height={600}
                 className={imageClasses}
                 loading={loading}
+                decoding={loading === "lazy" ? "async" : "auto"}
               />
             </div>
           ))}
