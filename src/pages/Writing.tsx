@@ -186,30 +186,62 @@ const Writing = () => {
     // Removed the else branch - useScrollToTop handles scroll-to-top
   }, [location]);
 
-  // Preload all background images and book covers at once
+  // ============================================
+  // IMAGE LOADING PRIORITY STRATEGY
+  // ============================================
+  // LCP (Largest Contentful Paint): schoolBackground - preloaded in index.html
+  // Above-fold eager: Banner thumbnails (handled in BookshelfMenu with loading="eager")
+  // Below-fold lazy: All other backgrounds use IntersectionObserver
+  // ============================================
+
+  // State to track which background images should be loaded (IntersectionObserver-based)
+  const [loadedBackgrounds, setLoadedBackgrounds] = useState<Set<string>>(new Set(['school'])); // LCP loads immediately
+  
+  // IntersectionObserver to lazy-load background images when sections approach viewport
   useEffect(() => {
-    const allImages = [
-      // Backgrounds
-      schoolBackground,
-      hoaxBackground,
-      theMarketBackground,
-      amyaNewBackground,
-      statesOfMotionBackground,
-      howBackground,
-      viceVersaBackground,
-      professorBarnabasBackground,
-      wastelandCityBackground,
-      deepSpaceBackground,
-      // Young Adult book covers
-      professorBarnabasCover,
-      landDreamSkyCover,
-      toFlyCover
-    ];
+    const sectionToBackground: Record<string, string> = {
+      'hoax': 'hoax',
+      'the-market': 'theMarket',
+      'oba': 'oba',
+      'states-of-motion': 'statesOfMotion',
+      'how': 'how',
+      'vice-versa': 'viceVersa',
+      'young-adult': 'youngAdult', // Will trigger loading of all 3 YA backgrounds
+      'other-works': 'otherWorks'
+    };
     
-    allImages.forEach(imgSrc => {
-      const img = new Image();
-      img.src = imgSrc;
-    });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const sectionName = (entry.target as HTMLElement).dataset.section;
+            if (sectionName && sectionToBackground[sectionName]) {
+              setLoadedBackgrounds(prev => {
+                const newSet = new Set(prev);
+                newSet.add(sectionToBackground[sectionName]);
+                // For young-adult, also load all 3 background variants
+                if (sectionName === 'young-adult') {
+                  newSet.add('victorianLondon');
+                  newSet.add('wasteland');
+                  newSet.add('deepSpace');
+                }
+                return newSet;
+              });
+            }
+          }
+        });
+      },
+      {
+        rootMargin: '800px 0px', // Start loading 800px before section enters viewport
+        threshold: 0
+      }
+    );
+    
+    // Observe all sections
+    const sections = document.querySelectorAll('[data-section]');
+    sections.forEach(section => observer.observe(section));
+    
+    return () => observer.disconnect();
   }, []);
 
 
@@ -787,77 +819,128 @@ const Writing = () => {
       />
       
       {/* Stacked Background Images - GPU-accelerated fixed layer */}
+      {/* LCP CANDIDATE: schoolBackground - loaded eagerly with high priority */}
       <div className="bg-layer-fixed z-0">
         <img 
           src={schoolBackground} 
-          alt="School background"
+          alt=""
+          width={2560}
+          height={1440}
           loading="eager"
+          decoding="sync"
+          {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
           className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
           style={{ opacity: backgroundOpacities.school }}
         />
-        <img 
-          src={hoaxBackground} 
-          alt="Hoax background"
-          loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.hoax }}
-        />
-        <img 
-          src={theMarketBackground} 
-          alt="The Market background"
-          loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.theMarket }}
-        />
-        <img 
-          src={howBackground} 
-          alt="HOW background"
-          loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.how }}
-        />
-        <img 
-          src={viceVersaBackground} 
-          alt="Vice Versa background"
-          loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.viceVersa }}
-        />
-        <img 
-          src={amyaNewBackground} 
-          alt="AMYA background"
-          loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-150"
-          style={{ opacity: backgroundOpacities.oba }}
-        />
-        <img 
-          src={statesOfMotionBackground} 
-          alt="States of Motion background"
-          loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-125"
-          style={{ opacity: backgroundOpacities.statesOfMotion }}
-        />
-        <img 
-          src={professorBarnabasBackground} 
-          alt="Professor Barnabas background"
-          loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.victorianLondon }}
-        />
-        <img 
-          src={wastelandCityBackground} 
-          alt="Wasteland City background"
-          loading="eager"
-          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.wasteland }}
-        />
-        <img 
-          src={deepSpaceBackground} 
-          alt="Space battle background"
-          loading="eager"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.deepSpace }}
-        />
+        {/* Below-fold backgrounds - lazy loaded via IntersectionObserver */}
+        {loadedBackgrounds.has('hoax') && (
+          <img 
+            src={hoaxBackground} 
+            alt=""
+            width={2560}
+            height={1440}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+            style={{ opacity: backgroundOpacities.hoax }}
+          />
+        )}
+        {loadedBackgrounds.has('theMarket') && (
+          <img 
+            src={theMarketBackground} 
+            alt=""
+            width={2560}
+            height={1440}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+            style={{ opacity: backgroundOpacities.theMarket }}
+          />
+        )}
+        {loadedBackgrounds.has('how') && (
+          <img 
+            src={howBackground} 
+            alt=""
+            width={2560}
+            height={1440}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+            style={{ opacity: backgroundOpacities.how }}
+          />
+        )}
+        {loadedBackgrounds.has('viceVersa') && (
+          <img 
+            src={viceVersaBackground} 
+            alt=""
+            width={2560}
+            height={1440}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+            style={{ opacity: backgroundOpacities.viceVersa }}
+          />
+        )}
+        {loadedBackgrounds.has('oba') && (
+          <img 
+            src={amyaNewBackground} 
+            alt=""
+            width={2560}
+            height={1440}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-150"
+            style={{ opacity: backgroundOpacities.oba }}
+          />
+        )}
+        {loadedBackgrounds.has('statesOfMotion') && (
+          <img 
+            src={statesOfMotionBackground} 
+            alt=""
+            width={2560}
+            height={1440}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-125"
+            style={{ opacity: backgroundOpacities.statesOfMotion }}
+          />
+        )}
+        {loadedBackgrounds.has('victorianLondon') && (
+          <img 
+            src={professorBarnabasBackground} 
+            alt=""
+            width={2560}
+            height={1440}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+            style={{ opacity: backgroundOpacities.victorianLondon }}
+          />
+        )}
+        {loadedBackgrounds.has('wasteland') && (
+          <img 
+            src={wastelandCityBackground} 
+            alt=""
+            width={2560}
+            height={1440}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
+            style={{ opacity: backgroundOpacities.wasteland }}
+          />
+        )}
+        {loadedBackgrounds.has('deepSpace') && (
+          <img 
+            src={deepSpaceBackground} 
+            alt=""
+            width={2560}
+            height={1440}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+            style={{ opacity: backgroundOpacities.deepSpace }}
+          />
+        )}
         
         {/* Background for Other Works section - transitions from black to white */}
         <div 
@@ -1495,10 +1578,11 @@ const Writing = () => {
               WebkitMaskComposite: 'source-in'
             }}
           >
-            {/* DESERT LEFT vignette: uses separate image file showing left side */}
             <img 
               src={vignetteDesertLeftAlt}
               alt=""
+              loading="lazy"
+              decoding="async"
               className="absolute w-full h-full"
               style={{
                 objectFit: 'cover',
@@ -1518,10 +1602,11 @@ const Writing = () => {
               WebkitMaskComposite: 'source-in'
             }}
           >
-            {/* DESERT RIGHT vignette: uses edited image with boys in diving helmets */}
             <img 
               src={vignetteDesertRightEdited}
               alt=""
+              loading="lazy"
+              decoding="async"
               className="absolute w-full h-full"
               style={{
                 objectFit: 'cover',
