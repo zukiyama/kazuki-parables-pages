@@ -12,40 +12,40 @@ import { FloatingQuote } from "@/components/FloatingQuote";
 import { MagazineBlurb } from "@/components/MagazineBlurb";
 
 // Background images
-import schoolBackground from "@/assets/school-background-montage.jpg";
-import hoaxBackground from "@/assets/hoax-background-desert-road.jpeg";
-import theMarketBackground from "@/assets/the-market-background-new.jpg";
-import howBackground from "@/assets/how-background.jpg";
-import viceVersaBackground from "@/assets/vice-versa-background.jpg";
-import amyaNewBackground from "@/assets/amya-new-background.png";
-import statesOfMotionBackground from "@/assets/states-of-motion-background.png";
-import wastelandCityBackground from "@/assets/land-dream-sky-background.png";
-import deepSpaceBackground from "@/assets/to-fly-space-battle-background.jpg";
-import professorBarnabasBackground from "@/assets/professor-barnabas-background.jpg";
+import schoolBackground from "@/assets/school-background-montage.webp";
+import hoaxBackground from "@/assets/hoax-background-desert-road.webp";
+import theMarketBackground from "@/assets/the-market-background-new.webp";
+import howBackground from "@/assets/how-background.webp";
+import viceVersaBackground from "@/assets/vice-versa-background.webp";
+import amyaNewBackground from "@/assets/amya-new-background.webp";
+import statesOfMotionBackground from "@/assets/states-of-motion-background.webp";
+import wastelandCityBackground from "@/assets/land-dream-sky-background.webp";
+import deepSpaceBackground from "@/assets/to-fly-space-battle-background.webp";
+import professorBarnabasBackground from "@/assets/professor-barnabas-background.webp";
 
 // Vignette images for Other Works section
-import vignetteDesertLeftAlt from "@/assets/vignette-desert-left-alt.jpeg";
-import vignetteDesertRightEdited from "@/assets/vignette-desert-right-edited.jpeg";
-import vignetteLightsLeft from "@/assets/vignette-lights-left.png";
-import vignetteLightsRight from "@/assets/vignette-lights-right.png";
-import vignetteFasterLeft from "@/assets/vignette-faster-left.png";
-import vignetteFasterRight from "@/assets/vignette-faster-right.png";
-import vignetteRevisionsLeft from "@/assets/vignette-revisions-left.png";
-import vignetteRevisionsRight from "@/assets/vignette-revisions-right.png";
-import vignetteSyphonsLeft from "@/assets/vignette-syphons-left.png";
-import vignetteSyphonsRight from "@/assets/vignette-syphons-right.png";
+import vignetteDesertLeftAlt from "@/assets/vignette-desert-left-alt.webp";
+import vignetteDesertRightEdited from "@/assets/vignette-desert-right-edited.webp";
+import vignetteLightsLeft from "@/assets/vignette-lights-left.webp";
+import vignetteLightsRight from "@/assets/vignette-lights-right.webp";
+import vignetteFasterLeft from "@/assets/vignette-faster-left.webp";
+import vignetteFasterRight from "@/assets/vignette-faster-right.webp";
+import vignetteRevisionsLeft from "@/assets/vignette-revisions-left.webp";
+import vignetteRevisionsRight from "@/assets/vignette-revisions-right.webp";
+import vignetteSyphonsLeft from "@/assets/vignette-syphons-left.webp";
+import vignetteSyphonsRight from "@/assets/vignette-syphons-right.webp";
 
 // Book covers
-import kaijuCover from "@/assets/kaiju-cover-new.jpg";
-import hoaxCover from "@/assets/hoax-cover.jpg";
-import theMarketCover from "@/assets/the-market-cover-new.jpg";
-import howCover from "@/assets/how-cover.jpg";
-import viceVersaCover from "@/assets/vice-versa-cover.jpg";
-import amyaCover from "@/assets/amya-cover.png";
-import statesOfMotionCover from "@/assets/states-of-motion-cover.png";
-import professorBarnabasCover from "@/assets/professor-barnabas-cover-new.png";
-import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
-import toFlyCover from "@/assets/to-fly-cover-new.png";
+import kaijuCover from "@/assets/kaiju-cover-new.webp";
+import hoaxCover from "@/assets/hoax-cover.webp";
+import theMarketCover from "@/assets/the-market-cover-new.webp";
+import howCover from "@/assets/how-cover.webp";
+import viceVersaCover from "@/assets/vice-versa-cover.webp";
+import amyaCover from "@/assets/amya-cover.webp";
+import statesOfMotionCover from "@/assets/states-of-motion-cover.webp";
+import professorBarnabasCover from "@/assets/professor-barnabas-cover-new.webp";
+import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.webp";
+import toFlyCover from "@/assets/to-fly-cover-new.webp";
 
 const Writing = () => {
   useScrollToTop();
