@@ -1,18 +1,18 @@
 import { useState } from "react";
 
 // Book cover images for banner
-import kaijuCover from "@/assets/kaiju-cover-new.jpg";
-import hoaxCover from "@/assets/hoax-cover.jpg";
-import theMarketCover from "@/assets/the-market-cover-new.jpg";
-import howCover from "@/assets/how-cover.jpg";
-import viceVersaCover from "@/assets/vice-versa-cover.jpg";
-import amyaCover from "@/assets/amya-cover.png";
-import statesOfMotionCover from "@/assets/states-of-motion-cover.png";
+import kaijuCover from "@/assets/kaiju-cover-new.webp";
+import hoaxCover from "@/assets/hoax-cover.webp";
+import theMarketCover from "@/assets/the-market-cover-new.webp";
+import howCover from "@/assets/how-cover.webp";
+import viceVersaCover from "@/assets/vice-versa-cover.webp";
+import amyaCover from "@/assets/amya-cover.webp";
+import statesOfMotionCover from "@/assets/states-of-motion-cover.webp";
 
 // Young adult book covers
-import professorBarnabasCover from "@/assets/professor-barnabas-cover-new.png";
-import toFlyCover from "@/assets/to-fly-cover-new.png";
-import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.png";
+import professorBarnabasCover from "@/assets/professor-barnabas-cover-new.webp";
+import toFlyCover from "@/assets/to-fly-cover-new.webp";
+import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.webp";
 
 interface Book {
   id: string;
