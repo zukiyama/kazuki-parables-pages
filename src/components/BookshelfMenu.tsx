@@ -1,18 +1,18 @@
 import { useState } from "react";
 
-// Book cover images for banner
-import kaijuCover from "@/assets/kaiju-cover-new.webp";
-import hoaxCover from "@/assets/hoax-cover.webp";
-import theMarketCover from "@/assets/the-market-cover-new.webp";
-import howCover from "@/assets/how-cover.webp";
-import viceVersaCover from "@/assets/vice-versa-cover.webp";
-import amyaCover from "@/assets/amya-cover.webp";
-import statesOfMotionCover from "@/assets/states-of-motion-cover.webp";
+// Book cover thumbnail images for banner (128x192 optimized versions)
+import kaijuCoverThumb from "@/assets/kaiju-cover-newthumbnail.webp";
+import hoaxCoverThumb from "@/assets/hoax-coverthumbnail.webp";
+import theMarketCoverThumb from "@/assets/the-market-cover-newthumbnail.webp";
+import howCoverThumb from "@/assets/how-coverthumbnail.webp";
+import viceVersaCoverThumb from "@/assets/vice-versa-coverthumbnail.webp";
+import amyaCoverThumb from "@/assets/amya-coverthumbnail.webp";
+import statesOfMotionCoverThumb from "@/assets/states-of-motion-coverthumbnail.webp";
 
-// Young adult book covers
-import professorBarnabasCover from "@/assets/professor-barnabas-cover-new.webp";
-import toFlyCover from "@/assets/to-fly-cover-new.webp";
-import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.webp";
+// Young adult book cover thumbnails
+import professorBarnabasCoverThumb from "@/assets/professor-barnabas-cover-newthumbnail.webp";
+import toFlyCoverThumb from "@/assets/to-fly-cover-newthumbnail.webp";
+import landDreamSkyCoverThumb from "@/assets/land-dream-sky-cover-newthumbnail.webp";
 
 interface Book {
   id: string;
@@ -26,63 +26,63 @@ const books: Book[] = [
   {
     id: "kaiju",
     title: "Kaiju",
-    cover: kaijuCover,
+    cover: kaijuCoverThumb,
     targetSection: "kaiju"
   },
   {
     id: "hoax", 
     title: "Hoax",
-    cover: hoaxCover,
+    cover: hoaxCoverThumb,
     targetSection: "hoax"
   },
   {
     id: "the-market",
     title: "The Market",
-    cover: theMarketCover,
+    cover: theMarketCoverThumb,
     targetSection: "the-market"
   },
   {
     id: "oba",
     title: "Amya",
-    cover: amyaCover,
+    cover: amyaCoverThumb,
     targetSection: "oba"
   },
   {
     id: "states-of-motion",
     title: "States of Motion",
-    cover: statesOfMotionCover,
+    cover: statesOfMotionCoverThumb,
     targetSection: "states-of-motion"
   },
   {
     id: "how",
     title: "How", 
-    cover: howCover,
+    cover: howCoverThumb,
     targetSection: "how"
   },
   {
     id: "vice-versa",
     title: "Vice Versa",
-    cover: viceVersaCover,
+    cover: viceVersaCoverThumb,
     targetSection: "vice-versa"
   },
   {
     id: "professor-barnabas",
     title: "Professor Barnabas",
-    cover: professorBarnabasCover,
+    cover: professorBarnabasCoverThumb,
     targetSection: "young-adult",
     slideToBook: 0
   },
   {
     id: "land-dream",
     title: "The Waste Trilogy",
-    cover: landDreamSkyCover,
+    cover: landDreamSkyCoverThumb,
     targetSection: "young-adult",
     slideToBook: 1
   },
   {
     id: "to-fly",
     title: "To Fly",
-    cover: toFlyCover,
+    cover: toFlyCoverThumb,
     targetSection: "young-adult", 
     slideToBook: 2
   }
@@ -124,9 +124,9 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   
   const activeBook = getActiveBook();
 
-  // Preload critical book cover images for better performance
+  // Preload critical book cover thumbnail images for better performance
   useState(() => {
-    const criticalImages = [kaijuCover, hoaxCover, theMarketCover, amyaCover, statesOfMotionCover, howCover, viceVersaCover];
+    const criticalImages = [kaijuCoverThumb, hoaxCoverThumb, theMarketCoverThumb, amyaCoverThumb, statesOfMotionCoverThumb, howCoverThumb, viceVersaCoverThumb];
     criticalImages.forEach((src) => {
       const img = new Image();
       img.src = src;
