@@ -5,12 +5,12 @@ import Footer from "@/components/Footer";
 import { useScrollAnimation } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
-import artistPortrait from "@/assets/artist-portrait-new.png";
-import parisSquare from "@/assets/paris-square-background.jpg";
-import signatureYamakawa from "@/assets/signature-yamakawa-new.png";
-import backgroundSphere from "@/assets/about-background-new.png";
-import cityscapeAerial from "@/assets/about-cityscape-aerial.png";
-import childPortrait from "@/assets/about-child-portrait.jpeg";
+import artistPortrait from "@/assets/artist-portrait-new.webp";
+import parisSquare from "@/assets/paris-square-background.webp";
+import signatureYamakawa from "@/assets/signature-yamakawa-new.webp";
+import backgroundSphere from "@/assets/about-background-new.webp";
+import cityscapeAerial from "@/assets/about-cityscape-aerial.webp";
+import childPortrait from "@/assets/about-child-portrait.webp";
 
 const About = () => {
   useScrollToTop();
