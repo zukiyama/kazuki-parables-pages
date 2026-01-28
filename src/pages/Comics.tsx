@@ -6,8 +6,22 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 
+// CRITICAL: First panel assets (Section 0 - Title) - LCP candidate
+import comicPanelsBackground from "@/assets/comic-panels-background.webp";
+
+// SECONDARY: Vignette assets (Section 1) - preload after first paint
+import vignetteManyFaces from "@/assets/god-of-lies-characters.webp";
+import vignetteApartments from "@/assets/god-of-lies-vignette-boardgame.webp";
+import vignetteBoardgame from "@/assets/god-of-lies-sweeping.webp";
+
+// SECONDARY: Cream section assets (Section 2) - preload after vignettes
+import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.webp";
+
+// TERTIARY: Pendragon scrollable section - preload after section 2
 import surnamePendragonBanner from "@/assets/surname-pendragon-banner.webp";
 import surnamePendragonMobile from "@/assets/surname-pendragon-mobile.webp";
+
+// LAZY: Final scrolling section assets - load on demand
 import soulTiedCover from "@/assets/soul-tied-cover-new.webp";
 import burdenCoverNew from "@/assets/burden-cover-new.webp";
 import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.webp";
@@ -15,11 +29,6 @@ import godsCover from "@/assets/gods-cover-new.webp";
 import scriptedCover from "@/assets/scripted-cover-new.webp";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.webp";
 import comicsFooterCharacter from "@/assets/comics-footer-character.webp";
-import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.webp";
-import vignetteApartments from "@/assets/god-of-lies-vignette-boardgame.webp";
-import vignetteBoardgame from "@/assets/god-of-lies-sweeping.webp";
-import vignetteManyFaces from "@/assets/god-of-lies-characters.webp";
-import comicPanelsBackground from "@/assets/comic-panels-background.webp";
 
 
 const Comics = () => {
@@ -33,6 +42,11 @@ const Comics = () => {
   const [pageReady, setPageReady] = useState(false);
   const [isNarrowPortrait, setIsNarrowPortrait] = useState(false);
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false);
+  
+  // Asset loading states for priority-based loading
+  const [secondaryAssetsLoaded, setSecondaryAssetsLoaded] = useState(false);
+  const [tertiaryAssetsLoaded, setTertiaryAssetsLoaded] = useState(false);
+  const imageCacheRef = useRef<Map<string, HTMLImageElement>>(new Map());
   
   // Pendragon caption toggle state
   const [pendragonCaptionVisible, setPendragonCaptionVisible] = useState(true);
@@ -54,6 +68,98 @@ const Comics = () => {
   const [showFooterCharacter, setShowFooterCharacter] = useState(false);
 
   const maxPinnedSection = 2; // After section 2 (Cream), normal scrolling begins - Pendragon is in scrollable content
+
+  // PRIORITY LOADING: Preload assets in sequence based on panel order
+  // Secondary assets (vignettes + cream) load after first paint
+  useEffect(() => {
+    const preloadSecondaryAssets = () => {
+      const secondaryImages = [
+        vignetteManyFaces,
+        vignetteApartments,
+        vignetteBoardgame,
+        godOfLiesStreetScene
+      ];
+      
+      let loadedCount = 0;
+      secondaryImages.forEach(src => {
+        if (imageCacheRef.current.has(src)) {
+          loadedCount++;
+          if (loadedCount === secondaryImages.length) {
+            setSecondaryAssetsLoaded(true);
+          }
+          return;
+        }
+        
+        const img = new Image();
+        img.onload = () => {
+          imageCacheRef.current.set(src, img);
+          loadedCount++;
+          if (loadedCount === secondaryImages.length) {
+            setSecondaryAssetsLoaded(true);
+          }
+        };
+        img.onerror = () => {
+          loadedCount++;
+          if (loadedCount === secondaryImages.length) {
+            setSecondaryAssetsLoaded(true);
+          }
+        };
+        img.src = src;
+      });
+    };
+    
+    // Use requestIdleCallback to avoid blocking first paint
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => preloadSecondaryAssets(), { timeout: 100 });
+    } else {
+      setTimeout(preloadSecondaryAssets, 50);
+    }
+  }, []);
+
+  // Tertiary assets (Pendragon) load after secondary assets
+  useEffect(() => {
+    if (!secondaryAssetsLoaded) return;
+    
+    const preloadTertiaryAssets = () => {
+      const tertiaryImages = [
+        surnamePendragonBanner,
+        surnamePendragonMobile
+      ];
+      
+      let loadedCount = 0;
+      tertiaryImages.forEach(src => {
+        if (imageCacheRef.current.has(src)) {
+          loadedCount++;
+          if (loadedCount === tertiaryImages.length) {
+            setTertiaryAssetsLoaded(true);
+          }
+          return;
+        }
+        
+        const img = new Image();
+        img.onload = () => {
+          imageCacheRef.current.set(src, img);
+          loadedCount++;
+          if (loadedCount === tertiaryImages.length) {
+            setTertiaryAssetsLoaded(true);
+          }
+        };
+        img.onerror = () => {
+          loadedCount++;
+          if (loadedCount === tertiaryImages.length) {
+            setTertiaryAssetsLoaded(true);
+          }
+        };
+        img.src = src;
+      });
+    };
+    
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => preloadTertiaryAssets(), { timeout: 200 });
+    } else {
+      setTimeout(preloadTertiaryAssets, 100);
+    }
+  }, [secondaryAssetsLoaded]);
 
   // SCROLL-HIJACKING: Intercept wheel/touch events and snap between sections
   useEffect(() => {
@@ -497,12 +603,17 @@ const Comics = () => {
               }}
             >
               <div className="text-center relative">
-                {/* Faded comic panels behind */}
+                {/* Faded comic panels behind - LCP CANDIDATE */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <img 
                     src={comicPanelsBackground}
                     alt=""
                     className="w-full max-w-2xl opacity-10"
+                    width={2560}
+                    height={800}
+                    {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
+                    loading="eager"
+                    decoding="sync"
                   />
                 </div>
                 
@@ -567,6 +678,10 @@ const Comics = () => {
                     alt="The many faces - God of Lies"
                     className="h-full w-auto object-contain"
                     style={{ maxHeight: isWidescreen ? 'calc(100vh - 80px)' : 'calc(100vh - 120px)' }}
+                    width={1280}
+                    height={1600}
+                    loading="eager"
+                    decoding="async"
                   />
                   {/* MANGA • WEBTOON label overlaid at bottom of left vignette */}
                   <div 
@@ -673,6 +788,10 @@ const Comics = () => {
                       alt="The neighborhood - God of Lies"
                       className="w-auto h-full object-contain"
                       style={{ maxHeight: isWidescreen ? '40vh' : '42vh' }}
+                      width={1280}
+                      height={1600}
+                      loading="eager"
+                      decoding="async"
                     />
                   </div>
                   {/* Bottom right - Boardgame (slightly larger to match top) */}
@@ -682,6 +801,10 @@ const Comics = () => {
                       alt="Family moments - God of Lies"
                       className="w-auto h-full object-contain"
                       style={{ maxHeight: isWidescreen ? '42vh' : '44vh' }}
+                      width={1280}
+                      height={1600}
+                      loading="eager"
+                      decoding="async"
                     />
                   </div>
                 </div>
@@ -702,6 +825,10 @@ const Comics = () => {
                     src={vignetteManyFaces}
                     alt="The many faces - God of Lies"
                     className="max-h-full max-w-full object-contain"
+                    width={1280}
+                    height={1600}
+                    loading="eager"
+                    decoding="async"
                   />
                 </div>
                 
@@ -783,6 +910,10 @@ const Comics = () => {
                         src={godOfLiesStreetScene}
                         alt="The Masked Figure following"
                         className="max-h-[65vh] object-contain shadow-xl transition-transform duration-300 group-hover:scale-[1.02]"
+                        width={2560}
+                        height={1600}
+                        loading="eager"
+                        decoding="async"
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
                         <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-sm">Click to enlarge</span>
@@ -867,12 +998,20 @@ const Comics = () => {
               alt="Surname Pendragon"
               className={`hidden lg:block w-full ${isWidescreen ? 'h-auto object-contain' : 'h-[calc(100vh-64px)] object-cover'}`}
               style={{ objectPosition: isWidescreen ? undefined : 'center 20%' }}
+              width={2560}
+              height={960}
+              loading="eager"
+              decoding="async"
             />
             {/* Mobile + small iPad image - full width, top edge aligned with header bottom */}
             <img 
               src={surnamePendragonMobile}
               alt="Surname Pendragon"
               className="lg:hidden w-full h-auto object-contain block"
+              width={800}
+              height={1200}
+              loading="eager"
+              decoding="async"
             />
             {/* Gradient overlay - desktop only */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent hidden lg:block" />
@@ -1037,7 +1176,10 @@ const Comics = () => {
                         src={comic.cover}
                         alt={`${comic.title} comic cover`}
                         className="w-full shadow-lg transition-transform duration-200 ease-out hover:scale-[1.02] xs:hover:scale-[1.03] sm:hover:scale-105"
+                        width={640}
+                        height={960}
                         loading="lazy"
+                        decoding="async"
                       />
                     </div>
                   ))}
@@ -1065,6 +1207,10 @@ const Comics = () => {
                 bottom: '100%',
                 right: '-10px'
               }}
+              width={300}
+              height={400}
+              loading="lazy"
+              decoding="async"
             />
           ) : null
         }
