@@ -1305,6 +1305,14 @@ const Comics = () => {
               >
                 {selectedComic.description}
               </p>
+              {/* Close button - only visible on mobile phones */}
+              <button
+                onClick={handleCloseModal}
+                className="hidden max-sm:block mt-6 text-neutral-500 text-sm italic self-center hover:text-neutral-700 transition-colors"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                close
+              </button>
             </div>
           </div>
         </div>
