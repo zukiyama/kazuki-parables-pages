@@ -456,6 +456,22 @@ const Comics = () => {
             const rowId = entry.target.getAttribute('data-row');
             if (rowId) {
               setVisibleRows((prev) => new Set(prev).add(rowId));
+              
+              // Pre-decode all comic covers when grid becomes visible
+              // This ensures modal opens instantly without re-loading
+              if (rowId === 'row1') {
+                smallShelfComics.forEach(comic => {
+                  if (!imageCacheRef.current.has(comic.cover)) {
+                    const img = new Image();
+                    img.src = comic.cover;
+                    img.decode().then(() => {
+                      imageCacheRef.current.set(comic.cover, img);
+                    }).catch(() => {
+                      // Ignore decode errors - image will decode on click
+                    });
+                  }
+                });
+              }
             }
           }
         });
@@ -550,12 +566,36 @@ const Comics = () => {
     }
   ];
 
-  const handleComicClick = (comic: {cover: string; title: string; description: React.ReactNode; teaser?: string}) => {
-    setSelectedComic(comic);
+  // Modal ready state - ensures image is decoded before showing
+  const [modalReady, setModalReady] = useState(false);
+
+  const handleComicClick = async (comic: {cover: string; title: string; description: React.ReactNode; teaser?: string}) => {
+    // Check if image is already in our cache (already decoded)
+    if (imageCacheRef.current.has(comic.cover)) {
+      setSelectedComic(comic);
+      setModalReady(true);
+      return;
+    }
+    
+    // Decode the image before showing modal to prevent flash
+    const img = new Image();
+    img.src = comic.cover;
+    
+    try {
+      await img.decode();
+      imageCacheRef.current.set(comic.cover, img);
+      setSelectedComic(comic);
+      setModalReady(true);
+    } catch {
+      // Fallback: show modal anyway if decode fails
+      setSelectedComic(comic);
+      setModalReady(true);
+    }
   };
 
   const handleCloseModal = () => {
     setSelectedComic(null);
+    setModalReady(false);
   };
 
 
@@ -1216,8 +1256,8 @@ const Comics = () => {
         }
       />
 
-      {/* Comic Detail Modal */}
-      {selectedComic && (
+      {/* Comic Detail Modal - only renders when image is decoded and ready */}
+      {selectedComic && modalReady && (
         <div 
           className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6 max-sm:p-4 cursor-pointer"
           onClick={handleCloseModal}
@@ -1241,6 +1281,8 @@ const Comics = () => {
                     ? 'max-w-sm max-h-[65vh] object-contain' 
                     : 'max-w-md'
                 }`}
+                width={640}
+                height={960}
               />
             </div>
             <div className="flex flex-col justify-center">
