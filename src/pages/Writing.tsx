@@ -85,7 +85,6 @@ const Writing = () => {
   const parableTrilogyRef = useRef<HTMLDivElement>(null);
   const userInteractedRef = useRef(false);
   const isBootingRef = useRef(true);
-  const isBannerNavigatingRef = useRef(false); // Suppress scroll handler during banner navigation
 
   const location = useLocation();
 
@@ -537,9 +536,6 @@ const Writing = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Skip scroll-based background updates during banner navigation to prevent grey flash
-      if (isBannerNavigatingRef.current) return;
-      
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
 
@@ -642,49 +638,6 @@ const Writing = () => {
     if (slideToBook !== undefined && youngAdultSlideshowRef.current) {
       youngAdultSlideshowRef.current.setCurrentBook(slideToBook);
     }
-    
-    // === BANNER NAVIGATION DEBOUNCE ===
-    // Suppress scroll handler and set target background immediately
-    // This prevents grey flash during rapid scroll to target section
-    isBannerNavigatingRef.current = true;
-    
-    // Map bookId to the appropriate background key
-    const bookToBackground: Record<string, Partial<typeof backgroundOpacities>> = {
-      'kaiju': { school: 1 },
-      'hoax': { hoax: 1 },
-      'the-market': { theMarket: 1 },
-      'oba': { oba: 1 },
-      'states-of-motion': { statesOfMotion: 1 },
-      'how': { how: 1 },
-      'vice-versa': { viceVersa: 1 },
-      'professor-barnabas': { victorianLondon: 1 },
-      'land-dream': { wasteland: 1 },
-      'to-fly': { deepSpace: 1 }
-    };
-    
-    const targetBackground = bookToBackground[bookId];
-    if (targetBackground) {
-      // Immediately set target background to 1, all others to 0
-      setBackgroundOpacities({
-        school: 0,
-        hoax: 0,
-        theMarket: 0,
-        oba: 0,
-        statesOfMotion: 0,
-        how: 0,
-        viceVersa: 0,
-        victorianLondon: 0,
-        wasteland: 0,
-        deepSpace: 0,
-        otherWorks: 0,
-        ...targetBackground
-      });
-    }
-    
-    // Re-enable scroll handler after scroll stabilizes
-    setTimeout(() => {
-      isBannerNavigatingRef.current = false;
-    }, 700);
   };
 
   // Handle click to toggle banner on widescreen devices
