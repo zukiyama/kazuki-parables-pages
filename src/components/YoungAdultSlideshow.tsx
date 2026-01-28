@@ -190,12 +190,12 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     : "relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20";
 
   const contentPadding = isWidescreen
-    ? "relative px-20 pt-8 md:px-16 lg:px-12 pb-10 max-sm:px-8 max-sm:py-4 max-sm:pb-12 flex-1 flex items-center justify-center"
+    ? "relative px-20 pt-8 md:px-16 lg:px-12 pb-10 max-sm:px-8 max-sm:py-4 max-sm:pb-12 flex-1 flex items-center"
     : "relative px-20 py-8 md:px-16 lg:px-12 pb-16 max-sm:px-4 max-sm:py-4 max-sm:pb-12";
 
-  // Widescreen book covers: use max-height for proper vertical centering
+  // Widescreen book covers: larger to fill the container better
   const imageClasses = isWidescreen
-    ? "max-h-[calc(60vh)] w-auto mx-auto object-contain rounded-lg shadow-lg"
+    ? "h-[calc(65vh)] w-auto mx-auto object-contain rounded-lg shadow-lg"
     : "w-full max-w-xs mx-auto object-contain rounded-lg shadow-lg max-sm:max-w-[200px]";
 
   const seriesClasses = isWidescreen
@@ -289,7 +289,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
             <div className={contentPadding}>
               <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 items-center max-sm:gap-4 ${
                 book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""
-              }`}>
+              } ${isWidescreen ? "h-full" : ""}`}>
                 {/* Book Cover */}
                 <div className={book.layout === "cover-right" ? "lg:col-start-2" : ""}>
                   <img 
