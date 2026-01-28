@@ -1,84 +1,71 @@
 
-# Fix Young Adult Slideshow Vertical Alignment (Widescreen Only)
+# Optimize Writing Page LCP and Image Loading
 
-## Problem
-On ultra-wide devices (laptop/HDTV), the "To Fly" slide displays lower than the other two books because its longer blurb stretches the grid. The previous fix added a scrollbar (`overflow-y-auto`) which is not desired.
+## Analysis
 
-## Solution Strategy
-Instead of constraining the blurb with scrollbars, allow the slideshow container to grow slightly to accommodate longer content. This ensures all three slides are vertically centered identically without any internal scrolling.
+After comparing the Music and Writing pages, I found **three key differences** in their loading strategies that explain why Music loads marginally faster:
 
-## Changes to YoungAdultSlideshow.tsx
-
-### 1. Container: Fixed height to minimum height (line 189)
-**Current:**
-```
-h-[calc(80vh)] flex flex-col
-```
-**New:**
-```
-min-h-[80vh] flex flex-col
-```
-This allows the container to be at least 80vh but grow if content requires more space.
-
-### 2. Slides wrapper: Add min-h-0 for proper flex sizing (line 277)
-**Current:**
-```
-className="flex w-full h-full"
-```
-**New:**
-```
-className="flex w-full h-full min-h-0"
-```
-This prevents flex overflow issues.
-
-### 3. Individual slide wrapper: Add min-h-0 (line 287)
-**Current:**
-```
-className="flex-shrink-0 w-full h-full"
-```
-**New:**
-```
-className="flex-shrink-0 w-full h-full min-h-0"
+### 1. Missing HTML Preload for Writing Page
+In `index.html`, the Writing page's LCP background (`school-background-montage.webp`) is only mentioned in a **comment** but not actually preloaded:
+```html
+<!-- Preload Writing page LCP background (school montage) - deferred via modulepreload strategy -->
+<!-- Note: schoolBackground is the LCP candidate for /writing route -->
 ```
 
-### 4. Content padding: Add min-h-0 (line 289)
-The contentPadding div should also have min-h-0 for widescreen.
-
-### 5. Grid: Add min-h-0 (line 290-292)
-Add `min-h-0` to the grid container for widescreen.
-
-### 6. Blurb column: Remove scrollbar, give more horizontal space (line 308)
-**Current:**
+Meanwhile, the Music page has an actual preload link:
+```html
+<link rel="preload" href="/src/assets/flower-ep-background-new.webp" as="image" type="image/webp">
 ```
-${isWidescreen ? "flex flex-col justify-center max-h-[60vh] overflow-y-auto" : ""}
-```
-**New:**
-```
-${isWidescreen ? "flex flex-col justify-center min-h-0" : ""}
-```
-Remove the `max-h-[60vh]` and `overflow-y-auto` completely. Add `min-h-0` instead.
 
-### 7. Widen blurb column for ultra-wide screens
-Adjust the grid to give the text column more space on widescreen by changing grid column ratios. This allows the longer blurb to wrap into fewer lines.
-
-**Update grid classes for widescreen:**
+### 2. No Explicit Image Decoding
+The Writing page uses `IntersectionObserver` for lazy loading but doesn't explicitly decode the initial background. The Music page uses:
+```javascript
+const img = new Image();
+img.onload = async () => {
+  await img.decode(); // Forces browser to fully prepare image
+  imageCache.current.set(src, img);
+};
 ```
-lg:grid-cols-[1fr_1.2fr]
+
+### 3. No Hidden LCP Element
+The Music page injects a hidden `<img>` element with `fetchpriority="high"` to signal to the browser that this is the LCP candidate. The Writing page doesn't do this.
+
+## Proposed Changes
+
+### 1. Add actual preload in index.html
+Add a real preload link for the Writing page's school background (currently just a comment).
+
+### 2. Add priority loading to Writing.tsx
+Add the same pattern used by Music page:
+- Create an `imageCache` ref to prevent garbage collection
+- Use a `loadAndCacheImage` function with `img.decode()`
+- Load `schoolBackground` immediately with high priority
+- Use `requestIdleCallback` for remaining backgrounds (or keep existing IntersectionObserver)
+- Add a hidden `<img>` element with `fetchpriority="high"` for the initial background
+
+### Technical Changes
+
+**index.html (line 29-30)**
 ```
-This gives the blurb column 20% more width than the cover column.
+Current:
+<!-- Preload Writing page LCP background (school montage) - deferred via modulepreload strategy -->
+<!-- Note: schoolBackground is the LCP candidate for /writing route -->
 
-## What Will NOT Change
-- Mobile layout (unchanged)
-- iPad/tablet layout (unchanged)  
-- Non-widescreen desktop layout (unchanged)
-- Scroll-snap behavior (the section may be slightly taller for "To Fly" but snap still works)
-- Book cover sizes (unchanged)
-- Font sizes (unchanged)
-- Any other pages
+New:
+<!-- Preload Writing page LCP background (school montage) -->
+<link rel="preload" href="/src/assets/school-background-montage.webp" as="image" type="image/webp">
+```
 
-## Expected Result
-- All three slides vertically centered identically
-- No scrollbars anywhere in the slideshow
-- Full blurb always visible
-- Container grows slightly when "To Fly" is displayed (if needed)
-- Other devices completely unaffected
+**src/pages/Writing.tsx**
+- Add `imageCache` ref similar to Music page
+- Add `backgroundsLoaded` state to delay showing the page until LCP is ready
+- Create `loadAndCacheImage()` function that uses `img.decode()`
+- Priority-load `schoolBackground` first, then defer remaining backgrounds
+- Add hidden `<img>` element for `schoolBackground` with `fetchpriority="high"`, `loading="eager"`, `decoding="sync"`
+
+## Expected Outcome
+
+- Writing page initial background loads as fast as Music page
+- Consistent image caching prevents re-downloading on route revisits
+- LCP metric improves due to explicit priority hints
+- No visual or behavioral changes to the page
