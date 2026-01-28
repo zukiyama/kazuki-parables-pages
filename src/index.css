@@ -203,6 +203,8 @@
     left: 0;
     width: 100%;
     z-index: -1;
+    /* Fallback to black during transitions - prevents grey flash */
+    background-color: #000;
     /* Overscan: stable height + 240px buffer */
     top: -120px;
     height: calc(100vh + 240px);
