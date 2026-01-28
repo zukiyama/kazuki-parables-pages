@@ -184,13 +184,14 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     swipeDecided.current = false;
   };
 
-  // Widescreen: scale the entire slideshow to fit viewport WITHOUT banner (80vh matches book cover heights)
+  // Widescreen: use 2-row grid to separate content from dots, ensuring consistent centering
   const containerClasses = isWidescreen
-    ? "relative w-full max-w-5xl mx-auto bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20 min-h-[80vh] flex flex-col"
+    ? "relative w-full max-w-5xl mx-auto bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20 min-h-[80vh] grid grid-rows-[1fr_auto]"
     : "relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20";
 
+  // Content padding - on widescreen, the slide wrapper handles centering
   const contentPadding = isWidescreen
-    ? "relative px-20 pt-4 md:px-16 lg:px-12 pb-6 max-sm:px-8 max-sm:py-4 max-sm:pb-12 flex-1 flex items-center justify-center min-h-0"
+    ? "relative px-20 pt-4 md:px-16 lg:px-12 pb-4 max-sm:px-8 max-sm:py-4 h-full flex items-center justify-center"
     : "relative px-20 py-8 md:px-16 lg:px-12 pb-16 max-sm:px-4 max-sm:py-4 max-sm:pb-12";
 
   // Widescreen book covers: larger to fill the container better
@@ -271,56 +272,58 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Slides container - all slides rendered, positioned side by side */}
-      <div 
-        ref={slidesRef}
-        className="flex w-full h-full min-h-0"
-        style={{
-          transform: `translateX(calc(-${currentBook * 100}% + ${translateX}px))`,
-          transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-          willChange: 'transform'
-        }}
-      >
-        {books.map((book, index) => (
-          <div 
-            key={index}
-            className="flex-shrink-0 w-full h-full min-h-0"
-          >
-            <div className={contentPadding}>
-              <div className={`grid grid-cols-1 gap-6 md:gap-10 items-center max-sm:gap-4 min-h-0 ${
-                isWidescreen ? "lg:grid-cols-[1fr_1.2fr]" : "lg:grid-cols-2"
-              } ${book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""}`}>
-                {/* Book Cover */}
-                <div className={book.layout === "cover-right" ? "lg:col-start-2" : ""}>
-                  <img 
-                    src={book.cover} 
-                    alt={book.title}
-                    width={300}
-                    height={450}
-                    className={imageClasses}
-                    loading="lazy"
-                    decoding="async"
-                    draggable={false}
-                  />
-                </div>
-                
-                {/* Book Info */}
-                <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-12 pl-8"} md:pl-16 md:pr-12 max-sm:px-4 max-sm:text-center ${isWidescreen ? "flex flex-col justify-center min-h-0" : ""}`}>
-                  {book.series && (
-                    <p className={seriesClasses}>{book.series}</p>
-                  )}
-                  <h3 className={titleClasses}>{book.title}</h3>
-                  {book.subtitle && (
-                    <h4 className={subtitleClasses}>{book.subtitle}</h4>
-                  )}
-                  <p className={summaryClasses}>
-                    {renderSummary(book.summary)}
-                  </p>
+      {/* Row 1: Slides container - content area with consistent height for centering */}
+      <div className={isWidescreen ? "row-start-1 h-full overflow-hidden" : ""}>
+        <div 
+          ref={slidesRef}
+          className={`flex w-full ${isWidescreen ? "h-full" : ""}`}
+          style={{
+            transform: `translateX(calc(-${currentBook * 100}% + ${translateX}px))`,
+            transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            willChange: 'transform'
+          }}
+        >
+          {books.map((book, index) => (
+            <div 
+              key={index}
+              className={`flex-shrink-0 w-full ${isWidescreen ? "h-full" : ""}`}
+            >
+              <div className={contentPadding}>
+                <div className={`grid grid-cols-1 gap-6 md:gap-10 items-center max-sm:gap-4 ${
+                  isWidescreen ? "lg:grid-cols-[1fr_1.2fr]" : "lg:grid-cols-2"
+                } ${book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""}`}>
+                  {/* Book Cover */}
+                  <div className={book.layout === "cover-right" ? "lg:col-start-2" : ""}>
+                    <img 
+                      src={book.cover} 
+                      alt={book.title}
+                      width={300}
+                      height={450}
+                      className={imageClasses}
+                      loading="lazy"
+                      decoding="async"
+                      draggable={false}
+                    />
+                  </div>
+                  
+                  {/* Book Info */}
+                  <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-12 pl-8"} md:pl-16 md:pr-12 max-sm:px-4 max-sm:text-center ${isWidescreen ? "flex flex-col justify-center" : ""}`}>
+                    {book.series && (
+                      <p className={seriesClasses}>{book.series}</p>
+                    )}
+                    <h3 className={titleClasses}>{book.title}</h3>
+                    {book.subtitle && (
+                      <h4 className={subtitleClasses}>{book.subtitle}</h4>
+                    )}
+                    <p className={summaryClasses}>
+                      {renderSummary(book.summary)}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       
       {/* Navigation - hidden on mobile, use swipe instead */}
@@ -347,8 +350,8 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
         </Button>
       </div>
       
-      {/* Book Indicator */}
-      <div className={`absolute left-1/2 transform -translate-x-1/2 flex space-x-2 ${isWidescreen ? "bottom-2" : "bottom-4"}`}>
+      {/* Row 2: Book Indicator - separate from content to not affect centering */}
+      <div className={`flex justify-center items-center space-x-2 ${isWidescreen ? "row-start-2 py-3" : "absolute bottom-4 left-1/2 transform -translate-x-1/2"}`}>
         {books.map((_, index) => (
           <div
             key={index}
