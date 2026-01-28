@@ -43,9 +43,6 @@ import howCover from "@/assets/how-cover.webp";
 import viceVersaCover from "@/assets/vice-versa-cover.webp";
 import amyaCover from "@/assets/amya-cover.webp";
 import statesOfMotionCover from "@/assets/states-of-motion-cover.webp";
-import professorBarnabasCover from "@/assets/professor-barnabas-cover-new.webp";
-import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.webp";
-import toFlyCover from "@/assets/to-fly-cover-new.webp";
 
 const Writing = () => {
   useScrollToTop();
