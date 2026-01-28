@@ -548,7 +548,49 @@ const Music = () => {
     }, 800);
   };
 
-  // Helper to start background crossfade
+  // Helper to ensure image is loaded and decoded (shared by prefetch and select)
+  const ensureImageLoaded = (src: string): Promise<void> => {
+    return new Promise<void>((resolve) => {
+      // Already cached and decoded
+      if (imageCache.current.has(src)) {
+        resolve();
+        return;
+      }
+      
+      const img = new Image();
+      const handleLoad = async () => {
+        try {
+          await img.decode();
+        } catch {
+          // Decode failed, continue anyway
+        }
+        imageCache.current.set(src, img);
+        resolve();
+      };
+      
+      img.onload = handleLoad;
+      img.onerror = () => resolve();
+      img.src = src;
+      
+      if (img.complete) {
+        handleLoad();
+      }
+    });
+  };
+
+  // On-intent prefetch: called on pointerdown/touchstart to start loading before click completes
+  const handleAlbumPrefetch = (albumId: number) => {
+    const album = albums.find(a => a.id === albumId);
+    if (!album || album.id === selectedAlbum.id) return;
+    
+    // Start loading both cover and background immediately (non-blocking)
+    ensureImageLoaded(album.background);
+    if (album.cover) {
+      ensureImageLoaded(album.cover);
+    }
+  };
+
+  // Helper to start background crossfade - only call when background is ready
   const startCrossfade = (backgroundSrc: string) => {
     setIsTransitioning(true);
     
@@ -586,70 +628,23 @@ const Music = () => {
 
   const handleAlbumSelect = async (albumId: number) => {
     const album = albums.find(a => a.id === albumId);
-    if (!album) return;
+    if (!album || album.id === selectedAlbum.id) return;
     
     // Clear any existing transition
     if (transitionRef.current) {
       clearTimeout(transitionRef.current);
     }
     
-    // OPTIMISTIC UPDATE: Immediately update the selected album for responsive UI
-    if (album.id !== selectedAlbum.id) {
-      setSelectedAlbum(album);
-    }
+    // SYNCHRONIZED UPDATE: Wait for BOTH images to be fully loaded before updating anything
+    // This ensures cover and background change at exactly the same moment
+    await Promise.all([
+      ensureImageLoaded(album.background),
+      album.cover ? ensureImageLoaded(album.cover) : Promise.resolve()
+    ]);
     
-    // Helper to ensure image is loaded and decoded
-    const ensureImageLoaded = (src: string): Promise<void> => {
-      return new Promise<void>((resolve) => {
-        // Already cached and decoded
-        if (imageCache.current.has(src)) {
-          resolve();
-          return;
-        }
-        
-        const img = new Image();
-        const handleLoad = async () => {
-          try {
-            await img.decode();
-          } catch {
-            // Decode failed, continue anyway
-          }
-          imageCache.current.set(src, img);
-          resolve();
-        };
-        
-        img.onload = handleLoad;
-        img.onerror = () => resolve();
-        img.src = src;
-        
-        if (img.complete) {
-          handleLoad();
-        }
-      });
-    };
-    
-    // Check if both images are already cached
-    const bgCached = imageCache.current.has(album.background);
-    const coverCached = !album.cover || imageCache.current.has(album.cover);
-    
-    if (bgCached && coverCached) {
-      // Both cached - start crossfade immediately (no waiting)
-      startCrossfade(album.background);
-    } else {
-      // Not cached - load with short timeout fallback for mobile responsiveness
-      const loadPromise = Promise.all([
-        ensureImageLoaded(album.background),
-        album.cover ? ensureImageLoaded(album.cover) : Promise.resolve()
-      ]);
-      
-      // Race against a 300ms timeout - don't block UI forever on slow mobile
-      await Promise.race([
-        loadPromise,
-        new Promise(resolve => setTimeout(resolve, 300))
-      ]);
-      
-      startCrossfade(album.background);
-    }
+    // Now both are ready - update cover and start background crossfade together
+    setSelectedAlbum(album);
+    startCrossfade(album.background);
     
     // Scroll to show album - widescreen devices center the album cover + title
     setTimeout(() => {
@@ -717,6 +712,7 @@ const Music = () => {
         <AlbumBanner 
           selectedAlbumId={selectedAlbum.id}
           onAlbumClick={handleAlbumSelectWithBanner}
+          onAlbumPrefetch={handleAlbumPrefetch}
         />
       </div>
       

@@ -66,9 +66,10 @@ const eps: Album[] = [
 interface AlbumBannerProps {
   selectedAlbumId?: number;
   onAlbumClick?: (albumId: number) => void;
+  onAlbumPrefetch?: (albumId: number) => void;
 }
 
-export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps) => {
+export const AlbumBanner = ({ selectedAlbumId, onAlbumClick, onAlbumPrefetch }: AlbumBannerProps) => {
   const [hoveredAlbum, setHoveredAlbum] = useState<number | null>(null);
   const [showEPs, setShowEPs] = useState(true); // Default to showing EPs on desktop
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -89,6 +90,12 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
   const handleAlbumClick = (album: Album) => {
     if (onAlbumClick) {
       onAlbumClick(album.id);
+    }
+  };
+
+  const handleAlbumPrefetch = (album: Album) => {
+    if (onAlbumPrefetch) {
+      onAlbumPrefetch(album.id);
     }
   };
 
@@ -195,8 +202,12 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                 <div
                   key={item.id}
                   className="flex flex-col items-center cursor-pointer group"
-                  onMouseEnter={() => setHoveredAlbum(item.id)}
+                  onMouseEnter={() => {
+                    setHoveredAlbum(item.id);
+                    handleAlbumPrefetch(item); // Prefetch on hover (desktop)
+                  }}
                   onMouseLeave={() => setHoveredAlbum(null)}
+                  onPointerDown={() => handleAlbumPrefetch(item)}
                   onClick={() => handleAlbumClick(item)}
                 >
                   <h3 className="font-palatino text-xs font-semibold text-white mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap">
@@ -276,6 +287,8 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                     <div
                       key={`ep-${item.id}`}
                       className="flex flex-col items-center cursor-pointer group flex-shrink-0"
+                      onTouchStart={() => handleAlbumPrefetch(item)}
+                      onPointerDown={() => handleAlbumPrefetch(item)}
                       onClick={() => handleAlbumClick(item)}
                       style={{ width: '64px' }}
                     >
@@ -365,6 +378,8 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick }: AlbumBannerProps)
                     <div
                       key={item.id}
                       className="flex flex-col items-center cursor-pointer group flex-shrink-0"
+                      onTouchStart={() => handleAlbumPrefetch(item)}
+                      onPointerDown={() => handleAlbumPrefetch(item)}
                       onClick={() => item.cover && handleAlbumClick(item)}
                       style={{ width: '64px', marginRight: spacingMap[index] || '0px' }}
                     >
