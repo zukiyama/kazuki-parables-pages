@@ -49,6 +49,7 @@ const Writing = () => {
   const isWidescreen = useWidescreenAspectRatio();
   const [scrollY, setScrollY] = useState(0);
   const [pageReady, setPageReady] = useState(false);
+  const [initialBackgroundReady, setInitialBackgroundReady] = useState(false);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [currentYoungAdultBook, setCurrentYoungAdultBook] = useState(0);
   const [bannerVisible, setBannerVisible] = useState(true); // For widescreen banner toggle
@@ -214,11 +215,21 @@ const Writing = () => {
     img.src = src;
   }, []);
   
-  // Priority-load the LCP background (schoolBackground) immediately
+  // Priority-load the LCP background (schoolBackground) immediately with fade-in
   useEffect(() => {
-    // Load LCP candidate first with high priority
-    loadAndCacheImage(schoolBackground, 'school');
-  }, [loadAndCacheImage]);
+    const img = new Image();
+    img.onload = async () => {
+      try {
+        await img.decode();
+        imageCache.current.set('school', img);
+        setInitialBackgroundReady(true);
+      } catch {
+        imageCache.current.set('school', img);
+        setInitialBackgroundReady(true);
+      }
+    };
+    img.src = schoolBackground;
+  }, []);
   
   // IntersectionObserver to lazy-load background images when sections approach viewport
   useEffect(() => {
@@ -889,8 +900,8 @@ const Writing = () => {
           loading="eager"
           decoding="sync"
           {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
-          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.school }}
+          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out"
+          style={{ opacity: initialBackgroundReady ? backgroundOpacities.school : 0 }}
         />
         {/* Below-fold backgrounds - lazy loaded via IntersectionObserver */}
         {loadedBackgrounds.has('hoax') && (
