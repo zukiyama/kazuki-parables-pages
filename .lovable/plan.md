@@ -1,93 +1,97 @@
 
+# Fix YoungAdultSlideshow Vertical Alignment on Extra-Wide Screens
 
-# Fix Grey Flash on Writing Page Banner Click Navigation
+## Problem Analysis
 
-## Problem Summary
-When clicking a book thumbnail in the Writing page banner, a grey flash briefly appears during the rapid scroll to the target section. This happens because multiple background images transition their opacity simultaneously during the fast scroll, and the underlying container has no fallback color set.
+The YoungAdultSlideshow displays three books (Professor Barnabas, Land is a Dream of the Sky, and To Fly). On your laptop connected to HDTV (likely 1920x1080 or wider), the book covers and text are not vertically centered consistently:
 
-## Root Causes Identified
+1. **"To Fly"** is positioned significantly lower than the other two books
+2. **Professor Barnabas** and **Land is a Dream of the Sky** are also slightly lower than ideal
+3. All three should be vertically centered within the slideshow container
 
-1. **No fallback background color**: The `.bg-layer-fixed` container doesn't have an explicit `background-color: black` set, so when all background images briefly have reduced opacity during transitions, the browser's default grey shows through.
+### Root Cause
 
-2. **Scroll handler triggers rapid opacity changes**: During a fast `scrollTo`, the scroll event fires many times, each time updating `visibleSections` and recalculating `backgroundOpacities`. This causes multiple backgrounds to start/stop fading simultaneously rather than a clean A→B crossfade.
+The widescreen layout uses several competing height/centering mechanisms:
 
-3. **Writing page uses single-layer opacity system vs Music page's two-layer crossfade**: The Music page explicitly manages `layerA` and `layerB` with proper sequencing, while Writing page just toggles opacity on individual images.
+1. **Container**: `h-[calc(80vh)]` - fixed viewport-relative height
+2. **Content wrapper**: `flex-1 flex items-center` - flexbox centering
+3. **Grid**: `h-full items-center` - tries to fill parent and center children
+4. **Book covers**: `h-[calc(65vh)]` - fixed height that may overflow
+5. **Text column**: `flex flex-col justify-center` - self-centering
 
-## Solution Strategy
+On very wide displays (higher than the Lovable preview pane width), when the viewport is extremely wide, the combination of `h-[calc(80vh)]` container with `h-[calc(65vh)]` images leaves only 15vh for text. If text content varies between books or if the overall layout calculations differ, the vertical centering breaks.
 
-A pragmatic, minimal-disruption fix that addresses the immediate symptom without rebuilding the entire background system:
+The key issue: The grid uses `h-full` on widescreen, but the slides container uses `flex w-full h-full` which may not properly constrain the grid height. Each slide is `flex-shrink-0 w-full h-full` but without explicit height, the content can push the layout.
 
-### Phase 1: Add Fallback Background Color (Quick Fix)
+### Why It Only Affects Larger Widescreen
 
-Add `background-color: black` to the `.bg-layer-fixed` CSS class. This ensures that when all backgrounds are transitioning, the fallback is black (matching the site theme) rather than browser default grey.
+The Lovable preview has a smaller viewport width, which means:
+- The `max-w-5xl` (1024px) container constraint is more relevant
+- The `65vh` image height results in smaller absolute pixels
+- There's more relative space for the layout to work correctly
 
-**File:** `src/index.css`
-```css
-.bg-layer-fixed {
-  /* existing styles... */
-  background-color: #000; /* Fallback to black, not grey */
-}
+On a full 1920px+ HDTV, the container has more room and the vh-based calculations produce larger absolute values that may cause overflow.
+
+## Solution
+
+Replace the vh-based sizing with a properly constrained flexbox layout that guarantees vertical centering regardless of screen width:
+
+### Changes to `src/components/YoungAdultSlideshow.tsx`
+
+1. **Container classes** (line 188-190): Keep `h-[calc(80vh)]` but ensure the inner content is properly centered
+
+2. **Content padding** (line 192-194): The current `flex-1 flex items-center` is correct but needs the child grid to cooperate
+
+3. **Grid layout** (line 290-292): Change from `h-full items-center` to proper centering without forcing full height
+
+4. **Image classes** (line 197-199): Change from fixed `h-[calc(65vh)]` to a max-height constraint that allows proper centering:
+   - Use `max-h-[calc(65vh)]` instead of `h-[calc(65vh)]`
+   - Or use a responsive approach that caps the height relative to the container
+
+5. **Book info column** (line 308): The `flex flex-col justify-center` is fine
+
+### Specific Code Changes
+
+**Container classes (widescreen)** - Keep the same:
+```tsx
+"relative w-full max-w-5xl mx-auto ... h-[calc(80vh)] flex flex-col"
 ```
 
-### Phase 2: Debounce Background Transitions During Banner Navigation
-
-Add a flag to temporarily suppress the scroll-based background updates when a banner click triggers navigation. The target background should be set directly rather than letting the scroll handler "discover" it by firing repeatedly.
-
-**File:** `src/pages/Writing.tsx`
-- Add a ref `isBannerNavigatingRef` that is set `true` when a banner click happens
-- The scroll handler's `setBackgroundOpacities()` logic should skip updates when this ref is true
-- After scroll stabilizes (~500-700ms), clear the flag
-- When banner click happens, immediately set the target section's background to opacity 1 and current background to 0, bypassing the scroll handler
-
-**File:** `src/components/BookshelfMenu.tsx`  
-- Pass a callback to Writing.tsx that includes the target section ID
-- Writing.tsx uses this to immediately transition backgrounds
-
-### Phase 3: Preload Target Background Before Fade (Optional Enhancement)
-
-For an even smoother experience, decode the target background image before starting the opacity transition (similar to Music page's approach). This is optional since the Writing page already lazy-loads backgrounds via IntersectionObserver and they should already be loaded for any section the user has scrolled past.
-
-## Technical Implementation Details
-
-### Step 1: CSS Fallback Color
-Add to `.bg-layer-fixed` in `src/index.css`:
-```css
-background-color: #000;
+**Content padding (widescreen)** - Add `justify-center`:
+```tsx
+"relative px-20 pt-8 md:px-16 lg:px-12 pb-10 ... flex-1 flex items-center justify-center"
 ```
 
-### Step 2: Banner Navigation Flag in Writing.tsx
-```text
-- Add: const isBannerNavigatingRef = useRef(false);
-- In handleBookClick callback (passed to BookshelfMenu):
-  1. Set isBannerNavigatingRef.current = true
-  2. Immediately calculate target background key from bookId
-  3. Set backgroundOpacities with only target = 1, all others = 0
-  4. After 700ms, set isBannerNavigatingRef.current = false
-- In the scroll handler (useEffect at ~line 537):
-  - Add early return: if (isBannerNavigatingRef.current) return;
+**Grid layout** - Remove `h-full` which causes the grid to stretch and potentially misalign:
+```tsx
+// Change from:
+${isWidescreen ? "h-full" : ""}
+// To:
+${isWidescreen ? "" : ""}  // Remove h-full on widescreen
 ```
 
-### Step 3: Update BookshelfMenu to Pass Target Section
-The `onBookClick` callback already passes `bookId` and `slideToBook`. Writing.tsx can use this to determine which background to show immediately.
+**Image classes (widescreen)** - Change from fixed height to max-height:
+```tsx
+// Change from:
+"h-[calc(65vh)] w-auto mx-auto object-contain rounded-lg shadow-lg"
+// To:
+"max-h-[calc(60vh)] w-auto mx-auto object-contain rounded-lg shadow-lg"
+```
+
+This ensures:
+- All three book covers use the same max-height constraint
+- The flexbox centering (`items-center`) can work properly without the grid forcing `h-full`
+- Content is vertically centered in the available space regardless of text length variations
 
 ## Files to Modify
 
-1. **`src/index.css`** - Add `background-color: #000` to `.bg-layer-fixed`
-2. **`src/pages/Writing.tsx`** - Add banner navigation debounce logic
+- `src/components/YoungAdultSlideshow.tsx`
 
 ## Expected Outcome
 
-- Banner thumbnail clicks will immediately crossfade from current background to target background
-- No grey flash because: (a) fallback is now black, (b) backgrounds transition cleanly A→B instead of chaotic multi-way transitions
-- Normal scrolling behavior remains unchanged
-- Minimal code changes, low risk of side effects
+All three Young Adult books will be:
+- Vertically centered within the slideshow container
+- Aligned consistently with each other (same vertical position)
+- Properly sized on both the Lovable preview and the larger HDTV display
 
-## Alternative Considered (Not Recommended Now)
-
-A full two-layer crossfade system like the Music page would be more robust but requires:
-- Significant refactoring of how backgrounds are rendered
-- Managing layerA/layerB state
-- More complex coordination between scroll handler and banner clicks
-
-The proposed solution achieves the same visual result with much less disruption to the existing, working code.
-
+The fix is targeted to widescreen only and will not affect mobile, tablet, or the iPad desktop site.
