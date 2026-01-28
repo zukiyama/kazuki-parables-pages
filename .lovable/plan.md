@@ -1,47 +1,84 @@
 
-# Two-Layer Crossfade System Implemented on Writing Page
+# Fix: Young Adult Background Persisting When Navigating Away
 
-## Problem Solved
-When clicking a book thumbnail in the Writing page banner, a grey flash briefly appeared during the rapid scroll to the target section. This happened because multiple background images were transitioning their opacity simultaneously during the fast scroll.
+## Problem Identified
 
-## Solution Implemented
+When navigating away from the Young Adult slideshow section using banner thumbnails, the background image remains stuck on the last viewed slideshow book instead of transitioning to the target section's background.
 
-### 1. CSS Fallback Color
-Added `background-color: #000` to `.bg-layer-fixed` in `src/index.css` to ensure black fallback instead of browser default grey.
+## Root Cause
 
-### 2. Two-Layer Crossfade System
-Replaced the 10+ individual background image layers with a two-layer A/B crossfade system (matching Music page pattern):
+The issue is in the `useEffect` at lines 695-700:
 
-- **Layer A**: Current background (starts visible)
-- **Layer B**: Next background (starts hidden)
+```javascript
+useEffect(() => {
+  if (!visibleSections.has('young-adult')) return;
+  
+  const targetSection = `young-adult-${currentYoungAdultBook}`;
+  transitionBackground(targetSection);
+}, [currentYoungAdultBook, visibleSections, transitionBackground]);
+```
 
-When transitioning:
-1. Put next image on hidden layer
-2. Use double `requestAnimationFrame` to ensure paint
-3. Crossfade by swapping opacities
+This effect triggers whenever `visibleSections` changes. During rapid scrolling from the banner click:
 
-### 3. State Changes
-- Removed: `backgroundOpacities` object with 10+ keys
-- Added: `layerA`, `layerB` state objects with `{ image, opacity, isBlack }`
-- Added: `transitionBackground()` function for clean crossfades
-- Added: `isBannerNavigatingRef` to suppress scroll handler during banner navigation
-- Added: `currentBackgroundRef` to track current section and prevent duplicate transitions
+1. `handleBookClick` correctly calls `transitionBackground('hoax')` and sets `currentBackgroundRef.current = 'hoax'`
+2. The scroll handler updates `visibleSections` (even during the navigation flag period)
+3. This triggers the young-adult effect because `visibleSections` changed
+4. If the young-adult section was briefly visible during scroll, the effect calls `transitionBackground('young-adult-2')` 
+5. This overwrites the correct 'hoax' transition with the old slideshow background
 
-### 4. Banner Click Handling
-Updated `handleBookClick` to:
-1. Set `isBannerNavigatingRef.current = true`
-2. Immediately call `transitionBackground()` with target section
-3. Clear flag after 700ms
+## Solution
 
-### 5. Image Preloading
-Converted the IntersectionObserver from lazy-loading individual layers to preloading/decoding images before they're needed.
+Add a check to skip this effect during banner navigation:
 
-## Files Modified
-1. `src/index.css` - Added black fallback to `.bg-layer-fixed`
-2. `src/pages/Writing.tsx` - Full two-layer crossfade refactor
+```javascript
+useEffect(() => {
+  // Skip during banner navigation to prevent overwriting target background
+  if (isBannerNavigatingRef.current) return;
+  if (!visibleSections.has('young-adult')) return;
+  
+  const targetSection = `young-adult-${currentYoungAdultBook}`;
+  transitionBackground(targetSection);
+}, [currentYoungAdultBook, visibleSections, transitionBackground]);
+```
 
-## Expected Behavior
-- Banner thumbnail clicks now trigger clean A→B crossfade
-- No grey flash because: (a) black fallback, (b) only two layers ever visible
-- Normal scrolling behavior unchanged with smooth crossfades
-- Matches Music page behavior perfectly
+## Technical Details
+
+### File to Modify
+- `src/pages/Writing.tsx`
+
+### Change Location
+Lines 695-700
+
+### Before
+```javascript
+useEffect(() => {
+  if (!visibleSections.has('young-adult')) return;
+  
+  const targetSection = `young-adult-${currentYoungAdultBook}`;
+  transitionBackground(targetSection);
+}, [currentYoungAdultBook, visibleSections, transitionBackground]);
+```
+
+### After
+```javascript
+useEffect(() => {
+  // Skip during banner navigation to prevent overwriting target background
+  if (isBannerNavigatingRef.current) return;
+  if (!visibleSections.has('young-adult')) return;
+  
+  const targetSection = `young-adult-${currentYoungAdultBook}`;
+  transitionBackground(targetSection);
+}, [currentYoungAdultBook, visibleSections, transitionBackground]);
+```
+
+## Why This Fix Works
+
+1. During normal scrolling/swiping in the slideshow: `isBannerNavigatingRef.current` is `false`, so the effect runs normally and updates the background when the user swipes between books
+
+2. During banner navigation: `isBannerNavigatingRef.current` is `true` for 700ms, which suppresses this effect from overwriting the correct target background that was set by `handleBookClick`
+
+3. After banner navigation completes: The flag clears, but by then `visibleSections` should only contain the target section (e.g., 'hoax'), not 'young-adult', so the effect won't trigger anyway
+
+## Risk Assessment
+
+**Low risk** - This is a one-line addition that simply prevents an effect from running during the already-established "navigation suppression" window. It doesn't change any other behavior.
