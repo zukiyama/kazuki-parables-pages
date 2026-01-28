@@ -1,12 +1,15 @@
 import React from "react";
-import { OptimizedImage } from "@/components/OptimizedImage";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useScrollAnimation } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
+
+// Above-the-fold assets - loaded eagerly with high priority
 import artistPortrait from "@/assets/artist-portrait-new.webp";
 import parisSquare from "@/assets/paris-square-background.webp";
+
+// Below-the-fold assets - lazy loaded
 import signatureYamakawa from "@/assets/signature-yamakawa-new.webp";
 import backgroundSphere from "@/assets/about-background-new.webp";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.webp";
@@ -18,6 +21,8 @@ const About = () => {
   const isWidescreen = useWidescreenAspectRatio();
   const [showCityscape, setShowCityscape] = React.useState(false);
   const [headerHeight, setHeaderHeight] = React.useState(0);
+  const [belowFoldVisible, setBelowFoldVisible] = React.useState(false);
+  const belowFoldRef = React.useRef<HTMLDivElement>(null);
 
   // Measure header height on mount and orientation change
   React.useEffect(() => {
@@ -37,6 +42,24 @@ const About = () => {
       window.removeEventListener('resize', measureHeader);
       window.removeEventListener('orientationchange', measureHeader);
     };
+  }, []);
+
+  // Lazy load below-fold images with IntersectionObserver
+  React.useEffect(() => {
+    if (!belowFoldRef.current) return;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setBelowFoldVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '800px' } // Start loading 800px before visible
+    );
+    
+    observer.observe(belowFoldRef.current);
+    return () => observer.disconnect();
   }, []);
 
   React.useEffect(() => {
@@ -67,11 +90,16 @@ const About = () => {
       >
         {/* Full-screen Paris background - covers entire section including under header */}
         <div className="absolute inset-0" style={{ top: headerHeight }}>
-          <OptimizedImage 
+          {/* LCP hero image - highest priority with explicit dimensions to prevent layout shift */}
+          <img 
             src={parisSquare}
             alt="Parisian square with pigeons"
+            width={2560}
+            height={1600}
+            loading="eager"
+            decoding="sync"
+            {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
             className="w-full h-full object-cover"
-            priority
           />
           {/* Subtle overlay to improve text readability - more opacity on mobile and iPad desktop for better text visibility */}
           <div className="absolute inset-0 bg-white/20 max-sm:bg-white/50 lg:bg-white/45 2xl:bg-white/20 xl:bg-white/35" />
@@ -95,11 +123,15 @@ const About = () => {
               <div className="flex-shrink-0">
                 {/* Photo and Title row */}
                 <div className="flex items-start gap-6">
-                  {/* Artist photo */}
+                  {/* Artist photo - above-fold, eager loaded with explicit dimensions */}
                   <div className="flex-shrink-0">
-                    <OptimizedImage 
+                    <img 
                       src={artistPortrait}
                       alt="Kazuki Yamakawa portrait"
+                      width={480}
+                      height={480}
+                      loading="eager"
+                      decoding="async"
                       className="w-[200px] xl:w-[220px] 2xl:w-[240px] aspect-square object-cover grayscale shadow-2xl"
                     />
                   </div>
@@ -132,11 +164,15 @@ const About = () => {
           ) : (
             /* Standard layout for non-widescreen */
             <div className="flex flex-col">
-              {/* Mobile phone only: Artist photo centered at top */}
+              {/* Mobile phone only: Artist photo centered at top - above-fold, eager */}
               <div className="sm:hidden flex justify-center mb-8">
-                <OptimizedImage 
+                <img 
                   src={artistPortrait}
                   alt="Kazuki Yamakawa portrait"
+                  width={480}
+                  height={480}
+                  loading="eager"
+                  decoding="async"
                   className="w-72 h-72 object-cover grayscale shadow-2xl"
                 />
               </div>
@@ -223,11 +259,15 @@ const About = () => {
               <div className="hidden 2xl:flex flex-col">
                 {/* Top row: Photo + Title + Body text */}
                 <div className="flex items-start gap-6">
-                  {/* Photo - small, same height as title */}
+                  {/* Photo - small, same height as title - above-fold, eager */}
                   <div className="flex-shrink-0">
-                    <OptimizedImage 
+                    <img 
                       src={artistPortrait}
                       alt="Kazuki Yamakawa portrait"
+                      width={480}
+                      height={480}
+                      loading="eager"
+                      decoding="async"
                       className="w-[160px] aspect-square object-cover grayscale shadow-2xl"
                     />
                   </div>
@@ -284,39 +324,57 @@ const About = () => {
       </div>
       
       {/* Background Image Section from Original About - pulled up, no gap on mobile */}
-      <div className="relative z-10 -mt-8 max-sm:mt-0">
+      <div ref={belowFoldRef} className="relative z-10 -mt-8 max-sm:mt-0">
         <div 
           data-scroll-animation="background-image"
           className={`relative pointer-events-none overflow-hidden scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
         >
-          {/* Cityscape layer behind everything - tablet and desktop */}
+          {/* Cityscape layer behind everything - tablet and desktop - lazy loaded */}
           <div 
             className={`absolute inset-0 hidden sm:block z-0 ${showCityscape ? 'animate-cityscape-fade-in' : 'opacity-0'}`}
             style={{ animationDuration: '10s', animationFillMode: 'forwards' }}
           >
-            <OptimizedImage
-              src={cityscapeAerial}
-              alt=""
-              className="w-full h-full object-cover"
-            />
+            {belowFoldVisible && (
+              <img
+                src={cityscapeAerial}
+                alt=""
+                width={2560}
+                height={1440}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover"
+              />
+            )}
             {/* White gradient at top of cityscape to blend with section above */}
             <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent pointer-events-none" />
           </div>
           
-          {/* Mobile phone ONLY: Child portrait as background - hidden on small iPad */}
-          <OptimizedImage
-            src={childPortrait}
-            alt=""
-            className="w-full h-auto object-cover hidden max-sm:block"
-          />
-          
-          {/* Tablet and Desktop: PNG overlay with transparent areas */}
-          <div className="relative z-10 hidden sm:block">
-            <OptimizedImage
-              src={backgroundSphere}
+          {/* Mobile phone ONLY: Child portrait as background - lazy loaded */}
+          {belowFoldVisible && (
+            <img
+              src={childPortrait}
               alt=""
-              className="w-full h-auto object-cover"
+              width={800}
+              height={1200}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-auto object-cover hidden max-sm:block"
             />
+          )}
+          
+          {/* Tablet and Desktop: PNG overlay with transparent areas - lazy loaded */}
+          <div className="relative z-10 hidden sm:block">
+            {belowFoldVisible && (
+              <img
+                src={backgroundSphere}
+                alt=""
+                width={2560}
+                height={1440}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-auto object-cover"
+              />
+            )}
           </div>
           
           {/* White overlay to replicate 80% opacity faded effect - tablet and desktop */}
@@ -343,13 +401,19 @@ const About = () => {
                 <br />
                 <span className="text-xl sm:text-2xl lg:text-3xl font-medium not-italic">bury them."</span>
               </p>
-              {/* Kanji Signature - positioned right of quote */}
+              {/* Kanji Signature - positioned right of quote - lazy loaded */}
               <div className="mt-6 flex justify-end pr-8">
-                <OptimizedImage 
-                  src={signatureYamakawa}
-                  alt="Yamakawa signature"
-                  className="w-24 sm:w-32 h-auto opacity-90"
-                />
+                {belowFoldVisible && (
+                  <img 
+                    src={signatureYamakawa}
+                    alt="Yamakawa signature"
+                    width={600}
+                    height={200}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-24 sm:w-32 h-auto opacity-90"
+                  />
+                )}
               </div>
             </div>
           </div>
