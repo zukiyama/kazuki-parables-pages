@@ -78,6 +78,9 @@ const Writing = () => {
   const mainRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLElement | null>(null);
   const isSnapping = useRef(false);
+  
+  // Persistent image cache to prevent garbage collection of decoded background images
+  const imageCache = useRef<Map<string, HTMLImageElement>>(new Map());
   const isDraggingScrollbar = useRef(false);
   const parableTrilogyRef = useRef<HTMLDivElement>(null);
   const userInteractedRef = useRef(false);
@@ -194,6 +197,29 @@ const Writing = () => {
   // State to track which background images should be loaded (IntersectionObserver-based)
   const [loadedBackgrounds, setLoadedBackgrounds] = useState<Set<string>>(new Set(['school'])); // LCP loads immediately
   
+  // Load and cache image with decode() to prevent GC and ensure instant transitions
+  const loadAndCacheImage = useCallback((src: string, key: string) => {
+    if (imageCache.current.has(key)) return;
+    
+    const img = new Image();
+    img.onload = async () => {
+      try {
+        await img.decode();
+        imageCache.current.set(key, img);
+      } catch {
+        // Decode failed, still cache for reference
+        imageCache.current.set(key, img);
+      }
+    };
+    img.src = src;
+  }, []);
+  
+  // Priority-load the LCP background (schoolBackground) immediately
+  useEffect(() => {
+    // Load LCP candidate first with high priority
+    loadAndCacheImage(schoolBackground, 'school');
+  }, [loadAndCacheImage]);
+  
   // IntersectionObserver to lazy-load background images when sections approach viewport
   useEffect(() => {
     const sectionToBackground: Record<string, string> = {
@@ -207,20 +233,44 @@ const Writing = () => {
       'other-works': 'otherWorks'
     };
     
+    // Map of background keys to their import sources for caching
+    const backgroundSources: Record<string, string> = {
+      'hoax': hoaxBackground,
+      'theMarket': theMarketBackground,
+      'oba': amyaNewBackground,
+      'statesOfMotion': statesOfMotionBackground,
+      'how': howBackground,
+      'viceVersa': viceVersaBackground,
+      'victorianLondon': professorBarnabasBackground,
+      'wasteland': wastelandCityBackground,
+      'deepSpace': deepSpaceBackground
+    };
+    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const sectionName = (entry.target as HTMLElement).dataset.section;
             if (sectionName && sectionToBackground[sectionName]) {
+              const bgKey = sectionToBackground[sectionName];
+              
+              // Cache the background image
+              if (backgroundSources[bgKey]) {
+                loadAndCacheImage(backgroundSources[bgKey], bgKey);
+              }
+              
               setLoadedBackgrounds(prev => {
                 const newSet = new Set(prev);
-                newSet.add(sectionToBackground[sectionName]);
+                newSet.add(bgKey);
                 // For young-adult, also load all 3 background variants
                 if (sectionName === 'young-adult') {
                   newSet.add('victorianLondon');
                   newSet.add('wasteland');
                   newSet.add('deepSpace');
+                  // Cache all 3 YA backgrounds
+                  loadAndCacheImage(professorBarnabasBackground, 'victorianLondon');
+                  loadAndCacheImage(wastelandCityBackground, 'wasteland');
+                  loadAndCacheImage(deepSpaceBackground, 'deepSpace');
                 }
                 return newSet;
               });
@@ -239,7 +289,7 @@ const Writing = () => {
     sections.forEach(section => observer.observe(section));
     
     return () => observer.disconnect();
-  }, []);
+  }, [loadAndCacheImage]);
 
 
   // Scroll snap logic - loose snapping, only when section fills most of screen, DESKTOP ONLY
@@ -813,6 +863,19 @@ const Writing = () => {
         bannerVisible={bannerVisible}
         onBannerHide={handleBannerBookClick}
         getHeaderBottom={getHeaderBottom}
+      />
+      
+      {/* Hidden LCP preload element - forces browser to prioritize this image */}
+      <img
+        src={schoolBackground}
+        alt=""
+        width={2560}
+        height={1440}
+        loading="eager"
+        decoding="sync"
+        {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
+        className="absolute w-0 h-0 opacity-0 pointer-events-none"
+        aria-hidden="true"
       />
       
       {/* Stacked Background Images - GPU-accelerated fixed layer */}
