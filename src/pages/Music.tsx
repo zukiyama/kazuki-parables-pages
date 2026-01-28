@@ -293,6 +293,7 @@ const Music = () => {
   // Store Image objects in cache ref to prevent garbage collection
   useEffect(() => {
     const initialBackground = albums[7].background; // Flower EP is default
+    const initialCover = albums[7].cover; // Also cache the default cover
     
     const loadAndCacheImage = (src: string): Promise<void> => {
       return new Promise<void>((resolve) => {
@@ -326,24 +327,37 @@ const Music = () => {
       });
     };
     
-    // Load initial background first, then show immediately
-    loadAndCacheImage(initialBackground).then(() => {
+    // Load initial background AND cover first, then show immediately
+    Promise.all([
+      loadAndCacheImage(initialBackground),
+      loadAndCacheImage(initialCover)
+    ]).then(() => {
       setBackgroundsLoaded(true);
       
-      // Defer loading and caching other backgrounds using requestIdleCallback
-      const loadRemainingBackgrounds = async () => {
+      // Defer loading and caching other backgrounds AND covers using requestIdleCallback
+      const loadRemainingAssets = async () => {
         for (const album of albums) {
-          if (album.background === initialBackground) continue;
-          await loadAndCacheImage(album.background);
+          if (album.background !== initialBackground) {
+            await loadAndCacheImage(album.background);
+          }
+          if (album.cover && album.cover !== initialCover) {
+            await loadAndCacheImage(album.cover);
+          }
+          // Also cache single covers if present
+          if (album.singleCovers) {
+            for (const singleCover of Object.values(album.singleCovers)) {
+              await loadAndCacheImage(singleCover);
+            }
+          }
         }
       };
       
       if ('requestIdleCallback' in window) {
         (window as typeof window & { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(() => {
-          loadRemainingBackgrounds();
+          loadRemainingAssets();
         });
       } else {
-        setTimeout(loadRemainingBackgrounds, 100);
+        setTimeout(loadRemainingAssets, 100);
       }
     });
     
@@ -543,6 +557,42 @@ const Music = () => {
       clearTimeout(transitionRef.current);
     }
     
+    // Helper to ensure image is loaded and decoded
+    const ensureImageLoaded = (src: string): Promise<void> => {
+      return new Promise<void>((resolve) => {
+        // Already cached and decoded
+        if (imageCache.current.has(src)) {
+          resolve();
+          return;
+        }
+        
+        const img = new Image();
+        const handleLoad = async () => {
+          try {
+            await img.decode();
+          } catch {
+            // Decode failed, continue anyway
+          }
+          imageCache.current.set(src, img);
+          resolve();
+        };
+        
+        img.onload = handleLoad;
+        img.onerror = () => resolve();
+        img.src = src;
+        
+        if (img.complete) {
+          handleLoad();
+        }
+      });
+    };
+    
+    // Wait for BOTH background AND cover to be loaded before transitioning
+    await Promise.all([
+      ensureImageLoaded(album.background),
+      album.cover ? ensureImageLoaded(album.cover) : Promise.resolve()
+    ]);
+    
     setIsTransitioning(true);
     
     // Determine which layer is currently visible
@@ -571,7 +621,7 @@ const Music = () => {
       });
     }
     
-    // Update album immediately as fade begins or if same album
+    // Update album now that both assets are ready
     if (album.id !== selectedAlbum.id) {
       setSelectedAlbum(album);
     }
