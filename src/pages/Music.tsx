@@ -286,46 +286,61 @@ const Music = () => {
     }
   }, [location.search]);
 
-  // Preload and decode all album backgrounds for smooth transitions
+// Priority-load the initial background (LCP), then lazy-load others
   useEffect(() => {
-    const preloadImages = async () => {
-      const timeout = setTimeout(() => {
-        // Fallback: show backgrounds after 5 seconds even if not all loaded
-        setBackgroundsLoaded(true);
-      }, 5000);
-
-      const promises = albums.map(album => {
-        return new Promise<void>((resolve) => {
-          const img = new Image();
-          
-          const handleLoad = async () => {
-            try {
-              await img.decode();
-            } catch (error) {
-              // Decode failed, but image loaded - continue anyway
-            }
-            resolve();
-          };
-          
-          // Set handlers BEFORE setting src
-          img.onload = handleLoad;
-          img.onerror = () => resolve();
-          
-          img.src = album.background;
-          
-          // Handle already-cached images (complete is true immediately)
-          if (img.complete) {
-            handleLoad();
+    const initialBackground = albums[7].background; // Flower EP is default
+    
+    const loadInitialBackground = async () => {
+      return new Promise<void>((resolve) => {
+        const img = new Image();
+        
+        const handleLoad = async () => {
+          try {
+            await img.decode();
+          } catch (error) {
+            // Decode failed, but image loaded - continue anyway
           }
-        });
+          resolve();
+        };
+        
+        img.onload = handleLoad;
+        img.onerror = () => resolve();
+        img.src = initialBackground;
+        
+        // Handle already-cached images
+        if (img.complete) {
+          handleLoad();
+        }
       });
-      
-      await Promise.all(promises);
-      clearTimeout(timeout);
-      setBackgroundsLoaded(true);
     };
     
-    preloadImages();
+    // Load initial background first, then show immediately
+    loadInitialBackground().then(() => {
+      setBackgroundsLoaded(true);
+      
+      // Defer loading other backgrounds using requestIdleCallback
+      const loadRemainingBackgrounds = () => {
+        albums.forEach((album, index) => {
+          if (index === 7) return; // Skip initial (already loaded)
+          
+          const img = new Image();
+          img.src = album.background;
+        });
+      };
+      
+      if ('requestIdleCallback' in window) {
+        (window as typeof window & { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(loadRemainingBackgrounds);
+      } else {
+        setTimeout(loadRemainingBackgrounds, 100);
+      }
+    });
+    
+    // Fallback timeout
+    const timeout = setTimeout(() => {
+      setBackgroundsLoaded(true);
+    }, 3000);
+    
+    return () => clearTimeout(timeout);
   }, []);
 
   // Reset scroll position when album changes
@@ -624,6 +639,19 @@ const Music = () => {
         />
       </div>
       
+      {/* Hidden preload image for LCP - ensures background is priority loaded */}
+      <img 
+        src={flowerEpBackground}
+        alt=""
+        aria-hidden="true"
+        width="2560"
+        height="1600"
+        loading="eager"
+        decoding="sync"
+        {...{ fetchpriority: "high" }}
+        className="absolute w-0 h-0 opacity-0 pointer-events-none"
+      />
+      
       {/* Two-Layer Crossfade Background System - GPU-accelerated fixed layer */}
       <div className="bg-layer-fixed z-0">
         {/* Loading placeholder until backgrounds are ready */}
@@ -661,6 +689,9 @@ const Music = () => {
               <img 
                 src={musicLogo} 
                 alt="Music" 
+                width="672"
+                height="auto"
+                loading="eager"
                 className="w-full animate-fade-in"
                 onLoad={() => setLogoLoaded(true)}
               />
