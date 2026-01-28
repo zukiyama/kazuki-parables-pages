@@ -6,20 +6,20 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 
-import surnamePendragonBanner from "@/assets/surname-pendragon-banner.png";
-import surnamePendragonMobile from "@/assets/surname-pendragon-mobile.png";
-import soulTiedCover from "@/assets/soul-tied-cover-new.jpeg";
-import burdenCoverNew from "@/assets/burden-cover-new.png";
-import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.png";
-import godsCover from "@/assets/gods-cover-new.png";
-import scriptedCover from "@/assets/scripted-cover-new.png";
-import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.jpeg";
-import comicsFooterCharacter from "@/assets/comics-footer-character.png";
-import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.png";
-import vignetteApartments from "@/assets/god-of-lies-vignette-boardgame.png";
-import vignetteBoardgame from "@/assets/god-of-lies-sweeping.png";
-import vignetteManyFaces from "@/assets/god-of-lies-characters.png";
-import comicPanelsBackground from "@/assets/comic-panels-background.png";
+import surnamePendragonBanner from "@/assets/surname-pendragon-banner.webp";
+import surnamePendragonMobile from "@/assets/surname-pendragon-mobile.webp";
+import soulTiedCover from "@/assets/soul-tied-cover-new.webp";
+import burdenCoverNew from "@/assets/burden-cover-new.webp";
+import mrMiracleCoverNew from "@/assets/mr-miracle-cover-new.webp";
+import godsCover from "@/assets/gods-cover-new.webp";
+import scriptedCover from "@/assets/scripted-cover-new.webp";
+import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.webp";
+import comicsFooterCharacter from "@/assets/comics-footer-character.webp";
+import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.webp";
+import vignetteApartments from "@/assets/god-of-lies-vignette-boardgame.webp";
+import vignetteBoardgame from "@/assets/god-of-lies-sweeping.webp";
+import vignetteManyFaces from "@/assets/god-of-lies-characters.webp";
+import comicPanelsBackground from "@/assets/comic-panels-background.webp";
 
 
 const Comics = () => {
