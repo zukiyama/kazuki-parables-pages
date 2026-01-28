@@ -47,6 +47,35 @@ import professorBarnabasCover from "@/assets/professor-barnabas-cover-new.webp";
 import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.webp";
 import toFlyCover from "@/assets/to-fly-cover-new.webp";
 
+// Map section names to their background images
+const sectionBackgrounds: Record<string, string> = {
+  'kaiju': schoolBackground,
+  'hoax': hoaxBackground,
+  'the-market': theMarketBackground,
+  'oba': amyaNewBackground,
+  'states-of-motion': statesOfMotionBackground,
+  'how': howBackground,
+  'vice-versa': viceVersaBackground,
+  'young-adult-0': professorBarnabasBackground, // Victorian London
+  'young-adult-1': wastelandCityBackground,     // Wasteland
+  'young-adult-2': deepSpaceBackground,         // Deep Space
+  'other-works': 'black' // Special case: solid black
+};
+
+// Map bookId from banner to section name
+const bookIdToSection: Record<string, string> = {
+  'kaiju': 'kaiju',
+  'hoax': 'hoax',
+  'the-market': 'the-market',
+  'oba': 'oba',
+  'states-of-motion': 'states-of-motion',
+  'how': 'how',
+  'vice-versa': 'vice-versa',
+  'professor-barnabas': 'young-adult-0',
+  'land-dream': 'young-adult-1',
+  'to-fly': 'young-adult-2'
+};
+
 const Writing = () => {
   useScrollToTop();
   const isWidescreen = useWidescreenAspectRatio();
@@ -57,19 +86,14 @@ const Writing = () => {
   const [bannerVisible, setBannerVisible] = useState(true); // For widescreen banner toggle
   const bannerManuallyHiddenRef = useRef(false); // Track when banner was programmatically hidden
   const [parableTrilogyVisible, setParableTrilogyVisible] = useState(true); // For fade animation
-  const [backgroundOpacities, setBackgroundOpacities] = useState({
-    school: 1,
-    hoax: 0,
-    theMarket: 0,
-    oba: 0,
-    statesOfMotion: 0,
-    how: 0,
-    viceVersa: 0,
-    victorianLondon: 0,
-    wasteland: 0,
-    deepSpace: 0,
-    otherWorks: 0
-  });
+  
+  // Two-layer crossfade system (like Music page)
+  const [layerA, setLayerA] = useState({ image: schoolBackground, opacity: 1, isBlack: false });
+  const [layerB, setLayerB] = useState({ image: schoolBackground, opacity: 0, isBlack: false });
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const transitionRef = useRef<NodeJS.Timeout | null>(null);
+  const currentBackgroundRef = useRef<string>('kaiju'); // Track current section for deduplication
+  const isBannerNavigatingRef = useRef(false); // Suppress scroll updates during banner navigation
   
   // Other Works section state
   const [slideshowOpacity, setSlideshowOpacity] = useState(1);
@@ -187,27 +211,37 @@ const Writing = () => {
   }, [location]);
 
   // ============================================
-  // IMAGE LOADING PRIORITY STRATEGY
+  // IMAGE PRELOADING STRATEGY
   // ============================================
-  // LCP (Largest Contentful Paint): schoolBackground - preloaded in index.html
-  // Above-fold eager: Banner thumbnails (handled in BookshelfMenu with loading="eager")
-  // Below-fold lazy: All other backgrounds use IntersectionObserver
+  // The two-layer crossfade system handles all backgrounds.
+  // This IntersectionObserver preloads/decodes images before they're needed.
   // ============================================
-
-  // State to track which background images should be loaded (IntersectionObserver-based)
-  const [loadedBackgrounds, setLoadedBackgrounds] = useState<Set<string>>(new Set(['school'])); // LCP loads immediately
   
-  // IntersectionObserver to lazy-load background images when sections approach viewport
+  // Preload and decode background images when sections approach viewport
   useEffect(() => {
-    const sectionToBackground: Record<string, string> = {
-      'hoax': 'hoax',
-      'the-market': 'theMarket',
-      'oba': 'oba',
-      'states-of-motion': 'statesOfMotion',
-      'how': 'how',
-      'vice-versa': 'viceVersa',
-      'young-adult': 'youngAdult', // Will trigger loading of all 3 YA backgrounds
-      'other-works': 'otherWorks'
+    const sectionToImages: Record<string, string[]> = {
+      'hoax': [hoaxBackground],
+      'the-market': [theMarketBackground],
+      'oba': [amyaNewBackground],
+      'states-of-motion': [statesOfMotionBackground],
+      'how': [howBackground],
+      'vice-versa': [viceVersaBackground],
+      'young-adult': [professorBarnabasBackground, wastelandCityBackground, deepSpaceBackground]
+    };
+    
+    const preloadedImages = new Set<string>();
+    
+    const preloadImage = async (src: string) => {
+      if (preloadedImages.has(src)) return;
+      preloadedImages.add(src);
+      
+      const img = new Image();
+      img.src = src;
+      try {
+        await img.decode();
+      } catch {
+        // Decode failed but image may still be usable
+      }
     };
     
     const observer = new IntersectionObserver(
@@ -215,24 +249,14 @@ const Writing = () => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const sectionName = (entry.target as HTMLElement).dataset.section;
-            if (sectionName && sectionToBackground[sectionName]) {
-              setLoadedBackgrounds(prev => {
-                const newSet = new Set(prev);
-                newSet.add(sectionToBackground[sectionName]);
-                // For young-adult, also load all 3 background variants
-                if (sectionName === 'young-adult') {
-                  newSet.add('victorianLondon');
-                  newSet.add('wasteland');
-                  newSet.add('deepSpace');
-                }
-                return newSet;
-              });
+            if (sectionName && sectionToImages[sectionName]) {
+              sectionToImages[sectionName].forEach(preloadImage);
             }
           }
         });
       },
       {
-        rootMargin: '800px 0px', // Start loading 800px before section enters viewport
+        rootMargin: '800px 0px', // Start preloading 800px before section enters viewport
         threshold: 0
       }
     );
@@ -534,8 +558,77 @@ const Writing = () => {
     return () => window.removeEventListener('scroll', checkParableTrilogyVisibility);
   }, [getHeaderBottom]);
 
+  // Two-layer crossfade transition function (like Music page)
+  const transitionBackground = useCallback((targetSection: string) => {
+    // Skip if same section or currently transitioning during banner navigation
+    if (targetSection === currentBackgroundRef.current) return;
+    
+    // Get the target image
+    const targetImage = sectionBackgrounds[targetSection];
+    if (!targetImage) return;
+    
+    // Special case for 'other-works' which uses solid black
+    const isBlack = targetSection === 'other-works';
+    
+    // Clear any existing transition
+    if (transitionRef.current) {
+      clearTimeout(transitionRef.current);
+    }
+    
+    setIsTransitioning(true);
+    currentBackgroundRef.current = targetSection;
+    
+    // Determine which layer is currently visible
+    const isLayerAVisible = layerA.opacity === 1;
+    
+    if (isLayerAVisible) {
+      // Layer A is visible, prepare layer B with new image and fade it in
+      setLayerB({ image: isBlack ? '' : targetImage, opacity: 0, isBlack });
+      
+      // Use requestAnimationFrame to ensure the new image is set before starting transition
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setLayerA(prev => ({ ...prev, opacity: 0 }));
+          setLayerB(prev => ({ ...prev, opacity: 1 }));
+        });
+      });
+    } else {
+      // Layer B is visible, prepare layer A with new image and fade it in
+      setLayerA({ image: isBlack ? '' : targetImage, opacity: 0, isBlack });
+      
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setLayerB(prev => ({ ...prev, opacity: 0 }));
+          setLayerA(prev => ({ ...prev, opacity: 1 }));
+        });
+      });
+    }
+    
+    // Clear transition state after animation completes
+    transitionRef.current = setTimeout(() => {
+      setIsTransitioning(false);
+    }, 1000); // Match CSS transition duration
+  }, [layerA.opacity]);
+
   useEffect(() => {
     const handleScroll = () => {
+      // Skip background updates during banner navigation
+      if (isBannerNavigatingRef.current) {
+        // Still update scroll position and visible sections
+        setScrollY(window.scrollY);
+        const sections = document.querySelectorAll('[data-section]');
+        const newVisibleSections = new Set<string>();
+        sections.forEach((section) => {
+          const rect = section.getBoundingClientRect();
+          const sectionId = section.getAttribute('data-section');
+          if (rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) {
+            if (sectionId) newVisibleSections.add(sectionId);
+          }
+        });
+        setVisibleSections(newVisibleSections);
+        return;
+      }
+      
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
 
@@ -554,28 +647,14 @@ const Writing = () => {
       
       setVisibleSections(newVisibleSections);
 
-      // Update background opacities based on visible section
-      const newOpacities = {
-        school: 0,
-        hoax: 0,
-        theMarket: 0,
-        oba: 0,
-        statesOfMotion: 0,
-        how: 0,
-        viceVersa: 0,
-        victorianLondon: 0,
-        wasteland: 0,
-        deepSpace: 0,
-        otherWorks: 0
-      };
+      // Determine which background to show based on visible section
+      let targetSection = 'kaiju'; // Default
       
       // Handle Other Works section visibility
       if (newVisibleSections.has('other-works')) {
-        newOpacities.otherWorks = 1;
+        targetSection = 'other-works';
         setSlideshowOpacity(0);
         setOtherWorksContentOpacity(1);
-        // IMPORTANT: When other-works is visible, do NOT set any other background opacity
-        // This prevents the KAIJU (school) background from flashing during the transition
       } else {
         setSlideshowOpacity(1);
         setOtherWorksContentOpacity(0);
@@ -583,62 +662,61 @@ const Writing = () => {
         setExpandedWork(null);
         setActiveVignette(null);
         
-        // Only determine which section background to show when NOT in other-works
+        // Determine which section background to show
         if (newVisibleSections.has('vice-versa')) {
-          newOpacities.viceVersa = 1;
+          targetSection = 'vice-versa';
         } else if (newVisibleSections.has('how')) {
-          newOpacities.how = 1;
+          targetSection = 'how';
         } else if (newVisibleSections.has('states-of-motion')) {
-          newOpacities.statesOfMotion = 1;
+          targetSection = 'states-of-motion';
         } else if (newVisibleSections.has('oba')) {
-          newOpacities.oba = 1;
+          targetSection = 'oba';
         } else if (newVisibleSections.has('the-market')) {
-          newOpacities.theMarket = 1;
+          targetSection = 'the-market';
         } else if (newVisibleSections.has('hoax')) {
-          newOpacities.hoax = 1;
+          targetSection = 'hoax';
         } else if (newVisibleSections.has('young-adult')) {
           // Show different backgrounds based on current young adult book
-          // Keep ALL young-adult backgrounds in their current opacity state initially
-          // Only the selected one will be set to 1, CSS transitions handle the crossfade
-          newOpacities.victorianLondon = currentYoungAdultBook === 0 ? 1 : 0;
-          newOpacities.wasteland = currentYoungAdultBook === 1 ? 1 : 0;
-          newOpacities.deepSpace = currentYoungAdultBook === 2 ? 1 : 0;
-          // If somehow out of range, show school background
-          if (currentYoungAdultBook < 0 || currentYoungAdultBook > 2) {
-            newOpacities.school = 1;
-          }
+          targetSection = `young-adult-${currentYoungAdultBook}`;
         } else {
-          newOpacities.school = 1;
+          targetSection = 'kaiju';
         }
       }
 
-      setBackgroundOpacities(newOpacities);
+      transitionBackground(targetSection);
     };
 
     window.addEventListener("scroll", handleScroll);
     handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [transitionBackground, currentYoungAdultBook]);
 
-  // Separate effect for young-adult book changes - only updates young-adult backgrounds
-  // This prevents black flash by updating only the relevant backgrounds
+  // Separate effect for young-adult book changes - triggers crossfade when book changes
   useEffect(() => {
     if (!visibleSections.has('young-adult')) return;
     
-    setBackgroundOpacities(prev => ({
-      ...prev,
-      victorianLondon: currentYoungAdultBook === 0 ? 1 : 0,
-      wasteland: currentYoungAdultBook === 1 ? 1 : 0,
-      deepSpace: currentYoungAdultBook === 2 ? 1 : 0
-    }));
-  }, [currentYoungAdultBook, visibleSections]);
+    const targetSection = `young-adult-${currentYoungAdultBook}`;
+    transitionBackground(targetSection);
+  }, [currentYoungAdultBook, visibleSections, transitionBackground]);
 
-  const handleBookClick = (bookId: string, slideToBook?: number) => {
+  const handleBookClick = useCallback((bookId: string, slideToBook?: number) => {
+    // Set flag to suppress scroll handler background updates during navigation
+    isBannerNavigatingRef.current = true;
+    
+    // Immediately transition to the target background
+    const targetSection = bookIdToSection[bookId] || 'kaiju';
+    transitionBackground(targetSection);
+    
     // If it's a young adult book, set the slideshow to show that book IMMEDIATELY
     if (slideToBook !== undefined && youngAdultSlideshowRef.current) {
       youngAdultSlideshowRef.current.setCurrentBook(slideToBook);
     }
-  };
+    
+    // Clear the navigation flag after scroll completes (~700ms)
+    setTimeout(() => {
+      isBannerNavigatingRef.current = false;
+    }, 700);
+  }, [transitionBackground]);
 
   // Handle click to toggle banner on widescreen devices
   const handlePageClick = useCallback((e: React.MouseEvent) => {
@@ -818,144 +896,70 @@ const Writing = () => {
         getHeaderBottom={getHeaderBottom}
       />
       
-      {/* Stacked Background Images - GPU-accelerated fixed layer */}
-      {/* LCP CANDIDATE: schoolBackground - loaded eagerly with high priority */}
+      {/* Two-Layer Crossfade Background System - GPU-accelerated fixed layer */}
+      {/* LCP CANDIDATE: schoolBackground is initial image on Layer A */}
       <div className="bg-layer-fixed z-0">
-        <img 
-          src={schoolBackground} 
-          alt=""
-          width={2560}
-          height={1440}
-          loading="eager"
-          decoding="sync"
-          {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
-          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: backgroundOpacities.school }}
-        />
-        {/* Below-fold backgrounds - lazy loaded via IntersectionObserver */}
-        {loadedBackgrounds.has('hoax') && (
-          <img 
-            src={hoaxBackground} 
-            alt=""
-            width={2560}
-            height={1440}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-            style={{ opacity: backgroundOpacities.hoax }}
+        {/* Layer A */}
+        {layerA.isBlack ? (
+          <div 
+            className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+            style={{ 
+              opacity: layerA.opacity,
+              backgroundColor: otherWorksWhiteMode ? '#ffffff' : '#000000'
+            }}
           />
-        )}
-        {loadedBackgrounds.has('theMarket') && (
+        ) : (
           <img 
-            src={theMarketBackground} 
+            src={layerA.image} 
             alt=""
             width={2560}
             height={1440}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-            style={{ opacity: backgroundOpacities.theMarket }}
-          />
-        )}
-        {loadedBackgrounds.has('how') && (
-          <img 
-            src={howBackground} 
-            alt=""
-            width={2560}
-            height={1440}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-            style={{ opacity: backgroundOpacities.how }}
-          />
-        )}
-        {loadedBackgrounds.has('viceVersa') && (
-          <img 
-            src={viceVersaBackground} 
-            alt=""
-            width={2560}
-            height={1440}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-            style={{ opacity: backgroundOpacities.viceVersa }}
-          />
-        )}
-        {loadedBackgrounds.has('oba') && (
-          <img 
-            src={amyaNewBackground} 
-            alt=""
-            width={2560}
-            height={1440}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-150"
-            style={{ opacity: backgroundOpacities.oba }}
-          />
-        )}
-        {loadedBackgrounds.has('statesOfMotion') && (
-          <img 
-            src={statesOfMotionBackground} 
-            alt=""
-            width={2560}
-            height={1440}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-125"
-            style={{ opacity: backgroundOpacities.statesOfMotion }}
-          />
-        )}
-        {loadedBackgrounds.has('victorianLondon') && (
-          <img 
-            src={professorBarnabasBackground} 
-            alt=""
-            width={2560}
-            height={1440}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-            style={{ opacity: backgroundOpacities.victorianLondon }}
-          />
-        )}
-        {loadedBackgrounds.has('wasteland') && (
-          <img 
-            src={wastelandCityBackground} 
-            alt=""
-            width={2560}
-            height={1440}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
-            style={{ opacity: backgroundOpacities.wasteland }}
-          />
-        )}
-        {loadedBackgrounds.has('deepSpace') && (
-          <img 
-            src={deepSpaceBackground} 
-            alt=""
-            width={2560}
-            height={1440}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-            style={{ opacity: backgroundOpacities.deepSpace }}
+            loading="eager"
+            decoding="sync"
+            {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+              layerA.image === statesOfMotionBackground ? 'brightness-125' : ''
+            } ${
+              layerA.image === amyaNewBackground ? 'brightness-150' : ''
+            } ${
+              layerA.image === schoolBackground || layerA.image === wastelandCityBackground ? 'object-top' : ''
+            }`}
+            style={{ opacity: layerA.opacity }}
           />
         )}
         
-        {/* Background for Other Works section - transitions from black to white */}
-        <div 
-          className="absolute inset-0 transition-all duration-1000 ease-in-out"
-          style={{ 
-            opacity: backgroundOpacities.otherWorks,
-            backgroundColor: otherWorksWhiteMode ? '#ffffff' : '#000000'
-          }}
-        />
+        {/* Layer B */}
+        {layerB.isBlack ? (
+          <div 
+            className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+            style={{ 
+              opacity: layerB.opacity,
+              backgroundColor: otherWorksWhiteMode ? '#ffffff' : '#000000'
+            }}
+          />
+        ) : (
+          <img 
+            src={layerB.image} 
+            alt=""
+            width={2560}
+            height={1440}
+            loading="lazy"
+            decoding="async"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+              layerB.image === statesOfMotionBackground ? 'brightness-125' : ''
+            } ${
+              layerB.image === amyaNewBackground ? 'brightness-150' : ''
+            } ${
+              layerB.image === schoolBackground || layerB.image === wastelandCityBackground ? 'object-top' : ''
+            }`}
+            style={{ opacity: layerB.opacity }}
+          />
+        )}
         
+        {/* Static overlay for readability - not animated */}
         <div 
-          className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
-          style={{ 
-            opacity: otherWorksWhiteMode ? 0 : 1 
-          }}
+          className="absolute inset-0 transition-opacity duration-1000 ease-in-out pointer-events-none"
+          style={{ opacity: otherWorksWhiteMode ? 0 : 1 }}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
         </div>
