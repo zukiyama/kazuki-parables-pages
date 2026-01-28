@@ -242,6 +242,9 @@ const Music = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const transitionRef = useRef<NodeJS.Timeout | null>(null);
   
+  // Persistent cache of decoded Image objects to prevent garbage collection
+  const imageCache = useRef<Map<string, HTMLImageElement>>(new Map());
+  
   // Track background image loading state
   const [backgroundsLoaded, setBackgroundsLoaded] = useState(false);
   
@@ -287,11 +290,18 @@ const Music = () => {
   }, [location.search]);
 
 // Priority-load the initial background (LCP), then lazy-load others
+  // Store Image objects in cache ref to prevent garbage collection
   useEffect(() => {
     const initialBackground = albums[7].background; // Flower EP is default
     
-    const loadInitialBackground = async () => {
+    const loadAndCacheImage = (src: string): Promise<void> => {
       return new Promise<void>((resolve) => {
+        // Check if already cached
+        if (imageCache.current.has(src)) {
+          resolve();
+          return;
+        }
+        
         const img = new Image();
         
         const handleLoad = async () => {
@@ -300,12 +310,14 @@ const Music = () => {
           } catch (error) {
             // Decode failed, but image loaded - continue anyway
           }
+          // Store in cache to prevent garbage collection
+          imageCache.current.set(src, img);
           resolve();
         };
         
         img.onload = handleLoad;
         img.onerror = () => resolve();
-        img.src = initialBackground;
+        img.src = src;
         
         // Handle already-cached images
         if (img.complete) {
@@ -315,21 +327,21 @@ const Music = () => {
     };
     
     // Load initial background first, then show immediately
-    loadInitialBackground().then(() => {
+    loadAndCacheImage(initialBackground).then(() => {
       setBackgroundsLoaded(true);
       
-      // Defer loading other backgrounds using requestIdleCallback
-      const loadRemainingBackgrounds = () => {
-        albums.forEach((album, index) => {
-          if (index === 7) return; // Skip initial (already loaded)
-          
-          const img = new Image();
-          img.src = album.background;
-        });
+      // Defer loading and caching other backgrounds using requestIdleCallback
+      const loadRemainingBackgrounds = async () => {
+        for (const album of albums) {
+          if (album.background === initialBackground) continue;
+          await loadAndCacheImage(album.background);
+        }
       };
       
       if ('requestIdleCallback' in window) {
-        (window as typeof window & { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(loadRemainingBackgrounds);
+        (window as typeof window & { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(() => {
+          loadRemainingBackgrounds();
+        });
       } else {
         setTimeout(loadRemainingBackgrounds, 100);
       }
@@ -342,7 +354,6 @@ const Music = () => {
     
     return () => clearTimeout(timeout);
   }, []);
-
   // Reset scroll position when album changes
   useEffect(() => {
     if (scrollAreaRef.current) {
