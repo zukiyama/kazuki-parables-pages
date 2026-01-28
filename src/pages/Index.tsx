@@ -30,6 +30,7 @@ const Index = () => {
   const [animateTvText, setAnimateTvText] = useState(false);
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
+  const [heroBackgroundReady, setHeroBackgroundReady] = useState(false);
   const showMagazineRef = useRef(false);
   
   // Parable banner slideshow state - using Embla for continuous right-scroll
@@ -272,18 +273,36 @@ const Index = () => {
     }
   }, [currentImage]);
 
+  // Load and decode hero background, then fade in
+  useEffect(() => {
+    const img = new Image();
+    img.onload = async () => {
+      try {
+        await img.decode();
+      } catch (e) {
+        // Fallback if decode fails
+      } finally {
+        setHeroBackgroundReady(true);
+      }
+    };
+    img.onerror = () => {
+      setHeroBackgroundReady(true);
+    };
+    img.src = japaneseBackground;
+  }, []);
+
   return (
     <div className="relative min-h-screen-stable flex flex-col overflow-hidden">
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
       {/* All devices use --hero-h for perfect bottom alignment */}
-      <section className="h-[calc(var(--hero-h,100dvh)-56px)] mt-14 flex items-center justify-center relative overflow-hidden bg-background">
+      <section className="h-[calc(var(--hero-h,100dvh)-56px)] mt-14 flex items-center justify-center relative overflow-hidden bg-black">
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-cover object-center bg-slate-100"
-          style={{ objectPosition: '50% center' }}
+          className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out"
+          style={{ objectPosition: '50% center', opacity: heroBackgroundReady ? 1 : 0 }}
           loading="eager"
           fetchPriority="high"
           decoding="sync"
