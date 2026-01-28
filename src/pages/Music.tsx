@@ -12,27 +12,26 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
 
 // Background images for different themes
-import spaceshipBackground from "@/assets/spaceship-background.jpg";
-import manOnFilmBackground from "@/assets/man-on-film-background-film-reels.png";
-import toDreamtManBackground from "@/assets/to-the-dreamt-man-background-final.png";
-import centreOfWorldBackground from "@/assets/centre-of-world-background-new.png";
-import ohioCassettePoster from "@/assets/music-video-poster-new.jpeg";
-import flowerEpBackground from "@/assets/flower-ep-background-new.png";
-import starPeopleRiverBackground from "@/assets/star-people-river-background.png";
-import deathOfLoveBackground from "@/assets/death-of-love-background.png";
-import sceneOfMyRestorationBackground from "@/assets/scene-of-my-restoration-background.png";
+import spaceshipBackground from "@/assets/spaceship-background.webp";
+import manOnFilmBackground from "@/assets/man-on-film-background-film-reels.webp";
+import toDreamtManBackground from "@/assets/to-the-dreamt-man-background-final.webp";
+import centreOfWorldBackground from "@/assets/centre-of-world-background-new.webp";
+import flowerEpBackground from "@/assets/flower-ep-background-new.webp";
+import starPeopleRiverBackground from "@/assets/star-people-river-background.webp";
+import deathOfLoveBackground from "@/assets/death-of-love-background.webp";
+import sceneOfMyRestorationBackground from "@/assets/scene-of-my-restoration-background.webp";
 import musicLogo from "@/assets/music-logo.png";
 
 // Album covers
-import spaceshipAlbum from "@/assets/spaceship-album.png";
-import starPeopleRiverAlbum from "@/assets/star-people-river-album.jpeg";
-import manOnFilmAlbum from "@/assets/man-on-film-album-updated.png";
-import deathOfLoveAlbum from "@/assets/death-of-love-album.png";
-import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album-new.jpeg";
-import centreOfWorldAlbum from "@/assets/last-city-on-earth-album.jpeg";
-import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
-import flowerEpCover from "@/assets/flower-ep-cover-banner.jpeg";
-import circlesSingleCover from "@/assets/circles-single-cover.webp";
+import spaceshipAlbum from "@/assets/spaceship-album.webp";
+import starPeopleRiverAlbum from "@/assets/star-people-river-album.webp";
+import manOnFilmAlbum from "@/assets/man-on-film-album-updated.webp";
+import deathOfLoveAlbum from "@/assets/death-of-love-album.webp";
+import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album-new.webp";
+import centreOfWorldAlbum from "@/assets/last-city-on-earth-album.webp";
+import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.webp";
+import flowerEpCover from "@/assets/flower-ep-cover-banner.webp";
+import circlesSingleCover from "@/assets/circles-single-covermusic.webp";
 
 const albums = [
   {
@@ -248,6 +247,7 @@ const Music = () => {
   
   // Zoom dialog for album covers
   const [isZoomDialogOpen, setIsZoomDialogOpen] = useState(false);
+  const [zoomImageSrc, setZoomImageSrc] = useState<string | null>(null);
   const zoomDialogJustClosedRef = useRef(false);
   
   // Track when banner was programmatically hidden (to prevent scroll handler from re-showing)
@@ -690,8 +690,7 @@ const Music = () => {
             <div className="bg-black/60 backdrop-blur-md rounded-lg p-6 border border-white/20 max-sm:p-2">
               <div className="relative aspect-video bg-black rounded-lg overflow-hidden group">
                 <video 
-                  className="w-full h-full object-cover"
-                  poster={ohioCassettePoster}
+                  className="w-full h-full object-cover bg-black"
                   controls={false}
                   id="ohio-video"
                 >
@@ -739,7 +738,10 @@ const Music = () => {
                       src={selectedAlbum.cover} 
                       alt={selectedAlbum.title}
                       className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6 transition-all duration-500 hover:scale-105 cursor-pointer"
-                      onClick={() => setIsZoomDialogOpen(true)}
+                      onClick={() => {
+                        setZoomImageSrc(selectedAlbum.cover);
+                        setIsZoomDialogOpen(true);
+                      }}
                     />
                   ) : (
                     <div className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6 bg-black/40 border border-white/20 flex items-center justify-center aspect-square">
@@ -859,26 +861,42 @@ const Music = () => {
             <h4 className="font-serif text-2xl text-white mb-4 text-center max-sm:text-xl">Singles</h4>
             {selectedAlbum.tracks.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-sm:gap-2">
-                {selectedAlbum.tracks.slice(0,4).map((track, idx) => (
-                <button
-                  key={idx}
-                  className={`relative group rounded-lg overflow-hidden border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 ${currentTrackIndex===idx? 'ring-2 ring-white/60':''}`}
-                  onClick={() => { setCurrentTrackIndex(idx); setIsPlaying(true); }}
-                >
-                  {(selectedAlbum as any).singleCovers?.[track] ? (
-                    <>
-                      <img src={(selectedAlbum as any).singleCovers[track]} alt={`${selectedAlbum.title} - ${track}`} className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
-                      <div className="absolute bottom-2 left-2 right-2 text-left">
-                        <span className="text-white text-sm font-palatino line-clamp-2">{track}</span>
+                {selectedAlbum.tracks.slice(0,4).map((track, idx) => {
+                  const singleCover = (selectedAlbum as any).singleCovers?.[track];
+                  return (
+                  <button
+                    key={idx}
+                    className={`relative group rounded-lg overflow-hidden border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 ${currentTrackIndex===idx? 'ring-2 ring-white/60':''}`}
+                    onClick={(e) => { 
+                      // If this single has a cover, check if user clicked on the image for zoom
+                      if (singleCover && (e.target as HTMLElement).tagName === 'IMG') {
+                        setZoomImageSrc(singleCover);
+                        setIsZoomDialogOpen(true);
+                      } else {
+                        setCurrentTrackIndex(idx); 
+                        setIsPlaying(true);
+                      }
+                    }}
+                  >
+                    {singleCover ? (
+                      <>
+                        <img 
+                          src={singleCover} 
+                          alt={`${selectedAlbum.title} - ${track}`} 
+                          className="w-full aspect-square object-cover opacity-90 group-hover:opacity-100 transition-opacity cursor-pointer hover:scale-105 transition-all duration-300" 
+                        />
+                        <div className="absolute bottom-2 left-2 right-2 text-left">
+                          <span className="text-white text-sm font-palatino line-clamp-2">{track}</span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="w-full aspect-square bg-black/60 flex items-center justify-center">
+                        <span className="text-white/40 text-2xl font-palatino">--</span>
                       </div>
-                    </>
-                  ) : (
-                    <div className="w-full aspect-square bg-black/60 flex items-center justify-center">
-                      <span className="text-white/40 text-2xl font-palatino">--</span>
-                    </div>
-                  )}
-                </button>
-                ))}
+                    )}
+                  </button>
+                  );
+                })}
               </div>
             ) : (
               <div className="text-center text-white/60 font-serif">No singles available yet</div>
@@ -910,7 +928,7 @@ const Music = () => {
           hideCloseButton
         >
           <img 
-            src={selectedAlbum.cover} 
+            src={zoomImageSrc || selectedAlbum.cover} 
             alt={selectedAlbum.title}
             className={`rounded-lg outline-none ring-0 ${
               isWidescreen 

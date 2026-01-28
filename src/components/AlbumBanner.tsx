@@ -1,15 +1,15 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { ChevronRight } from "lucide-react";
 
-// Album covers
-import spaceshipAlbum from "@/assets/spaceship-album.png";
-import starPeopleRiverAlbum from "@/assets/star-people-river-album.jpeg";
-import manOnFilmAlbum from "@/assets/man-on-film-album-updated.png";
-import deathOfLoveAlbum from "@/assets/death-of-love-album.png";
-import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album-new.jpeg";
-import centreOfWorldAlbum from "@/assets/last-city-on-earth-album.jpeg";
-import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.jpeg";
-import flowerEpCover from "@/assets/flower-ep-cover-banner.jpeg";
+// Album cover thumbnails for banner (192x192)
+import spaceshipAlbumThumb from "@/assets/spaceship-albumthumbnail.webp";
+import starPeopleRiverAlbumThumb from "@/assets/star-people-river-albumthumbnail.webp";
+import manOnFilmAlbumThumb from "@/assets/man-on-film-album-updatedthumbnail.webp";
+import deathOfLoveAlbumThumb from "@/assets/death-of-love-albumthumbnail.webp";
+import sceneOfMyRestorationAlbumThumb from "@/assets/scene-of-my-restoration-album-newthumbnail.webp";
+import centreOfWorldAlbumThumb from "@/assets/last-city-on-earth-albumthumbnail.webp";
+import toDreamtManAlbumThumb from "@/assets/to-dreamt-man-album-newthumbnail.webp";
+import flowerEpCoverThumb from "@/assets/flower-ep-cover-bannerthumbnail.webp";
 
 interface Album {
   id: number;
@@ -21,37 +21,37 @@ const albums: Album[] = [
   {
     id: 1,
     title: "Spaceship",
-    cover: spaceshipAlbum
+    cover: spaceshipAlbumThumb
   },
   {
     id: 2,
     title: "Star People River",
-    cover: starPeopleRiverAlbum
+    cover: starPeopleRiverAlbumThumb
   },
   {
     id: 3,
     title: "Man on Film",
-    cover: manOnFilmAlbum
+    cover: manOnFilmAlbumThumb
   },
   {
     id: 4,
     title: "The Death of Love",
-    cover: deathOfLoveAlbum
+    cover: deathOfLoveAlbumThumb
   },
   {
     id: 5,
     title: "Scene of My Restoration",
-    cover: sceneOfMyRestorationAlbum
+    cover: sceneOfMyRestorationAlbumThumb
   },
   {
     id: 6,
     title: "The Last City on Earth",
-    cover: centreOfWorldAlbum
+    cover: centreOfWorldAlbumThumb
   },
   {
     id: 7,
     title: "To the Dreamt Man",
-    cover: toDreamtManAlbum
+    cover: toDreamtManAlbumThumb
   }
 ];
 
@@ -59,7 +59,7 @@ const eps: Album[] = [
   {
     id: 8,
     title: "Flower",
-    cover: flowerEpCover
+    cover: flowerEpCoverThumb
   }
 ];
 
