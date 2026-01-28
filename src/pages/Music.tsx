@@ -548,6 +548,42 @@ const Music = () => {
     }, 800);
   };
 
+  // Helper to start background crossfade
+  const startCrossfade = (backgroundSrc: string) => {
+    setIsTransitioning(true);
+    
+    // Determine which layer is currently visible
+    const isLayerAVisible = layerA.opacity === 1;
+    
+    if (isLayerAVisible) {
+      // Layer A is visible, prepare layer B with new image and fade it in
+      setLayerB({ image: backgroundSrc, opacity: 0 });
+      
+      // Use requestAnimationFrame to ensure the new image is set before starting transition
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setLayerA(prev => ({ ...prev, opacity: 0 }));
+          setLayerB(prev => ({ ...prev, opacity: 1 }));
+        });
+      });
+    } else {
+      // Layer B is visible, prepare layer A with new image and fade it in
+      setLayerA({ image: backgroundSrc, opacity: 0 });
+      
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setLayerB(prev => ({ ...prev, opacity: 0 }));
+          setLayerA(prev => ({ ...prev, opacity: 1 }));
+        });
+      });
+    }
+    
+    // Clear transition state after animation completes
+    transitionRef.current = setTimeout(() => {
+      setIsTransitioning(false);
+    }, 800); // Match CSS transition duration
+  };
+
   const handleAlbumSelect = async (albumId: number) => {
     const album = albums.find(a => a.id === albumId);
     if (!album) return;
@@ -555,6 +591,11 @@ const Music = () => {
     // Clear any existing transition
     if (transitionRef.current) {
       clearTimeout(transitionRef.current);
+    }
+    
+    // OPTIMISTIC UPDATE: Immediately update the selected album for responsive UI
+    if (album.id !== selectedAlbum.id) {
+      setSelectedAlbum(album);
     }
     
     // Helper to ensure image is loaded and decoded
@@ -587,43 +628,27 @@ const Music = () => {
       });
     };
     
-    // Wait for BOTH background AND cover to be loaded before transitioning
-    await Promise.all([
-      ensureImageLoaded(album.background),
-      album.cover ? ensureImageLoaded(album.cover) : Promise.resolve()
-    ]);
+    // Check if both images are already cached
+    const bgCached = imageCache.current.has(album.background);
+    const coverCached = !album.cover || imageCache.current.has(album.cover);
     
-    setIsTransitioning(true);
-    
-    // Determine which layer is currently visible
-    const isLayerAVisible = layerA.opacity === 1;
-    
-    if (isLayerAVisible) {
-      // Layer A is visible, prepare layer B with new image and fade it in
-      setLayerB({ image: album.background, opacity: 0 });
-      
-      // Use requestAnimationFrame to ensure the new image is set before starting transition
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setLayerA(prev => ({ ...prev, opacity: 0 }));
-          setLayerB(prev => ({ ...prev, opacity: 1 }));
-        });
-      });
+    if (bgCached && coverCached) {
+      // Both cached - start crossfade immediately (no waiting)
+      startCrossfade(album.background);
     } else {
-      // Layer B is visible, prepare layer A with new image and fade it in
-      setLayerA({ image: album.background, opacity: 0 });
+      // Not cached - load with short timeout fallback for mobile responsiveness
+      const loadPromise = Promise.all([
+        ensureImageLoaded(album.background),
+        album.cover ? ensureImageLoaded(album.cover) : Promise.resolve()
+      ]);
       
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setLayerB(prev => ({ ...prev, opacity: 0 }));
-          setLayerA(prev => ({ ...prev, opacity: 1 }));
-        });
-      });
-    }
-    
-    // Update album now that both assets are ready
-    if (album.id !== selectedAlbum.id) {
-      setSelectedAlbum(album);
+      // Race against a 300ms timeout - don't block UI forever on slow mobile
+      await Promise.race([
+        loadPromise,
+        new Promise(resolve => setTimeout(resolve, 300))
+      ]);
+      
+      startCrossfade(album.background);
     }
     
     // Scroll to show album - widescreen devices center the album cover + title
@@ -669,11 +694,6 @@ const Music = () => {
         }
       }
     }, 100); // Small delay to ensure DOM update
-    
-    // Clear transition state after animation completes
-    transitionRef.current = setTimeout(() => {
-      setIsTransitioning(false);
-    }, 800); // Match CSS transition duration
   };
 
   // Wrap album select to also handle banner hiding on widescreen
@@ -829,7 +849,10 @@ const Music = () => {
                     <img 
                       src={selectedAlbum.cover} 
                       alt={selectedAlbum.title}
-                      className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6 transition-all duration-500 hover:scale-105 cursor-pointer"
+                      width="800"
+                      height="800"
+                      loading="eager"
+                      className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6 transition-all duration-500 hover:scale-105 cursor-pointer aspect-square object-cover"
                       onClick={() => {
                         setZoomImageSrc(selectedAlbum.cover);
                         setIsZoomDialogOpen(true);
