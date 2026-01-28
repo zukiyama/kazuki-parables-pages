@@ -693,6 +693,8 @@ const Writing = () => {
 
   // Separate effect for young-adult book changes - triggers crossfade when book changes
   useEffect(() => {
+    // Skip during banner navigation to prevent overwriting target background
+    if (isBannerNavigatingRef.current) return;
     if (!visibleSections.has('young-adult')) return;
     
     const targetSection = `young-adult-${currentYoungAdultBook}`;
