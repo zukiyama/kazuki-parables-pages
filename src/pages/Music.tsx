@@ -762,14 +762,20 @@ const Music = () => {
           {/* Header - Logo with handwritten Music title overlapping */}
           <div className="text-center mb-0 pt-0">
             {/* Wrapper maintains logo-relative positioning at all sizes */}
-            <div className="relative max-w-2xl w-full mx-auto" style={{ containerType: 'inline-size' }}>
+            {/* Use aspect-ratio to reserve space and prevent layout shift before logo loads */}
+            <div 
+              className="relative max-w-2xl w-full mx-auto" 
+              style={{ containerType: 'inline-size', aspectRatio: '672 / 160' }}
+            >
               <img 
                 src={musicLogo} 
                 alt="Music" 
                 width="672"
-                height="auto"
+                height="160"
                 loading="eager"
-                className="w-full animate-fade-in"
+                decoding="sync"
+                {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
+                className="w-full h-full object-contain animate-fade-in"
                 onLoad={() => setLogoLoaded(true)}
               />
               {/* Single music title - positioned relative to logo wrapper using container units */}
