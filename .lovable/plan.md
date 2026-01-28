@@ -1,84 +1,93 @@
 
-# Fix: Young Adult Background Persisting When Navigating Away
 
-## Problem Identified
+# Fix Grey Flash on Writing Page Banner Click Navigation
 
-When navigating away from the Young Adult slideshow section using banner thumbnails, the background image remains stuck on the last viewed slideshow book instead of transitioning to the target section's background.
+## Problem Summary
+When clicking a book thumbnail in the Writing page banner, a grey flash briefly appears during the rapid scroll to the target section. This happens because multiple background images transition their opacity simultaneously during the fast scroll, and the underlying container has no fallback color set.
 
-## Root Cause
+## Root Causes Identified
 
-The issue is in the `useEffect` at lines 695-700:
+1. **No fallback background color**: The `.bg-layer-fixed` container doesn't have an explicit `background-color: black` set, so when all background images briefly have reduced opacity during transitions, the browser's default grey shows through.
 
-```javascript
-useEffect(() => {
-  if (!visibleSections.has('young-adult')) return;
-  
-  const targetSection = `young-adult-${currentYoungAdultBook}`;
-  transitionBackground(targetSection);
-}, [currentYoungAdultBook, visibleSections, transitionBackground]);
+2. **Scroll handler triggers rapid opacity changes**: During a fast `scrollTo`, the scroll event fires many times, each time updating `visibleSections` and recalculating `backgroundOpacities`. This causes multiple backgrounds to start/stop fading simultaneously rather than a clean A→B crossfade.
+
+3. **Writing page uses single-layer opacity system vs Music page's two-layer crossfade**: The Music page explicitly manages `layerA` and `layerB` with proper sequencing, while Writing page just toggles opacity on individual images.
+
+## Solution Strategy
+
+A pragmatic, minimal-disruption fix that addresses the immediate symptom without rebuilding the entire background system:
+
+### Phase 1: Add Fallback Background Color (Quick Fix)
+
+Add `background-color: black` to the `.bg-layer-fixed` CSS class. This ensures that when all backgrounds are transitioning, the fallback is black (matching the site theme) rather than browser default grey.
+
+**File:** `src/index.css`
+```css
+.bg-layer-fixed {
+  /* existing styles... */
+  background-color: #000; /* Fallback to black, not grey */
+}
 ```
 
-This effect triggers whenever `visibleSections` changes. During rapid scrolling from the banner click:
+### Phase 2: Debounce Background Transitions During Banner Navigation
 
-1. `handleBookClick` correctly calls `transitionBackground('hoax')` and sets `currentBackgroundRef.current = 'hoax'`
-2. The scroll handler updates `visibleSections` (even during the navigation flag period)
-3. This triggers the young-adult effect because `visibleSections` changed
-4. If the young-adult section was briefly visible during scroll, the effect calls `transitionBackground('young-adult-2')` 
-5. This overwrites the correct 'hoax' transition with the old slideshow background
+Add a flag to temporarily suppress the scroll-based background updates when a banner click triggers navigation. The target background should be set directly rather than letting the scroll handler "discover" it by firing repeatedly.
 
-## Solution
+**File:** `src/pages/Writing.tsx`
+- Add a ref `isBannerNavigatingRef` that is set `true` when a banner click happens
+- The scroll handler's `setBackgroundOpacities()` logic should skip updates when this ref is true
+- After scroll stabilizes (~500-700ms), clear the flag
+- When banner click happens, immediately set the target section's background to opacity 1 and current background to 0, bypassing the scroll handler
 
-Add a check to skip this effect during banner navigation:
+**File:** `src/components/BookshelfMenu.tsx`  
+- Pass a callback to Writing.tsx that includes the target section ID
+- Writing.tsx uses this to immediately transition backgrounds
 
-```javascript
-useEffect(() => {
-  // Skip during banner navigation to prevent overwriting target background
-  if (isBannerNavigatingRef.current) return;
-  if (!visibleSections.has('young-adult')) return;
-  
-  const targetSection = `young-adult-${currentYoungAdultBook}`;
-  transitionBackground(targetSection);
-}, [currentYoungAdultBook, visibleSections, transitionBackground]);
+### Phase 3: Preload Target Background Before Fade (Optional Enhancement)
+
+For an even smoother experience, decode the target background image before starting the opacity transition (similar to Music page's approach). This is optional since the Writing page already lazy-loads backgrounds via IntersectionObserver and they should already be loaded for any section the user has scrolled past.
+
+## Technical Implementation Details
+
+### Step 1: CSS Fallback Color
+Add to `.bg-layer-fixed` in `src/index.css`:
+```css
+background-color: #000;
 ```
 
-## Technical Details
-
-### File to Modify
-- `src/pages/Writing.tsx`
-
-### Change Location
-Lines 695-700
-
-### Before
-```javascript
-useEffect(() => {
-  if (!visibleSections.has('young-adult')) return;
-  
-  const targetSection = `young-adult-${currentYoungAdultBook}`;
-  transitionBackground(targetSection);
-}, [currentYoungAdultBook, visibleSections, transitionBackground]);
+### Step 2: Banner Navigation Flag in Writing.tsx
+```text
+- Add: const isBannerNavigatingRef = useRef(false);
+- In handleBookClick callback (passed to BookshelfMenu):
+  1. Set isBannerNavigatingRef.current = true
+  2. Immediately calculate target background key from bookId
+  3. Set backgroundOpacities with only target = 1, all others = 0
+  4. After 700ms, set isBannerNavigatingRef.current = false
+- In the scroll handler (useEffect at ~line 537):
+  - Add early return: if (isBannerNavigatingRef.current) return;
 ```
 
-### After
-```javascript
-useEffect(() => {
-  // Skip during banner navigation to prevent overwriting target background
-  if (isBannerNavigatingRef.current) return;
-  if (!visibleSections.has('young-adult')) return;
-  
-  const targetSection = `young-adult-${currentYoungAdultBook}`;
-  transitionBackground(targetSection);
-}, [currentYoungAdultBook, visibleSections, transitionBackground]);
-```
+### Step 3: Update BookshelfMenu to Pass Target Section
+The `onBookClick` callback already passes `bookId` and `slideToBook`. Writing.tsx can use this to determine which background to show immediately.
 
-## Why This Fix Works
+## Files to Modify
 
-1. During normal scrolling/swiping in the slideshow: `isBannerNavigatingRef.current` is `false`, so the effect runs normally and updates the background when the user swipes between books
+1. **`src/index.css`** - Add `background-color: #000` to `.bg-layer-fixed`
+2. **`src/pages/Writing.tsx`** - Add banner navigation debounce logic
 
-2. During banner navigation: `isBannerNavigatingRef.current` is `true` for 700ms, which suppresses this effect from overwriting the correct target background that was set by `handleBookClick`
+## Expected Outcome
 
-3. After banner navigation completes: The flag clears, but by then `visibleSections` should only contain the target section (e.g., 'hoax'), not 'young-adult', so the effect won't trigger anyway
+- Banner thumbnail clicks will immediately crossfade from current background to target background
+- No grey flash because: (a) fallback is now black, (b) backgrounds transition cleanly A→B instead of chaotic multi-way transitions
+- Normal scrolling behavior remains unchanged
+- Minimal code changes, low risk of side effects
 
-## Risk Assessment
+## Alternative Considered (Not Recommended Now)
 
-**Low risk** - This is a one-line addition that simply prevents an effect from running during the already-established "navigation suppression" window. It doesn't change any other behavior.
+A full two-layer crossfade system like the Music page would be more robust but requires:
+- Significant refactoring of how backgrounds are rendered
+- Managing layerA/layerB state
+- More complex coordination between scroll handler and banner clicks
+
+The proposed solution achieves the same visual result with much less disruption to the existing, working code.
+
