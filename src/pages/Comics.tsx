@@ -566,48 +566,36 @@ const Comics = () => {
     }
   ];
 
-  // Pre-decode all comic covers aggressively on mount (not waiting for IntersectionObserver)
-  // This ensures covers are ready before user reaches the grid
-  useEffect(() => {
-    // Start aggressive prefetch after secondary assets are loaded (lower priority)
-    if (!secondaryAssetsLoaded) return;
-    
-    const prefetchCovers = () => {
-      smallShelfComics.forEach(comic => {
-        if (!imageCacheRef.current.has(comic.cover)) {
-          const img = new Image();
-          img.src = comic.cover;
-          img.decode().then(() => {
-            imageCacheRef.current.set(comic.cover, img);
-          }).catch(() => {
-            // Still cache the image object even if decode fails
-            imageCacheRef.current.set(comic.cover, img);
-          });
-        }
-      });
-    };
-    
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(() => prefetchCovers(), { timeout: 500 });
-    } else {
-      setTimeout(prefetchCovers, 300);
-    }
-  }, [secondaryAssetsLoaded]);
+  // Modal ready state - ensures image is decoded before showing
+  const [modalReady, setModalReady] = useState(false);
 
-  const handleComicClick = (comic: {cover: string; title: string; description: React.ReactNode; teaser?: string}) => {
-    // Synchronous check - no async/await delay
-    // Image should already be in cache from aggressive prefetching
-    if (!imageCacheRef.current.has(comic.cover)) {
-      // Emergency fallback: cache immediately (image likely already loaded by browser)
-      const img = new Image();
-      img.src = comic.cover;
-      imageCacheRef.current.set(comic.cover, img);
+  const handleComicClick = async (comic: {cover: string; title: string; description: React.ReactNode; teaser?: string}) => {
+    // Check if image is already in our cache (already decoded)
+    if (imageCacheRef.current.has(comic.cover)) {
+      setSelectedComic(comic);
+      setModalReady(true);
+      return;
     }
-    setSelectedComic(comic);
+    
+    // Decode the image before showing modal to prevent flash
+    const img = new Image();
+    img.src = comic.cover;
+    
+    try {
+      await img.decode();
+      imageCacheRef.current.set(comic.cover, img);
+      setSelectedComic(comic);
+      setModalReady(true);
+    } catch {
+      // Fallback: show modal anyway if decode fails
+      setSelectedComic(comic);
+      setModalReady(true);
+    }
   };
 
   const handleCloseModal = () => {
     setSelectedComic(null);
+    setModalReady(false);
   };
 
 
@@ -1268,8 +1256,8 @@ const Comics = () => {
         }
       />
 
-      {/* Comic Detail Modal - instant open since images are pre-cached */}
-      {selectedComic && (
+      {/* Comic Detail Modal - only renders when image is decoded and ready */}
+      {selectedComic && modalReady && (
         <div 
           className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6 max-sm:p-4 cursor-pointer"
           onClick={handleCloseModal}

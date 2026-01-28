@@ -54,12 +54,8 @@ const Writing = () => {
   const [bannerVisible, setBannerVisible] = useState(true); // For widescreen banner toggle
   const bannerManuallyHiddenRef = useRef(false); // Track when banner was programmatically hidden
   const [parableTrilogyVisible, setParableTrilogyVisible] = useState(true); // For fade animation
-  
-  // Initial background fade-in state - starts at 0, transitions to 1 after load
-  const [initialBackgroundReady, setInitialBackgroundReady] = useState(false);
-  
   const [backgroundOpacities, setBackgroundOpacities] = useState({
-    school: 1, // Will be visible once initialBackgroundReady is true
+    school: 1,
     hoax: 0,
     theMarket: 0,
     oba: 0,
@@ -218,35 +214,11 @@ const Writing = () => {
     img.src = src;
   }, []);
   
-  // Priority-load the LCP background (schoolBackground) immediately with fade-in
+  // Priority-load the LCP background (schoolBackground) immediately
   useEffect(() => {
-    // Load LCP candidate first with high priority, then trigger fade-in
-    const img = new Image();
-    img.onload = async () => {
-      try {
-        await img.decode();
-        imageCache.current.set('school', img);
-      } catch {
-        imageCache.current.set('school', img);
-      }
-      // Trigger fade-in after image is ready (small delay for smoother effect)
-      requestAnimationFrame(() => {
-        setInitialBackgroundReady(true);
-      });
-    };
-    img.onerror = () => {
-      // Even on error, show whatever we have
-      setInitialBackgroundReady(true);
-    };
-    img.src = schoolBackground;
-    
-    // Fallback timeout in case load takes too long
-    const timeout = setTimeout(() => {
-      setInitialBackgroundReady(true);
-    }, 2000);
-    
-    return () => clearTimeout(timeout);
-  }, []);
+    // Load LCP candidate first with high priority
+    loadAndCacheImage(schoolBackground, 'school');
+  }, [loadAndCacheImage]);
   
   // IntersectionObserver to lazy-load background images when sections approach viewport
   useEffect(() => {
@@ -917,8 +889,8 @@ const Writing = () => {
           loading="eager"
           decoding="sync"
           {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
-          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out"
-          style={{ opacity: initialBackgroundReady ? backgroundOpacities.school : 0 }}
+          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: backgroundOpacities.school }}
         />
         {/* Below-fold backgrounds - lazy loaded via IntersectionObserver */}
         {loadedBackgrounds.has('hoax') && (
