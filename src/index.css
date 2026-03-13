@@ -175,12 +175,14 @@
    */
   .h-screen-stable {
     height: 100vh;
+    height: 100dvh;
     height: 100svh;
     height: var(--app-height, 100svh);
   }
 
   .min-h-screen-stable {
     min-height: 100vh;
+    min-height: 100dvh;
     min-height: 100svh;
     min-height: var(--app-height, 100svh);
   }
