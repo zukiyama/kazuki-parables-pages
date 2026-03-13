@@ -92,7 +92,6 @@ const albums = [
       "Pilgrims I Didn't Recognise",
       "Deep Blue Sea",
       "If You Can Be My Friend",
-      "Only Broken Things",
       "Nobody Too"
     ]
   },
