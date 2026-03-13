@@ -306,7 +306,7 @@ const Writing = () => {
   // Scroll snap logic - loose snapping, only when section fills most of screen, DESKTOP ONLY
   // Fixed for iOS: uses visualViewport at snap time + listens to visualViewport resize
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout;
+    let scrollTimeout: ReturnType<typeof setTimeout>;
     let lastSnappedSection: string | null = null;
     let pendingResnap: number | null = null;
     
