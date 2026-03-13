@@ -91,7 +91,7 @@ const albums = [
       "Like They Do on TV",
       "Pilgrims I Didn't Recognise",
       "Deep Blue Sea",
-      "It's Only Broken Things",
+      "If You Can Be My Friend",
       "Nobody Too"
     ]
   },
@@ -239,7 +239,7 @@ const Music = () => {
   const [layerA, setLayerA] = useState({ image: albums[7].background, opacity: 1 }); // Default to Coming Soon EP background
   const [layerB, setLayerB] = useState({ image: albums[7].background, opacity: 0 });
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const transitionRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const transitionRef = useRef<NodeJS.Timeout | null>(null);
   
   // Persistent cache of decoded Image objects to prevent garbage collection
   const imageCache = useRef<Map<string, HTMLImageElement>>(new Map());

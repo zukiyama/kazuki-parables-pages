@@ -165,7 +165,7 @@ const Comics = () => {
   useEffect(() => {
     let scrollAccumulator = 0;
     const scrollThreshold = 80; // Amount of scroll needed to trigger section change
-    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+    let debounceTimer: NodeJS.Timeout | null = null;
     
     const triggerSectionChange = (direction: 'next' | 'prev') => {
       if (isTransitioning) return;
