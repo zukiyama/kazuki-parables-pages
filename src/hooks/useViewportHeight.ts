@@ -17,17 +17,8 @@ export const useViewportHeight = () => {
     let rafId: number | null = null;
     let stableWidth = 0;
 
-    // Use visualViewport.height for accuracy on iPad Chrome/Edge,
-    // where innerHeight can be stale after toolbar retraction
-    const getViewportHeight = (): number => {
-      if (window.visualViewport) {
-        return window.visualViewport.height;
-      }
-      return document.documentElement.clientHeight || window.innerHeight;
-    };
-
     const setHeight = () => {
-      const height = getViewportHeight();
+      const height = window.innerHeight;
       document.documentElement.style.setProperty('--app-height', `${height}px`);
       stableWidth = window.innerWidth;
     };
@@ -58,12 +49,6 @@ export const useViewportHeight = () => {
     // Initialize
     setHeight();
 
-    // Delayed re-measure to catch iPad Chrome/Edge toolbar settling
-    // (toolbars may retract shortly after initial load, changing viewport height)
-    const settleTimeout = setTimeout(() => {
-      setHeight();
-    }, 500);
-
     if (isDesktop) {
       // Desktop: responsive to all window resizes
       window.addEventListener('resize', handleDesktopResize);
@@ -74,7 +59,6 @@ export const useViewportHeight = () => {
     }
 
     return () => {
-      clearTimeout(settleTimeout);
       if (rafId) cancelAnimationFrame(rafId);
       if (isDesktop) {
         window.removeEventListener('resize', handleDesktopResize);

@@ -131,9 +131,9 @@
     --app-height: 100svh;
   }
 
-  /* Black fallback prevents white bar if --app-height is slightly short (iPad Chrome/Edge) */
+  /* Prevent white flash - match site background */
   html {
-    background-color: hsl(0 0% 0%);
+    background-color: hsl(var(--background));
   }
 
   html, body {
