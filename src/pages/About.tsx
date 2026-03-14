@@ -22,6 +22,7 @@ const About = () => {
   const [showCityscape, setShowCityscape] = React.useState(false);
   const [headerHeight, setHeaderHeight] = React.useState(0);
   const [belowFoldVisible, setBelowFoldVisible] = React.useState(false);
+  const [heroBackgroundReady, setHeroBackgroundReady] = React.useState(false);
   const belowFoldRef = React.useRef<HTMLDivElement>(null);
 
   // Measure header height on mount and orientation change
@@ -62,6 +63,24 @@ const About = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Load and decode hero background (Paris Square), then fade in
+  React.useEffect(() => {
+    const img = new Image();
+    img.onload = async () => {
+      try {
+        await img.decode();
+      } catch (e) {
+        // Fallback if decode fails
+      } finally {
+        setHeroBackgroundReady(true);
+      }
+    };
+    img.onerror = () => {
+      setHeroBackgroundReady(true);
+    };
+    img.src = parisSquare;
+  }, []);
+
   React.useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
@@ -89,7 +108,7 @@ const About = () => {
         style={{ paddingTop: headerHeight }}
       >
         {/* Full-screen Paris background - covers entire section including under header */}
-        <div className="absolute inset-0" style={{ top: headerHeight }}>
+        <div className="absolute inset-0 bg-black" style={{ top: headerHeight }}>
           {/* LCP hero image - highest priority with explicit dimensions to prevent layout shift */}
           <img 
             src={parisSquare}
@@ -99,7 +118,8 @@ const About = () => {
             loading="eager"
             decoding="sync"
             {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-opacity duration-700 ease-in-out"
+            style={{ opacity: heroBackgroundReady ? 1 : 0 }}
           />
           {/* Subtle overlay to improve text readability - more opacity on mobile and iPad desktop for better text visibility */}
           <div className="absolute inset-0 bg-white/20 max-sm:bg-white/50 lg:bg-white/45 2xl:bg-white/20 xl:bg-white/35" />
