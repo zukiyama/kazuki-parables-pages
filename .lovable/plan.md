@@ -1,148 +1,55 @@
 
 
-# Mobile Music Page Synchronization and Performance Fix
+# Root Cause Analysis: White Bar on iPad Chrome/Edge
 
-## Problem Analysis
+## The Culprit: `useViewportHeight` + `--app-height` CSS Variable
 
-After examining the code, I've identified **three issues** causing the sluggish behavior and desynchronization on mobile:
+The white bar is caused by the interaction between the JavaScript-set `--app-height` variable and how iPad Chrome/Edge handle their toolbar/UI chrome differently from Safari.
 
-### Issue 1: Album Cover Has No Explicit Dimensions on Mobile
+### How it works
 
-The main album cover image (lines 829-837) lacks `width` and `height` attributes:
+1. **`useViewportHeight`** (runs in `AppContent`, affects every page) sets `--app-height` to `window.innerHeight` on load
+2. **Every page** uses `min-h-screen-stable`, which resolves to `var(--app-height, 100svh)` — so the JS value overrides the CSS fallback
+3. **On mobile/tablet**, the hook deliberately freezes `--app-height` (only updates on orientation change) to prevent scroll jank
 
-```tsx
-<img 
-  src={selectedAlbum.cover} 
-  alt={selectedAlbum.title}
-  className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6..."
-  // NO width/height attributes - browser must wait to compute layout
-/>
-```
+### Why Chrome/Edge show the bar but Safari doesn't
 
-On mobile, the browser must download and decode the image before it knows the dimensions, causing **layout shift** and **delayed rendering**. The background may finish its crossfade while the cover is still being laid out.
+On iPadOS, all browsers use WebKit, but they have different toolbar configurations:
+- **Safari**: Bottom toolbar is part of the browser UI and `innerHeight` accurately reflects the usable viewport
+- **Chrome**: Has a different toolbar layout (address bar + potentially bottom toolbar). After initial load, Chrome may auto-hide toolbars, exposing more viewport than the frozen `--app-height` accounts for
+- **Edge**: Similar but slightly different toolbar height, hence the smaller bar
 
-### Issue 2: `await img.decode()` Blocks the Main Thread on Slow Devices
+When Chrome's toolbar retracts during/after load, the actual visible area grows (say from 950px to 1000px), but `--app-height` stays frozen at the initial 950px. The page content is sized to 950px, leaving a 50px white gap at the bottom — the `html` background (`hsl(var(--background))` = white) shows through.
 
-The `handleAlbumSelect` function (lines 551-677) uses `await Promise.all([ensureImageLoaded(...)])` which waits for **full decode** before updating state:
+### Why the landing page animation correlates
 
-```tsx
-await Promise.all([
-  ensureImageLoaded(album.background),
-  album.cover ? ensureImageLoaded(album.cover) : Promise.resolve()
-]);
-// Only AFTER this does setSelectedAlbum happen
-```
+- **State A (scroll effect works, bar present)**: JS initialized successfully → `--app-height` was set → frozen at initial (shorter) height → white bar
+- **State B (scroll effect fails, bar absent)**: JS initialization was delayed/failed → `--app-height` not yet set → CSS fallback `100svh` is used → browser's native viewport unit is correct → no bar
 
-On desktop, decoding is fast. On mobile with slower CPUs/GPUs, `img.decode()` can take **200-500ms**, during which:
-- The button press feels unresponsive (user thinks nothing happened)
-- Everything waits for the slowest asset
+This confirms the root cause: the JS override is the problem, not the CSS fallback.
 
-### Issue 3: No Visual Feedback During Loading
+### Why it's site-wide
 
-When a user taps an album on mobile, there's no immediate visual acknowledgment that the selection is being processed. The delay between tap and response makes the site feel sluggish.
+`useViewportHeight` runs once in `AppContent` (the shared wrapper around all routes in `App.tsx`), and every page's root container uses `min-h-screen-stable` which consumes this variable.
 
----
+## Proposed Fix
 
-## Proposed Solution
+The fix targets the `--app-height` calculation to account for Chrome/Edge iPad toolbar differences, while preserving the existing scroll-stability behavior:
 
-### 1. Add Explicit Dimensions to Album Cover
+1. **In `useViewportHeight.ts`**: Use `document.documentElement.clientHeight` or `window.visualViewport?.height` instead of `window.innerHeight`. `visualViewport.height` is more accurate on Chrome/Edge as it reflects the actual layout viewport excluding browser UI. Add a fallback chain: `visualViewport.height → documentElement.clientHeight → innerHeight`.
 
-Add `width` and `height` attributes to the album cover image so the browser reserves space immediately, preventing layout shift and allowing parallel rendering.
+2. **In `index.css`**: Change the `html` background from white (`hsl(var(--background))`) to black, so that even if a tiny gap remains during transitions, it's invisible against dark page edges rather than showing a bright white bar. This is a defensive fallback.
 
-### 2. Optimistic UI Update with Graceful Crossfade
+3. **In `useViewportHeight.ts`**: After the initial set, add a single delayed re-measurement (e.g., 500ms) to catch Chrome/Edge toolbar settling, using the same width-stability guard to avoid scroll-triggered updates.
 
-Instead of waiting for both images to fully decode before updating the UI:
+### Files to change
+- `src/hooks/useViewportHeight.ts` — use `visualViewport.height`, add delayed re-measure
+- `src/index.css` — change `html` background fallback color
 
-1. **Immediately** update `selectedAlbum` when the user taps (optimistic update)
-2. **Start** the background crossfade as soon as the background is in cache (don't wait for full decode if already cached)
-3. Use a **shorter timeout fallback** (300ms) so mobile devices don't wait forever for slow decodes
-4. Add the cover image to a **preload queue** on first page load so it's likely cached by the time users tap
-
-### 3. Add Loading State Visual Feedback (Optional Enhancement)
-
-Consider adding a subtle loading indicator or immediate highlight on the tapped album thumbnail to confirm the tap registered.
-
----
-
-## Technical Changes
-
-### File: `src/pages/Music.tsx`
-
-**Change 1: Add dimensions to album cover image (around line 829)**
-
-Add `width="800"` and `height="800"` to match the WebP dimensions, plus a loading state:
-
-```tsx
-<img 
-  src={selectedAlbum.cover} 
-  alt={selectedAlbum.title}
-  width="800"
-  height="800"
-  loading="eager"
-  className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6..."
-/>
-```
-
-**Change 2: Refactor `handleAlbumSelect` for optimistic updates (around line 551)**
-
-The current implementation:
-```tsx
-const handleAlbumSelect = async (albumId: number) => {
-  // ... 
-  await Promise.all([...]);  // Blocks UI for 200-500ms on mobile
-  setSelectedAlbum(album);   // Only updates AFTER await completes
-};
-```
-
-New implementation:
-```tsx
-const handleAlbumSelect = async (albumId: number) => {
-  // 1. IMMEDIATELY update the selected album (optimistic UI)
-  setSelectedAlbum(album);
-  
-  // 2. Check if images are already cached - if so, start transition immediately
-  const bgCached = imageCache.current.has(album.background);
-  const coverCached = !album.cover || imageCache.current.has(album.cover);
-  
-  if (bgCached && coverCached) {
-    // Both cached - start crossfade immediately
-    startCrossfade(album.background);
-  } else {
-    // Not cached - load with short timeout fallback for mobile
-    const loadPromise = Promise.all([
-      ensureImageLoaded(album.background),
-      album.cover ? ensureImageLoaded(album.cover) : Promise.resolve()
-    ]);
-    
-    // Race against a timeout - don't wait forever on slow mobile
-    await Promise.race([
-      loadPromise,
-      new Promise(resolve => setTimeout(resolve, 300))
-    ]);
-    
-    startCrossfade(album.background);
-  }
-};
-```
-
-**Change 3: Extract crossfade logic into helper function**
-
-Move the layer-switching logic (currently inside `handleAlbumSelect`) into a separate `startCrossfade(backgroundSrc)` function to allow calling it from multiple code paths.
-
-**Change 4: Preload all album covers on initial page load**
-
-The current `requestIdleCallback` queue already includes covers, but we can prioritize them higher by loading covers before backgrounds for albums other than the initial one.
-
----
-
-## Expected Outcome
-
-| Before | After |
-|--------|-------|
-| Tap album -> 200-500ms delay -> both change at once | Tap album -> cover changes immediately -> background crossfades |
-| No feedback during loading | Immediate visual response to tap |
-| Layout shift when cover loads | Stable layout with reserved space |
-| Feels sluggish on mobile | Feels responsive on mobile |
-
-The trade-off is that the cover might update a split-second before the background finishes its crossfade, but this is **preferable** to the current behavior where nothing happens for half a second. Users perceive the site as faster when they get immediate feedback.
+### What stays the same
+- The mobile freeze-on-scroll behavior (no scroll jank)
+- The orientation change handler
+- The desktop resize handler
+- All page-level `min-h-screen-stable` usage
+- The `.bg-layer-fixed` overscan system
 
