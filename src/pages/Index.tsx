@@ -30,7 +30,6 @@ const Index = () => {
   const [animateTvText, setAnimateTvText] = useState(false);
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
-  const [heroBackgroundReady, setHeroBackgroundReady] = useState(false);
   const showMagazineRef = useRef(false);
   
   // Parable banner slideshow state - using Embla for continuous right-scroll
@@ -273,36 +272,18 @@ const Index = () => {
     }
   }, [currentImage]);
 
-  // Load and decode hero background, then fade in
-  useEffect(() => {
-    const img = new Image();
-    img.onload = async () => {
-      try {
-        await img.decode();
-      } catch (e) {
-        // Fallback if decode fails
-      } finally {
-        setHeroBackgroundReady(true);
-      }
-    };
-    img.onerror = () => {
-      setHeroBackgroundReady(true);
-    };
-    img.src = japaneseBackground;
-  }, []);
-
   return (
     <div className="relative min-h-screen-stable flex flex-col overflow-hidden">
       <Navigation />
       
       {/* Hero Section with Japanese Painting */}
       {/* All devices use --hero-h for perfect bottom alignment */}
-      <section className="h-[calc(var(--hero-h,100dvh)-56px)] mt-14 flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: 'hsl(20, 30%, 15%)' }}>
+      <section className="h-[calc(var(--hero-h,100dvh)-56px)] mt-14 flex items-center justify-center relative overflow-hidden bg-background">
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
-          className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out"
-          style={{ objectPosition: '50% center', opacity: heroBackgroundReady ? 1 : 0 }}
+          className="absolute inset-0 w-full h-full object-cover object-center bg-slate-100"
+          style={{ objectPosition: '50% center' }}
           loading="eager"
           fetchPriority="high"
           decoding="sync"
@@ -310,17 +291,11 @@ const Index = () => {
           height={1440}
         />
         <div className="absolute inset-0 bg-black/10"></div>
-        <div 
-          className="relative z-20 text-center px-6 transition-opacity duration-700 ease-in-out"
-          style={{ opacity: heroBackgroundReady ? 1 : 0 }}
-        >
+        <div className="relative z-20 text-center px-6">
           <h1 className="font-heading text-6xl md:text-8xl font-bold text-ink-black mb-4 tracking-wide drop-shadow-md">
             Kazuki Yamakawa
           </h1>
-          <p 
-            className="font-body text-xl md:text-2xl text-foreground/80 transition-opacity duration-700 ease-in-out"
-            style={{ opacity: heroBackgroundReady ? 1 : 0, transitionDelay: heroBackgroundReady ? '700ms' : '0ms' }}
-          >
+          <p className="font-body text-xl md:text-2xl text-foreground/80 animate-fade-in-delayed">
             Writer • Musician
           </p>
         </div>
