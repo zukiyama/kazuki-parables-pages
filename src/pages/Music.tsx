@@ -699,7 +699,7 @@ const Music = () => {
   };
 
   return (
-    <div className="min-h-screen-stable bg-slate-900 relative overflow-x-hidden flex flex-col" onClick={handlePageClick}>
+    <div className="min-h-screen-stable bg-slate-900 relative overflow-x-hidden" onClick={handlePageClick}>
       <Navigation />
       
       {/* Album Banner - Fixed at top */}  
@@ -756,7 +756,7 @@ const Music = () => {
         <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
       </div>
       
-        <main className="container mx-auto px-6 pt-40 pb-12 relative z-10 flex-1">
+        <main className="container mx-auto px-6 pt-40 pb-12 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Header - Logo with handwritten Music title overlapping */}
           <div className="text-center mb-0 pt-0">

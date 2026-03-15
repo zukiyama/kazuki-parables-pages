@@ -99,7 +99,7 @@ const About = () => {
   }, [showCityscape]);
   
   return (
-    <div className="min-h-screen-stable bg-neutral-100 flex flex-col">
+    <div className="min-h-screen-stable bg-neutral-100">
       <Navigation />
       
       {/* Hero Section with Paris Square Background - top aligned exactly to header bottom */}
