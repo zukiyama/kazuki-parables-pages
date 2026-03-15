@@ -699,7 +699,7 @@ const Music = () => {
   };
 
   return (
-    <div className="min-h-screen-stable bg-slate-900 relative overflow-x-hidden" onClick={handlePageClick}>
+    <div className="min-h-screen-stable bg-slate-900 relative overflow-x-hidden flex flex-col" onClick={handlePageClick}>
       <Navigation />
       
       {/* Album Banner - Fixed at top */}  

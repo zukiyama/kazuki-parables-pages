@@ -861,7 +861,7 @@ const Writing = () => {
 
   return (
     <div 
-      className="min-h-screen-stable relative overflow-x-hidden"
+      className="min-h-screen-stable relative overflow-x-hidden flex flex-col"
       style={{ visibility: pageReady ? "visible" : "hidden" }}
       onClick={handlePageClick}
     >
