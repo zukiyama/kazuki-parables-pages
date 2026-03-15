@@ -131,32 +131,20 @@
     --app-height: 100svh;
   }
 
-  /* Prevent white bar / flash on ALL browsers including Chrome/Edge/Opera on iPad */
+  /* Prevent white flash - match site background */
   html {
-    background-color: #000;
-    min-height: 100%;
-    min-height: 100vh;
-    min-height: 100dvh;
+    background-color: hsl(var(--background));
   }
 
   html, body {
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
-    background-color: #000;
+    background-color: hsl(var(--background));
   }
 
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
-    min-height: 100%;
-    min-height: 100vh;
-    min-height: 100dvh;
-  }
-
-  #root {
-    min-height: 100%;
-    min-height: 100vh;
-    min-height: 100dvh;
   }
 
   h1, h2, h3, h4, h5, h6 {
