@@ -181,18 +181,17 @@
 
   /* 
    * STABLE viewport height utilities - for layout/scroll-snap.
-   * Uses --app-height which does NOT change during scroll.
+   * Uses 100dvh so all layers track the same dynamic viewport on iPad Chromium.
+   * Fallback chain: 100vh -> 100dvh (dvh wins where supported).
    */
   .h-screen-stable {
     height: 100vh;
-    height: 100svh;
-    height: var(--app-height, 100svh);
+    height: 100dvh;
   }
 
   .min-h-screen-stable {
     min-height: 100vh;
-    min-height: 100svh;
-    min-height: var(--app-height, 100svh);
+    min-height: 100dvh;
   }
 
   /* 
@@ -204,24 +203,19 @@
   }
 
   /* 
-   * OVERSCAN background layer - frozen size with extra height to prevent
-   * white bar when browser UI collapses, without resizing.
-   * 
-   * Strategy: Make background taller than viewport by 240px total,
-   * offset by -120px top so it extends 120px above and below.
+   * OVERSCAN background layer - uses 100dvh so it tracks the same
+   * dynamic viewport as the content/footer layer on iPad Chromium.
+   * 240px overscan absorbs browser bar height changes.
    */
   .bg-layer-fixed {
     position: fixed;
     left: 0;
     width: 100%;
     z-index: -1;
-    /* Fallback color - prevents grey flash during background transitions */
     background-color: #000;
-    /* Overscan: stable height + 240px buffer */
     top: -120px;
     height: calc(100vh + 240px);
-    height: calc(100svh + 240px);
-    height: calc(var(--app-height, 100svh) + 240px);
+    height: calc(100dvh + 240px);
     /* GPU acceleration */
     transform: translateZ(0);
     will-change: transform;
