@@ -1033,7 +1033,7 @@ const Writing = () => {
       </div>
       
       {/* Main content - FIXED padding for widescreen, independent of banner visibility */}
-      <main ref={mainRef} className={`relative z-10 transition-all duration-500 ${
+      <main ref={mainRef} className={`relative z-10 transition-all duration-500 flex-1 ${
         isWidescreen 
           ? 'pt-56' 
           : 'pt-52 max-sm:pt-52'
