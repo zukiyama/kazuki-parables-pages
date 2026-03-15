@@ -192,24 +192,17 @@
   }
 
   /* 
-   * OVERSCAN background layer - frozen size with extra height to prevent
-   * white bar when browser UI collapses, without resizing.
-   * 
-   * Strategy: Make background taller than viewport by 240px total,
-   * offset by -120px top so it extends 120px above and below.
+   * FIXED background layer - always covers the full visible viewport.
+   * Uses inset:0 so it tracks the actual visible area on all browsers,
+   * including when iPad browser bars collapse/expand.
+   * No overscan needed — the browser's own viewport is the source of truth.
    */
   .bg-layer-fixed {
     position: fixed;
-    left: 0;
-    width: 100%;
+    inset: 0;
     z-index: -1;
     /* Fallback color - prevents grey flash during background transitions */
     background-color: #000;
-    /* Overscan: stable height + 240px buffer */
-    top: -120px;
-    height: calc(100vh + 240px);
-    height: calc(100svh + 240px);
-    height: calc(var(--app-height, 100svh) + 240px);
     /* GPU acceleration */
     transform: translateZ(0);
     will-change: transform;
