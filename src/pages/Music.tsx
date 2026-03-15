@@ -91,7 +91,7 @@ const albums = [
       "Like They Do on TV",
       "Pilgrims I Didn't Recognise",
       "Deep Blue Sea",
-      "If You Can Be My Friend",
+      "It's Only Broken Things",
       "Nobody Too"
     ]
   },
