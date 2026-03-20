@@ -128,7 +128,7 @@
    * Does NOT change during scroll.
    */
   :root {
-    --app-height: 100svh;
+    --app-height: 100dvh;
   }
 
   /* Prevent white flash - match site background */
