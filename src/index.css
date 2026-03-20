@@ -128,24 +128,25 @@
    * Does NOT change during scroll.
    */
   :root {
-    --app-height: 100svh;
+    --app-height: 100dvh;
   }
 
-  /* Prevent white flash - match site background */
+  /* Dark fallback background - prevents white bar on Chrome/Edge iPad viewport gaps */
   html {
-    background-color: hsl(var(--background));
+    background-color: #000;
   }
 
   html, body {
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
-    background-color: hsl(var(--background));
+    background-color: #000;
     min-height: 100vh;
     min-height: 100dvh;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background-color: #000;
     font-family: var(--font-body);
   }
 
@@ -176,15 +177,13 @@
   .h-screen-stable {
     height: 100vh;
     height: 100dvh;
-    height: 100svh;
-    height: var(--app-height, 100svh);
+    height: var(--app-height, 100dvh);
   }
 
   .min-h-screen-stable {
     min-height: 100vh;
     min-height: 100dvh;
-    min-height: 100svh;
-    min-height: var(--app-height, 100svh);
+    min-height: var(--app-height, 100dvh);
   }
 
   /* 
@@ -212,8 +211,8 @@
     /* Overscan: stable height + 240px buffer */
     top: -120px;
     height: calc(100vh + 240px);
-    height: calc(100svh + 240px);
-    height: calc(var(--app-height, 100svh) + 240px);
+    height: calc(100dvh + 240px);
+    height: calc(var(--app-height, 100dvh) + 240px);
     /* GPU acceleration */
     transform: translateZ(0);
     will-change: transform;
