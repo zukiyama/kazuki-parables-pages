@@ -1,148 +1,73 @@
 
 
-# Mobile Music Page Synchronization and Performance Fix
+## Investigation Results
 
-## Problem Analysis
+### Root Cause: Two Compounding Problems
 
-After examining the code, I've identified **three issues** causing the sluggish behavior and desynchronization on mobile:
+**Problem 1: Wrong CSS fallback chain order**
 
-### Issue 1: Album Cover Has No Explicit Dimensions on Mobile
-
-The main album cover image (lines 829-837) lacks `width` and `height` attributes:
-
-```tsx
-<img 
-  src={selectedAlbum.cover} 
-  alt={selectedAlbum.title}
-  className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6..."
-  // NO width/height attributes - browser must wait to compute layout
-/>
+The `.h-screen-stable` and `.min-h-screen-stable` utilities use this cascade:
+```css
+height: 100vh;      /* large viewport on some browsers */
+height: 100dvh;     /* dynamic — correct on Chrome/Edge iPad */
+height: 100svh;     /* OVERRIDES dvh — this is SMALLER, causes the gap */
+height: var(--app-height, 100svh);  /* set from innerHeight — also small */
 ```
 
-On mobile, the browser must download and decode the image before it knows the dimensions, causing **layout shift** and **delayed rendering**. The background may finish its crossfade while the cover is still being laid out.
+On Safari iPad, `100svh` ≈ `100dvh` ≈ `100vh` because Safari handles them similarly. But on Chrome/Edge iPad, `100svh` is genuinely shorter than the actual visible viewport (it's the "small viewport" = viewport with all browser UI visible). This makes the page content shorter than the screen, revealing the white background behind it.
 
-### Issue 2: `await img.decode()` Blocks the Main Thread on Slow Devices
+**Problem 2: White html/body background**
 
-The `handleAlbumSelect` function (lines 551-677) uses `await Promise.all([ensureImageLoaded(...)])` which waits for **full decode** before updating state:
+The `--background` CSS variable is `0 0% 100%` (white). When the page content is too short, the white `html`/`body` background shows through as the white bar.
 
-```tsx
-await Promise.all([
-  ensureImageLoaded(album.background),
-  album.cover ? ensureImageLoaded(album.cover) : Promise.resolve()
-]);
-// Only AFTER this does setSelectedAlbum happen
+**Problem 3: `--app-height` uses `window.innerHeight`**
+
+The `useViewportHeight` hook sets `--app-height` from `window.innerHeight`, which on Chrome/Edge iPad may report the small viewport height, reinforcing the gap.
+
+**Why the landing hero is too short on Chrome:** The hero uses `h-[calc(var(--hero-h,100dvh)-56px)]` where `--hero-h` comes from `visualViewport.height` or `innerHeight`. On Chrome iPad this is the smaller value, making the hero not fill the screen.
+
+### Plan
+
+**1. Fix the CSS fallback chain in `src/index.css`**
+
+Reorder the height utilities so `100dvh` comes LAST (after `100svh`), because `dvh` is the most accurate on Chrome/Edge iPad. Remove `100svh` from the chain since it's the problematic unit:
+
+```css
+.h-screen-stable {
+  height: 100vh;
+  height: 100dvh;
+  height: var(--app-height, 100dvh);
+}
+.min-h-screen-stable {
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: var(--app-height, 100dvh);
+}
 ```
 
-On desktop, decoding is fast. On mobile with slower CPUs/GPUs, `img.decode()` can take **200-500ms**, during which:
-- The button press feels unresponsive (user thinks nothing happened)
-- Everything waits for the slowest asset
+Also update `.bg-layer-fixed` overscan to use `100dvh` as the preferred unit.
 
-### Issue 3: No Visual Feedback During Loading
+**2. Make html/body background dark instead of white**
 
-When a user taps an album on mobile, there's no immediate visual acknowledgment that the selection is being processed. The delay between tap and response makes the site feel sluggish.
+Change the `html` and `body` `background-color` from `hsl(var(--background))` (white) to `#000` (black). This way any viewport gap is invisible (black on black) rather than a white bar. Individual pages already set their own background colors over their entire content area.
 
----
+**3. Fix `--hero-h` to prefer `100dvh` on Chrome/Edge**
 
-## Proposed Solution
+Update `useHeroHeight.ts` to use `100dvh` via CSS as the fallback in the hero calc, and use `window.visualViewport.height` (which is more accurate on all iPad browsers) as the JS-set value. Already does this — just ensure the CSS fallback in Index.tsx also uses `100dvh` instead of relying solely on the JS variable.
 
-### 1. Add Explicit Dimensions to Album Cover
+**4. Update `--app-height` default in `:root`**
 
-Add `width` and `height` attributes to the album cover image so the browser reserves space immediately, preventing layout shift and allowing parallel rendering.
-
-### 2. Optimistic UI Update with Graceful Crossfade
-
-Instead of waiting for both images to fully decode before updating the UI:
-
-1. **Immediately** update `selectedAlbum` when the user taps (optimistic update)
-2. **Start** the background crossfade as soon as the background is in cache (don't wait for full decode if already cached)
-3. Use a **shorter timeout fallback** (300ms) so mobile devices don't wait forever for slow decodes
-4. Add the cover image to a **preload queue** on first page load so it's likely cached by the time users tap
-
-### 3. Add Loading State Visual Feedback (Optional Enhancement)
-
-Consider adding a subtle loading indicator or immediate highlight on the tapped album thumbnail to confirm the tap registered.
-
----
-
-## Technical Changes
-
-### File: `src/pages/Music.tsx`
-
-**Change 1: Add dimensions to album cover image (around line 829)**
-
-Add `width="800"` and `height="800"` to match the WebP dimensions, plus a loading state:
-
-```tsx
-<img 
-  src={selectedAlbum.cover} 
-  alt={selectedAlbum.title}
-  width="800"
-  height="800"
-  loading="eager"
-  className="w-full max-w-md mx-auto rounded-lg shadow-2xl mb-6..."
-/>
+Change the CSS default from `100svh` to `100dvh`:
+```css
+:root { --app-height: 100dvh; }
 ```
 
-**Change 2: Refactor `handleAlbumSelect` for optimistic updates (around line 551)**
+### Files to Change
 
-The current implementation:
-```tsx
-const handleAlbumSelect = async (albumId: number) => {
-  // ... 
-  await Promise.all([...]);  // Blocks UI for 200-500ms on mobile
-  setSelectedAlbum(album);   // Only updates AFTER await completes
-};
-```
+- **`src/index.css`**: Fix fallback chain order (remove `100svh` from stable height utilities, use `100dvh` as preferred), change html/body background to `#000`, update `--app-height` default
+- **`index.html`**: Ensure inline `body`/`#root` styles use dark background fallback consistently
 
-New implementation:
-```tsx
-const handleAlbumSelect = async (albumId: number) => {
-  // 1. IMMEDIATELY update the selected album (optimistic UI)
-  setSelectedAlbum(album);
-  
-  // 2. Check if images are already cached - if so, start transition immediately
-  const bgCached = imageCache.current.has(album.background);
-  const coverCached = !album.cover || imageCache.current.has(album.cover);
-  
-  if (bgCached && coverCached) {
-    // Both cached - start crossfade immediately
-    startCrossfade(album.background);
-  } else {
-    // Not cached - load with short timeout fallback for mobile
-    const loadPromise = Promise.all([
-      ensureImageLoaded(album.background),
-      album.cover ? ensureImageLoaded(album.cover) : Promise.resolve()
-    ]);
-    
-    // Race against a timeout - don't wait forever on slow mobile
-    await Promise.race([
-      loadPromise,
-      new Promise(resolve => setTimeout(resolve, 300))
-    ]);
-    
-    startCrossfade(album.background);
-  }
-};
-```
+### Why This Won't Break Safari
 
-**Change 3: Extract crossfade logic into helper function**
-
-Move the layer-switching logic (currently inside `handleAlbumSelect`) into a separate `startCrossfade(backgroundSrc)` function to allow calling it from multiple code paths.
-
-**Change 4: Preload all album covers on initial page load**
-
-The current `requestIdleCallback` queue already includes covers, but we can prioritize them higher by loading covers before backgrounds for albums other than the initial one.
-
----
-
-## Expected Outcome
-
-| Before | After |
-|--------|-------|
-| Tap album -> 200-500ms delay -> both change at once | Tap album -> cover changes immediately -> background crossfades |
-| No feedback during loading | Immediate visual response to tap |
-| Layout shift when cover loads | Stable layout with reserved space |
-| Feels sluggish on mobile | Feels responsive on mobile |
-
-The trade-off is that the cover might update a split-second before the background finishes its crossfade, but this is **preferable** to the current behavior where nothing happens for half a second. Users perceive the site as faster when they get immediate feedback.
+Safari on iPad treats `100dvh` ≈ `100svh` ≈ `100vh` nearly identically, so reordering these has no visible effect. The `--app-height` JS variable still takes priority when set. The dark body background is invisible behind page content on all browsers.
 
