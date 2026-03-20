@@ -211,8 +211,8 @@
     /* Overscan: stable height + 240px buffer */
     top: -120px;
     height: calc(100vh + 240px);
-    height: calc(100svh + 240px);
-    height: calc(var(--app-height, 100svh) + 240px);
+    height: calc(100dvh + 240px);
+    height: calc(var(--app-height, 100dvh) + 240px);
     /* GPU acceleration */
     transform: translateZ(0);
     will-change: transform;
