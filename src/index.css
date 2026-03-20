@@ -131,21 +131,22 @@
     --app-height: 100dvh;
   }
 
-  /* Prevent white flash - match site background */
+  /* Dark fallback background - prevents white bar on Chrome/Edge iPad viewport gaps */
   html {
-    background-color: hsl(var(--background));
+    background-color: #000;
   }
 
   html, body {
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
-    background-color: hsl(var(--background));
+    background-color: #000;
     min-height: 100vh;
     min-height: 100dvh;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background-color: #000;
     font-family: var(--font-body);
   }
 
