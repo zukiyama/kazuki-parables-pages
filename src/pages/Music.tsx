@@ -212,7 +212,7 @@ const albums = [
   },
   {
     id: 8,
-    title: "Flower",
+    title: "We Are Not Here To Avoid Mistakes",
     cover: flowerEpCover,
     background: flowerEpBackground,
     theme: "coming-soon",
