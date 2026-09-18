@@ -7,8 +7,8 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   base: mode === 'production' ? '/kazuki-parables-pages/' : '/',
   build: {
-    outDir: mode === 'production' ? '.' : 'dist',
-    emptyOutDir: false,
+    outDir: 'dist',
+    emptyOutDir: true,
   },
   server: {
     host: "::",
