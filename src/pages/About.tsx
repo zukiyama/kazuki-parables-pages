@@ -463,7 +463,7 @@ const About = () => {
         </div>
       </div>
       
-      <Footer variant="dark" showNavLinks={false} />
+      <Footer variant="dark" />
     </div>
   );
 };
