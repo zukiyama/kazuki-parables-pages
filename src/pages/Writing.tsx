@@ -2013,7 +2013,7 @@ const Writing = () => {
         </section>
       </main>
       
-      <Footer variant="dark" showNavLinks={false} />
+      <Footer variant="dark" />
     </div>
   );
 };

@@ -1234,7 +1234,6 @@ const Comics = () => {
       
       <Footer 
         variant="dark" 
-        showNavLinks={false}
         className={`mt-8 max-sm:mt-6 overflow-visible ${isScrollLocked ? 'hidden' : ''}`}
         beforeFooter={
           showFooterCharacter ? (
