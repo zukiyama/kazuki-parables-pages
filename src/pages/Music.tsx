@@ -1018,7 +1018,6 @@ const Music = () => {
       
       <Footer 
         variant="dark" 
-        showNavLinks={false}
         className="mt-8 max-sm:mt-6"
         extraContent={
           <p className="font-serif text-white text-xs mt-3">

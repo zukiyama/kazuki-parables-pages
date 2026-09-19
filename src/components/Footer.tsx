@@ -1,9 +1,7 @@
-import { Link } from "react-router-dom";
 import { ReactNode } from "react";
 
 interface FooterProps {
   variant?: "light" | "dark";
-  showNavLinks?: boolean;
   extraContent?: ReactNode;
   className?: string;
   beforeFooter?: ReactNode;
@@ -11,7 +9,6 @@ interface FooterProps {
 
 export const Footer = ({ 
   variant = "light", 
-  showNavLinks = true, 
   extraContent,
   className = "",
   beforeFooter
@@ -76,23 +73,6 @@ export const Footer = ({
               </div>
             </div>
             
-            {/* Nav links below */}
-            {showNavLinks && (
-              <div className="flex justify-center space-x-8 mt-10">
-                <Link to="/about" onClick={() => window.scrollTo(0, 0)} className={`font-body ${isDark ? 'text-white hover:text-white/80' : 'text-ink-black hover:text-ink-black/80'} transition-colors`}>
-                  About
-                </Link>
-                <Link to="/writing" onClick={() => window.scrollTo(0, 0)} className={`font-body ${isDark ? 'text-white hover:text-white/80' : 'text-ink-black hover:text-ink-black/80'} transition-colors`}>
-                  Writing
-                </Link>
-                <Link to="/music" onClick={() => window.scrollTo(0, 0)} className={`font-body ${isDark ? 'text-white hover:text-white/80' : 'text-ink-black hover:text-ink-black/80'} transition-colors`}>
-                  Music
-                </Link>
-                <Link to="/comics" onClick={() => window.scrollTo(0, 0)} className={`font-body ${isDark ? 'text-white hover:text-white/80' : 'text-ink-black hover:text-ink-black/80'} transition-colors`}>
-                  Comics & Scripts
-                </Link>
-              </div>
-            )}
           </div>
         </div>
       </footer>
