@@ -647,7 +647,7 @@ const Index = () => {
         </div>
       </section>
 
-      <Footer variant="light" showNavLinks={true} />
+      <Footer variant="light" />
     </div>
   );
 };
