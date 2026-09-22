@@ -19,20 +19,21 @@ import handwrittenIntro from "@/assets/about-intro-handwritten.png";
 
 type CrumbleLineProps = {
   children: string;
-  className: string;
+  className?: string;
   offset: number;
   active: boolean;
+  baseDelay?: number;
 };
 
-const CrumbleLine = ({ children, className, offset, active }: CrumbleLineProps) => (
+const CrumbleLine = ({ children, className = "", offset, active, baseDelay = 3000 }: CrumbleLineProps) => (
   <span className={className}>
     {Array.from(children).map((character, index) => {
       const characterIndex = offset + index;
       const horizontalDistance = ((characterIndex * 47) % 181) - 90;
       const initialDrop = 4 + ((characterIndex * 19) % 24);
       const rotation = ((characterIndex * 73) % 241) - 120;
-      const delay = 3000 + ((characterIndex * 41) % 420);
-      const duration = 1700 + ((characterIndex * 29) % 700);
+      const delay = baseDelay + ((characterIndex * 41) % 420);
+      const duration = 2600 + ((characterIndex * 29) % 900);
 
       return (
         <span
@@ -53,6 +54,7 @@ const CrumbleLine = ({ children, className, offset, active }: CrumbleLineProps) 
     })}
   </span>
 );
+
 
 const StampPortrait = ({ className }: { className: string }) => (
   <div className={`relative rotate-[-3deg] ${className}`}>
