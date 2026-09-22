@@ -570,7 +570,7 @@
   .about-signature-falling {
     animation-name: about-quote-reduced-fade;
     animation-duration: 500ms;
-    animation-delay: 3000ms;
+    animation-delay: var(--crumble-delay);
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
   }
