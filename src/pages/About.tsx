@@ -27,11 +27,24 @@ const About = () => {
   useScrollToTop();
   const visibleElements = useScrollAnimation();
   const isWidescreen = useWidescreenAspectRatio();
+  const [isCompactLandscape, setIsCompactLandscape] = React.useState(() =>
+    typeof window !== "undefined" && window.innerHeight <= 500
+  );
   const [showCityscape, setShowCityscape] = React.useState(false);
   const [headerHeight, setHeaderHeight] = React.useState(0);
   const [belowFoldVisible, setBelowFoldVisible] = React.useState(false);
   const [heroBackgroundReady, setHeroBackgroundReady] = React.useState(false);
   const belowFoldRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const checkCompactLandscape = () => setIsCompactLandscape(window.innerHeight <= 500);
+    window.addEventListener("resize", checkCompactLandscape);
+    window.addEventListener("orientationchange", checkCompactLandscape);
+    return () => {
+      window.removeEventListener("resize", checkCompactLandscape);
+      window.removeEventListener("orientationchange", checkCompactLandscape);
+    };
+  }, []);
 
   // Measure header height on mount and orientation change
   React.useEffect(() => {
@@ -145,7 +158,7 @@ const About = () => {
         {/* Magazine-style text layout over background */}
         <div className="relative z-10 px-8 md:px-16 lg:px-24 pb-24 mt-4">
           {/* Widescreen layout: Photo + Name + Subheading on left, Body text on right */}
-          {isWidescreen ? (
+          {isWidescreen && !isCompactLandscape ? (
             <div className="flex gap-8 items-start">
               {/* Left column: Photo + Title with Subheading aligned to photo bottom */}
               <div className="flex-shrink-0">
@@ -160,13 +173,13 @@ const About = () => {
                       height={480}
                       loading="eager"
                       decoding="async"
-                      className="w-[200px] xl:w-[220px] 2xl:w-[240px] aspect-square object-cover grayscale shadow-2xl"
+                      className="w-[200px] 2xl:w-[220px] aspect-square object-cover grayscale shadow-2xl"
                     />
                   </div>
                   
                   {/* Title + Subheading - subheading aligned to bottom of photo */}
-                  <div className="flex flex-col justify-between h-[200px] xl:h-[220px] 2xl:h-[240px] py-1">
-                    <h1 className="font-heading font-semibold text-[5rem] xl:text-[6rem] 2xl:text-[7rem] text-black leading-[0.82] tracking-tight">
+                  <div className="flex flex-col justify-between h-[200px] 2xl:h-[220px] py-1">
+                    <h1 className="font-heading font-semibold text-[5rem] 2xl:text-[6rem] text-black leading-[0.82] tracking-tight">
                       {ABOUT_INTRODUCTION.firstName}
                       <br />
                       <span className="italic font-normal">{ABOUT_INTRODUCTION.lastName}</span>
@@ -184,7 +197,7 @@ const About = () => {
                 <p className="font-body font-semibold text-xl xl:text-2xl text-black/85 leading-snug">
                   {ABOUT_INTRODUCTION.biography}
                 </p>
-                <p className="font-body text-xl xl:text-2xl text-black/85 leading-snug mt-4">
+                <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed mt-4">
                   {ABOUT_INTRODUCTION.musicLink}
                 </p>
               </div>
@@ -278,7 +291,7 @@ const About = () => {
                 <p className="font-body font-semibold text-2xl md:text-3xl text-black/80 leading-snug max-w-3xl">
                   {ABOUT_INTRODUCTION.biography}
                 </p>
-                <p className="font-body text-2xl md:text-3xl text-black/80 leading-snug max-w-3xl mt-4">
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl mt-4">
                   {ABOUT_INTRODUCTION.musicLink}
                 </p>
               </div>
@@ -312,7 +325,8 @@ const About = () => {
                   {/* Body text - right of title */}
                   <div className="flex-1 max-w-[420px] pt-1">
                     <p className="font-body font-semibold text-3xl text-black/80 leading-snug">
-                      {ABOUT_INTRODUCTION.biography} {ABOUT_INTRODUCTION.musicLink}
+                      {ABOUT_INTRODUCTION.biography}
+                      <span className="block font-normal text-lg leading-relaxed mt-4">{ABOUT_INTRODUCTION.musicLink}</span>
                     </p>
                   </div>
                 </div>
