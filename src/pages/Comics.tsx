@@ -6,8 +6,11 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 
-// CRITICAL: First panel asset (Section 0) - LCP candidate
-import comicsScriptsTitleVideo from "@/assets/comicsscriptstitle.mp4.asset.json";
+// CRITICAL: First panel assets (Section 0) - bundled for every host
+import comicsScriptsTitleVideo from "@/assets/comicsscriptstitle.mp4";
+import comicsScriptsTitleFirstFrame from "@/assets/comicsscriptstitle-first.webp";
+import comicsScriptsTitleFinalFrame from "@/assets/comicsscriptstitle-final.webp";
+import comicsStoryboardStrip from "@/assets/comics-storyboard-strip.jpg";
 
 // SECONDARY: Vignette assets (Section 1) - preload after first paint
 import vignetteManyFaces from "@/assets/god-of-lies-characters.webp";
@@ -42,6 +45,9 @@ const Comics = () => {
   const [pageReady, setPageReady] = useState(false);
   const [isNarrowPortrait, setIsNarrowPortrait] = useState(false);
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false);
+  const [headerBottom, setHeaderBottom] = useState(0);
+  const [openingVideoFailed, setOpeningVideoFailed] = useState(false);
+  const openingVideoRef = useRef<HTMLVideoElement>(null);
   
   // Asset loading states for priority-based loading
   const [secondaryAssetsLoaded, setSecondaryAssetsLoaded] = useState(false);
@@ -68,6 +74,48 @@ const Comics = () => {
   const [showFooterCharacter, setShowFooterCharacter] = useState(false);
 
   const maxPinnedSection = 2; // After section 2 (Cream), normal scrolling begins - Pendragon is in scrollable content
+
+  // Keep the opening stage exactly within the visible area below the fixed header.
+  useEffect(() => {
+    const header = document.querySelector<HTMLElement>('[data-header="true"]');
+    if (!header) return;
+
+    const updateHeaderBottom = () => setHeaderBottom(header.getBoundingClientRect().bottom);
+    updateHeaderBottom();
+
+    const observer = new ResizeObserver(updateHeaderBottom);
+    observer.observe(header);
+    window.addEventListener('resize', updateHeaderBottom);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateHeaderBottom);
+    };
+  }, []);
+
+  // Retry autoplay when the file is ready or the tab becomes visible.
+  useEffect(() => {
+    const video = openingVideoRef.current;
+    if (!video) return;
+
+    const playOpening = () => {
+      video.play().catch(() => {
+        // The poster remains visible if a browser temporarily blocks autoplay.
+      });
+    };
+    const handleVisibilityChange = () => {
+      if (!document.hidden && video.currentTime === 0) playOpening();
+    };
+
+    playOpening();
+    video.addEventListener('canplay', playOpening, { once: true });
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      video.removeEventListener('canplay', playOpening);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
 
   // PRIORITY LOADING: Preload assets in sequence based on panel order
   // Secondary assets (vignettes + cream) load after first paint
@@ -635,21 +683,57 @@ const Comics = () => {
             
             {/* SECTION 0: OPENING FILM */}
             <section 
-              className="absolute inset-0 flex items-center justify-center bg-black overflow-hidden"
+              className="absolute inset-x-0 bottom-0 grid grid-rows-[minmax(0,1fr)_auto_minmax(0,1fr)] overflow-hidden bg-canvas-base"
               style={{ 
+                top: headerBottom,
                 opacity: titleOpacity,
                 pointerEvents: titleVisible ? 'auto' : 'none',
                 transition: 'opacity 0.5s ease-out'
               }}
             >
-              <video
-                className="block h-auto max-h-full w-full object-contain"
-                src={comicsScriptsTitleVideo.url}
-                autoPlay
-                muted
-                playsInline
-                preload="auto"
-                aria-label="Comics and Scripts opening film"
+              <img
+                src={comicsStoryboardStrip}
+                alt=""
+                aria-hidden="true"
+                className="h-full min-h-0 w-full object-cover object-center"
+                width={1920}
+                height={512}
+                loading="eager"
+                decoding="async"
+              />
+              <div className="relative flex min-h-0 items-center justify-center overflow-hidden bg-black">
+                {openingVideoFailed ? (
+                  <img
+                    src={comicsScriptsTitleFinalFrame}
+                    alt="Comics and Scripts"
+                    className="block h-auto max-h-full w-full object-contain"
+                    width={1976}
+                    height={946}
+                  />
+                ) : (
+                  <video
+                    ref={openingVideoRef}
+                    className="block h-auto max-h-full w-full object-contain"
+                    src={comicsScriptsTitleVideo}
+                    poster={comicsScriptsTitleFirstFrame}
+                    autoPlay
+                    muted
+                    playsInline
+                    preload="auto"
+                    onError={() => setOpeningVideoFailed(true)}
+                    aria-label="Comics and Scripts opening film"
+                  />
+                )}
+              </div>
+              <img
+                src={comicsStoryboardStrip}
+                alt=""
+                aria-hidden="true"
+                className="h-full min-h-0 w-full rotate-180 object-cover object-center"
+                width={1920}
+                height={512}
+                loading="eager"
+                decoding="async"
               />
             </section>
 
