@@ -15,6 +15,7 @@ import backgroundSphere from "@/assets/about-background-new.webp";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.webp";
 import childPortrait from "@/assets/about-child-portrait.webp";
 import surrealCat from "@/assets/about-surreal-cat.png";
+import handwrittenIntro from "@/assets/about-intro-handwritten.png";
 
 const StampPortrait = ({ className }: { className: string }) => (
   <div className={`relative rotate-[-3deg] ${className}`}>
@@ -28,6 +29,19 @@ const StampPortrait = ({ className }: { className: string }) => (
       className="block h-full w-full object-contain drop-shadow-2xl"
     />
   </div>
+);
+
+// Handwritten intro note (transparent background, black ink) replacing the typed paragraph
+const HandwrittenIntro = ({ className = "" }: { className?: string }) => (
+  <img
+    src={handwrittenIntro}
+    alt="Handwritten note: Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page."
+    width={1949}
+    height={807}
+    loading="eager"
+    decoding="async"
+    className={`block h-auto ${className}`}
+  />
 );
 
 const About = () => {
@@ -179,10 +193,8 @@ const About = () => {
               </div>
               
               {/* Right column: Body text - aligned to top */}
-              <div className="flex-1 max-w-[400px] xl:max-w-[450px] pt-0">
-                <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed">
-                  Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
-                </p>
+              <div className="flex-1 max-w-[440px] xl:max-w-[500px] pt-0">
+                <HandwrittenIntro className="w-full" />
               </div>
             </div>
           ) : (
@@ -212,10 +224,10 @@ const About = () => {
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
                 
-                {/* Body text wraps around photo - increased top margin for 10.9" iPad */}
-                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed md:mt-4">
-                  Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
-                </p>
+                {/* Handwritten intro - replaces the typed paragraph, wraps below floated photo */}
+                <div className="md:mt-4">
+                  <HandwrittenIntro className="w-full max-w-[600px]" />
+                </div>
               </div>
               
               {/* Mobile phone: Title + content */}
@@ -230,9 +242,9 @@ const About = () => {
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
                 
-                <p className="font-body text-base text-black/80 leading-relaxed max-w-3xl">
-                  Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
-                </p>
+                <div className="mt-1 mb-7">
+                  <HandwrittenIntro className="w-full" />
+                </div>
               </div>
               
               {/* iPad DESKTOP only (lg to 2xl): Photo + Title row, subheading + body below */}
@@ -257,9 +269,9 @@ const About = () => {
                 <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6">
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
-                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl">
-                  Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
-                </p>
+                <div className="mt-2">
+                  <HandwrittenIntro className="w-full max-w-[680px]" />
+                </div>
               </div>
               
               {/* Widescreen (2xl and up): Original horizontal layout */}
@@ -280,11 +292,9 @@ const About = () => {
                     </h1>
                   </div>
                   
-                  {/* Body text - right of title */}
-                  <div className="flex-1 max-w-[420px] pt-1">
-                    <p className="font-body text-lg text-black/80 leading-relaxed">
-                      Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
-                    </p>
+                  {/* Handwritten intro - right of title */}
+                  <div className="flex-1 max-w-[500px] pt-1">
+                    <HandwrittenIntro className="w-full" />
                   </div>
                 </div>
                 
