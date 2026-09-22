@@ -8,6 +8,7 @@ import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 
 // CRITICAL: First panel assets (Section 0) - bundled for every host
 import comicsScriptsTitleVideo from "@/assets/comicsscriptstitle.mp4";
+import comicsScriptsTitleVideoWebm from "@/assets/comicsscriptstitle.webm";
 import comicsScriptsTitleFirstFrame from "@/assets/comicsscriptstitle-first.webp";
 import comicsScriptsTitleFinalFrame from "@/assets/comicsscriptstitle-final.webp";
 import comicsStoryboardStrip from "@/assets/comics-storyboard-strip.jpg";
@@ -714,7 +715,6 @@ const Comics = () => {
                   <video
                     ref={openingVideoRef}
                     className="block h-auto max-h-full w-full object-contain"
-                    src={comicsScriptsTitleVideo}
                     poster={comicsScriptsTitleFirstFrame}
                     autoPlay
                     muted
@@ -722,7 +722,10 @@ const Comics = () => {
                     preload="auto"
                     onError={() => setOpeningVideoFailed(true)}
                     aria-label="Comics and Scripts opening film"
-                  />
+                  >
+                    <source src={comicsScriptsTitleVideoWebm} type="video/webm" />
+                    <source src={comicsScriptsTitleVideo} type="video/mp4" />
+                  </video>
                 )}
               </div>
               <img
@@ -731,7 +734,7 @@ const Comics = () => {
                 aria-hidden="true"
                 className="h-full min-h-0 w-full rotate-180 object-cover object-center"
                 width={1920}
-                height={512}
+                height={368}
                 loading="eager"
                 decoding="async"
               />
