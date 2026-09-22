@@ -193,7 +193,7 @@ const About = () => {
               </div>
               
               {/* Right column: Body text - aligned to top */}
-              <div className="flex-1 max-w-[400px] xl:max-w-[450px] pt-0">
+              <div className="flex-1 max-w-[440px] xl:max-w-[500px] pt-0">
                 <HandwrittenIntro className="w-full" />
               </div>
             </div>
@@ -242,7 +242,7 @@ const About = () => {
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
                 
-                <div className="mt-1">
+                <div className="mt-1 mb-7">
                   <HandwrittenIntro className="w-full" />
                 </div>
               </div>
