@@ -30,7 +30,7 @@ const StampPortrait = ({ className }: { className: string }) => (
       />
     </div>
     <div className="pointer-events-none absolute -right-5 top-3 flex h-20 w-20 rotate-12 items-center justify-center rounded-full border-2 border-ink-black/45 text-center font-body text-[9px] uppercase leading-tight text-ink-black/55">
-      Tokyo<br />Japan<br />22 · 09 · 26
+      Tokyo<br />Japan<br />In Transit
     </div>
     <div className="pointer-events-none absolute -bottom-3 -left-4 flex h-16 w-16 -rotate-12 items-center justify-center rounded-full border border-ink-black/40 text-center font-body text-[8px] uppercase leading-tight text-ink-black/50">
       London<br />Air Mail
@@ -372,7 +372,7 @@ const About = () => {
 
           {/* Surreal cat between the city and mountain collage; excluded from phone and small-iPad layouts */}
           <div
-            className={`absolute bottom-[-8%] left-[27%] z-[5] hidden w-[48%] origin-bottom-left -rotate-[10deg] transition-opacity duration-[5000ms] ease-in-out md:block lg:left-[29%] lg:w-[43%] xl:left-[30%] xl:w-[40%] ${showCityscape ? 'opacity-90' : 'opacity-0'}`}
+            className={`absolute bottom-[-8%] left-[27%] z-[5] hidden w-[48%] origin-bottom-left -rotate-[10deg] transition-opacity duration-[5000ms] ease-in-out min-[820px]:block lg:left-[29%] lg:w-[43%] xl:left-[30%] xl:w-[40%] ${showCityscape ? 'opacity-90' : 'opacity-0'}`}
           >
             {belowFoldVisible && (
               <img
