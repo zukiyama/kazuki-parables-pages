@@ -176,9 +176,6 @@ const About = () => {
                 <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed">
                   Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
-                <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed mt-4">
-                  The best way to get to know his music is to head over to the music page.
-                </p>
               </div>
             </div>
           ) : (
@@ -269,9 +266,6 @@ const About = () => {
                 </p>
                 <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl">
                   Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
-                </p>
-                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl mt-4">
-                  The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
               
