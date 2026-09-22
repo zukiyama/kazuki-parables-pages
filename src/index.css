@@ -240,6 +240,16 @@
     transform: translateY(0);
   }
 
+  /* Opacity-only reveal (no vertical movement) for layered artwork sections */
+  .scroll-fade-plain {
+    opacity: 0;
+    transition: opacity 0.8s ease-out;
+  }
+
+  .scroll-fade-plain.visible {
+    opacity: 1;
+  }
+
   .image-dissolve {
     transition: opacity 2s ease-in-out;
   }
