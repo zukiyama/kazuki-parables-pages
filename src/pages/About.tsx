@@ -10,7 +10,6 @@ import artistPortrait from "@/assets/about-portrait-postcard.png";
 import parisSquare from "@/assets/about-music-room.webp";
 
 // Below-the-fold assets - lazy loaded
-import signatureYamakawa from "@/assets/signature-yamakawa-new.webp";
 import backgroundSphere from "@/assets/about-background-new.webp";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.webp";
 import childPortrait from "@/assets/about-child-portrait.webp";
