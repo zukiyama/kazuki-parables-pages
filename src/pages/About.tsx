@@ -15,36 +15,15 @@ import backgroundSphere from "@/assets/about-background-new.webp";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.webp";
 import childPortrait from "@/assets/about-child-portrait.webp";
 
-const ABOUT_INTRODUCTION = {
-  firstName: "Kazuki",
-  lastName: "Yamakawa",
-  descriptor: "A writer and singer-songwriter, working in literature, music and visual storytelling.",
-  biography: "Previously a writer in the Korean games industry, in his thirties, Kazuki dropped out to pursue the work that had been his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.",
-  musicLink: "The best way to get to know his music is to head over to the music page.",
-} as const;
-
 const About = () => {
   useScrollToTop();
   const visibleElements = useScrollAnimation();
   const isWidescreen = useWidescreenAspectRatio();
-  const [isCompactLandscape, setIsCompactLandscape] = React.useState(() =>
-    typeof window !== "undefined" && window.innerHeight <= 500
-  );
   const [showCityscape, setShowCityscape] = React.useState(false);
   const [headerHeight, setHeaderHeight] = React.useState(0);
   const [belowFoldVisible, setBelowFoldVisible] = React.useState(false);
   const [heroBackgroundReady, setHeroBackgroundReady] = React.useState(false);
   const belowFoldRef = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    const checkCompactLandscape = () => setIsCompactLandscape(window.innerHeight <= 500);
-    window.addEventListener("resize", checkCompactLandscape);
-    window.addEventListener("orientationchange", checkCompactLandscape);
-    return () => {
-      window.removeEventListener("resize", checkCompactLandscape);
-      window.removeEventListener("orientationchange", checkCompactLandscape);
-    };
-  }, []);
 
   // Measure header height on mount and orientation change
   React.useEffect(() => {
@@ -158,7 +137,7 @@ const About = () => {
         {/* Magazine-style text layout over background */}
         <div className="relative z-10 px-8 md:px-16 lg:px-24 pb-24 mt-4">
           {/* Widescreen layout: Photo + Name + Subheading on left, Body text on right */}
-          {isWidescreen && !isCompactLandscape ? (
+          {isWidescreen ? (
             <div className="flex gap-8 items-start">
               {/* Left column: Photo + Title with Subheading aligned to photo bottom */}
               <div className="flex-shrink-0">
@@ -173,20 +152,20 @@ const About = () => {
                       height={480}
                       loading="eager"
                       decoding="async"
-                      className="w-[200px] 2xl:w-[220px] aspect-square object-cover grayscale shadow-2xl"
+                      className="w-[200px] xl:w-[220px] 2xl:w-[240px] aspect-square object-cover grayscale shadow-2xl"
                     />
                   </div>
                   
                   {/* Title + Subheading - subheading aligned to bottom of photo */}
-                  <div className="flex flex-col justify-between h-[200px] 2xl:h-[220px] py-1">
-                    <h1 className="font-heading font-semibold text-[5rem] 2xl:text-[6rem] text-black leading-[0.82] tracking-tight">
-                      {ABOUT_INTRODUCTION.firstName}
+                  <div className="flex flex-col justify-between h-[200px] xl:h-[220px] 2xl:h-[240px] py-1">
+                    <h1 className="font-heading text-[5rem] xl:text-[6rem] 2xl:text-[7rem] text-black leading-[0.82] tracking-tight">
+                      Kazuki
                       <br />
-                      <span className="italic font-normal">{ABOUT_INTRODUCTION.lastName}</span>
+                      <span className="italic font-light">Yamakawa</span>
                     </h1>
                     {/* Subheading at bottom, aligned with photo bottom */}
-                    <p className="font-body font-semibold text-xl xl:text-2xl text-black leading-snug mt-4">
-                      {ABOUT_INTRODUCTION.descriptor}
+                    <p className="font-body text-xl xl:text-2xl text-black leading-snug mt-4">
+                      A multi-disciplinary artist working in literature,<br />music and visual storytelling.
                     </p>
                   </div>
                 </div>
@@ -194,11 +173,11 @@ const About = () => {
               
               {/* Right column: Body text - aligned to top */}
               <div className="flex-1 max-w-[400px] xl:max-w-[450px] pt-0">
-                <p className="font-body font-semibold text-xl xl:text-2xl text-black/85 leading-snug">
-                  {ABOUT_INTRODUCTION.biography}
+                <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed">
+                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
                 </p>
                 <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed mt-4">
-                  {ABOUT_INTRODUCTION.musicLink}
+                  The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
             </div>
@@ -229,36 +208,36 @@ const About = () => {
                 
                 {/* Title on left - extra top padding for 10.9" iPad portrait alignment */}
                 <h1 className="font-heading text-7xl md:text-8xl text-black leading-[0.85] tracking-tight mb-4 md:pt-3">
-                  {ABOUT_INTRODUCTION.firstName}
+                  Kazuki
                   <br />
-                  <span className="italic font-light">{ABOUT_INTRODUCTION.lastName}</span>
+                  <span className="italic font-light">Yamakawa</span>
                 </h1>
                 
                 {/* Subheading below title - increased top margin for 10.9" iPad */}
                 <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6 md:mt-6">
-                  {ABOUT_INTRODUCTION.descriptor}
+                  A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
                 
                 {/* Body text wraps around photo - increased top margin for 10.9" iPad */}
                 <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed md:mt-4">
-                  {ABOUT_INTRODUCTION.biography} {ABOUT_INTRODUCTION.musicLink}
+                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
               
               {/* Mobile phone: Title + content */}
               <div className="sm:hidden">
                 <h1 className="font-heading text-6xl text-black leading-[0.9] tracking-tight mb-6">
-                  {ABOUT_INTRODUCTION.firstName}
+                  Kazuki
                   <br />
-                  <span className="italic font-light">{ABOUT_INTRODUCTION.lastName}</span>
+                  <span className="italic font-light">Yamakawa</span>
                 </h1>
                 
                 <p className="font-body text-xl text-black leading-snug max-w-2xl mb-4">
-                  {ABOUT_INTRODUCTION.descriptor}
+                  A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
                 
                 <p className="font-body text-base text-black/80 leading-relaxed max-w-3xl">
-                  {ABOUT_INTRODUCTION.biography} {ABOUT_INTRODUCTION.musicLink}
+                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
               
@@ -268,10 +247,10 @@ const About = () => {
                 <div className="flex items-start gap-6 mb-10">
                   {/* Title - positioned on left */}
                   <div className="flex-1 pt-0">
-                    <h1 className="font-heading font-semibold text-7xl md:text-8xl lg:text-[8rem] text-black leading-[0.85] tracking-tight">
-                      {ABOUT_INTRODUCTION.firstName}
+                    <h1 className="font-heading text-7xl md:text-8xl lg:text-[8rem] text-black leading-[0.85] tracking-tight">
+                      Kazuki
                       <br />
-                      <span className="italic font-normal">{ABOUT_INTRODUCTION.lastName}</span>
+                      <span className="italic font-light">Yamakawa</span>
                     </h1>
                   </div>
                   {/* Photo - positioned on right, aligned top */}
@@ -285,14 +264,14 @@ const About = () => {
                 </div>
                 
                 {/* Subheading + Body text below */}
-                <p className="font-body font-semibold text-2xl md:text-3xl text-black leading-snug mb-6">
-                  {ABOUT_INTRODUCTION.descriptor}
+                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6">
+                  A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
-                <p className="font-body font-semibold text-2xl md:text-3xl text-black/80 leading-snug max-w-3xl">
-                  {ABOUT_INTRODUCTION.biography}
+                <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl">
+                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
                 </p>
                 <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl mt-4">
-                  {ABOUT_INTRODUCTION.musicLink}
+                  The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
               
@@ -315,25 +294,24 @@ const About = () => {
                   
                   {/* Title */}
                   <div className="flex-shrink-0">
-                    <h1 className="font-heading font-semibold text-8xl text-black leading-[0.85] tracking-tight">
-                      {ABOUT_INTRODUCTION.firstName}
+                    <h1 className="font-heading text-8xl text-black leading-[0.85] tracking-tight">
+                      Kazuki
                       <br />
-                      <span className="italic font-normal">{ABOUT_INTRODUCTION.lastName}</span>
+                      <span className="italic font-light">Yamakawa</span>
                     </h1>
                   </div>
                   
                   {/* Body text - right of title */}
                   <div className="flex-1 max-w-[420px] pt-1">
-                    <p className="font-body font-semibold text-3xl text-black/80 leading-snug">
-                      {ABOUT_INTRODUCTION.biography}
-                      <span className="block font-normal text-lg leading-relaxed mt-4">{ABOUT_INTRODUCTION.musicLink}</span>
+                    <p className="font-body text-lg text-black/80 leading-relaxed">
+                      A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                     </p>
                   </div>
                 </div>
                 
                 {/* Subheading below */}
-                <p className="font-body font-semibold text-3xl text-black leading-snug max-w-2xl mt-8">
-                  {ABOUT_INTRODUCTION.descriptor}
+                <p className="font-body text-3xl text-black leading-snug max-w-2xl mt-8">
+                  A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
               </div>
             </div>
