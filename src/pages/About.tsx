@@ -6,7 +6,7 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 
 // Above-the-fold assets - loaded eagerly with high priority
-import artistPortrait from "@/assets/about-portrait-stamp.jpeg.asset.json";
+import artistPortrait from "@/assets/about-portrait-stamp.jpeg";
 import parisSquare from "@/assets/about-music-room.webp";
 
 // Below-the-fold assets - lazy loaded
@@ -14,13 +14,13 @@ import signatureYamakawa from "@/assets/signature-yamakawa-new.webp";
 import backgroundSphere from "@/assets/about-background-new.webp";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.webp";
 import childPortrait from "@/assets/about-child-portrait.webp";
-import surrealCat from "@/assets/about-surreal-cat.png.asset.json";
+import surrealCat from "@/assets/about-surreal-cat.png";
 
 const StampPortrait = ({ className }: { className: string }) => (
   <div className={`relative rotate-[-3deg] bg-canvas-base p-2 shadow-2xl ring-1 ring-ink-black/25 ${className}`}>
     <div className="h-full border-2 border-dashed border-ink-black/35 p-1.5">
       <img
-        src={artistPortrait.url}
+        src={artistPortrait}
         alt="Kazuki Yamakawa wearing a hat"
         width={800}
         height={800}
@@ -376,7 +376,7 @@ const About = () => {
           >
             {belowFoldVisible && (
               <img
-                src={surrealCat.url}
+                src={surrealCat}
                 alt=""
                 width={1145}
                 height={1374}
