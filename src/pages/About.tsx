@@ -458,40 +458,27 @@ const About = () => {
           {/* Second Quote Block - Magazine style on left over cityscape - tablet and desktop */}
           <div 
             data-scroll-animation="second-quote"
-            className={`absolute top-[15%] left-[4%] w-[38%] pointer-events-auto hidden sm:block scroll-slide-left z-30 ${visibleElements.has("second-quote") ? "visible" : ""}`}
+            className={`absolute top-[20%] left-[4%] w-[38%] pointer-events-auto hidden sm:block scroll-slide-left z-30 ${visibleElements.has("second-quote") ? "visible" : ""}`}
           >
             <div className="text-center px-4">
-              <p className="font-body text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-black/85 leading-snug" aria-label={'Gardens appear whether you mean them to or not, and action figures grow taller than the boys that bury them."'}>
-                <CrumbleLine className="italic" offset={0} active={showCityscape}>Gardens appear</CrumbleLine>
+              <p className="font-body text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-black/85 leading-snug">
+                <span className="italic">Gardens appear</span>
                 <br />
-                <CrumbleLine className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-medium not-italic" offset={14} active={showCityscape}>whether you</CrumbleLine>
+                <span className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium not-italic">whether you</span>
                 <br />
-                <CrumbleLine className="italic" offset={25} active={showCityscape}>mean them to or not,</CrumbleLine>
+                <span className="italic">mean them to or not,</span>
                 <br />
-                <CrumbleLine className="text-lg sm:text-xl lg:text-2xl italic" offset={45} active={showCityscape}>and action figures</CrumbleLine>
+                <span className="text-xl sm:text-2xl lg:text-3xl italic">and action figures</span>
                 <br />
-                <CrumbleLine className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-medium not-italic tracking-tight" offset={63} active={showCityscape}>grow taller than</CrumbleLine>
+                <span className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium not-italic tracking-tight">grow taller than</span>
                 <br />
-                <CrumbleLine className="italic" offset={79} active={showCityscape}>the boys that</CrumbleLine>
+                <span className="italic">the boys that</span>
                 <br />
-                <CrumbleLine className="text-xl sm:text-2xl lg:text-3xl font-medium not-italic" offset={92} active={showCityscape}>{'bury them."'}</CrumbleLine>
+                <span className="text-2xl sm:text-3xl lg:text-4xl font-medium not-italic">{'bury them."'}</span>
               </p>
-              {/* Kanji Signature - positioned right of quote - lazy loaded */}
-              <div className={`mt-6 flex justify-end pr-8 ${showCityscape ? "about-signature-falling" : ""}`}>
-                {belowFoldVisible && (
-                  <img 
-                    src={signatureYamakawa}
-                    alt="Yamakawa signature"
-                    width={600}
-                    height={200}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-24 sm:w-32 h-auto opacity-90"
-                  />
-                )}
-              </div>
             </div>
           </div>
+
           
           {/* Mobile phone ONLY text overlay - hidden on small iPad */}
           <div className="hidden max-sm:block absolute inset-0 bg-black/40 pointer-events-auto">
