@@ -10,7 +10,6 @@ import artistPortrait from "@/assets/about-portrait-postcard.png";
 import parisSquare from "@/assets/about-music-room.webp";
 
 // Below-the-fold assets - lazy loaded
-import signatureYamakawa from "@/assets/signature-yamakawa-new.webp";
 import backgroundSphere from "@/assets/about-background-new.webp";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.webp";
 import childPortrait from "@/assets/about-child-portrait.webp";
@@ -19,20 +18,21 @@ import handwrittenIntro from "@/assets/about-intro-handwritten.png";
 
 type CrumbleLineProps = {
   children: string;
-  className: string;
+  className?: string;
   offset: number;
   active: boolean;
+  baseDelay?: number;
 };
 
-const CrumbleLine = ({ children, className, offset, active }: CrumbleLineProps) => (
+const CrumbleLine = ({ children, className = "", offset, active, baseDelay = 3000 }: CrumbleLineProps) => (
   <span className={className}>
     {Array.from(children).map((character, index) => {
       const characterIndex = offset + index;
       const horizontalDistance = ((characterIndex * 47) % 181) - 90;
       const initialDrop = 4 + ((characterIndex * 19) % 24);
       const rotation = ((characterIndex * 73) % 241) - 120;
-      const delay = 3000 + ((characterIndex * 41) % 420);
-      const duration = 1700 + ((characterIndex * 29) % 700);
+      const delay = baseDelay + ((characterIndex * 41) % 420);
+      const duration = 2600 + ((characterIndex * 29) % 900);
 
       return (
         <span
@@ -53,6 +53,7 @@ const CrumbleLine = ({ children, className, offset, active }: CrumbleLineProps) 
     })}
   </span>
 );
+
 
 const StampPortrait = ({ className }: { className: string }) => (
   <div className={`relative rotate-[-3deg] ${className}`}>
@@ -147,22 +148,32 @@ const About = () => {
     img.src = parisSquare;
   }, []);
 
+  // Reveal the cityscape (and the cat fading with it) once the lower artwork
+  // section actually enters the viewport - reliable in any window size or tab.
   React.useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercentage = scrollPosition / pageHeight;
-      
-      if (scrollPercentage >= 0.66 && !showCityscape) {
-        setTimeout(() => {
-          setShowCityscape(true);
-        }, 3000);
-      }
-    };
+    if (showCityscape) return;
+    const target = belowFoldRef.current;
+    if (!target) return;
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    let revealTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          revealTimer = setTimeout(() => setShowCityscape(true), 3000);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(target);
+    return () => {
+      observer.disconnect();
+      if (revealTimer) clearTimeout(revealTimer);
+    };
   }, [showCityscape]);
+
   
   return (
     <div className="min-h-screen-stable bg-neutral-100">
@@ -373,7 +384,7 @@ const About = () => {
       <div ref={belowFoldRef} className="relative z-10 -mt-8 max-sm:mt-0">
         <div 
           data-scroll-animation="background-image"
-          className={`relative pointer-events-none overflow-hidden scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
+          className={`relative pointer-events-none overflow-hidden scroll-fade-plain ${visibleElements.has("background-image") ? "visible" : ""}`}
         >
           {/* Cityscape layer behind everything - tablet and desktop - lazy loaded */}
           <div 
@@ -446,40 +457,27 @@ const About = () => {
           {/* Second Quote Block - Magazine style on left over cityscape - tablet and desktop */}
           <div 
             data-scroll-animation="second-quote"
-            className={`absolute top-[15%] left-[4%] w-[38%] pointer-events-auto hidden sm:block scroll-slide-left z-30 ${visibleElements.has("second-quote") ? "visible" : ""}`}
+            className={`absolute top-[20%] left-[4%] w-[38%] pointer-events-auto hidden sm:block scroll-slide-left z-30 ${visibleElements.has("second-quote") ? "visible" : ""}`}
           >
             <div className="text-center px-4">
-              <p className="font-body text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-black/85 leading-snug" aria-label={'Gardens appear whether you mean them to or not, and action figures grow taller than the boys that bury them."'}>
-                <CrumbleLine className="italic" offset={0} active={showCityscape}>Gardens appear</CrumbleLine>
+              <p className="font-body text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-black/85 leading-snug">
+                <span className="italic">Gardens appear</span>
                 <br />
-                <CrumbleLine className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-medium not-italic" offset={14} active={showCityscape}>whether you</CrumbleLine>
+                <span className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium not-italic">whether you</span>
                 <br />
-                <CrumbleLine className="italic" offset={25} active={showCityscape}>mean them to or not,</CrumbleLine>
+                <span className="italic">mean them to or not,</span>
                 <br />
-                <CrumbleLine className="text-lg sm:text-xl lg:text-2xl italic" offset={45} active={showCityscape}>and action figures</CrumbleLine>
+                <span className="text-xl sm:text-2xl lg:text-3xl italic">and action figures</span>
                 <br />
-                <CrumbleLine className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-medium not-italic tracking-tight" offset={63} active={showCityscape}>grow taller than</CrumbleLine>
+                <span className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium not-italic tracking-tight">grow taller than</span>
                 <br />
-                <CrumbleLine className="italic" offset={79} active={showCityscape}>the boys that</CrumbleLine>
+                <span className="italic">the boys that</span>
                 <br />
-                <CrumbleLine className="text-xl sm:text-2xl lg:text-3xl font-medium not-italic" offset={92} active={showCityscape}>{'bury them."'}</CrumbleLine>
+                <span className="text-2xl sm:text-3xl lg:text-4xl font-medium not-italic">{'bury them."'}</span>
               </p>
-              {/* Kanji Signature - positioned right of quote - lazy loaded */}
-              <div className={`mt-6 flex justify-end pr-8 ${showCityscape ? "about-signature-falling" : ""}`}>
-                {belowFoldVisible && (
-                  <img 
-                    src={signatureYamakawa}
-                    alt="Yamakawa signature"
-                    width={600}
-                    height={200}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-24 sm:w-32 h-auto opacity-90"
-                  />
-                )}
-              </div>
             </div>
           </div>
+
           
           {/* Mobile phone ONLY text overlay - hidden on small iPad */}
           <div className="hidden max-sm:block absolute inset-0 bg-black/40 pointer-events-auto">
@@ -496,11 +494,21 @@ const About = () => {
             className={`absolute bottom-[14%] right-[12%] pointer-events-auto hidden lg:block z-30 overflow-visible ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
           >
             <div className="font-body text-2xl sm:text-3xl lg:text-4xl text-white italic flex flex-col items-end tracking-wide overflow-visible">
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-1" : ""}`} style={{ marginRight: '20px' }}>None</span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-2" : ""}`} style={{ marginRight: '5px', marginTop: '14px' }}>of</span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-3" : ""}`} style={{ marginRight: '25px', marginTop: '16px' }}>this</span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-4" : ""}`} style={{ marginRight: '0px', marginTop: '12px' }}>is</span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-5" : ""}`} style={{ marginRight: '-15px', marginTop: '26px' }}>real</span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-1" : ""}`} style={{ marginRight: '20px' }}>
+                <CrumbleLine offset={0} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>None</CrumbleLine>
+              </span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-2" : ""}`} style={{ marginRight: '5px', marginTop: '14px' }}>
+                <CrumbleLine offset={7} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>of</CrumbleLine>
+              </span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-3" : ""}`} style={{ marginRight: '25px', marginTop: '16px' }}>
+                <CrumbleLine offset={13} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>this</CrumbleLine>
+              </span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-4" : ""}`} style={{ marginRight: '0px', marginTop: '12px' }}>
+                <CrumbleLine offset={21} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>is</CrumbleLine>
+              </span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-5" : ""}`} style={{ marginRight: '-15px', marginTop: '26px' }}>
+                <CrumbleLine offset={29} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>real</CrumbleLine>
+              </span>
             </div>
           </div>
         </div>
