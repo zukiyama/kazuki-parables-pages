@@ -495,11 +495,21 @@ const About = () => {
             className={`absolute bottom-[14%] right-[12%] pointer-events-auto hidden lg:block z-30 overflow-visible ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
           >
             <div className="font-body text-2xl sm:text-3xl lg:text-4xl text-white italic flex flex-col items-end tracking-wide overflow-visible">
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-1" : ""}`} style={{ marginRight: '20px' }}>None</span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-2" : ""}`} style={{ marginRight: '5px', marginTop: '14px' }}>of</span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-3" : ""}`} style={{ marginRight: '25px', marginTop: '16px' }}>this</span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-4" : ""}`} style={{ marginRight: '0px', marginTop: '12px' }}>is</span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-5" : ""}`} style={{ marginRight: '-15px', marginTop: '26px' }}>real</span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-1" : ""}`} style={{ marginRight: '20px' }}>
+                <CrumbleLine offset={0} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>None</CrumbleLine>
+              </span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-2" : ""}`} style={{ marginRight: '5px', marginTop: '14px' }}>
+                <CrumbleLine offset={7} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>of</CrumbleLine>
+              </span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-3" : ""}`} style={{ marginRight: '25px', marginTop: '16px' }}>
+                <CrumbleLine offset={13} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>this</CrumbleLine>
+              </span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-4" : ""}`} style={{ marginRight: '0px', marginTop: '12px' }}>
+                <CrumbleLine offset={21} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>is</CrumbleLine>
+              </span>
+              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-5" : ""}`} style={{ marginRight: '-15px', marginTop: '26px' }}>
+                <CrumbleLine offset={29} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>real</CrumbleLine>
+              </span>
             </div>
           </div>
         </div>
