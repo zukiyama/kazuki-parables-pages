@@ -421,8 +421,10 @@ const About = () => {
 
           {/* Surreal cat between the city and mountain collage; excluded from phone and small-iPad layouts */}
           <div
-            className={`absolute -bottom-[2%] left-[8%] z-[5] hidden w-[65%] origin-bottom-left -rotate-[10deg] transition-opacity duration-[3500ms] ease-out min-[820px]:block lg:left-[8%] lg:w-[60%] xl:left-[8%] xl:w-[56%] ${showCityscape ? 'opacity-90' : 'opacity-0'}`}
+            style={{ transition: 'opacity 3500ms ease-out' }}
+            className={`absolute -bottom-[2%] left-[8%] z-[5] hidden w-[65%] origin-bottom-left -rotate-[10deg] min-[820px]:block lg:left-[8%] lg:w-[60%] xl:left-[8%] xl:w-[56%] ${showCityscape ? 'opacity-90' : 'opacity-0'}`}
           >
+
             {belowFoldVisible && (
               <img
                 src={surrealCat}
