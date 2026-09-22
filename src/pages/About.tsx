@@ -31,6 +31,19 @@ const StampPortrait = ({ className }: { className: string }) => (
   </div>
 );
 
+// Handwritten intro note (transparent background, black ink) replacing the typed paragraph
+const HandwrittenIntro = ({ className = "" }: { className?: string }) => (
+  <img
+    src={handwrittenIntro}
+    alt="Handwritten note: Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page."
+    width={1949}
+    height={807}
+    loading="eager"
+    decoding="async"
+    className={`block h-auto ${className}`}
+  />
+);
+
 const About = () => {
   useScrollToTop();
   const visibleElements = useScrollAnimation();
