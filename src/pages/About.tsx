@@ -149,22 +149,32 @@ const About = () => {
     img.src = parisSquare;
   }, []);
 
+  // Reveal the cityscape (and the cat fading with it) once the lower artwork
+  // section actually enters the viewport - reliable in any window size or tab.
   React.useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercentage = scrollPosition / pageHeight;
-      
-      if (scrollPercentage >= 0.66 && !showCityscape) {
-        setTimeout(() => {
-          setShowCityscape(true);
-        }, 3000);
-      }
-    };
+    if (showCityscape) return;
+    const target = belowFoldRef.current;
+    if (!target) return;
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    let revealTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          revealTimer = setTimeout(() => setShowCityscape(true), 3000);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(target);
+    return () => {
+      observer.disconnect();
+      if (revealTimer) clearTimeout(revealTimer);
+    };
   }, [showCityscape]);
+
   
   return (
     <div className="min-h-screen-stable bg-neutral-100">
