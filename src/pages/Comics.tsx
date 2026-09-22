@@ -6,8 +6,8 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 
-// CRITICAL: First panel assets (Section 0 - Title) - LCP candidate
-import comicPanelsBackground from "@/assets/comic-panels-background.webp";
+// CRITICAL: First panel asset (Section 0) - LCP candidate
+import comicsScriptsTitleVideo from "@/assets/comicsscriptstitle.mp4.asset.json";
 
 // SECONDARY: Vignette assets (Section 1) - preload after first paint
 import vignetteManyFaces from "@/assets/god-of-lies-characters.webp";
@@ -633,63 +633,24 @@ const Comics = () => {
             }}
           >
             
-            {/* SECTION 0: TITLE SCREEN - Centered title with scroll hint */}
+            {/* SECTION 0: OPENING FILM */}
             <section 
-              className="absolute inset-0 flex flex-col items-center justify-center"
+              className="absolute inset-0 flex items-center justify-center bg-black overflow-hidden"
               style={{ 
                 opacity: titleOpacity,
                 pointerEvents: titleVisible ? 'auto' : 'none',
                 transition: 'opacity 0.5s ease-out'
               }}
             >
-              <div className="text-center relative">
-                {/* Faded comic panels behind - LCP CANDIDATE */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <img 
-                    src={comicPanelsBackground}
-                    alt=""
-                    className="w-full max-w-2xl opacity-10"
-                    width={2560}
-                    height={800}
-                    {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
-                    loading="eager"
-                    decoding="sync"
-                  />
-                </div>
-                
-                <h1 
-                  className="text-5xl xs:text-6xl sm:text-6xl lg:text-7xl xl:text-8xl uppercase text-black relative z-10"
-                  style={{ 
-                    fontFamily: 'Bangers, cursive',
-                    fontWeight: 400,
-                    letterSpacing: '0.08em'
-                  }}
-                >
-                  COMICS & SCRIPTS
-                </h1>
-
-                <div className="w-32 sm:w-48 h-0.5 bg-black/30 mx-auto mt-4" />
-
-                <p 
-                  className="text-xs sm:text-sm lg:text-base tracking-[0.2em] uppercase text-black/70 mt-4 sm:mt-5 relative z-10"
-                  style={{ 
-                    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                    fontWeight: 400
-                  }}
-                >
-                  Original Stories in Sequential Art & Screenplay
-                </p>
-              </div>
-              
-              {/* Scroll hint - centrally aligned */}
-              <div 
-                className="absolute bottom-8 inset-x-0 flex flex-col items-center gap-2 text-black/40 animate-bounce"
-              >
-                <span className="text-xs uppercase tracking-widest text-center">Scroll to explore</span>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 5v14M5 12l7 7 7-7"/>
-                </svg>
-              </div>
+              <video
+                className="block h-auto max-h-full w-full object-contain"
+                src={comicsScriptsTitleVideo.url}
+                autoPlay
+                muted
+                playsInline
+                preload="auto"
+                aria-label="Comics and Scripts opening film"
+              />
             </section>
 
             {/* SECTION 1: VIGNETTES - Slide in from sides with summary text */}
