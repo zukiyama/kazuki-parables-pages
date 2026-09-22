@@ -24,35 +24,54 @@ type CrumbleLineProps = {
   baseDelay?: number;
 };
 
-const CrumbleLine = ({ children, className = "", offset, active, baseDelay = 3000 }: CrumbleLineProps) => (
-  <span className={className}>
-    {Array.from(children).map((character, index) => {
-      const characterIndex = offset + index;
-      const horizontalDistance = ((characterIndex * 47) % 181) - 90;
-      const initialDrop = 4 + ((characterIndex * 19) % 24);
-      const rotation = ((characterIndex * 73) % 241) - 120;
-      const delay = baseDelay + ((characterIndex * 41) % 420);
-      const duration = 2600 + ((characterIndex * 29) % 900);
+const CrumbleLine = ({ children, className = "", offset, active, baseDelay = 3000 }: CrumbleLineProps) => {
+  // Keep the text as a single, natively rendered run (crisp kerning, ligatures and
+  // italic overhang) until the moment it actually needs to fall apart.
+  const [split, setSplit] = React.useState(false);
 
-      return (
-        <span
-          key={`${characterIndex}-${character}`}
-          aria-hidden="true"
-          className={`about-quote-character ${active ? "about-quote-character--falling" : ""}`}
-          style={{
-            "--crumble-x": `${horizontalDistance}px`,
-            "--crumble-y": `${initialDrop}px`,
-            "--crumble-rotation": `${rotation}deg`,
-            "--crumble-delay": `${delay}ms`,
-            "--crumble-duration": `${duration}ms`,
-          } as React.CSSProperties}
-        >
-          {character === " " ? "\u00a0" : character}
-        </span>
-      );
-    })}
-  </span>
-);
+  React.useEffect(() => {
+    if (!active) {
+      setSplit(false);
+      return;
+    }
+    const splitTimer = setTimeout(() => setSplit(true), Math.max(0, baseDelay - 150));
+    return () => clearTimeout(splitTimer);
+  }, [active, baseDelay]);
+
+  if (!split) {
+    return <span className={className}>{children}</span>;
+  }
+
+  return (
+    <span className={className}>
+      {Array.from(children).map((character, index) => {
+        const characterIndex = offset + index;
+        const horizontalDistance = ((characterIndex * 47) % 181) - 90;
+        const initialDrop = 4 + ((characterIndex * 19) % 24);
+        const rotation = ((characterIndex * 73) % 241) - 120;
+        const delay = 150 + ((characterIndex * 41) % 420);
+        const duration = 2600 + ((characterIndex * 29) % 900);
+
+        return (
+          <span
+            key={`${characterIndex}-${character}`}
+            aria-hidden="true"
+            className="about-quote-character about-quote-character--falling"
+            style={{
+              "--crumble-x": `${horizontalDistance}px`,
+              "--crumble-y": `${initialDrop}px`,
+              "--crumble-rotation": `${rotation}deg`,
+              "--crumble-delay": `${delay}ms`,
+              "--crumble-duration": `${duration}ms`,
+            } as React.CSSProperties}
+          >
+            {character === " " ? "\u00a0" : character}
+          </span>
+        );
+      })}
+    </span>
+  );
+};
 
 
 const StampPortrait = ({ className }: { className: string }) => (
