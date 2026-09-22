@@ -161,7 +161,7 @@ const About = () => {
       (entries) => {
         if (entries[0].isIntersecting) {
           observer.disconnect();
-          revealTimer = setTimeout(() => setShowCityscape(true), 3000);
+          revealTimer = setTimeout(() => setShowCityscape(true), 300);
         }
       },
       { threshold: 0.15 }
