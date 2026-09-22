@@ -293,7 +293,7 @@ const About = () => {
                   </div>
                   
                   {/* Handwritten intro - right of title */}
-                  <div className="flex-1 max-w-[440px] pt-1">
+                  <div className="flex-1 max-w-[500px] pt-1">
                     <HandwrittenIntro className="w-full" />
                   </div>
                 </div>
