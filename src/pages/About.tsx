@@ -87,6 +87,7 @@ const About = () => {
   const visibleElements = useScrollAnimation();
   const isWidescreen = useWidescreenAspectRatio();
   const [showCityscape, setShowCityscape] = React.useState(false);
+  const [showCat, setShowCat] = React.useState(false);
   const [headerHeight, setHeaderHeight] = React.useState(0);
   const [belowFoldVisible, setBelowFoldVisible] = React.useState(false);
   const [heroBackgroundReady, setHeroBackgroundReady] = React.useState(false);
@@ -173,6 +174,16 @@ const About = () => {
       if (revealTimer) clearTimeout(revealTimer);
     };
   }, [showCityscape]);
+
+  const quoteSequenceActive = visibleElements.has("second-quote");
+
+  // Begin the cat fade at the exact moment both quotations start crumbling.
+  React.useEffect(() => {
+    if (!quoteSequenceActive || showCat) return;
+
+    const catFadeTimer = setTimeout(() => setShowCat(true), 8000);
+    return () => clearTimeout(catFadeTimer);
+  }, [quoteSequenceActive, showCat]);
 
   
   return (
@@ -422,7 +433,7 @@ const About = () => {
           {/* Surreal cat between the city and mountain collage; excluded from phone and small-iPad layouts */}
           <div
             style={{ transition: 'opacity 3500ms ease-out' }}
-            className={`absolute -bottom-[2%] left-[8%] z-[5] hidden w-[65%] origin-bottom-left -rotate-[10deg] min-[820px]:block lg:left-[8%] lg:w-[60%] xl:left-[8%] xl:w-[56%] ${showCityscape ? 'opacity-90' : 'opacity-0'}`}
+            className={`absolute -bottom-[2%] left-[8%] z-[5] hidden w-[65%] origin-bottom-left -rotate-[10deg] min-[820px]:block lg:left-[8%] lg:w-[60%] xl:left-[8%] xl:w-[56%] ${showCat ? 'opacity-90' : 'opacity-0'}`}
           >
 
             {belowFoldVisible && (
@@ -462,20 +473,23 @@ const About = () => {
             className={`absolute top-[20%] left-[4%] w-[38%] pointer-events-auto hidden sm:block scroll-slide-left z-30 ${visibleElements.has("second-quote") ? "visible" : ""}`}
           >
             <div className="text-center px-4">
-              <p className="font-body text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-black/85 leading-snug">
-                <span className="italic">Gardens appear</span>
+              <p
+                aria-label={'Gardens appear whether you mean them to or not, and action figures grow taller than the boys that bury them."'}
+                className="font-body text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-black/85 leading-snug"
+              >
+                <CrumbleLine className="italic" offset={40} active={quoteSequenceActive} baseDelay={8000}>Gardens appear</CrumbleLine>
                 <br />
-                <span className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium not-italic">whether you</span>
+                <CrumbleLine className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium not-italic" offset={56} active={quoteSequenceActive} baseDelay={8000}>whether you</CrumbleLine>
                 <br />
-                <span className="italic">mean them to or not,</span>
+                <CrumbleLine className="italic" offset={69} active={quoteSequenceActive} baseDelay={8000}>mean them to or not,</CrumbleLine>
                 <br />
-                <span className="text-xl sm:text-2xl lg:text-3xl italic">and action figures</span>
+                <CrumbleLine className="text-xl sm:text-2xl lg:text-3xl italic" offset={91} active={quoteSequenceActive} baseDelay={8000}>and action figures</CrumbleLine>
                 <br />
-                <span className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium not-italic tracking-tight">grow taller than</span>
+                <CrumbleLine className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium not-italic tracking-tight" offset={110} active={quoteSequenceActive} baseDelay={8000}>grow taller than</CrumbleLine>
                 <br />
-                <span className="italic">the boys that</span>
+                <CrumbleLine className="italic" offset={127} active={quoteSequenceActive} baseDelay={8000}>the boys that</CrumbleLine>
                 <br />
-                <span className="text-2xl sm:text-3xl lg:text-4xl font-medium not-italic">{'bury them."'}</span>
+                <CrumbleLine className="text-2xl sm:text-3xl lg:text-4xl font-medium not-italic" offset={141} active={quoteSequenceActive} baseDelay={8000}>{'bury them."'}</CrumbleLine>
               </p>
             </div>
           </div>
@@ -493,23 +507,23 @@ const About = () => {
           {/* Desktop ONLY text at bottom right - word by word fade in - hidden on small iPad */}
           <div 
             data-scroll-animation="bottom-right-text"
-            className={`absolute bottom-[14%] right-[12%] pointer-events-auto hidden lg:block z-30 overflow-visible ${visibleElements.has("bottom-right-text") ? "visible" : ""}`}
+            className={`absolute bottom-[14%] right-[12%] pointer-events-auto hidden lg:block z-30 overflow-visible ${quoteSequenceActive ? "visible" : ""}`}
           >
             <div className="font-body text-2xl sm:text-3xl lg:text-4xl text-white italic flex flex-col items-end tracking-wide overflow-visible">
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-1" : ""}`} style={{ marginRight: '20px' }}>
-                <CrumbleLine offset={0} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>None</CrumbleLine>
+              <span className={`opacity-0 ${quoteSequenceActive ? "animate-word-fade-slow-1" : ""}`} style={{ marginRight: '20px' }}>
+                <CrumbleLine offset={0} active={quoteSequenceActive} baseDelay={8000}>None</CrumbleLine>
               </span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-2" : ""}`} style={{ marginRight: '5px', marginTop: '14px' }}>
-                <CrumbleLine offset={7} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>of</CrumbleLine>
+              <span className={`opacity-0 ${quoteSequenceActive ? "animate-word-fade-slow-2" : ""}`} style={{ marginRight: '5px', marginTop: '14px' }}>
+                <CrumbleLine offset={7} active={quoteSequenceActive} baseDelay={8000}>of</CrumbleLine>
               </span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-3" : ""}`} style={{ marginRight: '25px', marginTop: '16px' }}>
-                <CrumbleLine offset={13} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>this</CrumbleLine>
+              <span className={`opacity-0 ${quoteSequenceActive ? "animate-word-fade-slow-3" : ""}`} style={{ marginRight: '25px', marginTop: '16px' }}>
+                <CrumbleLine offset={13} active={quoteSequenceActive} baseDelay={8000}>this</CrumbleLine>
               </span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-4" : ""}`} style={{ marginRight: '0px', marginTop: '12px' }}>
-                <CrumbleLine offset={21} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>is</CrumbleLine>
+              <span className={`opacity-0 ${quoteSequenceActive ? "animate-word-fade-slow-4" : ""}`} style={{ marginRight: '0px', marginTop: '12px' }}>
+                <CrumbleLine offset={21} active={quoteSequenceActive} baseDelay={8000}>is</CrumbleLine>
               </span>
-              <span className={`opacity-0 ${visibleElements.has("bottom-right-text") ? "animate-word-fade-slow-5" : ""}`} style={{ marginRight: '-15px', marginTop: '26px' }}>
-                <CrumbleLine offset={29} active={visibleElements.has("bottom-right-text")} baseDelay={8000}>real</CrumbleLine>
+              <span className={`opacity-0 ${quoteSequenceActive ? "animate-word-fade-slow-5" : ""}`} style={{ marginRight: '-15px', marginTop: '26px' }}>
+                <CrumbleLine offset={29} active={quoteSequenceActive} baseDelay={8000}>real</CrumbleLine>
               </span>
             </div>
           </div>
