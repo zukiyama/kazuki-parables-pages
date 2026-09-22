@@ -516,6 +516,61 @@
   100% { opacity: 0.5; }
 }
 
+/* About quote loses gravity as the surreal cat finishes fading into view. */
+@keyframes about-character-crumble {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  14% {
+    opacity: 1;
+    transform: translate3d(calc(var(--crumble-x) * -0.12), var(--crumble-y), 0)
+      rotate(calc(var(--crumble-rotation) * -0.08));
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--crumble-x), 115vh, 0) rotate(var(--crumble-rotation));
+  }
+}
+
+@keyframes about-signature-fall {
+  0% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0deg); }
+  100% { opacity: 0; transform: translate3d(44px, 115vh, 0) rotate(18deg); }
+}
+
+.about-quote-character {
+  display: inline-block;
+  transform-origin: center;
+}
+
+.about-quote-character--falling {
+  animation: about-character-crumble var(--crumble-duration) cubic-bezier(0.45, 0, 0.8, 0.45)
+    var(--crumble-delay) forwards;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.about-signature-falling {
+  animation: about-signature-fall 2100ms cubic-bezier(0.45, 0, 0.8, 0.45) 3260ms forwards;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-quote-character--falling,
+  .about-signature-falling {
+    animation-name: about-quote-reduced-fade;
+    animation-duration: 500ms;
+    animation-delay: 3000ms;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+  }
+}
+
+@keyframes about-quote-reduced-fade {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
 .animate-quote-expand {
   animation: quote-expand 1s ease-out;
 }

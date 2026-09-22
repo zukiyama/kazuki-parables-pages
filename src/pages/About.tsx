@@ -17,6 +17,43 @@ import childPortrait from "@/assets/about-child-portrait.webp";
 import surrealCat from "@/assets/about-surreal-cat.png";
 import handwrittenIntro from "@/assets/about-intro-handwritten.png";
 
+type CrumbleLineProps = {
+  children: string;
+  className: string;
+  offset: number;
+  active: boolean;
+};
+
+const CrumbleLine = ({ children, className, offset, active }: CrumbleLineProps) => (
+  <span className={className}>
+    {Array.from(children).map((character, index) => {
+      const characterIndex = offset + index;
+      const horizontalDistance = ((characterIndex * 47) % 181) - 90;
+      const initialDrop = 4 + ((characterIndex * 19) % 24);
+      const rotation = ((characterIndex * 73) % 241) - 120;
+      const delay = 3000 + ((characterIndex * 41) % 420);
+      const duration = 1700 + ((characterIndex * 29) % 700);
+
+      return (
+        <span
+          key={`${characterIndex}-${character}`}
+          aria-hidden="true"
+          className={`about-quote-character ${active ? "about-quote-character--falling" : ""}`}
+          style={{
+            "--crumble-x": `${horizontalDistance}px`,
+            "--crumble-y": `${initialDrop}px`,
+            "--crumble-rotation": `${rotation}deg`,
+            "--crumble-delay": `${delay}ms`,
+            "--crumble-duration": `${duration}ms`,
+          } as React.CSSProperties}
+        >
+          {character === " " ? "\u00a0" : character}
+        </span>
+      );
+    })}
+  </span>
+);
+
 const StampPortrait = ({ className }: { className: string }) => (
   <div className={`relative rotate-[-3deg] ${className}`}>
     <img
@@ -373,7 +410,7 @@ const About = () => {
 
           {/* Surreal cat between the city and mountain collage; excluded from phone and small-iPad layouts */}
           <div
-            className={`absolute -bottom-[2%] left-[8%] z-[5] hidden w-[65%] origin-bottom-left -rotate-[10deg] transition-all duration-[3500ms] ease-in-out min-[820px]:block lg:left-[8%] lg:w-[60%] xl:left-[8%] xl:w-[56%] ${showCityscape ? 'translate-y-0 opacity-90' : 'translate-y-[45%] opacity-0'}`}
+            className={`absolute -bottom-[2%] left-[8%] z-[5] hidden w-[65%] origin-bottom-left -rotate-[10deg] transition-opacity duration-[3500ms] ease-out min-[820px]:block lg:left-[8%] lg:w-[60%] xl:left-[8%] xl:w-[56%] ${showCityscape ? 'opacity-90' : 'opacity-0'}`}
           >
             {belowFoldVisible && (
               <img
@@ -412,23 +449,23 @@ const About = () => {
             className={`absolute top-[15%] left-[4%] w-[38%] pointer-events-auto hidden sm:block scroll-slide-left z-30 ${visibleElements.has("second-quote") ? "visible" : ""}`}
           >
             <div className="text-center px-4">
-              <p className="font-body text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-black/85 leading-snug">
-                <span className="italic">Gardens appear</span>
+              <p className="font-body text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-black/85 leading-snug" aria-label={'Gardens appear whether you mean them to or not, and action figures grow taller than the boys that bury them."'}>
+                <CrumbleLine className="italic" offset={0} active={showCityscape}>Gardens appear</CrumbleLine>
                 <br />
-                <span className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-medium not-italic">whether you</span>
+                <CrumbleLine className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-medium not-italic" offset={14} active={showCityscape}>whether you</CrumbleLine>
                 <br />
-                <span className="italic">mean them to or not,</span>
+                <CrumbleLine className="italic" offset={25} active={showCityscape}>mean them to or not,</CrumbleLine>
                 <br />
-                <span className="text-lg sm:text-xl lg:text-2xl italic">and action figures</span>
+                <CrumbleLine className="text-lg sm:text-xl lg:text-2xl italic" offset={45} active={showCityscape}>and action figures</CrumbleLine>
                 <br />
-                <span className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-medium not-italic tracking-tight">grow taller than</span>
+                <CrumbleLine className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-medium not-italic tracking-tight" offset={63} active={showCityscape}>grow taller than</CrumbleLine>
                 <br />
-                <span className="italic">the boys that</span>
+                <CrumbleLine className="italic" offset={79} active={showCityscape}>the boys that</CrumbleLine>
                 <br />
-                <span className="text-xl sm:text-2xl lg:text-3xl font-medium not-italic">bury them."</span>
+                <CrumbleLine className="text-xl sm:text-2xl lg:text-3xl font-medium not-italic" offset={92} active={showCityscape}>{'bury them."'}</CrumbleLine>
               </p>
               {/* Kanji Signature - positioned right of quote - lazy loaded */}
-              <div className="mt-6 flex justify-end pr-8">
+              <div className={`mt-6 flex justify-end pr-8 ${showCityscape ? "about-signature-falling" : ""}`}>
                 {belowFoldVisible && (
                   <img 
                     src={signatureYamakawa}
