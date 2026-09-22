@@ -174,7 +174,7 @@ const About = () => {
               {/* Right column: Body text - aligned to top */}
               <div className="flex-1 max-w-[400px] xl:max-w-[450px] pt-0">
                 <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed">
-                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
+                  Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
                 <p className="font-body text-base xl:text-lg text-black/85 leading-relaxed mt-4">
                   The best way to get to know his music is to head over to the music page.
@@ -220,7 +220,7 @@ const About = () => {
                 
                 {/* Body text wraps around photo - increased top margin for 10.9" iPad */}
                 <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed md:mt-4">
-                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                  Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
               
@@ -237,7 +237,7 @@ const About = () => {
                 </p>
                 
                 <p className="font-body text-base text-black/80 leading-relaxed max-w-3xl">
-                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                  Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
               </div>
               
@@ -268,7 +268,7 @@ const About = () => {
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
                 <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl">
-                  A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.
+                  Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                 </p>
                 <p className="font-body text-lg md:text-xl text-black/80 leading-relaxed max-w-3xl mt-4">
                   The best way to get to know his music is to head over to the music page.
@@ -304,7 +304,7 @@ const About = () => {
                   {/* Body text - right of title */}
                   <div className="flex-1 max-w-[420px] pt-1">
                     <p className="font-body text-lg text-black/80 leading-relaxed">
-                      A writer in the Korean games industry in a previous life, Kazuki decided in his thirties to pursue the work that has been his lifelong vocation. Combining metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
+                      Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page.
                     </p>
                   </div>
                 </div>
@@ -330,11 +330,11 @@ const About = () => {
               <span className="absolute -top-6 -left-4 text-8xl text-white/20 font-serif">"</span>
               {/* Mobile phone version - shorter quote */}
               <p className="font-body text-lg text-white/90 leading-relaxed italic sm:hidden">
-                If it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk; if I had spent the summer revising rather than learning to hold an open A major on an old half size nylon-strung guitar—in short, if I hadn't have traded what I should be doing for what I love, I should never have found this hapless grove in which I am so brightly sustained.
+                If it weren't for the hours I wasted burying action figures and reading comics behind the monitor on my desk; if I had spent the summer revising rather than learning to hold an A Major on a battered old nylon-strung guitar—in short, if I hadn't traded what I should be doing for what I love, I should never have found this hapless grove in which I am so brightly sustained.
               </p>
               {/* Tablet and desktop version - full quote */}
               <p className="font-body hidden sm:block text-xl lg:text-2xl text-white/90 leading-relaxed italic">
-                If it weren't for the hours I had wasted burying action figures and reading comics behind the computer monitor on my desk; if I had spent the summer revising rather than learning to hold an open A major on an old half size nylon-strung guitar—in short, if I hadn't have traded what I should be doing for what I love, I should never have found this hapless grove in which I am so brightly sustained.
+                If it weren't for the hours I wasted burying action figures and reading comics behind the monitor on my desk; if I had spent the summer revising rather than learning to hold an A Major on a battered old nylon-strung guitar—in short, if I hadn't traded what I should be doing for what I love, I should never have found this hapless grove in which I am so brightly sustained.
               </p>
             </blockquote>
           </div>
