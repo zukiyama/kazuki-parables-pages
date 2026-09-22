@@ -385,7 +385,7 @@ const About = () => {
       <div ref={belowFoldRef} className="relative z-10 -mt-8 max-sm:mt-0">
         <div 
           data-scroll-animation="background-image"
-          className={`relative pointer-events-none overflow-hidden scroll-fade-up ${visibleElements.has("background-image") ? "visible" : ""}`}
+          className={`relative pointer-events-none overflow-hidden scroll-fade-plain ${visibleElements.has("background-image") ? "visible" : ""}`}
         >
           {/* Cityscape layer behind everything - tablet and desktop - lazy loaded */}
           <div 
