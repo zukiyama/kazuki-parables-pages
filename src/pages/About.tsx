@@ -6,7 +6,7 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 
 // Above-the-fold assets - loaded eagerly with high priority
-import artistPortrait from "@/assets/artist-portrait-new.webp";
+import artistPortrait from "@/assets/about-portrait-stamp.jpeg";
 import parisSquare from "@/assets/about-music-room.webp";
 
 // Below-the-fold assets - lazy loaded
@@ -14,6 +14,30 @@ import signatureYamakawa from "@/assets/signature-yamakawa-new.webp";
 import backgroundSphere from "@/assets/about-background-new.webp";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.webp";
 import childPortrait from "@/assets/about-child-portrait.webp";
+import surrealCat from "@/assets/about-surreal-cat.png";
+
+const StampPortrait = ({ className }: { className: string }) => (
+  <div className={`relative rotate-[-3deg] bg-canvas-base p-2 shadow-2xl ring-1 ring-ink-black/25 ${className}`}>
+    <div className="h-full border-2 border-dashed border-ink-black/35 p-1.5">
+      <img
+        src={artistPortrait}
+        alt="Kazuki Yamakawa wearing a hat"
+        width={800}
+        height={800}
+        loading="eager"
+        decoding="async"
+        className="block h-full w-full object-cover"
+      />
+    </div>
+    <div className="pointer-events-none absolute -right-5 top-3 flex h-20 w-20 rotate-12 items-center justify-center rounded-full border-2 border-ink-black/45 text-center font-body text-[9px] uppercase leading-tight text-ink-black/55">
+      Tokyo<br />Japan<br />In Transit
+    </div>
+    <div className="pointer-events-none absolute -bottom-3 -left-4 flex h-16 w-16 -rotate-12 items-center justify-center rounded-full border border-ink-black/40 text-center font-body text-[8px] uppercase leading-tight text-ink-black/50">
+      London<br />Air Mail
+    </div>
+    <div className="pointer-events-none absolute -right-8 top-10 h-px w-24 rotate-6 bg-ink-black/35 shadow-[0_5px_0_hsl(var(--ink-black)/0.25),0_10px_0_hsl(var(--ink-black)/0.18)]" />
+  </div>
+);
 
 const About = () => {
   useScrollToTop();
@@ -145,15 +169,7 @@ const About = () => {
                 <div className="flex items-start gap-6">
                   {/* Artist photo - above-fold, eager loaded with explicit dimensions */}
                   <div className="flex-shrink-0">
-                    <img 
-                      src={artistPortrait}
-                      alt="Kazuki Yamakawa portrait"
-                      width={480}
-                      height={480}
-                      loading="eager"
-                      decoding="async"
-                      className="w-[200px] xl:w-[220px] 2xl:w-[240px] aspect-square object-cover grayscale shadow-2xl"
-                    />
+                    <StampPortrait className="w-[200px] xl:w-[220px] 2xl:w-[240px] aspect-square" />
                   </div>
                   
                   {/* Title + Subheading - subheading aligned to bottom of photo */}
@@ -183,25 +199,15 @@ const About = () => {
             <div className="flex flex-col">
               {/* Mobile phone only: Artist photo centered at top - above-fold, eager */}
               <div className="sm:hidden flex justify-center mb-8">
-                <img 
-                  src={artistPortrait}
-                  alt="Kazuki Yamakawa portrait"
-                  width={480}
-                  height={480}
-                  loading="eager"
-                  decoding="async"
-                  className="w-72 h-72 object-cover grayscale shadow-2xl"
-                />
+                <StampPortrait className="w-64 aspect-square" />
               </div>
               
               {/* Small iPad portrait: Photo floated to top-right */}
               <div className="hidden sm:block lg:hidden relative">
                 {/* Photo floated to top-right */}
-                <img 
-                  src={artistPortrait}
-                  alt="Kazuki Yamakawa portrait"
-                  className="float-right w-48 md:w-56 aspect-square object-cover grayscale shadow-2xl ml-6 mb-4"
-                />
+                <div className="float-right ml-8 mb-6 mr-3">
+                  <StampPortrait className="w-48 md:w-56 aspect-square" />
+                </div>
                 
                 {/* Title on left - extra top padding for 10.9" iPad portrait alignment */}
                 <h1 className="font-heading text-7xl md:text-8xl text-black leading-[0.85] tracking-tight mb-4 md:pt-3">
@@ -252,11 +258,7 @@ const About = () => {
                   </div>
                   {/* Photo - positioned on right, aligned top */}
                   <div className="flex-shrink-0">
-                    <img 
-                      src={artistPortrait}
-                      alt="Kazuki Yamakawa portrait"
-                      className="w-48 md:w-56 lg:w-64 aspect-square object-cover grayscale shadow-2xl"
-                    />
+                    <StampPortrait className="w-48 md:w-56 lg:w-64 aspect-square" />
                   </div>
                 </div>
                 
@@ -275,15 +277,7 @@ const About = () => {
                 <div className="flex items-start gap-6">
                   {/* Photo - small, same height as title - above-fold, eager */}
                   <div className="flex-shrink-0">
-                    <img 
-                      src={artistPortrait}
-                      alt="Kazuki Yamakawa portrait"
-                      width={480}
-                      height={480}
-                      loading="eager"
-                      decoding="async"
-                      className="w-[160px] aspect-square object-cover grayscale shadow-2xl"
-                    />
+                    <StampPortrait className="w-[160px] aspect-square" />
                   </div>
                   
                   {/* Title */}
@@ -375,6 +369,23 @@ const About = () => {
               className="w-full h-auto object-cover hidden max-sm:block"
             />
           )}
+
+          {/* Surreal cat between the city and mountain collage; excluded from phone and small-iPad layouts */}
+          <div
+            className={`absolute bottom-[-8%] left-[27%] z-[5] hidden w-[48%] origin-bottom-left -rotate-[10deg] transition-opacity duration-[5000ms] ease-in-out min-[820px]:block lg:left-[29%] lg:w-[43%] xl:left-[30%] xl:w-[40%] ${showCityscape ? 'opacity-90' : 'opacity-0'}`}
+          >
+            {belowFoldVisible && (
+              <img
+                src={surrealCat}
+                alt=""
+                width={1145}
+                height={1374}
+                loading="lazy"
+                decoding="async"
+                className="h-auto w-full"
+              />
+            )}
+          </div>
           
           {/* Tablet and Desktop: PNG overlay with transparent areas - lazy loaded */}
           <div className="relative z-10 hidden sm:block">
