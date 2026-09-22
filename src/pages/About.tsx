@@ -7,7 +7,7 @@ import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 
 // Above-the-fold assets - loaded eagerly with high priority
 import artistPortrait from "@/assets/artist-portrait-new.webp";
-import parisSquare from "@/assets/paris-square-background.webp";
+import parisSquare from "@/assets/about-music-room.webp";
 
 // Below-the-fold assets - lazy loaded
 import signatureYamakawa from "@/assets/signature-yamakawa-new.webp";
@@ -112,9 +112,9 @@ const About = () => {
           {/* LCP hero image - highest priority with explicit dimensions to prevent layout shift */}
           <img 
             src={parisSquare}
-            alt="Parisian square with pigeons"
-            width={2560}
-            height={1600}
+            alt="Music room with guitars and keyboards"
+            width={1670}
+            height={750}
             loading="eager"
             decoding="sync"
             {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
@@ -122,7 +122,7 @@ const About = () => {
             style={{ opacity: heroBackgroundReady ? 1 : 0 }}
           />
           {/* Subtle overlay to improve text readability - more opacity on mobile and iPad desktop for better text visibility */}
-          <div className="absolute inset-0 bg-white/20 max-sm:bg-white/50 lg:bg-white/45 2xl:bg-white/20 xl:bg-white/35" />
+          <div className="absolute inset-0 bg-white/35 max-sm:bg-white/55 lg:bg-white/50 2xl:bg-white/30 xl:bg-white/45" />
         </div>
         
         {/* Editorial Top Bar - dynamically positioned below header */}
