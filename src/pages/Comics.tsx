@@ -731,16 +731,19 @@ const Comics = () => {
                   </video>
                 )}
               </div>
-              <img
-                src={comicsStoryboardStrip}
-                alt=""
-                aria-hidden="true"
-                className="h-full min-h-0 w-full rotate-180 object-cover object-center"
-                width={1920}
-                height={368}
-                loading="eager"
-                decoding="async"
-              />
+              <div className="comics-strip-frame comics-strip-frame--bottom relative h-full min-h-0 w-full overflow-hidden">
+                <img
+                  src={comicsStoryboardStrip}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-full min-h-0 w-full rotate-180 object-cover object-center"
+                  width={1920}
+                  height={368}
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+
             </section>
 
             {/* SECTION 1: VIGNETTES - Slide in from sides with summary text */}
