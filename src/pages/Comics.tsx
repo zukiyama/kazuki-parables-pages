@@ -50,6 +50,8 @@ const Comics = () => {
   const [openingVideoFailed, setOpeningVideoFailed] = useState(false);
   // Tablet portrait ONLY (never phones, never anything wider than it is tall)
   const [isTabletPortraitStrip, setIsTabletPortraitStrip] = useState(false);
+  // Landscape versions ONLY: hide the storyboard strips (black instead)
+  const [isLandscapeStripHidden, setIsLandscapeStripHidden] = useState(false);
   const openingVideoRef = useRef<HTMLVideoElement>(null);
   
   // Asset loading states for priority-based loading
@@ -490,6 +492,11 @@ const Comics = () => {
       setIsTabletPortraitStrip(
         window.innerWidth >= 768 && window.innerHeight > window.innerWidth
       );
+      // Landscape versions ONLY (wider than it is tall, never phones):
+      // no storyboard strips at all — plain black above and below the film.
+      setIsLandscapeStripHidden(
+        window.innerWidth > 820 && window.innerWidth > window.innerHeight
+      );
     };
     check();
     window.addEventListener('resize', check);
@@ -726,6 +733,8 @@ const Comics = () => {
                     decoding="async"
                   />
                 </div>
+              ) : isLandscapeStripHidden ? (
+                <div className="h-full min-h-0 w-full bg-black" aria-hidden="true" />
               ) : (
                 <img
                   src={comicsStoryboardStrip}
@@ -779,6 +788,8 @@ const Comics = () => {
                     decoding="async"
                   />
                 </div>
+              ) : isLandscapeStripHidden ? (
+                <div className="h-full min-h-0 w-full bg-black" aria-hidden="true" />
               ) : (
                 <img
                   src={comicsStoryboardStrip}
