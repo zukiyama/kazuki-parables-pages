@@ -766,7 +766,20 @@ const Comics = () => {
                   </video>
                 )}
               </div>
-              <div className="comics-strip-frame comics-strip-frame--bottom relative h-full min-h-0 w-full overflow-hidden">
+              {isTabletPortraitStrip ? (
+                <div className="comics-strip-frame comics-strip-frame--bottom relative h-full min-h-0 w-full overflow-hidden">
+                  <img
+                    src={comicsStoryboardStrip}
+                    alt=""
+                    aria-hidden="true"
+                    className="h-full min-h-0 w-full rotate-180 object-cover object-center"
+                    width={1920}
+                    height={368}
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              ) : (
                 <img
                   src={comicsStoryboardStrip}
                   alt=""
@@ -777,7 +790,8 @@ const Comics = () => {
                   loading="eager"
                   decoding="async"
                 />
-              </div>
+              )}
+
 
             </section>
 
