@@ -481,6 +481,25 @@ const Comics = () => {
     return () => clearTimeout(timeout);
   }, []);
 
+  // Tablet portrait detection for the opening storyboard strips.
+  // Strictly: at least 768px wide AND taller than it is wide. Anything wider
+  // than it is tall (landscape tablet, desktop, widescreen) and all phones
+  // keep the original untouched markup.
+  useEffect(() => {
+    const check = () => {
+      setIsTabletPortraitStrip(
+        window.innerWidth >= 768 && window.innerHeight > window.innerWidth
+      );
+    };
+    check();
+    window.addEventListener('resize', check);
+    window.addEventListener('orientationchange', check);
+    return () => {
+      window.removeEventListener('resize', check);
+      window.removeEventListener('orientationchange', check);
+    };
+  }, []);
+
   // Check narrow portrait desktop
   const isNarrowPortraitDesktop = useCallback(() => {
     const width = window.innerWidth;
