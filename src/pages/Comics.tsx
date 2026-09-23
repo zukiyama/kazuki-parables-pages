@@ -788,6 +788,8 @@ const Comics = () => {
                     decoding="async"
                   />
                 </div>
+              ) : isLandscapeStripHidden ? (
+                <div className="h-full min-h-0 w-full bg-black" aria-hidden="true" />
               ) : (
                 <img
                   src={comicsStoryboardStrip}
