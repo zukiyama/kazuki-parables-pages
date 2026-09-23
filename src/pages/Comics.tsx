@@ -713,7 +713,20 @@ const Comics = () => {
                 transition: 'opacity 0.5s ease-out'
               }}
             >
-              <div className="comics-strip-frame comics-strip-frame--top relative h-full min-h-0 w-full overflow-hidden">
+              {isTabletPortraitStrip ? (
+                <div className="comics-strip-frame comics-strip-frame--top relative h-full min-h-0 w-full overflow-hidden">
+                  <img
+                    src={comicsStoryboardStrip}
+                    alt=""
+                    aria-hidden="true"
+                    className="h-full min-h-0 w-full object-cover object-center"
+                    width={1920}
+                    height={512}
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              ) : (
                 <img
                   src={comicsStoryboardStrip}
                   alt=""
@@ -724,7 +737,8 @@ const Comics = () => {
                   loading="eager"
                   decoding="async"
                 />
-              </div>
+              )}
+
 
               <div className="relative flex min-h-0 items-center justify-center overflow-hidden bg-black">
                 {openingVideoFailed ? (
