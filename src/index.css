@@ -1329,3 +1329,30 @@
     margin-left: 0.5rem;
   }
 }
+/* Tablet portrait only: align the comic storyboard strips to the viewport edges.
+   Native strip is 1920x368; drawn comic frames span y=42 (top line) to y=329 (bottom line). */
+@media screen and (min-width: 640px) and (orientation: portrait) {
+  .comics-strip-frame > img {
+    position: absolute;
+    width: auto;
+    max-width: none;
+    object-fit: fill;
+  }
+
+  /* Top strip: image bottom meets the video; frame top line (y=42) sits on the
+     top edge of the visible viewport; image right border on the viewport right. */
+  .comics-strip-frame--top > img {
+    bottom: 0;
+    right: 0;
+    height: calc(100% * 368 / 326);
+  }
+
+  /* Bottom strip: image top meets the video; frame bottom line (y=329) sits on the
+     bottom edge of the visible viewport; image left border on the viewport left. */
+  .comics-strip-frame--bottom > img {
+    top: 0;
+    left: 0;
+    height: calc(100% * 368 / 329);
+    transform: none;
+  }
+}
