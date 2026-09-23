@@ -48,6 +48,8 @@ const Comics = () => {
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false);
   const [headerBottom, setHeaderBottom] = useState(0);
   const [openingVideoFailed, setOpeningVideoFailed] = useState(false);
+  // Tablet portrait ONLY (never phones, never anything wider than it is tall)
+  const [isTabletPortraitStrip, setIsTabletPortraitStrip] = useState(false);
   const openingVideoRef = useRef<HTMLVideoElement>(null);
   
   // Asset loading states for priority-based loading
@@ -479,6 +481,25 @@ const Comics = () => {
     return () => clearTimeout(timeout);
   }, []);
 
+  // Tablet portrait detection for the opening storyboard strips.
+  // Strictly: at least 768px wide AND taller than it is wide. Anything wider
+  // than it is tall (landscape tablet, desktop, widescreen) and all phones
+  // keep the original untouched markup.
+  useEffect(() => {
+    const check = () => {
+      setIsTabletPortraitStrip(
+        window.innerWidth >= 768 && window.innerHeight > window.innerWidth
+      );
+    };
+    check();
+    window.addEventListener('resize', check);
+    window.addEventListener('orientationchange', check);
+    return () => {
+      window.removeEventListener('resize', check);
+      window.removeEventListener('orientationchange', check);
+    };
+  }, []);
+
   // Check narrow portrait desktop
   const isNarrowPortraitDesktop = useCallback(() => {
     const width = window.innerWidth;
@@ -692,7 +713,20 @@ const Comics = () => {
                 transition: 'opacity 0.5s ease-out'
               }}
             >
-              <div className="comics-strip-frame comics-strip-frame--top relative h-full min-h-0 w-full overflow-hidden">
+              {isTabletPortraitStrip ? (
+                <div className="comics-strip-frame comics-strip-frame--top relative h-full min-h-0 w-full overflow-hidden">
+                  <img
+                    src={comicsStoryboardStrip}
+                    alt=""
+                    aria-hidden="true"
+                    className="h-full min-h-0 w-full object-cover object-center"
+                    width={1920}
+                    height={512}
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              ) : (
                 <img
                   src={comicsStoryboardStrip}
                   alt=""
@@ -703,7 +737,8 @@ const Comics = () => {
                   loading="eager"
                   decoding="async"
                 />
-              </div>
+              )}
+
 
               <div className="relative flex min-h-0 items-center justify-center overflow-hidden bg-black">
                 {openingVideoFailed ? (
@@ -731,7 +766,20 @@ const Comics = () => {
                   </video>
                 )}
               </div>
-              <div className="comics-strip-frame comics-strip-frame--bottom relative h-full min-h-0 w-full overflow-hidden">
+              {isTabletPortraitStrip ? (
+                <div className="comics-strip-frame comics-strip-frame--bottom relative h-full min-h-0 w-full overflow-hidden">
+                  <img
+                    src={comicsStoryboardStrip}
+                    alt=""
+                    aria-hidden="true"
+                    className="h-full min-h-0 w-full rotate-180 object-cover object-center"
+                    width={1920}
+                    height={368}
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              ) : (
                 <img
                   src={comicsStoryboardStrip}
                   alt=""
@@ -742,7 +790,8 @@ const Comics = () => {
                   loading="eager"
                   decoding="async"
                 />
-              </div>
+              )}
+
 
             </section>
 
