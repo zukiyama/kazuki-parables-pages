@@ -1331,7 +1331,7 @@
 }
 /* Tablet portrait only: align the comic storyboard strips to the viewport edges.
    Native strip is 1920x368; drawn comic frames span y=42 (top line) to y=329 (bottom line). */
-@media screen and (min-width: 640px) and (orientation: portrait) {
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (max-aspect-ratio: 4/5) {
   .comics-strip-frame > img {
     position: absolute;
     width: auto;
