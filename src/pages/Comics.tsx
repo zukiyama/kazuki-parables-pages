@@ -48,6 +48,8 @@ const Comics = () => {
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false);
   const [headerBottom, setHeaderBottom] = useState(0);
   const [openingVideoFailed, setOpeningVideoFailed] = useState(false);
+  // Tablet portrait ONLY (never phones, never anything wider than it is tall)
+  const [isTabletPortraitStrip, setIsTabletPortraitStrip] = useState(false);
   const openingVideoRef = useRef<HTMLVideoElement>(null);
   
   // Asset loading states for priority-based loading
