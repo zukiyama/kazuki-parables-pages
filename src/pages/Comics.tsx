@@ -692,16 +692,19 @@ const Comics = () => {
                 transition: 'opacity 0.5s ease-out'
               }}
             >
-              <img
-                src={comicsStoryboardStrip}
-                alt=""
-                aria-hidden="true"
-                className="h-full min-h-0 w-full object-cover object-center"
-                width={1920}
-                height={512}
-                loading="eager"
-                decoding="async"
-              />
+              <div className="comics-strip-frame comics-strip-frame--top relative h-full min-h-0 w-full overflow-hidden">
+                <img
+                  src={comicsStoryboardStrip}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-full min-h-0 w-full object-cover object-center"
+                  width={1920}
+                  height={512}
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+
               <div className="relative flex min-h-0 items-center justify-center overflow-hidden bg-black">
                 {openingVideoFailed ? (
                   <img
