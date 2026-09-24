@@ -12,6 +12,8 @@ import comicsScriptsTitleVideoWebm from "@/assets/comicsscriptstitle.webm";
 import comicsScriptsTitleFirstFrame from "@/assets/comicsscriptstitle-first.webp";
 import comicsScriptsTitleFinalFrame from "@/assets/comicsscriptstitle-final.webp";
 import comicsStoryboardStrip from "@/assets/comics-storyboard-strip.jpg";
+// Phone-only: the original uncropped storyboard artwork (1920x640)
+import comicsStoryboardStripFull from "@/assets/comics-storyboard-strip-full.jpg";
 
 // SECONDARY: Vignette assets (Section 1) - preload after first paint
 import vignetteManyFaces from "@/assets/god-of-lies-characters.webp";
