@@ -12,6 +12,8 @@ import comicsScriptsTitleVideoWebm from "@/assets/comicsscriptstitle.webm";
 import comicsScriptsTitleFirstFrame from "@/assets/comicsscriptstitle-first.webp";
 import comicsScriptsTitleFinalFrame from "@/assets/comicsscriptstitle-final.webp";
 import comicsStoryboardStrip from "@/assets/comics-storyboard-strip.jpg";
+// Phone-only: the original uncropped storyboard artwork (1920x640)
+import comicsStoryboardStripFull from "@/assets/comics-storyboard-strip-full.jpg";
 
 // SECONDARY: Vignette assets (Section 1) - preload after first paint
 import vignetteManyFaces from "@/assets/god-of-lies-characters.webp";
@@ -737,12 +739,12 @@ const Comics = () => {
                 <div className="h-full min-h-0 w-full bg-canvas-base" aria-hidden="true" />
               ) : (
                 <img
-                  src={comicsStoryboardStrip}
+                  src={comicsStoryboardStripFull}
                   alt=""
                   aria-hidden="true"
                   className="h-full min-h-0 w-full object-cover object-center"
                   width={1920}
-                  height={512}
+                  height={640}
                   loading="eager"
                   decoding="async"
                 />
@@ -792,12 +794,12 @@ const Comics = () => {
                 <div className="h-full min-h-0 w-full bg-canvas-base" aria-hidden="true" />
               ) : (
                 <img
-                  src={comicsStoryboardStrip}
+                  src={comicsStoryboardStripFull}
                   alt=""
                   aria-hidden="true"
                   className="h-full min-h-0 w-full rotate-180 object-cover object-center"
                   width={1920}
-                  height={368}
+                  height={640}
                   loading="eager"
                   decoding="async"
                 />
