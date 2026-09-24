@@ -50,7 +50,7 @@ const Comics = () => {
   const [openingVideoFailed, setOpeningVideoFailed] = useState(false);
   // Tablet portrait ONLY (never phones, never anything wider than it is tall)
   const [isTabletPortraitStrip, setIsTabletPortraitStrip] = useState(false);
-  // Landscape versions ONLY: hide the storyboard strips (black instead)
+  // Landscape versions ONLY: hide the storyboard strips (parchment instead)
   const [isLandscapeStripHidden, setIsLandscapeStripHidden] = useState(false);
   const openingVideoRef = useRef<HTMLVideoElement>(null);
   
@@ -493,7 +493,7 @@ const Comics = () => {
         window.innerWidth >= 768 && window.innerHeight > window.innerWidth
       );
       // Landscape versions ONLY (wider than it is tall, never phones):
-      // no storyboard strips at all — plain black above and below the film.
+      // no storyboard strips at all — parchment above and below the film.
       setIsLandscapeStripHidden(
         window.innerWidth > 820 && window.innerWidth > window.innerHeight
       );
@@ -734,7 +734,7 @@ const Comics = () => {
                   />
                 </div>
               ) : isLandscapeStripHidden ? (
-                <div className="h-full min-h-0 w-full bg-black" aria-hidden="true" />
+                <div className="h-full min-h-0 w-full bg-canvas-base" aria-hidden="true" />
               ) : (
                 <img
                   src={comicsStoryboardStrip}
@@ -789,7 +789,7 @@ const Comics = () => {
                   />
                 </div>
               ) : isLandscapeStripHidden ? (
-                <div className="h-full min-h-0 w-full bg-black" aria-hidden="true" />
+                <div className="h-full min-h-0 w-full bg-canvas-base" aria-hidden="true" />
               ) : (
                 <img
                   src={comicsStoryboardStrip}

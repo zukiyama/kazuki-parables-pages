@@ -321,7 +321,7 @@ const About = () => {
                 </p>
                 
                 <div className="mt-1 mb-7">
-                  <HandwrittenIntro className="w-full" />
+                  <HandwrittenIntro className="w-[calc(100%+4rem)] max-w-none -ml-8" />
                 </div>
               </div>
               
