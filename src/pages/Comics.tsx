@@ -794,12 +794,12 @@ const Comics = () => {
                 <div className="h-full min-h-0 w-full bg-canvas-base" aria-hidden="true" />
               ) : (
                 <img
-                  src={comicsStoryboardStrip}
+                  src={comicsStoryboardStripFull}
                   alt=""
                   aria-hidden="true"
                   className="h-full min-h-0 w-full rotate-180 object-cover object-center"
                   width={1920}
-                  height={368}
+                  height={640}
                   loading="eager"
                   decoding="async"
                 />
