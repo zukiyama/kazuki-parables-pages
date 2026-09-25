@@ -88,17 +88,47 @@ const StampPortrait = ({ className }: { className: string }) => (
   </div>
 );
 
-// Handwritten intro note (transparent background, black ink) replacing the typed paragraph
-const HandwrittenIntro = ({ className = "" }: { className?: string }) => (
-  <img
-    src={handwrittenIntro}
-    alt="Handwritten note: Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page."
-    width={1949}
-    height={807}
-    loading="eager"
-    decoding="async"
-    className={`block h-auto ${className}`}
-  />
+const handwrittenLineBands = [
+  { top: 0, bottom: 77, delay: 0 },
+  { top: 18, bottom: 64, delay: 520 },
+  { top: 31, bottom: 52, delay: 1040 },
+  { top: 43, bottom: 40, delay: 1560 },
+  { top: 55, bottom: 27, delay: 2080 },
+  { top: 68, bottom: 0, delay: 2600 },
+];
+
+// Reveal the original transparent artwork one handwritten line at a time.
+const HandwrittenIntro = ({
+  className = "",
+  active,
+}: {
+  className?: string;
+  active: boolean;
+}) => (
+  <div
+    className={`about-handwritten-intro relative aspect-[1949/807] ${active ? "is-writing" : ""} ${className}`}
+    role="img"
+    aria-label="Handwritten note: Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page."
+  >
+    {handwrittenLineBands.map((band, index) => (
+      <img
+        key={index}
+        src={handwrittenIntro}
+        alt=""
+        width={1949}
+        height={807}
+        loading="eager"
+        decoding="async"
+        aria-hidden="true"
+        className="about-handwritten-line absolute inset-0 block h-full w-full"
+        style={{
+          "--handwriting-top": `${band.top}%`,
+          "--handwriting-bottom": `${band.bottom}%`,
+          "--handwriting-delay": `${band.delay}ms`,
+        } as React.CSSProperties}
+      />
+    ))}
+  </div>
 );
 
 const About = () => {
@@ -272,7 +302,7 @@ const About = () => {
               
               {/* Right column: Body text - aligned to top */}
               <div className="flex-1 max-w-[440px] xl:max-w-[500px] pt-0">
-                <HandwrittenIntro className="w-full" />
+                <HandwrittenIntro active={heroBackgroundReady} className="w-full" />
               </div>
             </div>
           ) : (
@@ -304,7 +334,7 @@ const About = () => {
                 
                 {/* Handwritten intro - replaces the typed paragraph, wraps below floated photo */}
                 <div className="md:mt-4">
-                  <HandwrittenIntro className="w-full max-w-[600px]" />
+                  <HandwrittenIntro active={heroBackgroundReady} className="w-full max-w-[600px]" />
                 </div>
               </div>
               
@@ -321,7 +351,7 @@ const About = () => {
                 </p>
                 
                 <div className="mt-1 mb-7">
-                  <HandwrittenIntro className="w-[calc(100%+4rem)] max-w-none -ml-8" />
+                  <HandwrittenIntro active={heroBackgroundReady} className="w-[calc(100%+4rem)] max-w-none -ml-8" />
                 </div>
               </div>
               
@@ -348,7 +378,7 @@ const About = () => {
                   A multi-disciplinary artist working in literature, music and visual storytelling.
                 </p>
                 <div className="mt-2">
-                  <HandwrittenIntro className="w-full max-w-[680px]" />
+                  <HandwrittenIntro active={heroBackgroundReady} className="w-full max-w-[680px]" />
                 </div>
               </div>
               
@@ -372,7 +402,7 @@ const About = () => {
                   
                   {/* Handwritten intro - right of title */}
                   <div className="flex-1 max-w-[500px] pt-1">
-                    <HandwrittenIntro className="w-full" />
+                    <HandwrittenIntro active={heroBackgroundReady} className="w-full" />
                   </div>
                 </div>
                 
