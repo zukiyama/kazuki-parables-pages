@@ -517,7 +517,7 @@ const Index = () => {
           </div>
           
           {/* Dissolve slides */}
-          <div className="relative w-screen h-screen-stable overflow-hidden">
+          <div className="relative w-screen overflow-hidden" style={{ height: 'calc(var(--app-height, 100dvh) * 0.905)' }}>
             {images.map((image, index) => (
               <div 
                 key={index} 
@@ -536,7 +536,7 @@ const Index = () => {
                       src={image}
                       alt={`Slide ${index + 1}`}
                       className="absolute inset-0 w-full h-full object-cover"
-                      style={{ objectPosition: 'center' }}
+                      style={{ objectPosition: 'center bottom' }}
                       loading="lazy"
                     />
                   </div>
