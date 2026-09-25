@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import SocialIcons from './SocialIcons';
 
 const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -81,6 +82,13 @@ const MobileMenu = () => {
               </Link>
             ))}
           </nav>
+          <div className={`px-4 py-3 border-t ${isAboutPage ? 'border-border' : 'border-[hsl(30,20%,75%)]'}`}>
+            <SocialIcons
+              ids={["spotify", "applemusic", "youtube", "tiktok", "instagram"]}
+              iconClassName="w-4 h-4"
+              linkClassName={isAboutPage ? 'text-ink-black/70' : 'text-[hsl(25,30%,25%)]/70'}
+            />
+          </div>
         </div>
       )}
     </div>
