@@ -1,10 +1,9 @@
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { ScrollFadeUp } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
-import { useCirclePhysics } from "@/hooks/useCirclePhysics";
 import { useHeroHeight } from "@/hooks/useHeroHeight";
 import { useIsMobile } from "@/hooks/use-mobile";
 import japaneseBackground from "@/assets/japanese-painting-background.webp";
@@ -12,6 +11,7 @@ import officeView from "@/assets/office-window-view.webp";
 import boysTowerBlocks from "@/assets/boys-tower-blocks.webp";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.webp";
 import circlesSingleCover from "@/assets/circles-single-cover.webp";
+import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
 import godOfLiesManyFacesBanner from "@/assets/god-of-lies-many-faces-banner.webp";
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
 import useEmblaCarousel from "embla-carousel-react";
@@ -22,21 +22,17 @@ const Index = () => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
-  const [showMagazine, setShowMagazine] = useState(false);
   const [showParableBanner, setShowParableBanner] = useState(false);
-  const [showCirclesBanner, setShowCirclesBanner] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
   const [showTvText, setShowTvText] = useState(false);
   const [animateTvText, setAnimateTvText] = useState(false);
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
   const [heroBackgroundReady, setHeroBackgroundReady] = useState(false);
-  const showMagazineRef = useRef(false);
   
   // Parable banner slideshow state - using Embla for continuous right-scroll
   const [parableBannerSlide, setParableBannerSlide] = useState(0);
   const parableBannerRef = useRef<HTMLDivElement>(null);
-  const circlesBannerRef = useRef<HTMLDivElement>(null);
   
   // Embla carousel for Parable/God of Lies banner
   const [parableEmblaRef, parableEmblaApi] = useEmblaCarousel({ 
@@ -45,23 +41,6 @@ const Index = () => {
     dragFree: false,
   });
   
-  // Circle sensitivities - many more circles to fill the background
-  const circleSensitivities = useMemo(() => [
-    // Original circles (20)
-    2.5, 4.0, 1.8, 3.2, 2.8, 2.0, 3.5, 2.4, 3.0, 2.6,
-    1.6, 2.0, 1.2, 2.2, 0.8, 1.5, 1.0, 1.8, 2.8, 3.2,
-    // Additional circles to fill gaps (20 more)
-    1.4, 2.3, 3.1, 1.9, 2.7, 1.3, 3.4, 2.1, 1.7, 2.9,
-    0.9, 3.6, 1.1, 2.4, 3.0, 1.5, 2.2, 0.7, 3.3, 1.8
-  ], []);
-  
-  // Physics-based circle animation
-  const { offsets: circleOffsets } = useCirclePhysics(
-    circleSensitivities.length,
-    circleSensitivities
-  );
-  
-
   const images = [
     officeView,
     boysTowerBlocks,
@@ -121,11 +100,9 @@ const Index = () => {
 
   const magazineRef = useRef<HTMLDivElement>(null);
   
-  // Sequential scroll-based triggers - ensures correct order regardless of scroll speed
+  // Start the Parable carousel when its banner approaches the viewport.
   useEffect(() => {
     let parableTriggered = false;
-    let circlesTriggered = false;
-    let magazineTriggered = false;
     
     // Use IntersectionObserver for sequential triggering
     // Trigger when element is 200px from entering viewport (earlier than before, but still visible)
@@ -136,23 +113,6 @@ const Index = () => {
         if (entry.isIntersecting && !parableTriggered) {
           parableTriggered = true;
           setShowParableBanner(true);
-          
-          // Trigger Circles 500ms after Parable
-          setTimeout(() => {
-            if (!circlesTriggered) {
-              circlesTriggered = true;
-              setShowCirclesBanner(true);
-              
-              // Trigger Magazine 500ms after Circles
-              setTimeout(() => {
-                if (!magazineTriggered) {
-                  magazineTriggered = true;
-                  setShowMagazine(true);
-                  showMagazineRef.current = true;
-                }
-              }, 500);
-            }
-          }, 500);
         }
       });
     }, observerOptions);
@@ -198,13 +158,7 @@ const Index = () => {
     };
     
     const onReInit = () => {
-      // Only set ready after reInit completes
-      // Use ref to avoid stale closure
-      console.log('[SLIDESHOW] onReInit fired, showMagazineRef.current:', showMagazineRef.current);
-      if (showMagazineRef.current) {
-        console.log('[SLIDESHOW] Setting isCarouselReady to true');
-        setIsCarouselReady(true);
-      }
+      setIsCarouselReady(true);
     };
     
     emblaApi.on('select', () => {
@@ -222,13 +176,11 @@ const Index = () => {
     };
   }, [emblaApi]); // Removed showMagazine dependency to prevent race condition
 
-  // Ensure carousel is ready when slideshow becomes visible
+  // Ensure the carousel is ready without waiting for a section entrance animation.
   useEffect(() => {
-    if (showMagazine && emblaApi) {
-      console.log('[SLIDESHOW] Calling reInit');
-      emblaApi.reInit(); // This will trigger the 'reInit' event
-    }
-  }, [showMagazine, emblaApi]);
+    if (!emblaApi) return;
+    emblaApi.reInit();
+  }, [emblaApi]);
 
 
   useEffect(() => {
@@ -472,37 +424,19 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Music Banner - Full Width Edge to Edge - slide in on scroll */}
+        {/* Music Banner - temporary still, ready to be replaced by a looping film */}
         <div
-          ref={circlesBannerRef}
-          className={`relative w-full overflow-hidden border-t border-amber-200/50 bg-[#F5EBD8] magazine-slide ${showCirclesBanner ? "visible" : ""}`}
+          className="relative w-full overflow-hidden bg-black"
         >
-          {/* Bokeh circles background */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none bokeh-blur">
-            {/* Large circles at edges - desktop: match album cover colors, mobile: original peachy */}
-            <div className="absolute -left-20 top-1/4 w-56 h-56 rounded-full bg-[hsla(25,85%,72%,0.35)] md:bg-[hsla(25,90%,55%,0.35)] animate-drift-1"></div>
-            <div className="absolute -right-16 top-1/3 w-48 h-48 rounded-full bg-[hsla(15,80%,70%,0.32)] md:bg-[hsla(180,55%,50%,0.32)] animate-drift-2"></div>
-            
-            {/* Top edge circles */}
-            <div className="absolute left-1/4 -top-12 w-40 h-40 rounded-full bg-[hsla(20,75%,68%,0.28)] md:bg-[hsla(210,60%,55%,0.28)] animate-drift-3"></div>
-            <div className="absolute right-1/4 -top-8 w-44 h-44 rounded-full bg-[hsla(30,80%,74%,0.30)] md:bg-[hsla(345,75%,60%,0.30)] animate-drift-4"></div>
-            
-            {/* Bottom edge circles */}
-            <div className="absolute left-1/3 -bottom-16 w-52 h-52 rounded-full bg-[hsla(18,78%,71%,0.33)] md:bg-[hsla(300,40%,55%,0.33)] animate-drift-5"></div>
-            <div className="absolute right-1/3 -bottom-10 w-36 h-36 rounded-full bg-[hsla(22,82%,69%,0.25)] md:bg-[hsla(10,75%,65%,0.25)] animate-drift-6"></div>
-            
-            {/* Medium circles at corners */}
-            <div className="absolute left-[15%] bottom-[20%] w-32 h-32 rounded-full bg-[hsla(28,76%,73%,0.30)] md:bg-[hsla(175,50%,48%,0.30)] animate-drift-7"></div>
-            <div className="absolute right-[18%] top-[25%] w-36 h-36 rounded-full bg-[hsla(12,84%,67%,0.28)] md:bg-[hsla(25,95%,50%,0.28)] animate-drift-8"></div>
-            
-            {/* Small accent circles */}
-            <div className="absolute left-[40%] top-[15%] w-24 h-24 rounded-full bg-[hsla(35,70%,75%,0.35)] md:bg-[hsla(340,80%,55%,0.35)] animate-drift-1"></div>
-            <div className="absolute right-[35%] bottom-[25%] w-28 h-28 rounded-full bg-[hsla(8,85%,72%,0.32)] md:bg-[hsla(215,55%,50%,0.32)] animate-drift-3"></div>
-            
-            {/* Far corner circles */}
-            <div className="absolute -left-8 -bottom-12 w-44 h-44 rounded-full bg-[hsla(20,80%,70%,0.38)] md:bg-[hsla(290,35%,50%,0.38)] animate-drift-6"></div>
-            <div className="absolute -right-12 -top-8 w-40 h-40 rounded-full bg-[hsla(32,75%,68%,0.30)] md:bg-[hsla(35,85%,55%,0.30)] animate-drift-2"></div>
-          </div>
+          <img
+            src={sixtiesVarietyShow}
+            alt="Singer performing with an orchestra on a 1960s television variety show"
+            className="absolute inset-0 h-full w-full object-cover object-center grayscale"
+            loading="lazy"
+            width={1920}
+            height={768}
+          />
+          <div className="absolute inset-0 bg-black/45" />
 
           <Link to="/music" className="group relative z-10 block w-full py-8 md:py-10">
 
@@ -524,11 +458,11 @@ const Index = () => {
                   <p className="text-sm md:text-base font-bold uppercase tracking-widest text-rose-600/80 mb-1">
                     New Single
                   </p>
-                  <h4 className="font-heading text-3xl md:text-5xl font-black text-foreground tracking-tight group-hover:text-rose-600 transition-colors duration-300 drop-shadow-sm">
+                  <h4 className="font-heading text-3xl md:text-5xl font-black text-white tracking-tight transition-colors duration-300 drop-shadow-lg">
                     CIRCLES
                   </h4>
                 </div>
-                <div className="flex items-center gap-2 text-foreground/80 font-semibold group-hover:text-rose-600 transition-colors">
+                <div className="flex items-center gap-2 text-white/90 font-semibold transition-colors">
                   <span className="text-base md:text-xl uppercase tracking-wider">Out Now →</span>
                 </div>
               </div>
@@ -539,7 +473,7 @@ const Index = () => {
         {/* Magazine Cover Section - Dissolve Slideshow */}
         <div 
           ref={magazineRef}
-          className={`magazine-slide ${showMagazine ? "visible" : ""} cursor-pointer relative`}
+          className="cursor-pointer relative"
           onClick={() => navigate('/writing#kaiju')}
           onTouchStart={(e) => {
             const touch = e.touches[0];
