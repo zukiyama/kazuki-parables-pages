@@ -318,6 +318,35 @@
   to { clip-path: inset(0 0 0 0); opacity: 1; }
 }
 
+/* About intro: brisk, line-by-line reveal of the original handwritten artwork. */
+.about-handwritten-line {
+  clip-path: inset(var(--handwriting-top) 100% var(--handwriting-bottom) 0);
+  opacity: 0;
+}
+
+.about-handwritten-intro.is-writing .about-handwritten-line {
+  animation: about-handwritten-line-reveal 620ms linear var(--handwriting-delay) forwards;
+}
+
+@keyframes about-handwritten-line-reveal {
+  0% {
+    clip-path: inset(var(--handwriting-top) 100% var(--handwriting-bottom) 0);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(var(--handwriting-top) 0 var(--handwriting-bottom) 0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-handwritten-intro.is-writing .about-handwritten-line {
+    animation: none;
+    clip-path: inset(var(--handwriting-top) 0 var(--handwriting-bottom) 0);
+    opacity: 1;
+  }
+}
+
 /* Chalk handwriting animation - diagonal upward sweep */
 @keyframes chalk-write {
   0% { 
