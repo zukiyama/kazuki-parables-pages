@@ -14,7 +14,13 @@ import backgroundSphere from "@/assets/about-background-new.webp";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.webp";
 import childPortrait from "@/assets/about-child-portrait.webp";
 import surrealCat from "@/assets/about-surreal-cat.png";
-import handwrittenIntro from "@/assets/about-intro-handwritten.png";
+import handwrittenLine1 from "@/assets/about-intro-line-1.png";
+import handwrittenLine2 from "@/assets/about-intro-line-2.png";
+import handwrittenLine3 from "@/assets/about-intro-line-3.png";
+import handwrittenLine4 from "@/assets/about-intro-line-4.png";
+import handwrittenLine5 from "@/assets/about-intro-line-5.png";
+import handwrittenLine6 from "@/assets/about-intro-line-6.png";
+import handwrittenSignature from "@/assets/about-intro-line-7.png";
 
 type CrumbleLineProps = {
   children: string;
@@ -88,16 +94,19 @@ const StampPortrait = ({ className }: { className: string }) => (
   </div>
 );
 
-const handwrittenLineBands = [
-  { top: 0, bottom: 77, delay: 0 },
-  { top: 18, bottom: 64, delay: 520 },
-  { top: 31, bottom: 52, delay: 1040 },
-  { top: 43, bottom: 40, delay: 1560 },
-  { top: 55, bottom: 27, delay: 2080 },
-  { top: 68, bottom: 0, delay: 2600 },
-];
+// Each layer holds only the exact ink of one handwritten line (plus the signature),
+// so a full-height left-to-right wipe reveals that line and nothing else.
+const handwrittenLineLayers = [
+  handwrittenLine1,
+  handwrittenLine2,
+  handwrittenLine3,
+  handwrittenLine4,
+  handwrittenLine5,
+  handwrittenLine6,
+  handwrittenSignature,
+].map((src, index) => ({ src, delay: index * 520 }));
 
-// Reveal the original transparent artwork one handwritten line at a time.
+// Reveal the handwritten note one line at a time.
 const HandwrittenIntro = ({
   className = "",
   active,
@@ -110,10 +119,10 @@ const HandwrittenIntro = ({
     role="img"
     aria-label="Handwritten note: Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page."
   >
-    {handwrittenLineBands.map((band, index) => (
+    {handwrittenLineLayers.map((layer, index) => (
       <img
         key={index}
-        src={handwrittenIntro}
+        src={layer.src}
         alt=""
         width={1949}
         height={807}
@@ -122,9 +131,9 @@ const HandwrittenIntro = ({
         aria-hidden="true"
         className="about-handwritten-line absolute inset-0 block h-full w-full"
         style={{
-          "--handwriting-top": `${band.top}%`,
-          "--handwriting-bottom": `${band.bottom}%`,
-          "--handwriting-delay": `${band.delay}ms`,
+          "--handwriting-top": "0%",
+          "--handwriting-bottom": "0%",
+          "--handwriting-delay": `${layer.delay}ms`,
         } as React.CSSProperties}
       />
     ))}
