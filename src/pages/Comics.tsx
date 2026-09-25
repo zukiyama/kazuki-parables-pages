@@ -88,15 +88,31 @@ const Comics = () => {
     const updateHeaderBottom = () => setHeaderBottom(header.getBoundingClientRect().bottom);
     updateHeaderBottom();
 
+    // Same iPadOS rotation caveat as the strip detection below: re-measure on a
+    // short cascade once the rotation has settled.
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const updateWithSettle = () => {
+      updateHeaderBottom();
+      [50, 150, 300, 500].forEach((delay) => {
+        timers.push(setTimeout(updateHeaderBottom, delay));
+      });
+    };
+
     const observer = new ResizeObserver(updateHeaderBottom);
     observer.observe(header);
     window.addEventListener('resize', updateHeaderBottom);
+    window.addEventListener('orientationchange', updateWithSettle);
+    window.visualViewport?.addEventListener('resize', updateHeaderBottom);
 
     return () => {
+      timers.forEach(clearTimeout);
       observer.disconnect();
       window.removeEventListener('resize', updateHeaderBottom);
+      window.removeEventListener('orientationchange', updateWithSettle);
+      window.visualViewport?.removeEventListener('resize', updateHeaderBottom);
     };
   }, []);
+
 
   // Retry autoplay when the file is ready or the tab becomes visible.
   useEffect(() => {
@@ -498,14 +514,34 @@ const Comics = () => {
         window.innerWidth > 820 && window.innerWidth > window.innerHeight
       );
     };
+
+    // iOS/iPadOS fires orientationchange BEFORE innerWidth/innerHeight update,
+    // and while the body is position:fixed (scroll lock) the follow-up resize
+    // event is often suppressed. Re-check on a short cascade so the landscape
+    // dimensions are always picked up once WebKit settles.
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const checkWithSettle = () => {
+      check();
+      [50, 150, 300, 500].forEach((delay) => {
+        timers.push(setTimeout(check, delay));
+      });
+    };
+
     check();
     window.addEventListener('resize', check);
-    window.addEventListener('orientationchange', check);
+    window.addEventListener('orientationchange', checkWithSettle);
+    window.visualViewport?.addEventListener('resize', check);
+    const screenOrientation = window.screen?.orientation;
+    screenOrientation?.addEventListener?.('change', checkWithSettle);
     return () => {
+      timers.forEach(clearTimeout);
       window.removeEventListener('resize', check);
-      window.removeEventListener('orientationchange', check);
+      window.removeEventListener('orientationchange', checkWithSettle);
+      window.visualViewport?.removeEventListener('resize', check);
+      screenOrientation?.removeEventListener?.('change', checkWithSettle);
     };
   }, []);
+
 
   // Check narrow portrait desktop
   const isNarrowPortraitDesktop = useCallback(() => {
