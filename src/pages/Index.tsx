@@ -22,7 +22,6 @@ const Index = () => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
-  const [showMagazine] = useState(true);
   const [showParableBanner, setShowParableBanner] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
   const [showTvText, setShowTvText] = useState(false);
@@ -30,7 +29,6 @@ const Index = () => {
   const [isManualDrag, setIsManualDrag] = useState(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
   const [heroBackgroundReady, setHeroBackgroundReady] = useState(false);
-  const showMagazineRef = useRef(true);
   
   // Parable banner slideshow state - using Embla for continuous right-scroll
   const [parableBannerSlide, setParableBannerSlide] = useState(0);
@@ -160,13 +158,7 @@ const Index = () => {
     };
     
     const onReInit = () => {
-      // Only set ready after reInit completes
-      // Use ref to avoid stale closure
-      console.log('[SLIDESHOW] onReInit fired, showMagazineRef.current:', showMagazineRef.current);
-      if (showMagazineRef.current) {
-        console.log('[SLIDESHOW] Setting isCarouselReady to true');
-        setIsCarouselReady(true);
-      }
+      setIsCarouselReady(true);
     };
     
     emblaApi.on('select', () => {
@@ -184,13 +176,11 @@ const Index = () => {
     };
   }, [emblaApi]); // Removed showMagazine dependency to prevent race condition
 
-  // Ensure carousel is ready when slideshow becomes visible
+  // Ensure the carousel is ready without waiting for a section entrance animation.
   useEffect(() => {
-    if (showMagazine && emblaApi) {
-      console.log('[SLIDESHOW] Calling reInit');
-      emblaApi.reInit(); // This will trigger the 'reInit' event
-    }
-  }, [showMagazine, emblaApi]);
+    if (!emblaApi) return;
+    emblaApi.reInit();
+  }, [emblaApi]);
 
 
   useEffect(() => {
