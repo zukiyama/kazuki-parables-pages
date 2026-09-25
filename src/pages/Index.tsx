@@ -594,7 +594,7 @@ const Index = () => {
         </div>
       </section>
 
-      <Footer variant="header" />
+      <Footer variant="light" />
     </div>
   );
 };
