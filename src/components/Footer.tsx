@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import SocialIcons from "./SocialIcons";
 
 interface FooterProps {
   variant?: "light" | "dark";
@@ -24,8 +25,15 @@ export const Footer = ({
           <div className="container mx-auto px-6">
             {/* Main footer content - Subscribe center, Contact right */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-              {/* Left spacer for balance */}
-              <div className="hidden md:block md:flex-1" />
+              {/* Left - Social links */}
+              <div className="flex justify-center md:justify-start md:flex-1 mb-8 md:mb-0">
+                <SocialIcons
+                  ids={["spotify", "applemusic", "featurefm", "bandcamp", "youtube", "tiktok", "instagram", "facebook"]}
+                  iconClassName="w-4 h-4"
+                  className="flex-wrap gap-x-3 gap-y-2"
+                  linkClassName={isDark ? 'text-white/70' : 'text-ink-black/60'}
+                />
+              </div>
               
               {/* Center - Subscribe */}
               <div className="text-center md:flex-1">

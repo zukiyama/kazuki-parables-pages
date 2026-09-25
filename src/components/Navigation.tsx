@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import MobileMenu from "./MobileMenu";
+import SocialIcons from "./SocialIcons";
 
 const Navigation = () => {
   const location = useLocation();
@@ -34,7 +35,12 @@ const Navigation = () => {
             </svg>
           </Link>
           
-          <div className="flex space-x-8 max-sm:hidden">
+          <div className="flex items-center space-x-8 max-sm:hidden">
+            <SocialIcons
+              ids={["spotify", "applemusic", "youtube", "tiktok", "instagram"]}
+              iconClassName="w-4 h-4"
+              linkClassName={isAboutPage ? "text-ink-black/70" : "text-[hsl(25,30%,25%)]/70"}
+            />
             {navItems.map((item) => (
               <Link
                 key={item.path}
