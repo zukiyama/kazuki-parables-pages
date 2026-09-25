@@ -243,6 +243,18 @@ const Index = () => {
     img.src = japaneseBackground;
   }, []);
 
+  // Pre-decode the Parable banner images on mount so scrolling down from the
+  // hero never paints an empty backing while the first banner loads.
+  useEffect(() => {
+    [parableBoysStreet, godOfLiesManyFacesBanner].forEach((src) => {
+      const img = new Image();
+      img.onload = () => {
+        img.decode().catch(() => {});
+      };
+      img.src = src;
+    });
+  }, []);
+
   return (
     <div className="relative min-h-screen-stable flex flex-col overflow-hidden">
       <Navigation />
@@ -279,16 +291,16 @@ const Index = () => {
       </section>
 
       {/* Content Section */}
-      <section className="relative bg-background">
+      <section className="relative bg-ink-black">
         {/* Parable Banner Slideshow - Full Width with Embla Carousel */}
         <div
           ref={parableBannerRef}
-          className="relative w-full"
+          className="relative w-full bg-ink-black"
         >
-          <div className="overflow-hidden" ref={parableEmblaRef}>
+          <div className="overflow-hidden bg-ink-black" ref={parableEmblaRef}>
             <div className="flex">
               {/* Slide 1: Parable Trilogy */}
-              <div className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px]">
+              <div className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px] bg-ink-black">
                 {/* Left/Right click zones for navigation */}
                 <div 
                   className="absolute left-0 top-0 w-1/3 h-full z-10 cursor-pointer"
@@ -308,7 +320,8 @@ const Index = () => {
                   alt="Parable Trilogy background"
                   className="absolute inset-0 w-full h-full object-cover object-bottom"
                   style={{ objectPosition: '52% bottom', transform: 'scale(1.02)' }}
-                  loading="lazy"
+                  loading="eager"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-black/40" />
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -335,7 +348,7 @@ const Index = () => {
               
               {/* Slide 2: God of Lies */}
               <div 
-                className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px]"
+                className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px] bg-ink-black"
               >
                 {/* Left/Right click zones for navigation */}
                 <div 
