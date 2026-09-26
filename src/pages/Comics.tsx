@@ -24,7 +24,7 @@ import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.webp";
 import shrineTreeLeft from "@/assets/comics-shrine-tree-left.png";
 import shrineTreeRight from "@/assets/comics-shrine-tree-right.png";
 import shrineGate from "@/assets/comics-shrine-gate.png";
-import shrineForest from "@/assets/comics-shrine-forest.png";
+import comicsSeoulSkyline from "@/assets/comics-seoul-skyline.jpg";
 
 // TERTIARY: Pendragon scrollable section - preload after section 2
 import surnamePendragonBanner from "@/assets/surname-pendragon-banner.webp";
@@ -158,7 +158,7 @@ const Comics = () => {
         shrineTreeLeft,
         shrineTreeRight,
         shrineGate,
-        shrineForest
+        comicsSeoulSkyline
       ];
       
       let loadedCount = 0;
@@ -883,7 +883,7 @@ const Comics = () => {
 
             {/* SECTION 1: VIGNETTES - Slide in from sides with summary text */}
             <section 
-              className={`absolute inset-0 ${showPopUpScene ? 'bg-ink-black' : ''}`}
+              className={`absolute inset-0 ${showPopUpScene ? 'comics-shrine-section' : ''}`}
               style={{ 
                 opacity: vignetteOpacity,
                 pointerEvents: vignetteVisible ? 'auto' : 'none',
@@ -893,11 +893,11 @@ const Comics = () => {
               {showPopUpScene && (
                 <div className={`comics-shrine-scene ${shrineSceneActive ? 'is-open' : ''}`} aria-hidden="true">
                   <img
-                    src={shrineForest}
+                    src={comicsSeoulSkyline}
                     alt=""
-                    className="comics-shrine-layer comics-shrine-forest"
+                    className="comics-shrine-layer comics-shrine-skyline"
                     width={1536}
-                    height={768}
+                    height={1024}
                     loading="eager"
                     decoding="async"
                   />
