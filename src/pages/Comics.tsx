@@ -5,6 +5,7 @@ import { ScrollScale } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
+import { Button } from "@/components/ui/button";
 
 // CRITICAL: First panel assets (Section 0) - bundled for every host
 import comicsScriptsTitleVideo from "@/assets/comicsscriptstitle.mp4";
@@ -20,6 +21,10 @@ import vignetteBoardgame from "@/assets/god-of-lies-sweeping.webp";
 
 // SECONDARY: Cream section assets (Section 2) - preload after vignettes
 import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.webp";
+import shrineTreeLeft from "@/assets/comics-shrine-tree-left.png";
+import shrineTreeRight from "@/assets/comics-shrine-tree-right.png";
+import shrineGate from "@/assets/comics-shrine-gate.png";
+import shrineForest from "@/assets/comics-shrine-forest.png";
 
 // TERTIARY: Pendragon scrollable section - preload after section 2
 import surnamePendragonBanner from "@/assets/surname-pendragon-banner.webp";
@@ -48,11 +53,14 @@ const Comics = () => {
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false);
   const [headerBottom, setHeaderBottom] = useState(0);
   const [openingVideoFailed, setOpeningVideoFailed] = useState(false);
+  const [openingVideoEnded, setOpeningVideoEnded] = useState(false);
   // Tablet portrait ONLY (never phones, never anything wider than it is tall)
   const [isTabletPortraitStrip, setIsTabletPortraitStrip] = useState(false);
   // Landscape versions ONLY: hide the storyboard strips (parchment instead)
   const [isLandscapeStripHidden, setIsLandscapeStripHidden] = useState(false);
+  const [showPopUpScene, setShowPopUpScene] = useState(false);
   const openingVideoRef = useRef<HTMLVideoElement>(null);
+  const advanceOpeningRef = useRef<(() => void) | null>(null);
   
   // Asset loading states for priority-based loading
   const [secondaryAssetsLoaded, setSecondaryAssetsLoaded] = useState(false);
@@ -146,7 +154,11 @@ const Comics = () => {
         vignetteManyFaces,
         vignetteApartments,
         vignetteBoardgame,
-        godOfLiesStreetScene
+        godOfLiesStreetScene,
+        shrineTreeLeft,
+        shrineTreeRight,
+        shrineGate,
+        shrineForest
       ];
       
       let loadedCount = 0;
@@ -313,6 +325,8 @@ const Comics = () => {
       requestAnimationFrame(animate);
       scrollAccumulator = 0;
     };
+
+    advanceOpeningRef.current = () => triggerSectionChange('next');
     
     const handleWheel = (e: WheelEvent) => {
       // If in normal scroll mode - allow normal scrolling
@@ -449,6 +463,7 @@ const Comics = () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
+      advanceOpeningRef.current = null;
       if (debounceTimer) clearTimeout(debounceTimer);
     };
   }, [currentSection, isTransitioning, isScrollLocked]);
@@ -512,6 +527,11 @@ const Comics = () => {
       // no storyboard strips at all — parchment above and below the film.
       setIsLandscapeStripHidden(
         window.innerWidth > 820 && window.innerWidth > window.innerHeight
+      );
+      // Keep every phone orientation on the original sequence. Tablet and
+      // larger viewports receive the pop-up scene, including iPad portrait.
+      setShowPopUpScene(
+        window.innerWidth >= 768 && window.innerHeight >= 600
       );
     };
 
@@ -727,6 +747,7 @@ const Comics = () => {
   // Cream section: visible on section 2, fades out when leaving to section 3
   const creamVisible = currentSection === 2;
   const creamOpacity = currentSection === 2 ? 1 : 0;
+  const shrineSceneActive = currentSection === 1;
   
   // Pendragon is now ONLY in scrollable content - no pinned version
 
@@ -803,6 +824,7 @@ const Comics = () => {
                     muted
                     playsInline
                     preload="auto"
+                    onEnded={() => setOpeningVideoEnded(true)}
                     onError={() => setOpeningVideoFailed(true)}
                     aria-label="Comics and Scripts opening film"
                   >
@@ -811,6 +833,23 @@ const Comics = () => {
                   </video>
                 )}
               </div>
+
+              {showPopUpScene && (openingVideoEnded || openingVideoFailed) && titleVisible && (
+                <div className="comics-opening-prompt absolute inset-x-0 bottom-5 z-20 flex justify-center">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="group h-auto flex-col gap-1.5 text-ink-black hover:bg-transparent hover:text-ink-black"
+                    onClick={() => advanceOpeningRef.current?.()}
+                    aria-label="Continue to God of Lies"
+                  >
+                    <span className="font-palatino text-sm italic sm:text-base">Scroll down for good stuff</span>
+                    <svg className="h-7 w-7 transition-transform duration-300 group-hover:translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                      <path d="M12 4v15M5.5 12.5 12 19l6.5-6.5" />
+                    </svg>
+                  </Button>
+                </div>
+              )}
               {isTabletPortraitStrip ? (
                 <div className="comics-strip-frame comics-strip-frame--bottom relative h-full min-h-0 w-full overflow-hidden">
                   <img
@@ -844,15 +883,70 @@ const Comics = () => {
 
             {/* SECTION 1: VIGNETTES - Slide in from sides with summary text */}
             <section 
-              className="absolute inset-0"
+              className={`absolute inset-0 ${showPopUpScene ? 'bg-ink-black' : ''}`}
               style={{ 
                 opacity: vignetteOpacity,
                 pointerEvents: vignetteVisible ? 'auto' : 'none',
                 transition: 'opacity 0.5s ease-out'
               }}
             >
+              {showPopUpScene && (
+                <div className={`comics-shrine-scene ${shrineSceneActive ? 'is-open' : ''}`} aria-hidden="true">
+                  <img
+                    src={shrineForest}
+                    alt=""
+                    className="comics-shrine-layer comics-shrine-forest"
+                    width={1536}
+                    height={768}
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <img
+                    src={shrineTreeLeft}
+                    alt=""
+                    className="comics-shrine-layer comics-shrine-tree comics-shrine-tree--left"
+                    width={1024}
+                    height={1536}
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <img
+                    src={shrineTreeRight}
+                    alt=""
+                    className="comics-shrine-layer comics-shrine-tree comics-shrine-tree--right"
+                    width={1024}
+                    height={1536}
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <img
+                    src={shrineGate}
+                    alt=""
+                    className="comics-shrine-layer comics-shrine-gate"
+                    width={1024}
+                    height={1024}
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <div className="comics-shrine-vignette" />
+                </div>
+              )}
+
+              {showPopUpScene && (
+                <div className={`comics-shrine-title ${shrineSceneActive ? 'is-open' : ''}`}>
+                  <p className="font-body text-xs uppercase text-canvas-base/70">Featured</p>
+                  <h2 className="font-playfair text-4xl text-canvas-base sm:text-5xl lg:text-6xl">
+                    GOD <span className="text-2xl italic font-normal sm:text-3xl lg:text-4xl">of</span> LIES
+                  </h2>
+                  <div className="h-0.5 w-20 bg-destructive" />
+                  <p className="max-w-sm text-center font-body text-sm text-canvas-base/85 sm:text-base">
+                    A psychological manga of deception, betrayal and redemption
+                  </p>
+                </div>
+              )}
+
               {/* DESKTOP VIGNETTES LAYOUT - only large screens */}
-              <div className="w-full h-full hidden lg:flex items-center px-4 sm:px-6 lg:px-8">
+              {!showPopUpScene && <div className="w-full h-full hidden lg:flex items-center px-4 sm:px-6 lg:px-8">
                 
               {/* LEFT SIDE - Many Faces character collage (full height) */}
                 <div 
@@ -998,10 +1092,10 @@ const Comics = () => {
                     />
                   </div>
                 </div>
-              </div>
+              </div>}
               
               {/* MOBILE + SMALL IPAD VIGNETTES LAYOUT - Full screen image with overlaid text */}
-              <div className="w-full h-full flex lg:hidden items-center justify-center relative">
+              {!showPopUpScene && <div className="w-full h-full flex lg:hidden items-center justify-center relative">
                 {/* Full page Many Faces image with padding */}
                 <div 
                   className="absolute inset-0 flex items-center justify-center p-6"
@@ -1067,7 +1161,7 @@ const Comics = () => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </div>}
             </section>
 
             {/* SECTION 2: CREAM SCREEN - Street scene with description (LAST DISSOLVE SECTION) */}
