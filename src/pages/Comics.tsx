@@ -58,6 +58,7 @@ const Comics = () => {
   const [isTabletPortraitStrip, setIsTabletPortraitStrip] = useState(false);
   // Landscape versions ONLY: hide the storyboard strips (parchment instead)
   const [isLandscapeStripHidden, setIsLandscapeStripHidden] = useState(false);
+  const [showPopUpScene, setShowPopUpScene] = useState(false);
   const openingVideoRef = useRef<HTMLVideoElement>(null);
   const advanceOpeningRef = useRef<(() => void) | null>(null);
   
@@ -527,6 +528,11 @@ const Comics = () => {
       setIsLandscapeStripHidden(
         window.innerWidth > 820 && window.innerWidth > window.innerHeight
       );
+      // Keep every phone orientation on the original sequence. Tablet and
+      // larger viewports receive the pop-up scene, including iPad portrait.
+      setShowPopUpScene(
+        window.innerWidth >= 768 && window.innerHeight >= 600
+      );
     };
 
     // iOS/iPadOS fires orientationchange BEFORE innerWidth/innerHeight update,
@@ -828,7 +834,7 @@ const Comics = () => {
                 )}
               </div>
 
-              {!isMobile && (openingVideoEnded || openingVideoFailed) && titleVisible && (
+              {showPopUpScene && (openingVideoEnded || openingVideoFailed) && titleVisible && (
                 <div className="comics-opening-prompt absolute inset-x-0 bottom-5 z-20 flex justify-center">
                   <Button
                     type="button"
@@ -877,14 +883,14 @@ const Comics = () => {
 
             {/* SECTION 1: VIGNETTES - Slide in from sides with summary text */}
             <section 
-              className={`absolute inset-0 ${isMobile ? '' : 'bg-ink-black'}`}
+              className={`absolute inset-0 ${showPopUpScene ? 'bg-ink-black' : ''}`}
               style={{ 
                 opacity: vignetteOpacity,
                 pointerEvents: vignetteVisible ? 'auto' : 'none',
                 transition: 'opacity 0.5s ease-out'
               }}
             >
-              {!isMobile && (
+              {showPopUpScene && (
                 <div className={`comics-shrine-scene ${shrineSceneActive ? 'is-open' : ''}`} aria-hidden="true">
                   <img
                     src={shrineForest}
@@ -926,7 +932,7 @@ const Comics = () => {
                 </div>
               )}
 
-              {!isMobile && (
+              {showPopUpScene && (
                 <div className={`comics-shrine-title ${shrineSceneActive ? 'is-open' : ''}`}>
                   <p className="font-body text-xs uppercase text-canvas-base/70">Featured</p>
                   <h2 className="font-playfair text-4xl text-canvas-base sm:text-5xl lg:text-6xl">
@@ -940,7 +946,7 @@ const Comics = () => {
               )}
 
               {/* DESKTOP VIGNETTES LAYOUT - only large screens */}
-              {isMobile && <div className="w-full h-full hidden lg:flex items-center px-4 sm:px-6 lg:px-8">
+              {!showPopUpScene && <div className="w-full h-full hidden lg:flex items-center px-4 sm:px-6 lg:px-8">
                 
               {/* LEFT SIDE - Many Faces character collage (full height) */}
                 <div 
@@ -1089,7 +1095,7 @@ const Comics = () => {
               </div>}
               
               {/* MOBILE + SMALL IPAD VIGNETTES LAYOUT - Full screen image with overlaid text */}
-              {isMobile && <div className="w-full h-full flex lg:hidden items-center justify-center relative">
+              {!showPopUpScene && <div className="w-full h-full flex lg:hidden items-center justify-center relative">
                 {/* Full page Many Faces image with padding */}
                 <div 
                   className="absolute inset-0 flex items-center justify-center p-6"
