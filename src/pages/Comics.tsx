@@ -891,16 +891,20 @@ const Comics = () => {
               }}
             >
               {showPopUpScene && (
+                <img
+                  src={comicsSeoulSkyline}
+                  alt=""
+                  aria-hidden="true"
+                  className="comics-shrine-skyline"
+                  width={1536}
+                  height={1024}
+                  loading="eager"
+                  decoding="async"
+                />
+              )}
+
+              {showPopUpScene && (
                 <div className={`comics-shrine-scene ${shrineSceneActive ? 'is-open' : ''}`} aria-hidden="true">
-                  <img
-                    src={comicsSeoulSkyline}
-                    alt=""
-                    className="comics-shrine-layer comics-shrine-skyline"
-                    width={1536}
-                    height={1024}
-                    loading="eager"
-                    decoding="async"
-                  />
                   <img
                     src={shrineTreeLeft}
                     alt=""
