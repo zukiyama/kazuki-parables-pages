@@ -1394,10 +1394,6 @@
   transition: transform 850ms cubic-bezier(0.16, 1, 0.3, 1) 180ms, opacity 550ms ease-out 180ms;
 }
 
-.comics-shrine-scene.is-open .comics-shrine-skyline {
-  opacity: 1;
-  transform: scale(1);
-}
 
 .comics-shrine-scene.is-open .comics-shrine-tree--left {
   opacity: 1;
