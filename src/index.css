@@ -1428,7 +1428,7 @@
 }
 .comics-balloon {
   position: absolute;
-  left: 68%;
+  left: 39%;
   top: 36%;
   height: 41.5%;
   width: auto;
@@ -1436,7 +1436,6 @@
   transform: translate3d(0, 0, 0);
   filter: drop-shadow(0 0.75rem 1.5rem hsl(var(--ink-black) / 0.28));
 }
-
 
 .comics-god-cover-mobile {
   position: absolute;
@@ -1527,12 +1526,6 @@
     width: 60vw;
   }
 
-  /* Portrait: keep the girl clear of the centred blurb. */
-  .comics-balloon {
-    left: 77%;
-    height: 38%;
-  }
-
   /* Preserve the first portrait composition and its original edge anchoring. */
   .comics-tree {
     width: 72vw;
@@ -1542,7 +1535,6 @@
   .comics-tree--right { right: -42%; }
 
 }
-
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-shrine-title {
