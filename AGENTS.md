@@ -3,4 +3,4 @@
 - The home page’s major visual bands remain in normal document flow without timed entrance transforms, so scrolling never reveals artificial gaps.
 - The home page’s content section and every banner inside it carry the `bg-ink-black` backing, and images that sit just below the hero are preloaded and decoded on mount — no light container colour may ever show through a band while scrolling.
 - The About intro uses clipped copies of its original transparent handwriting artwork for a brisk line-by-line reveal synchronized to the hero background decode; reduced motion shows it immediately.
-- The Comics opening keeps phones on their original sequence; tablet and desktop fold transparent forest trees and the God of Lies cover in over a preloaded blue Seoul skyline during the first section change, with a sky-blue fallback so no other backing can show.
+- The Comics opening keeps phones on their original sequence; tablet and desktop assemble transparent shrine layers over a preloaded blue Seoul skyline during the first section change, with a sky-blue fallback so no other backing can show.

@@ -1383,15 +1383,14 @@
   transform-origin: right bottom;
 }
 
-.comics-shrine-cover {
+.comics-shrine-gate {
   left: 50%;
-  bottom: 6%;
-  height: clamp(16rem, 40vh, 28rem);
-  width: auto;
+  bottom: -13%;
+  width: clamp(21rem, 33vw, 36rem);
+  height: auto;
   opacity: 0;
-  transform: translate3d(-50%, 68%, 70px) rotateX(48deg) scale(0.85);
+  transform: translate3d(-50%, 72%, 70px) rotateX(54deg) scale(0.8);
   transform-origin: bottom center;
-  filter: drop-shadow(0 1.4rem 2.2rem hsl(var(--ink-black) / 0.55));
   transition: transform 850ms cubic-bezier(0.16, 1, 0.3, 1) 180ms, opacity 550ms ease-out 180ms;
 }
 
@@ -1406,7 +1405,7 @@
   transform: translate3d(0, 0, 30px) rotateY(0deg) rotate(-3deg);
 }
 
-.comics-shrine-scene.is-open .comics-shrine-cover {
+.comics-shrine-scene.is-open .comics-shrine-gate {
   opacity: 1;
   transform: translate3d(-50%, 0, 70px) rotateX(0deg) scale(1);
 }
@@ -1421,7 +1420,7 @@
   position: absolute;
   z-index: 5;
   left: 50%;
-  top: 30%;
+  top: 43%;
   display: flex;
   width: min(38vw, 28rem);
   flex-direction: column;
@@ -1451,13 +1450,13 @@
     object-position: center center;
   }
 
-  .comics-shrine-cover {
-    bottom: 8%;
-    height: clamp(15rem, 38vh, 26rem);
+  .comics-shrine-gate {
+    bottom: -4%;
+    width: 58vw;
   }
 
   .comics-shrine-title {
-    top: 24%;
+    top: 36%;
     width: 48vw;
   }
 }
