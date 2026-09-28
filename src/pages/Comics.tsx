@@ -25,7 +25,6 @@ import shrineTreeLeft from "@/assets/comics-tree-original-left.png";
 import shrineTreeRight from "@/assets/comics-tree-original-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
-import comicsBalloonGirl from "@/assets/comics-balloon-girl-transparent.png";
 import comicsShrineSteps from "@/assets/comics-shrine-gate-tall.png";
 import { WordReveal, countWords, type RevealSegment } from "@/components/WordReveal";
 
@@ -947,22 +946,6 @@ const Comics = () => {
                     decoding="async"
                   />
                 </div>
-
-
-                {/* Balloon rises from below with the trees: the balloon rests on
-                    the sky screen while the girl waits on the road screen below. */}
-                <div className={`comics-balloon-rig ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
-                  <img
-                    src={comicsBalloonGirl}
-                    alt=""
-                    className="comics-balloon"
-                    width={1024}
-                    height={1536}
-                    loading="eager"
-                    decoding="async"
-                  />
-                </div>
-
                 <div className="comics-sky-half">
                 <div className={`comics-shrine-scene ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
                   <div className="comics-shrine-vignette" />
