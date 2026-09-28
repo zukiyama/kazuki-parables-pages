@@ -25,7 +25,7 @@ import shrineTreeLeft from "@/assets/comics-tree-original-left.png";
 import shrineTreeRight from "@/assets/comics-tree-original-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
-import comicsBalloonGirl from "@/assets/comics-balloon-girl.png";
+import comicsBalloonGirl from "@/assets/comics-balloon-girl-transparent.png";
 import { WordReveal, countWords, type RevealSegment } from "@/components/WordReveal";
 
 // TERTIARY: Pendragon scrollable section - preload after section 2
@@ -938,8 +938,8 @@ const Comics = () => {
                     src={comicsBalloonGirl}
                     alt=""
                     className="comics-balloon"
-                    width={992}
-                    height={3425}
+                    width={1024}
+                    height={1536}
                     loading="eager"
                     decoding="async"
                   />

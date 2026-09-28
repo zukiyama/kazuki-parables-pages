@@ -1410,14 +1410,12 @@
   opacity: 1;
 }
 
-/* Red balloon and girl: one tall cut-out spanning both screens of the
-   panorama. The balloon rests near the foot of the sky screen, the string
-   runs through the fold and the girl hangs above the road screen below.
-   It rises from below in step with the trees folding in. */
+/* Red balloon and floating girl: one transparent cut-out crossing the fold
+   between both panorama screens. */
 .comics-balloon-rig {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 4;
   opacity: 0;
   pointer-events: none;
   transform: translate3d(0, 6%, 0);
@@ -1430,12 +1428,12 @@
 }
 .comics-balloon {
   position: absolute;
-  left: 50%;
+  left: 30%;
   top: 41%;
-  height: 49%;
+  height: 44%;
   width: auto;
   max-width: none;
-  transform: translate3d(24%, 0, 0);
+  transform: translate3d(0, 0, 0);
   filter: drop-shadow(0 0.75rem 1.5rem hsl(var(--ink-black) / 0.28));
 }
 
@@ -1543,14 +1541,11 @@
     top: 36%;
   }
 
-  /* Wider frames let the girl stand clear of the centred blurb. */
-  .comics-balloon {
-    transform: translate3d(50%, 0, 0);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .comics-tree img,
+  .comics-balloon-rig,
   .comics-title-kicker,
   .comics-title-letter,
   .comics-title-rule,
