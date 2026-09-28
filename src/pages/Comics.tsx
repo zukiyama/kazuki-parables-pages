@@ -25,6 +25,7 @@ import shrineTreeLeft from "@/assets/comics-tree-original-left.png";
 import shrineTreeRight from "@/assets/comics-tree-original-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
+import comicsBalloonGirl from "@/assets/comics-balloon-girl.png";
 import { WordReveal, countWords, type RevealSegment } from "@/components/WordReveal";
 
 // TERTIARY: Pendragon scrollable section - preload after section 2
