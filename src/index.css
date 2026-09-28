@@ -1428,7 +1428,7 @@
 }
 .comics-balloon {
   position: absolute;
-  left: 42%;
+  left: 46%;
   top: 36%;
   height: 40.5%;
   width: auto;
@@ -1439,7 +1439,7 @@
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-balloon {
-    left: 49%;
+    left: 54%;
   }
 }
 
