@@ -1323,7 +1323,7 @@
   }
 }
 
-/* Comics: non-phone pop-up shrine assembled during the first page turn. */
+/* Comics: non-phone pop-up scene assembled during the first page turn. */
 .comics-shrine-section {
   background-color: hsl(var(--comics-sky));
 }
@@ -1383,15 +1383,16 @@
   transform-origin: right bottom;
 }
 
-.comics-shrine-gate {
+.comics-god-cover {
   left: 50%;
-  bottom: -13%;
-  width: clamp(21rem, 33vw, 36rem);
-  height: auto;
+  bottom: 5%;
+  width: auto;
+  height: min(48%, 34rem);
   opacity: 0;
   transform: translate3d(-50%, 72%, 70px) rotateX(54deg) scale(0.8);
   transform-origin: bottom center;
   transition: transform 850ms cubic-bezier(0.16, 1, 0.3, 1) 180ms, opacity 550ms ease-out 180ms;
+  box-shadow: 0 1rem 2.5rem hsl(var(--ink-black) / 0.38);
 }
 
 
@@ -1405,9 +1406,21 @@
   transform: translate3d(0, 0, 30px) rotateY(0deg) rotate(-3deg);
 }
 
-.comics-shrine-scene.is-open .comics-shrine-gate {
+.comics-shrine-scene.is-open .comics-god-cover {
   opacity: 1;
   transform: translate3d(-50%, 0, 70px) rotateX(0deg) scale(1);
+}
+
+.comics-god-cover-mobile {
+  position: absolute;
+  top: 3%;
+  left: 50%;
+  width: auto;
+  height: 70%;
+  max-width: calc(100% - 2rem);
+  object-fit: contain;
+  transform: translateX(-50%);
+  box-shadow: 0 0.75rem 2rem hsl(var(--ink-black) / 0.35);
 }
 
 .comics-shrine-vignette {
@@ -1451,25 +1464,27 @@
     object-position: center center;
   }
 
-  .comics-shrine-gate {
-    bottom: -4%;
-    width: 58vw;
+  .comics-god-cover {
+    bottom: 5%;
+    width: auto;
+    height: 52%;
   }
 
   .comics-shrine-title {
-    top: 36%;
+    top: 17%;
     width: 48vw;
   }
 }
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
-  .comics-shrine-gate {
-    bottom: -12%;
-    width: clamp(28rem, 50vw, 42rem);
+  .comics-god-cover {
+    bottom: 6%;
+    width: auto;
+    height: min(47%, 28rem);
   }
 
   .comics-shrine-title {
-    top: 6%;
+    top: 14%;
   }
 }
 
