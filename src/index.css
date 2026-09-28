@@ -1428,13 +1428,19 @@
 }
 .comics-balloon {
   position: absolute;
-  left: 39%;
+  left: 42%;
   top: 36%;
-  height: 41.5%;
+  height: 40.5%;
   width: auto;
   max-width: none;
   transform: translate3d(0, 0, 0);
   filter: drop-shadow(0 0.75rem 1.5rem hsl(var(--ink-black) / 0.28));
+}
+
+@media screen and (min-width: 821px) and (orientation: landscape) {
+  .comics-balloon {
+    left: 49%;
+  }
 }
 
 .comics-god-cover-mobile {
