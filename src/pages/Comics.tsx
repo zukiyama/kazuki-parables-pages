@@ -904,36 +904,35 @@ const Comics = () => {
                   decoding="async"
                 />
 
+                {/* Pop-up trees: straight trunks leaning inwards; each trunk leaves
+                    through the side edge of the view and never re-enters it. */}
+                <div className={`comics-tree-rig ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
+                  <div className="comics-tree comics-tree--left">
+                    <img src={shrineTreeLeft} alt="" width={768} height={1376} loading="eager" decoding="async" />
+                  </div>
+                  <div className="comics-tree comics-tree--right">
+                    <img src={shrineTreeRight} alt="" width={768} height={1376} loading="eager" decoding="async" />
+                  </div>
+                </div>
+
                 <div className="comics-sky-half">
                 <div className={`comics-shrine-scene ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
-                  <img
-                    src={shrineTreeLeft}
-                    alt=""
-                    className="comics-shrine-layer comics-shrine-tree comics-shrine-tree--left"
-                    width={848}
-                    height={1264}
-                    loading="eager"
-                    decoding="async"
-                  />
-                  <img
-                    src={shrineTreeRight}
-                    alt=""
-                    className="comics-shrine-layer comics-shrine-tree comics-shrine-tree--right"
-                    width={848}
-                    height={1264}
-                    loading="eager"
-                    decoding="async"
-                  />
                   <div className="comics-shrine-vignette" />
                 </div>
 
                 <div className={`comics-shrine-title ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`}>
-                  <p className="font-body text-xs uppercase text-canvas-base/70">Featured</p>
-                  <h2 className="font-playfair text-4xl text-canvas-base sm:text-5xl lg:text-6xl">
-                    GOD <span className="text-2xl italic font-normal sm:text-3xl lg:text-4xl">of</span> LIES
+                  <p className="comics-title-kicker font-body text-xs uppercase text-canvas-base/80">Featured</p>
+                  <h2 className="comics-title-heading font-playfair text-4xl text-canvas-base sm:text-5xl lg:text-6xl" aria-label="God of Lies">
+                    {['G', 'O', 'D'].map((ch, i) => (
+                      <span key={`g${i}`} className="comics-title-letter" style={{ '--l': i } as React.CSSProperties} aria-hidden="true">{ch}</span>
+                    ))}
+                    <span className="comics-title-letter comics-title-of text-2xl italic font-normal sm:text-3xl lg:text-4xl" style={{ '--l': 3 } as React.CSSProperties} aria-hidden="true">of</span>
+                    {['L', 'I', 'E', 'S'].map((ch, i) => (
+                      <span key={`l${i}`} className="comics-title-letter" style={{ '--l': i + 4 } as React.CSSProperties} aria-hidden="true">{ch}</span>
+                    ))}
                   </h2>
-                  <div className="h-0.5 w-20 bg-destructive" />
-                  <p className="max-w-sm text-center font-body text-sm text-canvas-base/85 sm:text-base">
+                  <div className="comics-title-rule h-0.5 w-20 bg-destructive" />
+                  <p className="comics-title-sub max-w-sm text-center font-body text-sm text-canvas-base/85 sm:text-base">
                     A psychological manga of deception, betrayal and redemption
                   </p>
                 </div>
@@ -941,13 +940,21 @@ const Comics = () => {
 
                 <div className="comics-sky-half comics-sky-lower">
                   <div className={`comics-hill-blurb ${currentSection >= 2 ? 'is-open' : ''}`}>
-                    <p className="text-lg leading-relaxed text-canvas-base lg:text-xl" style={{ fontFamily: 'Georgia, serif' }}>
-                      Con-man <em>Yi Chang-Min</em> has had to lie and cheat to get by his whole life. Even his landlady—and the young woman who has just moved in with them—have no idea what he does for a living. But while impersonating a shaman for a bereaved couple, he inadvertently raises <em>Seok-seol</em>, the god of lies. As he struggles to rid himself of his less-than-divine companion, <em>Chang-min</em> realises that having a deity of illusion at his beck and call may not be the worst thing for someone who makes his living deceiving others...
-                    </p>
-                    <p className="mt-5 text-lg leading-relaxed text-canvas-base lg:text-xl" style={{ fontFamily: 'Georgia, serif' }}>
-                      A supernatural psychological manga packed with twists and reversals.
-                    </p>
-                    <p className="mt-5 text-sm uppercase tracking-widest text-canvas-base/85" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
+                    <WordReveal
+                      className="text-lg leading-relaxed text-canvas-base lg:text-xl"
+                      style={{ fontFamily: 'Georgia, serif' }}
+                      segments={blurbMain}
+                    />
+                    <WordReveal
+                      className="mt-5 text-lg leading-relaxed text-canvas-base lg:text-xl"
+                      style={{ fontFamily: 'Georgia, serif' }}
+                      segments={blurbTagline}
+                      startIndex={countWords(blurbMain)}
+                    />
+                    <p
+                      className="comics-blurb-meta mt-5 text-sm uppercase tracking-widest text-canvas-base/85"
+                      style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', '--w': countWords(blurbMain) + countWords(blurbTagline) } as React.CSSProperties}
+                    >
                       Manga • Webtoon • 2026
                     </p>
                   </div>
