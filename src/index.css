@@ -1433,7 +1433,7 @@
   position: absolute;
   z-index: 5;
   left: 50%;
-  top: 43%;
+  top: 33%;
   display: flex;
   width: min(38vw, 28rem);
   flex-direction: column;
@@ -1464,27 +1464,15 @@
     object-position: center center;
   }
 
-  .comics-god-cover {
-    bottom: 5%;
-    width: auto;
-    height: 52%;
-  }
-
   .comics-shrine-title {
-    top: 17%;
-    width: 48vw;
+    top: 34%;
+    width: 60vw;
   }
 }
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
-  .comics-god-cover {
-    bottom: 6%;
-    width: auto;
-    height: min(47%, 28rem);
-  }
-
   .comics-shrine-title {
-    top: 14%;
+    top: 30%;
   }
 }
 
