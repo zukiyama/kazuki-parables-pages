@@ -1428,8 +1428,8 @@
 }
 .comics-balloon {
   position: absolute;
-  left: 30%;
-  top: 41%;
+  left: 34%;
+  top: 33%;
   height: 44%;
   width: auto;
   max-width: none;
@@ -1582,7 +1582,7 @@
 }
 .comics-sky-lower {
   top: 50%;
-  z-index: 3;
+  z-index: 5;
   display: flex;
   align-items: flex-end;
   justify-content: center;
