@@ -938,8 +938,8 @@ const Comics = () => {
                     src={comicsBalloonGirl}
                     alt=""
                     className="comics-balloon"
-                    width={774}
-                    height={2385}
+                    width={992}
+                    height={3425}
                     loading="eager"
                     decoding="async"
                   />

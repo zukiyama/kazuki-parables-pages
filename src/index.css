@@ -1435,7 +1435,7 @@
   height: 49%;
   width: auto;
   max-width: none;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(24%, 0, 0);
   filter: drop-shadow(0 0.75rem 1.5rem hsl(var(--ink-black) / 0.28));
 }
 
@@ -1545,7 +1545,7 @@
 
   /* Wider frames let the girl stand clear of the centred blurb. */
   .comics-balloon {
-    transform: translate3d(30%, 0, 0);
+    transform: translate3d(50%, 0, 0);
   }
 }
 
@@ -1595,7 +1595,7 @@
   padding: 5rem 1.5rem clamp(4rem, 10vh, 7rem);
 }
 .comics-hill-blurb {
-  max-width: 40rem;
+  max-width: 36rem;
   text-align: center;
   opacity: 0;
   /* A single quick fade as the panorama travels down to the road. */
