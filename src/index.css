@@ -1535,6 +1535,13 @@
   }
   .comics-tree--left { left: -42%; }
   .comics-tree--right { right: -42%; }
+
+  /* Narrower screens need a shorter drop so the girl stays on the road. */
+  .comics-balloon {
+    top: 35.6%;
+    height: 52%;
+    transform: translate3d(-14%, 0, 0);
+  }
 }
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
