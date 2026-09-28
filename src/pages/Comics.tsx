@@ -910,8 +910,8 @@ const Comics = () => {
                     src={shrineTreeLeft}
                     alt=""
                     className="comics-shrine-layer comics-shrine-tree comics-shrine-tree--left"
-                    width={1024}
-                    height={1536}
+                    width={848}
+                    height={1264}
                     loading="eager"
                     decoding="async"
                   />
@@ -919,8 +919,8 @@ const Comics = () => {
                     src={shrineTreeRight}
                     alt=""
                     className="comics-shrine-layer comics-shrine-tree comics-shrine-tree--right"
-                    width={1024}
-                    height={1536}
+                    width={848}
+                    height={1264}
                     loading="eager"
                     decoding="async"
                   />
