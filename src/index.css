@@ -1410,6 +1410,35 @@
   opacity: 1;
 }
 
+/* Red balloon and girl: one tall cut-out spanning both screens of the
+   panorama. The balloon rests near the foot of the sky screen, the string
+   runs through the fold and the girl hangs above the road screen below.
+   It rises from below in step with the trees folding in. */
+.comics-balloon-rig {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 6%, 0);
+  transition: transform 950ms cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 650ms ease-out;
+}
+.comics-balloon-rig.is-open {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+.comics-balloon {
+  position: absolute;
+  left: 50%;
+  top: 41%;
+  height: 49%;
+  width: auto;
+  max-width: none;
+  transform: translate3d(24%, 0, 0);
+  filter: drop-shadow(0 0.75rem 1.5rem hsl(var(--ink-black) / 0.28));
+}
+
 .comics-god-cover-mobile {
   position: absolute;
   top: 3%;
@@ -1468,25 +1497,25 @@
 .comics-shrine-title.is-open .comics-title-kicker {
   opacity: 1;
   letter-spacing: 0.3em;
-  transition: opacity 700ms ease-out 450ms, letter-spacing 1100ms cubic-bezier(0.22, 1, 0.36, 1) 450ms;
+  transition: opacity 320ms ease-out 60ms, letter-spacing 620ms cubic-bezier(0.22, 1, 0.36, 1) 60ms;
 }
 .comics-shrine-title.is-open .comics-title-letter {
   opacity: 1;
   filter: blur(0);
   transform: translate3d(0, 0, 0) rotateX(0deg);
-  transition: opacity 600ms ease-out, filter 700ms ease-out, transform 900ms cubic-bezier(0.2, 1.3, 0.4, 1);
-  transition-delay: calc(650ms + var(--l, 0) * 75ms);
+  transition: opacity 320ms ease-out, filter 380ms ease-out, transform 520ms cubic-bezier(0.2, 1.3, 0.4, 1);
+  transition-delay: calc(140ms + var(--l, 0) * 34ms);
 }
 .comics-shrine-title.is-open .comics-title-rule {
   opacity: 1;
   transform: scaleX(1);
-  transition: opacity 300ms ease-out 1300ms, transform 700ms cubic-bezier(0.65, 0, 0.35, 1) 1300ms;
+  transition: opacity 240ms ease-out 520ms, transform 460ms cubic-bezier(0.65, 0, 0.35, 1) 520ms;
 }
 .comics-shrine-title.is-open .comics-title-sub {
   opacity: 1;
   filter: blur(0);
   transform: translate3d(0, 0, 0);
-  transition: opacity 800ms ease-out 1650ms, filter 800ms ease-out 1650ms, transform 900ms cubic-bezier(0.22, 1, 0.36, 1) 1650ms;
+  transition: opacity 380ms ease-out 640ms, filter 380ms ease-out 640ms, transform 480ms cubic-bezier(0.22, 1, 0.36, 1) 640ms;
 }
 
 @media screen and (min-width: 768px) and (orientation: portrait) {
@@ -1506,11 +1535,17 @@
   }
   .comics-tree--left { left: -42%; }
   .comics-tree--right { right: -42%; }
+
 }
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-shrine-title {
     top: 36%;
+  }
+
+  /* Wider frames let the girl stand clear of the centred blurb. */
+  .comics-balloon {
+    transform: translate3d(50%, 0, 0);
   }
 }
 
@@ -1548,9 +1583,11 @@
   top: 0;
   height: 50%;
   overflow: hidden;
+  z-index: 3;
 }
 .comics-sky-lower {
   top: 50%;
+  z-index: 3;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -1558,10 +1595,11 @@
   padding: 5rem 1.5rem clamp(4rem, 10vh, 7rem);
 }
 .comics-hill-blurb {
-  max-width: 40rem;
+  max-width: 36rem;
   text-align: center;
   opacity: 0;
-  transition: opacity 480ms ease-out 180ms;
+  /* A single quick fade as the panorama travels down to the road. */
+  transition: opacity 420ms ease-out 60ms;
   /* Slightly stronger than before: the halo reaches further out so the words
      lift off the busy road, while the layers hugging each letter stay lighter
      so the glyphs read crisp rather than smudged. No backdrop box. */
@@ -1578,7 +1616,7 @@
 /* The blurb fades in as the panorama moves onto the road. */
 .comics-reveal-word,
 .comics-blurb-meta {
-  display: inline-block;
+  display: inline;
   opacity: 1;
   filter: none;
   transform: none;
