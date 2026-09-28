@@ -1363,7 +1363,7 @@
 }
 
 .comics-shrine-tree {
-  bottom: -10%;
+  bottom: -16%;
   width: clamp(31rem, 52vw, 55rem);
   height: 124%;
   object-fit: contain;
@@ -1439,6 +1439,7 @@
 
 @media screen and (min-width: 768px) and (orientation: portrait) {
   .comics-shrine-tree {
+    bottom: -21%;
     width: 72vw;
     height: 108%;
   }
@@ -1458,6 +1459,17 @@
   .comics-shrine-title {
     top: 36%;
     width: 48vw;
+  }
+}
+
+@media screen and (min-width: 821px) and (orientation: landscape) {
+  .comics-shrine-gate {
+    bottom: -12%;
+    width: clamp(28rem, 50vw, 42rem);
+  }
+
+  .comics-shrine-title {
+    top: 6%;
   }
 }
 
