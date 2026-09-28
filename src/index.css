@@ -1410,9 +1410,8 @@
   opacity: 1;
 }
 
-/* Shrine and its winding stone stairway. The viewport edge crosses the upper
-   stair landing, concealing the lower flight until the pan begins. An aggressive
-   mask then dissolves that lower flight before the road screen is established. */
+/* Cloud-borne Korean shrine. Its complete cloud bed sits at the foot of the
+   title screen, then the whole layer clears while the panorama pans to the blurb. */
 .comics-shrine-steps-rig {
   position: absolute;
   inset: 0;
@@ -1423,8 +1422,8 @@
 .comics-shrine-steps {
   position: absolute;
   left: 50%;
-  top: 26%;
-  height: 34.3%;
+  top: 22%;
+  height: 27.5%;
   width: auto;
   max-width: none;
   transform-origin: 50% 100%;
@@ -1432,37 +1431,28 @@
   transform: translate3d(-50%, 14%, 0) rotateX(72deg) scale(0.9);
   transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1) 120ms,
               opacity 600ms ease-out 120ms;
-  /* The cloud bank sits entirely below the first viewport edge; it is revealed
-     only while the pan travels and is fully erased before the blurb screen. */
-  -webkit-mask-image: linear-gradient(to bottom,
-    hsl(0 0% 0% / 1) 0%,
-    hsl(0 0% 0% / 1) 64%,
-    hsl(0 0% 0% / 0.6) 74%,
-    hsl(0 0% 0% / 0.12) 80%,
-    hsl(0 0% 0% / 0) 84%);
-  mask-image: linear-gradient(to bottom,
-    hsl(0 0% 0% / 1) 0%,
-    hsl(0 0% 0% / 1) 64%,
-    hsl(0 0% 0% / 0.6) 74%,
-    hsl(0 0% 0% / 0.12) 80%,
-    hsl(0 0% 0% / 0) 84%);
 }
 .comics-shrine-steps-rig.is-open .comics-shrine-steps {
   opacity: 1;
   transform: translate3d(-50%, 0, 0) rotateX(0deg) scale(1);
 }
+.comics-shrine-steps-rig.is-lower .comics-shrine-steps {
+  opacity: 0;
+  transition-delay: 0ms, 420ms;
+  transition-duration: 1000ms, 430ms;
+}
 
 @media screen and (min-width: 768px) and (orientation: portrait) {
   .comics-shrine-steps {
-    top: 31.8%;
-    height: 26%;
+    top: 28%;
+    height: 22%;
   }
 }
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-shrine-steps {
-    top: 26%;
-    height: 34.3%;
+    top: 22%;
+    height: 27.5%;
   }
 }
 
