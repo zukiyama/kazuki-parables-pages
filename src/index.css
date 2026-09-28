@@ -1415,7 +1415,7 @@
 .comics-balloon-rig {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 4;
   opacity: 0;
   pointer-events: none;
   transform: translate3d(0, 6%, 0);
@@ -1428,9 +1428,9 @@
 }
 .comics-balloon {
   position: absolute;
-  left: 50%;
-  top: 37%;
-  height: 58%;
+  left: 48%;
+  top: 41%;
+  height: 44%;
   width: auto;
   max-width: none;
   transform: translate3d(0, 0, 0);
@@ -1533,11 +1533,6 @@
   }
   .comics-tree--left { left: -42%; }
   .comics-tree--right { right: -42%; }
-
-  .comics-balloon {
-    left: 45%;
-    transform: translate3d(-15%, 0, 0);
-  }
 
 }
 
