@@ -1499,13 +1499,13 @@
     width: 60vw;
   }
 
-  /* Portrait: gentler lean, with more of each tree present in the frame. */
+  /* Preserve the first portrait composition and its original edge anchoring. */
   .comics-tree {
-    --tree-h: 112%;
-    --tree-top: -4%;
-    --tree-lean: 6deg;
-    --tree-shift: 51%;
+    width: 72vw;
+    height: 108%;
   }
+  .comics-tree--left { left: -42%; }
+  .comics-tree--right { right: -42%; }
 }
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
