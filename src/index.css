@@ -1431,11 +1431,11 @@
 .comics-balloon {
   position: absolute;
   left: 50%;
-  top: 31.3%;
-  height: 59.7%;
+  top: 41%;
+  height: 49%;
   width: auto;
   max-width: none;
-  transform: translate3d(-8%, 0, 0);
+  transform: translate3d(0, 0, 0);
   filter: drop-shadow(0 0.75rem 1.5rem hsl(var(--ink-black) / 0.28));
 }
 
@@ -1536,17 +1536,16 @@
   .comics-tree--left { left: -42%; }
   .comics-tree--right { right: -42%; }
 
-  /* Narrower screens need a shorter drop so the girl stays on the road. */
-  .comics-balloon {
-    top: 35.6%;
-    height: 52%;
-    transform: translate3d(-14%, 0, 0);
-  }
 }
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-shrine-title {
     top: 36%;
+  }
+
+  /* Wider frames let the girl stand clear of the centred blurb. */
+  .comics-balloon {
+    transform: translate3d(30%, 0, 0);
   }
 }
 
