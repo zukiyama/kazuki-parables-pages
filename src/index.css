@@ -1437,6 +1437,62 @@
   filter: drop-shadow(0 0.75rem 1.5rem hsl(var(--ink-black) / 0.28));
 }
 
+/* Shrine and its winding stone stairway. The rig spans the whole two-screen
+   panorama; the artwork starts just under the title on the sky screen and runs
+   down into the road screen, where a gradient mask dissolves it well above the
+   blurb so the words always sit on clean background. */
+.comics-shrine-steps-rig {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  perspective: 1600px;
+}
+.comics-shrine-steps {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  height: 42%;
+  width: auto;
+  max-width: none;
+  transform-origin: 50% 100%;
+  opacity: 0;
+  transform: translate3d(-50%, 14%, 0) rotateX(72deg) scale(0.9);
+  transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1) 120ms,
+              opacity 600ms ease-out 120ms;
+  /* Fades out across its lower third, long before the blurb. */
+  -webkit-mask-image: linear-gradient(to bottom,
+    hsl(0 0% 0% / 1) 0%,
+    hsl(0 0% 0% / 1) 52%,
+    hsl(0 0% 0% / 0.85) 66%,
+    hsl(0 0% 0% / 0.45) 80%,
+    hsl(0 0% 0% / 0) 94%);
+  mask-image: linear-gradient(to bottom,
+    hsl(0 0% 0% / 1) 0%,
+    hsl(0 0% 0% / 1) 52%,
+    hsl(0 0% 0% / 0.85) 66%,
+    hsl(0 0% 0% / 0.45) 80%,
+    hsl(0 0% 0% / 0) 94%);
+}
+.comics-shrine-steps-rig.is-open .comics-shrine-steps {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0) rotateX(0deg) scale(1);
+}
+
+@media screen and (min-width: 768px) and (orientation: portrait) {
+  .comics-shrine-steps {
+    top: 31%;
+    height: 40%;
+  }
+}
+
+@media screen and (min-width: 821px) and (orientation: landscape) {
+  .comics-shrine-steps {
+    top: 29%;
+    height: 44%;
+  }
+}
+
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-balloon {
     left: 54%;
@@ -1552,6 +1608,7 @@
 @media (prefers-reduced-motion: reduce) {
   .comics-tree img,
   .comics-balloon-rig,
+  .comics-shrine-steps,
   .comics-title-kicker,
   .comics-title-letter,
   .comics-title-rule,
@@ -1560,6 +1617,7 @@
     opacity: 1;
     filter: none;
   }
+  .comics-shrine-steps { transform: translate3d(-50%, 0, 0); }
   .comics-shrine-title .comics-title-letter,
   .comics-shrine-title .comics-title-sub { transform: none; }
   .comics-shrine-title .comics-title-rule { transform: none; }

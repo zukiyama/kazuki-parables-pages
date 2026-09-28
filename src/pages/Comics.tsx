@@ -26,6 +26,7 @@ import shrineTreeRight from "@/assets/comics-tree-original-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
 import comicsBalloonGirl from "@/assets/comics-balloon-girl-transparent.png";
+import comicsShrineSteps from "@/assets/comics-shrine-gate-tall.png";
 import { WordReveal, countWords, type RevealSegment } from "@/components/WordReveal";
 
 // TERTIARY: Pendragon scrollable section - preload after section 2
@@ -174,7 +175,8 @@ const Comics = () => {
         shrineTreeLeft,
         shrineTreeRight,
         godOfLiesCover,
-        comicsSeoulSkyline
+        comicsSeoulSkyline,
+        comicsShrineSteps
       ];
       
       let loadedCount = 0;
@@ -930,6 +932,22 @@ const Comics = () => {
                     <img src={shrineTreeRight} alt="" width={1024} height={1536} loading="eager" decoding="async" />
                   </div>
                 </div>
+
+                {/* Shrine with its stone stairway: folds up like a pop-up page,
+                    settling below the title, then fades out down the road screen
+                    before it reaches the blurb. */}
+                <div className={`comics-shrine-steps-rig ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
+                  <img
+                    src={comicsShrineSteps}
+                    alt=""
+                    className="comics-shrine-steps"
+                    width={768}
+                    height={1376}
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+
 
                 {/* Balloon rises from below with the trees: the balloon rests on
                     the sky screen while the girl waits on the road screen below. */}
