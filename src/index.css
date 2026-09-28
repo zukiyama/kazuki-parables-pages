@@ -1615,7 +1615,7 @@
 /* The blurb fades in as the panorama moves onto the road. */
 .comics-reveal-word,
 .comics-blurb-meta {
-  display: inline-block;
+  display: inline;
   opacity: 1;
   filter: none;
   transform: none;
