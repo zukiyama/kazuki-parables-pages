@@ -1421,7 +1421,7 @@
 }
 .comics-shrine-steps {
   position: absolute;
-  left: 47.5%;
+  left: 46.5%;
   top: 30%;
   height: 23.5%;
   width: auto;
@@ -1444,7 +1444,7 @@
 
 @media screen and (min-width: 768px) and (orientation: portrait) {
   .comics-shrine-steps {
-    left: 47.5%;
+    left: 46.5%;
     top: 34.5%;
     height: 18%;
   }
@@ -1452,7 +1452,7 @@
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-shrine-steps {
-    left: 47.5%;
+    left: 46.5%;
     top: 30%;
     height: 23.5%;
   }
