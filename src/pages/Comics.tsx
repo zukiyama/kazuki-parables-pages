@@ -931,6 +931,20 @@ const Comics = () => {
                   </div>
                 </div>
 
+                {/* Balloon rises from below with the trees: the balloon rests on
+                    the sky screen while the girl waits on the road screen below. */}
+                <div className={`comics-balloon-rig ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
+                  <img
+                    src={comicsBalloonGirl}
+                    alt=""
+                    className="comics-balloon"
+                    width={774}
+                    height={2385}
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+
                 <div className="comics-sky-half">
                 <div className={`comics-shrine-scene ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
                   <div className="comics-shrine-vignette" />
