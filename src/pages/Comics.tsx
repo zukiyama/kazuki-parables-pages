@@ -24,7 +24,7 @@ import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.webp";
 import shrineTreeLeft from "@/assets/comics-shrine-tree-left.png";
 import shrineTreeRight from "@/assets/comics-shrine-tree-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
-import comicsSeoulSkyline from "@/assets/comics-seoul-skyline.jpg";
+import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
 
 // TERTIARY: Pendragon scrollable section - preload after section 2
 import surnamePendragonBanner from "@/assets/surname-pendragon-banner.webp";
@@ -748,6 +748,7 @@ const Comics = () => {
   const creamVisible = currentSection === 2;
   const creamOpacity = currentSection === 2 ? 1 : 0;
   const shrineSceneActive = currentSection === 1;
+  const skyPanVisible = currentSection === 1 || currentSection === 2;
   
   // Pendragon is now ONLY in scrollable content - no pinned version
 
@@ -883,28 +884,28 @@ const Comics = () => {
 
             {/* SECTION 1: VIGNETTES - Slide in from sides with summary text */}
             <section 
-              className={`absolute inset-0 ${showPopUpScene ? 'comics-shrine-section' : ''}`}
+              className={`absolute inset-0 ${showPopUpScene ? 'comics-shrine-section overflow-hidden' : ''}`}
               style={{ 
-                opacity: vignetteOpacity,
-                pointerEvents: vignetteVisible ? 'auto' : 'none',
+                opacity: showPopUpScene ? (skyPanVisible ? 1 : 0) : vignetteOpacity,
+                pointerEvents: (showPopUpScene ? skyPanVisible : vignetteVisible) ? 'auto' : 'none',
                 transition: 'opacity 0.5s ease-out'
               }}
             >
               {showPopUpScene && (
+              <div className={`comics-sky-pan ${currentSection >= 2 ? 'is-lower' : ''}`}>
                 <img
                   src={comicsSeoulSkyline}
                   alt=""
                   aria-hidden="true"
                   className="comics-shrine-skyline"
                   width={1536}
-                  height={1024}
+                  height={2048}
                   loading="eager"
                   decoding="async"
                 />
-              )}
 
-              {showPopUpScene && (
-                <div className={`comics-shrine-scene ${shrineSceneActive ? 'is-open' : ''}`} aria-hidden="true">
+                <div className="comics-sky-half">
+                <div className={`comics-shrine-scene ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
                   <img
                     src={shrineTreeLeft}
                     alt=""
@@ -934,10 +935,8 @@ const Comics = () => {
                   />
                   <div className="comics-shrine-vignette" />
                 </div>
-              )}
 
-              {showPopUpScene && (
-                <div className={`comics-shrine-title ${shrineSceneActive ? 'is-open' : ''}`}>
+                <div className={`comics-shrine-title ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`}>
                   <p className="font-body text-xs uppercase text-canvas-base/70">Featured</p>
                   <h2 className="font-playfair text-4xl text-canvas-base sm:text-5xl lg:text-6xl">
                     GOD <span className="text-2xl italic font-normal sm:text-3xl lg:text-4xl">of</span> LIES
@@ -947,6 +946,26 @@ const Comics = () => {
                     A psychological manga of deception, betrayal and redemption
                   </p>
                 </div>
+                </div>
+
+                <div className="comics-sky-half comics-sky-lower">
+                  <div className={`comics-hill-blurb ${currentSection >= 2 ? 'is-open' : ''}`}>
+                    <h2 className="font-playfair text-3xl text-canvas-base lg:text-4xl" style={{ letterSpacing: '0.08em', fontWeight: 700 }}>
+                      GOD <span className="italic font-normal text-xl lg:text-2xl">of</span> LIES
+                    </h2>
+                    <div className="my-4 h-0.5 w-full bg-destructive" />
+                    <p className="text-base leading-relaxed text-canvas-base/95 lg:text-lg" style={{ fontFamily: 'Georgia, serif' }}>
+                      Con-man <em>Yi Chang-Min</em> has had to lie and cheat to get by his whole life. Even his landlady—and the young woman who has just moved in with them—have no idea what he does for a living. But while impersonating a shaman for a bereaved couple, he inadvertently raises <em>Seok-seol</em>, the god of lies. As he struggles to rid himself of his less-than-divine companion, <em>Chang-min</em> realises that having a deity of illusion at his beck and call may not be the worst thing for someone who makes his living deceiving others...
+                    </p>
+                    <p className="mt-4 text-base leading-relaxed text-canvas-base/90 lg:text-lg" style={{ fontFamily: 'Georgia, serif' }}>
+                      A supernatural psychological manga packed with twists and reversals.
+                    </p>
+                    <p className="mt-4 text-sm uppercase tracking-widest text-canvas-base/75" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
+                      Manga • Webtoon • 2026
+                    </p>
+                  </div>
+                </div>
+              </div>
               )}
 
               {/* DESKTOP VIGNETTES LAYOUT - only large screens */}
@@ -1172,8 +1191,9 @@ const Comics = () => {
             <section 
               className="absolute inset-0"
               style={{ 
-                opacity: creamOpacity,
-                pointerEvents: creamVisible ? 'auto' : 'none',
+                opacity: showPopUpScene ? 0 : creamOpacity,
+                visibility: showPopUpScene ? 'hidden' : undefined,
+                pointerEvents: creamVisible && !showPopUpScene ? 'auto' : 'none',
                 background: 'linear-gradient(to bottom, #f5f0e1, #e8e0cc)',
                 transition: 'opacity 0.5s ease-out'
               }}
