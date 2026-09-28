@@ -1584,6 +1584,7 @@
   top: 0;
   height: 50%;
   overflow: hidden;
+  z-index: 3;
 }
 .comics-sky-lower {
   top: 50%;
