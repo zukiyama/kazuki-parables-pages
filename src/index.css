@@ -1438,8 +1438,8 @@
 }
 .comics-shrine-steps-rig.is-lower .comics-shrine-steps {
   opacity: 0;
-  transition-delay: 0ms, 320ms;
-  transition-duration: 1000ms, 520ms;
+  transition-delay: 0ms, 220ms;
+  transition-duration: 1000ms, 700ms;
 }
 
 @media screen and (min-width: 768px) and (orientation: portrait) {
@@ -1617,7 +1617,7 @@
   opacity: 0;
   /* Begin only after the lower screen has entered the viewport, so the fade is
      visible rather than completing while the blurb is still off-screen. */
-  transition: opacity 520ms ease-out 360ms;
+  transition: opacity 700ms ease-out 220ms;
   /* Slightly stronger than before: the halo reaches further out so the words
      lift off the busy road, while the layers hugging each letter stay lighter
      so the glyphs read crisp rather than smudged. No backdrop box. */
