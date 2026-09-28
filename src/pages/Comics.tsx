@@ -23,7 +23,7 @@ import vignetteBoardgame from "@/assets/god-of-lies-sweeping.webp";
 import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.webp";
 import shrineTreeLeft from "@/assets/comics-shrine-tree-left.png";
 import shrineTreeRight from "@/assets/comics-shrine-tree-right.png";
-import shrineGate from "@/assets/comics-shrine-gate.png";
+import koreanShrine from "@/assets/comics-korean-shrine.png";
 import comicsSeoulSkyline from "@/assets/comics-seoul-skyline.jpg";
 
 // TERTIARY: Pendragon scrollable section - preload after section 2
@@ -924,7 +924,7 @@ const Comics = () => {
                     decoding="async"
                   />
                   <img
-                    src={shrineGate}
+                    src={koreanShrine}
                     alt=""
                     className="comics-shrine-layer comics-shrine-gate"
                     width={1024}
