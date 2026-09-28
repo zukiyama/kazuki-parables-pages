@@ -933,6 +933,22 @@ const Comics = () => {
                   </div>
                 </div>
 
+                {/* Shrine with its stone stairway: folds up like a pop-up page,
+                    settling below the title, then fades out down the road screen
+                    before it reaches the blurb. */}
+                <div className={`comics-shrine-steps-rig ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
+                  <img
+                    src={comicsShrineSteps}
+                    alt=""
+                    className="comics-shrine-steps"
+                    width={768}
+                    height={1376}
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+
+
                 {/* Balloon rises from below with the trees: the balloon rests on
                     the sky screen while the girl waits on the road screen below. */}
                 <div className={`comics-balloon-rig ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
