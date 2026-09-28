@@ -1423,7 +1423,7 @@
 .comics-shrine-steps {
   position: absolute;
   left: 50%;
-  top: 28.35%;
+  top: 29.8%;
   height: 48%;
   width: auto;
   max-width: none;
@@ -1436,16 +1436,16 @@
      the first-screen fold. It is fully absent throughout the blurb screen. */
   -webkit-mask-image: linear-gradient(to bottom,
     hsl(0 0% 0% / 1) 0%,
-    hsl(0 0% 0% / 1) 47%,
-    hsl(0 0% 0% / 0.72) 52%,
-    hsl(0 0% 0% / 0.2) 59%,
-    hsl(0 0% 0% / 0) 64%);
+    hsl(0 0% 0% / 1) 42%,
+    hsl(0 0% 0% / 0.72) 45%,
+    hsl(0 0% 0% / 0.2) 49%,
+    hsl(0 0% 0% / 0) 52%);
   mask-image: linear-gradient(to bottom,
     hsl(0 0% 0% / 1) 0%,
-    hsl(0 0% 0% / 1) 47%,
-    hsl(0 0% 0% / 0.72) 52%,
-    hsl(0 0% 0% / 0.2) 59%,
-    hsl(0 0% 0% / 0) 64%);
+    hsl(0 0% 0% / 1) 42%,
+    hsl(0 0% 0% / 0.72) 45%,
+    hsl(0 0% 0% / 0.2) 49%,
+    hsl(0 0% 0% / 0) 52%);
 }
 .comics-shrine-steps-rig.is-open .comics-shrine-steps {
   opacity: 1;
@@ -1454,21 +1454,15 @@
 
 @media screen and (min-width: 768px) and (orientation: portrait) {
   .comics-shrine-steps {
-    top: 29.25%;
-    height: 46%;
+    top: 29.8%;
+    height: 48%;
   }
 }
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-shrine-steps {
-    top: 29%;
-    height: 44%;
-  }
-}
-
-@media screen and (min-width: 821px) and (orientation: landscape) {
-  .comics-balloon {
-    left: 54%;
+    top: 29.8%;
+    height: 48%;
   }
 }
 
