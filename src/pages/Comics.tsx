@@ -23,7 +23,7 @@ import vignetteBoardgame from "@/assets/god-of-lies-sweeping.webp";
 import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.webp";
 import shrineTreeLeft from "@/assets/comics-shrine-tree-left.png";
 import shrineTreeRight from "@/assets/comics-shrine-tree-right.png";
-import koreanShrine from "@/assets/comics-korean-shrine.png";
+import godOfLiesCoverAsset from "@/assets/god-of-lies-cover.png.asset.json";
 import comicsSeoulSkyline from "@/assets/comics-seoul-skyline.jpg";
 
 // TERTIARY: Pendragon scrollable section - preload after section 2
@@ -157,7 +157,7 @@ const Comics = () => {
         godOfLiesStreetScene,
         shrineTreeLeft,
         shrineTreeRight,
-        koreanShrine,
+        godOfLiesCoverAsset.url,
         comicsSeoulSkyline
       ];
       
@@ -924,11 +924,11 @@ const Comics = () => {
                     decoding="async"
                   />
                   <img
-                    src={koreanShrine}
-                    alt=""
-                    className="comics-shrine-layer comics-shrine-gate"
+                    src={godOfLiesCoverAsset.url}
+                    alt="God of Lies comic cover"
+                    className="comics-shrine-layer comics-god-cover"
                     width={1024}
-                    height={1024}
+                    height={1536}
                     loading="eager"
                     decoding="async"
                   />
@@ -1110,11 +1110,11 @@ const Comics = () => {
                   }}
                 >
                   <img 
-                    src={vignetteManyFaces}
-                    alt="The many faces - God of Lies"
-                    className="max-h-full max-w-full object-contain"
-                    width={1280}
-                    height={1600}
+                    src={godOfLiesCoverAsset.url}
+                    alt="God of Lies comic cover"
+                    className="comics-god-cover-mobile"
+                    width={1024}
+                    height={1536}
                     loading="eager"
                     decoding="async"
                   />
