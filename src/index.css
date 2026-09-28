@@ -1377,10 +1377,10 @@
   pointer-events: none;
 }
 .comics-tree {
-  --tree-h: 135%;
+  --tree-h: 142%;
   --tree-top: -5%;
   --tree-lean: 8deg;
-  --tree-shift: 65.6%;
+  --tree-shift: 53%;
   position: absolute;
   top: var(--tree-top);
   height: var(--tree-h);
@@ -1504,12 +1504,12 @@
     width: 60vw;
   }
 
-  /* Portrait: shorter trees, gentler lean, trunk leaves the side edge near the bottom. */
+  /* Portrait: gentler lean, with more of each tree present in the frame. */
   .comics-tree {
-    --tree-h: 100%;
+    --tree-h: 112%;
     --tree-top: -4%;
     --tree-lean: 6deg;
-    --tree-shift: 62%;
+    --tree-shift: 51%;
   }
 }
 
@@ -1559,12 +1559,14 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  /* Sits low so most of the text lies over the road. */
-  padding: 5rem 1.5rem clamp(1.75rem, 6vh, 4rem);
+  /* Sits over the road, raised enough to enter while the lower scene arrives. */
+  padding: 5rem 1.5rem clamp(4rem, 10vh, 7rem);
 }
 .comics-hill-blurb {
   max-width: 40rem;
   text-align: center;
+  opacity: 0;
+  transition: opacity 480ms ease-out 180ms;
   text-shadow:
     0 1px 1px hsl(var(--ink-black)),
     0 1px 3px hsl(var(--ink-black) / 0.95),
@@ -1572,31 +1574,21 @@
     0 0 30px hsl(var(--ink-black) / 0.85),
     0 0 60px hsl(var(--ink-black) / 0.6);
 }
+.comics-hill-blurb.is-open { opacity: 1; }
 
-/* Blurb: words drift up out of a soft blur, one after another, once the pan
-   onto the road has settled. Hiding is instant so it replays cleanly. */
+/* The blurb fades in as the panorama moves onto the road. */
 .comics-reveal-word,
 .comics-blurb-meta {
   display: inline-block;
-  opacity: 0;
-  filter: blur(6px);
-  transform: translate3d(0, 0.55em, 0);
-  transition: opacity 0s, filter 0s, transform 0s;
+  opacity: 1;
+  filter: none;
+  transform: none;
+  transition: none;
 }
 .comics-blurb-meta { display: block; }
-.comics-hill-blurb.is-open .comics-reveal-word,
-.comics-hill-blurb.is-open .comics-blurb-meta {
-  opacity: 1;
-  filter: blur(0);
-  transform: translate3d(0, 0, 0);
-  transition: opacity 700ms ease-out, filter 800ms ease-out, transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: calc(950ms + var(--w, 0) * 16ms);
-}
-.comics-hill-blurb.is-open .comics-blurb-meta {
-  transition-delay: calc(1250ms + var(--w, 0) * 16ms);
-}
 @media (prefers-reduced-motion: reduce) {
   .comics-sky-pan,
+  .comics-hill-blurb,
   .comics-reveal-word,
   .comics-blurb-meta,
   .comics-hill-blurb.is-open .comics-reveal-word,
