@@ -1362,54 +1362,58 @@
   pointer-events: none;
 }
 
-.comics-shrine-tree {
-  bottom: -16%;
-  width: clamp(31rem, 52vw, 55rem);
-  height: 124%;
-  object-fit: contain;
+/* Pop-up trees. The rig spans the first screen; each tree is a straight,
+   vertical-trunk drawing tilted inwards around its trunk base. The base sits
+   beyond the side edge, so the trunk runs down and out of the view at the
+   bottom corner and never comes back in, even after panning to the road.
+   --tree-shift is precomputed from height/lean so the trunk exits at 100%. */
+.comics-tree-rig {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 50%;
+  z-index: 1;
+  pointer-events: none;
+}
+.comics-tree {
+  --tree-h: 135%;
+  --tree-top: -5%;
+  --tree-lean: 8deg;
+  --tree-shift: 65.6%;
+  position: absolute;
+  top: var(--tree-top);
+  height: var(--tree-h);
+  aspect-ratio: 768 / 1376;
+  perspective: 1400px;
+}
+.comics-tree--left {
+  left: 0;
+  transform-origin: 50% 100%;
+  transform: translateX(calc(-1 * var(--tree-shift))) rotate(var(--tree-lean));
+}
+.comics-tree--right {
+  right: 0;
+  transform-origin: 50% 100%;
+  transform: translateX(var(--tree-shift)) rotate(calc(-1 * var(--tree-lean)));
+}
+.comics-tree img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
   opacity: 0;
-  transition: transform 950ms cubic-bezier(0.22, 1, 0.36, 1), opacity 450ms ease-out;
+  will-change: transform, opacity;
+  transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1), opacity 450ms ease-out;
 }
-
-.comics-shrine-tree--left {
-  left: -28%;
-  transform: translate3d(-42%, 7%, 30px) rotateY(58deg) rotate(-8deg);
-  transform-origin: left bottom;
-}
-
-.comics-shrine-tree--right {
-  right: -28%;
-  transform: translate3d(42%, 7%, 30px) rotateY(-58deg) rotate(8deg);
-  transform-origin: right bottom;
-}
-
-.comics-god-cover {
-  left: 50%;
-  bottom: 5%;
-  width: auto;
-  height: min(48%, 34rem);
-  opacity: 0;
-  transform: translate3d(-50%, 72%, 70px) rotateX(54deg) scale(0.8);
-  transform-origin: bottom center;
-  transition: transform 850ms cubic-bezier(0.16, 1, 0.3, 1) 180ms, opacity 550ms ease-out 180ms;
-  box-shadow: 0 1rem 2.5rem hsl(var(--ink-black) / 0.38);
-}
-
-
-.comics-shrine-scene.is-open .comics-shrine-tree--left {
+/* Folds up from the hinge on the outer (offscreen) side, like a pop-up page. */
+.comics-tree--left img { transform-origin: 0% 60%; transform: translate3d(-30%, 4%, 0) rotateY(75deg); }
+.comics-tree--right img { transform-origin: 100% 60%; transform: translate3d(30%, 4%, 0) rotateY(-75deg); }
+.comics-tree-rig.is-open .comics-tree img {
   opacity: 1;
-  transform: translate3d(0, 0, 30px) rotateY(0deg) rotate(3deg);
+  transform: translate3d(0, 0, 0) rotateY(0deg);
 }
-
-.comics-shrine-scene.is-open .comics-shrine-tree--right {
-  opacity: 1;
-  transform: translate3d(0, 0, 30px) rotateY(0deg) rotate(-3deg);
-}
-
-.comics-shrine-scene.is-open .comics-god-cover {
-  opacity: 1;
-  transform: translate3d(-50%, 0, 70px) rotateX(0deg) scale(1);
-}
+.comics-tree-rig.is-open .comics-tree--right img { transition-delay: 90ms; }
 
 .comics-god-cover-mobile {
   position: absolute;
@@ -1433,55 +1437,102 @@
   position: absolute;
   z-index: 5;
   left: 50%;
-  top: 33%;
+  top: 38%;
   display: flex;
   width: min(38vw, 28rem);
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  opacity: 0;
-  transform: translate3d(-50%, 1.5rem, 100px) scale(0.94);
+  transform: translate3d(-50%, 0, 0);
   text-shadow: 0 2px 12px hsl(var(--ink-black));
-  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 430ms, opacity 600ms ease-out 430ms;
+  perspective: 700px;
 }
 
-.comics-shrine-title.is-open {
+/* Title entrance: kicker tightens in, each letter swings up out of a blur,
+   the red rule draws out from the centre, then the tagline surfaces.
+   All parts hide instantly so the sequence replays on every visit. */
+.comics-title-kicker,
+.comics-title-letter,
+.comics-title-rule,
+.comics-title-sub {
+  opacity: 0;
+  transition: none;
+}
+.comics-title-kicker { letter-spacing: 0.9em; }
+.comics-title-heading { display: flex; align-items: baseline; justify-content: center; }
+.comics-title-letter {
+  display: inline-block;
+  filter: blur(8px);
+  transform: translate3d(0, 0.5em, 0) rotateX(-75deg);
+  transform-origin: 50% 100%;
+}
+.comics-title-of { margin: 0 0.35em 0 0.3em; }
+.comics-title-rule { transform: scaleX(0); transform-origin: center; }
+.comics-title-sub { filter: blur(5px); transform: translate3d(0, 0.6rem, 0); }
+
+.comics-shrine-title.is-open .comics-title-kicker {
   opacity: 1;
-  transform: translate3d(-50%, 0, 100px) scale(1);
+  letter-spacing: 0.3em;
+  transition: opacity 700ms ease-out 450ms, letter-spacing 1100ms cubic-bezier(0.22, 1, 0.36, 1) 450ms;
+}
+.comics-shrine-title.is-open .comics-title-letter {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate3d(0, 0, 0) rotateX(0deg);
+  transition: opacity 600ms ease-out, filter 700ms ease-out, transform 900ms cubic-bezier(0.2, 1.3, 0.4, 1);
+  transition-delay: calc(650ms + var(--l, 0) * 75ms);
+}
+.comics-shrine-title.is-open .comics-title-rule {
+  opacity: 1;
+  transform: scaleX(1);
+  transition: opacity 300ms ease-out 1300ms, transform 700ms cubic-bezier(0.65, 0, 0.35, 1) 1300ms;
+}
+.comics-shrine-title.is-open .comics-title-sub {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate3d(0, 0, 0);
+  transition: opacity 800ms ease-out 1650ms, filter 800ms ease-out 1650ms, transform 900ms cubic-bezier(0.22, 1, 0.36, 1) 1650ms;
 }
 
 @media screen and (min-width: 768px) and (orientation: portrait) {
-  .comics-shrine-tree {
-    bottom: -21%;
-    width: 72vw;
-    height: 108%;
-  }
-
-  .comics-shrine-tree--left { left: -42%; }
-  .comics-shrine-tree--right { right: -42%; }
-
   .comics-shrine-skyline {
     object-position: center center;
   }
 
   .comics-shrine-title {
-    top: 34%;
+    top: 39%;
     width: 60vw;
+  }
+
+  /* Portrait: shorter trees, gentler lean, trunk leaves the side edge near the bottom. */
+  .comics-tree {
+    --tree-h: 100%;
+    --tree-top: -4%;
+    --tree-lean: 6deg;
+    --tree-shift: 62%;
   }
 }
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-shrine-title {
-    top: 30%;
+    top: 36%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .comics-shrine-layer,
-  .comics-shrine-title {
-    transition-duration: 1ms !important;
-    transition-delay: 0ms !important;
+  .comics-tree img,
+  .comics-title-kicker,
+  .comics-title-letter,
+  .comics-title-rule,
+  .comics-title-sub {
+    transition: none !important;
+    opacity: 1;
+    filter: none;
   }
+  .comics-shrine-title .comics-title-letter,
+  .comics-shrine-title .comics-title-sub { transform: none; }
+  .comics-shrine-title .comics-title-rule { transform: none; }
+  .comics-title-kicker { letter-spacing: 0.3em; }
 }
 
 /* Two-screen God of Lies panorama: one tall illustration, the view pans
@@ -1501,23 +1552,19 @@
   right: 0;
   top: 0;
   height: 50%;
-  /* Clips the pop-up trees at the horizon so their trunks simply run off the
-     edge of the scene — no root ends ever float over the hill road below. */
   overflow: hidden;
 }
 .comics-sky-lower {
   top: 50%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  padding: 5rem 1.5rem 2rem;
+  /* Sits low so most of the text lies over the road. */
+  padding: 5rem 1.5rem clamp(1.75rem, 6vh, 4rem);
 }
 .comics-hill-blurb {
   max-width: 40rem;
   text-align: center;
-  opacity: 0;
-  transform: translate3d(0, 2rem, 0);
-  transition: opacity 600ms ease-out 500ms, transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 500ms;
   text-shadow:
     0 1px 1px hsl(var(--ink-black)),
     0 1px 3px hsl(var(--ink-black) / 0.95),
@@ -1525,7 +1572,37 @@
     0 0 30px hsl(var(--ink-black) / 0.85),
     0 0 60px hsl(var(--ink-black) / 0.6);
 }
-.comics-hill-blurb.is-open { opacity: 1; transform: translate3d(0, 0, 0); }
+
+/* Blurb: words drift up out of a soft blur, one after another, once the pan
+   onto the road has settled. Hiding is instant so it replays cleanly. */
+.comics-reveal-word,
+.comics-blurb-meta {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(6px);
+  transform: translate3d(0, 0.55em, 0);
+  transition: opacity 0s, filter 0s, transform 0s;
+}
+.comics-blurb-meta { display: block; }
+.comics-hill-blurb.is-open .comics-reveal-word,
+.comics-hill-blurb.is-open .comics-blurb-meta {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate3d(0, 0, 0);
+  transition: opacity 700ms ease-out, filter 800ms ease-out, transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(950ms + var(--w, 0) * 16ms);
+}
+.comics-hill-blurb.is-open .comics-blurb-meta {
+  transition-delay: calc(1250ms + var(--w, 0) * 16ms);
+}
 @media (prefers-reduced-motion: reduce) {
-  .comics-sky-pan, .comics-hill-blurb { transition: none; }
+  .comics-sky-pan,
+  .comics-reveal-word,
+  .comics-blurb-meta,
+  .comics-hill-blurb.is-open .comics-reveal-word,
+  .comics-hill-blurb.is-open .comics-blurb-meta {
+    transition: none !important;
+    filter: none;
+    transform: none;
+  }
 }
