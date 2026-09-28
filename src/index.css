@@ -1495,3 +1495,44 @@
     transition-delay: 0ms !important;
   }
 }
+
+/* Two-screen God of Lies panorama: one tall illustration, the view pans
+   from the sky half down to the hill-road half where the blurb sits. */
+.comics-sky-pan {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 200%;
+  transform: translate3d(0, 0, 0);
+  transition: transform 1100ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+.comics-sky-pan.is-lower { transform: translate3d(0, -50%, 0); }
+.comics-sky-pan .comics-shrine-skyline { object-position: center center; }
+.comics-sky-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 50%;
+}
+.comics-sky-lower {
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 1.5rem 2rem;
+}
+.comics-hill-blurb {
+  max-width: 38rem;
+  padding: 2rem 2.25rem;
+  border-radius: 0.25rem;
+  background: hsl(var(--ink-black) / 0.62);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 1.5rem 3rem hsl(var(--ink-black) / 0.35);
+  opacity: 0;
+  transform: translate3d(0, 2rem, 0);
+  transition: opacity 600ms ease-out 500ms, transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 500ms;
+}
+.comics-hill-blurb.is-open { opacity: 1; transform: translate3d(0, 0, 0); }
+@media (prefers-reduced-motion: reduce) {
+  .comics-sky-pan, .comics-hill-blurb { transition: none; }
+}

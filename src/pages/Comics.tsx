@@ -1191,8 +1191,9 @@ const Comics = () => {
             <section 
               className="absolute inset-0"
               style={{ 
-                opacity: creamOpacity,
-                pointerEvents: creamVisible ? 'auto' : 'none',
+                opacity: showPopUpScene ? 0 : creamOpacity,
+                visibility: showPopUpScene ? 'hidden' : undefined,
+                pointerEvents: creamVisible && !showPopUpScene ? 'auto' : 'none',
                 background: 'linear-gradient(to bottom, #f5f0e1, #e8e0cc)',
                 transition: 'opacity 0.5s ease-out'
               }}
