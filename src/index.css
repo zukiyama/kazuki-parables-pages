@@ -1421,9 +1421,9 @@
 }
 .comics-shrine-steps {
   position: absolute;
-  left: 50%;
-  top: 22%;
-  height: 27.5%;
+  left: 49%;
+  top: 25%;
+  height: 24.5%;
   width: auto;
   max-width: none;
   transform-origin: 50% 100%;
@@ -1438,21 +1438,23 @@
 }
 .comics-shrine-steps-rig.is-lower .comics-shrine-steps {
   opacity: 0;
-  transition-delay: 0ms, 420ms;
-  transition-duration: 1000ms, 430ms;
+  transition-delay: 0ms, 220ms;
+  transition-duration: 1000ms, 700ms;
 }
 
 @media screen and (min-width: 768px) and (orientation: portrait) {
   .comics-shrine-steps {
-    top: 28%;
-    height: 22%;
+    left: 49%;
+    top: 31%;
+    height: 19%;
   }
 }
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-shrine-steps {
-    top: 22%;
-    height: 27.5%;
+    left: 49%;
+    top: 25%;
+    height: 24.5%;
   }
 }
 
@@ -1541,7 +1543,7 @@
   }
 
   .comics-shrine-title {
-    top: 39%;
+    top: 37%;
     width: 60vw;
   }
 
@@ -1557,7 +1559,7 @@
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-shrine-title {
-    top: 36%;
+    top: 34%;
   }
 
 }
@@ -1613,8 +1615,9 @@
   max-width: 36rem;
   text-align: center;
   opacity: 0;
-  /* A single quick fade as the panorama travels down to the road. */
-  transition: opacity 420ms ease-out 60ms;
+  /* Begin only after the lower screen has entered the viewport, so the fade is
+     visible rather than completing while the blurb is still off-screen. */
+  transition: opacity 700ms ease-out 220ms;
   /* Slightly stronger than before: the halo reaches further out so the words
      lift off the busy road, while the layers hugging each letter stay lighter
      so the glyphs read crisp rather than smudged. No backdrop box. */
