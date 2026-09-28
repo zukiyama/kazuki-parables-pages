@@ -1436,16 +1436,16 @@
      only while the pan travels and is fully erased before the blurb screen. */
   -webkit-mask-image: linear-gradient(to bottom,
     hsl(0 0% 0% / 1) 0%,
-    hsl(0 0% 0% / 1) 72%,
-    hsl(0 0% 0% / 0.85) 82%,
-    hsl(0 0% 0% / 0.35) 92%,
-    hsl(0 0% 0% / 0) 100%);
+    hsl(0 0% 0% / 1) 64%,
+    hsl(0 0% 0% / 0.6) 74%,
+    hsl(0 0% 0% / 0.12) 80%,
+    hsl(0 0% 0% / 0) 84%);
   mask-image: linear-gradient(to bottom,
     hsl(0 0% 0% / 1) 0%,
-    hsl(0 0% 0% / 1) 72%,
-    hsl(0 0% 0% / 0.85) 82%,
-    hsl(0 0% 0% / 0.35) 92%,
-    hsl(0 0% 0% / 0) 100%);
+    hsl(0 0% 0% / 1) 64%,
+    hsl(0 0% 0% / 0.6) 74%,
+    hsl(0 0% 0% / 0.12) 80%,
+    hsl(0 0% 0% / 0) 84%);
 }
 .comics-shrine-steps-rig.is-open .comics-shrine-steps {
   opacity: 1;
@@ -1454,8 +1454,8 @@
 
 @media screen and (min-width: 768px) and (orientation: portrait) {
   .comics-shrine-steps {
-    top: 29%;
-    height: 30%;
+    top: 31.8%;
+    height: 26%;
   }
 }
 
