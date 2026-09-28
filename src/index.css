@@ -1388,7 +1388,6 @@
   bottom: 5%;
   width: auto;
   height: min(48%, 34rem);
-  height: auto;
   opacity: 0;
   transform: translate3d(-50%, 72%, 70px) rotateX(54deg) scale(0.8);
   transform-origin: bottom center;
