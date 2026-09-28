@@ -21,8 +21,8 @@ import vignetteBoardgame from "@/assets/god-of-lies-sweeping.webp";
 
 // SECONDARY: Cream section assets (Section 2) - preload after vignettes
 import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.webp";
-import shrineTreeLeft from "@/assets/comics-tree-straight-left.webp";
-import shrineTreeRight from "@/assets/comics-tree-straight-right.webp";
+import shrineTreeLeft from "@/assets/comics-tree-original-left.png";
+import shrineTreeRight from "@/assets/comics-tree-original-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
 import { WordReveal, countWords, type RevealSegment } from "@/components/WordReveal";
@@ -919,14 +919,14 @@ const Comics = () => {
                   decoding="async"
                 />
 
-                {/* Pop-up trees: straight trunks leaning inwards; each trunk leaves
-                    through the side edge of the view and never re-enters it. */}
+                {/* Original lush pop-up trees, with only the roots replaced by
+                    continuous trunks that finish beyond the viewport. */}
                 <div className={`comics-tree-rig ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
                   <div className="comics-tree comics-tree--left">
-                    <img src={shrineTreeLeft} alt="" width={768} height={1376} loading="eager" decoding="async" />
+                    <img src={shrineTreeLeft} alt="" width={1024} height={1536} loading="eager" decoding="async" />
                   </div>
                   <div className="comics-tree comics-tree--right">
-                    <img src={shrineTreeRight} alt="" width={768} height={1376} loading="eager" decoding="async" />
+                    <img src={shrineTreeRight} alt="" width={1024} height={1536} loading="eager" decoding="async" />
                   </div>
                 </div>
 
