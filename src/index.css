@@ -1617,6 +1617,7 @@
     opacity: 1;
     filter: none;
   }
+  .comics-shrine-steps { transform: translate3d(-50%, 0, 0); }
   .comics-shrine-title .comics-title-letter,
   .comics-shrine-title .comics-title-sub { transform: none; }
   .comics-shrine-title .comics-title-rule { transform: none; }
