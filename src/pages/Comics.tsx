@@ -157,7 +157,7 @@ const Comics = () => {
         godOfLiesStreetScene,
         shrineTreeLeft,
         shrineTreeRight,
-        shrineGate,
+        koreanShrine,
         comicsSeoulSkyline
       ];
       
