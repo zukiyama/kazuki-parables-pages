@@ -1421,9 +1421,9 @@
 }
 .comics-shrine-steps {
   position: absolute;
-  left: 49%;
-  top: 25%;
-  height: 24.5%;
+  left: 46.5%;
+  top: 30%;
+  height: 23.5%;
   width: auto;
   max-width: none;
   transform-origin: 50% 100%;
@@ -1438,23 +1438,23 @@
 }
 .comics-shrine-steps-rig.is-lower .comics-shrine-steps {
   opacity: 0;
-  transition-delay: 0ms, 220ms;
-  transition-duration: 1000ms, 700ms;
+  transition-delay: 0ms, 560ms;
+  transition-duration: 1000ms, 500ms;
 }
 
 @media screen and (min-width: 768px) and (orientation: portrait) {
   .comics-shrine-steps {
-    left: 49%;
-    top: 31%;
-    height: 19%;
+    left: 46.5%;
+    top: 34.5%;
+    height: 18%;
   }
 }
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-shrine-steps {
-    left: 49%;
-    top: 25%;
-    height: 24.5%;
+    left: 46.5%;
+    top: 30%;
+    height: 23.5%;
   }
 }
 
@@ -1615,9 +1615,9 @@
   max-width: 36rem;
   text-align: center;
   opacity: 0;
-  /* Begin only after the lower screen has entered the viewport, so the fade is
-     visible rather than completing while the blurb is still off-screen. */
-  transition: opacity 700ms ease-out 220ms;
+  /* The lower scene begins off-screen. Keep the text transparent until its
+     position enters the viewport, then cross-fade it against the shrine. */
+  transition: opacity 500ms ease-out;
   /* Slightly stronger than before: the halo reaches further out so the words
      lift off the busy road, while the layers hugging each letter stay lighter
      so the glyphs read crisp rather than smudged. No backdrop box. */
@@ -1629,7 +1629,10 @@
     0 0 58px hsl(var(--ink-black) / 0.6),
     0 0 96px hsl(var(--ink-black) / 0.45);
 }
-.comics-hill-blurb.is-open { opacity: 1; }
+.comics-hill-blurb.is-open {
+  opacity: 1;
+  transition-delay: 560ms;
+}
 
 /* The blurb fades in as the panorama moves onto the road. */
 .comics-reveal-word,
