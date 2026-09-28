@@ -25,7 +25,7 @@ import shrineTreeLeft from "@/assets/comics-tree-original-left.png";
 import shrineTreeRight from "@/assets/comics-tree-original-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
-import comicsShrineSteps from "@/assets/comics-cloud-temple.png";
+import comicsShrineAsset from "@/assets/comics-korean-cloud-shrine.png.asset.json";
 import { WordReveal, countWords, type RevealSegment } from "@/components/WordReveal";
 
 // TERTIARY: Pendragon scrollable section - preload after section 2
@@ -175,7 +175,7 @@ const Comics = () => {
         shrineTreeRight,
         godOfLiesCover,
         comicsSeoulSkyline,
-        comicsShrineSteps
+        comicsShrineAsset.url
       ];
       
       let loadedCount = 0;
@@ -932,16 +932,15 @@ const Comics = () => {
                   </div>
                 </div>
 
-                {/* Shrine with its stone stairway: folds up like a pop-up page,
-                    settling below the title, then fades out down the road screen
-                    before it reaches the blurb. */}
-                <div className={`comics-shrine-steps-rig ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
+                {/* Cloud-borne Korean shrine: folds up beneath the title, keeps its
+                    complete cloud bank visible, then clears during the road pan. */}
+                <div className={`comics-shrine-steps-rig ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''} ${currentSection >= 2 ? 'is-lower' : ''}`} aria-hidden="true">
                   <img
-                    src={comicsShrineSteps}
+                    src={comicsShrineAsset.url}
                     alt=""
                     className="comics-shrine-steps"
-                    width={1449}
-                    height={1086}
+                    width={1024}
+                    height={768}
                     loading="eager"
                     decoding="async"
                   />
