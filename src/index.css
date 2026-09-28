@@ -1433,7 +1433,7 @@
   position: absolute;
   z-index: 5;
   left: 50%;
-  top: 43%;
+  top: 33%;
   display: flex;
   width: min(38vw, 28rem);
   flex-direction: column;
@@ -1464,27 +1464,15 @@
     object-position: center center;
   }
 
-  .comics-god-cover {
-    bottom: 5%;
-    width: auto;
-    height: 52%;
-  }
-
   .comics-shrine-title {
-    top: 17%;
-    width: 48vw;
+    top: 34%;
+    width: 60vw;
   }
 }
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
-  .comics-god-cover {
-    bottom: 6%;
-    width: auto;
-    height: min(47%, 28rem);
-  }
-
   .comics-shrine-title {
-    top: 14%;
+    top: 30%;
   }
 }
 
@@ -1513,6 +1501,9 @@
   right: 0;
   top: 0;
   height: 50%;
+  /* Clips the pop-up trees at the horizon so their trunks simply run off the
+     edge of the scene — no root ends ever float over the hill road below. */
+  overflow: hidden;
 }
 .comics-sky-lower {
   top: 50%;
@@ -1522,15 +1513,17 @@
   padding: 5rem 1.5rem 2rem;
 }
 .comics-hill-blurb {
-  max-width: 38rem;
-  padding: 2rem 2.25rem;
-  border-radius: 0.25rem;
-  background: hsl(var(--ink-black) / 0.62);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 1.5rem 3rem hsl(var(--ink-black) / 0.35);
+  max-width: 40rem;
+  text-align: center;
   opacity: 0;
   transform: translate3d(0, 2rem, 0);
   transition: opacity 600ms ease-out 500ms, transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 500ms;
+  text-shadow:
+    0 1px 1px hsl(var(--ink-black)),
+    0 1px 3px hsl(var(--ink-black) / 0.95),
+    0 2px 12px hsl(var(--ink-black) / 0.9),
+    0 0 30px hsl(var(--ink-black) / 0.85),
+    0 0 60px hsl(var(--ink-black) / 0.6);
 }
 .comics-hill-blurb.is-open { opacity: 1; transform: translate3d(0, 0, 0); }
 @media (prefers-reduced-motion: reduce) {
