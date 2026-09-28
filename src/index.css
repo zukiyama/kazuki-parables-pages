@@ -1597,7 +1597,8 @@
   max-width: 40rem;
   text-align: center;
   opacity: 0;
-  transition: opacity 480ms ease-out 180ms;
+  /* A single quick fade as the panorama travels down to the road. */
+  transition: opacity 420ms ease-out 60ms;
   /* Slightly stronger than before: the halo reaches further out so the words
      lift off the busy road, while the layers hugging each letter stay lighter
      so the glyphs read crisp rather than smudged. No backdrop box. */
