@@ -924,15 +924,6 @@ const Comics = () => {
                     loading="eager"
                     decoding="async"
                   />
-                  <img
-                    src={godOfLiesCover}
-                    alt="God of Lies comic cover"
-                    className="comics-shrine-layer comics-god-cover"
-                    width={1024}
-                    height={1536}
-                    loading="eager"
-                    decoding="async"
-                  />
                   <div className="comics-shrine-vignette" />
                 </div>
 
@@ -950,17 +941,13 @@ const Comics = () => {
 
                 <div className="comics-sky-half comics-sky-lower">
                   <div className={`comics-hill-blurb ${currentSection >= 2 ? 'is-open' : ''}`}>
-                    <h2 className="font-playfair text-3xl text-canvas-base lg:text-4xl" style={{ letterSpacing: '0.08em', fontWeight: 700 }}>
-                      GOD <span className="italic font-normal text-xl lg:text-2xl">of</span> LIES
-                    </h2>
-                    <div className="my-4 h-0.5 w-full bg-destructive" />
-                    <p className="text-base leading-relaxed text-canvas-base/95 lg:text-lg" style={{ fontFamily: 'Georgia, serif' }}>
+                    <p className="text-lg leading-relaxed text-canvas-base lg:text-xl" style={{ fontFamily: 'Georgia, serif' }}>
                       Con-man <em>Yi Chang-Min</em> has had to lie and cheat to get by his whole life. Even his landlady—and the young woman who has just moved in with them—have no idea what he does for a living. But while impersonating a shaman for a bereaved couple, he inadvertently raises <em>Seok-seol</em>, the god of lies. As he struggles to rid himself of his less-than-divine companion, <em>Chang-min</em> realises that having a deity of illusion at his beck and call may not be the worst thing for someone who makes his living deceiving others...
                     </p>
-                    <p className="mt-4 text-base leading-relaxed text-canvas-base/90 lg:text-lg" style={{ fontFamily: 'Georgia, serif' }}>
+                    <p className="mt-5 text-lg leading-relaxed text-canvas-base lg:text-xl" style={{ fontFamily: 'Georgia, serif' }}>
                       A supernatural psychological manga packed with twists and reversals.
                     </p>
-                    <p className="mt-4 text-sm uppercase tracking-widest text-canvas-base/75" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
+                    <p className="mt-5 text-sm uppercase tracking-widest text-canvas-base/85" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
                       Manga • Webtoon • 2026
                     </p>
                   </div>
