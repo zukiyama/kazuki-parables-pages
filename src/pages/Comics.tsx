@@ -21,10 +21,11 @@ import vignetteBoardgame from "@/assets/god-of-lies-sweeping.webp";
 
 // SECONDARY: Cream section assets (Section 2) - preload after vignettes
 import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.webp";
-import shrineTreeLeft from "@/assets/comics-shrine-tree-left.png";
-import shrineTreeRight from "@/assets/comics-shrine-tree-right.png";
+import shrineTreeLeft from "@/assets/comics-tree-straight-left.webp";
+import shrineTreeRight from "@/assets/comics-tree-straight-right.webp";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
+import { WordReveal, countWords, type RevealSegment } from "@/components/WordReveal";
 
 // TERTIARY: Pendragon scrollable section - preload after section 2
 import surnamePendragonBanner from "@/assets/surname-pendragon-banner.webp";
@@ -38,6 +39,20 @@ import godsCover from "@/assets/gods-cover-new.webp";
 import scriptedCover from "@/assets/scripted-cover-new.webp";
 import orangesGoldCoverNew from "@/assets/oranges-gold-cover-new.webp";
 import comicsFooterCharacter from "@/assets/comics-footer-character.webp";
+
+const blurbMain: RevealSegment[] = [
+  { text: 'Con-man ' },
+  { text: 'Yi Chang-Min', em: true },
+  { text: ' has had to lie and cheat to get by his whole life. Even his landlady—and the young woman who has just moved in with them—have no idea what he does for a living. But while impersonating a shaman for a bereaved couple, he inadvertently raises ' },
+  { text: 'Seok-seol', em: true },
+  { text: ', the god of lies. As he struggles to rid himself of his less-than-divine companion, ' },
+  { text: 'Chang-min', em: true },
+  { text: ' realises that having a deity of illusion at his beck and call may not be the worst thing for someone who makes his living deceiving others...' },
+];
+const blurbTagline: RevealSegment[] = [
+  { text: 'A supernatural psychological manga packed with twists and reversals.' },
+];
+
 
 
 const Comics = () => {
