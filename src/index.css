@@ -1423,8 +1423,8 @@
 .comics-shrine-steps {
   position: absolute;
   left: 50%;
-  top: 29.8%;
-  height: 48%;
+  top: 26%;
+  height: 34.3%;
   width: auto;
   max-width: none;
   transform-origin: 50% 100%;
@@ -1432,20 +1432,20 @@
   transform: translate3d(-50%, 14%, 0) rotateX(72deg) scale(0.9);
   transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1) 120ms,
               opacity 600ms ease-out 120ms;
-  /* Keep the upper shrine crisp, then erase the continuation immediately below
-     the first-screen fold. It is fully absent throughout the blurb screen. */
+  /* The cloud bank sits entirely below the first viewport edge; it is revealed
+     only while the pan travels and is fully erased before the blurb screen. */
   -webkit-mask-image: linear-gradient(to bottom,
     hsl(0 0% 0% / 1) 0%,
-    hsl(0 0% 0% / 1) 42%,
-    hsl(0 0% 0% / 0.72) 45%,
-    hsl(0 0% 0% / 0.2) 49%,
-    hsl(0 0% 0% / 0) 52%);
+    hsl(0 0% 0% / 1) 72%,
+    hsl(0 0% 0% / 0.85) 82%,
+    hsl(0 0% 0% / 0.35) 92%,
+    hsl(0 0% 0% / 0) 100%);
   mask-image: linear-gradient(to bottom,
     hsl(0 0% 0% / 1) 0%,
-    hsl(0 0% 0% / 1) 42%,
-    hsl(0 0% 0% / 0.72) 45%,
-    hsl(0 0% 0% / 0.2) 49%,
-    hsl(0 0% 0% / 0) 52%);
+    hsl(0 0% 0% / 1) 72%,
+    hsl(0 0% 0% / 0.85) 82%,
+    hsl(0 0% 0% / 0.35) 92%,
+    hsl(0 0% 0% / 0) 100%);
 }
 .comics-shrine-steps-rig.is-open .comics-shrine-steps {
   opacity: 1;
@@ -1454,15 +1454,15 @@
 
 @media screen and (min-width: 768px) and (orientation: portrait) {
   .comics-shrine-steps {
-    top: 29.8%;
-    height: 48%;
+    top: 29%;
+    height: 30%;
   }
 }
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-shrine-steps {
-    top: 29.8%;
-    height: 48%;
+    top: 26%;
+    height: 34.3%;
   }
 }
 
