@@ -1410,6 +1410,35 @@
   opacity: 1;
 }
 
+/* Red balloon and girl: one tall cut-out spanning both screens of the
+   panorama. The balloon rests near the foot of the sky screen, the string
+   runs through the fold and the girl hangs above the road screen below.
+   It rises from below in step with the trees folding in. */
+.comics-balloon-rig {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 6%, 0);
+  transition: transform 950ms cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 650ms ease-out;
+}
+.comics-balloon-rig.is-open {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+.comics-balloon {
+  position: absolute;
+  left: 50%;
+  top: 31.3%;
+  height: 59.7%;
+  width: auto;
+  max-width: none;
+  transform: translate3d(-8%, 0, 0);
+  filter: drop-shadow(0 0.75rem 1.5rem hsl(var(--ink-black) / 0.28));
+}
+
 .comics-god-cover-mobile {
   position: absolute;
   top: 3%;
