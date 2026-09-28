@@ -1587,6 +1587,7 @@
 }
 .comics-sky-lower {
   top: 50%;
+  z-index: 3;
   display: flex;
   align-items: flex-end;
   justify-content: center;
