@@ -1527,6 +1527,12 @@
     width: 60vw;
   }
 
+  /* Portrait: keep the girl clear of the centred blurb. */
+  .comics-balloon {
+    left: 77%;
+    height: 38%;
+  }
+
   /* Preserve the first portrait composition and its original edge anchoring. */
   .comics-tree {
     width: 72vw;
@@ -1536,6 +1542,7 @@
   .comics-tree--right { right: -42%; }
 
 }
+
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-shrine-title {
