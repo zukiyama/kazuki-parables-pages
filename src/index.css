@@ -1438,11 +1438,9 @@
   transform: translate3d(-50%, 0, 0) rotateX(0deg) scale(1);
 }
 .comics-shrine-steps-rig.is-lower .comics-shrine-steps {
-  visibility: hidden;
   opacity: 1;
   transform: translate3d(-50%, 14%, 0) rotateX(72deg) scale(0.9);
-  transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1),
-              visibility 0s linear 1000ms;
+  transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media screen and (min-width: 768px) and (orientation: portrait) {
@@ -1619,7 +1617,6 @@
   text-align: center;
   /* The halo remains static while each opaque row moves, avoiding the
      compositing flicker caused by fading a large blurred text-shadow stack. */
-  overflow: hidden;
   /* Slightly stronger than before: the halo reaches further out so the words
      lift off the busy road, while the layers hugging each letter stay lighter
      so the glyphs read crisp rather than smudged. No backdrop box. */
