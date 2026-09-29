@@ -1416,6 +1416,7 @@
   position: absolute;
   inset: 0;
   z-index: 2;
+  overflow: hidden;
   pointer-events: none;
   perspective: 1600px;
 }
@@ -1437,9 +1438,11 @@
   transform: translate3d(-50%, 0, 0) rotateX(0deg) scale(1);
 }
 .comics-shrine-steps-rig.is-lower .comics-shrine-steps {
-  opacity: 0;
-  transition-delay: 0ms, 560ms;
-  transition-duration: 1000ms, 500ms;
+  visibility: hidden;
+  opacity: 1;
+  transform: translate3d(-50%, 14%, 0) rotateX(72deg) scale(0.9);
+  transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0s linear 1000ms;
 }
 
 @media screen and (min-width: 768px) and (orientation: portrait) {
@@ -1614,10 +1617,9 @@
 .comics-hill-blurb {
   max-width: 36rem;
   text-align: center;
-  opacity: 0;
-  /* The lower scene begins off-screen. Keep the text transparent until its
-     position enters the viewport, then cross-fade it against the shrine. */
-  transition: opacity 500ms ease-out;
+  /* The halo remains static while each opaque row moves, avoiding the
+     compositing flicker caused by fading a large blurred text-shadow stack. */
+  overflow: hidden;
   /* Slightly stronger than before: the halo reaches further out so the words
      lift off the busy road, while the layers hugging each letter stay lighter
      so the glyphs read crisp rather than smudged. No backdrop box. */
@@ -1629,30 +1631,43 @@
     0 0 58px hsl(var(--ink-black) / 0.6),
     0 0 96px hsl(var(--ink-black) / 0.45);
 }
-.comics-hill-blurb.is-open {
-  opacity: 1;
-  transition-delay: 560ms;
-}
 
-/* The blurb fades in as the panorama moves onto the road. */
-.comics-reveal-word,
-.comics-blurb-meta {
-  display: inline;
+/* Stable, fully opaque rows alternate directions as the road screen arrives. */
+.comics-blurb-line {
   opacity: 1;
   filter: none;
-  transform: none;
-  transition: none;
+  will-change: transform;
+  transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-.comics-blurb-meta { display: block; }
+.comics-blurb-line--left {
+  transform: translate3d(-115%, 0, 0);
+}
+.comics-blurb-line--right {
+  transform: translate3d(115%, 0, 0);
+}
+.comics-hill-blurb.is-open .comics-blurb-line {
+  transform: translate3d(0, 0, 0);
+}
+.comics-hill-blurb.is-open .comics-blurb-line:nth-child(1) {
+  transition-delay: 420ms;
+}
+.comics-hill-blurb.is-open .comics-blurb-line:nth-child(2) {
+  transition-delay: 500ms;
+}
+.comics-hill-blurb.is-open .comics-blurb-line:nth-child(3) {
+  transition-delay: 580ms;
+}
 @media (prefers-reduced-motion: reduce) {
   .comics-sky-pan,
-  .comics-hill-blurb,
-  .comics-reveal-word,
-  .comics-blurb-meta,
-  .comics-hill-blurb.is-open .comics-reveal-word,
-  .comics-hill-blurb.is-open .comics-blurb-meta {
+  .comics-blurb-line,
+  .comics-hill-blurb.is-open .comics-blurb-line {
     transition: none !important;
     filter: none;
     transform: none;
+  }
+
+  .comics-shrine-steps-rig.is-lower .comics-shrine-steps {
+    visibility: hidden;
+    transition: none !important;
   }
 }

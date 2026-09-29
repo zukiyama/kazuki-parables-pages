@@ -26,7 +26,7 @@ import shrineTreeRight from "@/assets/comics-tree-original-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
 import comicsShrineImage from "@/assets/comics-korean-cloud-shrine.png";
-import { WordReveal, countWords, type RevealSegment } from "@/components/WordReveal";
+import type { RevealSegment } from "@/components/WordReveal";
 
 // TERTIARY: Pendragon scrollable section - preload after section 2
 import surnamePendragonBanner from "@/assets/surname-pendragon-banner.webp";
@@ -53,6 +53,13 @@ const blurbMain: RevealSegment[] = [
 const blurbTagline: RevealSegment[] = [
   { text: 'A supernatural psychological manga packed with twists and reversals.' },
 ];
+
+const renderBlurbSegments = (segments: RevealSegment[]) =>
+  segments.map((segment, index) => (
+    segment.em
+      ? <em key={index}>{segment.text}</em>
+      : <span key={index}>{segment.text}</span>
+  ));
 
 
 
@@ -970,20 +977,21 @@ const Comics = () => {
 
                 <div className="comics-sky-half comics-sky-lower">
                   <div className={`comics-hill-blurb ${currentSection >= 2 ? 'is-open' : ''}`}>
-                    <WordReveal
-                      className="text-lg leading-relaxed text-canvas-base lg:text-xl"
-                      style={{ fontFamily: 'Georgia, serif' }}
-                      segments={blurbMain}
-                    />
-                    <WordReveal
-                      className="mt-5 text-lg leading-relaxed text-canvas-base lg:text-xl"
-                      style={{ fontFamily: 'Georgia, serif' }}
-                      segments={blurbTagline}
-                      startIndex={countWords(blurbMain)}
-                    />
                     <p
-                      className="comics-blurb-meta mt-5 text-sm uppercase tracking-widest text-canvas-base/85"
-                      style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', '--w': countWords(blurbMain) + countWords(blurbTagline) } as React.CSSProperties}
+                      className="comics-blurb-line comics-blurb-line--left text-lg leading-relaxed text-canvas-base lg:text-xl"
+                      style={{ fontFamily: 'Georgia, serif' }}
+                    >
+                      {renderBlurbSegments(blurbMain)}
+                    </p>
+                    <p
+                      className="comics-blurb-line comics-blurb-line--right mt-5 text-lg leading-relaxed text-canvas-base lg:text-xl"
+                      style={{ fontFamily: 'Georgia, serif' }}
+                    >
+                      {renderBlurbSegments(blurbTagline)}
+                    </p>
+                    <p
+                      className="comics-blurb-line comics-blurb-line--left mt-5 text-sm uppercase tracking-widest text-canvas-base/85"
+                      style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                     >
                       Manga • Webtoon • 2026
                     </p>
