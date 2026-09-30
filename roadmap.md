@@ -11,3 +11,7 @@
 - [x] Sequence the side-cover entrances from top to bottom as the lower panorama arrives.
 - [x] Replace the red selected frame with a natural neutral treatment.
 - [x] Verify both orientations, reverse scrolling, selection/reset, and phone isolation.
+- [ ] Move the central God of Lies cover above the lower blurb and match the side-cover size.
+- [ ] Lower every active blurb within the road scene.
+- [ ] Restore off-screen staggered side entrances, fold in the central cover, and fade in a dark road mask.
+- [ ] Verify both orientations, reverse scrolling, story selection/reset, and phone isolation.
