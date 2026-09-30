@@ -198,6 +198,7 @@ const Comics = () => {
         shrineTreeLeft,
         shrineTreeRight,
         godOfLiesCover,
+        godOfLiesUploadedCover.url,
         comicsSeoulSkyline,
         comicsKeepGoingArrow
       ];
