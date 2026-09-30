@@ -24,6 +24,7 @@ import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.webp";
 import shrineTreeLeft from "@/assets/comics-tree-original-left.png";
 import shrineTreeRight from "@/assets/comics-tree-original-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
+import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.png.asset.json";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.png";
 import type { RevealSegment } from "@/components/WordReveal";
@@ -1036,6 +1037,16 @@ const Comics = () => {
                         <p className="comics-story-description">{activePanoramaStory.description}</p>
                         <p className="comics-story-teaser">{activePanoramaStory.teaser}</p>
                         <p className="comics-story-format">{activePanoramaStory.format}</p>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          className={`comics-story-cover comics-story-cover--home ${activePanoramaStory.title === godOfLiesStory.title ? 'is-selected' : ''}`}
+                          onClick={() => handlePanoramaComicClick(godOfLiesStory)}
+                          aria-label="Return to the God of Lies story"
+                          aria-pressed={activePanoramaStory.title === godOfLiesStory.title}
+                        >
+                          <img src={godOfLiesUploadedCover.url} alt="God of Lies comic cover" width={1024} height={1536} loading="eager" decoding="async" />
+                        </Button>
                       </div>
                     </div>
 
