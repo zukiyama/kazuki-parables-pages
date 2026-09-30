@@ -62,6 +62,13 @@ type ComicStory = {
   format: string;
 };
 
+const renderBlurbSegments = (segments: RevealSegment[]) =>
+  segments.map((segment, index) => (
+    segment.em
+      ? <em key={index}>{segment.text}</em>
+      : <span key={index}>{segment.text}</span>
+  ));
+
 const godOfLiesStory: ComicStory = {
   cover: godOfLiesCover,
   title: "God of Lies",
@@ -69,13 +76,6 @@ const godOfLiesStory: ComicStory = {
   teaser: "A supernatural psychological manga packed with twists and reversals.",
   format: "Manga • Webtoon • 2026",
 };
-
-const renderBlurbSegments = (segments: RevealSegment[]) =>
-  segments.map((segment, index) => (
-    segment.em
-      ? <em key={index}>{segment.text}</em>
-      : <span key={index}>{segment.text}</span>
-  ));
 
 
 
