@@ -1735,6 +1735,10 @@
   perspective: 900px;
   transition: opacity 260ms ease-out 120ms, transform 620ms cubic-bezier(0.2, 1.25, 0.35, 1) 120ms, filter 180ms ease-out;
 }
+.comics-story-cover--home.is-selected {
+  opacity: 0;
+  transform: translate3d(0, 1.25rem, 0) rotateX(-88deg);
+}
 .comics-story-selector.is-open .comics-story-cover--home {
   opacity: 0.86;
   transform: translate3d(0, 0, 0) rotateX(0deg);
