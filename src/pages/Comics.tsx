@@ -1032,22 +1032,22 @@ const Comics = () => {
                     </div>
 
                     <div className="comics-hill-blurb">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        className={`comics-story-cover comics-story-cover--home ${activePanoramaStory.title === godOfLiesStory.title ? 'is-selected' : ''}`}
+                        onClick={() => handlePanoramaComicClick(godOfLiesStory)}
+                        aria-label="Return to the God of Lies story"
+                        aria-pressed={activePanoramaStory.title === godOfLiesStory.title}
+                      >
+                        <img src={godOfLiesUploadedCover.url} alt="God of Lies comic cover" width={1024} height={1536} loading="eager" decoding="async" />
+                      </Button>
                       <div className={`comics-story-copy ${panoramaStoryVisible ? 'is-visible' : ''}`} aria-live="polite">
                         <h3 className="comics-story-title">{activePanoramaStory.title === "Gods!" ? "GODS!" : activePanoramaStory.title}</h3>
                         <div className="comics-story-rule" />
                         <p className="comics-story-description">{activePanoramaStory.description}</p>
                         <p className="comics-story-teaser">{activePanoramaStory.teaser}</p>
                         <p className="comics-story-format">{activePanoramaStory.format}</p>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          className={`comics-story-cover comics-story-cover--home ${activePanoramaStory.title === godOfLiesStory.title ? 'is-selected' : ''}`}
-                          onClick={() => handlePanoramaComicClick(godOfLiesStory)}
-                          aria-label="Return to the God of Lies story"
-                          aria-pressed={activePanoramaStory.title === godOfLiesStory.title}
-                        >
-                          <img src={godOfLiesUploadedCover.url} alt="God of Lies comic cover" width={1024} height={1536} loading="eager" decoding="async" />
-                        </Button>
                       </div>
                     </div>
 

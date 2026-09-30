@@ -1607,7 +1607,20 @@
   /* Sits over the road, raised enough to enter while the lower scene arrives. */
   padding: clamp(4rem, 7vh, 6rem) clamp(1rem, 3vw, 3rem) clamp(2rem, 5vh, 4rem);
 }
+.comics-sky-lower::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: hsl(var(--ink-black) / 0.46);
+  opacity: 0;
+  transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+.comics-sky-pan.is-lower .comics-sky-lower::before { opacity: 1; }
 .comics-story-selector {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(9rem, 1fr) minmax(19rem, 34rem) minmax(9rem, 1fr);
   align-items: center;
@@ -1625,8 +1638,8 @@
   gap: clamp(0.15rem, 0.55vh, 0.4rem);
   height: min(79vh, 52rem);
 }
-.comics-story-rail--left { --cover-entry-x: -7rem; }
-.comics-story-rail--right { --cover-entry-x: 7rem; }
+.comics-story-rail--left { --cover-entry-x: -55vw; }
+.comics-story-rail--right { --cover-entry-x: 55vw; }
 .comics-story-cover {
   position: relative;
   display: block;
@@ -1643,9 +1656,9 @@
     transform 460ms cubic-bezier(0.22, 1, 0.36, 1),
     filter 180ms ease-out;
 }
-.comics-story-rail .comics-story-cover:nth-child(1) { transition-delay: 300ms; }
-.comics-story-rail .comics-story-cover:nth-child(2) { transition-delay: 390ms; }
-.comics-story-rail .comics-story-cover:nth-child(3) { transition-delay: 480ms; }
+.comics-story-rail .comics-story-cover:nth-child(1) { transition-delay: 180ms; }
+.comics-story-rail .comics-story-cover:nth-child(2) { transition-delay: 280ms; }
+.comics-story-rail .comics-story-cover:nth-child(3) { transition-delay: 380ms; }
 .comics-story-selector.is-open .comics-story-rail .comics-story-cover {
   opacity: 0.86;
   transform: translate3d(0, 0, 0);
@@ -1680,11 +1693,13 @@
 }
 .comics-hill-blurb {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   min-height: min(68vh, 44rem);
   max-width: 36rem;
+  padding-bottom: clamp(1rem, 4vh, 3rem);
   text-align: center;
   /* The halo remains static while each opaque row moves, avoiding the
      compositing flicker caused by fading a large blurred text-shadow stack. */
@@ -1700,6 +1715,8 @@
     0 0 96px hsl(var(--ink-black) / 0.45);
 }
 .comics-story-copy {
+  width: 100%;
+  margin-top: auto;
   opacity: 0;
   transform: translate3d(0, 0.3rem, 0);
   transition: opacity 150ms ease-out, transform 150ms ease-out;
@@ -1710,12 +1727,29 @@
 }
 .comics-story-cover--home {
   --cover-entry-x: 0rem;
-  width: clamp(4.5rem, 6.5vw, 6rem);
-  margin: clamp(0.8rem, 1.8vh, 1.2rem) auto 0;
-  opacity: 0.86;
-  transform: translate3d(0, 0, 0);
+  width: min(100%, 9rem);
+  margin: 0 auto;
+  opacity: 0;
+  transform: translate3d(0, 1.25rem, 0) rotateX(-88deg);
+  transform-origin: 50% 100%;
+  perspective: 900px;
+  transition: opacity 260ms ease-out 120ms, transform 620ms cubic-bezier(0.2, 1.25, 0.35, 1) 120ms, filter 180ms ease-out;
 }
-.comics-story-cover--home img { max-height: min(15vh, 9rem); }
+.comics-story-cover--home.is-selected {
+  opacity: 0;
+  transform: translate3d(0, 1.25rem, 0) rotateX(-88deg);
+}
+.comics-story-selector.is-open .comics-story-cover--home {
+  opacity: 0.86;
+  transform: translate3d(0, 0, 0) rotateX(0deg);
+}
+.comics-story-selector.is-open .comics-story-cover--home:hover,
+.comics-story-selector.is-open .comics-story-cover--home:focus-visible,
+.comics-story-selector.is-open .comics-story-cover--home.is-selected {
+  opacity: 1;
+  transform: translate3d(0, -0.18rem, 0) rotateX(0deg) scale(1.04);
+}
+.comics-story-cover--home img { max-height: min(25vh, 16rem); }
 .comics-story-title {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: clamp(1.6rem, 3vw, 2.5rem);
@@ -1754,14 +1788,15 @@
   .comics-story-rail { height: min(76vh, 54rem); }
   .comics-story-cover { width: min(100%, 7.5rem); }
   .comics-story-cover img { max-height: min(23vh, 14rem); }
-  .comics-story-cover--home { width: clamp(4.25rem, 9vw, 5.5rem); }
-  .comics-story-cover--home img { max-height: min(13vh, 8rem); }
+  .comics-story-cover--home { width: min(100%, 7.5rem); }
+  .comics-story-cover--home img { max-height: min(23vh, 14rem); }
   .comics-hill-blurb { min-height: 62vh; }
   .comics-story-description,
   .comics-story-teaser { font-size: clamp(0.82rem, 1.8vw, 1rem); line-height: 1.45; }
 }
 @media (prefers-reduced-motion: reduce) {
   .comics-sky-pan,
+  .comics-sky-lower::before,
   .comics-story-cover,
   .comics-story-copy,
   .comics-keep-going {
