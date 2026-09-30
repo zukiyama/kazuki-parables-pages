@@ -1609,7 +1609,7 @@
 }
 .comics-story-selector {
   display: grid;
-  grid-template-columns: minmax(5rem, 8vw) minmax(20rem, 36rem) minmax(5rem, 8vw);
+  grid-template-columns: minmax(7rem, 1fr) minmax(20rem, 36rem) minmax(7rem, 1fr);
   align-items: center;
   justify-content: space-between;
   gap: clamp(1.25rem, 3vw, 3.5rem);
@@ -1732,7 +1732,7 @@
 }
 @media screen and (min-width: 768px) and (orientation: portrait) {
   .comics-story-selector {
-    grid-template-columns: minmax(4.5rem, 11vw) minmax(16rem, 1fr) minmax(4.5rem, 11vw);
+    grid-template-columns: minmax(4.5rem, 1fr) minmax(16rem, 68vw) minmax(4.5rem, 1fr);
     gap: clamp(0.8rem, 2vw, 1.5rem);
     width: 94vw;
   }
