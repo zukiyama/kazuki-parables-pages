@@ -1609,11 +1609,11 @@
 }
 .comics-story-selector {
   display: grid;
-  grid-template-columns: minmax(7rem, 1fr) minmax(20rem, 36rem) minmax(7rem, 1fr);
+  grid-template-columns: minmax(9rem, 1fr) minmax(19rem, 34rem) minmax(9rem, 1fr);
   align-items: center;
   justify-content: space-between;
-  gap: clamp(1.25rem, 3vw, 3.5rem);
-  width: min(94vw, 88rem);
+  gap: clamp(0.65rem, 1.5vw, 1.5rem);
+  width: min(98vw, 94rem);
   height: 100%;
   margin: 0 auto;
 }
@@ -1622,34 +1622,39 @@
   grid-template-rows: repeat(3, minmax(0, 1fr));
   justify-items: center;
   align-items: center;
-  gap: clamp(0.5rem, 1.4vh, 1rem);
-  height: min(76vh, 48rem);
-  opacity: 0;
-  transition: opacity 360ms ease-out 460ms, transform 620ms cubic-bezier(0.22, 1, 0.36, 1) 380ms;
+  gap: clamp(0.15rem, 0.55vh, 0.4rem);
+  height: min(79vh, 52rem);
 }
-.comics-story-rail--left { transform: translate3d(-2rem, 0, 0); }
-.comics-story-rail--right { transform: translate3d(2rem, 0, 0); }
-.comics-story-selector.is-open .comics-story-rail {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-}
+.comics-story-rail--left { --cover-entry-x: -7rem; }
+.comics-story-rail--right { --cover-entry-x: 7rem; }
 .comics-story-cover {
   position: relative;
   display: block;
-  width: min(100%, 6.5rem);
+  width: min(100%, 9rem);
   height: auto;
   max-height: 100%;
   padding: 0;
   border-radius: 2px;
   background: transparent;
-  opacity: 0.8;
-  transition: opacity 180ms ease-out, transform 180ms ease-out, box-shadow 180ms ease-out;
+  opacity: 0;
+  transform: translate3d(var(--cover-entry-x), 0, 0);
+  transition:
+    opacity 280ms ease-out,
+    transform 460ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 180ms ease-out;
+}
+.comics-story-rail .comics-story-cover:nth-child(1) { transition-delay: 300ms; }
+.comics-story-rail .comics-story-cover:nth-child(2) { transition-delay: 390ms; }
+.comics-story-rail .comics-story-cover:nth-child(3) { transition-delay: 480ms; }
+.comics-story-selector.is-open .comics-story-rail .comics-story-cover {
+  opacity: 0.86;
+  transform: translate3d(0, 0, 0);
 }
 .comics-story-cover img {
   display: block;
   width: 100%;
   height: auto;
-  max-height: min(22vh, 13rem);
+  max-height: min(25vh, 16rem);
   object-fit: contain;
   box-shadow: 0 0.45rem 1rem hsl(var(--ink-black) / 0.48);
 }
@@ -1657,14 +1662,16 @@
 .comics-story-cover:focus-visible,
 .comics-story-cover.is-selected {
   opacity: 1;
-  transform: translateY(-0.15rem) scale(1.035);
+  transform: translate3d(0, -0.18rem, 0) scale(1.04);
 }
 .comics-story-cover.is-selected::after {
   content: '';
   position: absolute;
-  inset: -0.3rem;
-  border: 2px solid hsl(var(--canvas-base) / 0.9);
-  box-shadow: 0 0 0 2px hsl(var(--destructive) / 0.8), 0 0 1.2rem hsl(var(--ink-black) / 0.55);
+  inset: -0.28rem;
+  border: 1px solid hsl(var(--canvas-base) / 0.88);
+  box-shadow:
+    0 0 0 0.18rem hsl(var(--canvas-base) / 0.2),
+    0 0.55rem 1.3rem hsl(var(--ink-black) / 0.62);
   pointer-events: none;
 }
 .comics-story-cover:focus-visible {
@@ -1701,6 +1708,14 @@
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
+.comics-story-cover--home {
+  --cover-entry-x: 0rem;
+  width: clamp(4.5rem, 6.5vw, 6rem);
+  margin: clamp(0.8rem, 1.8vh, 1.2rem) auto 0;
+  opacity: 0.86;
+  transform: translate3d(0, 0, 0);
+}
+.comics-story-cover--home img { max-height: min(15vh, 9rem); }
 .comics-story-title {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: clamp(1.6rem, 3vw, 2.5rem);
@@ -1732,24 +1747,27 @@
 }
 @media screen and (min-width: 768px) and (orientation: portrait) {
   .comics-story-selector {
-    grid-template-columns: minmax(4.5rem, 1fr) minmax(16rem, 68vw) minmax(4.5rem, 1fr);
-    gap: clamp(0.8rem, 2vw, 1.5rem);
-    width: 94vw;
+    grid-template-columns: minmax(6rem, 1fr) minmax(15rem, 60vw) minmax(6rem, 1fr);
+    gap: clamp(0.35rem, 1vw, 0.75rem);
+    width: 98vw;
   }
-  .comics-story-rail { height: min(72vh, 52rem); }
-  .comics-story-cover { width: min(100%, 6rem); }
-  .comics-story-cover img { max-height: min(20vh, 12rem); }
+  .comics-story-rail { height: min(76vh, 54rem); }
+  .comics-story-cover { width: min(100%, 7.5rem); }
+  .comics-story-cover img { max-height: min(23vh, 14rem); }
+  .comics-story-cover--home { width: clamp(4.25rem, 9vw, 5.5rem); }
+  .comics-story-cover--home img { max-height: min(13vh, 8rem); }
   .comics-hill-blurb { min-height: 62vh; }
   .comics-story-description,
   .comics-story-teaser { font-size: clamp(0.82rem, 1.8vw, 1rem); line-height: 1.45; }
 }
 @media (prefers-reduced-motion: reduce) {
   .comics-sky-pan,
-  .comics-story-rail,
+  .comics-story-cover,
   .comics-story-copy,
   .comics-keep-going {
     transition: none !important;
     filter: none;
-    transform: none;
   }
+  .comics-story-selector.is-open .comics-story-cover,
+  .comics-story-cover--home { opacity: 1; transform: none; }
 }
