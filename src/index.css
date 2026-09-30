@@ -1410,55 +1410,6 @@
   opacity: 1;
 }
 
-/* Cloud-borne Korean shrine. Its complete cloud bed sits at the foot of the
-   title screen, then the whole layer clears while the panorama pans to the blurb. */
-.comics-shrine-steps-rig {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  overflow: hidden;
-  pointer-events: none;
-  perspective: 1600px;
-}
-.comics-shrine-steps {
-  position: absolute;
-  left: 46.5%;
-  top: 30%;
-  height: 23.5%;
-  width: auto;
-  max-width: none;
-  transform-origin: 50% 100%;
-  opacity: 0;
-  transform: translate3d(-50%, 14%, 0) rotateX(72deg) scale(0.9);
-  transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1) 120ms,
-              opacity 600ms ease-out 120ms;
-}
-.comics-shrine-steps-rig.is-open .comics-shrine-steps {
-  opacity: 1;
-  transform: translate3d(-50%, 0, 0) rotateX(0deg) scale(1);
-}
-.comics-shrine-steps-rig.is-lower .comics-shrine-steps {
-  opacity: 1;
-  transform: translate3d(-50%, 14%, 0) rotateX(72deg) scale(0.9);
-  transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@media screen and (min-width: 768px) and (orientation: portrait) {
-  .comics-shrine-steps {
-    left: 46.5%;
-    top: 34.5%;
-    height: 18%;
-  }
-}
-
-@media screen and (min-width: 821px) and (orientation: landscape) {
-  .comics-shrine-steps {
-    left: 46.5%;
-    top: 30%;
-    height: 23.5%;
-  }
-}
-
 .comics-god-cover-mobile {
   position: absolute;
   top: 3%;
@@ -1481,7 +1432,7 @@
   position: absolute;
   z-index: 5;
   left: 50%;
-  top: 38%;
+  top: 29%;
   display: flex;
   width: min(38vw, 28rem);
   flex-direction: column;
@@ -1490,6 +1441,50 @@
   transform: translate3d(-50%, 0, 0);
   text-shadow: 0 2px 12px hsl(var(--ink-black));
   perspective: 700px;
+}
+
+.comics-keep-going {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  margin-top: 0.15rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: hsl(var(--canvas-base));
+  cursor: pointer;
+  opacity: 0;
+  transform: translate3d(0, 0.65rem, 0) rotate(-1deg);
+  transition: opacity 320ms ease-out 760ms, transform 480ms cubic-bezier(0.22, 1, 0.36, 1) 760ms;
+}
+.comics-keep-going span {
+  font-family: 'DK Crayon Crumble', 'Bangers', cursive;
+  font-size: clamp(1rem, 1.7vw, 1.45rem);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-shadow: 2px 3px 0 hsl(var(--ink-black) / 0.8), 0 0 12px hsl(var(--ink-black) / 0.55);
+}
+.comics-keep-going img {
+  display: block;
+  width: clamp(3.25rem, 5.5vw, 5rem);
+  height: auto;
+  margin-top: -0.2rem;
+  filter: drop-shadow(0 0.25rem 0.2rem hsl(var(--ink-black) / 0.25));
+  transition: transform 220ms ease-out;
+}
+.comics-keep-going:hover img,
+.comics-keep-going:focus-visible img {
+  transform: translateY(0.3rem);
+}
+.comics-keep-going:focus-visible {
+  outline: 2px solid hsl(var(--canvas-base));
+  outline-offset: 0.35rem;
+}
+.comics-shrine-title.is-open .comics-keep-going {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotate(-1deg);
 }
 
 /* Title entrance: kicker tightens in, each letter swings up out of a blur,
@@ -1544,7 +1539,7 @@
   }
 
   .comics-shrine-title {
-    top: 37%;
+    top: 30%;
     width: 60vw;
   }
 
@@ -1560,14 +1555,14 @@
 
 @media screen and (min-width: 821px) and (orientation: landscape) {
   .comics-shrine-title {
-    top: 34%;
+    top: 27%;
   }
 
 }
 
 @media (prefers-reduced-motion: reduce) {
   .comics-tree img,
-  .comics-shrine-steps,
+  .comics-keep-going,
   .comics-title-kicker,
   .comics-title-letter,
   .comics-title-rule,
@@ -1576,7 +1571,7 @@
     opacity: 1;
     filter: none;
   }
-  .comics-shrine-steps { transform: translate3d(-50%, 0, 0); }
+  .comics-keep-going { transform: none; }
   .comics-shrine-title .comics-title-letter,
   .comics-shrine-title .comics-title-sub { transform: none; }
   .comics-shrine-title .comics-title-rule { transform: none; }
@@ -1607,12 +1602,81 @@
   top: 50%;
   z-index: 5;
   display: flex;
-  align-items: flex-end;
+  align-items: stretch;
   justify-content: center;
   /* Sits over the road, raised enough to enter while the lower scene arrives. */
-  padding: 5rem 1.5rem clamp(4rem, 10vh, 7rem);
+  padding: clamp(4rem, 7vh, 6rem) clamp(1rem, 3vw, 3rem) clamp(2rem, 5vh, 4rem);
+}
+.comics-story-selector {
+  display: grid;
+  grid-template-columns: minmax(7rem, 1fr) minmax(20rem, 36rem) minmax(7rem, 1fr);
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1.25rem, 3vw, 3.5rem);
+  width: min(94vw, 88rem);
+  height: 100%;
+  margin: 0 auto;
+}
+.comics-story-rail {
+  display: grid;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  justify-items: center;
+  align-items: center;
+  gap: clamp(0.5rem, 1.4vh, 1rem);
+  height: min(76vh, 48rem);
+  opacity: 0;
+  transition: opacity 360ms ease-out 460ms, transform 620ms cubic-bezier(0.22, 1, 0.36, 1) 380ms;
+}
+.comics-story-rail--left { transform: translate3d(-2rem, 0, 0); }
+.comics-story-rail--right { transform: translate3d(2rem, 0, 0); }
+.comics-story-selector.is-open .comics-story-rail {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+.comics-story-cover {
+  position: relative;
+  display: block;
+  width: min(100%, 6.5rem);
+  height: auto;
+  max-height: 100%;
+  padding: 0;
+  border-radius: 2px;
+  background: transparent;
+  opacity: 0.8;
+  transition: opacity 180ms ease-out, transform 180ms ease-out, box-shadow 180ms ease-out;
+}
+.comics-story-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(22vh, 13rem);
+  object-fit: contain;
+  box-shadow: 0 0.45rem 1rem hsl(var(--ink-black) / 0.48);
+}
+.comics-story-cover:hover,
+.comics-story-cover:focus-visible,
+.comics-story-cover.is-selected {
+  opacity: 1;
+  transform: translateY(-0.15rem) scale(1.035);
+}
+.comics-story-cover.is-selected::after {
+  content: '';
+  position: absolute;
+  inset: -0.3rem;
+  border: 2px solid hsl(var(--canvas-base) / 0.9);
+  box-shadow: 0 0 0 2px hsl(var(--destructive) / 0.8), 0 0 1.2rem hsl(var(--ink-black) / 0.55);
+  pointer-events: none;
+}
+.comics-story-cover:focus-visible {
+  outline: 2px solid hsl(var(--canvas-base));
+  outline-offset: 0.45rem;
 }
 .comics-hill-blurb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: min(68vh, 44rem);
   max-width: 36rem;
   text-align: center;
   /* The halo remains static while each opaque row moves, avoiding the
@@ -1628,43 +1692,64 @@
     0 0 58px hsl(var(--ink-black) / 0.6),
     0 0 96px hsl(var(--ink-black) / 0.45);
 }
-
-/* Stable, fully opaque rows alternate directions as the road screen arrives. */
-.comics-blurb-line {
+.comics-story-copy {
+  opacity: 0;
+  transform: translate3d(0, 0.3rem, 0);
+  transition: opacity 150ms ease-out, transform 150ms ease-out;
+}
+.comics-story-copy.is-visible {
   opacity: 1;
-  filter: none;
-  will-change: transform;
-  transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.comics-blurb-line--left {
-  transform: translate3d(-115%, 0, 0);
-}
-.comics-blurb-line--right {
-  transform: translate3d(115%, 0, 0);
-}
-.comics-hill-blurb.is-open .comics-blurb-line {
   transform: translate3d(0, 0, 0);
 }
-.comics-hill-blurb.is-open .comics-blurb-line:nth-child(1) {
-  transition-delay: 420ms;
+.comics-story-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  line-height: 1.05;
+  color: hsl(var(--canvas-base));
 }
-.comics-hill-blurb.is-open .comics-blurb-line:nth-child(2) {
-  transition-delay: 500ms;
+.comics-story-rule {
+  width: 4.5rem;
+  height: 2px;
+  margin: 0.8rem auto 1rem;
+  background: hsl(var(--destructive));
+  box-shadow: 0 1px 4px hsl(var(--ink-black) / 0.55);
 }
-.comics-hill-blurb.is-open .comics-blurb-line:nth-child(3) {
-  transition-delay: 580ms;
+.comics-story-description,
+.comics-story-teaser {
+  font-family: Georgia, serif;
+  font-size: clamp(0.92rem, 1.4vw, 1.16rem);
+  line-height: 1.55;
+  color: hsl(var(--canvas-base));
+}
+.comics-story-teaser { margin-top: 1rem; font-style: italic; }
+.comics-story-format {
+  margin-top: 1rem;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: clamp(0.68rem, 0.9vw, 0.8rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: hsl(var(--canvas-base) / 0.85);
+}
+@media screen and (min-width: 768px) and (orientation: portrait) {
+  .comics-story-selector {
+    grid-template-columns: minmax(4.5rem, 1fr) minmax(16rem, 68vw) minmax(4.5rem, 1fr);
+    gap: clamp(0.8rem, 2vw, 1.5rem);
+    width: 94vw;
+  }
+  .comics-story-rail { height: min(72vh, 52rem); }
+  .comics-story-cover { width: min(100%, 6rem); }
+  .comics-story-cover img { max-height: min(20vh, 12rem); }
+  .comics-hill-blurb { min-height: 62vh; }
+  .comics-story-description,
+  .comics-story-teaser { font-size: clamp(0.82rem, 1.8vw, 1rem); line-height: 1.45; }
 }
 @media (prefers-reduced-motion: reduce) {
   .comics-sky-pan,
-  .comics-blurb-line,
-  .comics-hill-blurb.is-open .comics-blurb-line {
+  .comics-story-rail,
+  .comics-story-copy,
+  .comics-keep-going {
     transition: none !important;
     filter: none;
     transform: none;
-  }
-
-  .comics-shrine-steps-rig.is-lower .comics-shrine-steps {
-    visibility: hidden;
-    transition: none !important;
   }
 }
