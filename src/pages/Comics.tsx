@@ -25,7 +25,7 @@ import shrineTreeLeft from "@/assets/comics-tree-original-left.png";
 import shrineTreeRight from "@/assets/comics-tree-original-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
-import comicsShrineImage from "@/assets/comics-korean-cloud-shrine.png";
+import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.png";
 import type { RevealSegment } from "@/components/WordReveal";
 
 // TERTIARY: Pendragon scrollable section - preload after section 2
@@ -53,6 +53,22 @@ const blurbMain: RevealSegment[] = [
 const blurbTagline: RevealSegment[] = [
   { text: 'A supernatural psychological manga packed with twists and reversals.' },
 ];
+
+type ComicStory = {
+  cover: string;
+  title: string;
+  description: React.ReactNode;
+  teaser: string;
+  format: string;
+};
+
+const godOfLiesStory: ComicStory = {
+  cover: godOfLiesCover,
+  title: "God of Lies",
+  description: renderBlurbSegments(blurbMain),
+  teaser: "A supernatural psychological manga packed with twists and reversals.",
+  format: "Manga • Webtoon • 2026",
+};
 
 const renderBlurbSegments = (segments: RevealSegment[]) =>
   segments.map((segment, index) => (
@@ -182,7 +198,7 @@ const Comics = () => {
         shrineTreeRight,
         godOfLiesCover,
         comicsSeoulSkyline,
-        comicsShrineImage
+        comicsKeepGoingArrow
       ];
       
       let loadedCount = 0;
@@ -684,44 +700,68 @@ const Comics = () => {
     };
   }, [isMobile, isScrollLocked, topSectionsLoaded]);
 
-  const smallShelfComics = [
+  const smallShelfComics: ComicStory[] = [
     {
       cover: burdenCoverNew,
       title: "The Burden",
       description: <>When <em>Hiroshi</em> receives a phone call from a sister he hasn't seen in twenty years demanding that he look after their mother, he's about to hang up. But learning that she now has dementia and can no longer care for herself, he is forced to take in the woman who destroyed his childhood. As his mother's memory slips away, he starts to see his own in a new light…</>,
-      teaser: "Family duty weighs heavier than expected burdens."
+      teaser: "Family duty weighs heavier than expected burdens.",
+      format: "Graphic Novel • Drama • In Development"
     },
     {
       cover: mrMiracleCoverNew,
       title: "Mr. Miracle", 
       description: "A mysterious 40-year-old man moves into a tight-knit neighborhood where everyone knows everyone's business. Unmarried and with no known background, he becomes the subject of intense gossip among the elderly local ladies. But as the community slowly gets to know him, perceptions begin to change in unexpected ways.",
-      teaser: "Sometimes the most ordinary man holds extraordinary secrets."
+      teaser: "Sometimes the most ordinary man holds extraordinary secrets.",
+      format: "Webtoon • Mystery • In Development"
     },
     {
       cover: soulTiedCover,
       title: "Soul-Tied",
       description: <>An idle ghost and an up-and-coming lawyer find their fates intertwined in this soul-searching supernatural comedy.<br /><br />In a crowded Seoul bar, the hopeless spirit of <em>Eun-yeong</em> is used to people passing right through him—until he collides with young lawyer <em>Jae-seong</em>, causing him to spill his coffee all over himself. The two opposing personalities discover that they are soul-tied: bound together in the spirit-realm, unable to be separated for all eternity. As they work together to sever their bond, they soon learn that <em>Eun-yeong</em> is not the only spirit unable to move on…</>,
-      teaser: "Destiny binds two souls in chaos and control."
+      teaser: "Destiny binds two souls in chaos and control.",
+      format: "Webtoon • Supernatural Comedy • In Development"
     },
     {
       cover: godsCover,
       title: "Gods!",
       description: <>It is the worst day of <em>Hyeon Qi-Ling's</em> career. Set on a cosmic space station where idol-gods from different galaxies meet for a rare celestial gathering. When disaster strikes and invasion threatens, a cynical female security officer who despises idols and their fanatical followers must protect the beings she most detests... if not from invaders, then from themselves.</>,
-      teaser: "When gods need saving, who do you call?"
+      teaser: "When gods need saving, who do you call?",
+      format: "Manga • Science Fiction • In Development"
     },
     {
       cover: scriptedCover,
       title: "Scripted",
       description: "A group of actors are fated to meet in every drama they appear in, each time forgetting their previous roles and relationships—until, as a traumatised character, one of them visits a hypnotherapist and begins to glimpse flashes of their previous lives. From then on, the past starts to seep into the present: unfinished stories, buried secrets, scenes that seem to have played out before. But who are they really and why do they keep being drawn together?",
-      teaser: "Reality blurs when every life feels like a performance."
+      teaser: "Reality blurs when every life feels like a performance.",
+      format: "Graphic Novel • Psychological Drama • In Development"
     },
     {
       cover: orangesGoldCoverNew,
       title: "Oranges are Made of Gold",
       description: <>A 99-year-old Korean CEO controls a vast orange empire built on rare oranges that grow only on Jeju Island. Instead of naming an heir, he forces his two sons to compete—whoever makes the most profit in one year inherits everything. <em>Ji-won</em> is an astute businessman who has spent his life working his way up in his father's company, whereas <em>Hye-il</em> left the family home, has little money, and prefers to sleep under the stars. The result seems a foregone conclusion—but as their father says: oranges rarely roll in a straight line.</>,
-      teaser: "In Jeju's orchards, family rivalry grows sweeter than gold."
+      teaser: "In Jeju's orchards, family rivalry grows sweeter than gold.",
+      format: "Webtoon • Family Drama • In Development"
     }
   ];
+
+  const [activePanoramaStory, setActivePanoramaStory] = useState<ComicStory>(godOfLiesStory);
+  const [panoramaStoryVisible, setPanoramaStoryVisible] = useState(true);
+  const panoramaStoryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (panoramaStoryTimerRef.current) clearTimeout(panoramaStoryTimerRef.current);
+  }, []);
+
+  const handlePanoramaComicClick = (comic: ComicStory) => {
+    if (comic.title === activePanoramaStory.title) return;
+    if (panoramaStoryTimerRef.current) clearTimeout(panoramaStoryTimerRef.current);
+    setPanoramaStoryVisible(false);
+    panoramaStoryTimerRef.current = setTimeout(() => {
+      setActivePanoramaStory(comic);
+      setPanoramaStoryVisible(true);
+    }, 150);
+  };
 
   // Modal ready state - ensures image is decoded before showing
   const [modalReady, setModalReady] = useState(false);
@@ -939,19 +979,6 @@ const Comics = () => {
                   </div>
                 </div>
 
-                {/* Cloud-borne Korean shrine: folds up beneath the title, keeps its
-                    complete cloud bank visible, then clears during the road pan. */}
-                <div className={`comics-shrine-steps-rig ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''} ${currentSection >= 2 ? 'is-lower' : ''}`} aria-hidden="true">
-                  <img
-                    src={comicsShrineImage}
-                    alt=""
-                    className="comics-shrine-steps"
-                    width={1024}
-                    height={768}
-                    loading="eager"
-                    decoding="async"
-                  />
-                </div>
                 <div className="comics-sky-half">
                 <div className={`comics-shrine-scene ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
                   <div className="comics-shrine-vignette" />
@@ -972,29 +999,61 @@ const Comics = () => {
                   <p className="comics-title-sub max-w-sm text-center font-body text-sm text-canvas-base/85 sm:text-base">
                     A psychological manga of deception, betrayal and redemption
                   </p>
+                  <button
+                    type="button"
+                    className="comics-keep-going"
+                    onClick={() => advanceOpeningRef.current?.()}
+                    aria-label="Keep going to the stories"
+                  >
+                    <span>Keep going</span>
+                    <img src={comicsKeepGoingArrow} alt="" width={816} height={816} loading="eager" />
+                  </button>
                 </div>
                 </div>
 
                 <div className="comics-sky-half comics-sky-lower">
-                  <div className={`comics-hill-blurb ${currentSection >= 2 ? 'is-open' : ''}`}>
-                    <p
-                      className="comics-blurb-line comics-blurb-line--left text-lg leading-relaxed text-canvas-base lg:text-xl"
-                      style={{ fontFamily: 'Georgia, serif' }}
-                    >
-                      {renderBlurbSegments(blurbMain)}
-                    </p>
-                    <p
-                      className="comics-blurb-line comics-blurb-line--right mt-5 text-lg leading-relaxed text-canvas-base lg:text-xl"
-                      style={{ fontFamily: 'Georgia, serif' }}
-                    >
-                      {renderBlurbSegments(blurbTagline)}
-                    </p>
-                    <p
-                      className="comics-blurb-line comics-blurb-line--left mt-5 text-sm uppercase tracking-widest text-canvas-base/85"
-                      style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
-                    >
-                      Manga • Webtoon • 2026
-                    </p>
+                  <div className={`comics-story-selector ${currentSection >= 2 ? 'is-open' : ''}`}>
+                    <div className="comics-story-rail comics-story-rail--left" aria-label="Choose a comic">
+                      {smallShelfComics.slice(0, 3).map((comic) => (
+                        <Button
+                          key={comic.title}
+                          type="button"
+                          variant="ghost"
+                          className={`comics-story-cover ${activePanoramaStory.title === comic.title ? 'is-selected' : ''}`}
+                          onClick={() => handlePanoramaComicClick(comic)}
+                          aria-label={`Read about ${comic.title}`}
+                          aria-pressed={activePanoramaStory.title === comic.title}
+                        >
+                          <img src={comic.cover} alt={`${comic.title} comic cover`} width={1024} height={1536} loading="eager" decoding="async" />
+                        </Button>
+                      ))}
+                    </div>
+
+                    <div className="comics-hill-blurb">
+                      <div className={`comics-story-copy ${panoramaStoryVisible ? 'is-visible' : ''}`} aria-live="polite">
+                        <h3 className="comics-story-title">{activePanoramaStory.title === "Gods!" ? "GODS!" : activePanoramaStory.title}</h3>
+                        <div className="comics-story-rule" />
+                        <p className="comics-story-description">{activePanoramaStory.description}</p>
+                        <p className="comics-story-teaser">{activePanoramaStory.teaser}</p>
+                        <p className="comics-story-format">{activePanoramaStory.format}</p>
+                      </div>
+                    </div>
+
+                    <div className="comics-story-rail comics-story-rail--right" aria-label="Choose a comic">
+                      {smallShelfComics.slice(3).map((comic) => (
+                        <Button
+                          key={comic.title}
+                          type="button"
+                          variant="ghost"
+                          className={`comics-story-cover ${activePanoramaStory.title === comic.title ? 'is-selected' : ''}`}
+                          onClick={() => handlePanoramaComicClick(comic)}
+                          aria-label={`Read about ${comic.title}`}
+                          aria-pressed={activePanoramaStory.title === comic.title}
+                        >
+                          <img src={comic.cover} alt={`${comic.title} comic cover`} width={1024} height={1536} loading="eager" decoding="async" />
+                        </Button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
