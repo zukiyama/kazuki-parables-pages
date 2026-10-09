@@ -26,6 +26,7 @@ import shrineTreeRight from "@/assets/comics-tree-original-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.png.asset.json";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
+import { PagePeel } from "@/components/PagePeel";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.png";
 import type { RevealSegment } from "@/components/WordReveal";
 
@@ -101,6 +102,9 @@ const Comics = () => {
   const [showPopUpScene, setShowPopUpScene] = useState(false);
   const openingVideoRef = useRef<HTMLVideoElement>(null);
   const advanceOpeningRef = useRef<(() => void) | null>(null);
+  const openingSectionRef = useRef<HTMLElement>(null);
+  const peelTurnRef = useRef<(() => boolean) | null>(null);
+  const peelDraggingRef = useRef(false);
   
   // Asset loading states for priority-based loading
   const [secondaryAssetsLoaded, setSecondaryAssetsLoaded] = useState(false);
@@ -422,6 +426,7 @@ const Comics = () => {
       }, 150);
       
       if (scrollAccumulator > scrollThreshold) {
+        if (currentSection === 0 && peelTurnRef.current?.()) { scrollAccumulator = 0; return; }
         triggerSectionChange('next');
       } else if (scrollAccumulator < -scrollThreshold) {
         triggerSectionChange('prev');
@@ -481,13 +486,14 @@ const Comics = () => {
       
       e.preventDefault();
       
-      if (isTransitioning) return;
+      if (isTransitioning || peelDraggingRef.current) return;
       
       const touchY = e.touches[0].clientY;
       const delta = touchStartY - touchY;
       touchAccumulator = delta;
       
       if (touchAccumulator > 60) {
+        if (currentSection === 0 && peelTurnRef.current?.()) { touchStartY = touchY; return; }
         triggerSectionChange('next');
         touchStartY = touchY;
       } else if (touchAccumulator < -60) {
