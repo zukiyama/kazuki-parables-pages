@@ -1613,99 +1613,111 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: hsl(var(--ink-black) / 0.46);
+  /* Feathered top edge so the mask never shows a hard line. */
+  background: linear-gradient(to bottom,
+    hsl(var(--ink-black) / 0) 0%,
+    hsl(var(--ink-black) / 0.3) 10%,
+    hsl(var(--ink-black) / 0.48) 24%,
+    hsl(var(--ink-black) / 0.52) 100%);
   opacity: 0;
-  transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+  transition: opacity 260ms ease-out;
 }
-.comics-sky-pan.is-lower .comics-sky-lower::before { opacity: 1; }
+/* Fades in only once the 1100ms downward pan has settled. */
+.comics-sky-pan.is-lower .comics-sky-lower::before {
+  opacity: 1;
+  transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1) 1000ms;
+}
 .comics-story-selector {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(9rem, 1fr) minmax(19rem, 34rem) minmax(9rem, 1fr);
-  align-items: center;
-  justify-content: space-between;
-  gap: clamp(0.65rem, 1.5vw, 1.5rem);
-  width: min(98vw, 94rem);
-  height: 100%;
-  margin: 0 auto;
-}
-.comics-story-rail {
-  display: grid;
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-  justify-items: center;
-  align-items: center;
-  gap: clamp(0.15rem, 0.55vh, 0.4rem);
-  height: min(79vh, 52rem);
-}
-.comics-story-rail--left { --cover-entry-x: -55vw; }
-.comics-story-rail--right { --cover-entry-x: 55vw; }
-.comics-story-cover {
-  position: relative;
-  display: block;
-  width: min(100%, 9rem);
-  height: auto;
-  max-height: 100%;
-  padding: 0;
-  border-radius: 2px;
-  background: transparent;
-  opacity: 0;
-  transform: translate3d(var(--cover-entry-x), 0, 0);
-  transition:
-    opacity 280ms ease-out,
-    transform 460ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 180ms ease-out;
-}
-.comics-story-rail .comics-story-cover:nth-child(1) { transition-delay: 180ms; }
-.comics-story-rail .comics-story-cover:nth-child(2) { transition-delay: 280ms; }
-.comics-story-rail .comics-story-cover:nth-child(3) { transition-delay: 380ms; }
-.comics-story-selector.is-open .comics-story-rail .comics-story-cover {
-  opacity: 0.86;
-  transform: translate3d(0, 0, 0);
-}
-.comics-story-cover img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: min(25vh, 16rem);
-  object-fit: contain;
-  box-shadow: 0 0.45rem 1rem hsl(var(--ink-black) / 0.48);
-}
-.comics-story-cover:hover,
-.comics-story-cover:focus-visible,
-.comics-story-cover.is-selected {
-  opacity: 1;
-  transform: translate3d(0, -0.18rem, 0) scale(1.04);
-}
-.comics-story-cover.is-selected::after {
-  content: '';
-  position: absolute;
-  inset: -0.28rem;
-  border: 1px solid hsl(var(--canvas-base) / 0.88);
-  box-shadow:
-    0 0 0 0.18rem hsl(var(--canvas-base) / 0.2),
-    0 0.55rem 1.3rem hsl(var(--ink-black) / 0.62);
-  pointer-events: none;
-}
-.comics-story-cover:focus-visible {
-  outline: 2px solid hsl(var(--canvas-base));
-  outline-offset: 0.45rem;
-}
-.comics-hill-blurb {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  width: min(96vw, 80rem);
+  height: 100%;
+  margin: 0 auto;
+}
+.comics-story-spacer { flex: 1 1 0; min-height: 0.75rem; }
+.comics-story-row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  justify-items: center;
+  align-items: end;
+  gap: clamp(0.75rem, 2.2vw, 2.25rem);
   width: 100%;
-  min-height: min(68vh, 44rem);
-  max-width: 36rem;
-  padding-bottom: clamp(1rem, 4vh, 3rem);
+}
+.comics-story-cover {
+  position: relative;
+  display: block;
+  width: min(100%, 9.5rem);
+  height: auto;
+  padding: 0;
+  border-radius: 3px;
+  background: transparent;
+  opacity: 0;
+  transform: translate3d(var(--cover-entry-x, -60vw), 0, 0);
+  transition:
+    opacity 280ms ease-out,
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.comics-story-row .comics-story-cover:nth-child(-n+3) { --cover-entry-x: -60vw; }
+.comics-story-row .comics-story-cover:nth-child(n+4) { --cover-entry-x: 60vw; }
+.comics-story-row .comics-story-cover:nth-child(3),
+.comics-story-row .comics-story-cover:nth-child(4) { transition-delay: 380ms; }
+.comics-story-row .comics-story-cover:nth-child(2),
+.comics-story-row .comics-story-cover:nth-child(5) { transition-delay: 480ms; }
+.comics-story-row .comics-story-cover:nth-child(1),
+.comics-story-row .comics-story-cover:nth-child(6) { transition-delay: 580ms; }
+.comics-story-selector.is-open .comics-story-cover {
+  opacity: 0.84;
+  transform: translate3d(0, 0, 0);
+}
+.comics-story-selector.is-open .comics-story-cover:hover,
+.comics-story-selector.is-open .comics-story-cover:focus-visible,
+.comics-story-selector.is-open .comics-story-cover.is-selected {
+  opacity: 1;
+  transform: translate3d(0, -0.3rem, 0) scale(1.05);
+  transition-delay: 0ms;
+}
+.comics-story-cover img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(24vh, 15rem);
+  object-fit: contain;
+  border-radius: 3px;
+  box-shadow: 0 0.45rem 1rem hsl(var(--ink-black) / 0.5);
+}
+/* Soft warm rim glow that breathes in instead of a hard frame. */
+.comics-story-cover::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  z-index: 0;
+  border-radius: 6px;
+  pointer-events: none;
+  box-shadow:
+    0 0 10px 2px hsl(42 95% 75% / 0.75),
+    0 0 26px 6px hsl(36 90% 62% / 0.42),
+    0 0 52px 14px hsl(30 85% 55% / 0.2);
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 520ms ease-out, transform 520ms ease-out;
+}
+.comics-story-cover.is-selected::after { opacity: 1; transform: scale(1); }
+.comics-story-cover:hover::after { opacity: 0.45; transform: scale(1); }
+.comics-story-cover.is-selected:hover::after { opacity: 1; }
+.comics-story-cover:focus-visible {
+  outline: 2px solid hsl(var(--canvas-base) / 0.7);
+  outline-offset: 0.5rem;
+}
+.comics-hill-blurb {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 38rem;
   text-align: center;
-  /* The halo remains static while each opaque row moves, avoiding the
-     compositing flicker caused by fading a large blurred text-shadow stack. */
-  /* Slightly stronger than before: the halo reaches further out so the words
-     lift off the busy road, while the layers hugging each letter stay lighter
-     so the glyphs read crisp rather than smudged. No backdrop box. */
   text-shadow:
     0 1px 1px hsl(var(--ink-black) / 0.95),
     0 1px 3px hsl(var(--ink-black) / 0.8),
@@ -1716,7 +1728,6 @@
 }
 .comics-story-copy {
   width: 100%;
-  margin-top: auto;
   opacity: 0;
   transform: translate3d(0, 0.3rem, 0);
   transition: opacity 150ms ease-out, transform 150ms ease-out;
@@ -1725,31 +1736,6 @@
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
-.comics-story-cover--home {
-  --cover-entry-x: 0rem;
-  width: min(100%, 9rem);
-  margin: 0 auto;
-  opacity: 0;
-  transform: translate3d(0, 1.25rem, 0) rotateX(-88deg);
-  transform-origin: 50% 100%;
-  perspective: 900px;
-  transition: opacity 260ms ease-out 120ms, transform 620ms cubic-bezier(0.2, 1.25, 0.35, 1) 120ms, filter 180ms ease-out;
-}
-.comics-story-cover--home.is-selected {
-  opacity: 0;
-  transform: translate3d(0, 1.25rem, 0) rotateX(-88deg);
-}
-.comics-story-selector.is-open .comics-story-cover--home {
-  opacity: 0.86;
-  transform: translate3d(0, 0, 0) rotateX(0deg);
-}
-.comics-story-selector.is-open .comics-story-cover--home:hover,
-.comics-story-selector.is-open .comics-story-cover--home:focus-visible,
-.comics-story-selector.is-open .comics-story-cover--home.is-selected {
-  opacity: 1;
-  transform: translate3d(0, -0.18rem, 0) rotateX(0deg) scale(1.04);
-}
-.comics-story-cover--home img { max-height: min(25vh, 16rem); }
 .comics-story-title {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: clamp(1.6rem, 3vw, 2.5rem);
@@ -1780,17 +1766,8 @@
   color: hsl(var(--canvas-base) / 0.85);
 }
 @media screen and (min-width: 768px) and (orientation: portrait) {
-  .comics-story-selector {
-    grid-template-columns: minmax(6rem, 1fr) minmax(15rem, 60vw) minmax(6rem, 1fr);
-    gap: clamp(0.35rem, 1vw, 0.75rem);
-    width: 98vw;
-  }
-  .comics-story-rail { height: min(76vh, 54rem); }
-  .comics-story-cover { width: min(100%, 7.5rem); }
-  .comics-story-cover img { max-height: min(23vh, 14rem); }
-  .comics-story-cover--home { width: min(100%, 7.5rem); }
-  .comics-story-cover--home img { max-height: min(23vh, 14rem); }
-  .comics-hill-blurb { min-height: 62vh; }
+  .comics-story-row { gap: clamp(0.4rem, 1.6vw, 1rem); }
+  .comics-story-cover img { max-height: min(17vh, 13rem); }
   .comics-story-description,
   .comics-story-teaser { font-size: clamp(0.82rem, 1.8vw, 1rem); line-height: 1.45; }
 }
@@ -1803,6 +1780,42 @@
     transition: none !important;
     filter: none;
   }
-  .comics-story-selector.is-open .comics-story-cover,
-  .comics-story-cover--home { opacity: 1; transform: none; }
+  .comics-story-selector.is-open .comics-story-cover { opacity: 1; transform: none; }
 }
+
+/* Page-turn dog-ear over the Comics opening film (tablet/desktop only). */
+.comics-page-peel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+.comics-page-peel__shadow {
+  position: absolute;
+  inset: 0;
+  filter: drop-shadow(-6px -4px 10px hsl(var(--ink-black) / 0.35));
+}
+.comics-page-peel__flap {
+  position: absolute;
+  left: -100%;
+  top: -100%;
+  width: 300%;
+  height: 300%;
+  display: none;
+}
+.comics-page-peel__hotspot {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 9rem;
+  height: 9rem;
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+  background: transparent;
+  border: 0;
+}
+.comics-page-peel__hotspot:active { cursor: grabbing; }
+.comics-page-peel__hotspot:focus-visible { outline: 2px solid hsl(var(--ink-black) / 0.6); outline-offset: -0.5rem; }
