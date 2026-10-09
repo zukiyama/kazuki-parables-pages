@@ -1604,8 +1604,9 @@
   display: flex;
   align-items: stretch;
   justify-content: center;
-  /* Sits over the road, raised enough to enter while the lower scene arrives. */
-  padding: clamp(4rem, 7vh, 6rem) clamp(1rem, 3vw, 3rem) clamp(2rem, 5vh, 4rem);
+  /* Blurb sits near the top; the cover row's two flexible spacers keep equal
+     gaps above (to the blurb) and below (to the viewport edge). */
+  padding: clamp(4.5rem, 10vh, 7rem) clamp(1rem, 3vw, 3rem) 0;
 }
 .comics-sky-lower::before {
   content: '';
