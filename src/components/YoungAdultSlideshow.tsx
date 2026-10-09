@@ -212,8 +212,8 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
 
   // Widescreen: use 2-row grid to separate content from dots, ensuring consistent centering
   const containerClasses = isWidescreen
-    ? "relative w-full max-w-5xl mx-auto bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20 min-h-[80vh] grid grid-rows-[1fr_auto]"
-    : "relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-white/20";
+    ? "relative w-full max-w-5xl mx-auto bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg min-h-[80vh] grid grid-rows-[1fr_auto]"
+    : "relative w-full bg-black/60 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg";
 
   // Content padding - on widescreen, the slide wrapper handles centering
   const contentPadding = isWidescreen
@@ -368,24 +368,34 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
           />
         ))}
       </div>
+
+      {/* Frame: side edges stop short of the arrow tabs so no line shows through them */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-10 rounded-lg overflow-hidden">
+        <span className="absolute inset-x-0 top-0 h-px bg-white/20" />
+        <span className="absolute inset-x-0 bottom-0 h-px bg-white/20" />
+        <span className="absolute left-0 top-0 w-px bg-white/20" style={{ height: "calc(50% - 2.25rem)" }} />
+        <span className="absolute bottom-0 left-0 w-px bg-white/20" style={{ height: "calc(50% - 2.25rem)" }} />
+        <span className="absolute right-0 top-0 w-px bg-white/20" style={{ height: "calc(50% - 2.25rem)" }} />
+        <span className="absolute bottom-0 right-0 w-px bg-white/20" style={{ height: "calc(50% - 2.25rem)" }} />
+      </div>
     </div>
       {/* Navigation - square tabs straddling the slideshow edges; hidden on mobile, use swipe instead */}
       <button
         type="button"
         onClick={prevBook}
         aria-label="Previous book"
-        className="absolute left-0 -translate-x-1/2 top-1/2 -translate-y-1/2 z-20 max-sm:hidden flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-md bg-neutral-800/95 border border-white/15 text-white/90 shadow-lg overflow-hidden"
+        className="absolute left-0 -translate-x-1/2 top-1/2 -translate-y-1/2 z-20 max-sm:hidden flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-md bg-black/55 backdrop-blur-md border border-white/10 text-white/90 shadow-lg overflow-hidden"
       >
-        <span aria-hidden className="absolute inset-0 bg-white/15 pointer-events-none" style={{ opacity: flash === "prev" ? 1 : 0, transition: flash === "prev" ? "opacity 120ms ease-out" : "opacity 500ms ease-out" }} />
+        <span aria-hidden className="absolute inset-0 bg-white/10 pointer-events-none" style={{ opacity: flash === "prev" ? 1 : 0, transition: flash === "prev" ? "opacity 120ms ease-out" : "opacity 500ms ease-out" }} />
         <ChevronLeft className="relative w-7 h-7" />
       </button>
       <button
         type="button"
         onClick={nextBook}
         aria-label="Next book"
-        className="absolute right-0 translate-x-1/2 top-1/2 -translate-y-1/2 z-20 max-sm:hidden flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-md bg-neutral-800/95 border border-white/15 text-white/90 shadow-lg overflow-hidden"
+        className="absolute right-0 translate-x-1/2 top-1/2 -translate-y-1/2 z-20 max-sm:hidden flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-md bg-black/55 backdrop-blur-md border border-white/10 text-white/90 shadow-lg overflow-hidden"
       >
-        <span aria-hidden className="absolute inset-0 bg-white/15 pointer-events-none" style={{ opacity: flash === "next" ? 1 : 0, transition: flash === "next" ? "opacity 120ms ease-out" : "opacity 500ms ease-out" }} />
+        <span aria-hidden className="absolute inset-0 bg-white/10 pointer-events-none" style={{ opacity: flash === "next" ? 1 : 0, transition: flash === "next" ? "opacity 120ms ease-out" : "opacity 500ms ease-out" }} />
         <ChevronRight className="relative w-7 h-7" />
       </button>
     </div>
