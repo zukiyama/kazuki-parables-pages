@@ -316,29 +316,23 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
         </div>
       </div>
       
-      {/* Navigation - hidden on mobile, use swipe instead */}
-      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 max-sm:hidden">
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={prevBook}
-          disabled={currentBook === 0}
-          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl disabled:opacity-30"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </Button>
-      </div>
-      <div className="absolute right-4 top-1/2 transform -translate-y-1/2 max-sm:hidden">
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={nextBook}
-          disabled={currentBook === books.length - 1}
-          className="bg-black/60 border-2 border-yellow-300/60 text-yellow-300 hover:bg-black/80 hover:border-yellow-300 hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 p-0 backdrop-blur-sm shadow-xl disabled:opacity-30"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </Button>
-      </div>
+      {/* Navigation - modern translucent edge tabs, wraps around like a carousel; hidden on mobile, use swipe instead */}
+      <button
+        type="button"
+        onClick={prevBook}
+        aria-label="Previous book"
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 max-sm:hidden flex items-center justify-start w-12 h-24 md:w-14 md:h-28 rounded-r-full bg-white/10 hover:bg-white/20 focus-visible:bg-white/20 backdrop-blur-md border border-l-0 border-white/20 text-white/90 transition-all duration-300 shadow-lg group"
+      >
+        <ChevronLeft className="w-7 h-7 ml-2 transition-transform duration-300 group-hover:-translate-x-0.5" />
+      </button>
+      <button
+        type="button"
+        onClick={nextBook}
+        aria-label="Next book"
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 max-sm:hidden flex items-center justify-end w-12 h-24 md:w-14 md:h-28 rounded-l-full bg-white/10 hover:bg-white/20 focus-visible:bg-white/20 backdrop-blur-md border border-r-0 border-white/20 text-white/90 transition-all duration-300 shadow-lg group"
+      >
+        <ChevronRight className="w-7 h-7 mr-2 transition-transform duration-300 group-hover:translate-x-0.5" />
+      </button>
       
       {/* Row 2: Book Indicator - separate from content to not affect centering */}
       <div className={`flex justify-center items-center space-x-2 ${isWidescreen ? "row-start-2 py-3" : "absolute bottom-4 left-1/2 transform -translate-x-1/2"}`}>
