@@ -26,6 +26,7 @@ import shrineTreeRight from "@/assets/comics-tree-original-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.png.asset.json";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
+import { PagePeel } from "@/components/PagePeel";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.png";
 import type { RevealSegment } from "@/components/WordReveal";
 
@@ -101,6 +102,9 @@ const Comics = () => {
   const [showPopUpScene, setShowPopUpScene] = useState(false);
   const openingVideoRef = useRef<HTMLVideoElement>(null);
   const advanceOpeningRef = useRef<(() => void) | null>(null);
+  const openingSectionRef = useRef<HTMLElement>(null);
+  const peelTurnRef = useRef<(() => boolean) | null>(null);
+  const peelDraggingRef = useRef(false);
   
   // Asset loading states for priority-based loading
   const [secondaryAssetsLoaded, setSecondaryAssetsLoaded] = useState(false);
@@ -422,6 +426,7 @@ const Comics = () => {
       }, 150);
       
       if (scrollAccumulator > scrollThreshold) {
+        if (currentSection === 0 && peelTurnRef.current?.()) { scrollAccumulator = 0; return; }
         triggerSectionChange('next');
       } else if (scrollAccumulator < -scrollThreshold) {
         triggerSectionChange('prev');
@@ -481,13 +486,14 @@ const Comics = () => {
       
       e.preventDefault();
       
-      if (isTransitioning) return;
+      if (isTransitioning || peelDraggingRef.current) return;
       
       const touchY = e.touches[0].clientY;
       const delta = touchStartY - touchY;
       touchAccumulator = delta;
       
       if (touchAccumulator > 60) {
+        if (currentSection === 0 && peelTurnRef.current?.()) { touchStartY = touchY; return; }
         triggerSectionChange('next');
         touchStartY = touchY;
       } else if (touchAccumulator < -60) {
@@ -836,10 +842,12 @@ const Comics = () => {
             
             {/* SECTION 0: OPENING FILM */}
             <section 
+              ref={openingSectionRef}
               className="absolute inset-x-0 bottom-0 grid grid-rows-[minmax(0,1fr)_auto_minmax(0,1fr)] overflow-hidden bg-canvas-base"
               style={{ 
                 top: headerBottom,
                 opacity: titleOpacity,
+                zIndex: showPopUpScene ? 10 : undefined,
                 pointerEvents: titleVisible ? 'auto' : 'none',
                 transition: 'opacity 0.5s ease-out'
               }}
@@ -901,22 +909,6 @@ const Comics = () => {
                 )}
               </div>
 
-              {showPopUpScene && (openingVideoEnded || openingVideoFailed) && titleVisible && (
-                <div className="comics-opening-prompt absolute inset-x-0 bottom-5 z-20 flex justify-center">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="group h-auto flex-col gap-1.5 text-ink-black hover:bg-transparent hover:text-ink-black"
-                    onClick={() => advanceOpeningRef.current?.()}
-                    aria-label="Continue to God of Lies"
-                  >
-                    <span className="font-palatino text-sm italic sm:text-base">Scroll down for good stuff</span>
-                    <svg className="h-7 w-7 transition-transform duration-300 group-hover:translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                      <path d="M12 4v15M5.5 12.5 12 19l6.5-6.5" />
-                    </svg>
-                  </Button>
-                </div>
-              )}
               {isTabletPortraitStrip ? (
                 <div className="comics-strip-frame comics-strip-frame--bottom relative h-full min-h-0 w-full overflow-hidden">
                   <img
@@ -948,11 +940,26 @@ const Comics = () => {
 
             </section>
 
+            {showPopUpScene && (
+              <PagePeel
+                targetRef={openingSectionRef}
+                boxStyle={{ top: headerBottom }}
+                ready={openingVideoEnded || openingVideoFailed}
+                pageShown={titleVisible}
+                onTurned={() => advanceOpeningRef.current?.()}
+                turnRef={peelTurnRef}
+                draggingRef={peelDraggingRef}
+              />
+            )}
+
             {/* SECTION 1: VIGNETTES - Slide in from sides with summary text */}
             <section 
               className={`absolute inset-0 ${showPopUpScene ? 'comics-shrine-section overflow-hidden' : ''}`}
               style={{ 
-                opacity: showPopUpScene ? (skyPanVisible ? 1 : 0) : vignetteOpacity,
+                // Pop-up mode: the sky page sits beneath the opening page so the
+                // page-turn peel reveals it directly instead of dissolving.
+                opacity: showPopUpScene ? 1 : vignetteOpacity,
+                zIndex: showPopUpScene ? 1 : undefined,
                 pointerEvents: (showPopUpScene ? skyPanVisible : vignetteVisible) ? 'auto' : 'none',
                 transition: 'opacity 0.5s ease-out'
               }}
@@ -1001,47 +1008,12 @@ const Comics = () => {
                   <p className="comics-title-sub max-w-sm text-center font-body text-sm text-canvas-base/85 sm:text-base">
                     A psychological manga of deception, betrayal and redemption
                   </p>
-                  <button
-                    type="button"
-                    className="comics-keep-going"
-                    onClick={() => advanceOpeningRef.current?.()}
-                    aria-label="Keep going to the stories"
-                  >
-                    <span>Keep going</span>
-                    <img src={comicsKeepGoingArrow} alt="" width={816} height={816} loading="eager" />
-                  </button>
                 </div>
                 </div>
 
                 <div className="comics-sky-half comics-sky-lower">
                   <div className={`comics-story-selector ${currentSection >= 2 ? 'is-open' : ''}`}>
-                    <div className="comics-story-rail comics-story-rail--left" aria-label="Choose a comic">
-                      {smallShelfComics.slice(0, 3).map((comic) => (
-                        <Button
-                          key={comic.title}
-                          type="button"
-                          variant="ghost"
-                          className={`comics-story-cover ${activePanoramaStory.title === comic.title ? 'is-selected' : ''}`}
-                          onClick={() => handlePanoramaComicClick(comic)}
-                          aria-label={`Read about ${comic.title}`}
-                          aria-pressed={activePanoramaStory.title === comic.title}
-                        >
-                          <img src={comic.cover} alt={`${comic.title} comic cover`} width={1024} height={1536} loading="eager" decoding="async" />
-                        </Button>
-                      ))}
-                    </div>
-
                     <div className="comics-hill-blurb">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className={`comics-story-cover comics-story-cover--home ${activePanoramaStory.title === godOfLiesStory.title ? 'is-selected' : ''}`}
-                        onClick={() => handlePanoramaComicClick(godOfLiesStory)}
-                        aria-label="Return to the God of Lies story"
-                        aria-pressed={activePanoramaStory.title === godOfLiesStory.title}
-                      >
-                        <img src={godOfLiesUploadedCover.url} alt="God of Lies comic cover" width={1024} height={1536} loading="eager" decoding="async" />
-                      </Button>
                       <div className={`comics-story-copy ${panoramaStoryVisible ? 'is-visible' : ''}`} aria-live="polite">
                         <h3 className="comics-story-title">{activePanoramaStory.title === "Gods!" ? "GODS!" : activePanoramaStory.title}</h3>
                         <div className="comics-story-rule" />
@@ -1050,9 +1022,9 @@ const Comics = () => {
                         <p className="comics-story-format">{activePanoramaStory.format}</p>
                       </div>
                     </div>
-
-                    <div className="comics-story-rail comics-story-rail--right" aria-label="Choose a comic">
-                      {smallShelfComics.slice(3).map((comic) => (
+                    <div className="comics-story-spacer" aria-hidden="true" />
+                    <div className="comics-story-row" aria-label="Choose a comic">
+                      {smallShelfComics.map((comic) => (
                         <Button
                           key={comic.title}
                           type="button"
@@ -1066,6 +1038,7 @@ const Comics = () => {
                         </Button>
                       ))}
                     </div>
+                    <div className="comics-story-spacer" aria-hidden="true" />
                   </div>
                 </div>
               </div>

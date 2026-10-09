@@ -18,3 +18,8 @@
 - [x] Match the Young Adult slideshow arrow tabs to the panel tone and keep them translucent.
 - [x] Draw the slideshow frame in segments so no edge line shows through the tabs.
 - [x] Verify the tabs over the writing page background.
+- [x] Replace the Comics opening dissolve with a draggable/tappable page-corner turn.
+- [x] Remove the opening prompt and the "Keep going" arrow.
+- [x] Feather and delay the lower road mask.
+- [x] Remove the central God of Lies cover; lay out six covers in one row below a raised blurb with equal spacing.
+- [x] Replace the selection frame with a soft warm glow.
