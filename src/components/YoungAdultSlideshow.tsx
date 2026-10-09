@@ -89,18 +89,54 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     }
   }, []);
 
+  // Track position includes a clone at each end so wrapping keeps moving in the same direction
+  const [position, setPosition] = useState(1);
+  const [instant, setInstant] = useState(false);
+  const [flash, setFlash] = useState<"prev" | "next" | null>(null);
+  const flashTimer = useRef<number | null>(null);
+
+  const triggerFlash = (side: "prev" | "next") => {
+    if (flashTimer.current) window.clearTimeout(flashTimer.current);
+    setFlash(side);
+    flashTimer.current = window.setTimeout(() => setFlash(null), 180);
+  };
+
   const goToBook = (index: number) => {
     const clampedIndex = Math.max(0, Math.min(index, books.length - 1));
+    setInstant(false);
+    setPosition(clampedIndex + 1);
     setCurrentBook(clampedIndex);
   };
 
-  const nextBook = () => {
-    goToBook((currentBook + 1) % books.length);
+  const step = (dir: 1 | -1) => {
+    if (position === 0 || position === books.length + 1) return; // mid-wrap
+    setInstant(false);
+    setPosition(position + dir);
+    setCurrentBook((currentBook + dir + books.length) % books.length);
   };
 
-  const prevBook = () => {
-    goToBook((currentBook - 1 + books.length) % books.length);
+  const handleTrackTransitionEnd = (e: React.TransitionEvent) => {
+    if (e.target !== e.currentTarget) return;
+    if (position === 0) { setInstant(true); setPosition(books.length); }
+    else if (position === books.length + 1) { setInstant(true); setPosition(1); }
   };
+
+  useEffect(() => {
+    if (!instant) return;
+    const id = requestAnimationFrame(() => requestAnimationFrame(() => setInstant(false)));
+    return () => cancelAnimationFrame(id);
+  }, [instant]);
+
+  // Keep position in sync when the parent sets the book externally
+  useEffect(() => {
+    setPosition((p) => {
+      const shown = (p - 1 + books.length) % books.length;
+      return shown === currentBook ? p : currentBook + 1;
+    });
+  }, [currentBook]);
+
+  const nextBook = () => { triggerFlash("next"); step(1); };
+  const prevBook = () => { triggerFlash("prev"); step(-1); };
 
   // Touch/swipe handlers - only activate on intentional horizontal swipes
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -159,10 +195,10 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     if (isSwipeActive) {
       if (translateX < -SWIPE_COMPLETE_THRESHOLD) {
         // Swiped left - go to next book (wraps to the first)
-        goToBook((currentBook + 1) % books.length);
+        step(1);
       } else if (translateX > SWIPE_COMPLETE_THRESHOLD) {
         // Swiped right - go to previous book (wraps to the last)
-        goToBook((currentBook - 1 + books.length) % books.length);
+        step(-1);
       }
     }
     
@@ -254,7 +290,10 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     return processText(summary);
   };
 
+  const track = [books[books.length - 1], ...books, books[0]];
+
   return (
+    <div className={`relative w-full ${isWidescreen ? "max-w-5xl mx-auto" : ""}`}>
     <div 
       ref={containerRef}
       className={containerClasses}
@@ -268,14 +307,16 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
           ref={slidesRef}
           className={`flex w-full ${isWidescreen ? "h-full" : ""}`}
           style={{
-            transform: `translateX(calc(-${currentBook * 100}% + ${translateX}px))`,
-            transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            transform: `translateX(calc(-${position * 100}% + ${translateX}px))`,
+            transition: isDragging || instant ? 'none' : 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             willChange: 'transform'
           }}
+          onTransitionEnd={handleTrackTransitionEnd}
         >
-          {books.map((book, index) => (
+          {track.map((book, index) => (
             <div 
               key={index}
+              aria-hidden={index !== position}
               className={`flex-shrink-0 w-full ${isWidescreen ? "h-full" : ""}`}
             >
               <div className={contentPadding}>
@@ -316,24 +357,6 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
         </div>
       </div>
       
-      {/* Navigation - modern translucent edge tabs, wraps around like a carousel; hidden on mobile, use swipe instead */}
-      <button
-        type="button"
-        onClick={prevBook}
-        aria-label="Previous book"
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 max-sm:hidden flex items-center justify-start w-12 h-24 md:w-14 md:h-28 rounded-r-full bg-white/10 hover:bg-white/20 focus-visible:bg-white/20 backdrop-blur-md border border-l-0 border-white/20 text-white/90 transition-all duration-300 shadow-lg group"
-      >
-        <ChevronLeft className="w-7 h-7 ml-2 transition-transform duration-300 group-hover:-translate-x-0.5" />
-      </button>
-      <button
-        type="button"
-        onClick={nextBook}
-        aria-label="Next book"
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 max-sm:hidden flex items-center justify-end w-12 h-24 md:w-14 md:h-28 rounded-l-full bg-white/10 hover:bg-white/20 focus-visible:bg-white/20 backdrop-blur-md border border-r-0 border-white/20 text-white/90 transition-all duration-300 shadow-lg group"
-      >
-        <ChevronRight className="w-7 h-7 mr-2 transition-transform duration-300 group-hover:translate-x-0.5" />
-      </button>
-      
       {/* Row 2: Book Indicator - separate from content to not affect centering */}
       <div className={`flex justify-center items-center space-x-2 ${isWidescreen ? "row-start-2 py-3" : "absolute bottom-4 left-1/2 transform -translate-x-1/2"}`}>
         {books.map((_, index) => (
@@ -345,6 +368,26 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
           />
         ))}
       </div>
+    </div>
+      {/* Navigation - square tabs straddling the slideshow edges; hidden on mobile, use swipe instead */}
+      <button
+        type="button"
+        onClick={prevBook}
+        aria-label="Previous book"
+        className="absolute left-0 -translate-x-1/2 top-1/2 -translate-y-1/2 z-20 max-sm:hidden flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-md bg-neutral-800/95 border border-white/15 text-white/90 shadow-lg overflow-hidden"
+      >
+        <span aria-hidden className="absolute inset-0 bg-white/15 pointer-events-none" style={{ opacity: flash === "prev" ? 1 : 0, transition: flash === "prev" ? "opacity 120ms ease-out" : "opacity 500ms ease-out" }} />
+        <ChevronLeft className="relative w-7 h-7" />
+      </button>
+      <button
+        type="button"
+        onClick={nextBook}
+        aria-label="Next book"
+        className="absolute right-0 translate-x-1/2 top-1/2 -translate-y-1/2 z-20 max-sm:hidden flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-md bg-neutral-800/95 border border-white/15 text-white/90 shadow-lg overflow-hidden"
+      >
+        <span aria-hidden className="absolute inset-0 bg-white/15 pointer-events-none" style={{ opacity: flash === "next" ? 1 : 0, transition: flash === "next" ? "opacity 120ms ease-out" : "opacity 500ms ease-out" }} />
+        <ChevronRight className="relative w-7 h-7" />
+      </button>
     </div>
   );
 });
