@@ -147,12 +147,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
     if (!isSwipeActive && !swipeDecided.current) return;
     if (swipeDecided.current && !isSwipeActive) return;
     
-    // Add resistance at edges
-    if ((currentBook === 0 && diffX > 0) || (currentBook === books.length - 1 && diffX < 0)) {
-      setTranslateX(diffX * 0.3); // Reduced movement at edges
-    } else {
-      setTranslateX(diffX);
-    }
+    setTranslateX(diffX);
   };
 
   const handleTouchEnd = () => {
@@ -160,14 +155,14 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
       return;
     }
     
-    // Only process swipe if we were actively swiping
+    // Only process swipe if we were actively swiping (wraps around like a carousel)
     if (isSwipeActive) {
-      if (translateX < -SWIPE_COMPLETE_THRESHOLD && currentBook < books.length - 1) {
-        // Swiped left - go to next book
-        goToBook(currentBook + 1);
-      } else if (translateX > SWIPE_COMPLETE_THRESHOLD && currentBook > 0) {
-        // Swiped right - go to previous book
-        goToBook(currentBook - 1);
+      if (translateX < -SWIPE_COMPLETE_THRESHOLD) {
+        // Swiped left - go to next book (wraps to the first)
+        goToBook((currentBook + 1) % books.length);
+      } else if (translateX > SWIPE_COMPLETE_THRESHOLD) {
+        // Swiped right - go to previous book (wraps to the last)
+        goToBook((currentBook - 1 + books.length) % books.length);
       }
     }
     
