@@ -15,3 +15,6 @@
 - [x] Lower every active blurb within the road scene.
 - [x] Restore off-screen staggered side entrances, fold in the central cover, and fade in a dark road mask.
 - [x] Verify both orientations, reverse scrolling, story selection/reset, and phone isolation.
+- [x] Match the Young Adult slideshow arrow tabs to the panel tone and keep them translucent.
+- [x] Draw the slideshow frame in segments so no edge line shows through the tabs.
+- [x] Verify the tabs over the writing page background.
