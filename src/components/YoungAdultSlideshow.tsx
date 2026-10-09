@@ -1,5 +1,4 @@
 import { useState, forwardRef, useImperativeHandle, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Book covers
@@ -96,15 +95,11 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
   };
 
   const nextBook = () => {
-    if (currentBook < books.length - 1) {
-      goToBook(currentBook + 1);
-    }
+    goToBook((currentBook + 1) % books.length);
   };
 
   const prevBook = () => {
-    if (currentBook > 0) {
-      goToBook(currentBook - 1);
-    }
+    goToBook((currentBook - 1 + books.length) % books.length);
   };
 
   // Touch/swipe handlers - only activate on intentional horizontal swipes
