@@ -28,6 +28,8 @@ import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.png.asset.json";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
 import godOfLiesPopupCharacters from "@/assets/god-of-lies-characters-replacement.png.asset.json";
+import godOfLiesPopupDog from "@/assets/god-of-lies-popup-dog.png.asset.json";
+import { GodOfLiesCarousel } from "@/components/GodOfLiesCarousel";
 import { PagePeel } from "@/components/PagePeel";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.png";
 import type { RevealSegment } from "@/components/WordReveal";
@@ -998,7 +1000,8 @@ const Comics = () => {
 
                 <div className="comics-sky-half">
                 <div ref={characterPopupRef} className={`comics-character-popup ${shrineSceneActive ? 'is-open' : ''}`} aria-hidden="true">
-                  <img src={godOfLiesPopupCharacters.url} alt="" width={768} height={1152} loading="eager" decoding="async" />
+                  <img className="comics-character-men" src={godOfLiesPopupCharacters.url} alt="" width={768} height={1152} loading="eager" decoding="async" />
+                  <img className="comics-character-dog" src={godOfLiesPopupDog.url} alt="" width={1312} height={1199} loading="eager" decoding="async" />
                 </div>
                 <div className={`comics-shrine-scene ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
                   <div className="comics-shrine-vignette" />
@@ -1023,13 +1026,13 @@ const Comics = () => {
                 </div>
 
                 <div className="comics-sky-half comics-sky-lower">
-                  <div className="comics-hill-blurb">
+                  <GodOfLiesCarousel>
                     <h3 className="comics-story-title">God of Lies</h3>
                     <div className="comics-story-rule" />
                     <p className="comics-story-description">{renderBlurbSegments(blurbMain)}</p>
                     <p className="comics-story-teaser">A supernatural psychological manga packed with twists and reversals.</p>
                     <p className="comics-story-format">Manga • Webtoon • 2026</p>
-                  </div>
+                  </GodOfLiesCarousel>
                 </div>
               </div>
               )}
