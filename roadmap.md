@@ -1,5 +1,9 @@
 # Roadmap
 
+- [x] Add the proportional bottom-anchored folding dog.
+- [x] Add the frameless blurb/image carousel with partial neighbours and fading thumbnail selections.
+- [x] Verify both orientations, carousel access, folding and unchanged phones.
+
 - [x] Replace and substantially enlarge the title-screen characters without changing their fold.
 - [x] Remove the panorama selector and restore only the lower-centred God of Lies blurb.
 - [x] Verify spacing, folding, the lower blurb and unchanged separate gallery/phones.

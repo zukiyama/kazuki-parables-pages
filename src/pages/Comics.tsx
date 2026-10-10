@@ -28,6 +28,8 @@ import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.png.asset.json";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
 import godOfLiesPopupCharacters from "@/assets/god-of-lies-characters-replacement.png.asset.json";
+import godOfLiesPopupDog from "@/assets/god-of-lies-popup-dog.png.asset.json";
+import { GodOfLiesCarousel } from "@/components/GodOfLiesCarousel";
 import { PagePeel } from "@/components/PagePeel";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.png";
 import type { RevealSegment } from "@/components/WordReveal";
@@ -394,6 +396,7 @@ const Comics = () => {
     advanceOpeningRef.current = () => triggerSectionChange('next');
     
     const handleWheel = (e: WheelEvent) => {
+      if (isScrollLocked && e.target instanceof Element && e.target.closest('.god-of-lies-carousel') && Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
         // Check if user scrolled to top and wants to go up - dissolve back to Cream
@@ -454,14 +457,17 @@ const Comics = () => {
     
     // Touch handling for mobile
     let touchStartY = 0;
+    let touchStartX = 0;
     let touchAccumulator = 0;
     
     const handleTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY;
+      touchStartX = e.touches[0].clientX;
       touchAccumulator = 0;
     };
     
     const handleTouchMove = (e: TouchEvent) => {
+      if (e.target instanceof Element && e.target.closest('.god-of-lies-carousel') && Math.abs(e.touches[0].clientX - touchStartX) > Math.abs(e.touches[0].clientY - touchStartY)) return;
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
         // Check if user scrolled to top and wants to go up - dissolve back to Cream
@@ -998,7 +1004,8 @@ const Comics = () => {
 
                 <div className="comics-sky-half">
                 <div ref={characterPopupRef} className={`comics-character-popup ${shrineSceneActive ? 'is-open' : ''}`} aria-hidden="true">
-                  <img src={godOfLiesPopupCharacters.url} alt="" width={768} height={1152} loading="eager" decoding="async" />
+                  <img className="comics-character-men" src={godOfLiesPopupCharacters.url} alt="" width={768} height={1152} loading="eager" decoding="async" />
+                  <img className="comics-character-dog" src={godOfLiesPopupDog.url} alt="" width={1312} height={1199} loading="eager" decoding="async" />
                 </div>
                 <div className={`comics-shrine-scene ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
                   <div className="comics-shrine-vignette" />
@@ -1023,13 +1030,13 @@ const Comics = () => {
                 </div>
 
                 <div className="comics-sky-half comics-sky-lower">
-                  <div className="comics-hill-blurb">
+                  <GodOfLiesCarousel>
                     <h3 className="comics-story-title">God of Lies</h3>
                     <div className="comics-story-rule" />
                     <p className="comics-story-description">{renderBlurbSegments(blurbMain)}</p>
                     <p className="comics-story-teaser">A supernatural psychological manga packed with twists and reversals.</p>
                     <p className="comics-story-format">Manga • Webtoon • 2026</p>
-                  </div>
+                  </GodOfLiesCarousel>
                 </div>
               </div>
               )}
