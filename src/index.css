@@ -1642,9 +1642,10 @@
   top: 50%;
   z-index: 5;
   display: flex;
-  align-items: stretch;
-  justify-content: center;
-  padding: clamp(5rem, 12vh, 8rem) clamp(1rem, 3vw, 3rem) 2rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: clamp(5rem, 12vh, 8rem) clamp(1rem, 3vw, 3rem) clamp(3rem, 12vh, 9rem);
 }
 .comics-sky-pan::after {
   content: '';
@@ -1659,105 +1660,6 @@
 }
 .comics-sky-pan.is-lower::after {
   opacity: 1;
-}
-.comics-hill-blurb {
-  grid-column: 1 / -1;
-  max-width: 48rem;
-  justify-self: center;
-}
-.comics-story-selector.is-original .comics-cover-stage { display: none; }
-.comics-story-reset {
-  color: hsl(var(--canvas-base) / 0.8);
-  margin-top: 0.75rem;
-  padding: 0.25rem 0.5rem;
-  height: auto;
-  font-size: 0.8rem;
-}
-.comics-story-reset:hover { color: hsl(var(--canvas-base)); }
-.comics-story-row {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  justify-items: center;
-  align-items: end;
-  gap: clamp(0.75rem, 2vw, 2rem);
-  width: 100%;
-  height: min(22dvh, 12rem);
-}
-.comics-story-cover {
-  position: relative;
-  display: block;
-  width: min(100%, 8rem, calc(min(22dvh, 12rem) * 2 / 3));
-  height: auto;
-  aspect-ratio: 2 / 3;
-  padding: 0;
-  border-radius: 3px;
-  background: transparent;
-  opacity: 0;
-  transform: translate3d(var(--cover-entry-x, -60vw), 0, 0);
-  transition:
-    opacity 280ms ease-out,
-    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.comics-story-row .comics-story-cover:nth-child(-n+3) { --cover-entry-x: -60vw; }
-.comics-story-row .comics-story-cover:nth-child(n+4) { --cover-entry-x: 60vw; }
-.comics-story-row .comics-story-cover:nth-child(3),
-.comics-story-row .comics-story-cover:nth-child(4) { transition-delay: 380ms; }
-.comics-story-row .comics-story-cover:nth-child(2),
-.comics-story-row .comics-story-cover:nth-child(5) { transition-delay: 480ms; }
-.comics-story-row .comics-story-cover:nth-child(1),
-.comics-story-row .comics-story-cover:nth-child(6) { transition-delay: 580ms; }
-.comics-story-selector.is-open .comics-story-cover {
-  opacity: 0.84;
-  transform: translate3d(0, 0, 0);
-}
-.comics-story-selector.is-open .comics-story-cover:hover,
-.comics-story-selector.is-open .comics-story-cover:focus-visible {
-  opacity: 1;
-  transition-delay: 0ms;
-}
-.comics-story-selector.is-open .comics-story-cover.is-selected {
-  opacity: 1;
-  z-index: 5;
-  transition-delay: 0ms;
-}
-.comics-story-cover.is-selected {
-  outline: 1px dashed hsl(var(--canvas-base) / 0.35);
-  outline-offset: -1px;
-}
-.comics-story-cover:hover,
-.comics-story-cover:focus,
-.comics-story-cover:focus-visible,
-.comics-story-cover:active,
-.comics-story-cover.is-selected { background: transparent !important; box-shadow: none !important; }
-.comics-story-cover img {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 3px;
-  box-shadow: 0 0.45rem 1rem hsl(var(--ink-black) / 0.5);
-  transform-origin: top left;
-  transform: translate3d(var(--cover-x, 0px), var(--cover-y, 0px), 0) scale(var(--cover-scale, 1));
-  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), filter 250ms ease;
-  pointer-events: none;
-  will-change: transform;
-}
-/* Soft warm rim glow that breathes in instead of a hard frame. */
-.comics-story-cover.is-selected img {
-  filter: drop-shadow(0 0 5px hsl(var(--comic-rim-glow) / 0.5)) drop-shadow(0 0 12px hsl(var(--comic-rim-glow) / 0.25));
-}
-.comics-story-cover:focus-visible {
-  outline: 2px solid hsl(var(--canvas-base) / 0.7);
-  outline-offset: 0.5rem;
-}
-.comics-sky-lower {
-  justify-content: flex-end;
-  padding-bottom: clamp(3rem, 12vh, 9rem);
 }
 .comics-hill-blurb {
   flex: 0 0 auto;
