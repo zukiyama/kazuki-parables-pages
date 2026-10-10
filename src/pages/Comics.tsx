@@ -396,6 +396,7 @@ const Comics = () => {
     advanceOpeningRef.current = () => triggerSectionChange('next');
     
     const handleWheel = (e: WheelEvent) => {
+      if (isScrollLocked && e.target instanceof Element && e.target.closest('.god-of-lies-carousel') && Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
         // Check if user scrolled to top and wants to go up - dissolve back to Cream
@@ -456,14 +457,17 @@ const Comics = () => {
     
     // Touch handling for mobile
     let touchStartY = 0;
+    let touchStartX = 0;
     let touchAccumulator = 0;
     
     const handleTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY;
+      touchStartX = e.touches[0].clientX;
       touchAccumulator = 0;
     };
     
     const handleTouchMove = (e: TouchEvent) => {
+      if (e.target instanceof Element && e.target.closest('.god-of-lies-carousel') && Math.abs(e.touches[0].clientX - touchStartX) > Math.abs(e.touches[0].clientY - touchStartY)) return;
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
         // Check if user scrolled to top and wants to go up - dissolve back to Cream

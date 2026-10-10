@@ -1481,7 +1481,7 @@
 }
 .comics-character-popup .comics-character-dog {
   height: calc(var(--character-height, 52vh) * 0.3);
-  left: calc(50% + var(--character-height, 52vh) * 0.43);
+  left: min(calc(50% + var(--character-height, 52vh) * 0.43), 86%);
   max-width: 26%;
 }
 @media (prefers-reduced-motion: reduce) {
