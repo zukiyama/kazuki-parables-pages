@@ -987,7 +987,7 @@ const Comics = () => {
 
                 {/* Original lush pop-up trees, with only the roots replaced by
                     continuous trunks that finish beyond the viewport. */}
-                <div className={`comics-tree-rig ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
+                <div className={`comics-tree-rig ${shrineSceneActive ? 'is-open' : ''}`} aria-hidden="true">
                   <div className="comics-tree comics-tree--left">
                     <img src={shrineTreeLeft} alt="" width={1024} height={1536} loading="eager" decoding="async" />
                   </div>
@@ -1006,11 +1006,11 @@ const Comics = () => {
 
                 <div ref={panoramaTitleRef} className={`comics-shrine-title ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`}>
                   <p className="comics-title-kicker font-body text-xs uppercase text-canvas-base/80">Featured</p>
-                  <h2 className="comics-title-heading font-playfair text-4xl text-canvas-base sm:text-5xl lg:text-6xl" aria-label="God of Lies">
+                  <h2 className="comics-title-heading font-playfair text-6xl text-canvas-base lg:text-7xl xl:text-8xl" aria-label="God of Lies">
                     {['G', 'O', 'D'].map((ch, i) => (
                       <span key={`g${i}`} className="comics-title-letter" style={{ '--l': i } as React.CSSProperties} aria-hidden="true">{ch}</span>
                     ))}
-                    <span className="comics-title-letter comics-title-of text-2xl italic font-normal sm:text-3xl lg:text-4xl" style={{ '--l': 3 } as React.CSSProperties} aria-hidden="true">of</span>
+                    <span className="comics-title-letter comics-title-of text-4xl italic font-normal lg:text-5xl xl:text-6xl" style={{ '--l': 3 } as React.CSSProperties} aria-hidden="true">of</span>
                     {['L', 'I', 'E', 'S'].map((ch, i) => (
                       <span key={`l${i}`} className="comics-title-letter" style={{ '--l': i + 4 } as React.CSSProperties} aria-hidden="true">{ch}</span>
                     ))}
