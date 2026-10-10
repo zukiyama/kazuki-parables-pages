@@ -246,7 +246,7 @@ export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, onRe
   };
 
   return (
-    <div ref={overlayRef} className="comics-page-peel" style={boxStyle} aria-hidden={!pageShown}>
+    <div ref={overlayRef} className="comics-page-peel" style={boxStyle} hidden={!pageShown} aria-hidden={!pageShown}>
       <div className="comics-page-peel__shadow">
         <div ref={flapRef} className="comics-page-peel__flap" />
       </div>

@@ -28,6 +28,7 @@ import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.png.asset.json";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
 import { PagePeel } from "@/components/PagePeel";
+import { PanoramaComicSelector } from "@/components/PanoramaComicSelector";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.png";
 import type { RevealSegment } from "@/components/WordReveal";
 
@@ -762,24 +763,6 @@ const Comics = () => {
     }
   ];
 
-  const [activePanoramaStory, setActivePanoramaStory] = useState<ComicStory>(godOfLiesStory);
-  const [panoramaStoryVisible, setPanoramaStoryVisible] = useState(true);
-  const panoramaStoryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => () => {
-    if (panoramaStoryTimerRef.current) clearTimeout(panoramaStoryTimerRef.current);
-  }, []);
-
-  const handlePanoramaComicClick = (comic: ComicStory) => {
-    if (comic.title === activePanoramaStory.title) return;
-    if (panoramaStoryTimerRef.current) clearTimeout(panoramaStoryTimerRef.current);
-    setPanoramaStoryVisible(false);
-    panoramaStoryTimerRef.current = setTimeout(() => {
-      setActivePanoramaStory(comic);
-      setPanoramaStoryVisible(true);
-    }, 150);
-  };
-
   // Modal ready state - ensures image is decoded before showing
   const [modalReady, setModalReady] = useState(false);
 
@@ -1028,32 +1011,7 @@ const Comics = () => {
                 </div>
 
                 <div className="comics-sky-half comics-sky-lower">
-                  <div className={`comics-story-selector ${currentSection >= 2 ? 'is-open' : ''}`}>
-                    <div className="comics-story-row" aria-label="Choose a comic">
-                      {smallShelfComics.map((comic) => (
-                        <Button
-                          key={comic.title}
-                          type="button"
-                          variant="ghost"
-                          className={`comics-story-cover ${activePanoramaStory.title === comic.title ? 'is-selected' : ''}`}
-                          onClick={() => handlePanoramaComicClick(comic)}
-                          aria-label={`Read about ${comic.title}`}
-                          aria-pressed={activePanoramaStory.title === comic.title}
-                        >
-                          <img src={comic.cover} alt={`${comic.title} comic cover`} width={1024} height={1536} loading="eager" decoding="async" />
-                        </Button>
-                      ))}
-                    </div>
-                    <div className="comics-hill-blurb">
-                      <div className={`comics-story-copy ${panoramaStoryVisible ? 'is-visible' : ''}`} aria-live="polite">
-                        <h3 className="comics-story-title">{activePanoramaStory.title === "Gods!" ? "GODS!" : activePanoramaStory.title}</h3>
-                        <div className="comics-story-rule" />
-                        <p className="comics-story-description">{activePanoramaStory.description}</p>
-                        <p className="comics-story-teaser">{activePanoramaStory.teaser}</p>
-                        <p className="comics-story-format">{activePanoramaStory.format}</p>
-                      </div>
-                    </div>
-                  </div>
+                  <PanoramaComicSelector comics={smallShelfComics} original={godOfLiesStory} open={currentSection >= 2} />
                 </div>
               </div>
               )}
