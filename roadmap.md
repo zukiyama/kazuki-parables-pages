@@ -1,7 +1,7 @@
 # Roadmap
 
-- [ ] Preserve character sizes after returning from Pendragon and nudge the dog up/right.
-- [ ] Verify repeated return trips and both orientations.
+- [x] Preserve character sizes after returning from Pendragon and nudge the dog up/right.
+- [x] Verify repeated return trips and both orientations.
 
 - [x] Add the proportional bottom-anchored folding dog.
 - [x] Add the frameless blurb/image carousel with partial neighbours and fading thumbnail selections.
