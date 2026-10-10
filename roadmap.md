@@ -1,5 +1,9 @@
 # Roadmap
 
+- [x] Restrict the dog ear to the opening page, including return scrolling.
+- [x] Animate covers between a fixed six-cover bottom row and the enlarged left position, with subtle dashed empty slots.
+- [x] Add a small “Back to God of Lies” text link and verify selections, return scrolling, and phone isolation.
+
 - [x] Prevent image-loading and pressed-corner blue flashes.
 - [x] Start the trees and title during the page turn.
 - [x] Arrange fixed covers in two columns of three on the left, with story copy on the right.
