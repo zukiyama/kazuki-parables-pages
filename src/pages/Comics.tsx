@@ -27,6 +27,7 @@ import shrineTreeRight from "@/assets/comics-tree-original-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.png.asset.json";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
+import godOfLiesPopupCharacters from "@/assets/god-of-lies-popup-characters.png.asset.json";
 import { PagePeel } from "@/components/PagePeel";
 import { PanoramaComicSelector } from "@/components/PanoramaComicSelector";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.png";
@@ -988,6 +989,9 @@ const Comics = () => {
                 </div>
 
                 <div className="comics-sky-half">
+                <div className={`comics-character-popup ${shrineSceneActive ? 'is-open' : ''}`} aria-hidden="true">
+                  <img src={godOfLiesPopupCharacters.url} alt="" width={1024} height={1536} loading="eager" decoding="async" />
+                </div>
                 <div className={`comics-shrine-scene ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
                   <div className="comics-shrine-vignette" />
                 </div>
