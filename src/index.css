@@ -56,6 +56,7 @@
     --comics-sky: 204 76% 65%;
     --paper-fold-shade: 40 12% 70%;
     --paper-fold-light: 40 20% 98%;
+    --comic-rim-glow: 42 95% 75%;
 
     /* Typography scale for literary feel */
     --font-heading: 'Playfair Display', serif;
@@ -1704,7 +1705,8 @@
   transition-delay: 0ms;
 }
 .comics-story-cover.is-selected {
-  border: 1px dashed hsl(var(--canvas-base) / 0.35);
+  outline: 1px dashed hsl(var(--canvas-base) / 0.35);
+  outline-offset: -1px;
 }
 .comics-story-cover:hover { background: transparent; }
 .comics-story-cover img {
