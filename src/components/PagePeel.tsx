@@ -13,6 +13,7 @@ interface PagePeelProps {
   /** Whether the page is currently the visible one. */
   pageShown: boolean;
   onTurned: () => void;
+  onRevealChange: (revealed: boolean) => void;
   /** Exposes a programmatic turn (wheel / swipe). Returns true when handled. */
   turnRef: MutableRefObject<(() => boolean) | null>;
   draggingRef: MutableRefObject<boolean>;
@@ -40,7 +41,7 @@ const clipHalf = (poly: Pt[], side: (p: Pt) => number, keepPositive: boolean): P
 
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
-export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, turnRef, draggingRef }: PagePeelProps) => {
+export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, onRevealChange, turnRef, draggingRef }: PagePeelProps) => {
   const overlayRef = useRef<HTMLDivElement>(null);
   const flapRef = useRef<HTMLDivElement>(null);
   const pRef = useRef<Pt | null>(null);
@@ -54,6 +55,9 @@ export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, turn
   readyRef.current = ready;
   const onTurnedRef = useRef(onTurned);
   onTurnedRef.current = onTurned;
+  const revealRef = useRef(false);
+  const onRevealRef = useRef(onRevealChange);
+  onRevealRef.current = onRevealChange;
 
   const size = () => {
     const el = targetRef.current;
@@ -76,6 +80,11 @@ export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, turn
     if (!page || !flap) return;
     const { w, h } = size();
     const c = { x: w, y: h };
+    const revealed = w > 0 && (w - p.x) / w > 0.16;
+    if (revealed !== revealRef.current) {
+      revealRef.current = revealed;
+      onRevealRef.current(revealed);
+    }
     const dx = p.x - c.x;
     const dy = p.y - c.y;
     const len = Math.hypot(dx, dy);
@@ -144,7 +153,7 @@ export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, turn
   }, [render, restPoint]);
 
   const turn = useCallback(() => {
-    if (turnedRef.current) return;
+    if (turnedRef.current || !readyRef.current) return;
     turnedRef.current = true;
     const { w, h } = size();
     const from = pRef.current;
@@ -157,6 +166,7 @@ export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, turn
   useEffect(() => {
     turnRef.current = () => {
       if (!pageShown) return false;
+      if (!readyRef.current) return true;
       if (!turnedRef.current) turn();
       return true;
     };
@@ -244,7 +254,7 @@ export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, turn
         <Button
           type="button"
           variant="ghost"
-          className="comics-page-peel__hotspot"
+          className="comics-page-peel__hotspot bg-transparent hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
           aria-label="Turn the page to God of Lies"
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
