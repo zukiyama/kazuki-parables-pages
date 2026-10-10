@@ -953,8 +953,9 @@ const Comics = () => {
               <PagePeel
                 targetRef={openingSectionRef}
                 boxStyle={{ top: headerBottom }}
-                ready={true}
+                ready={panoramaReady}
                 pageShown={titleVisible}
+                onRevealChange={setOpeningRevealing}
                 onTurned={() => advanceOpeningRef.current?.()}
                 turnRef={peelTurnRef}
                 draggingRef={peelDraggingRef}
@@ -980,6 +981,12 @@ const Comics = () => {
                   alt=""
                   aria-hidden="true"
                   className="comics-shrine-skyline"
+                  fetchPriority="high"
+                  onLoad={async (event) => {
+                    const image = event.currentTarget;
+                    try { await image.decode(); } catch { return; }
+                    setPanoramaReady(true);
+                  }}
                   width={1536}
                   height={2048}
                   loading="eager"
