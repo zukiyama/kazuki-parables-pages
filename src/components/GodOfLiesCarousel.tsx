@@ -43,7 +43,7 @@ export function GodOfLiesCarousel({ children }: { children: ReactNode }) {
             <div className="comics-hill-blurb">{children}</div>
           </div>
           {scenes.map((scene, index) => (
-            <div className="god-of-lies-carousel__slide" key={scene.src} role="group" aria-label={`Illustration ${index + 1} of ${scenes.length}`}>
+            <div className="god-of-lies-carousel__slide is-image" key={scene.src} role="group" aria-label={`Illustration ${index + 1} of ${scenes.length}`}>
               <Button variant="link" className="god-of-lies-carousel__image" onClick={() => goTo(index + 1)} aria-label={`View illustration ${index + 1}`}>
                 <img src={scene.src} alt={scene.alt} width={1536} height={1024} loading="eager" decoding="async" draggable={false} />
               </Button>
