@@ -1695,7 +1695,6 @@
   align-items: center;
   justify-content: center;
 }
-.god-of-lies-carousel__slide.is-image { flex: 0 0 min(54vw, 66vh, 40rem); }
 .god-of-lies-carousel__slide .comics-hill-blurb { padding: 0 1.5rem; }
 .god-of-lies-carousel__text { cursor: pointer; }
 .god-of-lies-carousel__image {
