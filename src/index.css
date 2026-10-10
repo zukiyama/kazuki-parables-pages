@@ -54,6 +54,8 @@
     --earth-tone: 35 30% 70%;
     --smoke-grey: 0 0% 60%;
     --comics-sky: 204 76% 65%;
+    --paper-fold-shade: 40 12% 70%;
+    --paper-fold-light: 40 20% 98%;
 
     /* Typography scale for literary feel */
     --font-heading: 'Playfair Display', serif;
@@ -1604,29 +1606,21 @@
   display: flex;
   align-items: stretch;
   justify-content: center;
-  /* Blurb sits near the top; the cover row's two flexible spacers keep equal
-     gaps above (to the blurb) and below (to the viewport edge). */
-  padding: clamp(4.5rem, 10vh, 7rem) clamp(1rem, 3vw, 3rem) 0;
+  padding: clamp(5rem, 12vh, 8rem) clamp(1rem, 3vw, 3rem) 1rem;
 }
-.comics-sky-lower::before {
+.comics-sky-pan::after {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 2;
   pointer-events: none;
-  /* Feathered top edge so the mask never shows a hard line. */
-  background: linear-gradient(to bottom,
-    hsl(var(--ink-black) / 0) 0%,
-    hsl(var(--ink-black) / 0.3) 10%,
-    hsl(var(--ink-black) / 0.48) 24%,
-    hsl(var(--ink-black) / 0.52) 100%);
+  /* One continuous mask across both halves: no boundary during the pan. */
+  background: hsl(var(--ink-black) / 0.52);
   opacity: 0;
-  transition: opacity 260ms ease-out;
+  transition: opacity 1100ms cubic-bezier(0.65, 0, 0.35, 1);
 }
-/* Fades in only once the 1100ms downward pan has settled. */
-.comics-sky-pan.is-lower .comics-sky-lower::before {
+.comics-sky-pan.is-lower::after {
   opacity: 1;
-  transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1) 1000ms;
 }
 .comics-story-selector {
   position: relative;
@@ -1638,8 +1632,8 @@
   height: 100%;
   margin: 0 auto;
 }
-.comics-story-spacer { flex: 1 1 0; min-height: 0.75rem; }
 .comics-story-row {
+  flex: 0 0 auto;
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   justify-items: center;
@@ -1716,6 +1710,7 @@
 }
 .comics-hill-blurb {
   flex: 0 0 auto;
+  margin-top: clamp(2.5rem, 7vh, 5rem);
   width: 100%;
   max-width: 38rem;
   text-align: center;
@@ -1774,7 +1769,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .comics-sky-pan,
-  .comics-sky-lower::before,
+  .comics-sky-pan::after,
   .comics-story-cover,
   .comics-story-copy,
   .comics-keep-going {
@@ -1817,6 +1812,19 @@
   cursor: grab;
   background: transparent;
   border: 0;
+  padding: 0;
+  border-radius: 0;
+}
+.comics-page-peel__hotspot:hover { background: transparent; }
+.comics-page-peel-cue {
+  position: absolute;
+  right: 3.5rem;
+  bottom: 1.5rem;
+  width: 16rem;
+  height: 8rem;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 0 2px hsl(var(--paper-fold-light))) drop-shadow(0 0 4px hsl(var(--paper-fold-light)));
 }
 .comics-page-peel__hotspot:active { cursor: grabbing; }
 .comics-page-peel__hotspot:focus-visible { outline: 2px solid hsl(var(--ink-black) / 0.6); outline-offset: -0.5rem; }
