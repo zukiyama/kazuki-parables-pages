@@ -1,7 +1,7 @@
 # Roadmap
 
-- [ ] Add the uploaded bottom-centred character cutout with a reversible pop-up fold and subtle title shading.
-- [ ] Verify title spacing, forward/reverse folding, and unchanged phones.
+- [x] Add the uploaded bottom-centred character cutout with a reversible pop-up fold and subtle title shading.
+- [x] Verify title spacing, forward/reverse folding, and unchanged phones.
 
 - [x] Restrict the dog ear to the opening page, including return scrolling.
 - [x] Animate covers between a fixed six-cover bottom row and the enlarged left position, with subtle dashed empty slots.
