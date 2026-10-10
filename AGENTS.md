@@ -10,3 +10,4 @@
 - The lower Comics panorama uses an isolated looping Embla carousel with original story copy as its initial slide, equal-sized adjacent image slides, and thumbnail navigation; the separate gallery below retains its existing interactions.
 - The Comics peel overlay is visually hidden whenever the opening page is not shown, because accessibility hiding alone leaves the reflected flap visible after return scrolling.
 - The title-screen characters, dog and trees share the opening reveal/title-section state so all reverse on departure; positive bottom-hinged character rotation folds away from the viewer, and measured space beneath the title maintains bottom anchoring and proportional dog placement without overlap or phone changes.
+- Rebind character sizing measurements whenever the pinned Comics pages return from Pendragon, because those pages unmount and their replacement elements otherwise lose the measured sizes.

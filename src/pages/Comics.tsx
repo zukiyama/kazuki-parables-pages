@@ -97,21 +97,6 @@ const Comics = () => {
   const [showPopUpScene, setShowPopUpScene] = useState(false);
   const characterPopupRef = useRef<HTMLDivElement>(null);
   const panoramaTitleRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const popup = characterPopupRef.current;
-    const title = panoramaTitleRef.current;
-    const half = popup?.parentElement;
-    if (!popup || !title || !half) return;
-    const measure = () => {
-      const available = half.clientHeight - title.offsetTop - title.offsetHeight - 24;
-      popup.style.setProperty('--character-height', `${Math.max(0, available)}px`);
-    };
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(half);
-    observer.observe(title);
-    return () => observer.disconnect();
-  }, [showPopUpScene]);
   const openingVideoRef = useRef<HTMLVideoElement>(null);
   const advanceOpeningRef = useRef<(() => void) | null>(null);
   const openingSectionRef = useRef<HTMLElement>(null);
@@ -152,6 +137,24 @@ const Comics = () => {
   const [showFooterCharacter, setShowFooterCharacter] = useState(false);
 
   const maxPinnedSection = 2; // After section 2 (Cream), normal scrolling begins - Pendragon is in scrollable content
+
+  // Pendragon unmounts the pinned pages. Rebind measurements to the new
+  // elements on return instead of leaving them at the percentage fallback.
+  useEffect(() => {
+    const popup = characterPopupRef.current;
+    const title = panoramaTitleRef.current;
+    const half = popup?.parentElement;
+    if (!popup || !title || !half) return;
+    const measure = () => {
+      const available = half.clientHeight - title.offsetTop - title.offsetHeight - 24;
+      popup.style.setProperty('--character-height', `${Math.max(0, available)}px`);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(half);
+    observer.observe(title);
+    return () => observer.disconnect();
+  }, [showPopUpScene, isScrollLocked]);
 
   // Keep the opening stage exactly within the visible area below the fixed header.
   useEffect(() => {

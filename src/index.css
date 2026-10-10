@@ -1480,8 +1480,9 @@
   transform: translateX(-50%) rotateX(0deg);
 }
 .comics-character-popup .comics-character-dog {
+  bottom: 0.5rem;
   height: calc(var(--character-height, 52vh) * 0.3);
-  left: min(calc(50% + var(--character-height, 52vh) * 0.43), 86%);
+  left: min(calc(50% + var(--character-height, 52vh) * 0.43 + 0.75rem), 87%);
   max-width: 26%;
 }
 @media (prefers-reduced-motion: reduce) {
