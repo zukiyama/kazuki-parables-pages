@@ -13,6 +13,7 @@ import comicsScriptsTitleVideoWebm from "@/assets/comicsscriptstitle.webm";
 import comicsScriptsTitleFirstFrame from "@/assets/comicsscriptstitle-first.webp";
 import comicsScriptsTitleFinalFrame from "@/assets/comicsscriptstitle-final.webp";
 import comicsStoryboardStrip from "@/assets/comics-storyboard-strip.jpg";
+import comicsCoolStuffCue from "@/assets/comics-cool-stuff-cue.png";
 
 // SECONDARY: Vignette assets (Section 1) - preload after first paint
 import vignetteManyFaces from "@/assets/god-of-lies-characters.webp";
@@ -94,7 +95,6 @@ const Comics = () => {
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false);
   const [headerBottom, setHeaderBottom] = useState(0);
   const [openingVideoFailed, setOpeningVideoFailed] = useState(false);
-  const [openingVideoEnded, setOpeningVideoEnded] = useState(false);
   // Tablet portrait ONLY (never phones, never anything wider than it is tall)
   const [isTabletPortraitStrip, setIsTabletPortraitStrip] = useState(false);
   // Landscape versions ONLY: hide the storyboard strips (parchment instead)
@@ -899,7 +899,6 @@ const Comics = () => {
                     muted
                     playsInline
                     preload="auto"
-                    onEnded={() => setOpeningVideoEnded(true)}
                     onError={() => setOpeningVideoFailed(true)}
                     aria-label="Comics and Scripts opening film"
                   >
@@ -936,15 +935,16 @@ const Comics = () => {
                   decoding="async"
                 />
               )}
-
-
+              {showPopUpScene && (
+                <img className="comics-page-peel-cue" src={comicsCoolStuffCue} alt="Cool stuff here" width={1152} height={576} loading="eager" decoding="async" />
+              )}
             </section>
 
             {showPopUpScene && (
               <PagePeel
                 targetRef={openingSectionRef}
                 boxStyle={{ top: headerBottom }}
-                ready={openingVideoEnded || openingVideoFailed}
+                ready={true}
                 pageShown={titleVisible}
                 onTurned={() => advanceOpeningRef.current?.()}
                 turnRef={peelTurnRef}
@@ -1013,16 +1013,6 @@ const Comics = () => {
 
                 <div className="comics-sky-half comics-sky-lower">
                   <div className={`comics-story-selector ${currentSection >= 2 ? 'is-open' : ''}`}>
-                    <div className="comics-hill-blurb">
-                      <div className={`comics-story-copy ${panoramaStoryVisible ? 'is-visible' : ''}`} aria-live="polite">
-                        <h3 className="comics-story-title">{activePanoramaStory.title === "Gods!" ? "GODS!" : activePanoramaStory.title}</h3>
-                        <div className="comics-story-rule" />
-                        <p className="comics-story-description">{activePanoramaStory.description}</p>
-                        <p className="comics-story-teaser">{activePanoramaStory.teaser}</p>
-                        <p className="comics-story-format">{activePanoramaStory.format}</p>
-                      </div>
-                    </div>
-                    <div className="comics-story-spacer" aria-hidden="true" />
                     <div className="comics-story-row" aria-label="Choose a comic">
                       {smallShelfComics.map((comic) => (
                         <Button
@@ -1038,7 +1028,15 @@ const Comics = () => {
                         </Button>
                       ))}
                     </div>
-                    <div className="comics-story-spacer" aria-hidden="true" />
+                    <div className="comics-hill-blurb">
+                      <div className={`comics-story-copy ${panoramaStoryVisible ? 'is-visible' : ''}`} aria-live="polite">
+                        <h3 className="comics-story-title">{activePanoramaStory.title === "Gods!" ? "GODS!" : activePanoramaStory.title}</h3>
+                        <div className="comics-story-rule" />
+                        <p className="comics-story-description">{activePanoramaStory.description}</p>
+                        <p className="comics-story-teaser">{activePanoramaStory.teaser}</p>
+                        <p className="comics-story-format">{activePanoramaStory.format}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

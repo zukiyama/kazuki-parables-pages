@@ -1,5 +1,11 @@
 # Roadmap
 
+- [x] Show the opening corner immediately and give its reverse opaque paper shading.
+- [x] Add the black handwritten “Cool stuff here” cue and arrow.
+- [x] Fade a seamless full-panorama mask during both directions of travel.
+- [x] Fix the six-cover row above the lower text, independent of story length.
+- [x] Verify page turning, mask timing, cover stability and phone isolation.
+
 - [x] Remove the rendered temple while preserving its asset.
 - [x] Raise the God of Lies title and add the “Keep going” comic arrow prompt.
 - [x] Place six interactive covers around the lower panorama blurb on tablet and desktop.

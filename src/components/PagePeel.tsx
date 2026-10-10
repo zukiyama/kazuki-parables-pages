@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, type CSSProperties, type MutableRefObject, type RefObject } from "react";
+import { Button } from "@/components/ui/button";
 
 type Pt = { x: number; y: number };
 
@@ -115,9 +116,9 @@ export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, turn
     flap.style.display = "block";
     flap.style.clipPath = `polygon(${flapPoly.map((q) => `${q.x}px ${q.y}px`).join(",")})`;
     flap.style.background = `linear-gradient(${angle}deg,
-      hsl(var(--ink-black) / 0.28) ${t0}%,
+      hsl(var(--paper-fold-shade)) ${t0}%,
       hsl(var(--canvas-base)) ${t0 + span * 0.12}%,
-      hsl(0 0% 100% / 0.95) ${t0 + span * 0.38}%,
+      hsl(var(--paper-fold-light)) ${t0 + span * 0.38}%,
       hsl(var(--canvas-base)) ${t0 + span * 0.7}%,
       hsl(var(--parchment, var(--canvas-base))) ${t1}%)`;
   }, [targetRef]);
@@ -240,8 +241,9 @@ export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, turn
         <div ref={flapRef} className="comics-page-peel__flap" />
       </div>
       {pageShown && ready && (
-        <button
+        <Button
           type="button"
+          variant="ghost"
           className="comics-page-peel__hotspot"
           aria-label="Turn the page to God of Lies"
           onPointerDown={onPointerDown}
