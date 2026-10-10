@@ -1687,7 +1687,7 @@
 .god-of-lies-carousel__viewport { width: 100%; overflow: hidden; touch-action: pan-y pinch-zoom; }
 .god-of-lies-carousel__track { display: flex; align-items: stretch; }
 .god-of-lies-carousel__slide {
-  flex: 0 0 min(70vw, 88vh, 54rem);
+  flex: 0 0 min(56vw, 68vh, 42rem);
   min-width: 0;
   aspect-ratio: 3 / 2;
   margin-right: 2rem;
@@ -1696,6 +1696,7 @@
   justify-content: center;
 }
 .god-of-lies-carousel__slide .comics-hill-blurb { padding: 0 1.5rem; }
+.god-of-lies-carousel__text { cursor: pointer; }
 .god-of-lies-carousel__image {
   display: block;
   width: 100%;
