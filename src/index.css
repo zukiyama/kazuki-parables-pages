@@ -1813,6 +1813,7 @@
   pointer-events: auto;
   touch-action: none;
   cursor: grab;
+  -webkit-tap-highlight-color: transparent;
   background: transparent;
   border: 0;
   padding: 0;
