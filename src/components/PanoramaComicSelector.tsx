@@ -42,7 +42,7 @@ export function PanoramaComicSelector({ comics, original, open }: { comics: Stor
     observer.observe(root);
     observer.observe(stage);
     return () => observer.disconnect();
-  }, [selected]);
+  }, [selected, story]);
 
   const choose = (index: number | null) => {
     if (selected === index) return;
