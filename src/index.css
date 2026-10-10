@@ -56,7 +56,6 @@
     --comics-sky: 204 76% 65%;
     --paper-fold-shade: 40 12% 70%;
     --paper-fold-light: 40 20% 98%;
-    --comic-rim-glow: 42 95% 75%;
 
     /* Typography scale for literary feel */
     --font-heading: 'Playfair Display', serif;
@@ -1465,9 +1464,9 @@
   position: absolute;
   bottom: 0;
   left: 50%;
-  height: 41%;
+  height: var(--character-height, 52%);
   width: auto;
-  max-width: 58%;
+  max-width: 90%;
   object-fit: contain;
   object-position: center bottom;
   transform-origin: 50% 100%;
@@ -1479,9 +1478,6 @@
 }
 .comics-character-popup.is-open img {
   transform: translateX(-50%) rotateX(0deg);
-}
-@media screen and (min-width: 768px) and (orientation: portrait) {
-  .comics-character-popup img { height: 46%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .comics-character-popup img { transition: none; }
@@ -1646,9 +1642,10 @@
   top: 50%;
   z-index: 5;
   display: flex;
-  align-items: stretch;
-  justify-content: center;
-  padding: clamp(5rem, 12vh, 8rem) clamp(1rem, 3vw, 3rem) 2rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: clamp(5rem, 12vh, 8rem) clamp(1rem, 3vw, 3rem) clamp(3rem, 12vh, 9rem);
 }
 .comics-sky-pan::after {
   content: '';
@@ -1664,124 +1661,11 @@
 .comics-sky-pan.is-lower::after {
   opacity: 1;
 }
-.comics-story-selector {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
-  grid-template-rows: minmax(0, 1fr);
-  align-items: center;
-  column-gap: clamp(2rem, 5vw, 5rem);
-  width: min(96vw, 80rem);
-  height: 100%;
-  margin: 0 auto;
-  padding-bottom: calc(min(22dvh, 12rem) + 2.5rem);
-}
-.comics-cover-stage {
-  height: 100%;
-  max-height: 28rem;
-  width: 100%;
-}
-.comics-story-selector.is-original .comics-hill-blurb {
-  grid-column: 1 / -1;
-  max-width: 48rem;
-  justify-self: center;
-}
-.comics-story-selector.is-original .comics-cover-stage { display: none; }
-.comics-story-reset {
-  color: hsl(var(--canvas-base) / 0.8);
-  margin-top: 0.75rem;
-  padding: 0.25rem 0.5rem;
-  height: auto;
-  font-size: 0.8rem;
-}
-.comics-story-reset:hover { color: hsl(var(--canvas-base)); }
-.comics-story-row {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  justify-items: center;
-  align-items: end;
-  gap: clamp(0.75rem, 2vw, 2rem);
-  width: 100%;
-  height: min(22dvh, 12rem);
-}
-.comics-story-cover {
-  position: relative;
-  display: block;
-  width: min(100%, 8rem, calc(min(22dvh, 12rem) * 2 / 3));
-  height: auto;
-  aspect-ratio: 2 / 3;
-  padding: 0;
-  border-radius: 3px;
-  background: transparent;
-  opacity: 0;
-  transform: translate3d(var(--cover-entry-x, -60vw), 0, 0);
-  transition:
-    opacity 280ms ease-out,
-    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.comics-story-row .comics-story-cover:nth-child(-n+3) { --cover-entry-x: -60vw; }
-.comics-story-row .comics-story-cover:nth-child(n+4) { --cover-entry-x: 60vw; }
-.comics-story-row .comics-story-cover:nth-child(3),
-.comics-story-row .comics-story-cover:nth-child(4) { transition-delay: 380ms; }
-.comics-story-row .comics-story-cover:nth-child(2),
-.comics-story-row .comics-story-cover:nth-child(5) { transition-delay: 480ms; }
-.comics-story-row .comics-story-cover:nth-child(1),
-.comics-story-row .comics-story-cover:nth-child(6) { transition-delay: 580ms; }
-.comics-story-selector.is-open .comics-story-cover {
-  opacity: 0.84;
-  transform: translate3d(0, 0, 0);
-}
-.comics-story-selector.is-open .comics-story-cover:hover,
-.comics-story-selector.is-open .comics-story-cover:focus-visible {
-  opacity: 1;
-  transition-delay: 0ms;
-}
-.comics-story-selector.is-open .comics-story-cover.is-selected {
-  opacity: 1;
-  z-index: 5;
-  transition-delay: 0ms;
-}
-.comics-story-cover.is-selected {
-  outline: 1px dashed hsl(var(--canvas-base) / 0.35);
-  outline-offset: -1px;
-}
-.comics-story-cover:hover,
-.comics-story-cover:focus,
-.comics-story-cover:focus-visible,
-.comics-story-cover:active,
-.comics-story-cover.is-selected { background: transparent !important; box-shadow: none !important; }
-.comics-story-cover img {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 3px;
-  box-shadow: 0 0.45rem 1rem hsl(var(--ink-black) / 0.5);
-  transform-origin: top left;
-  transform: translate3d(var(--cover-x, 0px), var(--cover-y, 0px), 0) scale(var(--cover-scale, 1));
-  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), filter 250ms ease;
-  pointer-events: none;
-  will-change: transform;
-}
-/* Soft warm rim glow that breathes in instead of a hard frame. */
-.comics-story-cover.is-selected img {
-  filter: drop-shadow(0 0 5px hsl(var(--comic-rim-glow) / 0.5)) drop-shadow(0 0 12px hsl(var(--comic-rim-glow) / 0.25));
-}
-.comics-story-cover:focus-visible {
-  outline: 2px solid hsl(var(--canvas-base) / 0.7);
-  outline-offset: 0.5rem;
-}
 .comics-hill-blurb {
   flex: 0 0 auto;
   margin-top: 0;
   width: 100%;
-  max-width: 38rem;
+  max-width: 48rem;
   text-align: center;
   text-shadow:
     0 1px 1px hsl(var(--ink-black) / 0.95),
@@ -1790,16 +1674,6 @@
     0 0 28px hsl(var(--ink-black) / 0.75),
     0 0 58px hsl(var(--ink-black) / 0.6),
     0 0 96px hsl(var(--ink-black) / 0.45);
-}
-.comics-story-copy {
-  width: 100%;
-  opacity: 0;
-  transform: translate3d(0, 0.3rem, 0);
-  transition: opacity 150ms ease-out, transform 150ms ease-out;
-}
-.comics-story-copy.is-visible {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
 }
 .comics-story-title {
   font-family: 'Playfair Display', Georgia, serif;
@@ -1831,21 +1705,16 @@
   color: hsl(var(--canvas-base) / 0.85);
 }
 @media screen and (min-width: 768px) and (orientation: portrait) {
-  .comics-story-row { gap: 1rem; }
   .comics-story-description,
   .comics-story-teaser { font-size: clamp(0.82rem, 1.8vw, 1rem); line-height: 1.45; }
 }
 @media (prefers-reduced-motion: reduce) {
   .comics-sky-pan,
   .comics-sky-pan::after,
-  .comics-story-cover,
-  .comics-story-cover img,
-  .comics-story-copy,
   .comics-keep-going {
     transition: none !important;
     filter: none;
   }
-  .comics-story-selector.is-open .comics-story-cover { opacity: 1; transform: none; }
 }
 
 /* Page-turn dog-ear over the Comics opening film (tablet/desktop only). */

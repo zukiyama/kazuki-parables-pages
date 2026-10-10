@@ -1,5 +1,9 @@
 # Roadmap
 
+- [x] Replace and substantially enlarge the title-screen characters without changing their fold.
+- [x] Remove the panorama selector and restore only the lower-centred God of Lies blurb.
+- [x] Verify spacing, folding, the lower blurb and unchanged separate gallery/phones.
+
 - [x] Add the uploaded bottom-centred character cutout with a reversible pop-up fold and subtle title shading.
 - [x] Verify title spacing, forward/reverse folding, and unchanged phones.
 

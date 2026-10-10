@@ -27,9 +27,8 @@ import shrineTreeRight from "@/assets/comics-tree-original-right.png";
 import godOfLiesCover from "@/assets/god-of-lies-cover.png";
 import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.png.asset.json";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
-import godOfLiesPopupCharacters from "@/assets/god-of-lies-popup-characters.png.asset.json";
+import godOfLiesPopupCharacters from "@/assets/god-of-lies-characters-replacement.png.asset.json";
 import { PagePeel } from "@/components/PagePeel";
-import { PanoramaComicSelector } from "@/components/PanoramaComicSelector";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.png";
 import type { RevealSegment } from "@/components/WordReveal";
 
@@ -74,14 +73,6 @@ const renderBlurbSegments = (segments: RevealSegment[]) =>
       : <span key={index}>{segment.text}</span>
   ));
 
-const godOfLiesStory: ComicStory = {
-  cover: godOfLiesCover,
-  title: "God of Lies",
-  description: renderBlurbSegments(blurbMain),
-  teaser: "A supernatural psychological manga packed with twists and reversals.",
-  format: "Manga • Webtoon • 2026",
-};
-
 
 
 const Comics = () => {
@@ -102,6 +93,23 @@ const Comics = () => {
   // Landscape versions ONLY: hide the storyboard strips (parchment instead)
   const [isLandscapeStripHidden, setIsLandscapeStripHidden] = useState(false);
   const [showPopUpScene, setShowPopUpScene] = useState(false);
+  const characterPopupRef = useRef<HTMLDivElement>(null);
+  const panoramaTitleRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const popup = characterPopupRef.current;
+    const title = panoramaTitleRef.current;
+    const half = popup?.parentElement;
+    if (!popup || !title || !half) return;
+    const measure = () => {
+      const available = half.clientHeight - title.offsetTop - title.offsetHeight - 24;
+      popup.style.setProperty('--character-height', `${Math.max(0, available)}px`);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(half);
+    observer.observe(title);
+    return () => observer.disconnect();
+  }, [showPopUpScene]);
   const openingVideoRef = useRef<HTMLVideoElement>(null);
   const advanceOpeningRef = useRef<(() => void) | null>(null);
   const openingSectionRef = useRef<HTMLElement>(null);
@@ -989,14 +997,14 @@ const Comics = () => {
                 </div>
 
                 <div className="comics-sky-half">
-                <div className={`comics-character-popup ${shrineSceneActive ? 'is-open' : ''}`} aria-hidden="true">
-                  <img src={godOfLiesPopupCharacters.url} alt="" width={1024} height={1536} loading="eager" decoding="async" />
+                <div ref={characterPopupRef} className={`comics-character-popup ${shrineSceneActive ? 'is-open' : ''}`} aria-hidden="true">
+                  <img src={godOfLiesPopupCharacters.url} alt="" width={768} height={1152} loading="eager" decoding="async" />
                 </div>
                 <div className={`comics-shrine-scene ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
                   <div className="comics-shrine-vignette" />
                 </div>
 
-                <div className={`comics-shrine-title ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`}>
+                <div ref={panoramaTitleRef} className={`comics-shrine-title ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`}>
                   <p className="comics-title-kicker font-body text-xs uppercase text-canvas-base/80">Featured</p>
                   <h2 className="comics-title-heading font-playfair text-4xl text-canvas-base sm:text-5xl lg:text-6xl" aria-label="God of Lies">
                     {['G', 'O', 'D'].map((ch, i) => (
@@ -1015,7 +1023,13 @@ const Comics = () => {
                 </div>
 
                 <div className="comics-sky-half comics-sky-lower">
-                  <PanoramaComicSelector comics={smallShelfComics} original={godOfLiesStory} open={currentSection >= 2} />
+                  <div className="comics-hill-blurb">
+                    <h3 className="comics-story-title">God of Lies</h3>
+                    <div className="comics-story-rule" />
+                    <p className="comics-story-description">{renderBlurbSegments(blurbMain)}</p>
+                    <p className="comics-story-teaser">A supernatural psychological manga packed with twists and reversals.</p>
+                    <p className="comics-story-format">Manga • Webtoon • 2026</p>
+                  </div>
                 </div>
               </div>
               )}
