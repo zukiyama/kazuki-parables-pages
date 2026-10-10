@@ -105,6 +105,15 @@ const Comics = () => {
   const openingSectionRef = useRef<HTMLElement>(null);
   const peelTurnRef = useRef<(() => boolean) | null>(null);
   const peelDraggingRef = useRef(false);
+  const [panoramaReady, setPanoramaReady] = useState(false);
+  const [openingRevealing, setOpeningRevealing] = useState(false);
+
+  // Fetch the next page immediately, not through the deferred secondary queue.
+  useEffect(() => {
+    const image = new Image();
+    image.fetchPriority = 'high';
+    image.src = comicsSeoulSkyline;
+  }, []);
   
   // Asset loading states for priority-based loading
   const [secondaryAssetsLoaded, setSecondaryAssetsLoaded] = useState(false);
@@ -819,7 +828,7 @@ const Comics = () => {
   // Cream section: visible on section 2, fades out when leaving to section 3
   const creamVisible = currentSection === 2;
   const creamOpacity = currentSection === 2 ? 1 : 0;
-  const shrineSceneActive = currentSection === 1;
+  const shrineSceneActive = currentSection === 1 || (currentSection === 0 && openingRevealing);
   const skyPanVisible = currentSection === 1 || currentSection === 2;
   
   // Pendragon is now ONLY in scrollable content - no pinned version
@@ -935,7 +944,7 @@ const Comics = () => {
                   decoding="async"
                 />
               )}
-              {showPopUpScene && (
+              {showPopUpScene && panoramaReady && (
                 <img className="comics-page-peel-cue" src={comicsCoolStuffCue} alt="Cool stuff here" width={1152} height={576} loading="eager" decoding="async" />
               )}
             </section>
