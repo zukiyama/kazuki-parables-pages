@@ -1,9 +1,9 @@
 # Roadmap
 
-- [ ] Prevent image-loading and pressed-corner blue flashes.
-- [ ] Start the trees and title during the page turn.
-- [ ] Arrange fixed covers in two columns of three on the left, with story copy on the right.
-- [ ] Verify loading, page turning and every story in both orientations; preserve phones.
+- [x] Prevent image-loading and pressed-corner blue flashes.
+- [x] Start the trees and title during the page turn.
+- [x] Arrange fixed covers in two columns of three on the left, with story copy on the right.
+- [x] Verify loading, page turning and every story in both orientations; preserve phones.
 
 - [x] Show the opening corner immediately and give its reverse opaque paper shading.
 - [x] Add the black handwritten “Cool stuff here” cue and arrow.
