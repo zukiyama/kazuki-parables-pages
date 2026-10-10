@@ -23,10 +23,11 @@ export function PanoramaComicSelector({ comics, original, open }: { comics: Stor
       const destination = stage.getBoundingClientRect();
       slotsRef.current.forEach((slot, index) => {
         const image = slot?.querySelector("img");
-        if (!slot || !image) return;
+        const parent = slot?.offsetParent;
+        if (!slot || !image || !(parent instanceof HTMLElement)) return;
         // Offset coordinates ignore entrance transforms, keeping the destination stable.
-        const sourceX = slot.offsetLeft + (slot.offsetParent as HTMLElement).offsetLeft;
-        const sourceY = slot.offsetTop + (slot.offsetParent as HTMLElement).offsetTop;
+        const sourceX = slot.offsetLeft + parent.offsetLeft;
+        const sourceY = slot.offsetTop + parent.offsetTop;
         const width = Math.min(destination.width, destination.height * 2 / 3);
         const height = width * 3 / 2;
         const enlarged = selected === index;

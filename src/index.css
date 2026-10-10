@@ -1711,7 +1711,8 @@
 .comics-story-cover:hover,
 .comics-story-cover:focus,
 .comics-story-cover:focus-visible,
-.comics-story-cover:active { background: transparent; box-shadow: none; }
+.comics-story-cover:active,
+.comics-story-cover.is-selected { background: transparent !important; box-shadow: none !important; }
 .comics-story-cover img {
   position: relative;
   z-index: 1;
