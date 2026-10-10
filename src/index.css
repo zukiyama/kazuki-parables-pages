@@ -1445,6 +1445,47 @@
   text-shadow: 0 2px 12px hsl(var(--ink-black));
   perspective: 700px;
 }
+.comics-shrine-title::before {
+  content: '';
+  position: absolute;
+  inset: -2rem -3rem;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse, hsl(var(--ink-black) / 0.32) 0%, hsl(var(--ink-black) / 0.16) 45%, transparent 72%);
+}
+.comics-character-popup {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  perspective: 1000px;
+  perspective-origin: 50% 100%;
+}
+.comics-character-popup img {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: 41%;
+  width: auto;
+  max-width: 58%;
+  object-fit: contain;
+  object-position: center bottom;
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotateX(-90deg);
+  backface-visibility: hidden;
+  filter: drop-shadow(0 4px 6px hsl(var(--ink-black) / 0.3));
+  transition: transform 560ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+.comics-character-popup.is-open img {
+  transform: translateX(-50%) rotateX(0deg);
+}
+@media screen and (min-width: 768px) and (orientation: portrait) {
+  .comics-character-popup img { height: 46%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .comics-character-popup img { transition: none; }
+}
 
 .comics-keep-going {
   appearance: none;

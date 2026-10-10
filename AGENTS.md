@@ -9,3 +9,4 @@
 - The tablet/desktop Comics opening peel becomes available as soon as the underlying panorama decodes, uses opaque paper and a permanently transparent hotspot, and signals reveal progress to start the trees and title before completion; its clipped cue and wheel/swipe use the same turn without mapping live video to a mesh.
 - The lower Comics panorama reserves a fixed bottom selector row and a left cover stage; measured image transforms move each cover between its own slot and the stage without moving the row when story text changes.
 - The Comics peel overlay is visually hidden whenever the opening page is not shown, because accessibility hiding alone leaves the reflected flap visible after return scrolling.
+- The title-screen character cutout uses the opening reveal/title-section state and a bottom-hinged perspective transform, so it folds down during the lower pan and reopens on return without changing the phone sequence.
