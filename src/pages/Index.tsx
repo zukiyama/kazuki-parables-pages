@@ -12,9 +12,11 @@ import boysTowerBlocks from "@/assets/boys-tower-blocks.webp";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.webp";
 import circlesSingleCover from "@/assets/circles-single-cover.webp";
 import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
-import godOfLiesManyFacesBanner from "@/assets/god-of-lies-many-faces-banner.webp";
+import godOfLiesManyFacesBannerAsset from "@/assets/god-of-lies-many-faces-banner.png.asset.json";
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
 import useEmblaCarousel from "embla-carousel-react";
+
+const godOfLiesManyFacesBanner = godOfLiesManyFacesBannerAsset.url;
 
 const Index = () => {
   useScrollToTop();
