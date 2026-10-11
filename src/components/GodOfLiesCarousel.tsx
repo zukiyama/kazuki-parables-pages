@@ -22,10 +22,32 @@ export function GodOfLiesCarousel({ children }: { children: ReactNode }) {
   }, [api]);
   useEffect(() => {
     if (!api) return;
+    const syncLighting = () => {
+      const viewport = api.rootNode().getBoundingClientRect();
+      const center = viewport.left + viewport.width / 2;
+      api.slideNodes().forEach((slide) => {
+        const picture = slide.querySelector<HTMLElement>(".god-of-lies-carousel__image");
+        if (!picture) return;
+        const rect = slide.getBoundingClientRect();
+        const distance = Math.abs(rect.left + rect.width / 2 - center);
+        const illumination = Math.max(0, 1 - distance / (rect.width * 0.6));
+        picture.style.setProperty("--picture-brightness", String(0.74 + illumination * 0.26));
+      });
+    };
     syncSelection();
+    syncLighting();
     api.on("select", syncSelection);
     api.on("reInit", syncSelection);
-    return () => { api.off("select", syncSelection); api.off("reInit", syncSelection); };
+    api.on("scroll", syncLighting);
+    api.on("reInit", syncLighting);
+    api.on("settle", syncLighting);
+    return () => {
+      api.off("select", syncSelection);
+      api.off("reInit", syncSelection);
+      api.off("scroll", syncLighting);
+      api.off("reInit", syncLighting);
+      api.off("settle", syncLighting);
+    };
   }, [api, syncSelection]);
   const goTo = (index: number) => api?.scrollTo(index, window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
@@ -44,9 +66,11 @@ export function GodOfLiesCarousel({ children }: { children: ReactNode }) {
           </div>
           {scenes.map((scene, index) => (
             <div className="god-of-lies-carousel__slide is-image" key={scene.src} role="group" aria-label={`Illustration ${index + 1} of ${scenes.length}`}>
+              <div className={`god-of-lies-carousel__picture-reveal ${index === scenes.length - 1 ? "from-left" : "from-right"}`}>
               <Button variant="link" className="god-of-lies-carousel__image" onClick={() => goTo(index + 1)} aria-label={`View illustration ${index + 1}`}>
                 <img src={scene.src} alt={scene.alt} width={1536} height={1024} loading="eager" decoding="async" draggable={false} />
               </Button>
+              </div>
             </div>
           ))}
         </div>
