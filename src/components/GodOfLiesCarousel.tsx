@@ -5,15 +5,13 @@ import { AlignLeft } from "lucide-react";
 import plantShop from "@/assets/god-of-lies-carousel-plant-shop.asset.json";
 import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.asset.json";
 import pear from "@/assets/god-of-lies-carousel-pear.asset.json";
-import breakfast from "@/assets/god-of-lies-carousel-chibi-breakfast.asset.json";
 import milk from "@/assets/god-of-lies-carousel-milk.asset.json";
 
 const scenes = [
-  { src: plantShop.url, alt: "Two men among flowers and plants" },
   { src: cottonCandy.url, alt: "Chang-Min and Seok-seol shopping with cotton candy" },
   { src: pear.url, alt: "Seok-seol reclining on a sliced pear" },
-  { src: breakfast.url, alt: "Little chibi characters enjoying breakfast" },
   { src: milk.url, alt: "Chang-Min holding milk beside Seok-seol in the kitchen" },
+  { src: plantShop.url, alt: "Two men among flowers and plants" },
 ];
 
 export function GodOfLiesCarousel({ children }: { children: ReactNode }) {
