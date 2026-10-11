@@ -5,14 +5,14 @@ import { AlignLeft } from "lucide-react";
 import plantShop from "@/assets/god-of-lies-carousel-plant-shop.asset.json";
 import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.asset.json";
 import pear from "@/assets/god-of-lies-carousel-pear.asset.json";
-import breakfast from "@/assets/god-of-lies-carousel-chibi-breakfast.asset.json";
 import milk from "@/assets/god-of-lies-carousel-milk.asset.json";
+import runner from "@/assets/god-of-lies-chibi-runner.png";
+import bus from "@/assets/god-of-lies-chibi-bus.png";
 
 const scenes = [
-  { src: plantShop.url, alt: "Two men among flowers and plants" },
   { src: cottonCandy.url, alt: "Chang-Min and Seok-seol shopping with cotton candy" },
   { src: pear.url, alt: "Seok-seol reclining on a sliced pear" },
-  { src: breakfast.url, alt: "Little chibi characters enjoying breakfast" },
+  { src: plantShop.url, alt: "Two men among flowers and plants" },
   { src: milk.url, alt: "Chang-Min holding milk beside Seok-seol in the kitchen" },
 ];
 
@@ -78,6 +78,8 @@ export function GodOfLiesCarousel({ children }: { children: ReactNode }) {
           ))}
         </div>
       </div>
+      <div className="god-of-lies-carousel__footer">
+        <img src={runner} alt="A black-haired chibi man running towards the bus" className="god-of-lies-carousel__runner" width={546} height={472} draggable={false} />
       <div className="god-of-lies-carousel__thumbnails" aria-label="Choose slideshow image">
         <Button variant="link" className={`god-of-lies-carousel__thumbnail god-of-lies-carousel__story ${selected === 0 ? "is-selected" : ""}`} aria-label="Back to God of Lies story" aria-pressed={selected === 0} onClick={() => goTo(0)} title="God of Lies story"><AlignLeft /></Button>
         {scenes.map((scene, index) => (
@@ -85,6 +87,8 @@ export function GodOfLiesCarousel({ children }: { children: ReactNode }) {
             <img src={scene.src} alt="" width={1536} height={1024} draggable={false} />
           </Button>
         ))}
+      </div>
+        <img src={bus} alt="A green bus with a queue of chibi passengers" className="god-of-lies-carousel__bus" width={1132} height={458} draggable={false} />
       </div>
     </div>
   );
