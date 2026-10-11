@@ -1,7 +1,7 @@
 # Roadmap
 
 - [x] Replace the God of Lies carousel illustrations in the requested attachment order.
-- [ ] Verify smaller side pictures grow to their existing size centrally without cropping or moving the text.
+- [x] Verify smaller side pictures grow to their existing size centrally without cropping or moving the text.
 
 - [x] Fade in the story during the pan, bring in side pictures and thumbnails together, and slightly shrink uncropped pictures with centre-dependent lighting.
 - [x] Verify entrance timing, landscape proportions, centre lighting and reverse scrolling.
