@@ -480,6 +480,34 @@
 }
 
 /* Falling letter animations for PARABLE text */
+.parable-zoom {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.parable-zoom__word {
+  width: 90%;
+  max-width: 58rem;
+  overflow: visible;
+  fill: hsl(var(--primary-foreground));
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 180px;
+  font-weight: bold;
+  animation: parable-through-a 7s cubic-bezier(0.65, 0, 0.8, 0.45) 3.4s forwards;
+}
+.parable-zoom__word text { opacity: 0; }
+@keyframes parable-through-a {
+  from { transform: translateX(0) scale(1); }
+  to { transform: translateX(var(--parable-travel-x)) scale(900); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .parable-zoom__word { animation: none; }
+  .parable-zoom__word text { animation: none; opacity: 1; }
+}
+
 @keyframes letterFall {
   0% { 
     transform: translateY(-150vh);

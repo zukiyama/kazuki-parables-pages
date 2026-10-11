@@ -1,5 +1,8 @@
 # Roadmap
 
+- [ ] Replace the homepage faces background with the latest upload, preserving alignment.
+- [ ] Extend the bottom Parable sequence into a zoom through the A and verify the result.
+
 - [x] Fade in the story during the pan, bring in side pictures and thumbnails together, and slightly shrink uncropped pictures with centre-dependent lighting.
 - [x] Verify entrance timing, landscape proportions, centre lighting and reverse scrolling.
 - [x] Preserve character sizes after returning from Pendragon and nudge the dog up/right.
