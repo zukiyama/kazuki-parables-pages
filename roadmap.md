@@ -2,7 +2,7 @@
 
 - [x] Remove the food-chibi slide and reorder the remaining four illustrations.
 - [x] Replace title chibis with separate runner, bus/queue and bottom-right clickable sign cutouts.
-- [ ] Verify footer spacing, sign navigation and unchanged carousel scaling.
+- [x] Verify footer spacing, sign navigation and unchanged carousel scaling.
 
 - [x] Replace the God of Lies carousel illustrations in the requested attachment order.
 - [x] Verify smaller side pictures grow to their existing size centrally without cropping or moving the text.

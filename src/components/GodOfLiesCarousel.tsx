@@ -88,7 +88,7 @@ export function GodOfLiesCarousel({ children }: { children: ReactNode }) {
           </Button>
         ))}
       </div>
-        <img src={bus} alt="A green bus with a queue of chibi passengers" className="god-of-lies-carousel__bus" width={667} height={278} draggable={false} />
+        <img src={bus} alt="A green bus with a queue of chibi passengers" className="god-of-lies-carousel__bus" width={1132} height={458} draggable={false} />
       </div>
     </div>
   );
