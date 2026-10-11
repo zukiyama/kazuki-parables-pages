@@ -12,8 +12,7 @@ import boysTowerBlocks from "@/assets/boys-tower-blocks.webp";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.webp";
 import circlesSingleCover from "@/assets/circles-single-cover.webp";
 import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
-import godOfLiesManyFacesBannerAsset from "@/assets/god-of-lies-faces-updated.png.asset.json";
-import { ParableZoom } from "@/components/ParableZoom";
+import godOfLiesManyFacesBannerAsset from "@/assets/god-of-lies-many-faces-banner.png.asset.json";
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -192,8 +191,6 @@ const Index = () => {
     if (isCarouselReady && emblaApi && !isManualDrag) {
       // Read current slide index dynamically to avoid stale closure
       const currentSlide = emblaApi.selectedScrollSnap();
-      // The word's white-out now owns the transition from the buildings to the final slide.
-      if (currentSlide === 1) return;
       console.log('[SLIDESHOW] Starting auto-advance interval for image:', currentSlide);
       
       // Calculate duration based on current slide
@@ -549,6 +546,19 @@ const Index = () => {
                 <div className="absolute inset-0 bg-black/20"></div>
                 
                 {/* PARABLE falling text - only on second image */}
+                {index === 1 && currentImage === 1 && isCarouselReady && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="flex gap-2 md:gap-4 text-white font-bold tracking-wider" style={{ fontFamily: 'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif' }}>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-1 opacity-0">P</span>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-4 opacity-0">A</span>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-2 opacity-0">R</span>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-6 opacity-0">A</span>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-3 opacity-0">B</span>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-5 opacity-0">L</span>
+                      <span className="text-6xl md:text-9xl animate-letter-fall-7 opacity-0">E</span>
+                    </div>
+                  </div>
+                )}
                 
                 {/* Floating Quote - only appears on first image */}
                 {showQuote && index === 0 && currentImage === 0 && (
@@ -582,9 +592,6 @@ const Index = () => {
                 )}
               </div>
             ))}
-            {isCarouselReady && <ParableZoom active={currentImage === 1} onCovered={() => {
-              if (emblaApi?.selectedScrollSnap() === 1) emblaApi.scrollNext();
-            }} />}
           </div>
         </div>
       </section>
