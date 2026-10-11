@@ -2,16 +2,18 @@ import { useCallback, useEffect, useState, type ReactNode } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Button } from "@/components/ui/button";
 import { AlignLeft } from "lucide-react";
-import boardgame from "@/assets/god-of-lies-carousel-boardgame.png.asset.json";
-import shopping from "@/assets/god-of-lies-carousel-shopping.png.asset.json";
-import office from "@/assets/god-of-lies-carousel-office.png.asset.json";
-import kitchen from "@/assets/god-of-lies-carousel-kitchen.png.asset.json";
+import plantShop from "@/assets/god-of-lies-carousel-plant-shop.asset.json";
+import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.asset.json";
+import pear from "@/assets/god-of-lies-carousel-pear.asset.json";
+import breakfast from "@/assets/god-of-lies-carousel-chibi-breakfast.asset.json";
+import milk from "@/assets/god-of-lies-carousel-milk.asset.json";
 
 const scenes = [
-  { src: boardgame.url, alt: "Chang-Min and Seok-seol playing a board game" },
-  { src: shopping.url, alt: "God of Lies illustration — shopping" },
-  { src: office.url, alt: "God of Lies illustration — office" },
-  { src: kitchen.url, alt: "God of Lies illustration — kitchen" },
+  { src: plantShop.url, alt: "Two men among flowers and plants" },
+  { src: cottonCandy.url, alt: "Chang-Min and Seok-seol shopping with cotton candy" },
+  { src: pear.url, alt: "Seok-seol reclining on a sliced pear" },
+  { src: breakfast.url, alt: "Little chibi characters enjoying breakfast" },
+  { src: milk.url, alt: "Chang-Min holding milk beside Seok-seol in the kitchen" },
 ];
 
 export function GodOfLiesCarousel({ children }: { children: ReactNode }) {
@@ -32,6 +34,7 @@ export function GodOfLiesCarousel({ children }: { children: ReactNode }) {
         const distance = Math.abs(rect.left + rect.width / 2 - center);
         const illumination = Math.max(0, 1 - distance / (rect.width * 0.6));
         picture.style.setProperty("--picture-brightness", String(0.74 + illumination * 0.26));
+        picture.style.setProperty("--picture-scale", String(0.8 + illumination * 0.2));
       });
     };
     syncSelection();
