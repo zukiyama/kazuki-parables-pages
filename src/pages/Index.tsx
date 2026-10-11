@@ -192,6 +192,8 @@ const Index = () => {
     if (isCarouselReady && emblaApi && !isManualDrag) {
       // Read current slide index dynamically to avoid stale closure
       const currentSlide = emblaApi.selectedScrollSnap();
+      // The word's white-out now owns the transition from the buildings to the final slide.
+      if (currentSlide === 1) return;
       console.log('[SLIDESHOW] Starting auto-advance interval for image:', currentSlide);
       
       // Calculate duration based on current slide
@@ -547,9 +549,6 @@ const Index = () => {
                 <div className="absolute inset-0 bg-black/20"></div>
                 
                 {/* PARABLE falling text - only on second image */}
-                {index === 1 && currentImage === 1 && isCarouselReady && (
-                  <ParableZoom />
-                )}
                 
                 {/* Floating Quote - only appears on first image */}
                 {showQuote && index === 0 && currentImage === 0 && (
@@ -583,6 +582,9 @@ const Index = () => {
                 )}
               </div>
             ))}
+            {isCarouselReady && <ParableZoom active={currentImage === 1} onCovered={() => {
+              if (emblaApi?.selectedScrollSnap() === 1) emblaApi.scrollNext();
+            }} />}
           </div>
         </div>
       </section>
