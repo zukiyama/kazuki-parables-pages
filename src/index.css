@@ -56,6 +56,7 @@
     --comics-sky: 204 76% 65%;
     --paper-fold-shade: 40 12% 70%;
     --paper-fold-light: 40 20% 98%;
+    --parable-white: 0 0% 100%;
 
     /* Typography scale for literary feel */
     --font-heading: 'Playfair Display', serif;
@@ -487,25 +488,48 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  z-index: 20;
 }
 .parable-zoom__word {
-  width: 90%;
-  max-width: 58rem;
-  overflow: visible;
-  fill: hsl(var(--primary-foreground));
+  display: flex;
+  gap: 0.5rem;
+  color: hsl(var(--parable-white));
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  font-size: 180px;
+  font-size: 3.75rem;
+  line-height: 1;
   font-weight: bold;
-  animation: parable-through-a 7s cubic-bezier(0.65, 0, 0.8, 0.45) 3.4s forwards;
+  transform-origin: center;
+  animation: parable-through-word 7s cubic-bezier(0.65, 0, 0.8, 0.45) 3.4s forwards;
 }
-.parable-zoom__word text { opacity: 0; }
-@keyframes parable-through-a {
-  from { transform: translateX(0) scale(1); }
-  to { transform: translateX(var(--parable-travel-x)) scale(900); }
+.parable-zoom__word span { opacity: 0; }
+.parable-zoom__white {
+  position: absolute;
+  inset: 0;
+  background: hsl(var(--parable-white));
+  opacity: 0;
+  animation: parable-white-cover 600ms ease-in 9.8s forwards;
+}
+.parable-zoom.is-revealing .parable-zoom__white {
+  opacity: 1;
+  animation: parable-white-reveal 500ms ease-out 1100ms forwards;
+}
+@keyframes parable-through-word {
+  from { transform: scale(1); }
+  to { transform: scale(150); }
+}
+@keyframes parable-white-cover {
+  to { opacity: 1; }
+}
+@keyframes parable-white-reveal {
+  to { opacity: 0; }
+}
+@media (min-width: 768px) {
+  .parable-zoom__word { font-size: 8rem; gap: 1rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .parable-zoom__word { animation: none; }
-  .parable-zoom__word text { animation: none; opacity: 1; }
+  .parable-zoom__word { animation: parable-through-word 1ms 10.4s forwards; }
+  .parable-zoom__word span { animation: none; opacity: 1; }
+  @keyframes parable-through-word { from { transform: none; } to { transform: none; } }
 }
 
 @keyframes letterFall {
