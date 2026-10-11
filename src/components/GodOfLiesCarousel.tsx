@@ -32,7 +32,6 @@ export function GodOfLiesCarousel({ children }: { children: ReactNode }) {
         const distance = Math.abs(rect.left + rect.width / 2 - center);
         const illumination = Math.max(0, 1 - distance / (rect.width * 0.6));
         picture.style.setProperty("--picture-brightness", String(0.74 + illumination * 0.26));
-        picture.style.setProperty("--picture-focus", String(0.9 + illumination * 0.1));
       });
     };
     syncSelection();

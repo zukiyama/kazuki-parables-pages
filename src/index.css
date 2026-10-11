@@ -1722,14 +1722,13 @@
 }
 .god-of-lies-carousel__image {
   display: block;
-  width: 55%;
+  width: 82%;
   height: auto;
   padding: 0;
   border-radius: 0;
   background: transparent;
   filter: brightness(var(--picture-brightness, 0.74));
-  transform: scale(var(--picture-focus, 1));
-  transition: filter 160ms linear, transform 160ms linear;
+  transition: filter 160ms linear;
 }
 .god-of-lies-carousel__image img { width: 100%; height: auto; object-fit: contain; }
 .god-of-lies-carousel__thumbnails {
