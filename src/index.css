@@ -1697,16 +1697,56 @@
 }
 .god-of-lies-carousel__slide .comics-hill-blurb { padding: 0 1.5rem; }
 .god-of-lies-carousel__text { cursor: pointer; }
+.god-of-lies-carousel__text .comics-hill-blurb {
+  opacity: 0;
+  transition: opacity 480ms ease-out;
+}
+.comics-sky-pan.is-lower .god-of-lies-carousel__text .comics-hill-blurb {
+  opacity: 1;
+  transition-delay: 80ms;
+}
+.god-of-lies-carousel__picture-reveal {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: transform 560ms ease-out, opacity 480ms ease-out;
+}
+.god-of-lies-carousel__picture-reveal.from-left { transform: translateX(-5rem); }
+.god-of-lies-carousel__picture-reveal.from-right { transform: translateX(5rem); }
+.comics-sky-pan.is-lower .god-of-lies-carousel__picture-reveal {
+  transform: translateX(0);
+  opacity: 1;
+  transition-delay: 80ms;
+}
 .god-of-lies-carousel__image {
   display: block;
-  width: 88%;
+  width: 82%;
   height: auto;
   padding: 0;
   border-radius: 0;
   background: transparent;
+  filter: brightness(var(--picture-brightness, 0.74));
+  transition: filter 160ms linear;
 }
 .god-of-lies-carousel__image img { width: 100%; height: auto; object-fit: contain; }
-.god-of-lies-carousel__thumbnails { display: flex; justify-content: center; gap: 0.75rem; margin-top: 2rem; }
+.god-of-lies-carousel__thumbnails {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  opacity: 0;
+  transform: translateY(0.75rem);
+  transition: opacity 450ms ease-out, transform 450ms ease-out;
+  pointer-events: none;
+}
+.comics-sky-pan.is-lower .god-of-lies-carousel__thumbnails {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 180ms;
+  pointer-events: auto;
+}
 .god-of-lies-carousel__thumbnail {
   position: relative;
   width: 5rem;
@@ -1728,7 +1768,11 @@
 }
 .god-of-lies-carousel__story { background: hsl(var(--ink-black) / 0.3); }
 @media (prefers-reduced-motion: reduce) {
-  .god-of-lies-carousel__thumbnail { transition: none; }
+  .god-of-lies-carousel__thumbnail,
+  .god-of-lies-carousel__image,
+  .god-of-lies-carousel__picture-reveal,
+  .god-of-lies-carousel__text .comics-hill-blurb,
+  .god-of-lies-carousel__thumbnails { transition: none; }
 }
 .comics-story-title {
   font-family: 'Playfair Display', Georgia, serif;
