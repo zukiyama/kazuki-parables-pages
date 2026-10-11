@@ -29,8 +29,7 @@ import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.png.asse
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
 import godOfLiesPopupCharacters from "@/assets/god-of-lies-characters-replacement.png.asset.json";
 import godOfLiesPopupDog from "@/assets/god-of-lies-popup-dog.png.asset.json";
-import godOfLiesChibiSugar from "@/assets/god-of-lies-chibi-sugar.png";
-import godOfLiesChibiCup from "@/assets/god-of-lies-chibi-cup.png";
+import godOfLiesChibiSign from "@/assets/god-of-lies-chibi-sign.png";
 import { GodOfLiesCarousel } from "@/components/GodOfLiesCarousel";
 import { PagePeel } from "@/components/PagePeel";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.png";
@@ -1037,15 +1036,16 @@ const Comics = () => {
                 <div className="comics-sky-half comics-sky-lower">
                   <GodOfLiesCarousel>
                     <div className="comics-story-title-row">
-                      <img src={godOfLiesChibiSugar} alt="" className="comics-story-chibi comics-story-chibi--left" width={820} height={560} loading="lazy" decoding="async" draggable={false} />
                       <h3 className="comics-story-title">God of Lies</h3>
-                      <img src={godOfLiesChibiCup} alt="" className="comics-story-chibi comics-story-chibi--right" width={315} height={300} loading="lazy" decoding="async" draggable={false} />
                     </div>
                     <div className="comics-story-rule" />
                     <p className="comics-story-description">{renderBlurbSegments(blurbMain)}</p>
                     <p className="comics-story-teaser">A supernatural psychological manga packed with twists and reversals.</p>
                     <p className="comics-story-format">Manga • Webtoon • 2026</p>
                   </GodOfLiesCarousel>
+                  <Button variant="link" className="comics-pendragon-sign" aria-label="Continue to Surname Pendragon" onClick={() => advanceOpeningRef.current?.()}>
+                    <img src={godOfLiesChibiSign} alt="Click here for more" width={373} height={575} draggable={false} />
+                  </Button>
                 </div>
               </div>
               )}
