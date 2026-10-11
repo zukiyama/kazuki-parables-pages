@@ -1,5 +1,10 @@
 # Roadmap
 
+- [x] Shrink the God of Lies slideshow pictures by a third and let the centred one grow slightly as the carousel moves.
+- [x] Verify sizing, centring and landscape proportions in both orientations.
+
+
+
 - [x] Fade in the story during the pan, bring in side pictures and thumbnails together, and slightly shrink uncropped pictures with centre-dependent lighting.
 - [x] Verify entrance timing, landscape proportions, centre lighting and reverse scrolling.
 - [x] Preserve character sizes after returning from Pendragon and nudge the dog up/right.
