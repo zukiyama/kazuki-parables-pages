@@ -51,7 +51,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
       const target = api.scrollSnapList()[api.selectedScrollSnap()];
       if (target === undefined) return;
       const raw = Math.abs(api.scrollProgress() - target);
-      if (Math.min(raw, 1 - raw) < 0.004) { travelingRef.current = false; setTraveling(false); }
+      if (Math.min(raw, 1 - raw) < 0.004) { travelingRef.current = false; setTraveling(false); setScreen(api.selectedScrollSnap()); }
     };
     api.on("scroll", reveal);
     return () => { api.off("scroll", reveal); };
