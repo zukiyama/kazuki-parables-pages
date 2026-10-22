@@ -591,20 +591,26 @@ const Comics = () => {
   // a header link can never step the page back. Only real mouse pointers count:
   // touch taps emit compatibility mouse events that must be ignored.
   useEffect(() => {
-    if (!showPopUpScene || !isScrollLocked || currentSection <= 0) return;
-    const arrivedAt = performance.now();
+    if (!showPopUpScene || !isScrollLocked) return;
+    // The bottom strip only fires when the cursor ENTERS it from above, so a
+    // cursor resting near the peel corner can never skip the title by itself.
+    let inBottomStrip = true;
     const handlePointerMove = (e: PointerEvent) => {
       if (e.pointerType !== 'mouse') return;
       const target = e.target as Element | null;
       if (target?.closest?.('[data-header="true"]')) return;
       if (document.querySelector('[role="dialog"]')) return;
       // Thin strip just above the bottom edge of the title page: step down.
-      // Ignored for a moment after arriving so a cursor left near the peel
-      // corner cannot skip the title straight away.
-      if (currentSection === 1 && e.clientY >= window.innerHeight - 32 && performance.now() - arrivedAt > 600) {
-        advanceOpeningRef.current?.();
+      const nowInStrip = e.clientY >= window.innerHeight - 32;
+      const entered = nowInStrip && !inBottomStrip;
+      inBottomStrip = nowInStrip;
+      if (entered && currentSection <= 1) {
+        const busy = isTransitioning || (currentSection === 0 && (openingRevealingRef.current || peelStartedRef.current));
+        if (busy) pendingTitleAdvanceRef.current = true;
+        else if (currentSection === 1) advanceOpeningRef.current?.();
         return;
       }
+      if (currentSection <= 0) return;
       const header = document.querySelector<HTMLElement>('[data-header="true"]');
       const top = header ? header.getBoundingClientRect().bottom : 0;
       if (e.clientY <= top || e.clientY > top + 32) return;
@@ -612,7 +618,10 @@ const Comics = () => {
     };
     window.addEventListener('pointermove', handlePointerMove);
     return () => window.removeEventListener('pointermove', handlePointerMove);
-  }, [showPopUpScene, isScrollLocked, currentSection]);
+  }, [showPopUpScene, isScrollLocked, currentSection, isTransitioning]);
+
+  useEffect(() => { openingRevealingRef.current = openingRevealing; }, [openingRevealing]);
+  useEffect(() => { if (currentSection !== 0) peelStartedRef.current = false; }, [currentSection]);
 
   // A scroll, swipe or tap made while the opening page is still turning is
   // remembered and carried out the moment the title page has settled.
