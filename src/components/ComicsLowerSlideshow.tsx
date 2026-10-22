@@ -4,7 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import { GodOfLiesGallery } from "@/components/GodOfLiesGallery";
-import { COMICS_LOWER_SCREENS, nextComicsScreen } from "@/lib/comics-slideshow";
+import { COMICS_LOWER_SCREENS, nextComicsScreen, paperArrowOverlap } from "@/lib/comics-slideshow";
 
 type Comic = { cover: string; title: string; description: ReactNode; teaser: string; format: string };
 
@@ -17,6 +17,9 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   const [closing, setClosing] = useState(false);
   const shellRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
+  const paperRef = useRef<HTMLElement>(null);
+  const leftArrowRef = useRef<HTMLButtonElement>(null);
+  const rightArrowRef = useRef<HTMLButtonElement>(null);
   const sourceRef = useRef<HTMLImageElement | null>(null);
   const enlargedRef = useRef<HTMLImageElement | null>(null);
   const animationRef = useRef<Animation | null>(null);
@@ -32,8 +35,39 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   useEffect(() => {
     if (!api) return;
     const sync = () => setScreen(api.selectedScrollSnap());
-    sync(); api.on("select", sync);
-    return () => { api.off("select", sync); };
+    // Keep footer/layout and React updates out of the moving frames.
+    sync(); api.on("settle", sync); api.on("reInit", sync);
+    return () => { api.off("settle", sync); api.off("reInit", sync); };
+  }, [api]);
+  useEffect(() => {
+    if (!api) return;
+    const paintArrows = () => {
+      const paper = paperRef.current?.getBoundingClientRect();
+      if (!paper) return;
+      // Read all geometry before writing the paint-only clipping properties.
+      const arrows = [leftArrowRef.current, rightArrowRef.current].map(button => ({
+        button, bounds: button?.querySelector("svg")?.getBoundingClientRect(),
+      }));
+      arrows.forEach(({ button, bounds }) => {
+        if (!button || !bounds) return;
+        const [start, end] = paperArrowOverlap(bounds.left, bounds.width, paper.left, paper.right);
+        button.style.setProperty("--paper-arrow-start", `${start}%`);
+        button.style.setProperty("--paper-arrow-end", `${100 - end}%`);
+      });
+    };
+    // Embla emits scroll before applying its frame's transform. Paint after
+    // that render, but before the browser paints, to avoid a one-frame lag.
+    let mounted = true;
+    const afterRender = () => queueMicrotask(() => { if (mounted) paintArrows(); });
+    paintArrows();
+    api.on("scroll", afterRender); api.on("reInit", afterRender); api.on("settle", afterRender);
+    const observer = new ResizeObserver(paintArrows);
+    if (shellRef.current) observer.observe(shellRef.current);
+    return () => {
+      mounted = false;
+      api.off("scroll", afterRender); api.off("reInit", afterRender); api.off("settle", afterRender);
+      observer.disconnect();
+    };
   }, [api]);
   useEffect(() => { if (!open) api?.scrollTo(1, true); }, [api, open]);
   useEffect(() => {
@@ -90,7 +124,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
             <img className="comics-story-slide__background" src={panorama} alt="" aria-hidden="true" />
             <GodOfLiesGallery>{children}</GodOfLiesGallery>
           </section>
-          <section className="comics-lower-slideshow__slide comics-shelf-slide" aria-label={COMICS_LOWER_SCREENS[2]} aria-hidden={screen !== 2} ref={element => { if (screen !== 2) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
+          <section className="comics-lower-slideshow__slide comics-shelf-slide" aria-label={COMICS_LOWER_SCREENS[2]} aria-hidden={screen !== 2} ref={element => { paperRef.current = element; if (screen !== 2) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
             <h2>Stories waiting to be told…</h2>
             <div className="comics-shelf-slide__grid">
               {comics.map(comic => <Button variant="link" className="comics-shelf-slide__cover" key={comic.title} aria-label={`Explore ${comic.title}`} onClick={event => {
@@ -100,8 +134,8 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
           </section>
         </div>
       </div>
-      <Button variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--left" aria-label="Previous comics screen" onClick={() => navigate(-1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg></Button>
-      <Button variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--right" aria-label="Next comics screen" onClick={() => navigate(1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg></Button>
+      <Button ref={leftArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--left" aria-label="Previous comics screen" onClick={() => navigate(-1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg></Button>
+      <Button ref={rightArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--right" aria-label="Next comics screen" onClick={() => navigate(1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg></Button>
       <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant={screen === 2 ? "light" : "dark"} /></div>
       <Dialog.Root open={selected !== null} onOpenChange={value => { if (!value) void close(); }}>
         <Dialog.Portal>
