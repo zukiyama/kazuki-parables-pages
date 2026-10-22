@@ -55,12 +55,17 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
         button.style.setProperty("--paper-arrow-end", `${100 - end}%`);
       });
     };
+    // Embla emits scroll before applying its frame's transform. Paint after
+    // that render, but before the browser paints, to avoid a one-frame lag.
+    let mounted = true;
+    const afterRender = () => queueMicrotask(() => { if (mounted) paintArrows(); });
     paintArrows();
-    api.on("scroll", paintArrows); api.on("reInit", paintArrows); api.on("settle", paintArrows);
+    api.on("scroll", afterRender); api.on("reInit", afterRender); api.on("settle", afterRender);
     const observer = new ResizeObserver(paintArrows);
     if (shellRef.current) observer.observe(shellRef.current);
     return () => {
-      api.off("scroll", paintArrows); api.off("reInit", paintArrows); api.off("settle", paintArrows);
+      mounted = false;
+      api.off("scroll", afterRender); api.off("reInit", afterRender); api.off("settle", afterRender);
       observer.disconnect();
     };
   }, [api]);
