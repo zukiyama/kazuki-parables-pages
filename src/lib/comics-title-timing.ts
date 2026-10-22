@@ -1,4 +1,4 @@
-export const COMICS_TITLE_PAUSE_MS = 1100;
+export const COMICS_TITLE_PAUSE_MS = 800;
 
 export function shouldAutoAdvanceComicsTitle(
   section: number,
