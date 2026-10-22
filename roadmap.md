@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Restore arrows attached to the lower page throughout vertical movement, without an entrance fade; verify relative positioning, horizontal fades, looping, footer and route exit.
+- [x] Restore arrows attached to the lower page throughout vertical movement, without an entrance fade; verified constant arrow-to-picture offset and opacity 1 across 30 frames at 1037×783, horizontal fades, shelf reader, story return and Writing exit. Remote gallery images remain unavailable in this preview.
 
 - [x] Smooth lower slideshow motion and synchronize each arrow with the background directly beneath it; verified both directions and looping (gallery image loading unavailable in this preview).
 
