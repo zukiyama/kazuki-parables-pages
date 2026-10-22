@@ -2,8 +2,8 @@ import { describe, expect, test } from "bun:test";
 import { COMICS_TITLE_PAUSE_MS, shouldAutoAdvanceComicsTitle } from "./comics-title-timing";
 
 describe("Comics first title arrival", () => {
-  test("pauses for one and a half seconds", () => {
-    expect(COMICS_TITLE_PAUSE_MS).toBe(1500);
+  test("triggers slightly sooner than the original one and a half seconds", () => {
+    expect(COMICS_TITLE_PAUSE_MS).toBe(1400);
   });
   test("advances only the first settled title arrival", () => {
     expect(shouldAutoAdvanceComicsTitle(1, false, true, true, false)).toBe(true);
