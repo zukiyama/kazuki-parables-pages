@@ -1,5 +1,8 @@
 # Roadmap
 
+- [x] Quicken the title auto-advance, centre the slideshow arrows vertically, and add touch-swipe-up plus cursor-at-top return on tablet/desktop.
+- [x] Add the header emblem one-spin Easter egg matching the Music switcher; verify return navigation and unchanged phones.
+
 - [x] Replace tablet/desktop lower vertical sections with a looping three-screen slideshow: Pendragon, God of Lies, six comics.
 - [x] Add persistent triangular arrows and the footer; modernize shelf enlargement and slightly quicken the title timer.
 - [x] Verify looping in both directions, picture dialogs, title return, and preserved phones.

@@ -14,5 +14,6 @@
 
 - A tap on the tablet/desktop God of Lies title half advances through the existing section transition; never intercept taps in an image dialog.
 - Keep the title auto-advance consumed flag on the Comics page mount, not the pinned scene, so returning from Pendragon or the opening cannot restart the one-time timer; schedule only after the first settled title arrival.
-- Tablet/desktop lower content lives in a looping Embla three-screen slideshow with a persistent footer and arrows; keep its mounted scene inside the lower panorama half to preserve the opening pan and cutout measurements without vertical unlocks.
+- Tablet/desktop lower content lives in a looping Embla three-screen slideshow with a persistent footer and vertically centred arrows; keep its mounted scene inside the lower panorama half to preserve the opening pan and cutout measurements without vertical unlocks.
+- Pinned Comics pages must stay returnable: touch drag-up steps back like the wheel, and on pointer devices the cursor entering the thin top strip above the gallery pictures steps back one page; neither may fire while a dialog is open.
 - The shelf uses a portalled accessible unboxed reader with cover-to-slot zoom animation, isolating focus and gestures from the page navigation while showing story copy beside the cover.
