@@ -1076,13 +1076,13 @@ const Writing = () => {
                 style={isWidescreen ? { marginBottom: '5rem' } : undefined}
               >
                 <span 
-                  className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 max-sm:mb-2 ${isWidescreen ? 'text-2xl' : 'text-2xl max-sm:text-lg'}`}
+                  className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 max-sm:mb-2 ${isWidescreen ? 'text-lg' : 'text-xl max-sm:text-lg'}`}
                   style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 400 }}
                 >
                   Book One of the Parable Trilogy
                 </span>
                 <h2 
-                  className={`font-light tracking-[0.15em] text-white ${isWidescreen ? 'text-8xl' : 'text-8xl max-sm:text-7xl'}`}
+                  className={`font-light tracking-[0.15em] text-white ${isWidescreen ? 'text-7xl' : 'text-[84px] max-sm:text-[66px]'}`}
                   style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
                 >
                   KAIJU
