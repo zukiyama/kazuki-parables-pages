@@ -1656,27 +1656,41 @@
   padding: 3rem 0 2rem;
 }
 .comics-hill-blurb {
+  position: relative;
+  isolation: isolate;
   flex: 0 0 auto;
   margin-top: 0;
   width: 100%;
   max-width: 48rem;
   text-align: center;
   text-shadow:
-    0 1px 1px hsl(var(--ink-black) / 0.95),
-    0 1px 3px hsl(var(--ink-black) / 0.8),
-    0 2px 10px hsl(var(--ink-black) / 0.7),
-    0 0 28px hsl(var(--ink-black) / 0.75),
-    0 0 58px hsl(var(--ink-black) / 0.6),
-    0 0 96px hsl(var(--ink-black) / 0.45);
+    0 1px 2px hsl(var(--ink-black) / 0.95),
+    0 2px 8px hsl(var(--ink-black) / 0.8);
+}
+.comics-hill-blurb::before {
+  content: '';
+  position: absolute;
+  inset: -3rem -4rem;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse, hsl(var(--ink-black) / 0.8) 0%, hsl(var(--ink-black) / 0.65) 42%, hsl(var(--ink-black) / 0.3) 65%, transparent 78%);
 }
 /* A fixed picture row above the lower story; enlargement never moves its slots. */
 .god-of-lies-gallery {
   width: 100%; height: 100%; min-height: 0;
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: space-evenly; gap: 2rem;
+  display: grid; justify-items: center;
+  grid-template-rows: minmax(1rem, 1.15fr) auto minmax(1rem, 1.15fr) auto minmax(1rem, 0.55fr);
   padding: 0 clamp(1.5rem, 4vw, 4rem);
+  /* One decoded, stable layer fades during the pan, rather than repainting
+     separate image/text opacity layers and six large text-shadow kernels. */
+  opacity: 0;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: opacity;
+  transition: opacity 380ms ease-out;
 }
 .god-of-lies-gallery__row {
+  grid-row: 2;
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
   width: 100%; gap: clamp(0.75rem, 2vw, 2rem);
 }
@@ -1684,13 +1698,20 @@
   display: flex; width: 100%; height: auto; aspect-ratio: 3 / 2;
   padding: 0; border-radius: 0; background: transparent;
 }
-.god-of-lies-gallery__picture:hover { background: transparent; }
-.god-of-lies-gallery__picture img { width: 100%; height: 100%; object-fit: contain; }
-.god-of-lies-gallery__row, .god-of-lies-gallery > .comics-hill-blurb {
-  opacity: 0; transition: opacity 480ms ease-out;
+.god-of-lies-gallery > .comics-hill-blurb { grid-row: 4; }
+.god-of-lies-gallery__picture:hover,
+.god-of-lies-gallery__picture:active,
+.god-of-lies-gallery__picture:focus,
+.god-of-lies-gallery__picture:focus-visible,
+.god-of-lies-gallery__dismiss:hover,
+.god-of-lies-gallery__dismiss:focus-visible {
+  background: transparent;
+  box-shadow: none;
+  text-decoration: none;
 }
-.comics-sky-pan.is-lower .god-of-lies-gallery__row,
-.comics-sky-pan.is-lower .god-of-lies-gallery > .comics-hill-blurb { opacity: 1; transition-delay: 80ms; }
+.god-of-lies-gallery__picture:focus-visible { outline: 1px dashed hsl(var(--canvas-base) / 0.65); outline-offset: 4px; }
+.god-of-lies-gallery__picture img { width: 100%; height: 100%; object-fit: contain; }
+.comics-sky-pan.is-lower .god-of-lies-gallery.is-ready { opacity: 1; }
 .god-of-lies-gallery__overlay {
   position: fixed; inset: 0; z-index: 100;
   background: hsl(var(--ink-black) / 0.78);
@@ -1700,18 +1721,18 @@
   transform: translate(-50%, -50%); width: min(90vw, 123dvh, 90rem);
   outline: none;
 }
-.god-of-lies-gallery__enlarged > img {
+.god-of-lies-gallery__dismiss {
+  display: block; width: 100%; height: auto; padding: 0;
+  background: transparent; border-radius: 0; cursor: zoom-out;
+}
+.god-of-lies-gallery__dismiss img {
   display: block; width: 100%; height: auto; max-height: 82dvh;
   object-fit: contain; transform-origin: center;
 }
-.god-of-lies-gallery__close {
-  position: absolute; right: 0; top: -2.75rem;
-  color: hsl(var(--canvas-base)); background: transparent;
-}
-.comics-character-popup, .comics-shrine-title { opacity: 1; transition: opacity 420ms ease-out; }
+.comics-character-popup, .comics-shrine-title { opacity: 1; transition: opacity 650ms ease-in-out; }
 .comics-character-popup.is-departing, .comics-shrine-title.is-departing { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
-  .god-of-lies-gallery__row, .god-of-lies-gallery > .comics-hill-blurb,
+  .god-of-lies-gallery,
   .comics-character-popup, .comics-shrine-title { transition: none; }
 }
 .comics-story-title {
