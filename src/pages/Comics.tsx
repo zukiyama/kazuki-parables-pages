@@ -6,6 +6,7 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 import { Button } from "@/components/ui/button";
+import { COMICS_TITLE_PAUSE_MS, shouldAutoAdvanceComicsTitle } from "@/lib/comics-title-timing";
 
 // CRITICAL: First panel assets (Section 0) - bundled for every host
 import comicsScriptsTitleVideo from "@/assets/comicsscriptstitle.mp4";
@@ -99,6 +100,7 @@ const Comics = () => {
   const panoramaTitleRef = useRef<HTMLDivElement>(null);
   const openingVideoRef = useRef<HTMLVideoElement>(null);
   const advanceOpeningRef = useRef<(() => void) | null>(null);
+  const firstTitleVisitedRef = useRef(false);
   const openingSectionRef = useRef<HTMLElement>(null);
   const peelTurnRef = useRef<(() => boolean) | null>(null);
   const peelDraggingRef = useRef(false);
@@ -137,6 +139,17 @@ const Comics = () => {
   const [showFooterCharacter, setShowFooterCharacter] = useState(false);
 
   const maxPinnedSection = 2; // After section 2 (Cream), normal scrolling begins - Pendragon is in scrollable content
+
+  useEffect(() => {
+    // Manual early departure also consumes this visit's one automatic advance.
+    if (currentSection >= 2) firstTitleVisitedRef.current = true;
+    if (!shouldAutoAdvanceComicsTitle(currentSection, firstTitleVisitedRef.current, showPopUpScene, isScrollLocked, isTransitioning)) return;
+    firstTitleVisitedRef.current = true;
+    const timer = window.setTimeout(() => {
+      advanceOpeningRef.current?.();
+    }, COMICS_TITLE_PAUSE_MS);
+    return () => window.clearTimeout(timer);
+  }, [currentSection, showPopUpScene, isScrollLocked, isTransitioning]);
 
   // Pendragon unmounts the pinned pages. Rebind measurements to the new
   // elements on return instead of leaving them at the percentage fallback.
