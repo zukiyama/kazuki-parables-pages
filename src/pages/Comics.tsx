@@ -105,6 +105,7 @@ const Comics = () => {
   const peelStartedRef = useRef(false);
   const openingRevealingRef = useRef(false);
   const lastWheelAtRef = useRef(0);
+  const inBottomStripRef = useRef(true);
   const openingSectionRef = useRef<HTMLElement>(null);
   const peelTurnRef = useRef<(() => boolean) | null>(null);
   const peelDraggingRef = useRef(false);
@@ -594,7 +595,6 @@ const Comics = () => {
     if (!showPopUpScene || !isScrollLocked) return;
     // The bottom strip only fires when the cursor ENTERS it from above, so a
     // cursor resting near the peel corner can never skip the title by itself.
-    let inBottomStrip = true;
     const handlePointerMove = (e: PointerEvent) => {
       if (e.pointerType !== 'mouse') return;
       const target = e.target as Element | null;
@@ -602,8 +602,8 @@ const Comics = () => {
       if (document.querySelector('[role="dialog"]')) return;
       // Thin strip just above the bottom edge of the title page: step down.
       const nowInStrip = e.clientY >= window.innerHeight - 32;
-      const entered = nowInStrip && !inBottomStrip;
-      inBottomStrip = nowInStrip;
+      const entered = nowInStrip && !inBottomStripRef.current;
+      inBottomStripRef.current = nowInStrip;
       if (entered && currentSection <= 1) {
         const busy = isTransitioning || (currentSection === 0 && (openingRevealingRef.current || peelStartedRef.current));
         if (busy) pendingTitleAdvanceRef.current = true;
