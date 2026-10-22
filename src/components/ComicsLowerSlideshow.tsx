@@ -13,6 +13,8 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
 }) {
   const [viewport, api] = useEmblaCarousel({ loop: true, startIndex: 1, duration: 20 });
   const [screen, setScreen] = useState(1);
+  // Footer colour follows the target screen from the tap, as it originally did.
+  const [footerScreen, setFooterScreen] = useState(1);
   const [traveling, setTraveling] = useState(false);
   const travelingRef = useRef(false);
   const [selected, setSelected] = useState<Comic | null>(null);
@@ -36,10 +38,11 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   }, []);
   useEffect(() => {
     if (!api) return;
-    const sync = () => { setScreen(api.selectedScrollSnap()); travelingRef.current = false; setTraveling(false); };
+    const sync = () => { setScreen(api.selectedScrollSnap()); setFooterScreen(api.selectedScrollSnap()); travelingRef.current = false; setTraveling(false); };
     // Keep footer/layout and React updates out of the moving frames.
-    sync(); api.on("settle", sync); api.on("reInit", sync);
-    return () => { api.off("settle", sync); api.off("reInit", sync); };
+    const pickFooter = () => setFooterScreen(api.selectedScrollSnap());
+    sync(); pickFooter(); api.on("settle", sync); api.on("reInit", sync); api.on("select", pickFooter); api.on("reInit", pickFooter);
+    return () => { api.off("settle", sync); api.off("reInit", sync); api.off("select", pickFooter); api.off("reInit", pickFooter); };
   }, [api]);
   // Embla's settle event fires ~700ms after the slide has visually landed, so
   // waiting for it left the arrows hidden over an already-stationary slide.
@@ -51,7 +54,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
       const target = api.scrollSnapList()[api.selectedScrollSnap()];
       if (target === undefined) return;
       const raw = Math.abs(api.scrollProgress() - target);
-      if (Math.min(raw, 1 - raw) < 0.004) { travelingRef.current = false; setTraveling(false); setScreen(api.selectedScrollSnap()); }
+      if (Math.min(raw, 1 - raw) < 0.004) { travelingRef.current = false; setTraveling(false); }
     };
     api.on("scroll", reveal);
     return () => { api.off("scroll", reveal); };
@@ -92,7 +95,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   const jumpTo = useCallback((index: number) => {
     if (!api) return;
     api.scrollTo(index, true);
-    setScreen(api.selectedScrollSnap()); travelingRef.current = false; setTraveling(false);
+    setScreen(api.selectedScrollSnap()); setFooterScreen(api.selectedScrollSnap()); travelingRef.current = false; setTraveling(false);
   }, [api]);
   useEffect(() => { if (!open) jumpTo(1); }, [jumpTo, open]);
   useEffect(() => {
@@ -162,7 +165,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
       </div>
       <Button ref={leftArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--left" aria-label="Previous comics screen" onClick={() => navigate(-1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg></Button>
       <Button ref={rightArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--right" aria-label="Next comics screen" onClick={() => navigate(1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg></Button>
-      <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant={screen === 2 ? "light" : "dark"} /></div>
+      <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant={footerScreen === 2 ? "light" : "dark"} /></div>
       <Dialog.Root open={selected !== null} onOpenChange={value => { if (!value) void close(); }}>
         <Dialog.Portal>
           <Dialog.Overlay className="comics-reader__overlay" />
