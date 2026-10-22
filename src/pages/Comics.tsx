@@ -98,7 +98,6 @@ const Comics = () => {
   const [showPopUpScene, setShowPopUpScene] = useState(false);
   const characterPopupRef = useRef<HTMLDivElement>(null);
   const panoramaTitleRef = useRef<HTMLDivElement>(null);
-  const [slideshowArrowContainer, setSlideshowArrowContainer] = useState<HTMLDivElement | null>(null);
   const openingVideoRef = useRef<HTMLVideoElement>(null);
   const advanceOpeningRef = useRef<(() => void) | null>(null);
   const firstTitleVisitedRef = useRef(false);
@@ -1076,7 +1075,7 @@ const Comics = () => {
                 </div>
 
                 <div className="comics-sky-half comics-sky-lower">
-                  <ComicsLowerSlideshow comics={smallShelfComics} panorama={comicsSeoulSkyline} pendragon={surnamePendragonBanner} pendragonPortrait={surnamePendragonMobile} open={currentSection === 2} arrowContainer={slideshowArrowContainer}>
+                  <ComicsLowerSlideshow comics={smallShelfComics} panorama={comicsSeoulSkyline} pendragon={surnamePendragonBanner} pendragonPortrait={surnamePendragonMobile} open={currentSection === 2}>
                     <h3 className="comics-story-title">God of Lies</h3>
                     <div className="comics-story-rule" />
                     <p className="comics-story-description">{renderBlurbSegments(blurbMain)}</p>
@@ -1085,8 +1084,6 @@ const Comics = () => {
                   </ComicsLowerSlideshow>
                 </div>
               </div>
-              {/* Only the arrows leave the panning layer; all chapter content stays put. */}
-              <div ref={setSlideshowArrowContainer} className="comics-lower-slideshow__arrow-host" />
               </>
               )}
 
