@@ -1834,18 +1834,18 @@
 
 /* Lower chapters share one viewport; the footer never travels with the slides. */
 .comics-sky-lower:has(.comics-lower-slideshow) { padding: 0; }
-.comics-lower-slideshow { width: 100%; height: 100%; position: relative; display: flex; flex-direction: column; --chapter-arrow: var(--comics-arrow-light); }
-.comics-lower-slideshow.is-paper { --chapter-arrow: var(--comics-arrow-dark); }
+.comics-lower-slideshow { width: 100%; height: 100%; position: relative; display: flex; flex-direction: column; }
 .comics-lower-slideshow__viewport { flex: 1; min-height: 0; overflow: hidden; touch-action: pan-y pinch-zoom; }
-.comics-lower-slideshow__track { display: flex; height: 100%; }
-.comics-lower-slideshow__slide { position: relative; flex: 0 0 100%; min-width: 0; height: 100%; overflow: hidden; }
+.comics-lower-slideshow__track { display: flex; height: 100%; will-change: transform; }
+.comics-lower-slideshow__slide { position: relative; flex: 0 0 100%; min-width: 0; height: 100%; overflow: hidden; contain: paint; }
 .comics-story-slide__background { position: absolute; inset: 0; width: 100%; height: calc(200% + var(--chapter-footer-height, 120px) * 2); object-fit: cover; object-position: center; transform: translateY(-50%); filter: brightness(0.68); pointer-events: none; }
 .comics-story-slide > .god-of-lies-gallery { position: relative; padding: 1.5rem 8%; grid-template-rows: minmax(0.5rem, 1fr) auto minmax(0.5rem, 1fr) auto minmax(0.5rem, 0.25fr); }
 .comics-story-slide .comics-hill-blurb { max-width: 44rem; }
-.comics-lower-slideshow__arrow { position: absolute; top: calc(50% - 2.25rem); width: 4rem; height: 4.5rem; padding: 0.65rem; z-index: 8; color: hsl(var(--chapter-arrow)); background: transparent; border-radius: 0; transition: color 400ms ease, transform 180ms ease, opacity 180ms ease; }
+.comics-lower-slideshow__arrow { position: absolute; top: calc(50% - 2.25rem); width: 4rem; height: 4.5rem; padding: 0.65rem; z-index: 8; color: hsl(var(--comics-arrow-light)); background: transparent; border-radius: 0; transition: transform 180ms ease, opacity 180ms ease; }
 .comics-lower-slideshow__arrow--left { left: 1.2%; }
 .comics-lower-slideshow__arrow--right { right: 1.2%; }
-.comics-lower-slideshow .comics-lower-slideshow__arrow svg { width: 100%; height: 100%; filter: drop-shadow(0 1px 3px hsl(var(--ink-black) / 0.25)); }
+.comics-lower-slideshow .comics-lower-slideshow__arrow svg { position: absolute; inset: 0.65rem; width: calc(100% - 1.3rem); height: calc(100% - 1.3rem); filter: drop-shadow(0 1px 3px hsl(var(--ink-black) / 0.25)); }
+.comics-lower-slideshow__arrow-paper { color: hsl(var(--comics-arrow-dark)); clip-path: inset(0 var(--paper-arrow-end, 100%) 0 var(--paper-arrow-start, 0%)); }
 .comics-lower-slideshow__arrow:hover { background: transparent; opacity: 0.8; }
 .comics-lower-slideshow__arrow:active { transform: scale(0.85); }
 .comics-lower-slideshow__arrow:focus-visible { outline: 1px dashed currentColor; outline-offset: 1px; }
