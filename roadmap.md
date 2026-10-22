@@ -1,8 +1,8 @@
 # Roadmap
 
-- [ ] Lower the panorama story and picture row; strengthen local text contrast.
-- [ ] Eliminate entrance flicker and slow title/cutout fades.
-- [ ] Remove picture highlights and close X; verify image/outside dismissal and return scrolling.
+- [x] Lower the panorama story and picture row; strengthen local text contrast.
+- [x] Eliminate entrance flicker and slow title/cutout fades.
+- [x] Remove picture highlights and close X; verify image/outside dismissal and return scrolling.
 
 - [x] Replace the God of Lies carousel illustrations in the requested attachment order.
 - [x] Verify smaller side pictures grow to their existing size centrally without cropping or moving the text.
