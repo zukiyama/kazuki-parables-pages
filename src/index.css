@@ -1848,6 +1848,7 @@
 .comics-lower-slideshow__arrow-paper { color: hsl(var(--comics-arrow-dark)); clip-path: inset(0 var(--paper-arrow-end, 100%) 0 var(--paper-arrow-start, 0%)); }
 .comics-lower-slideshow__arrow:hover { background: transparent; opacity: 0.8; }
 .comics-lower-slideshow__arrow:active { transform: scale(0.85); }
+.comics-lower-slideshow.is-traveling .comics-lower-slideshow__arrow { opacity: 0; transition-duration: 90ms; pointer-events: none; }
 .comics-lower-slideshow__arrow:focus-visible { outline: 1px dashed currentColor; outline-offset: 1px; }
 .comics-lower-slideshow__footer { flex: 0 0 auto; position: relative; z-index: 9; }
 .comics-lower-slideshow__footer footer { transition: background-color 400ms, color 400ms; }
