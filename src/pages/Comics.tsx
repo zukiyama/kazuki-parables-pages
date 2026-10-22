@@ -29,7 +29,7 @@ import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.png.asse
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
 import godOfLiesPopupCharacters from "@/assets/god-of-lies-characters-replacement.png.asset.json";
 import godOfLiesPopupDog from "@/assets/god-of-lies-popup-dog.png.asset.json";
-import { GodOfLiesCarousel } from "@/components/GodOfLiesCarousel";
+import { GodOfLiesGallery } from "@/components/GodOfLiesGallery";
 import { PagePeel } from "@/components/PagePeel";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.png";
 import type { RevealSegment } from "@/components/WordReveal";
@@ -399,7 +399,7 @@ const Comics = () => {
     advanceOpeningRef.current = () => triggerSectionChange('next');
     
     const handleWheel = (e: WheelEvent) => {
-      if (isScrollLocked && e.target instanceof Element && e.target.closest('.god-of-lies-carousel') && Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      if (e.target instanceof Element && e.target.closest('[role=dialog]')) return;
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
         // Check if user scrolled to top and wants to go up - dissolve back to Cream
@@ -460,17 +460,15 @@ const Comics = () => {
     
     // Touch handling for mobile
     let touchStartY = 0;
-    let touchStartX = 0;
-    let touchAccumulator = 0;
+        let touchAccumulator = 0;
     
     const handleTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY;
-      touchStartX = e.touches[0].clientX;
       touchAccumulator = 0;
     };
     
     const handleTouchMove = (e: TouchEvent) => {
-      if (e.target instanceof Element && e.target.closest('.god-of-lies-carousel') && Math.abs(e.touches[0].clientX - touchStartX) > Math.abs(e.touches[0].clientY - touchStartY)) return;
+      if (e.target instanceof Element && e.target.closest('[role=dialog]')) return;
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
         // Check if user scrolled to top and wants to go up - dissolve back to Cream
@@ -1005,8 +1003,8 @@ const Comics = () => {
                   </div>
                 </div>
 
-                <div className="comics-sky-half">
-                <div ref={characterPopupRef} className={`comics-character-popup ${shrineSceneActive ? 'is-open' : ''}`} aria-hidden="true">
+                <div className="comics-sky-half" onClick={() => { if (currentSection === 1 && !isTransitioning) advanceOpeningRef.current?.(); }}>
+                <div ref={characterPopupRef} className={`comics-character-popup ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''} ${currentSection >= 2 ? 'is-departing' : ''}`} aria-hidden="true">
                   <img className="comics-character-men" src={godOfLiesPopupCharacters.url} alt="" width={768} height={1152} loading="eager" decoding="async" />
                   <img className="comics-character-dog" src={godOfLiesPopupDog.url} alt="" width={1312} height={1199} loading="eager" decoding="async" />
                 </div>
@@ -1014,7 +1012,7 @@ const Comics = () => {
                   <div className="comics-shrine-vignette" />
                 </div>
 
-                <div ref={panoramaTitleRef} className={`comics-shrine-title ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`}>
+                <div ref={panoramaTitleRef} className={`comics-shrine-title ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''} ${currentSection >= 2 ? 'is-departing' : ''}`}>
                   <p className="comics-title-kicker font-body text-xs uppercase text-canvas-base/80">Featured</p>
                   <h2 className="comics-title-heading font-playfair text-6xl text-canvas-base lg:text-7xl xl:text-8xl" aria-label="God of Lies">
                     {['G', 'O', 'D'].map((ch, i) => (
@@ -1033,13 +1031,13 @@ const Comics = () => {
                 </div>
 
                 <div className="comics-sky-half comics-sky-lower">
-                  <GodOfLiesCarousel>
+                  <GodOfLiesGallery>
                     <h3 className="comics-story-title">God of Lies</h3>
                     <div className="comics-story-rule" />
                     <p className="comics-story-description">{renderBlurbSegments(blurbMain)}</p>
                     <p className="comics-story-teaser">A supernatural psychological manga packed with twists and reversals.</p>
                     <p className="comics-story-format">Manga • Webtoon • 2026</p>
-                  </GodOfLiesCarousel>
+                  </GodOfLiesGallery>
                 </div>
               </div>
               )}
