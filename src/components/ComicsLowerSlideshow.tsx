@@ -14,6 +14,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   const [viewport, api] = useEmblaCarousel({ loop: true, startIndex: 1, duration: 20 });
   const [screen, setScreen] = useState(1);
   const [traveling, setTraveling] = useState(false);
+  const travelingRef = useRef(false);
   const [selected, setSelected] = useState<Comic | null>(null);
   const [closing, setClosing] = useState(false);
   const shellRef = useRef<HTMLDivElement>(null);
@@ -35,10 +36,25 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   }, []);
   useEffect(() => {
     if (!api) return;
-    const sync = () => { setScreen(api.selectedScrollSnap()); setTraveling(false); };
+    const sync = () => { setScreen(api.selectedScrollSnap()); travelingRef.current = false; setTraveling(false); };
     // Keep footer/layout and React updates out of the moving frames.
     sync(); api.on("settle", sync); api.on("reInit", sync);
     return () => { api.off("settle", sync); api.off("reInit", sync); };
+  }, [api]);
+  // Embla's settle event fires ~700ms after the slide has visually landed, so
+  // waiting for it left the arrows hidden over an already-stationary slide.
+  // Bring them back the moment the track is within a few pixels of its target.
+  useEffect(() => {
+    if (!api) return;
+    const reveal = () => {
+      if (!travelingRef.current) return;
+      const target = api.scrollSnapList()[api.selectedScrollSnap()];
+      if (target === undefined) return;
+      const raw = Math.abs(api.scrollProgress() - target);
+      if (Math.min(raw, 1 - raw) < 0.004) { travelingRef.current = false; setTraveling(false); }
+    };
+    api.on("scroll", reveal);
+    return () => { api.off("scroll", reveal); };
   }, [api]);
   useEffect(() => {
     if (!api) return;
@@ -102,7 +118,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   };
   const navigate = (direction: -1 | 1) => {
     if (!api) return;
-    setTraveling(true);
+    travelingRef.current = true; setTraveling(true);
     const next = nextComicsScreen(api.selectedScrollSnap(), direction);
     if (reduced()) api.scrollTo(next, true);
     else if (direction === 1) api.scrollNext();
