@@ -479,12 +479,16 @@ const Comics = () => {
     let touchStartY = 0;
         let touchAccumulator = 0;
     
+    let touchInHeader = false;
     const handleTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY;
       touchAccumulator = 0;
+      // A tap on a header link must only navigate, never change sections.
+      touchInHeader = !!(e.target as Element | null)?.closest?.('[data-header="true"]');
     };
     
     const handleTouchMove = (e: TouchEvent) => {
+      if (touchInHeader) return;
       if (document.querySelector('[role="dialog"]')) return;
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
@@ -562,15 +566,23 @@ const Comics = () => {
 
   // Cursor-at-top return: on pointer devices, moving the cursor into the thin
   // strip above the gallery pictures steps back to the previous pinned page.
+  // The strip sits strictly below the fixed header so reaching for (or tapping)
+  // a header link can never step the page back. Only real mouse pointers count:
+  // touch taps emit compatibility mouse events that must be ignored.
   useEffect(() => {
     if (!showPopUpScene || !isScrollLocked || currentSection <= 0) return;
-    const handleMouseMove = (e: MouseEvent) => {
-      if (e.clientY > 48) return;
+    const handlePointerMove = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return;
+      const target = e.target as Element | null;
+      if (target?.closest?.('[data-header="true"]')) return;
+      const header = document.querySelector<HTMLElement>('[data-header="true"]');
+      const top = header ? header.getBoundingClientRect().bottom : 0;
+      if (e.clientY <= top || e.clientY > top + 32) return;
       if (document.querySelector('[role="dialog"]')) return;
       prevSectionRef.current?.();
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('pointermove', handlePointerMove);
+    return () => window.removeEventListener('pointermove', handlePointerMove);
   }, [showPopUpScene, isScrollLocked, currentSection]);
 
   // Lock/unlock body scroll based on animation state
