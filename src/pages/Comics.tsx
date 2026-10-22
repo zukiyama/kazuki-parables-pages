@@ -30,7 +30,7 @@ import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.png.asse
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
 import godOfLiesPopupCharacters from "@/assets/god-of-lies-characters-replacement.png.asset.json";
 import godOfLiesPopupDog from "@/assets/god-of-lies-popup-dog.png.asset.json";
-import { GodOfLiesGallery } from "@/components/GodOfLiesGallery";
+import { ComicsLowerSlideshow } from "@/components/ComicsLowerSlideshow";
 import { PagePeel } from "@/components/PagePeel";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.png";
 import type { RevealSegment } from "@/components/WordReveal";
@@ -333,6 +333,8 @@ const Comics = () => {
     
     const triggerSectionChange = (direction: 'next' | 'prev') => {
       if (isTransitioning) return;
+      if (showPopUpScene && direction === 'next' && currentSection >= maxPinnedSection) return;
+      if (showPopUpScene && document.querySelector('[role="dialog"]')) return;
       
       setCurrentSection(prev => {
         // Prevent going below 0
@@ -412,7 +414,7 @@ const Comics = () => {
     advanceOpeningRef.current = () => triggerSectionChange('next');
     
     const handleWheel = (e: WheelEvent) => {
-      if (document.querySelector('.god-of-lies-gallery__enlarged')) return;
+      if (document.querySelector('[role="dialog"]')) return;
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
         // Check if user scrolled to top and wants to go up - dissolve back to Cream
@@ -481,7 +483,8 @@ const Comics = () => {
     };
     
     const handleTouchMove = (e: TouchEvent) => {
-      if (document.querySelector('.god-of-lies-gallery__enlarged')) return;
+      if (document.querySelector('[role="dialog"]')) return;
+      if (showPopUpScene && currentSection === 2 && e.target instanceof Element && e.target.closest('.comics-lower-slideshow')) return;
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
         // Check if user scrolled to top and wants to go up - dissolve back to Cream
@@ -553,7 +556,7 @@ const Comics = () => {
       advanceOpeningRef.current = null;
       if (debounceTimer) clearTimeout(debounceTimer);
     };
-  }, [currentSection, isTransitioning, isScrollLocked]);
+  }, [currentSection, isTransitioning, isScrollLocked, showPopUpScene]);
 
   // Lock/unlock body scroll based on animation state
   useEffect(() => {
@@ -1044,13 +1047,13 @@ const Comics = () => {
                 </div>
 
                 <div className="comics-sky-half comics-sky-lower">
-                  <GodOfLiesGallery>
+                  <ComicsLowerSlideshow comics={smallShelfComics} panorama={comicsSeoulSkyline} pendragon={surnamePendragonBanner} pendragonPortrait={surnamePendragonMobile} open={currentSection === 2}>
                     <h3 className="comics-story-title">God of Lies</h3>
                     <div className="comics-story-rule" />
                     <p className="comics-story-description">{renderBlurbSegments(blurbMain)}</p>
                     <p className="comics-story-teaser">A supernatural psychological manga packed with twists and reversals.</p>
                     <p className="comics-story-format">Manga • Webtoon • 2026</p>
-                  </GodOfLiesGallery>
+                  </ComicsLowerSlideshow>
                 </div>
               </div>
               )}
@@ -1378,7 +1381,7 @@ const Comics = () => {
         )}
 
         {/* SCROLLABLE CONTENT - Pendragon sits behind pinned container, revealed when scroll unlocks */}
-        <div 
+        {!showPopUpScene && <div 
           ref={scrollableContentRef}
           className="mt-16 max-sm:mt-[4.5rem]"
         >
@@ -1584,10 +1587,10 @@ const Comics = () => {
             
             <div ref={row2Ref} data-row="row2" className="hidden" />
           </section>
-        </div>
+        </div>}
       </main>
       
-      <Footer 
+      {!showPopUpScene && <Footer 
         variant="dark" 
         className={`mt-8 max-sm:mt-6 overflow-visible ${isScrollLocked ? 'hidden' : ''}`}
         beforeFooter={
@@ -1608,7 +1611,7 @@ const Comics = () => {
             />
           ) : null
         }
-      />
+      />}
 
       {/* Comic Detail Modal - only renders when image is decoded and ready */}
       {selectedComic && modalReady && (
