@@ -627,6 +627,7 @@ const Comics = () => {
   // remembered and carried out the moment the title page has settled.
   useEffect(() => {
     if (isTransitioning || !pendingTitleAdvanceRef.current) return;
+    if (currentSection === 0) return; // still turning: keep waiting
     pendingTitleAdvanceRef.current = false;
     if (currentSection === 1 && showPopUpScene && isScrollLocked) advanceOpeningRef.current?.();
   }, [isTransitioning, currentSection, showPopUpScene, isScrollLocked]);
