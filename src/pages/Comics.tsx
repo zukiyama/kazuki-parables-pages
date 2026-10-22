@@ -399,7 +399,7 @@ const Comics = () => {
     advanceOpeningRef.current = () => triggerSectionChange('next');
     
     const handleWheel = (e: WheelEvent) => {
-      if (e.target instanceof Element && e.target.closest('[role=dialog]')) return;
+      if (document.querySelector('.god-of-lies-gallery__enlarged')) return;
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
         // Check if user scrolled to top and wants to go up - dissolve back to Cream
@@ -468,7 +468,7 @@ const Comics = () => {
     };
     
     const handleTouchMove = (e: TouchEvent) => {
-      if (e.target instanceof Element && e.target.closest('[role=dialog]')) return;
+      if (document.querySelector('.god-of-lies-gallery__enlarged')) return;
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
         // Check if user scrolled to top and wants to go up - dissolve back to Cream

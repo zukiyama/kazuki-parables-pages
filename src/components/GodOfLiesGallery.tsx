@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useRef, useState, type ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
@@ -27,14 +27,14 @@ export function GodOfLiesGallery({ children }: { children: ReactNode }) {
     if (!source || !target || !target.width || !target.height) return "none";
     return `translate(${source.left + source.width / 2 - target.left - target.width / 2}px, ${source.top + source.height / 2 - target.top - target.height / 2}px) scale(${source.width / target.width}, ${source.height / target.height})`;
   };
-  useLayoutEffect(() => {
-    if (selected === null || reducedMotion()) return;
-    animationRef.current = imageRef.current?.animate(
+  const mountImage = useCallback((image: HTMLImageElement | null) => {
+    imageRef.current = image;
+    if (!image || reducedMotion()) return;
+    animationRef.current = image.animate(
       [{ transform: sourceTransform() }, { transform: "none" }],
       { duration: 420, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
-    ) ?? null;
-    return () => animationRef.current?.cancel();
-  }, [selected]);
+    );
+  }, []);
   const close = async () => {
     if (closingRef.current) return;
     closingRef.current = true;
@@ -68,7 +68,7 @@ export function GodOfLiesGallery({ children }: { children: ReactNode }) {
           <Dialog.Overlay className="god-of-lies-gallery__overlay" />
           <Dialog.Content className="god-of-lies-gallery__enlarged" aria-describedby={undefined} onEscapeKeyDown={(event) => { event.preventDefault(); void close(); }} onPointerDownOutside={(event) => { event.preventDefault(); void close(); }} onCloseAutoFocus={(event) => { event.preventDefault(); sourceRef.current?.closest<HTMLElement>("button")?.focus(); }}>
             <Dialog.Title className="sr-only">{scene?.alt}</Dialog.Title>
-            {scene && <img ref={imageRef} src={scene.src} alt={scene.alt} width={1536} height={1024} />}
+            {scene && <img ref={mountImage} src={scene.src} alt={scene.alt} width={1536} height={1024} />}
             <Button variant="link" className="god-of-lies-gallery__close" aria-label="Close illustration" onClick={() => void close()}><X /></Button>
           </Dialog.Content>
         </Dialog.Portal>
