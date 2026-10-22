@@ -59,13 +59,15 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   const navigate = (direction: -1 | 1) => {
     if (!api) return;
     const next = nextComicsScreen(api.selectedScrollSnap(), direction);
-    api.scrollTo(next, reduced(), direction === 1 ? -1 : 1);
+    if (reduced()) api.scrollTo(next, true);
+    else if (direction === 1) api.scrollNext();
+    else api.scrollPrev();
   };
   return (
     <div className={`comics-lower-slideshow ${screen === 2 ? "is-paper" : ""}`} role="region" aria-label="Comics and scripts slideshow" aria-roledescription="carousel">
       <div ref={viewport} className="comics-lower-slideshow__viewport">
         <div className="comics-lower-slideshow__track">
-          <section className="comics-lower-slideshow__slide comics-pendragon-slide" aria-label={COMICS_LOWER_SCREENS[0]} aria-hidden={screen !== 0} inert={screen !== 0 ? "" : undefined}>
+          <section className="comics-lower-slideshow__slide comics-pendragon-slide" aria-label={COMICS_LOWER_SCREENS[0]} aria-hidden={screen !== 0} ref={element => { if (screen !== 0) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
             <picture><source media="(orientation: portrait)" srcSet={pendragonPortrait} /><img className="comics-pendragon-slide__image" src={pendragon} alt="Surname Pendragon" /></picture>
             <div className="comics-pendragon-slide__copy">
               <p className="comics-pendragon-slide__kicker">Screenplay Adaptation</p>
@@ -75,11 +77,11 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
               <p className="comics-pendragon-slide__kicker">Feature Film • Drama • In Development</p>
             </div>
           </section>
-          <section className="comics-lower-slideshow__slide comics-story-slide" aria-label={COMICS_LOWER_SCREENS[1]} aria-hidden={screen !== 1} inert={screen !== 1 ? "" : undefined}>
+          <section className="comics-lower-slideshow__slide comics-story-slide" aria-label={COMICS_LOWER_SCREENS[1]} aria-hidden={screen !== 1} ref={element => { if (screen !== 1) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
             <img className="comics-story-slide__background" src={panorama} alt="" aria-hidden="true" />
             <GodOfLiesGallery>{children}</GodOfLiesGallery>
           </section>
-          <section className="comics-lower-slideshow__slide comics-shelf-slide" aria-label={COMICS_LOWER_SCREENS[2]} aria-hidden={screen !== 2} inert={screen !== 2 ? "" : undefined}>
+          <section className="comics-lower-slideshow__slide comics-shelf-slide" aria-label={COMICS_LOWER_SCREENS[2]} aria-hidden={screen !== 2} ref={element => { if (screen !== 2) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
             <h2>Stories waiting to be told…</h2>
             <div className="comics-shelf-slide__grid">
               {comics.map(comic => <Button variant="link" className="comics-shelf-slide__cover" key={comic.title} aria-label={`Explore ${comic.title}`} onClick={event => {
