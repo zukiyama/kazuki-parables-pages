@@ -1071,7 +1071,7 @@ const Comics = () => {
                   </div>
                 </div>
 
-                <div className="comics-sky-half" onClick={() => { if (currentSection === 1 && !isTransitioning) advanceOpeningRef.current?.(); }}>
+                <div className="comics-sky-half" onClick={() => { if (currentSection !== 1) return; if (isTransitioning) pendingTitleAdvanceRef.current = true; else advanceOpeningRef.current?.(); }}>
                 <div ref={characterPopupRef} className={`comics-character-popup ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''} ${currentSection >= 2 ? 'is-departing' : ''}`} aria-hidden="true">
                   <img className="comics-character-men" src={godOfLiesPopupCharacters.url} alt="" width={768} height={1152} loading="eager" decoding="async" />
                   <img className="comics-character-dog" src={godOfLiesPopupDog.url} alt="" width={1312} height={1199} loading="eager" decoding="async" />
