@@ -176,7 +176,7 @@ const Writing = () => {
     if (location.hash === '#kaiju') {
       // Small delay to ensure DOM is rendered
       setTimeout(() => {
-        const parableTrilogy = document.querySelector('[data-section="kaiju"] h2');
+        const parableTrilogy = document.querySelector('[data-section="kaiju"] h1');
         if (parableTrilogy) {
           const rect = parableTrilogy.getBoundingClientRect();
           const scrollTop = window.pageYOffset + rect.top - 100; // 100px offset for nav
@@ -570,7 +570,7 @@ const Writing = () => {
       if (!parableTrilogyRef.current) return;
       
       const rect = parableTrilogyRef.current.getBoundingClientRect();
-      const titleEl = parableTrilogyRef.current.querySelector('h2');
+      const titleEl = parableTrilogyRef.current.querySelector('h1');
       
       if (titleEl) {
         const titleRect = titleEl.getBoundingClientRect();
@@ -1044,17 +1044,6 @@ const Writing = () => {
         }`}>
           <div className="container mx-auto px-6 py-12">
             <div className="max-w-6xl mx-auto">
-              {/* Page Title */}
-              {/* Widescreen: mb-20, iPad desktop: slightly more (mb-24) */}
-              <div className={`text-center lg:pt-12 pt-8 ${isWidescreen ? 'mb-20' : 'mb-24 max-sm:mb-12'}`}>
-                <h1 
-                  className={`font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white transition-opacity duration-500 ${
-                    visibleSections.has('kaiju') ? 'opacity-100' : 'opacity-0'
-                  }`}
-                >
-                  Novels
-                </h1>
-              </div>
               
               {/* The Parable Trilogy Introduction - fades out/in based on scroll trigger */}
               <div 
@@ -1068,9 +1057,9 @@ const Writing = () => {
                 }}
               >
                 {/* iPad: slightly larger text (text-5xl), Widescreen: same (text-5xl), Mobile phone: larger (text-4xl) */}
-                <h2 className={`font-serif font-bold text-yellow-300 mb-6 ${isWidescreen ? 'text-5xl' : 'text-5xl max-sm:text-4xl'}`}>
+                <h1 className={`font-serif font-bold text-yellow-300 mb-6 ${isWidescreen ? 'text-5xl' : 'text-5xl max-sm:text-4xl'}`}>
                   The Parable Trilogy
-                </h2>
+                </h1>
                 <p className={`font-serif leading-relaxed text-white max-w-4xl mx-auto ${isWidescreen ? 'text-xl' : 'text-lg md:text-xl max-sm:text-base'}`}>
                   A metaphysical saga unfolding across the shifting decades of an alternate 20th-century Japan, from mysterious towns and abandoned film sets to mountain temples and secret research facilities far from this world. With a cast as varied as its setting, childhood wonder collides with philosophy and fantasy in this compelling trilogy that explores the boundaries between truth and fiction.
                 </p>
@@ -1087,13 +1076,13 @@ const Writing = () => {
                 style={isWidescreen ? { marginBottom: '5rem' } : undefined}
               >
                 <span 
-                  className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 max-sm:mb-2 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'}`}
+                  className={`uppercase tracking-[0.3em] text-stone-300 block mb-4 max-sm:mb-2 ${isWidescreen ? 'text-2xl' : 'text-2xl max-sm:text-lg'}`}
                   style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 400 }}
                 >
                   Book One of the Parable Trilogy
                 </span>
                 <h2 
-                  className={`font-light tracking-[0.15em] text-white ${isWidescreen ? 'text-6xl' : 'text-7xl max-sm:text-6xl'}`}
+                  className={`font-light tracking-[0.15em] text-white ${isWidescreen ? 'text-8xl' : 'text-8xl max-sm:text-7xl'}`}
                   style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
                 >
                   KAIJU
