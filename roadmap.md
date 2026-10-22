@@ -1,5 +1,8 @@
 # Roadmap
 
+- [ ] Remove the local story halo; gently darken/brighten the panorama during travel and retain tight text shadows.
+- [ ] Auto-advance after three seconds only on the first title arrival per Comics visit; verify returns and fresh visits.
+
 - [x] Lower the panorama story and picture row; strengthen local text contrast.
 - [x] Eliminate entrance flicker and slow title/cutout fades.
 - [x] Remove picture highlights and close X; verify image/outside dismissal and return scrolling.
