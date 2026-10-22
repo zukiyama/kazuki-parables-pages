@@ -3,7 +3,7 @@ import { COMICS_TITLE_PAUSE_MS, shouldAutoAdvanceComicsTitle } from "./comics-ti
 
 describe("Comics first title arrival", () => {
   test("triggers slightly sooner than the original one and a half seconds", () => {
-    expect(COMICS_TITLE_PAUSE_MS).toBe(1400);
+    expect(COMICS_TITLE_PAUSE_MS).toBe(1100);
   });
   test("advances only the first settled title arrival", () => {
     expect(shouldAutoAdvanceComicsTitle(1, false, true, true, false)).toBe(true);
