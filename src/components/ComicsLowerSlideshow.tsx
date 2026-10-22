@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { createPortal } from "react-dom";
 import useEmblaCarousel from "embla-carousel-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
@@ -9,8 +8,8 @@ import { COMICS_LOWER_SCREENS, nextComicsScreen, paperArrowOverlap } from "@/lib
 
 type Comic = { cover: string; title: string; description: ReactNode; teaser: string; format: string };
 
-export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pendragonPortrait, open, arrowContainer }: {
-  children: ReactNode; comics: Comic[]; panorama: string; pendragon: string; pendragonPortrait: string; open: boolean; arrowContainer: HTMLElement | null;
+export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pendragonPortrait, open }: {
+  children: ReactNode; comics: Comic[]; panorama: string; pendragon: string; pendragonPortrait: string; open: boolean;
 }) {
   const [viewport, api] = useEmblaCarousel({ loop: true, startIndex: 1, duration: 20 });
   const [screen, setScreen] = useState(1);
@@ -89,7 +88,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
       api.off("scroll", afterRender); api.off("reInit", afterRender); api.off("settle", afterRender);
       observer.disconnect();
     };
-  }, [api, arrowContainer]);
+  }, [api]);
   // Embla never emits "settle" after an instant jump (its first render checks
   // the old position), so sync the screen explicitly after every jump or the
   // footer keeps the previous screen's variant.
@@ -173,10 +172,10 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
           </section>
         </div>
       </div>
-      {arrowContainer && createPortal(<div className={`comics-lower-slideshow__controls ${traveling ? "is-traveling" : ""}`} hidden={!open}>
+      <div className={`comics-lower-slideshow__controls ${traveling ? "is-traveling" : ""}`}>
       <Button ref={leftArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--left" aria-label="Previous comics screen" onClick={() => navigate(-1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg></Button>
       <Button ref={rightArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--right" aria-label="Next comics screen" onClick={() => navigate(1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg></Button>
-      </div>, arrowContainer)}
+      </div>
       <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant={footerScreen === 2 ? "light" : "dark"} /></div>
       <Dialog.Root open={selected !== null} onOpenChange={value => { if (!value) void close(); }}>
         <Dialog.Portal>
