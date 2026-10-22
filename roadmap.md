@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Keep arrows stationary and immediately visible during downward entry; verify horizontal fades, looping, dialogs, footer and header navigation remain intact.
+- [x] Keep arrows stationary and immediately visible during downward entry; verified frame-by-frame at 1037×783, horizontal fades, looping, shelf reader, pale shelf footer and Writing navigation. Existing remote character/gallery image loading remains unavailable in this preview.
 
 - [x] Smooth lower slideshow motion and synchronize each arrow with the background directly beneath it; verified both directions and looping (gallery image loading unavailable in this preview).
 
