@@ -1653,21 +1653,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 0 1.5rem;
-}
-.comics-sky-pan::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  /* One continuous mask across both halves: no boundary during the pan. */
-  background: hsl(var(--ink-black) / 0.52);
-  opacity: 0;
-  transition: opacity 1100ms cubic-bezier(0.65, 0, 0.35, 1);
-}
-.comics-sky-pan.is-lower::after {
-  opacity: 1;
+  padding: 3rem 0 2rem;
 }
 .comics-hill-blurb {
   flex: 0 0 auto;
@@ -1683,98 +1669,50 @@
     0 0 58px hsl(var(--ink-black) / 0.6),
     0 0 96px hsl(var(--ink-black) / 0.45);
 }
-.god-of-lies-carousel { width: 100%; }
-.god-of-lies-carousel__viewport { width: 100%; overflow: hidden; touch-action: pan-y pinch-zoom; }
-.god-of-lies-carousel__track { display: flex; align-items: stretch; }
-.god-of-lies-carousel__slide {
-  flex: 0 0 min(70vw, 88vh, 54rem);
-  min-width: 0;
-  aspect-ratio: 3 / 2;
-  margin-right: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* A fixed picture row above the lower story; enlargement never moves its slots. */
+.god-of-lies-gallery {
+  width: 100%; height: 100%; min-height: 0;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: space-evenly; gap: 2rem;
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
 }
-.god-of-lies-carousel__slide .comics-hill-blurb { padding: 0 1.5rem; }
-.god-of-lies-carousel__text { cursor: pointer; }
-.god-of-lies-carousel__text .comics-hill-blurb {
-  opacity: 0;
-  transition: opacity 480ms ease-out;
+.god-of-lies-gallery__row {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: 100%; gap: clamp(0.75rem, 2vw, 2rem);
 }
-.comics-sky-pan.is-lower .god-of-lies-carousel__text .comics-hill-blurb {
-  opacity: 1;
-  transition-delay: 80ms;
+.god-of-lies-gallery__picture {
+  display: flex; width: 100%; height: auto; aspect-ratio: 3 / 2;
+  padding: 0; border-radius: 0; background: transparent;
 }
-.god-of-lies-carousel__picture-reveal {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: transform 560ms ease-out, opacity 480ms ease-out;
+.god-of-lies-gallery__picture:hover { background: transparent; }
+.god-of-lies-gallery__picture img { width: 100%; height: 100%; object-fit: contain; }
+.god-of-lies-gallery__row, .god-of-lies-gallery > .comics-hill-blurb {
+  opacity: 0; transition: opacity 480ms ease-out;
 }
-.god-of-lies-carousel__picture-reveal.from-left { transform: translateX(-5rem); }
-.god-of-lies-carousel__picture-reveal.from-right { transform: translateX(5rem); }
-.comics-sky-pan.is-lower .god-of-lies-carousel__picture-reveal {
-  transform: translateX(0);
-  opacity: 1;
-  transition-delay: 80ms;
+.comics-sky-pan.is-lower .god-of-lies-gallery__row,
+.comics-sky-pan.is-lower .god-of-lies-gallery > .comics-hill-blurb { opacity: 1; transition-delay: 80ms; }
+.god-of-lies-gallery__overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: hsl(var(--ink-black) / 0.78);
 }
-.god-of-lies-carousel__image {
-  display: block;
-  width: 82%;
-  height: auto;
-  padding: 0;
-  border-radius: 0;
-  background: transparent;
-  filter: brightness(var(--picture-brightness, 0.74));
-  transform: scale(var(--picture-scale, 0.8));
-  transform-origin: center;
-  transition: filter 160ms linear, transform 140ms linear;
+.god-of-lies-gallery__enlarged {
+  position: fixed; left: 50%; top: 50%; z-index: 101;
+  transform: translate(-50%, -50%); width: min(90vw, 123dvh, 90rem);
+  outline: none;
 }
-.god-of-lies-carousel__image img { width: 100%; height: auto; object-fit: contain; }
-.god-of-lies-carousel__thumbnails {
-  display: flex;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: 2rem;
-  opacity: 0;
-  transform: translateY(0.75rem);
-  transition: opacity 450ms ease-out, transform 450ms ease-out;
-  pointer-events: none;
+.god-of-lies-gallery__enlarged > img {
+  display: block; width: 100%; height: auto; max-height: 82dvh;
+  object-fit: contain; transform-origin: center;
 }
-.comics-sky-pan.is-lower .god-of-lies-carousel__thumbnails {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 180ms;
-  pointer-events: auto;
+.god-of-lies-gallery__close {
+  position: absolute; right: 0; top: -2.75rem;
+  color: hsl(var(--canvas-base)); background: transparent;
 }
-.god-of-lies-carousel__thumbnail {
-  position: relative;
-  width: 5rem;
-  height: auto;
-  aspect-ratio: 3 / 2;
-  padding: 0;
-  border-radius: 2px;
-  background: transparent;
-  opacity: 0.55;
-  transition: opacity 250ms ease, box-shadow 250ms ease, transform 250ms ease;
-  color: hsl(var(--canvas-base));
-}
-.god-of-lies-carousel__thumbnail img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
-.god-of-lies-carousel__thumbnail:hover { opacity: 0.9; }
-.god-of-lies-carousel__thumbnail.is-selected {
-  opacity: 1;
-  transform: translateY(-2px);
-  box-shadow: 0 0 0 1px hsl(var(--canvas-base) / 0.55), 0 0 14px hsl(var(--canvas-base) / 0.3);
-}
-.god-of-lies-carousel__story { background: hsl(var(--ink-black) / 0.3); }
+.comics-character-popup, .comics-shrine-title { opacity: 1; transition: opacity 420ms ease-out; }
+.comics-character-popup.is-departing, .comics-shrine-title.is-departing { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
-  .god-of-lies-carousel__thumbnail,
-  .god-of-lies-carousel__image,
-  .god-of-lies-carousel__picture-reveal,
-  .god-of-lies-carousel__text .comics-hill-blurb,
-  .god-of-lies-carousel__thumbnails { transition: none; }
+  .god-of-lies-gallery__row, .god-of-lies-gallery > .comics-hill-blurb,
+  .comics-character-popup, .comics-shrine-title { transition: none; }
 }
 .comics-story-title {
   font-family: 'Playfair Display', Georgia, serif;
@@ -1811,7 +1749,6 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .comics-sky-pan,
-  .comics-sky-pan::after,
   .comics-keep-going {
     transition: none !important;
     filter: none;

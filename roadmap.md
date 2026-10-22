@@ -57,3 +57,6 @@
 - [x] Feather and delay the lower road mask.
 - [x] Remove the central God of Lies cover; lay out six covers in one row below a raised blurb with equal spacing.
 - [x] Replace the selection frame with a soft warm glow.
+
+- [x] Replace the lower carousel with four evenly spaced enlarging pictures and a lower blurb; remove the panorama mask.
+- [x] Enable touch-to-advance and fading title cutouts; verify enlargement, dismissal and return transitions.
