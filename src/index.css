@@ -1636,7 +1636,12 @@
   transition: transform 1100ms cubic-bezier(0.65, 0, 0.35, 1);
 }
 .comics-sky-pan.is-lower { transform: translate3d(0, -50%, 0); }
-.comics-sky-pan .comics-shrine-skyline { object-position: center center; }
+.comics-sky-pan .comics-shrine-skyline {
+  object-position: center center;
+  filter: brightness(1);
+  transition: filter 1100ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+.comics-sky-pan.is-lower .comics-shrine-skyline { filter: brightness(0.68); }
 .comics-sky-half {
   position: absolute;
   left: 0;
@@ -1664,16 +1669,8 @@
   max-width: 48rem;
   text-align: center;
   text-shadow:
-    0 1px 2px hsl(var(--ink-black) / 0.95),
-    0 2px 8px hsl(var(--ink-black) / 0.8);
-}
-.comics-hill-blurb::before {
-  content: '';
-  position: absolute;
-  inset: -3rem -4rem;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(ellipse, hsl(var(--ink-black) / 0.8) 0%, hsl(var(--ink-black) / 0.65) 42%, hsl(var(--ink-black) / 0.3) 65%, transparent 78%);
+    0 1px 2px hsl(var(--ink-black)),
+    0 2px 5px hsl(var(--ink-black) / 0.9);
 }
 /* A fixed picture row above the lower story; enlargement never moves its slots. */
 .god-of-lies-gallery {
@@ -1733,6 +1730,7 @@
 .comics-character-popup.is-departing, .comics-shrine-title.is-departing { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
   .god-of-lies-gallery,
+  .comics-sky-pan .comics-shrine-skyline,
   .comics-character-popup, .comics-shrine-title { transition: none; }
 }
 .comics-story-title {
