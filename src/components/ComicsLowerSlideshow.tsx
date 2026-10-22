@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,8 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   const rightArrowRef = useRef<HTMLButtonElement>(null);
   const sourceRef = useRef<HTMLImageElement | null>(null);
   const enlargedRef = useRef<HTMLImageElement | null>(null);
+  const readerCopyRef = useRef<HTMLDivElement>(null);
+  const readerOverlayRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<Animation | null>(null);
   const closeRef = useRef(false);
   const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -102,7 +104,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   // arrow press — for example one interrupted by leaving the section — must
   // be dropped the moment the section changes, or the arrows would fade in
   // with the scroll instead of being there from the start.
-  useEffect(() => {
+  useLayoutEffect(() => {
     travelingRef.current = false;
     setTraveling(false);
   }, [open]);
@@ -127,12 +129,26 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   }, []);
   const close = async () => {
     if (closeRef.current) return;
-    closeRef.current = true; setClosing(true); animationRef.current?.cancel();
+    closeRef.current = true; setClosing(true);
     if (!reduced()) {
-      const animation = enlargedRef.current?.animate([{ transform: "none" }, { transform: sourceTransform() }], {
-        duration: 320, easing: "cubic-bezier(0.4, 0, 0.2, 1)", fill: "forwards",
-      });
-      try { await animation?.finished; } catch { /* Unmounted. */ }
+      const image = enlargedRef.current;
+      const copy = readerCopyRef.current;
+      const overlay = readerOverlayRef.current;
+      const options: KeyframeAnimationOptions = { duration: 320, easing: "cubic-bezier(0.4, 0, 0.2, 1)", fill: "forwards" };
+      const animations: Animation[] = [];
+      const animate = (element: HTMLElement | null, end: Keyframe) => {
+        if (!element) return;
+        const style = getComputedStyle(element);
+        const start = { opacity: style.opacity, transform: style.transform };
+        element.getAnimations().forEach(animation => animation.cancel());
+        animations.push(element.animate([start, end], options));
+      };
+      animate(image, { opacity: 1, transform: sourceTransform() });
+      animate(copy, { opacity: 0, transform: "translateY(0.5rem)" });
+      animate(overlay, { opacity: 0, transform: "none" });
+      const startTime = document.timeline.currentTime;
+      animations.forEach(animation => { animation.startTime = startTime; });
+      try { await Promise.all(animations.map(animation => animation.finished)); } catch { /* Unmounted. */ }
     }
     setSelected(null); setClosing(false); closeRef.current = false;
   };
@@ -172,17 +188,17 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
           </section>
         </div>
       </div>
-      <div className={`comics-lower-slideshow__controls ${traveling ? "is-traveling" : ""}`}>
+      <div className={`comics-lower-slideshow__controls ${open && traveling ? "is-traveling" : ""}`} data-page-open={open}>
       <Button ref={leftArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--left" aria-label="Previous comics screen" onClick={() => navigate(-1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg></Button>
       <Button ref={rightArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--right" aria-label="Next comics screen" onClick={() => navigate(1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg></Button>
       </div>
       <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant={footerScreen === 2 ? "light" : "dark"} /></div>
       <Dialog.Root open={selected !== null} onOpenChange={value => { if (!value) void close(); }}>
         <Dialog.Portal>
-          <Dialog.Overlay className="comics-reader__overlay" />
-          <Dialog.Content className={`comics-reader ${closing ? "is-closing" : ""}`} aria-describedby="comic-reader-description" onEscapeKeyDown={event => { event.preventDefault(); void close(); }} onPointerDownOutside={event => { event.preventDefault(); void close(); }} onCloseAutoFocus={event => { event.preventDefault(); sourceRef.current?.closest<HTMLElement>("button")?.focus(); }}>
+          <Dialog.Overlay ref={readerOverlayRef} className="comics-reader__overlay" />
+          <Dialog.Content className={`comics-reader ${closing ? "is-closing" : ""}`} aria-describedby="comic-reader-description" onClick={event => { if (event.target !== enlargedRef.current) void close(); }} onEscapeKeyDown={event => { event.preventDefault(); void close(); }} onPointerDownOutside={event => { event.preventDefault(); void close(); }} onCloseAutoFocus={event => { event.preventDefault(); sourceRef.current?.closest<HTMLElement>("button")?.focus(); }}>
             <Button variant="link" className="comics-reader__image" aria-label="Close comic details" onClick={() => void close()}>{selected && <img ref={mountCover} src={selected.cover} alt={`${selected.title} comic cover`} width={640} height={960} />}</Button>
-            <div className="comics-reader__copy"><p className="comics-reader__format">{selected?.format}</p><Dialog.Title>{selected?.title}</Dialog.Title><div id="comic-reader-description">{selected?.description}</div><p className="comics-reader__teaser">{selected?.teaser}</p></div>
+            <div ref={readerCopyRef} className="comics-reader__copy"><p className="comics-reader__format">{selected?.format}</p><Dialog.Title>{selected?.title}</Dialog.Title><div id="comic-reader-description">{selected?.description}</div><p className="comics-reader__teaser">{selected?.teaser}</p></div>
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>

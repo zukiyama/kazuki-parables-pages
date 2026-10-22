@@ -1850,6 +1850,7 @@
 .comics-lower-slideshow__arrow:hover { background: transparent; opacity: 0.8; }
 .comics-lower-slideshow__arrow:active { transform: scale(0.85); }
 .comics-lower-slideshow__controls.is-traveling .comics-lower-slideshow__arrow { opacity: 0; transition: transform 90ms ease, opacity 90ms linear; pointer-events: none; }
+.comics-lower-slideshow__controls[data-page-open="false"] .comics-lower-slideshow__arrow { opacity: 1; transition: transform 180ms ease; }
 .comics-lower-slideshow__arrow:focus-visible { outline: 1px dashed currentColor; outline-offset: 1px; }
 .comics-lower-slideshow__footer { flex: 0 0 auto; position: relative; z-index: 9; }
 .comics-lower-slideshow__footer footer { transition: background-color 400ms, color 400ms; }
@@ -1870,7 +1871,7 @@
 .comics-shelf-slide__cover { height: auto; padding: 0; border-radius: 0; background: transparent; cursor: zoom-in; }
 .comics-shelf-slide__cover img { width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: contain; box-shadow: 0 5px 15px hsl(var(--ink-black) / 0.16); }
 .comics-shelf-slide__cover:hover, .comics-shelf-slide__cover:focus-visible { background: transparent; }
-.comics-reader__overlay { position: fixed; inset: 0; z-index: 100; background: hsl(var(--comics-reader-backdrop) / 0.95); backdrop-filter: blur(10px); }
+.comics-reader__overlay { position: fixed; inset: 0; z-index: 100; background: hsl(var(--comics-reader-backdrop) / 0.95); backdrop-filter: blur(10px); animation: comics-reader-backdrop-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both; }
 .comics-reader { position: fixed; inset: 6dvh 6vw; z-index: 101; display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr); gap: 4rem; align-items: center; max-width: 70rem; margin: auto; color: hsl(var(--canvas-base)); outline: none; }
 .comics-reader__image { display: flex; height: 100%; min-height: 0; padding: 0; background: transparent; cursor: zoom-out; }
 .comics-reader__image img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
@@ -1879,7 +1880,7 @@
 .comics-reader__copy h2 { font-family: var(--font-heading); font-size: 2.75rem; line-height: 1.15; margin: 0.75rem 0 1.5rem; }
 .comics-reader__format { font-size: 0.7rem; text-transform: uppercase; color: hsl(var(--canvas-base) / 0.65); }
 .comics-reader__teaser { margin-top: 1.5rem; font-style: italic; color: hsl(var(--canvas-base) / 0.8); }
-.comics-reader.is-closing .comics-reader__copy { opacity: 0; transition: opacity 200ms ease; }
+@keyframes comics-reader-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes comics-reader-copy-in { from { opacity: 0; transform: translateY(0.5rem); } to { opacity: 1; transform: none; } }
 @media (orientation: portrait) {
   .comics-shelf-slide__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); width: min(100%, 38rem); gap: 1.5rem; }
@@ -1896,5 +1897,5 @@
   .comics-story-slide > .god-of-lies-gallery { padding-top: 4.5rem; padding-bottom: 0.75rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .comics-lower-slideshow__arrow, .comics-reader__copy { animation: none; transition: none; }
+  .comics-lower-slideshow__arrow, .comics-reader__copy, .comics-reader__overlay { animation: none; transition: none; }
 }
