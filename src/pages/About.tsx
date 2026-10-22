@@ -104,7 +104,7 @@ const handwrittenLineLayers = [
   handwrittenLine5,
   handwrittenLine6,
   handwrittenSignature,
-].map((src, index) => ({ src, delay: index * 280 }));
+].map((src, index) => ({ src, delay: index * 520 }));
 
 // Reveal the handwritten note one line at a time.
 const HandwrittenIntro = ({

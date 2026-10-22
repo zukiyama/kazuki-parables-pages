@@ -332,7 +332,7 @@
 }
 
 .about-handwritten-intro.is-writing .about-handwritten-line {
-  animation: about-handwritten-line-reveal 400ms linear var(--handwriting-delay) forwards;
+  animation: about-handwritten-line-reveal 620ms linear var(--handwriting-delay) forwards;
 }
 
 @keyframes about-handwritten-line-reveal {
