@@ -1841,7 +1841,10 @@
 .comics-story-slide__background { position: absolute; inset: 0; width: 100%; height: calc(200% + var(--chapter-footer-height, 120px) * 2); object-fit: cover; object-position: center; transform: translateY(-50%); filter: brightness(0.68); pointer-events: none; }
 .comics-story-slide > .god-of-lies-gallery { position: relative; padding: 1.5rem 8%; grid-template-rows: minmax(0.5rem, 1fr) auto minmax(0.5rem, 1fr) auto minmax(0.5rem, 0.25fr); }
 .comics-story-slide .comics-hill-blurb { max-width: 44rem; }
-.comics-lower-slideshow__controls { position: absolute; inset: 0; z-index: 8; pointer-events: none; }
+/* Own compositing layer inside the panning page: Safari otherwise defers
+   painting these non-composited arrows until the 1100ms pan finishes, so
+   they appeared late even though they are always opacity 1. */
+.comics-lower-slideshow__controls { position: absolute; inset: 0; z-index: 8; pointer-events: none; transform: translateZ(0); backface-visibility: hidden; }
 .comics-lower-slideshow__arrow { position: absolute; top: calc(50% - 2.25rem); width: 4rem; height: 4.5rem; padding: 0.65rem; z-index: 8; pointer-events: auto; color: hsl(var(--comics-arrow-light)); background: transparent; border-radius: 0; transition: transform 180ms ease, opacity 40ms linear; }
 .comics-lower-slideshow__arrow--left { left: 1.2%; }
 .comics-lower-slideshow__arrow--right { right: 1.2%; }
