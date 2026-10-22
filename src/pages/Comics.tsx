@@ -101,6 +101,7 @@ const Comics = () => {
   const openingVideoRef = useRef<HTMLVideoElement>(null);
   const advanceOpeningRef = useRef<(() => void) | null>(null);
   const firstTitleVisitedRef = useRef(false);
+  const pendingTitleAdvanceRef = useRef(false);
   const openingSectionRef = useRef<HTMLElement>(null);
   const peelTurnRef = useRef<(() => boolean) | null>(null);
   const peelDraggingRef = useRef(false);
@@ -457,7 +458,10 @@ const Comics = () => {
       e.preventDefault();
       e.stopPropagation();
       
-      if (isTransitioning) return;
+      if (isTransitioning) {
+        if (showPopUpScene && currentSection === 1 && e.deltaY > 20) pendingTitleAdvanceRef.current = true;
+        return;
+      }
       
       scrollAccumulator += e.deltaY;
       
@@ -533,7 +537,11 @@ const Comics = () => {
       
       e.preventDefault();
       
-      if (isTransitioning || peelDraggingRef.current) return;
+      if (peelDraggingRef.current) return;
+      if (isTransitioning) {
+        if (showPopUpScene && currentSection === 1 && touchStartY - e.touches[0].clientY > 30) pendingTitleAdvanceRef.current = true;
+        return;
+      }
       
       const touchY = e.touches[0].clientY;
       const delta = touchStartY - touchY;
@@ -571,19 +579,35 @@ const Comics = () => {
   // touch taps emit compatibility mouse events that must be ignored.
   useEffect(() => {
     if (!showPopUpScene || !isScrollLocked || currentSection <= 0) return;
+    const arrivedAt = performance.now();
     const handlePointerMove = (e: PointerEvent) => {
       if (e.pointerType !== 'mouse') return;
       const target = e.target as Element | null;
       if (target?.closest?.('[data-header="true"]')) return;
+      if (document.querySelector('[role="dialog"]')) return;
+      // Thin strip just above the bottom edge of the title page: step down.
+      // Ignored for a moment after arriving so a cursor left near the peel
+      // corner cannot skip the title straight away.
+      if (currentSection === 1 && e.clientY >= window.innerHeight - 32 && performance.now() - arrivedAt > 600) {
+        advanceOpeningRef.current?.();
+        return;
+      }
       const header = document.querySelector<HTMLElement>('[data-header="true"]');
       const top = header ? header.getBoundingClientRect().bottom : 0;
       if (e.clientY <= top || e.clientY > top + 32) return;
-      if (document.querySelector('[role="dialog"]')) return;
       prevSectionRef.current?.();
     };
     window.addEventListener('pointermove', handlePointerMove);
     return () => window.removeEventListener('pointermove', handlePointerMove);
   }, [showPopUpScene, isScrollLocked, currentSection]);
+
+  // A scroll, swipe or tap made while the opening page is still turning is
+  // remembered and carried out the moment the title page has settled.
+  useEffect(() => {
+    if (isTransitioning || !pendingTitleAdvanceRef.current) return;
+    pendingTitleAdvanceRef.current = false;
+    if (currentSection === 1 && showPopUpScene && isScrollLocked) advanceOpeningRef.current?.();
+  }, [isTransitioning, currentSection, showPopUpScene, isScrollLocked]);
 
   // Lock/unlock body scroll based on animation state
   useEffect(() => {
