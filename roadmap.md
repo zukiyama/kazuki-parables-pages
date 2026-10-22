@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Smooth lower slideshow motion and synchronize each arrow with the background directly beneath it; verify both directions and looping.
+- [x] Smooth lower slideshow motion and synchronize each arrow with the background directly beneath it; verified both directions and looping (gallery image loading unavailable in this preview).
 
 - [x] Quicken the title auto-advance, centre the slideshow arrows vertically, and add touch-swipe-up plus cursor-at-top return on tablet/desktop.
 - [x] Add the header emblem one-spin Easter egg matching the Music switcher; verify return navigation and unchanged phones.
