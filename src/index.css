@@ -1841,14 +1841,16 @@
 .comics-story-slide__background { position: absolute; inset: 0; width: 100%; height: calc(200% + var(--chapter-footer-height, 120px) * 2); object-fit: cover; object-position: center; transform: translateY(-50%); filter: brightness(0.68); pointer-events: none; }
 .comics-story-slide > .god-of-lies-gallery { position: relative; padding: 1.5rem 8%; grid-template-rows: minmax(0.5rem, 1fr) auto minmax(0.5rem, 1fr) auto minmax(0.5rem, 0.25fr); }
 .comics-story-slide .comics-hill-blurb { max-width: 44rem; }
-.comics-lower-slideshow__arrow { position: absolute; top: calc(50% - 2.25rem); width: 4rem; height: 4.5rem; padding: 0.65rem; z-index: 8; color: hsl(var(--comics-arrow-light)); background: transparent; border-radius: 0; transition: transform 180ms ease, opacity 40ms linear; }
+.comics-lower-slideshow__arrow-host { position: absolute; inset: 0; z-index: 8; pointer-events: none; }
+.comics-lower-slideshow__controls { position: absolute; inset: 0; pointer-events: none; }
+.comics-lower-slideshow__arrow { position: absolute; top: calc(50% - 2.25rem); width: 4rem; height: 4.5rem; padding: 0.65rem; z-index: 8; pointer-events: auto; color: hsl(var(--comics-arrow-light)); background: transparent; border-radius: 0; transition: transform 180ms ease, opacity 40ms linear; }
 .comics-lower-slideshow__arrow--left { left: 1.2%; }
 .comics-lower-slideshow__arrow--right { right: 1.2%; }
-.comics-lower-slideshow .comics-lower-slideshow__arrow svg { position: absolute; inset: 0.65rem; width: calc(100% - 1.3rem); height: calc(100% - 1.3rem); filter: drop-shadow(0 1px 3px hsl(var(--ink-black) / 0.25)); }
+.comics-lower-slideshow__controls .comics-lower-slideshow__arrow svg { position: absolute; inset: 0.65rem; width: calc(100% - 1.3rem); height: calc(100% - 1.3rem); filter: drop-shadow(0 1px 3px hsl(var(--ink-black) / 0.25)); }
 .comics-lower-slideshow__arrow-paper { color: hsl(var(--comics-arrow-dark)); clip-path: inset(0 var(--paper-arrow-end, 100%) 0 var(--paper-arrow-start, 0%)); }
 .comics-lower-slideshow__arrow:hover { background: transparent; opacity: 0.8; }
 .comics-lower-slideshow__arrow:active { transform: scale(0.85); }
-.comics-lower-slideshow.is-traveling .comics-lower-slideshow__arrow { opacity: 0; transition: transform 90ms ease, opacity 90ms linear; pointer-events: none; }
+.comics-lower-slideshow__controls.is-traveling .comics-lower-slideshow__arrow { opacity: 0; transition: transform 90ms ease, opacity 90ms linear; pointer-events: none; }
 .comics-lower-slideshow__arrow:focus-visible { outline: 1px dashed currentColor; outline-offset: 1px; }
 .comics-lower-slideshow__footer { flex: 0 0 auto; position: relative; z-index: 9; }
 .comics-lower-slideshow__footer footer { transition: background-color 400ms, color 400ms; }
