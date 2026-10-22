@@ -86,7 +86,15 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
       observer.disconnect();
     };
   }, [api]);
-  useEffect(() => { if (!open) api?.scrollTo(1, true); }, [api, open]);
+  // Embla never emits "settle" after an instant jump (its first render checks
+  // the old position), so sync the screen explicitly after every jump or the
+  // footer keeps the previous screen's variant.
+  const jumpTo = useCallback((index: number) => {
+    if (!api) return;
+    api.scrollTo(index, true);
+    setScreen(api.selectedScrollSnap()); travelingRef.current = false; setTraveling(false);
+  }, [api]);
+  useEffect(() => { if (!open) jumpTo(1); }, [jumpTo, open]);
   useEffect(() => {
     [panorama, pendragon, pendragonPortrait, ...comics.map(c => c.cover)].forEach(src => {
       const image = new Image(); image.src = src; void image.decode().catch(() => {});
@@ -120,7 +128,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
     if (!api) return;
     travelingRef.current = true; setTraveling(true);
     const next = nextComicsScreen(api.selectedScrollSnap(), direction);
-    if (reduced()) api.scrollTo(next, true);
+    if (reduced()) jumpTo(next);
     else if (direction === 1) api.scrollNext();
     else api.scrollPrev();
   };
@@ -154,7 +162,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
       </div>
       <Button ref={leftArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--left" aria-label="Previous comics screen" onClick={() => navigate(-1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg></Button>
       <Button ref={rightArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--right" aria-label="Next comics screen" onClick={() => navigate(1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg></Button>
-      <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant="dark" /></div>
+      <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant={screen === 2 ? "light" : "dark"} /></div>
       <Dialog.Root open={selected !== null} onOpenChange={value => { if (!value) void close(); }}>
         <Dialog.Portal>
           <Dialog.Overlay className="comics-reader__overlay" />
