@@ -1,8 +1,8 @@
 # Roadmap
 
-- [ ] Replace tablet/desktop lower vertical sections with a looping three-screen slideshow: Pendragon, God of Lies, six comics.
-- [ ] Add persistent triangular arrows and the footer; modernize shelf enlargement and slightly quicken the title timer.
-- [ ] Verify looping in both directions, picture dialogs, title return, and preserved phones.
+- [x] Replace tablet/desktop lower vertical sections with a looping three-screen slideshow: Pendragon, God of Lies, six comics.
+- [x] Add persistent triangular arrows and the footer; modernize shelf enlargement and slightly quicken the title timer.
+- [x] Verify looping in both directions, picture dialogs, title return, and preserved phones.
 
 - [x] Remove the local story halo; gently darken/brighten the panorama during travel and retain tight text shadows.
 - [x] Auto-advance after one and a half seconds only on the first title arrival per Comics visit; verify returns and fresh visits.
