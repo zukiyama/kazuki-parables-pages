@@ -102,6 +102,9 @@ const Comics = () => {
   const advanceOpeningRef = useRef<(() => void) | null>(null);
   const firstTitleVisitedRef = useRef(false);
   const pendingTitleAdvanceRef = useRef(false);
+  const peelStartedRef = useRef(false);
+  const openingRevealingRef = useRef(false);
+  const lastWheelAtRef = useRef(0);
   const openingSectionRef = useRef<HTMLElement>(null);
   const peelTurnRef = useRef<(() => boolean) | null>(null);
   const peelDraggingRef = useRef(false);
@@ -458,8 +461,14 @@ const Comics = () => {
       e.preventDefault();
       e.stopPropagation();
       
-      if (isTransitioning) {
-        if (showPopUpScene && currentSection === 1 && e.deltaY > 20) pendingTitleAdvanceRef.current = true;
+      // A wheel gesture is "fresh" only after a quiet gap, so the tail of the
+      // flick that started the turn can never queue a second advance.
+      const nowTs = performance.now();
+      const freshGesture = nowTs - lastWheelAtRef.current > 150;
+      lastWheelAtRef.current = nowTs;
+      const openingBusy = showPopUpScene && currentSection === 0 && (openingRevealingRef.current || peelStartedRef.current);
+      if (isTransitioning || openingBusy) {
+        if (freshGesture && showPopUpScene && currentSection <= 1 && e.deltaY > 20) pendingTitleAdvanceRef.current = true;
         return;
       }
       
@@ -472,7 +481,7 @@ const Comics = () => {
       }, 150);
       
       if (scrollAccumulator > scrollThreshold) {
-        if (currentSection === 0 && peelTurnRef.current?.()) { scrollAccumulator = 0; return; }
+        if (currentSection === 0 && peelTurnRef.current?.()) { peelStartedRef.current = true; scrollAccumulator = 0; return; }
         triggerSectionChange('next');
       } else if (scrollAccumulator < -scrollThreshold) {
         triggerSectionChange('prev');
@@ -484,7 +493,9 @@ const Comics = () => {
         let touchAccumulator = 0;
     
     let touchInHeader = false;
+    let touchBeganBusy = false;
     const handleTouchStart = (e: TouchEvent) => {
+      touchBeganBusy = isTransitioning || (currentSection === 0 && (openingRevealingRef.current || peelStartedRef.current));
       touchStartY = e.touches[0].clientY;
       touchAccumulator = 0;
       // A tap on a header link must only navigate, never change sections.
@@ -538,8 +549,10 @@ const Comics = () => {
       e.preventDefault();
       
       if (peelDraggingRef.current) return;
-      if (isTransitioning) {
-        if (showPopUpScene && currentSection === 1 && touchStartY - e.touches[0].clientY > 30) pendingTitleAdvanceRef.current = true;
+      const openingBusy = showPopUpScene && currentSection === 0 && (openingRevealingRef.current || peelStartedRef.current);
+      if (isTransitioning || openingBusy) {
+        // Only a swipe that began while the page was already turning counts.
+        if (touchBeganBusy && showPopUpScene && currentSection <= 1 && touchStartY - e.touches[0].clientY > 30) pendingTitleAdvanceRef.current = true;
         return;
       }
       
@@ -548,7 +561,7 @@ const Comics = () => {
       touchAccumulator = delta;
       
       if (touchAccumulator > 60) {
-        if (currentSection === 0 && peelTurnRef.current?.()) { touchStartY = touchY; return; }
+        if (currentSection === 0 && peelTurnRef.current?.()) { peelStartedRef.current = true; touchStartY = touchY; return; }
         triggerSectionChange('next');
         touchStartY = touchY;
       } else if (touchAccumulator < -60) {
