@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Keep arrows stationary and immediately visible during downward entry; verify horizontal fades, looping, dialogs, footer and header navigation remain intact.
+
 - [x] Smooth lower slideshow motion and synchronize each arrow with the background directly beneath it; verified both directions and looping (gallery image loading unavailable in this preview).
 
 - [x] Quicken the title auto-advance, centre the slideshow arrows vertically, and add touch-swipe-up plus cursor-at-top return on tablet/desktop.
