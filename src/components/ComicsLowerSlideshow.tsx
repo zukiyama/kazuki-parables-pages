@@ -97,6 +97,15 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
     api.scrollTo(index, true);
     setScreen(api.selectedScrollSnap()); setFooterScreen(api.selectedScrollSnap()); travelingRef.current = false; setTraveling(false);
   }, [api]);
+  // Sliding between the pinned title and the blurb page is a page-level
+  // transition, never a carousel one. Any travel state left over from an
+  // arrow press — for example one interrupted by leaving the section — must
+  // be dropped the moment the section changes, or the arrows would fade in
+  // with the scroll instead of being there from the start.
+  useEffect(() => {
+    travelingRef.current = false;
+    setTraveling(false);
+  }, [open]);
   useEffect(() => { if (!open) jumpTo(1); }, [jumpTo, open]);
   useEffect(() => {
     [panorama, pendragon, pendragonPortrait, ...comics.map(c => c.cover)].forEach(src => {
