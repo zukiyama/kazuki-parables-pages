@@ -1,7 +1,6 @@
-import { useCallback, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
 import plantShop from "@/assets/god-of-lies-carousel-plant-shop.asset.json";
 import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.asset.json";
 import pear from "@/assets/god-of-lies-carousel-pear.asset.json";
@@ -16,6 +15,17 @@ const scenes = [
 
 export function GodOfLiesGallery({ children }: { children: ReactNode }) {
   const [selected, setSelected] = useState<number | null>(null);
+  const [imagesReady, setImagesReady] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    // Decode while the opening/title is visible, not during the moving reveal.
+    void Promise.all(scenes.map(async ({ src }) => {
+      const image = new Image();
+      image.src = src;
+      try { await image.decode(); } catch { /* A failed image must not hide the story. */ }
+    })).then(() => { if (!cancelled) setImagesReady(true); });
+    return () => { cancelled = true; };
+  }, []);
   const imageRef = useRef<HTMLImageElement>(null);
   const sourceRef = useRef<HTMLImageElement | null>(null);
   const animationRef = useRef<Animation | null>(null);
@@ -51,14 +61,14 @@ export function GodOfLiesGallery({ children }: { children: ReactNode }) {
   };
   const scene = selected === null ? undefined : scenes[selected];
   return (
-    <div className="god-of-lies-gallery">
+    <div className={`god-of-lies-gallery ${imagesReady ? 'is-ready' : ''}`}>
       <div className="god-of-lies-gallery__row" aria-label="God of Lies illustrations">
         {scenes.map((scene, index) => (
           <Button key={scene.src} variant="link" className="god-of-lies-gallery__picture" aria-label={`Enlarge illustration ${index + 1}`} onClick={(event) => {
             sourceRef.current = event.currentTarget.querySelector("img");
             setSelected(index);
           }}>
-            <img src={scene.src} alt={scene.alt} width={1536} height={1024} loading="eager" decoding="async" draggable={false} />
+            <img src={scene.src} alt={scene.alt} width={1536} height={1024} loading="eager" decoding="sync" draggable={false} />
           </Button>
         ))}
       </div>
@@ -68,8 +78,7 @@ export function GodOfLiesGallery({ children }: { children: ReactNode }) {
           <Dialog.Overlay className="god-of-lies-gallery__overlay" />
           <Dialog.Content className="god-of-lies-gallery__enlarged" aria-describedby={undefined} onEscapeKeyDown={(event) => { event.preventDefault(); void close(); }} onPointerDownOutside={(event) => { event.preventDefault(); void close(); }} onCloseAutoFocus={(event) => { event.preventDefault(); sourceRef.current?.closest<HTMLElement>("button")?.focus(); }}>
             <Dialog.Title className="sr-only">{scene?.alt}</Dialog.Title>
-            {scene && <img ref={mountImage} src={scene.src} alt={scene.alt} width={1536} height={1024} />}
-            <Button variant="link" className="god-of-lies-gallery__close" aria-label="Close illustration" onClick={() => void close()}><X /></Button>
+            {scene && <Button variant="link" className="god-of-lies-gallery__dismiss" aria-label="Close illustration" onClick={() => void close()}><img ref={mountImage} src={scene.src} alt={scene.alt} width={1536} height={1024} /></Button>}
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
