@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import MobileMenu from "./MobileMenu";
 import SocialIcons from "./SocialIcons";
 
 const Navigation = () => {
   const location = useLocation();
+  const [emblemSpinning, setEmblemSpinning] = useState(false);
 
   const navItems = [
     { path: "/", label: "Home" },
@@ -23,17 +25,24 @@ const Navigation = () => {
     }`}>
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className={`font-body text-2xl font-semibold inline-flex items-center gap-3 ${
-            isAboutPage ? "text-ink-black" : "text-[hsl(25,30%,25%)]"
-          }`}>
-            <span className="tracking-wide max-sm:text-lg">Kazuki Yamakawa</span>
-            <svg width="28" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className={`max-sm:w-6 max-sm:h-5 ${isAboutPage ? "text-ink-black/80" : "text-[hsl(25,30%,25%)]/80"}`}>
-              <path d="M3 19 L12 5 L21 19 Z" stroke="currentColor" strokeWidth="1.5" fill="none" />
-              <circle cx="16" cy="10" r="3" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.7" />
-              <path d="M5 14 C9 12, 15 16, 20 18" stroke="currentColor" strokeWidth="1.2" fill="none" opacity="0.8" />
-              <path d="M4 16 C8 14, 14 18, 19 20" stroke="currentColor" strokeWidth="1.2" fill="none" opacity="0.5" />
-            </svg>
-          </Link>
+          <div className={`inline-flex items-center gap-3 ${isAboutPage ? "text-ink-black" : "text-[hsl(25,30%,25%)]"}`}>
+            <Link to="/" className="font-body text-2xl font-semibold inline-flex items-center">
+              <span className="tracking-wide max-sm:text-lg">Kazuki Yamakawa</span>
+            </Link>
+            <button
+              type="button"
+              onClick={() => setEmblemSpinning(true)}
+              aria-label="Spin the emblem"
+              className="p-0 bg-transparent border-0 cursor-pointer"
+            >
+              <svg width="28" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" onAnimationEnd={() => setEmblemSpinning(false)} className={`max-sm:w-6 max-sm:h-5 ${isAboutPage ? "text-ink-black/80" : "text-[hsl(25,30%,25%)]/80"} ${emblemSpinning ? "animate-[spin-forward_0.6s_ease-in-out]" : ""}`}>
+                <path d="M3 19 L12 5 L21 19 Z" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                <circle cx="16" cy="10" r="3" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.7" />
+                <path d="M5 14 C9 12, 15 16, 20 18" stroke="currentColor" strokeWidth="1.2" fill="none" opacity="0.8" />
+                <path d="M4 16 C8 14, 14 18, 19 20" stroke="currentColor" strokeWidth="1.2" fill="none" opacity="0.5" />
+              </svg>
+            </button>
+          </div>
           
           <div className="flex items-center space-x-8 max-sm:hidden">
             <SocialIcons

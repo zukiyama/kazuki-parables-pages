@@ -104,6 +104,7 @@ const Comics = () => {
   const openingSectionRef = useRef<HTMLElement>(null);
   const peelTurnRef = useRef<(() => boolean) | null>(null);
   const peelDraggingRef = useRef(false);
+  const prevSectionRef = useRef<(() => void) | null>(null);
   const [panoramaReady, setPanoramaReady] = useState(false);
   const [openingRevealing, setOpeningRevealing] = useState(false);
 
@@ -412,6 +413,7 @@ const Comics = () => {
     };
 
     advanceOpeningRef.current = () => triggerSectionChange('next');
+    prevSectionRef.current = () => triggerSectionChange('prev');
     
     const handleWheel = (e: WheelEvent) => {
       if (document.querySelector('[role="dialog"]')) return;
@@ -484,7 +486,6 @@ const Comics = () => {
     
     const handleTouchMove = (e: TouchEvent) => {
       if (document.querySelector('[role="dialog"]')) return;
-      if (showPopUpScene && currentSection === 2 && e.target instanceof Element && e.target.closest('.comics-lower-slideshow')) return;
       // If in normal scroll mode - allow normal scrolling
       if (!isScrollLocked) {
         // Check if user scrolled to top and wants to go up - dissolve back to Cream
@@ -554,9 +555,23 @@ const Comics = () => {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
       advanceOpeningRef.current = null;
+      prevSectionRef.current = null;
       if (debounceTimer) clearTimeout(debounceTimer);
     };
   }, [currentSection, isTransitioning, isScrollLocked, showPopUpScene]);
+
+  // Cursor-at-top return: on pointer devices, moving the cursor into the thin
+  // strip above the gallery pictures steps back to the previous pinned page.
+  useEffect(() => {
+    if (!showPopUpScene || !isScrollLocked || currentSection <= 0) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      if (e.clientY > 48) return;
+      if (document.querySelector('[role="dialog"]')) return;
+      prevSectionRef.current?.();
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [showPopUpScene, isScrollLocked, currentSection]);
 
   // Lock/unlock body scroll based on animation state
   useEffect(() => {
