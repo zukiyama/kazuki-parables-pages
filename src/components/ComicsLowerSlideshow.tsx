@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
@@ -104,7 +104,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   // arrow press — for example one interrupted by leaving the section — must
   // be dropped the moment the section changes, or the arrows would fade in
   // with the scroll instead of being there from the start.
-  useEffect(() => {
+  useLayoutEffect(() => {
     travelingRef.current = false;
     setTraveling(false);
   }, [open]);
@@ -188,7 +188,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
           </section>
         </div>
       </div>
-      <div className={`comics-lower-slideshow__controls ${traveling ? "is-traveling" : ""}`}>
+      <div className={`comics-lower-slideshow__controls ${open && traveling ? "is-traveling" : ""}`} data-page-open={open}>
       <Button ref={leftArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--left" aria-label="Previous comics screen" onClick={() => navigate(-1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg></Button>
       <Button ref={rightArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--right" aria-label="Next comics screen" onClick={() => navigate(1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg></Button>
       </div>
