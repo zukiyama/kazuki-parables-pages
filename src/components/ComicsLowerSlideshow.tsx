@@ -11,8 +11,9 @@ type Comic = { cover: string; title: string; description: ReactNode; teaser: str
 export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pendragonPortrait, open }: {
   children: ReactNode; comics: Comic[]; panorama: string; pendragon: string; pendragonPortrait: string; open: boolean;
 }) {
-  const [viewport, api] = useEmblaCarousel({ loop: true, startIndex: 1, duration: 30 });
+  const [viewport, api] = useEmblaCarousel({ loop: true, startIndex: 1, duration: 20 });
   const [screen, setScreen] = useState(1);
+  const [traveling, setTraveling] = useState(false);
   const [selected, setSelected] = useState<Comic | null>(null);
   const [closing, setClosing] = useState(false);
   const shellRef = useRef<HTMLDivElement>(null);
@@ -34,7 +35,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   }, []);
   useEffect(() => {
     if (!api) return;
-    const sync = () => setScreen(api.selectedScrollSnap());
+    const sync = () => { setScreen(api.selectedScrollSnap()); setTraveling(false); };
     // Keep footer/layout and React updates out of the moving frames.
     sync(); api.on("settle", sync); api.on("reInit", sync);
     return () => { api.off("settle", sync); api.off("reInit", sync); };
@@ -101,13 +102,14 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   };
   const navigate = (direction: -1 | 1) => {
     if (!api) return;
+    setTraveling(true);
     const next = nextComicsScreen(api.selectedScrollSnap(), direction);
     if (reduced()) api.scrollTo(next, true);
     else if (direction === 1) api.scrollNext();
     else api.scrollPrev();
   };
   return (
-    <div ref={shellRef} className={`comics-lower-slideshow ${screen === 2 ? "is-paper" : ""}`} role="region" aria-label="Comics and scripts slideshow" aria-roledescription="carousel">
+    <div ref={shellRef} className={`comics-lower-slideshow ${traveling ? "is-traveling" : ""}`} role="region" aria-label="Comics and scripts slideshow" aria-roledescription="carousel">
       <div ref={viewport} className="comics-lower-slideshow__viewport">
         <div className="comics-lower-slideshow__track">
           <section className="comics-lower-slideshow__slide comics-pendragon-slide" aria-label={COMICS_LOWER_SCREENS[0]} aria-hidden={screen !== 0} ref={element => { if (screen !== 0) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
@@ -136,7 +138,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
       </div>
       <Button ref={leftArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--left" aria-label="Previous comics screen" onClick={() => navigate(-1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg></Button>
       <Button ref={rightArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--right" aria-label="Next comics screen" onClick={() => navigate(1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg></Button>
-      <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant={screen === 2 ? "light" : "dark"} /></div>
+      <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant="dark" /></div>
       <Dialog.Root open={selected !== null} onOpenChange={value => { if (!value) void close(); }}>
         <Dialog.Portal>
           <Dialog.Overlay className="comics-reader__overlay" />
