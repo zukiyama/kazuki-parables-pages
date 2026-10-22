@@ -76,3 +76,5 @@
 
 - [x] Replace the lower carousel with four evenly spaced enlarging pictures and a lower blurb; remove the panorama mask.
 - [x] Enable touch-to-advance and fading title cutouts; verify enlargement, dismissal and return transitions.
+
+- [x] Bring the lower slideshow arrows back the instant a slide is in place instead of waiting for the late settle; verify reappearance timing.
