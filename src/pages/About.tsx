@@ -7,7 +7,8 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 // Above-the-fold assets - loaded eagerly with high priority
 import artistPortrait from "@/assets/about-portrait-postcard.png";
-import writerBackground from "@/assets/about-writer-background.jpeg.asset.json";
+import AboutHeroVideo from "@/components/AboutHeroVideo";
+import heroFirstFrame from "@/assets/about-hero-first.jpg.asset.json";
 
 // Below-the-fold assets - lazy loaded
 import backgroundSphere from "@/assets/about-background-new.webp";
@@ -149,7 +150,7 @@ const About = () => {
     img.onerror = () => {
       setHeroBackgroundReady(true);
     };
-    img.src = writerBackground.url;
+    img.src = heroFirstFrame.url;
   }, []);
 
   // Reveal the cityscape (and the cat fading with it) once the lower artwork
@@ -196,14 +197,8 @@ const About = () => {
       <section className="about-writer-hero" style={{ paddingTop: headerHeight }}>
         <div className="about-writer-stage">
           <div className="about-writer-artwork">
-            <img
-              src={writerBackground.url}
-              alt="An overhead view of a writer at a typewriter, framed by the sound hole of a guitar"
-              width={1871}
-              height={840}
-              loading="eager"
-              decoding="async"
-              {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
+            <AboutHeroVideo
+              label="An overhead view of a writer at a typewriter, framed by the sound hole of a guitar"
               className={`about-writer-background ${heroBackgroundReady ? "is-ready" : ""}`}
             />
           </div>
