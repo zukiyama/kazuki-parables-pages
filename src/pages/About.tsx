@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useScrollAnimation } from "@/components/ScrollAnimations";
@@ -213,7 +214,7 @@ const About = () => {
             <div className="about-writer-biography">
               <p>Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation.</p>
               <p>Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.</p>
-              <p>The best way to get to know his music is to head over to the <a href="/music">music page</a>.</p>
+              <p>The best way to get to know his music is to head over to the <Link to="/music">music page</Link>.</p>
             </div>
           </div>
           <StampPortrait className="about-writer-portrait aspect-square" />
