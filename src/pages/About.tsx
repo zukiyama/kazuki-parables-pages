@@ -199,8 +199,8 @@ const About = () => {
             <img
               src={writerBackground.url}
               alt="An overhead view of a writer at a typewriter, framed by the sound hole of a guitar"
-              width={1711}
-              height={768}
+              width={1871}
+              height={840}
               loading="eager"
               decoding="async"
               {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
