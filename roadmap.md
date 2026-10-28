@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Replace the About opening background with the uploaded writer photograph; rearrange readable biography and portrait without covering its central figure. Checked four screen sizes and the music link using the original upload in browser tests; local CDN delivery returns HTML, so hosted image delivery remains unverified.
+
 - [x] Investigate reported vertical arrow fade: browser could not reproduce opacity fading, including all ancestors. Added pre-paint travel reset and explicit full opacity while the lower page is inactive; verified fixed content-relative offset and full opacity across 30 vertical frames, with unchanged horizontal fades.
 - [x] Allow reader dismissal outside the actual cover and synchronize cover, copy and backdrop reversal; verified text, outer-screen and cover taps, identical animation start times and 320ms duration, and return to shelf. Nine existing tests pass; build OK.
 

@@ -1,27 +1,19 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useScrollAnimation } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
-import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 
 // Above-the-fold assets - loaded eagerly with high priority
 import artistPortrait from "@/assets/about-portrait-postcard.png";
-import parisSquare from "@/assets/about-music-room.webp";
+import writerBackground from "@/assets/about-writer-background.jpeg.asset.json";
 
 // Below-the-fold assets - lazy loaded
 import backgroundSphere from "@/assets/about-background-new.webp";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.webp";
 import childPortrait from "@/assets/about-child-portrait.webp";
 import surrealCat from "@/assets/about-surreal-cat.png";
-import handwrittenLine1 from "@/assets/about-intro-line-1.png";
-import handwrittenLine2 from "@/assets/about-intro-line-2.png";
-import handwrittenLine3 from "@/assets/about-intro-line-3.png";
-import handwrittenLine4 from "@/assets/about-intro-line-4.png";
-import handwrittenLine5 from "@/assets/about-intro-line-5.png";
-import handwrittenLine6 from "@/assets/about-intro-line-6.png";
-import handwrittenSignature from "@/assets/about-intro-line-7.png";
-
 type CrumbleLineProps = {
   children: string;
   className?: string;
@@ -94,56 +86,9 @@ const StampPortrait = ({ className }: { className: string }) => (
   </div>
 );
 
-// Each layer holds only the exact ink of one handwritten line (plus the signature),
-// so a full-height left-to-right wipe reveals that line and nothing else.
-const handwrittenLineLayers = [
-  handwrittenLine1,
-  handwrittenLine2,
-  handwrittenLine3,
-  handwrittenLine4,
-  handwrittenLine5,
-  handwrittenLine6,
-  handwrittenSignature,
-].map((src, index) => ({ src, delay: index * 520 }));
-
-// Reveal the handwritten note one line at a time.
-const HandwrittenIntro = ({
-  className = "",
-  active,
-}: {
-  className?: string;
-  active: boolean;
-}) => (
-  <div
-    className={`about-handwritten-intro relative aspect-[1949/807] ${active ? "is-writing" : ""} ${className}`}
-    role="img"
-    aria-label="Handwritten note: Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation. Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human. The best way to get to know his music is to head over to the music page."
-  >
-    {handwrittenLineLayers.map((layer, index) => (
-      <img
-        key={index}
-        src={layer.src}
-        alt=""
-        width={1949}
-        height={807}
-        loading="eager"
-        decoding="async"
-        aria-hidden="true"
-        className="about-handwritten-line absolute inset-0 block h-full w-full"
-        style={{
-          "--handwriting-top": "0%",
-          "--handwriting-bottom": "0%",
-          "--handwriting-delay": `${layer.delay}ms`,
-        } as React.CSSProperties}
-      />
-    ))}
-  </div>
-);
-
 const About = () => {
   useScrollToTop();
   const visibleElements = useScrollAnimation();
-  const isWidescreen = useWidescreenAspectRatio();
   const [showCityscape, setShowCityscape] = React.useState(false);
   const [showCat, setShowCat] = React.useState(false);
   const [headerHeight, setHeaderHeight] = React.useState(0);
@@ -189,7 +134,7 @@ const About = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Load and decode hero background (Paris Square), then fade in
+  // Decode the opening photograph before revealing it.
   React.useEffect(() => {
     const img = new Image();
     img.onload = async () => {
@@ -204,7 +149,7 @@ const About = () => {
     img.onerror = () => {
       setHeroBackgroundReady(true);
     };
-    img.src = parisSquare;
+    img.src = writerBackground.url;
   }, []);
 
   // Reveal the cityscape (and the cat fading with it) once the lower artwork
@@ -248,185 +193,33 @@ const About = () => {
     <div className="min-h-screen-stable bg-neutral-100">
       <Navigation />
       
-      {/* Hero Section with Paris Square Background - top aligned exactly to header bottom */}
-      <div 
-        className="relative min-h-screen-stable"
-        style={{ paddingTop: headerHeight }}
-      >
-        {/* Full-screen Paris background - covers entire section including under header */}
-        <div className="absolute inset-0 bg-black" style={{ top: headerHeight }}>
-          {/* LCP hero image - highest priority with explicit dimensions to prevent layout shift */}
-          <img 
-            src={parisSquare}
-            alt="Music room with guitars and keyboards"
-            width={1670}
-            height={750}
-            loading="eager"
-            decoding="sync"
-            {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
-            className="w-full h-full object-cover transition-opacity duration-700 ease-in-out"
-            style={{ opacity: heroBackgroundReady ? 1 : 0 }}
-          />
-          {/* Subtle overlay to improve text readability - more opacity on mobile and iPad desktop for better text visibility */}
-          <div className="absolute inset-0 bg-white/35 max-sm:bg-white/55 lg:bg-white/50 2xl:bg-white/30 xl:bg-white/45" />
-        </div>
-        
-        {/* Editorial Top Bar - dynamically positioned below header */}
-        <div className="relative z-10 px-8 md:px-16 lg:px-24 pt-4">
-          <div className="border-b-2 border-black pb-4 mb-8">
-            <span className="font-body text-sm tracking-[0.3em] uppercase text-black">
-              Author · Composer
-            </span>
+      <section className="about-writer-hero" style={{ paddingTop: headerHeight }}>
+        <div className="about-writer-stage">
+          <div className="about-writer-artwork">
+            <img
+              src={writerBackground.url}
+              alt="An overhead view of a writer at a typewriter, framed by the sound hole of a guitar"
+              width={1871}
+              height={840}
+              loading="eager"
+              decoding="async"
+              {...{ fetchpriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>}
+              className={`about-writer-background ${heroBackgroundReady ? "is-ready" : ""}`}
+            />
           </div>
-        </div>
-        
-        {/* Magazine-style text layout over background */}
-        <div className="relative z-10 px-8 md:px-16 lg:px-24 pb-24 mt-4">
-          {/* Widescreen layout: Photo + Name + Subheading on left, Body text on right */}
-          {isWidescreen ? (
-            <div className="flex gap-8 items-start">
-              {/* Left column: Photo + Title with Subheading aligned to photo bottom */}
-              <div className="flex-shrink-0">
-                {/* Photo and Title row */}
-                <div className="flex items-start gap-6">
-                  {/* Artist photo - above-fold, eager loaded with explicit dimensions */}
-                  <div className="flex-shrink-0">
-                    <StampPortrait className="w-[200px] xl:w-[220px] 2xl:w-[240px] aspect-square" />
-                  </div>
-                  
-                  {/* Title + Subheading - subheading aligned to bottom of photo */}
-                  <div className="flex flex-col justify-between h-[200px] xl:h-[220px] 2xl:h-[240px] py-1">
-                    <h1 className="font-heading text-[5rem] xl:text-[6rem] 2xl:text-[7rem] text-black leading-[0.82] tracking-tight">
-                      Kazuki
-                      <br />
-                      <span className="italic font-light">Yamakawa</span>
-                    </h1>
-                    {/* Subheading at bottom, aligned with photo bottom */}
-                    <p className="font-body text-xl xl:text-2xl text-black leading-snug mt-4">
-                      A multi-disciplinary artist working in literature,<br />music and visual storytelling.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Right column: Body text - aligned to top */}
-              <div className="flex-1 max-w-[440px] xl:max-w-[500px] pt-0">
-                <HandwrittenIntro active={heroBackgroundReady} className="w-full" />
-              </div>
+          <div className="about-writer-copy">
+            <p className="about-writer-eyebrow">Author · Composer</p>
+            <h1>Kazuki<br /><span>Yamakawa</span></h1>
+            <p className="about-writer-deck">A multi-disciplinary artist working in literature, music and visual storytelling.</p>
+            <div className="about-writer-biography">
+              <p>Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation.</p>
+              <p>Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.</p>
+              <p>The best way to get to know his music is to head over to the <Link to="/music">music page</Link>.</p>
             </div>
-          ) : (
-            /* Standard layout for non-widescreen */
-            <div className="flex flex-col">
-              {/* Mobile phone only: Artist photo centered at top - above-fold, eager */}
-              <div className="sm:hidden flex justify-center mb-8">
-                <StampPortrait className="w-64 aspect-square" />
-              </div>
-              
-              {/* Small iPad portrait: Photo floated to top-right */}
-              <div className="hidden sm:block lg:hidden relative">
-                {/* Photo floated to top-right */}
-                <div className="float-right ml-8 mb-6 mr-3">
-                  <StampPortrait className="w-48 md:w-56 aspect-square" />
-                </div>
-                
-                {/* Title on left - extra top padding for 10.9" iPad portrait alignment */}
-                <h1 className="font-heading text-7xl md:text-8xl text-black leading-[0.85] tracking-tight mb-4 md:pt-3">
-                  Kazuki
-                  <br />
-                  <span className="italic font-light">Yamakawa</span>
-                </h1>
-                
-                {/* Subheading below title - increased top margin for 10.9" iPad */}
-                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6 md:mt-6">
-                  A multi-disciplinary artist working in literature, music and visual storytelling.
-                </p>
-                
-                {/* Handwritten intro - replaces the typed paragraph, wraps below floated photo */}
-                <div className="md:mt-4">
-                  <HandwrittenIntro active={heroBackgroundReady} className="w-full max-w-[600px]" />
-                </div>
-              </div>
-              
-              {/* Mobile phone: Title + content */}
-              <div className="sm:hidden">
-                <h1 className="font-heading text-6xl text-black leading-[0.9] tracking-tight mb-6">
-                  Kazuki
-                  <br />
-                  <span className="italic font-light">Yamakawa</span>
-                </h1>
-                
-                <p className="font-body text-xl text-black leading-snug max-w-2xl mb-4">
-                  A multi-disciplinary artist working in literature, music and visual storytelling.
-                </p>
-                
-                <div className="mt-1 mb-7">
-                  <HandwrittenIntro active={heroBackgroundReady} className="w-[calc(100%+4rem)] max-w-none -ml-8" />
-                </div>
-              </div>
-              
-              {/* iPad DESKTOP only (lg to 2xl): Photo + Title row, subheading + body below */}
-              <div className="hidden lg:flex 2xl:hidden flex-col">
-                {/* Header row: Title on left, Photo on right */}
-                <div className="flex items-start gap-6 mb-10">
-                  {/* Title - positioned on left */}
-                  <div className="flex-1 pt-0">
-                    <h1 className="font-heading text-7xl md:text-8xl lg:text-[8rem] text-black leading-[0.85] tracking-tight">
-                      Kazuki
-                      <br />
-                      <span className="italic font-light">Yamakawa</span>
-                    </h1>
-                  </div>
-                  {/* Photo - positioned on right, aligned top */}
-                  <div className="flex-shrink-0">
-                    <StampPortrait className="w-48 md:w-56 lg:w-64 aspect-square" />
-                  </div>
-                </div>
-                
-                {/* Subheading + Body text below */}
-                <p className="font-body text-2xl md:text-3xl text-black leading-snug mb-6">
-                  A multi-disciplinary artist working in literature, music and visual storytelling.
-                </p>
-                <div className="mt-2">
-                  <HandwrittenIntro active={heroBackgroundReady} className="w-full max-w-[680px]" />
-                </div>
-              </div>
-              
-              {/* Widescreen (2xl and up): Original horizontal layout */}
-              <div className="hidden 2xl:flex flex-col">
-                {/* Top row: Photo + Title + Body text */}
-                <div className="flex items-start gap-6">
-                  {/* Photo - small, same height as title - above-fold, eager */}
-                  <div className="flex-shrink-0">
-                    <StampPortrait className="w-[160px] aspect-square" />
-                  </div>
-                  
-                  {/* Title */}
-                  <div className="flex-shrink-0">
-                    <h1 className="font-heading text-8xl text-black leading-[0.85] tracking-tight">
-                      Kazuki
-                      <br />
-                      <span className="italic font-light">Yamakawa</span>
-                    </h1>
-                  </div>
-                  
-                  {/* Handwritten intro - right of title */}
-                  <div className="flex-1 max-w-[500px] pt-1">
-                    <HandwrittenIntro active={heroBackgroundReady} className="w-full" />
-                  </div>
-                </div>
-                
-                {/* Subheading below */}
-                <p className="font-body text-3xl text-black leading-snug max-w-2xl mt-8">
-                  A multi-disciplinary artist working in literature, music and visual storytelling.
-                </p>
-              </div>
-            </div>
-          )}
+          </div>
+          <StampPortrait className="about-writer-portrait aspect-square" />
         </div>
-        
-        {/* Gradient transition to dark section */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-neutral-900 z-10" />
-      </div>
+      </section>
       
       {/* Dark Quote Section - First Quote Only */}
       <div className="relative z-20 -mt-20">
