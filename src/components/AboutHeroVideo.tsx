@@ -1,4 +1,5 @@
 import React from "react";
+import heroWebm from "@/assets/about-hero.webm.asset.json";
 import heroVideo from "@/assets/about-hero.mp4.asset.json";
 import firstFrame from "@/assets/about-hero-first.jpg.asset.json";
 import lastFrame from "@/assets/about-hero-last.jpg.asset.json";
@@ -60,7 +61,6 @@ const AboutHeroVideo = ({ className = "", label, onReady }: Props) => {
     <video
       ref={videoRef}
       className={className}
-      src={heroVideo.url}
       poster={reduceMotion ? lastFrame.url : firstFrame.url}
       muted
       playsInline
@@ -70,7 +70,10 @@ const AboutHeroVideo = ({ className = "", label, onReady }: Props) => {
       onLoadedData={onReady}
       onError={onReady}
       {...({ "disable-picture-in-picture": "", disablePictureInPicture: true } as object)}
-    />
+    >
+      <source src={heroWebm.url} type="video/webm" />
+      <source src={heroVideo.url} type="video/mp4" />
+    </video>
   );
 };
 
