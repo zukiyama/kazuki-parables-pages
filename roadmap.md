@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Replace the About opening photograph with the uploaded silent video; preserve framing and biography, slow the final two source seconds to rest, and offer a still for reduced motion. Playback verified with locally fulfilled media; hosted delivery checked separately.
+
 - [x] Replace the About opening background with the uploaded writer photograph; rearrange readable biography and portrait without covering its central figure. Checked four screen sizes and the music link using the original upload in browser tests; local CDN delivery returns HTML, so hosted image delivery remains unverified.
 
 - [x] Investigate reported vertical arrow fade: browser could not reproduce opacity fading, including all ancestors. Added pre-paint travel reset and explicit full opacity while the lower page is inactive; verified fixed content-relative offset and full opacity across 30 vertical frames, with unchanged horizontal fades.
