@@ -2,7 +2,7 @@
 // its final two seconds of real time so it comes to rest on the last frame.
 //
 // Rate falls as r(s) = (1 - s/T)^2 over real time s.
-// point is c = (T/3)(1 - s/T)^3, so r = (3c/T)^(2/3): a function of the
+// The content left at that point is c = (T/3)(1 - s/T)^3, so r = (3c/T)^(2/3): a function of the
 // remaining content time only, which keeps the ramp self-correcting.
 
 export const RAMP_SECONDS = 2.6; // model length; with the rate floor the visible slowdown lasts ~2s of real time
