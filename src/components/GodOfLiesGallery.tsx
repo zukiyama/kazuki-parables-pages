@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import plantShop from "@/assets/god-of-lies-carousel-plant-shop.asset.json";
@@ -11,7 +11,20 @@ const scenes = [
   { src: plantShop.url, alt: "Two men among flowers and plants" },
 ];
 
+// The pictures centre between the fixed header's bottom border and the blurb,
+// so the header's on-screen height is reserved as an invisible spacer row.
 export function GodOfLiesGallery({ children }: { children: ReactNode }) {
+  const [headerSpace, setHeaderSpace] = useState(0);
+  useLayoutEffect(() => {
+    const header = document.querySelector<HTMLElement>('[data-header="true"]');
+    if (!header) return;
+    const update = () => setHeaderSpace(header.getBoundingClientRect().bottom);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(header);
+    window.addEventListener('resize', update);
+    return () => { observer.disconnect(); window.removeEventListener('resize', update); };
+  }, []);
   const [selected, setSelected] = useState<number | null>(null);
   const [imagesReady, setImagesReady] = useState(false);
   useEffect(() => {
@@ -59,7 +72,10 @@ export function GodOfLiesGallery({ children }: { children: ReactNode }) {
   };
   const scene = selected === null ? undefined : scenes[selected];
   return (
-    <div className={`god-of-lies-gallery ${imagesReady ? 'is-ready' : ''}`}>
+    <div
+      className={`god-of-lies-gallery ${imagesReady ? 'is-ready' : ''}`}
+      style={{ '--god-of-lies-header-space': `${Math.round(headerSpace)}px` } as CSSProperties}
+    >
       <div className="god-of-lies-gallery__row" aria-label="God of Lies illustrations">
         {scenes.map((scene, index) => (
           <Button key={scene.src} variant="link" className="god-of-lies-gallery__picture" aria-label={`Enlarge illustration ${index + 1}`} onClick={(event) => {
