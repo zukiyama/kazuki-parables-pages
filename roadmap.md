@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Replace the About stamp with the original hat portrait and enlarge the name; checked five screen sizes and first/last video frames with original media, inspected the full clip's subject position, verified the music link and three playback tests. Hosted portrait returns image/jpeg; local asset proxy still requires fulfillment for visual checks.
+
 - [x] Replace the About opening photograph with the uploaded silent video; preserve framing and biography, ramp playback down over the final two seconds to rest, and offer a still for reduced motion. Playback verified with locally fulfilled media; hosted delivery checked separately.
 
 - [x] Replace the About opening background with the uploaded writer photograph; rearrange readable biography and portrait without covering its central figure. Checked four screen sizes and the music link using the original upload in browser tests; local CDN delivery returns HTML, so hosted image delivery remains unverified.
