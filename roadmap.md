@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Replace the About stamp with the original portrait and enlarge the name; preserve biography readability and verify clearance throughout the video across screen sizes.
+
 - [x] Replace the About opening photograph with the uploaded silent video; preserve framing and biography, ramp playback down over the final two seconds to rest, and offer a still for reduced motion. Playback verified with locally fulfilled media; hosted delivery checked separately.
 
 - [x] Replace the About opening background with the uploaded writer photograph; rearrange readable biography and portrait without covering its central figure. Checked four screen sizes and the music link using the original upload in browser tests; local CDN delivery returns HTML, so hosted image delivery remains unverified.
