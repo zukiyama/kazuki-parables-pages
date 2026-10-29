@@ -1956,7 +1956,7 @@
   .comics-story-slide .comics-story-teaser, .comics-story-slide .comics-story-format { margin-top: 0.5rem; }
   .comics-story-slide .comics-story-rule { margin: 0.5rem auto; }
   .comics-story-slide .god-of-lies-gallery__row { width: 88%; }
-  .comics-story-slide > .god-of-lies-gallery { padding-top: 4.5rem; padding-bottom: 0.75rem; }
+  .comics-story-slide > .god-of-lies-gallery { padding-top: 0; padding-bottom: 0.75rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .comics-lower-slideshow__arrow, .comics-reader__copy, .comics-reader__overlay { animation: none; transition: none; }
