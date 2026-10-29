@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import plantShop from "@/assets/god-of-lies-carousel-plant-shop.asset.json";
@@ -74,7 +74,7 @@ export function GodOfLiesGallery({ children }: { children: ReactNode }) {
   return (
     <div
       className={`god-of-lies-gallery ${imagesReady ? 'is-ready' : ''}`}
-      style={{ '--god-of-lies-header-space': `${Math.round(headerSpace)}px` } as React.CSSProperties}
+      style={{ '--god-of-lies-header-space': `${Math.round(headerSpace)}px` } as CSSProperties}
     >
       <div className="god-of-lies-gallery__row" aria-label="God of Lies illustrations">
         {scenes.map((scene, index) => (
