@@ -4,12 +4,10 @@ import { Button } from "@/components/ui/button";
 import plantShop from "@/assets/god-of-lies-carousel-plant-shop.asset.json";
 import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.asset.json";
 import pear from "@/assets/god-of-lies-carousel-pear.asset.json";
-import milk from "@/assets/god-of-lies-carousel-milk.asset.json";
 
 const scenes = [
   { src: cottonCandy.url, alt: "Chang-Min and Seok-seol shopping with cotton candy" },
   { src: pear.url, alt: "Seok-seol reclining on a sliced pear" },
-  { src: milk.url, alt: "Chang-Min holding milk beside Seok-seol in the kitchen" },
   { src: plantShop.url, alt: "Two men among flowers and plants" },
 ];
 
