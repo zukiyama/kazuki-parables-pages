@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Replace the About stamp with the original portrait and enlarge the name; preserve biography readability and verify clearance throughout the video across screen sizes.
+- [x] Replace the About stamp with the original hat portrait and enlarge the name; checked five screen sizes and first/last video frames with original media, inspected the full clip's subject position, verified the music link and three playback tests. Hosted portrait returns image/jpeg; local asset proxy still requires fulfillment for visual checks.
 
 - [x] Replace the About opening photograph with the uploaded silent video; preserve framing and biography, ramp playback down over the final two seconds to rest, and offer a still for reduced motion. Playback verified with locally fulfilled media; hosted delivery checked separately.
 
