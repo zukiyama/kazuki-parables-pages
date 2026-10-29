@@ -348,28 +348,25 @@
 }
 .about-writer-copy { width: 35%; max-width: 440px; }
 .about-writer-eyebrow { font-family: var(--font-body); font-size: 14px; margin-bottom: 24px; }
-.about-writer-copy h1 { font-size: 64px; line-height: 1.05; letter-spacing: 0; margin-bottom: 22px; }
+.about-writer-copy h1 { font-size: 52px; line-height: 1.05; letter-spacing: 0; margin-bottom: 22px; }
 .about-writer-copy h1 span { font-style: italic; font-weight: 400; }
 .about-writer-deck { font-size: 21px; line-height: 1.4; margin-bottom: 26px; }
 .about-writer-biography { font-size: 18px; line-height: 1.6; }
 .about-writer-biography p + p { margin-top: 18px; }
 .about-writer-biography a { text-decoration: underline; text-underline-offset: 4px; }
 .about-writer-biography a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
-.about-writer-portrait { position: absolute; top: 42px; right: 5%; width: min(19%, 230px); margin: 0; border: 1px solid hsl(var(--about-photo-type) / 0.25); }
+.about-writer-portrait { position: absolute; top: 42px; right: 5%; width: min(19%, 230px); }
 @media (min-width: 1400px) {
-  .about-writer-copy h1 { font-size: 80px; }
+  .about-writer-copy h1 { font-size: 64px; }
   .about-writer-stage { padding-top: 60px; }
   .about-writer-portrait { top: 62px; }
 }
 @media (min-width: 600px) and (max-width: 900px) {
   .about-writer-stage { padding-left: 4%; padding-right: 4%; min-height: 860px; }
   .about-writer-copy { width: 37%; }
-  .about-writer-copy h1 { font-size: 48px; }
+  .about-writer-copy h1 { font-size: 40px; }
   .about-writer-deck { font-size: 19px; }
   .about-writer-biography { font-size: 17px; }
-}
-@media (min-width: 600px) and (max-width: 760px) {
-  .about-writer-copy h1 { font-size: 44px; }
 }
 @media (max-width: 599px) {
   .about-writer-stage { min-height: 0; padding: 350px 24px 100px; }
@@ -377,7 +374,7 @@
   .about-writer-background { object-position: 50% 50%; }
   .about-writer-artwork::after { background: linear-gradient(0deg, hsl(var(--about-photo-ink)), hsl(var(--about-photo-ink) / 0) 26%); }
   .about-writer-copy { width: 100%; max-width: none; }
-  .about-writer-copy h1 { font-size: 56px; }
+  .about-writer-copy h1 { font-size: 48px; }
   .about-writer-eyebrow { margin-bottom: 18px; }
   .about-writer-portrait { top: 22px; right: 20px; width: 110px; }
 }

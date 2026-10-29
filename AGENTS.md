@@ -2,7 +2,7 @@
 
 - The home page’s major visual bands remain in normal document flow without timed entrance transforms, so scrolling never reveals artificial gaps.
 - The home page’s content section and every banner inside it carry the `bg-ink-black` backing, and images that sit just below the hero are preloaded and decoded on mount — no light container colour may ever show through a band while scrolling.
-- The About opening uses live biography and a plain photo in separate side columns beside a once-playing muted video with a smooth rate ramp and static reduced-motion poster; keep its central subject clear and phone biography below the artwork.
+- The About opening uses live readable biography text beside a once-playing muted video with a smooth rate ramp and static reduced-motion poster; its central subject stays clear, and phones place biography below the artwork.
 - The Comics opening keeps phones on their original sequence with the God of Lies cover as its feature image; tablet and desktop reveal only a decoded priority-loaded double-height Seoul panorama, with portrait/landscape framing isolated by orientation.
 - Keep the tablet/desktop panorama free of coloured masks; animate brightness on the background image alone during the pan so its foreground remains undimmed. Preserve temple/balloon artwork and the original phone sequence.
 - Overlay controls that sit translucent on a panel's edge must never rely on a CSS `border` on that panel, because the line shows through them; the Young Adult slideshow draws its frame as separate edge segments with a gap where the arrow tabs sit, so keep the panel border-less and extend those segments if the tabs change size.
