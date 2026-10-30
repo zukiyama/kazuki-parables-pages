@@ -1785,6 +1785,10 @@
   transform: translate(-50%, -50%); width: min(90vw, 123dvh, 90rem);
   outline: none;
 }
+.god-of-lies-gallery__viewer { position: fixed; inset: 0; z-index: 101; pointer-events: none; outline: none; }
+.god-of-lies-gallery__viewer .god-of-lies-gallery__enlarged { pointer-events: auto; width: min(82vw, 123dvh, 90rem); }
+.god-of-lies-gallery__viewer .god-of-lies-gallery__controls { position: fixed; inset: auto; z-index: 102; }
+.comics-lower-slideshow__controls.is-picture-open { visibility: hidden; }
 .god-of-lies-gallery__dismiss {
   display: block; width: 100%; height: auto; padding: 0;
   background: transparent; border-radius: 0; cursor: zoom-out;
