@@ -8,8 +8,9 @@ import { COMICS_LOWER_SCREENS, nextComicsScreen, paperArrowOverlap } from "@/lib
 
 type Comic = { cover: string; title: string; description: ReactNode; teaser: string; format: string };
 
-export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pendragonPortrait, open }: {
+export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pendragonPortrait, open, onScreenChange }: {
   children: ReactNode; comics: Comic[]; panorama: string; pendragon: string; pendragonPortrait: string; open: boolean;
+  onScreenChange?: (screen: number) => void;
 }) {
   const [viewport, api] = useEmblaCarousel({ loop: true, startIndex: 1, duration: 20 });
   const [screen, setScreen] = useState(1);
@@ -43,7 +44,12 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   }, []);
   useEffect(() => {
     if (!api) return;
-    const sync = () => { setScreen(api.selectedScrollSnap()); setFooterScreen(api.selectedScrollSnap()); travelingRef.current = false; setTraveling(false); };
+    const sync = () => {
+      const selected = api.selectedScrollSnap();
+      setScreen(selected); setFooterScreen(selected);
+      travelingRef.current = false; setTraveling(false);
+      onScreenChange?.(selected);
+    };
     // Keep footer/layout and React updates out of the moving frames.
     const pickFooter = () => setFooterScreen(api.selectedScrollSnap());
     sync(); pickFooter(); api.on("settle", sync); api.on("reInit", sync); api.on("select", pickFooter); api.on("reInit", pickFooter);
@@ -100,8 +106,10 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   const jumpTo = useCallback((index: number) => {
     if (!api) return;
     api.scrollTo(index, true);
-    setScreen(api.selectedScrollSnap()); setFooterScreen(api.selectedScrollSnap()); travelingRef.current = false; setTraveling(false);
-  }, [api]);
+    const selected = api.selectedScrollSnap();
+    setScreen(selected); setFooterScreen(selected); travelingRef.current = false; setTraveling(false);
+    onScreenChange?.(selected);
+  }, [api, onScreenChange]);
   // Sliding between the pinned title and the blurb page is a page-level
   // transition, never a carousel one. Any travel state left over from an
   // arrow press — for example one interrupted by leaving the section — must
