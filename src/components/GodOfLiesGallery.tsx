@@ -116,7 +116,7 @@ export function GodOfLiesGallery({ children, onViewerChange, renderViewerControl
       <div className="comics-hill-blurb">{children}</div>
       <Dialog.Root open={selected !== null} onOpenChange={(open) => { if (!open) void close(); }}>
         <Dialog.Portal>
-          <Dialog.Overlay className="god-of-lies-gallery__overlay" />
+          <Dialog.Overlay ref={overlayRef} className="god-of-lies-gallery__overlay" />
           <Dialog.Content className="god-of-lies-gallery__viewer" aria-describedby={undefined} onClick={(event) => {
             if (event.target instanceof Element && event.target.closest('.god-of-lies-gallery__controls')) return;
             void close();
