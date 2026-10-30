@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Button } from "@/components/ui/button";
 import plantShop from "@/assets/god-of-lies-carousel-plant-shop.asset.json";
 import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.asset.json";
 import pear from "@/assets/god-of-lies-carousel-pear.asset.json";
@@ -78,21 +77,21 @@ export function GodOfLiesGallery({ children }: { children: ReactNode }) {
     >
       <div className="god-of-lies-gallery__row" aria-label="God of Lies illustrations">
         {scenes.map((scene, index) => (
-          <Button key={scene.src} variant="link" className="god-of-lies-gallery__picture" aria-label={`Enlarge illustration ${index + 1}`} onClick={(event) => {
+          <button key={scene.src} type="button" className="god-of-lies-gallery__picture" aria-label={`Enlarge illustration ${index + 1}`} onClick={(event) => {
             sourceRef.current = event.currentTarget.querySelector("img");
             setSelected(index);
           }}>
             <img src={scene.src} alt={scene.alt} width={1536} height={1024} loading="eager" decoding="sync" draggable={false} />
-          </Button>
+          </button>
         ))}
       </div>
       <div className="comics-hill-blurb">{children}</div>
       <Dialog.Root open={selected !== null} onOpenChange={(open) => { if (!open) void close(); }}>
         <Dialog.Portal>
           <Dialog.Overlay className="god-of-lies-gallery__overlay" />
-          <Dialog.Content className="god-of-lies-gallery__enlarged" aria-describedby={undefined} onEscapeKeyDown={(event) => { event.preventDefault(); void close(); }} onPointerDownOutside={(event) => { event.preventDefault(); void close(); }} onCloseAutoFocus={(event) => { event.preventDefault(); sourceRef.current?.closest<HTMLElement>("button")?.focus(); }}>
+          <Dialog.Content className="god-of-lies-gallery__enlarged" aria-describedby={undefined} onEscapeKeyDown={(event) => { event.preventDefault(); void close(); }} onPointerDownOutside={(event) => { event.preventDefault(); void close(); }} onCloseAutoFocus={(event) => { event.preventDefault(); }}>
             <Dialog.Title className="sr-only">{scene?.alt}</Dialog.Title>
-            {scene && <Button variant="link" className="god-of-lies-gallery__dismiss" aria-label="Close illustration" onClick={() => void close()}><img ref={mountImage} src={scene.src} alt={scene.alt} width={1536} height={1024} /></Button>}
+            {scene && <button type="button" className="god-of-lies-gallery__dismiss" aria-label="Close illustration" onClick={() => void close()}><img ref={mountImage} src={scene.src} alt={scene.alt} width={1536} height={1024} /></button>}
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
