@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import plantShop from "@/assets/god-of-lies-carousel-plant-shop.asset.json";
+import florist from "@/assets/god-of-lies-carousel-florist.webp.asset.json";
 import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.asset.json";
 import pear from "@/assets/god-of-lies-carousel-pear.asset.json";
 import { nextGalleryPicture } from "@/lib/comics-slideshow";
@@ -8,7 +8,7 @@ import { nextGalleryPicture } from "@/lib/comics-slideshow";
 const scenes = [
   { src: cottonCandy.url, alt: "Chang-Min and Seok-seol shopping with cotton candy" },
   { src: pear.url, alt: "Seok-seol reclining on a sliced pear" },
-  { src: plantShop.url, alt: "Two men among flowers and plants" },
+  { src: florist.url, alt: "Two people among potted plants on a flying terrace beneath a ringed planet" },
 ];
 
 // The pictures centre between the fixed header's bottom border and the blurb,
