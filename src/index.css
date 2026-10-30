@@ -1786,7 +1786,7 @@
   outline: none;
 }
 .god-of-lies-gallery__viewer { position: fixed; inset: 0; z-index: 101; pointer-events: none; outline: none; }
-.god-of-lies-gallery__viewer .god-of-lies-gallery__enlarged { pointer-events: auto; width: min(82vw, 123dvh, 90rem); }
+.god-of-lies-gallery__viewer .god-of-lies-gallery__enlarged { pointer-events: auto; }
 .god-of-lies-gallery__viewer .god-of-lies-gallery__controls { position: fixed; inset: auto; z-index: 102; }
 .comics-lower-slideshow__controls.is-picture-open { visibility: hidden; }
 .god-of-lies-gallery__dismiss {
