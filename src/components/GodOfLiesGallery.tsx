@@ -46,6 +46,7 @@ export function GodOfLiesGallery({ children, onViewerChange, renderViewerControl
   const thumbnailsRef = useRef<(HTMLImageElement | null)[]>([]);
   const directionRef = useRef<-1 | 1 | null>(null);
   const animationRef = useRef<Animation | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
   const closingRef = useRef(false);
   const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const sourceTransform = () => {
