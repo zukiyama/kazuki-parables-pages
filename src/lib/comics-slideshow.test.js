@@ -1,5 +1,12 @@
 import { expect, test } from "bun:test";
-import { COMICS_LOWER_SCREENS, nextComicsScreen, paperArrowOverlap } from "./comics-slideshow";
+import { COMICS_LOWER_SCREENS, nextComicsScreen, nextGalleryPicture, paperArrowOverlap } from "./comics-slideshow";
+
+test("enlarged gallery arrows browse only the three pictures and wrap both ways", () => {
+  expect(nextGalleryPicture(0, 1)).toBe(1);
+  expect(nextGalleryPicture(1, 1)).toBe(2);
+  expect(nextGalleryPicture(2, 1)).toBe(0);
+  expect(nextGalleryPicture(0, -1)).toBe(2);
+});
 
 test("Pendragon is left of the story and the six comics are right", () => {
   expect(COMICS_LOWER_SCREENS[nextComicsScreen(1, -1)]).toBe("Surname Pendragon");

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,9 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   const [traveling, setTraveling] = useState(false);
   const travelingRef = useRef(false);
   const [selected, setSelected] = useState<Comic | null>(null);
+  const [pictureOpen, setPictureOpen] = useState(false);
+  const controlsRef = useRef<HTMLDivElement>(null);
+  const viewerBoundsRef = useRef<CSSProperties>({});
   const [closing, setClosing] = useState(false);
   const shellRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
@@ -160,6 +163,12 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
     else if (direction === 1) api.scrollNext();
     else api.scrollPrev();
   };
+  const arrow = (direction: -1 | 1, action: (direction: -1 | 1) => void, viewer = false) => (
+    <Button ref={viewer ? undefined : direction === -1 ? leftArrowRef : rightArrowRef} variant="link" className={`comics-lower-slideshow__arrow comics-lower-slideshow__arrow--${direction === -1 ? "left" : "right"}`} aria-label={`${direction === -1 ? "Previous" : "Next"} ${viewer ? "illustration" : "comics screen"}`} onClick={() => action(direction)}>
+      <svg viewBox="0 0 36 48" aria-hidden="true"><path d={direction === -1 ? "M30 5 6 24 30 43Z" : "m6 5 24 19L6 43Z"} fill="currentColor" /></svg>
+      {!viewer && <svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d={direction === -1 ? "M30 5 6 24 30 43Z" : "m6 5 24 19L6 43Z"} fill="currentColor" /></svg>}
+    </Button>
+  );
   return (
     <div ref={shellRef} className={`comics-lower-slideshow ${traveling ? "is-traveling" : ""}`} role="region" aria-label="Comics and scripts slideshow" aria-roledescription="carousel">
       <div ref={viewport} className="comics-lower-slideshow__viewport">
@@ -176,7 +185,17 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
           </section>
           <section className="comics-lower-slideshow__slide comics-story-slide" aria-label={COMICS_LOWER_SCREENS[1]} aria-hidden={screen !== 1} ref={element => { if (screen !== 1) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
             <img className="comics-story-slide__background" src={panorama} alt="" aria-hidden="true" />
-            <GodOfLiesGallery>{children}</GodOfLiesGallery>
+            <GodOfLiesGallery onViewerChange={value => {
+              if (value) {
+                const bounds = controlsRef.current?.getBoundingClientRect();
+                if (bounds) viewerBoundsRef.current = { top: bounds.top, left: bounds.left, width: bounds.width, height: bounds.height };
+              }
+              setPictureOpen(value);
+            }} renderViewerControls={navigatePicture => (
+              <div className="comics-lower-slideshow__controls god-of-lies-gallery__controls" style={viewerBoundsRef.current}>
+                {arrow(-1, navigatePicture, true)}{arrow(1, navigatePicture, true)}
+              </div>
+            )}>{children}</GodOfLiesGallery>
           </section>
           <section className="comics-lower-slideshow__slide comics-shelf-slide" aria-label={COMICS_LOWER_SCREENS[2]} aria-hidden={screen !== 2} ref={element => { paperRef.current = element; if (screen !== 2) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
             <h2>Stories waiting to be told…</h2>
@@ -188,9 +207,8 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
           </section>
         </div>
       </div>
-      <div className={`comics-lower-slideshow__controls ${open && traveling ? "is-traveling" : ""}`} data-page-open={open}>
-      <Button ref={leftArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--left" aria-label="Previous comics screen" onClick={() => navigate(-1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="M30 5 6 24 30 43Z" fill="currentColor" /></svg></Button>
-      <Button ref={rightArrowRef} variant="link" className="comics-lower-slideshow__arrow comics-lower-slideshow__arrow--right" aria-label="Next comics screen" onClick={() => navigate(1)}><svg viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg><svg className="comics-lower-slideshow__arrow-paper" viewBox="0 0 36 48" aria-hidden="true"><path d="m6 5 24 19L6 43Z" fill="currentColor" /></svg></Button>
+      <div ref={controlsRef} className={`comics-lower-slideshow__controls ${open && traveling ? "is-traveling" : ""} ${pictureOpen ? "is-picture-open" : ""}`} data-page-open={open}>
+        {arrow(-1, navigate)}{arrow(1, navigate)}
       </div>
       <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant={footerScreen === 2 ? "light" : "dark"} /></div>
       <Dialog.Root open={selected !== null} onOpenChange={value => { if (!value) void close(); }}>
