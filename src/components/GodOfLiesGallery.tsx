@@ -46,6 +46,7 @@ export function GodOfLiesGallery({ children, onViewerChange, renderViewerControl
   const thumbnailsRef = useRef<(HTMLImageElement | null)[]>([]);
   const directionRef = useRef<-1 | 1 | null>(null);
   const animationRef = useRef<Animation | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
   const closingRef = useRef(false);
   const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const sourceTransform = () => {
@@ -70,6 +71,11 @@ export function GodOfLiesGallery({ children, onViewerChange, renderViewerControl
     if (closingRef.current) return;
     closingRef.current = true;
     animationRef.current?.cancel();
+    // The dim must lift the moment the shrink is requested, not on arrival.
+    overlayRef.current?.animate(
+      [{ opacity: 1 }, { opacity: 0 }],
+      { duration: reducedMotion() ? 0 : 110, easing: "linear", fill: "forwards" },
+    );
     if (!reducedMotion()) {
       const animation = imageRef.current?.animate(
         [{ transform: "none" }, { transform: sourceTransform() }],
@@ -110,7 +116,7 @@ export function GodOfLiesGallery({ children, onViewerChange, renderViewerControl
       <div className="comics-hill-blurb">{children}</div>
       <Dialog.Root open={selected !== null} onOpenChange={(open) => { if (!open) void close(); }}>
         <Dialog.Portal>
-          <Dialog.Overlay className="god-of-lies-gallery__overlay" />
+          <Dialog.Overlay ref={overlayRef} className="god-of-lies-gallery__overlay" />
           <Dialog.Content className="god-of-lies-gallery__viewer" aria-describedby={undefined} onClick={(event) => {
             if (event.target instanceof Element && event.target.closest('.god-of-lies-gallery__controls')) return;
             void close();
