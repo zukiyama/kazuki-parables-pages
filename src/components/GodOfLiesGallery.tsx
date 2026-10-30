@@ -2,12 +2,12 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProp
 import * as Dialog from "@radix-ui/react-dialog";
 import florist from "@/assets/god-of-lies-carousel-florist.webp.asset.json";
 import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.asset.json";
-import pear from "@/assets/god-of-lies-carousel-pear.asset.json";
+import serenePortrait from "@/assets/god-of-lies-carousel-serene-portrait.jpg.asset.json";
 import { nextGalleryPicture } from "@/lib/comics-slideshow";
 
 const scenes = [
   { src: cottonCandy.url, alt: "Chang-Min and Seok-seol shopping with cotton candy" },
-  { src: pear.url, alt: "Seok-seol reclining on a sliced pear" },
+  { src: serenePortrait.url, alt: "Smiling young man in a patterned robe with tassel earrings, eyes closed" },
   { src: florist.url, alt: "Two people among potted plants on a flying terrace beneath a ringed planet" },
 ];
 
