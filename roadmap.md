@@ -1,7 +1,7 @@
 # Roadmap
 
-- [ ] Allow enlarged God of Lies illustrations to close on viewport taps outside the picture without closing on arrow taps; verify browsing and return.
-- [ ] Remove the About opening introductory sentence and enlarge both name lines to the biography column width; verify fluid sizing.
+- [x] Allow enlarged God of Lies illustrations to close on viewport taps outside the picture without closing on arrow taps; verified browsing, picture/outside dismissal and restored page navigation.
+- [x] Remove the About opening introductory sentence and enlarge both name lines to the biography column width; verified widths at 1280px, 781px and 390px.
 
 - [x] Replace the About opening photograph with the uploaded silent video; preserve framing and biography, ramp playback down over the final two seconds to rest, and offer a still for reduced motion. Playback verified with locally fulfilled media; hosted delivery checked separately.
 
