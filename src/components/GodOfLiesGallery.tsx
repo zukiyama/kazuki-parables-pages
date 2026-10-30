@@ -71,6 +71,11 @@ export function GodOfLiesGallery({ children, onViewerChange, renderViewerControl
     if (closingRef.current) return;
     closingRef.current = true;
     animationRef.current?.cancel();
+    // The dim must lift the moment the shrink is requested, not on arrival.
+    overlayRef.current?.animate(
+      [{ opacity: 1 }, { opacity: 0 }],
+      { duration: reducedMotion() ? 0 : 110, easing: "linear", fill: "forwards" },
+    );
     if (!reducedMotion()) {
       const animation = imageRef.current?.animate(
         [{ transform: "none" }, { transform: sourceTransform() }],
