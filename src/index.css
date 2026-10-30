@@ -1755,17 +1755,25 @@
   padding: 0; border-radius: 0; background: transparent;
 }
 .god-of-lies-gallery > .comics-hill-blurb { grid-row: 4; }
+/* The pictures must never show a frame: no focus ring, outline or highlight
+   in any state, on the thumbnails or the enlarged dismissal image. */
+.god-of-lies-gallery__picture,
 .god-of-lies-gallery__picture:hover,
 .god-of-lies-gallery__picture:active,
 .god-of-lies-gallery__picture:focus,
 .god-of-lies-gallery__picture:focus-visible,
+.god-of-lies-gallery__dismiss,
 .god-of-lies-gallery__dismiss:hover,
+.god-of-lies-gallery__dismiss:active,
+.god-of-lies-gallery__dismiss:focus,
 .god-of-lies-gallery__dismiss:focus-visible {
   background: transparent;
+  border: none;
+  outline: none;
   box-shadow: none;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
-.god-of-lies-gallery__picture:focus-visible { outline: 1px dashed hsl(var(--canvas-base) / 0.65); outline-offset: 4px; }
 .god-of-lies-gallery__picture img { width: 100%; height: 100%; object-fit: contain; }
 .comics-sky-pan.is-lower .god-of-lies-gallery.is-ready { opacity: 1; }
 .god-of-lies-gallery__overlay {
