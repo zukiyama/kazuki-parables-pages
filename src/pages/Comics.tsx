@@ -7,6 +7,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 import { Button } from "@/components/ui/button";
 import { COMICS_TITLE_PAUSE_MS, shouldAutoAdvanceComicsTitle } from "@/lib/comics-title-timing";
+import { getComicsLayout, type ComicsLayout } from "@/lib/comics-layout";
 
 // CRITICAL: First panel assets (Section 0) - bundled for every host
 import comicsScriptsTitleVideo from "@/assets/comicsscriptstitle.mp4";
@@ -683,20 +684,21 @@ const Comics = () => {
   // than it is tall (landscape tablet, desktop, widescreen) and all phones
   // keep the original untouched markup.
   useEffect(() => {
+    let layout: ComicsLayout | undefined;
     const check = () => {
-      setIsTabletPortraitStrip(
-        window.innerWidth >= 768 && window.innerHeight > window.innerWidth
+      layout = getComicsLayout(
+        window.innerWidth,
+        window.innerHeight,
+        window.visualViewport?.scale ?? 1,
+        layout,
       );
+      setIsTabletPortraitStrip(layout.tabletPortraitStrip);
       // Landscape versions ONLY (wider than it is tall, never phones):
       // no storyboard strips at all — parchment above and below the film.
-      setIsLandscapeStripHidden(
-        window.innerWidth > 820 && window.innerWidth > window.innerHeight
-      );
+      setIsLandscapeStripHidden(layout.landscapeStripHidden);
       // Keep every phone orientation on the original sequence. Tablet and
       // larger viewports receive the pop-up scene, including iPad portrait.
-      setShowPopUpScene(
-        window.innerWidth >= 768 && window.innerHeight >= 600
-      );
+      setShowPopUpScene(layout.popUpScene);
     };
 
     // iOS/iPadOS fires orientationchange BEFORE innerWidth/innerHeight update,
