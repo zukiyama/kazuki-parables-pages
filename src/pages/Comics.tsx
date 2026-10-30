@@ -111,6 +111,10 @@ const Comics = () => {
   const peelTurnRef = useRef<(() => boolean) | null>(null);
   const peelDraggingRef = useRef(false);
   const prevSectionRef = useRef<(() => void) | null>(null);
+  // Which lower-carousel screen is showing: 0 Pendragon, 1 God of Lies blurb, 2 shelf.
+  // Returning up to the title page is only allowed from the blurb screen.
+  const lowerScreenRef = useRef(1);
+  const handleLowerScreenChange = useCallback((screen: number) => { lowerScreenRef.current = screen; }, []);
   const [panoramaReady, setPanoramaReady] = useState(false);
   const [openingRevealing, setOpeningRevealing] = useState(false);
 
@@ -486,7 +490,10 @@ const Comics = () => {
         if (currentSection === 0 && peelTurnRef.current?.()) { peelStartedRef.current = true; scrollAccumulator = 0; return; }
         triggerSectionChange('next');
       } else if (scrollAccumulator < -scrollThreshold) {
-        triggerSectionChange('prev');
+        // Only the God of Lies blurb screen steps back up to the title page;
+        // on the Pendragon or shelf screens an upward scroll does nothing.
+        if (currentSection === 2 && lowerScreenRef.current !== 1) scrollAccumulator = 0;
+        else triggerSectionChange('prev');
       }
     };
     
@@ -567,8 +574,9 @@ const Comics = () => {
         triggerSectionChange('next');
         touchStartY = touchY;
       } else if (touchAccumulator < -60) {
-        triggerSectionChange('prev');
-        touchStartY = touchY;
+        // Only the God of Lies blurb screen steps back up to the title page.
+        if (currentSection === 2 && lowerScreenRef.current !== 1) { touchStartY = touchY; }
+        else { triggerSectionChange('prev'); touchStartY = touchY; }
       }
     };
     
@@ -612,6 +620,9 @@ const Comics = () => {
         return;
       }
       if (currentSection <= 0) return;
+      // The cursor-at-top strip only steps back from the God of Lies blurb
+      // screen; on the Pendragon or shelf screens it does nothing.
+      if (currentSection === 2 && lowerScreenRef.current !== 1) return;
       const header = document.querySelector<HTMLElement>('[data-header="true"]');
       const top = header ? header.getBoundingClientRect().bottom : 0;
       if (e.clientY <= top || e.clientY > top + 32) return;
@@ -1124,7 +1135,7 @@ const Comics = () => {
                 </div>
 
                 <div className="comics-sky-half comics-sky-lower">
-                  <ComicsLowerSlideshow comics={smallShelfComics} panorama={comicsSeoulSkyline} pendragon={surnamePendragonBanner} pendragonPortrait={surnamePendragonMobile} open={currentSection === 2}>
+                  <ComicsLowerSlideshow comics={smallShelfComics} panorama={comicsSeoulSkyline} pendragon={surnamePendragonBanner} pendragonPortrait={surnamePendragonMobile} open={currentSection === 2} onScreenChange={handleLowerScreenChange}>
                     <h3 className="comics-story-title">God of Lies</h3>
                     <div className="comics-story-rule" />
                     <p className="comics-story-description">{renderBlurbSegments(blurbMain)}</p>
