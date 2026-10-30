@@ -111,7 +111,10 @@ export function GodOfLiesGallery({ children, onViewerChange, renderViewerControl
       <Dialog.Root open={selected !== null} onOpenChange={(open) => { if (!open) void close(); }}>
         <Dialog.Portal>
           <Dialog.Overlay className="god-of-lies-gallery__overlay" />
-          <Dialog.Content className="god-of-lies-gallery__viewer" aria-describedby={undefined} onEscapeKeyDown={(event) => { event.preventDefault(); void close(); }} onPointerDownOutside={(event) => { event.preventDefault(); void close(); }} onCloseAutoFocus={(event) => { event.preventDefault(); }}>
+          <Dialog.Content className="god-of-lies-gallery__viewer" aria-describedby={undefined} onClick={(event) => {
+            if (event.target instanceof Element && event.target.closest('.god-of-lies-gallery__controls')) return;
+            void close();
+          }} onEscapeKeyDown={(event) => { event.preventDefault(); void close(); }} onPointerDownOutside={(event) => { event.preventDefault(); void close(); }} onCloseAutoFocus={(event) => { event.preventDefault(); }}>
             <Dialog.Title className="sr-only">{scene?.alt}</Dialog.Title>
             <div className="god-of-lies-gallery__enlarged">
               {scene && <button type="button" className="god-of-lies-gallery__dismiss" aria-label="Close illustration" onClick={() => void close()}><img key={scene.src} ref={mountImage} src={scene.src} alt={scene.alt} width={1536} height={1024} /></button>}

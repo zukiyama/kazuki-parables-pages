@@ -96,6 +96,27 @@ const About = () => {
   const [belowFoldVisible, setBelowFoldVisible] = React.useState(false);
   const [heroBackgroundReady, setHeroBackgroundReady] = React.useState(false);
   const belowFoldRef = React.useRef<HTMLDivElement>(null);
+  const nameRef = React.useRef<HTMLHeadingElement>(null);
+
+  React.useLayoutEffect(() => {
+    const heading = nameRef.current;
+    if (!heading) return;
+    const fitName = () => {
+      const width = heading.clientWidth;
+      if (!width) return;
+      heading.querySelectorAll<HTMLElement>('span').forEach(line => {
+        const measuredWidth = line.getBoundingClientRect().width;
+        const fontSize = Number.parseFloat(getComputedStyle(line).fontSize);
+        if (measuredWidth) line.style.fontSize = `${fontSize * width / measuredWidth}px`;
+      });
+    };
+    fitName();
+    const observer = new ResizeObserver(fitName);
+    observer.observe(heading);
+    let cancelled = false;
+    void document.fonts.ready.then(() => { if (!cancelled) fitName(); });
+    return () => { cancelled = true; observer.disconnect(); };
+  }, []);
 
   // Measure header height on mount and orientation change
   React.useEffect(() => {
@@ -204,8 +225,7 @@ const About = () => {
           </div>
           <div className="about-writer-copy">
             <p className="about-writer-eyebrow">Author · Composer</p>
-            <h1>Kazuki<br /><span>Yamakawa</span></h1>
-            <p className="about-writer-deck">A multi-disciplinary artist working in literature, music and visual storytelling.</p>
+            <h1 ref={nameRef}><span>Kazuki</span><br /><span>Yamakawa</span></h1>
             <div className="about-writer-biography">
               <p>Previously a writer in the Korean games industry, Kazuki decided in his thirties to pursue the work that is his lifelong vocation.</p>
               <p>Treating metaphysics with an unusual levity and invention, his literary works explore what it is to be real while remaining, above all things, deeply human.</p>
