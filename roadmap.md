@@ -88,4 +88,4 @@
 
 - [x] Bring the lower slideshow arrows back the instant a slide is in place instead of waiting for the late settle; verify reappearance timing.
 
-- [ ] Remove the white frame from the God of Lies blurb pictures (thumbnails and enlarged view) so they look as they did before the zoom fix; keep the zoom fix itself intact.
+- [x] Remove the white frame from the God of Lies blurb pictures (thumbnails and enlarged view) so they look as they did before the zoom fix; keep the zoom fix itself intact.
