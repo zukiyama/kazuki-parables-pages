@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Balance The Burden's landscape letterboxing as browser space changes, and fill portrait framing with its right-hand artwork; preserve other screens and phone sequence.
+- [x] Balance The Burden's landscape letterboxing as browser space changes, and fill portrait framing with its right-hand artwork. Browser checked live resize/rotation at 1366×768, 1366×950, 1366×1024, 1024×1366 and 781×1000 with original artwork; equal 34.77px landscape borders and flush portrait boundaries. Short-landscape framing, other screens and phone sequence unchanged; 10 tests pass.
 
 - [x] Remove the Burden caption year, lift its artwork a tiny bit more, and restore Coming 2027's previous uncropped equal-letterbox framing. Checked artwork and caption in browser with original uploads; equal 98px top/bottom gaps at 781×783, 7 tests pass, build OK.
 
