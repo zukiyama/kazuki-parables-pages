@@ -20,7 +20,7 @@ import HomeLayoutToggle, { useHomeLayout } from "@/components/home/HomeLayoutTog
 
 const godOfLiesManyFacesBanner = godOfLiesManyFacesBannerAsset.url;
 
-const ClassicHome = () => {
+export const ClassicHome = () => {
   useScrollToTop();
   useHeroHeight();
   const isMobile = useIsMobile();
@@ -260,12 +260,12 @@ const ClassicHome = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen-stable flex flex-col overflow-hidden">
+    <div className="home-classic relative min-h-screen-stable flex flex-col overflow-hidden">
       <Navigation />
-      
+
       {/* Hero Section with Japanese Painting */}
       {/* All devices use --hero-h for perfect bottom alignment */}
-      <section className="h-[calc(var(--hero-h,100dvh)-56px)] mt-14 flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: 'hsl(20, 30%, 15%)' }}>
+      <section className="home-hero h-[calc(var(--hero-h,100dvh)-56px)] mt-14 flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: 'hsl(20, 30%, 15%)' }}>
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
