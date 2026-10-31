@@ -1140,7 +1140,7 @@ const Comics = () => {
                     <div className="comics-story-rule" />
                     <p className="comics-story-description">{renderBlurbSegments(blurbMain)}</p>
                     <p className="comics-story-teaser">A supernatural psychological manga packed with twists and reversals.</p>
-                    <p className="comics-story-format">Manga • Webtoon • 2026</p>
+                    <p className="comics-story-format">Manga • Webtoon</p>
                   </ComicsLowerSlideshow>
                 </div>
               </div>
