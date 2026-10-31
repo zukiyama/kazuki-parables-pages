@@ -1135,7 +1135,7 @@ const Comics = () => {
                 </div>
 
                 <div className="comics-sky-half comics-sky-lower">
-                  <ComicsLowerSlideshow comics={smallShelfComics} panorama={comicsSeoulSkyline} pendragon={surnamePendragonBanner} pendragonPortrait={surnamePendragonMobile} open={currentSection === 2} onScreenChange={handleLowerScreenChange}>
+                  <ComicsLowerSlideshow comics={smallShelfComics} panorama={comicsSeoulSkyline} open={currentSection === 2} onScreenChange={handleLowerScreenChange}>
                     <h3 className="comics-story-title">God of Lies</h3>
                     <div className="comics-story-rule" />
                     <p className="comics-story-description">{renderBlurbSegments(blurbMain)}</p>
