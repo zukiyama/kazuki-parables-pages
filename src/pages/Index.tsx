@@ -304,7 +304,7 @@ export const ClassicHome = () => {
           <div className="overflow-hidden bg-ink-black" ref={parableEmblaRef}>
             <div className="flex">
               {/* Slide 1: Parable Trilogy */}
-              <div className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px] bg-ink-black">
+              <div className="home-banner-slide flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px] bg-ink-black">
                 {/* Left/Right click zones for navigation */}
                 <div 
                   className="absolute left-0 top-0 w-1/3 h-full z-10 cursor-pointer"
@@ -351,8 +351,8 @@ export const ClassicHome = () => {
               </div>
               
               {/* Slide 2: God of Lies */}
-              <div 
-                className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px] bg-ink-black"
+              <div
+                className="home-banner-slide flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px] bg-ink-black"
               >
                 {/* Left/Right click zones for navigation */}
                 <div 
@@ -443,7 +443,7 @@ export const ClassicHome = () => {
 
         {/* Music Banner - temporary still, ready to be replaced by a looping film */}
         <div
-          className="relative w-full overflow-hidden bg-black"
+          className="home-music-banner relative w-full overflow-hidden bg-black"
         >
           <img
             src={sixtiesVarietyShow}
@@ -488,9 +488,9 @@ export const ClassicHome = () => {
         </div>
 
         {/* Magazine Cover Section - Dissolve Slideshow */}
-        <div 
+        <div
           ref={magazineRef}
-          className="cursor-pointer relative"
+          className="home-magazine cursor-pointer relative"
           onClick={() => navigate('/writing#kaiju')}
           onTouchStart={(e) => {
             const touch = e.touches[0];
