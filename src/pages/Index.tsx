@@ -16,11 +16,12 @@ import godOfLiesManyFacesBannerAsset from "@/assets/god-of-lies-many-faces-banne
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
 import useEmblaCarousel from "embla-carousel-react";
 import HomeCinematic from "@/components/home/HomeCinematic";
+import HomePolished from "@/components/home/HomePolished";
 import HomeLayoutToggle, { useHomeLayout } from "@/components/home/HomeLayoutToggle";
 
 const godOfLiesManyFacesBanner = godOfLiesManyFacesBannerAsset.url;
 
-const ClassicHome = () => {
+export const ClassicHome = () => {
   useScrollToTop();
   useHeroHeight();
   const isMobile = useIsMobile();
@@ -260,12 +261,12 @@ const ClassicHome = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen-stable flex flex-col overflow-hidden">
+    <div className="home-classic relative min-h-screen-stable flex flex-col overflow-hidden">
       <Navigation />
-      
+
       {/* Hero Section with Japanese Painting */}
       {/* All devices use --hero-h for perfect bottom alignment */}
-      <section className="h-[calc(var(--hero-h,100dvh)-56px)] mt-14 flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: 'hsl(20, 30%, 15%)' }}>
+      <section className="home-hero h-[calc(var(--hero-h,100dvh)-56px)] mt-14 flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: 'hsl(20, 30%, 15%)' }}>
         <img 
           src={japaneseBackground} 
           alt="Japanese painting background" 
@@ -304,7 +305,7 @@ const ClassicHome = () => {
           <div className="overflow-hidden bg-ink-black" ref={parableEmblaRef}>
             <div className="flex">
               {/* Slide 1: Parable Trilogy */}
-              <div className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px] bg-ink-black">
+              <div className="home-banner-slide flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px] bg-ink-black">
                 {/* Left/Right click zones for navigation */}
                 <div 
                   className="absolute left-0 top-0 w-1/3 h-full z-10 cursor-pointer"
@@ -351,8 +352,8 @@ const ClassicHome = () => {
               </div>
               
               {/* Slide 2: God of Lies */}
-              <div 
-                className="flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px] bg-ink-black"
+              <div
+                className="home-banner-slide flex-[0_0_100%] min-w-0 relative h-[280px] md:h-[320px] bg-ink-black"
               >
                 {/* Left/Right click zones for navigation */}
                 <div 
@@ -443,7 +444,7 @@ const ClassicHome = () => {
 
         {/* Music Banner - temporary still, ready to be replaced by a looping film */}
         <div
-          className="relative w-full overflow-hidden bg-black"
+          className="home-music-banner relative w-full overflow-hidden bg-black"
         >
           <img
             src={sixtiesVarietyShow}
@@ -488,9 +489,9 @@ const ClassicHome = () => {
         </div>
 
         {/* Magazine Cover Section - Dissolve Slideshow */}
-        <div 
+        <div
           ref={magazineRef}
-          className="cursor-pointer relative"
+          className="home-magazine cursor-pointer relative"
           onClick={() => navigate('/writing#kaiju')}
           onTouchStart={(e) => {
             const touch = e.touches[0];
@@ -607,7 +608,7 @@ const Index = () => {
   const [layout, setLayout] = useHomeLayout();
   return (
     <>
-      {layout === "cinematic" ? <HomeCinematic /> : <ClassicHome />}
+      {layout === "cinematic" ? <HomeCinematic /> : layout === "polished" ? <HomePolished /> : <ClassicHome />}
       <HomeLayoutToggle layout={layout} onChange={setLayout} />
     </>
   );
