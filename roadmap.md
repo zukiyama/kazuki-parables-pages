@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Add the sketch shelf background and final Coming 2027 image screen; frame The Burden clear of header/footer and verify four-screen looping and existing controls.
+
 - [x] Swap shelf and screenplay positions; show the full-width uploaded Burden artwork with subtle status line and five evenly spaced shelf covers beneath a raised heading. Verified rightward looping, cover reader and shelf return restriction at 1280px and 781px; 17 tests pass. Artwork checked using the original upload to fulfil its hosted URL locally.
 
 - [x] Allow enlarged God of Lies illustrations to close on viewport taps outside the picture without closing on arrow taps; verified browsing, picture/outside dismissal and restored page navigation.
