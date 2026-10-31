@@ -596,6 +596,7 @@
 
 /* Experimental Cinematic mode only; the other homepage layouts are untouched. */
 .home-cinematic-kaiju { height: 70svh; min-height: 400px; }
+.home-cinematic-kaiju > img { inset: auto 0 0; height: 256.5%; object-position: center bottom; }
 .home-cinematic-pair > a { height: 58svh; min-height: 360px; }
 .home-cinematic-slideshow { height: 60svh; min-height: 400px; }
 .home-cinematic-slideshow__parable { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; }
