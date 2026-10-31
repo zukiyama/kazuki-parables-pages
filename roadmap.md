@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Make The Burden edge-to-edge with header clearance; centre Coming 2027 equally between header and footer, preserving other carousel behavior.
+
 - [x] Add the sketch shelf background and final Coming 2027 image screen; fit The Burden clear of header/footer. Verified four-screen looping, five covers and reader at 1280×1800, 781×783 and 1366×768; 17 tests pass, build OK. Uploaded artwork visually checked by fulfilling hosted URLs with original uploads locally.
 
 - [x] Swap shelf and screenplay positions; show the full-width uploaded Burden artwork with subtle status line and five evenly spaced shelf covers beneath a raised heading. Verified rightward looping, cover reader and shelf return restriction at 1280px and 781px; 17 tests pass. Artwork checked using the original upload to fulfil its hosted URL locally.
