@@ -7,6 +7,8 @@ import { GodOfLiesGallery } from "@/components/GodOfLiesGallery";
 import { COMICS_LOWER_SCREENS, nextComicsScreen, paperArrowOverlap, shelfComics } from "@/lib/comics-slideshow";
 
 import screenplayArtwork from "@/assets/the-burden-screenplay.png.asset.json";
+import shelfBackground from "@/assets/comics-sketch-background.png.asset.json";
+import comingArtwork from "@/assets/comics-coming-2027.jpeg.asset.json";
 
 type Comic = { cover: string; title: string; description: ReactNode; teaser: string; format: string };
 
@@ -37,6 +39,16 @@ export function ComicsLowerSlideshow({ children, comics, panorama, open, onScree
   const animationRef = useRef<Animation | null>(null);
   const closeRef = useRef(false);
   const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  useLayoutEffect(() => {
+    const header = document.querySelector<HTMLElement>('[data-header="true"]');
+    if (!header) return;
+    const measure = () => shellRef.current?.style.setProperty("--chapter-header-height", `${Math.max(0, header.getBoundingClientRect().bottom)}px`);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(header);
+    window.addEventListener("resize", measure);
+    return () => { observer.disconnect(); window.removeEventListener("resize", measure); };
+  }, []);
   useEffect(() => {
     const footer = footerRef.current;
     if (!footer) return;
@@ -123,7 +135,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, open, onScree
   }, [open]);
   useEffect(() => { if (!open) jumpTo(1); }, [jumpTo, open]);
   useEffect(() => {
-    [panorama, screenplayArtwork.url, ...comics.map(c => c.cover)].forEach(src => {
+    [panorama, screenplayArtwork.url, shelfBackground.url, comingArtwork.url, ...comics.map(c => c.cover)].forEach(src => {
       const image = new Image(); image.src = src; void image.decode().catch(() => {});
     });
   }, [panorama]);
@@ -183,12 +195,12 @@ export function ComicsLowerSlideshow({ children, comics, panorama, open, onScree
     <div ref={shellRef} className={`comics-lower-slideshow ${traveling ? "is-traveling" : ""}`} role="region" aria-label="Comics and scripts slideshow" aria-roledescription="carousel">
       <div ref={viewport} className="comics-lower-slideshow__viewport">
         <div className="comics-lower-slideshow__track">
-          <section className="comics-lower-slideshow__slide comics-shelf-slide" aria-label={COMICS_LOWER_SCREENS[0]} aria-hidden={screen !== 0} ref={element => { paperRef.current = element; if (screen !== 0) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
-            <h2>Stories waiting to be told…</h2>
-            <div className="comics-shelf-slide__grid">
-              {shelfComics(comics).map(comic => <Button variant="link" className="comics-shelf-slide__cover" key={comic.title} aria-label={`Explore ${comic.title}`} onClick={event => {
-                sourceRef.current = event.currentTarget.querySelector("img"); setSelected(comic);
-              }}><img src={comic.cover} alt={`${comic.title} comic cover`} width={640} height={960} draggable={false} /></Button>)}
+          <section className="comics-lower-slideshow__slide comics-coming-slide" aria-label={COMICS_LOWER_SCREENS[0]} aria-hidden={screen !== 0} ref={element => { if (screen !== 0) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
+            <div className="comics-film-stage">
+              <div className="comics-coming-slide__artwork">
+                <img src={comingArtwork.url} alt="Chang-Min seated among guitars in a sunlit studio with glowing butterflies" width={1874} height={839} />
+                <h2>Coming 2027</h2>
+              </div>
             </div>
           </section>
           <section className="comics-lower-slideshow__slide comics-story-slide" aria-label={COMICS_LOWER_SCREENS[1]} aria-hidden={screen !== 1} ref={element => { if (screen !== 1) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
@@ -206,9 +218,20 @@ export function ComicsLowerSlideshow({ children, comics, panorama, open, onScree
             )}>{children}</GodOfLiesGallery>
           </section>
           <section className="comics-lower-slideshow__slide comics-screenplay-slide" aria-label={COMICS_LOWER_SCREENS[2]} aria-hidden={screen !== 2} ref={element => { if (screen !== 2) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
+            <div className="comics-film-stage">
             <div className="comics-screenplay-slide__artwork">
               <img src={screenplayArtwork.url} alt="The Burden. A phone call from a sister he hasn't spoken to in years. A mother he swore never to see again. As her memories fade, Hiroshi's own resurface in a new light." />
               <p className="comics-screenplay-slide__status">Full-length screenplay <span aria-hidden="true">•</span> In development</p>
+            </div>
+            </div>
+          </section>
+          <section className="comics-lower-slideshow__slide comics-shelf-slide" aria-label={COMICS_LOWER_SCREENS[3]} aria-hidden={screen !== 3} ref={element => { paperRef.current = element; if (screen !== 3) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
+            <img className="comics-shelf-slide__background" src={shelfBackground.url} alt="" aria-hidden="true" />
+            <h2>Stories waiting to be told…</h2>
+            <div className="comics-shelf-slide__grid">
+              {shelfComics(comics).map(comic => <Button variant="link" className="comics-shelf-slide__cover" key={comic.title} aria-label={`Explore ${comic.title}`} onClick={event => {
+                sourceRef.current = event.currentTarget.querySelector("img"); setSelected(comic);
+              }}><img src={comic.cover} alt={`${comic.title} comic cover`} width={640} height={960} draggable={false} /></Button>)}
             </div>
           </section>
         </div>
@@ -216,7 +239,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, open, onScree
       <div ref={controlsRef} className={`comics-lower-slideshow__controls ${open && traveling ? "is-traveling" : ""} ${pictureOpen ? "is-picture-open" : ""}`} data-page-open={open}>
         {arrow(-1, navigate)}{arrow(1, navigate)}
       </div>
-      <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant={footerScreen === 0 ? "light" : "dark"} /></div>
+      <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant={footerScreen === 3 ? "light" : "dark"} /></div>
       <Dialog.Root open={selected !== null} onOpenChange={value => { if (!value) void close(); }}>
         <Dialog.Portal>
           <Dialog.Overlay ref={readerOverlayRef} className="comics-reader__overlay" />

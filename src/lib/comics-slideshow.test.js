@@ -11,15 +11,16 @@ test("enlarged gallery arrows browse only the three pictures and wrap both ways"
 test("right from God of Lies reaches the replacement screenplay then the shelf", () => {
   expect(COMICS_LOWER_SCREENS[nextComicsScreen(1, 1)]).toBe("The Burden");
   expect(COMICS_LOWER_SCREENS[nextComicsScreen(2, 1)]).toBe("Forthcoming comics");
-  expect(COMICS_LOWER_SCREENS[nextComicsScreen(1, -1)]).toBe("Forthcoming comics");
+  expect(COMICS_LOWER_SCREENS[nextComicsScreen(3, 1)]).toBe("Coming 2027");
+  expect(COMICS_LOWER_SCREENS[nextComicsScreen(0, 1)]).toBe("God of Lies");
 });
 test("the white shelf excludes The Burden and retains the other five in order", () => {
   const titles = ["The Burden", "Mr. Miracle", "Soul-Tied", "Gods!", "Scripted", "Oranges are Made of Gold"];
   expect(shelfComics(titles.map(title => ({ title }))).map(comic => comic.title)).toEqual(titles.slice(1));
 });
-test("three screens loop in either direction", () => {
-  expect(nextComicsScreen(2, 1)).toBe(0);
-  expect(nextComicsScreen(0, -1)).toBe(2);
+test("four screens loop in either direction", () => {
+  expect(nextComicsScreen(3, 1)).toBe(0);
+  expect(nextComicsScreen(0, -1)).toBe(3);
 });
 
 test("incoming white background reaches the right arrow before the left", () => {

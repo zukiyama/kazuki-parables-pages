@@ -1,4 +1,4 @@
-export const COMICS_LOWER_SCREENS = ["Forthcoming comics", "God of Lies", "The Burden"] as const;
+export const COMICS_LOWER_SCREENS = ["Coming 2027", "God of Lies", "The Burden", "Forthcoming comics"] as const;
 
 export function shelfComics<T extends { title: string }>(comics: T[]): T[] {
   return comics.filter(comic => comic.title !== "The Burden");
