@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Update only Cinematic: restore animated bottom slideshow, crop/shorten KAIJU, shorten God of Lies with a two-thirds split and stronger replacement feature, and remove Storyteller; preserve all layout choices.
+- [x] Update only Cinematic: restore decoded three-picture slideshow with falling Parable title, shorten/crop KAIJU, shorten the two-thirds God of Lies band with Music beside it, and remove Storyteller. Browser checked manual navigation, wrapping, auto-advance, title animation and all three layout choices; hosted faces artwork remains unavailable in the sandbox.
 
 - [x] Isolate oversized Burden artwork and inactive-slide hit regions without changing framing. Touch-enabled Chromium checked picture opening, viewer arrows, dismissal and page arrows through 1024×1366 → 1366×1024 → 1024×1366; original Burden framing visually checked, 14 tests pass, build OK. Physical iPad Safari remains unverified; persistent failure did not reproduce in simulation.
 
