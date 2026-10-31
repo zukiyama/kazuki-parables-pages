@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Isolate oversized Burden artwork and inactive-slide hit regions without changing framing; verify gallery and carousel controls through portrait/landscape rotations.
+- [x] Isolate oversized Burden artwork and inactive-slide hit regions without changing framing. Touch-enabled Chromium checked picture opening, viewer arrows, dismissal and page arrows through 1024×1366 → 1366×1024 → 1024×1366; original Burden framing visually checked, 14 tests pass, build OK. Physical iPad Safari remains unverified; persistent failure did not reproduce in simulation.
 
 - [x] Balance The Burden's landscape letterboxing as browser space changes, and fill portrait framing with its right-hand artwork. Browser checked live resize/rotation at 1366×768, 1366×950, 1366×1024, 1024×1366 and 781×1000 with original artwork; equal 34.77px landscape borders and flush portrait boundaries. Short-landscape framing, other screens and phone sequence unchanged; 10 tests pass.
 
