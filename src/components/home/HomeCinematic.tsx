@@ -10,7 +10,6 @@ import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
 import circlesSingleCover from "@/assets/circles-single-cover.webp";
 import manyFaces from "@/assets/god-of-lies-many-faces-banner.png.asset.json";
 import HomeCinematicSlideshow from "@/components/home/HomeCinematicSlideshow";
-import musicRoom from "@/assets/about-music-room.webp";
 
 /** Text-only reveal: bands stay in normal flow; only copy fades in. */
 const Reveal = ({ children, delay = 0, className = "" }: { children: ReactNode; delay?: number; className?: string }) => {
@@ -123,39 +122,29 @@ const HomeCinematic = () => {
         A metaphysical fantasy. Summer 1979, Osaka — something is coming.
       </Chapter>
 
-      <section className="home-cinematic-pair grid w-full bg-ink-black md:grid-cols-[2fr_1fr]">
+      <section className="home-cinematic-pair grid w-full bg-ink-black md:grid-cols-[1fr_2fr]">
         <Link to="/comics" className="group relative block min-w-0 overflow-hidden">
           <img src={manyFaces.url} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[2000ms] group-hover:scale-[1.04]" style={{ objectPosition: "40% center" }} />
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-ink-black/30 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
             <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">02</span> · Manga Webtoon</p></Reveal>
-            <Reveal delay={120}><h2 className="font-heading text-5xl text-background md:text-6xl">God of Lies</h2></Reveal>
+            <Reveal delay={120}><h2 className="font-heading text-4xl text-background lg:text-5xl">God of Lies</h2></Reveal>
             <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Read more →</span></Reveal>
           </div>
         </Link>
         <Link to="/music" className="group relative block min-w-0 overflow-hidden">
-          <img src={musicRoom} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[2000ms] group-hover:scale-[1.04]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-ink-black/30 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
-            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">03</span> · Music</p></Reveal>
-            <Reveal delay={120}><h2 className="font-heading text-4xl text-background lg:text-6xl">Albums<br />& Songs</h2></Reveal>
-            <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Explore music →</span></Reveal>
+          <img src={sixtiesVarietyShow} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover grayscale opacity-50 transition-transform duration-[2000ms] group-hover:scale-[1.04]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink-black via-ink-black/70 to-transparent" />
+          <div className="relative z-10 flex h-full flex-col justify-center gap-6 px-6 py-8 sm:flex-row sm:items-center md:gap-5 md:px-6 lg:gap-10 lg:px-10">
+            <img src={circlesSingleCover} alt="Circles single cover" loading="lazy" className="h-40 w-40 shrink-0 rounded-sm object-cover shadow-2xl transition-transform duration-500 group-hover:-rotate-2 group-hover:scale-105 lg:h-56 lg:w-56" />
+            <div className="min-w-0">
+              <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">03</span> · New single</p></Reveal>
+              <Reveal delay={120}><h2 className="font-heading text-5xl text-background lg:text-7xl">Circles</h2></Reveal>
+              <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Listen now →</span></Reveal>
+            </div>
           </div>
         </Link>
       </section>
-
-      <Link to="/music" className="group relative block w-full overflow-hidden bg-ink-black">
-        <img src={sixtiesVarietyShow} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover grayscale opacity-50 transition-transform duration-[2000ms] group-hover:scale-[1.04]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink-black via-ink-black/70 to-transparent" />
-        <div className="relative z-10 flex flex-col gap-10 px-6 py-20 md:flex-row md:items-center md:px-16 md:py-28">
-          <img src={circlesSingleCover} alt="Circles single cover" loading="lazy" className="h-56 w-56 rounded-sm object-cover shadow-2xl transition-transform duration-500 group-hover:-rotate-2 group-hover:scale-105 md:h-72 md:w-72" />
-          <div>
-            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">04</span> · New single</p></Reveal>
-            <Reveal delay={120}><h2 className="font-heading text-6xl text-background md:text-8xl">Circles</h2></Reveal>
-            <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Listen now →</span></Reveal>
-          </div>
-        </div>
-      </Link>
 
       <HomeCinematicSlideshow />
 
