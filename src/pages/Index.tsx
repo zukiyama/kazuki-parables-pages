@@ -15,10 +15,12 @@ import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
 import godOfLiesManyFacesBannerAsset from "@/assets/god-of-lies-many-faces-banner.png.asset.json";
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
 import useEmblaCarousel from "embla-carousel-react";
+import HomeCinematic from "@/components/home/HomeCinematic";
+import HomeLayoutToggle, { useHomeLayout } from "@/components/home/HomeLayoutToggle";
 
 const godOfLiesManyFacesBanner = godOfLiesManyFacesBannerAsset.url;
 
-const Index = () => {
+const ClassicHome = () => {
   useScrollToTop();
   useHeroHeight();
   const isMobile = useIsMobile();
@@ -598,6 +600,16 @@ const Index = () => {
 
       <Footer variant="light" />
     </div>
+  );
+};
+
+const Index = () => {
+  const [layout, setLayout] = useHomeLayout();
+  return (
+    <>
+      {layout === "cinematic" ? <HomeCinematic /> : <ClassicHome />}
+      <HomeLayoutToggle layout={layout} onChange={setLayout} />
+    </>
   );
 };
 
