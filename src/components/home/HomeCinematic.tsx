@@ -6,11 +6,11 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useHeroHeight } from "@/hooks/useHeroHeight";
 import japaneseBackground from "@/assets/japanese-painting-background.webp";
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
-import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.webp";
 import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
 import circlesSingleCover from "@/assets/circles-single-cover.webp";
 import manyFaces from "@/assets/god-of-lies-many-faces-banner.png.asset.json";
-import burden from "@/assets/the-burden-screenplay.png.asset.json";
+import HomeCinematicSlideshow from "@/components/home/HomeCinematicSlideshow";
+import musicRoom from "@/assets/about-music-room.webp";
 
 /** Text-only reveal: bands stay in normal flow; only copy fades in. */
 const Reveal = ({ children, delay = 0, className = "" }: { children: ReactNode; delay?: number; className?: string }) => {
@@ -35,11 +35,11 @@ const Reveal = ({ children, delay = 0, className = "" }: { children: ReactNode; 
 };
 
 const Chapter = ({
-  index, kicker, title, children, to, cta, image, position = "center",
+  index, kicker, title, children, to, cta, image, position = "center", className = "",
 }: {
-  index: string; kicker: string; title: ReactNode; children?: ReactNode; to: string; cta: string; image: string; position?: string;
+  index: string; kicker: string; title: ReactNode; children?: ReactNode; to: string; cta: string; image: string; position?: string; className?: string;
 }) => (
-  <Link to={to} className="group relative block h-[85svh] min-h-[520px] w-full overflow-hidden bg-ink-black">
+  <Link to={to} className={`group relative block w-full overflow-hidden bg-ink-black ${className}`}>
     <img
       src={image}
       alt=""
@@ -93,7 +93,7 @@ const HomeCinematic = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen-stable flex flex-col overflow-hidden bg-ink-black">
+    <div className="home-cinematic relative min-h-screen-stable flex flex-col overflow-hidden bg-ink-black">
       <Navigation />
 
       <section className="relative mt-14 flex h-[calc(var(--hero-h,100dvh)-56px)] items-end overflow-hidden" style={{ backgroundColor: "hsl(20, 30%, 15%)" }}>
@@ -107,7 +107,7 @@ const HomeCinematic = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink-black/80 via-transparent to-transparent" />
         <div className={`relative z-10 w-full px-6 pb-12 md:px-16 md:pb-16 transition-opacity duration-1000 ${ready ? "opacity-100" : "opacity-0"}`}>
-          <p className="mb-3 text-xs uppercase tracking-[0.4em] text-background/80">Writer · Musician · Storyteller</p>
+          <p className="mb-3 text-xs uppercase tracking-[0.4em] text-background/80">Writer · Musician</p>
           <h1 className="font-heading text-6xl leading-[0.9] text-background md:text-9xl">
             Kazuki<br />Yamakawa
           </h1>
@@ -119,12 +119,12 @@ const HomeCinematic = () => {
         </div>
       </section>
 
-      <Chapter index="01" kicker="The Parable Trilogy · Book One" title="KAIJU" to="/writing#kaiju" cta="Enter the story" image={parableBoysStreet} position="52% bottom">
+      <Chapter className="home-cinematic-kaiju" index="01" kicker="The Parable Trilogy · Book One" title="KAIJU" to="/writing#kaiju" cta="Enter the story" image={parableBoysStreet} position="52% bottom">
         A metaphysical fantasy. Summer 1979, Osaka — something is coming.
       </Chapter>
 
-      <section className="grid w-full bg-ink-black md:grid-cols-2">
-        <Link to="/comics" className="group relative block h-[70svh] min-h-[420px] overflow-hidden">
+      <section className="home-cinematic-pair grid w-full bg-ink-black md:grid-cols-[2fr_1fr]">
+        <Link to="/comics" className="group relative block min-w-0 overflow-hidden">
           <img src={manyFaces.url} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[2000ms] group-hover:scale-[1.04]" style={{ objectPosition: "40% center" }} />
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-ink-black/30 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
@@ -133,13 +133,13 @@ const HomeCinematic = () => {
             <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Read more →</span></Reveal>
           </div>
         </Link>
-        <Link to="/comics" className="group relative block h-[70svh] min-h-[420px] overflow-hidden">
-          <img src={burden.url} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[2000ms] group-hover:scale-[1.04]" style={{ objectPosition: "35% center" }} />
+        <Link to="/music" className="group relative block min-w-0 overflow-hidden">
+          <img src={musicRoom} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[2000ms] group-hover:scale-[1.04]" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-ink-black/30 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
-            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">03</span> · Full-length screenplay</p></Reveal>
-            <Reveal delay={120}><h2 className="font-heading text-5xl text-background md:text-6xl">The Burden</h2></Reveal>
-            <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">In development →</span></Reveal>
+            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">03</span> · Music</p></Reveal>
+            <Reveal delay={120}><h2 className="font-heading text-4xl text-background lg:text-6xl">Albums<br />& Songs</h2></Reveal>
+            <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Explore music →</span></Reveal>
           </div>
         </Link>
       </section>
@@ -157,16 +157,7 @@ const HomeCinematic = () => {
         </div>
       </Link>
 
-      <section className="relative w-full overflow-hidden bg-ink-black">
-        <img src={kyotoTvShop} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-40" />
-        <div className="relative z-10 px-6 py-28 text-center md:py-40">
-          <Reveal>
-            <blockquote className="mx-auto max-w-3xl font-heading text-3xl italic leading-snug text-background md:text-5xl">
-              ‘Feelings are the thoughts of the heart.’
-            </blockquote>
-          </Reveal>
-        </div>
-      </section>
+      <HomeCinematicSlideshow />
 
       <Footer variant="dark" />
     </div>

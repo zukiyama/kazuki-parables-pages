@@ -594,6 +594,17 @@
   animation: letterFall 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 1.9s forwards;
 }
 
+/* Experimental Cinematic mode only; the other homepage layouts are untouched. */
+.home-cinematic-kaiju { height: 70svh; min-height: 400px; }
+.home-cinematic-pair > a { height: 58svh; min-height: 360px; }
+.home-cinematic-slideshow { height: 60svh; min-height: 400px; }
+.home-cinematic-slideshow__parable { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; }
+
+@media (prefers-reduced-motion: reduce) {
+  .home-cinematic-slideshow__slide, .home-cinematic-slideshow__slide img { transition: none; animation: none; }
+  .home-cinematic-slideshow__parable span { animation: none; opacity: 1; transform: none; }
+}
+
 @keyframes slide-in-from-left-scroll {
   0% { transform: translateX(-100px); opacity: 0; }
   100% { transform: translateX(0); opacity: 1; }
