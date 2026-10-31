@@ -1938,6 +1938,11 @@
 .comics-film-stage { flex: 1; min-height: 0; width: 100%; container-type: size; display: flex; align-items: center; justify-content: center; }
 .comics-screenplay-slide .comics-film-stage { padding-top: 0; align-items: flex-start; }
 .comics-screenplay-slide__artwork { position: relative; flex-shrink: 0; width: 100%; aspect-ratio: 1670 / 941; transform: translateY(clamp(-1.375rem, -2dvh, -0.75rem)); }
+/* Only when the complete full-width artwork fits: share spare height equally.
+   Container dimensions follow the live header/footer-bounded stage. */
+@container (aspect-ratio < 1670 / 941) {
+  .comics-screenplay-slide__artwork { transform: translateY(calc((100cqh - 100cqw * 941 / 1670) / 2)); }
+}
 .comics-coming-slide__artwork { position: relative; width: min(100cqw, calc(100cqh * 1874 / 839)); aspect-ratio: 1874 / 839; }
 .comics-coming-slide__artwork img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .comics-coming-slide h2 { position: absolute; bottom: 5%; left: 0; width: 100%; text-align: center; font-family: var(--font-heading); font-size: 3rem; line-height: 1.15; color: hsl(var(--canvas-base)); text-shadow: 0 2px 3px hsl(var(--ink-black)), 0 3px 12px hsl(var(--ink-black)); }
@@ -1965,7 +1970,15 @@
 @keyframes comics-reader-copy-in { from { opacity: 0; transform: translateY(0.5rem); } to { opacity: 1; transform: none; } }
 @media (orientation: portrait) {
   .comics-coming-slide h2 { font-size: 2rem; }
-  .comics-screenplay-slide__status { font-size: 0.6rem; }
+  .comics-screenplay-slide__artwork { height: 100cqh; aspect-ratio: auto; transform: none; overflow: hidden; }
+  .comics-screenplay-slide__artwork img {
+    --screenplay-image-width: max(100cqw, calc(100cqh * 1670 / 941));
+    position: absolute; top: 0;
+    width: var(--screenplay-image-width); max-width: none;
+    left: clamp(calc(100cqw - var(--screenplay-image-width)), calc(50cqw - var(--screenplay-image-width) * 0.755), 0px);
+    object-fit: cover;
+  }
+  .comics-screenplay-slide__status { font-size: 0.6rem; left: 11%; width: 78%; }
   .comics-reader { gap: 2rem; }
   .comics-reader__copy { font-size: 1rem; }
   .comics-reader__copy h2 { font-size: 2rem; }
