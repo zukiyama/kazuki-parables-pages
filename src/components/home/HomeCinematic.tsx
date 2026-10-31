@@ -168,7 +168,7 @@ const HomeCinematic = () => {
         </div>
       </section>
 
-      <Footer />
+      <Footer variant="dark" />
     </div>
   );
 };
