@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Slightly lift The Burden artwork, fill the Coming 2027 frame with a leftward composition adjustment, and slightly lower the shelf heading; verify carousel and framing.
+- [x] Slightly lift The Burden artwork, fill the Coming 2027 frame with a leftward composition adjustment, and slightly lower the shelf heading. Visually checked at 781×783 and 1366×768 using original uploads; Coming frame aligns with header/footer, 7 carousel tests pass, build OK. Existing short-landscape Burden cropping remains.
 
 - [x] Make The Burden edge-to-edge with header clearance; centre Coming 2027 equally between header and footer. Verified widths and equal gaps at 781×783, 1280×1800 and 1366×768; carousel loop and reader checks pass, 17 tests pass, build OK.
 
