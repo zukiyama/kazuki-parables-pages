@@ -1997,3 +1997,76 @@
 @media (prefers-reduced-motion: reduce) {
   .comics-lower-slideshow__arrow, .comics-reader__copy, .comics-reader__overlay { animation: none; transition: none; }
 }
+
+/* ===== Homepage Option B — "Polished" refinements (scoped to .home-polished) ===== */
+
+/* Hero: slow ambient drift on the painting, refined name, scroll cue */
+.home-polished .home-hero img {
+  animation: home-hero-drift 42s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes home-hero-drift {
+  from { transform: scale(1) translateY(0); }
+  to { transform: scale(1.07) translateY(-1.5%); }
+}
+.home-polished .home-hero h1 {
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 34px rgba(0, 0, 0, 0.3);
+}
+.home-polished .home-hero p {
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+}
+@media (min-width: 768px) {
+  .home-polished .home-hero p { font-size: 1.05rem; }
+}
+.home-polished .home-hero::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 1.5rem;
+  width: 1px;
+  height: 3.25rem;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.85));
+  animation: home-scroll-cue 2.6s ease-in-out infinite;
+  z-index: 20;
+  pointer-events: none;
+}
+@keyframes home-scroll-cue {
+  0%, 100% { transform: translateY(0); opacity: 0.9; }
+  50% { transform: translateY(9px); opacity: 0.35; }
+}
+
+/* Banners: taller, with a hairline highlight for editorial rhythm */
+.home-polished .home-banner-slide { height: 340px; }
+@media (min-width: 768px) {
+  .home-polished .home-banner-slide { height: 430px; }
+}
+.home-polished .home-banner-slide,
+.home-polished .home-music-banner {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+/* Music banner: more breathing room */
+.home-polished .home-music-banner a { padding-top: 3rem; padding-bottom: 3rem; }
+@media (min-width: 768px) {
+  .home-polished .home-music-banner a { padding-top: 4.25rem; padding-bottom: 4.25rem; }
+}
+
+/* Slideshow: softer, longer dissolves and refined quote */
+.home-polished .home-magazine .transition-opacity {
+  transition-duration: 1600ms;
+}
+.home-polished .literary-quote {
+  font-style: italic;
+  letter-spacing: 0.015em;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-polished .home-hero img,
+  .home-polished .home-hero::after {
+    animation: none;
+  }
+}
