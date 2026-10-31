@@ -1937,9 +1937,9 @@
 .comics-screenplay-slide, .comics-coming-slide { background: hsl(var(--screenplay-letterbox)); display: flex; flex-direction: column; padding-top: var(--chapter-header-height, 0px); }
 .comics-film-stage { flex: 1; min-height: 0; width: 100%; container-type: size; display: flex; align-items: center; justify-content: center; }
 .comics-screenplay-slide .comics-film-stage { padding-top: 0; align-items: flex-start; }
-.comics-screenplay-slide__artwork { position: relative; flex-shrink: 0; width: 100%; aspect-ratio: 1670 / 941; transform: translateY(clamp(-1rem, -1.5dvh, -0.5rem)); }
-.comics-coming-slide__artwork { position: relative; width: 100%; height: 100%; overflow: hidden; }
-.comics-coming-slide__artwork img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 52% center; }
+.comics-screenplay-slide__artwork { position: relative; flex-shrink: 0; width: 100%; aspect-ratio: 1670 / 941; transform: translateY(clamp(-1.375rem, -2dvh, -0.75rem)); }
+.comics-coming-slide__artwork { position: relative; width: min(100cqw, calc(100cqh * 1874 / 839)); aspect-ratio: 1874 / 839; }
+.comics-coming-slide__artwork img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .comics-coming-slide h2 { position: absolute; bottom: 5%; left: 0; width: 100%; text-align: center; font-family: var(--font-heading); font-size: 3rem; line-height: 1.15; color: hsl(var(--canvas-base)); text-shadow: 0 2px 3px hsl(var(--ink-black)), 0 3px 12px hsl(var(--ink-black)); }
 .comics-screenplay-slide__artwork img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .comics-screenplay-slide__status { position: absolute; top: 59%; left: 56%; width: 39%; text-align: center; font-family: var(--font-body); font-size: 0.7rem; line-height: 1.4; text-transform: uppercase; color: hsl(var(--screenplay-caption) / 0.8); }

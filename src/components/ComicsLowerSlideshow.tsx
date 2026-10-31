@@ -221,7 +221,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, open, onScree
             <div className="comics-film-stage">
             <div className="comics-screenplay-slide__artwork">
               <img src={screenplayArtwork.url} alt="The Burden. A phone call from a sister he hasn't spoken to in years. A mother he swore never to see again. As her memories fade, Hiroshi's own resurface in a new light." />
-              <p className="comics-screenplay-slide__status">Full-length screenplay <span aria-hidden="true">•</span> In development <span aria-hidden="true">•</span> 2027</p>
+              <p className="comics-screenplay-slide__status">Full-length screenplay <span aria-hidden="true">•</span> In development</p>
             </div>
             </div>
           </section>
