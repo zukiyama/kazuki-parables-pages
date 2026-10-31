@@ -4,12 +4,14 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import { GodOfLiesGallery } from "@/components/GodOfLiesGallery";
-import { COMICS_LOWER_SCREENS, nextComicsScreen, paperArrowOverlap } from "@/lib/comics-slideshow";
+import { COMICS_LOWER_SCREENS, nextComicsScreen, paperArrowOverlap, shelfComics } from "@/lib/comics-slideshow";
+
+import screenplayArtwork from "@/assets/the-burden-screenplay.png.asset.json";
 
 type Comic = { cover: string; title: string; description: ReactNode; teaser: string; format: string };
 
-export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pendragonPortrait, open, onScreenChange }: {
-  children: ReactNode; comics: Comic[]; panorama: string; pendragon: string; pendragonPortrait: string; open: boolean;
+export function ComicsLowerSlideshow({ children, comics, panorama, open, onScreenChange }: {
+  children: ReactNode; comics: Comic[]; panorama: string; open: boolean;
   onScreenChange?: (screen: number) => void;
 }) {
   const [viewport, api] = useEmblaCarousel({ loop: true, startIndex: 1, duration: 20 });
@@ -121,10 +123,10 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
   }, [open]);
   useEffect(() => { if (!open) jumpTo(1); }, [jumpTo, open]);
   useEffect(() => {
-    [panorama, pendragon, pendragonPortrait, ...comics.map(c => c.cover)].forEach(src => {
+    [panorama, screenplayArtwork.url, ...comics.map(c => c.cover)].forEach(src => {
       const image = new Image(); image.src = src; void image.decode().catch(() => {});
     });
-  }, [panorama, pendragon, pendragonPortrait]);
+  }, [panorama]);
   const sourceTransform = () => {
     const source = sourceRef.current?.getBoundingClientRect();
     const target = enlargedRef.current?.getBoundingClientRect();
@@ -181,14 +183,12 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
     <div ref={shellRef} className={`comics-lower-slideshow ${traveling ? "is-traveling" : ""}`} role="region" aria-label="Comics and scripts slideshow" aria-roledescription="carousel">
       <div ref={viewport} className="comics-lower-slideshow__viewport">
         <div className="comics-lower-slideshow__track">
-          <section className="comics-lower-slideshow__slide comics-pendragon-slide" aria-label={COMICS_LOWER_SCREENS[0]} aria-hidden={screen !== 0} ref={element => { if (screen !== 0) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
-            <picture><source media="(orientation: portrait)" srcSet={pendragonPortrait} /><img className="comics-pendragon-slide__image" src={pendragon} alt="Surname Pendragon" /></picture>
-            <div className="comics-pendragon-slide__copy">
-              <p className="comics-pendragon-slide__kicker">Screenplay Adaptation</p>
-              <h2>Surname Pendragon</h2>
-              <p>A modern retelling of Arthurian legend. Invoking a very British mysticism, this high concept drama fuses 60s retro-future espionage with contemporary fantasy.</p>
-              <p>Starting his new job at <em>Camelot Enterprises</em>, Arthur Drake has never cared much for career—or adventure—but that’s about to change. After misplacing a set of sensitive documents and a chance encounter with a deranged homeless man, he is drawn into a bizarre netherworld and a legacy he’d rather avoid.</p>
-              <p className="comics-pendragon-slide__kicker">Feature Film • Drama • In Development</p>
+          <section className="comics-lower-slideshow__slide comics-shelf-slide" aria-label={COMICS_LOWER_SCREENS[0]} aria-hidden={screen !== 0} ref={element => { paperRef.current = element; if (screen !== 0) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
+            <h2>Stories waiting to be told…</h2>
+            <div className="comics-shelf-slide__grid">
+              {shelfComics(comics).map(comic => <Button variant="link" className="comics-shelf-slide__cover" key={comic.title} aria-label={`Explore ${comic.title}`} onClick={event => {
+                sourceRef.current = event.currentTarget.querySelector("img"); setSelected(comic);
+              }}><img src={comic.cover} alt={`${comic.title} comic cover`} width={640} height={960} draggable={false} /></Button>)}
             </div>
           </section>
           <section className="comics-lower-slideshow__slide comics-story-slide" aria-label={COMICS_LOWER_SCREENS[1]} aria-hidden={screen !== 1} ref={element => { if (screen !== 1) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
@@ -205,12 +205,10 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
               </div>
             )}>{children}</GodOfLiesGallery>
           </section>
-          <section className="comics-lower-slideshow__slide comics-shelf-slide" aria-label={COMICS_LOWER_SCREENS[2]} aria-hidden={screen !== 2} ref={element => { paperRef.current = element; if (screen !== 2) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
-            <h2>Stories waiting to be told…</h2>
-            <div className="comics-shelf-slide__grid">
-              {comics.map(comic => <Button variant="link" className="comics-shelf-slide__cover" key={comic.title} aria-label={`Explore ${comic.title}`} onClick={event => {
-                sourceRef.current = event.currentTarget.querySelector("img"); setSelected(comic);
-              }}><img src={comic.cover} alt={`${comic.title} comic cover`} width={640} height={960} draggable={false} /></Button>)}
+          <section className="comics-lower-slideshow__slide comics-screenplay-slide" aria-label={COMICS_LOWER_SCREENS[2]} aria-hidden={screen !== 2} ref={element => { if (screen !== 2) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
+            <div className="comics-screenplay-slide__artwork">
+              <img src={screenplayArtwork.url} alt="The Burden. A phone call from a sister he hasn't spoken to in years. A mother he swore never to see again. As her memories fade, Hiroshi's own resurface in a new light." />
+              <p className="comics-screenplay-slide__status">Full-length screenplay <span aria-hidden="true">•</span> In development</p>
             </div>
           </section>
         </div>
@@ -218,7 +216,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, pendragon, pe
       <div ref={controlsRef} className={`comics-lower-slideshow__controls ${open && traveling ? "is-traveling" : ""} ${pictureOpen ? "is-picture-open" : ""}`} data-page-open={open}>
         {arrow(-1, navigate)}{arrow(1, navigate)}
       </div>
-      <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant={footerScreen === 2 ? "light" : "dark"} /></div>
+      <div ref={footerRef} className="comics-lower-slideshow__footer"><Footer variant={footerScreen === 0 ? "light" : "dark"} /></div>
       <Dialog.Root open={selected !== null} onOpenChange={value => { if (!value) void close(); }}>
         <Dialog.Portal>
           <Dialog.Overlay ref={readerOverlayRef} className="comics-reader__overlay" />
