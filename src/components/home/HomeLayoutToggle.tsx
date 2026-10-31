@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 
-export type HomeLayout = "cinematic" | "original";
-const KEY = "home-layout-preview";
+export type HomeLayout = "original" | "cinematic" | "polished";
+const KEY = "home-layout-preview-v2";
+
+const LABELS: Record<HomeLayout, string> = {
+  original: "Original",
+  cinematic: "A · Cinematic",
+  polished: "B · Polished",
+};
 
 export function useHomeLayout(): [HomeLayout, (l: HomeLayout) => void] {
   const [layout, setLayout] = useState<HomeLayout>(() => {
     try {
-      return localStorage.getItem(KEY) === "original" ? "original" : "cinematic";
+      const stored = localStorage.getItem(KEY);
+      return stored === "original" || stored === "cinematic" || stored === "polished" ? stored : "polished";
     } catch {
-      return "cinematic";
+      return "polished";
     }
   });
   useEffect(() => {
@@ -24,7 +31,7 @@ export function useHomeLayout(): [HomeLayout, (l: HomeLayout) => void] {
 
 const HomeLayoutToggle = ({ layout, onChange }: { layout: HomeLayout; onChange: (l: HomeLayout) => void }) => (
   <div className="fixed bottom-4 left-4 z-[60] flex overflow-hidden rounded-full border border-border/40 bg-ink-black/80 p-1 text-xs backdrop-blur-md">
-    {(["cinematic", "original"] as HomeLayout[]).map((l) => (
+    {(["original", "cinematic", "polished"] as HomeLayout[]).map((l) => (
       <button
         key={l}
         type="button"
@@ -33,7 +40,7 @@ const HomeLayoutToggle = ({ layout, onChange }: { layout: HomeLayout; onChange: 
           layout === l ? "bg-background text-foreground" : "text-background/70 hover:text-background"
         }`}
       >
-        {l === "cinematic" ? "New" : "Original"}
+        {LABELS[l]}
       </button>
     ))}
   </div>
