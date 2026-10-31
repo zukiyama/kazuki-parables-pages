@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { COMICS_LOWER_SCREENS, nextComicsScreen, nextGalleryPicture, paperArrowOverlap } from "./comics-slideshow";
+import { COMICS_LOWER_SCREENS, nextComicsScreen, nextGalleryPicture, paperArrowOverlap, shelfComics } from "./comics-slideshow";
 
 test("enlarged gallery arrows browse only the three pictures and wrap both ways", () => {
   expect(nextGalleryPicture(0, 1)).toBe(1);
@@ -8,9 +8,14 @@ test("enlarged gallery arrows browse only the three pictures and wrap both ways"
   expect(nextGalleryPicture(0, -1)).toBe(2);
 });
 
-test("Pendragon is left of the story and the six comics are right", () => {
-  expect(COMICS_LOWER_SCREENS[nextComicsScreen(1, -1)]).toBe("Surname Pendragon");
-  expect(COMICS_LOWER_SCREENS[nextComicsScreen(1, 1)]).toBe("Forthcoming comics");
+test("right from God of Lies reaches the replacement screenplay then the shelf", () => {
+  expect(COMICS_LOWER_SCREENS[nextComicsScreen(1, 1)]).toBe("The Burden");
+  expect(COMICS_LOWER_SCREENS[nextComicsScreen(2, 1)]).toBe("Forthcoming comics");
+  expect(COMICS_LOWER_SCREENS[nextComicsScreen(1, -1)]).toBe("Forthcoming comics");
+});
+test("the white shelf excludes The Burden and retains the other five in order", () => {
+  const titles = ["The Burden", "Mr. Miracle", "Soul-Tied", "Gods!", "Scripted", "Oranges are Made of Gold"];
+  expect(shelfComics(titles.map(title => ({ title }))).map(comic => comic.title)).toEqual(titles.slice(1));
 });
 test("three screens loop in either direction", () => {
   expect(nextComicsScreen(2, 1)).toBe(0);

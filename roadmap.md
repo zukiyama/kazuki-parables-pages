@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Swap the shelf and screenplay carousel positions, replace the screenplay with the uploaded full-width Burden artwork and subtle status line, and centre five shelf covers beneath a raised heading; preserve navigation and reader behavior.
+
 - [x] Allow enlarged God of Lies illustrations to close on viewport taps outside the picture without closing on arrow taps; verified browsing, picture/outside dismissal and restored page navigation.
 - [x] Remove the About opening introductory sentence and enlarge both name lines to the biography column width; verified widths at 1280px, 781px and 390px.
 
