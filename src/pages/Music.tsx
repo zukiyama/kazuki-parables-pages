@@ -30,8 +30,8 @@ import deathOfLoveAlbum from "@/assets/death-of-love-album.webp";
 import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album-new.webp";
 import centreOfWorldAlbum from "@/assets/last-city-on-earth-album.webp";
 import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.webp";
-import flowerEpCover from "@/assets/kazuki-yamakawa-ep-cover.webp.asset.json";
-import circlesSingleCover from "@/assets/circles-single-cover-new.webp.asset.json";
+import flowerEpCover from "@/assets/kazuki-yamakawa-ep-cover.webp";
+import circlesSingleCover from "@/assets/circles-single-cover-new.webp";
 
 const albums = [
   {
@@ -213,11 +213,11 @@ const albums = [
   {
     id: 8,
     title: "Kazuki Yamakawa",
-    cover: flowerEpCover.url,
+    cover: flowerEpCover,
     background: flowerEpBackground,
     theme: "coming-soon",
     tracks: ["Circles", "--", "--", "--", "", ""],
-    singleCovers: { "Circles": circlesSingleCover.url }
+    singleCovers: { "Circles": circlesSingleCover }
   }
 ];
 

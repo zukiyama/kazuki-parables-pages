@@ -9,7 +9,7 @@ import deathOfLoveAlbumThumb from "@/assets/death-of-love-albumthumbnail.webp";
 import sceneOfMyRestorationAlbumThumb from "@/assets/scene-of-my-restoration-album-newthumbnail.webp";
 import centreOfWorldAlbumThumb from "@/assets/last-city-on-earth-albumthumbnail.webp";
 import toDreamtManAlbumThumb from "@/assets/to-dreamt-man-album-newthumbnail.webp";
-import flowerEpCoverThumb from "@/assets/kazuki-yamakawa-ep-coverthumbnail.webp.asset.json";
+import flowerEpCoverThumb from "@/assets/kazuki-yamakawa-ep-coverthumbnail.webp";
 
 interface Album {
   id: number;
@@ -59,7 +59,7 @@ const eps: Album[] = [
   {
     id: 8,
     title: "Kazuki Yamakawa",
-    cover: flowerEpCoverThumb.url
+    cover: flowerEpCoverThumb
   }
 ];
 
