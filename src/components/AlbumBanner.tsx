@@ -9,7 +9,7 @@ import deathOfLoveAlbumThumb from "@/assets/death-of-love-albumthumbnail.webp";
 import sceneOfMyRestorationAlbumThumb from "@/assets/scene-of-my-restoration-album-newthumbnail.webp";
 import centreOfWorldAlbumThumb from "@/assets/last-city-on-earth-albumthumbnail.webp";
 import toDreamtManAlbumThumb from "@/assets/to-dreamt-man-album-newthumbnail.webp";
-import flowerEpCoverThumb from "@/assets/flower-ep-cover-bannerthumbnail.webp";
+import flowerEpCoverThumb from "@/assets/kazuki-yamakawa-ep-coverthumbnail.webp.asset.json";
 
 interface Album {
   id: number;
@@ -58,8 +58,8 @@ const albums: Album[] = [
 const eps: Album[] = [
   {
     id: 8,
-    title: "Flower",
-    cover: flowerEpCoverThumb
+    title: "Kazuki Yamakawa",
+    cover: flowerEpCoverThumb.url
   }
 ];
 
@@ -435,7 +435,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick, onAlbumPrefetch }: 
               {showEPs ? (
                 /* EPs View */
                 <div className="flex items-center justify-center gap-6 px-6 pb-2 relative">
-                  {/* Flower EP - centered */}
+                  {/* Kazuki Yamakawa EP - centered */}
                   {eps.map((item) => (
                     <div
                       key={`ipad-portrait-ep-${item.id}`}

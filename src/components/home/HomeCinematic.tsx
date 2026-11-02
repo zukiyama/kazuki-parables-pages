@@ -7,7 +7,7 @@ import { useHeroHeight } from "@/hooks/useHeroHeight";
 import japaneseBackground from "@/assets/japanese-painting-background.webp";
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
 import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
-import circlesSingleCover from "@/assets/circles-single-cover.webp";
+import circlesSingleCover from "@/assets/circles-single-cover-new.webp.asset.json";
 import manyFaces from "@/assets/god-of-lies-many-faces-banner.png.asset.json";
 import HomeCinematicSlideshow from "@/components/home/HomeCinematicSlideshow";
 
@@ -127,7 +127,7 @@ const HomeCinematic = () => {
           <img src={sixtiesVarietyShow} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover grayscale opacity-50 transition-transform duration-[2000ms] group-hover:scale-[1.04]" />
           <div className="absolute inset-0 bg-gradient-to-r from-ink-black via-ink-black/70 to-transparent" />
           <div className="relative z-10 flex h-full flex-col justify-center gap-6 px-6 py-8 sm:flex-row sm:items-center md:gap-5 md:px-6 lg:gap-10 lg:px-10">
-            <img src={circlesSingleCover} alt="Circles single cover" loading="lazy" className="h-40 w-40 shrink-0 rounded-sm object-cover shadow-2xl transition-transform duration-500 group-hover:-rotate-2 group-hover:scale-105 lg:h-56 lg:w-56" />
+            <img src={circlesSingleCover.url} alt="Circles single cover" loading="lazy" className="h-40 w-40 shrink-0 rounded-sm object-cover shadow-2xl transition-transform duration-500 group-hover:-rotate-2 group-hover:scale-105 lg:h-56 lg:w-56" />
             <div className="min-w-0">
               <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">03</span> · New single</p></Reveal>
               <Reveal delay={120}><h2 className="font-heading text-5xl text-background lg:text-7xl">Circles</h2></Reveal>

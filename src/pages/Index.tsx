@@ -10,7 +10,7 @@ import japaneseBackground from "@/assets/japanese-painting-background.webp";
 import officeView from "@/assets/office-window-view.webp";
 import boysTowerBlocks from "@/assets/boys-tower-blocks.webp";
 import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.webp";
-import circlesSingleCover from "@/assets/circles-single-cover.webp";
+import circlesSingleCover from "@/assets/circles-single-cover-new.webp.asset.json";
 import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
 import godOfLiesManyFacesBannerAsset from "@/assets/god-of-lies-many-faces-banner.png.asset.json";
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
@@ -463,7 +463,7 @@ export const ClassicHome = () => {
               {/* Album art - shifted left */}
               <div className="-ml-4 md:-ml-8">
                 <img
-                  src={circlesSingleCover}
+                  src={circlesSingleCover.url}
                   alt="Circles single cover"
                   className="w-36 h-36 md:w-52 md:h-52 rounded-lg object-cover shadow-2xl group-hover:scale-105 transition-transform duration-300 ring-1 ring-black/5"
                   loading="lazy"

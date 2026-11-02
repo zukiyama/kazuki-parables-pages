@@ -30,8 +30,8 @@ import deathOfLoveAlbum from "@/assets/death-of-love-album.webp";
 import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album-new.webp";
 import centreOfWorldAlbum from "@/assets/last-city-on-earth-album.webp";
 import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.webp";
-import flowerEpCover from "@/assets/flower-ep-cover-banner.webp";
-import circlesSingleCover from "@/assets/circles-single-covermusic.webp";
+import flowerEpCover from "@/assets/kazuki-yamakawa-ep-cover.webp.asset.json";
+import circlesSingleCover from "@/assets/circles-single-cover-new.webp.asset.json";
 
 const albums = [
   {
@@ -212,12 +212,12 @@ const albums = [
   },
   {
     id: 8,
-    title: "We Are Not Here To Avoid Mistakes",
-    cover: flowerEpCover,
+    title: "Kazuki Yamakawa",
+    cover: flowerEpCover.url,
     background: flowerEpBackground,
     theme: "coming-soon",
     tracks: ["Circles", "--", "--", "--", "", ""],
-    singleCovers: { "Circles": circlesSingleCover }
+    singleCovers: { "Circles": circlesSingleCover.url }
   }
 ];
 
@@ -291,7 +291,7 @@ const Music = () => {
 // Priority-load the initial background (LCP), then lazy-load others
   // Store Image objects in cache ref to prevent garbage collection
   useEffect(() => {
-    const initialBackground = albums[7].background; // Flower EP is default
+    const initialBackground = albums[7].background; // Kazuki Yamakawa EP is default
     const initialCover = albums[7].cover; // Also cache the default cover
     
     const loadAndCacheImage = (src: string): Promise<void> => {
