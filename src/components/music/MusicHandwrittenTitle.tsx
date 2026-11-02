@@ -31,8 +31,8 @@ export function MusicHandwrittenTitle() {
                 strokeLinejoin="round"
                 pathLength="1"
                 style={{
-                  animationDelay: `${letter.delay + 200}ms`,
-                  animationDuration: `${letter.duration}ms`,
+                  animationDelay: `${letter.delay * 0.45 + 80}ms`,
+                  animationDuration: `${letter.duration * 0.45}ms`,
                 }}
               />
             </mask>
