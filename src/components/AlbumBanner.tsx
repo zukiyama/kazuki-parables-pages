@@ -435,7 +435,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick, onAlbumPrefetch }: 
               {showEPs ? (
                 /* EPs View */
                 <div className="flex items-center justify-center gap-6 px-6 pb-2 relative">
-                  {/* Flower EP - centered */}
+                  {/* Kazuki Yamakawa EP - centered */}
                   {eps.map((item) => (
                     <div
                       key={`ipad-portrait-ep-${item.id}`}
