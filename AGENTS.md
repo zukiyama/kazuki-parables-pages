@@ -1,4 +1,5 @@
 # Project architecture
+- Read music rules in src/components/music/AGENTS.md before edits there.
 
 - The home page’s major visual bands remain in normal document flow without timed entrance transforms, so scrolling never reveals artificial gaps.
 - Experimental Cinematic styles and its decoded Embla-backed dissolve slideshow stay isolated from Original/Polished, so comparison modes retain their behavior.

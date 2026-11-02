@@ -1,0 +1,38 @@
+.music-handwritten-title {
+  position: absolute;
+  right: -1%;
+  top: 48%;
+  z-index: 10;
+  width: 22.308cqw;
+  margin: 0;
+  color: hsl(var(--music-title-ink));
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+.music-handwritten-title svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.music-handwritten-title__pen {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation-name: music-pen-write;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+@keyframes music-pen-write {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .music-handwritten-title__pen {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

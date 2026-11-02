@@ -21,6 +21,7 @@ import starPeopleRiverBackground from "@/assets/star-people-river-background.web
 import deathOfLoveBackground from "@/assets/death-of-love-background.webp";
 import sceneOfMyRestorationBackground from "@/assets/scene-of-my-restoration-background.webp";
 import musicLogo from "@/assets/music-logo.png";
+import { MusicHandwrittenTitle } from "@/components/music/MusicHandwrittenTitle";
 
 // Album covers
 import spaceshipAlbum from "@/assets/spaceship-album.webp";
@@ -772,23 +773,7 @@ const Music = () => {
                 onLoad={() => setLogoLoaded(true)}
               />
               {/* Single music title - positioned relative to logo wrapper using container units */}
-              {logoLoaded && (
-                <h1 
-                  className="absolute chalk-write"
-                  style={{ 
-                    fontFamily: "'DK Crayon Crumble', cursive",
-                    color: 'white',
-                    fontSize: '12cqw',
-                    transform: 'rotate(-8deg)',
-                    right: '-1%',
-                    top: '48%',
-                    zIndex: 10,
-                    whiteSpace: 'nowrap'
-                  }}
-                >
-                  music
-                </h1>
-              )}
+              {logoLoaded && <MusicHandwrittenTitle />}
             </div>
           </div>
           
