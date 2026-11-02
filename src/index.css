@@ -62,6 +62,7 @@
     --comics-reader-backdrop: 0 0% 8%;
     --screenplay-letterbox: 0 0% 0%;
     --screenplay-caption: 36 45% 82%;
+    --music-title-ink: 0 0% 100%;
 
     /* Typography scale for literary feel */
     --font-heading: 'Playfair Display', serif;
