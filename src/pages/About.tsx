@@ -178,11 +178,7 @@ const About = () => {
       } catch (e) {
         // Fallback if decode fails
       } finally {
-        setHeroBackgroundReady(true);
       }
-    };
-    img.onerror = () => {
-      setHeroBackgroundReady(true);
     };
     img.src = heroFirstFrame.url;
   }, []);
@@ -234,6 +230,7 @@ const About = () => {
             <AboutHeroVideo
               label="An overhead view of a writer at a typewriter, framed by the sound hole of a guitar"
               className={`about-writer-background ${heroBackgroundReady ? "is-ready" : ""}`}
+              onReady={() => requestAnimationFrame(() => setHeroBackgroundReady(true))}
             />
           </div>
           <div className="about-writer-copy">
@@ -274,7 +271,7 @@ const About = () => {
       <div ref={belowFoldRef} className="relative z-10 -mt-8 max-sm:mt-0">
         <div 
           data-scroll-animation="background-image"
-          className={`relative pointer-events-none overflow-hidden scroll-fade-plain ${visibleElements.has("background-image") && lowerArtworkReady ? "visible" : ""}`}
+          className={`relative pointer-events-none overflow-hidden scroll-fade-up ${visibleElements.has("background-image") && lowerArtworkReady ? "visible" : ""}`}
         >
           {/* Cityscape layer behind everything - tablet and desktop - lazy loaded */}
           <div 
