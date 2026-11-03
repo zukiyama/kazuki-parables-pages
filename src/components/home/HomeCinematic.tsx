@@ -8,7 +8,7 @@ import japaneseBackground from "@/assets/japanese-painting-background.webp";
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
 import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
 import circlesSingleCover from "@/assets/circles-single-cover-new.webp";
-import manyFaces from "@/assets/god-of-lies-many-faces-banner.png.asset.json";
+import uniqueFaces from "@/assets/god-of-lies-unique-faces.webp";
 import HomeCinematicSlideshow from "@/components/home/HomeCinematicSlideshow";
 
 /** Text-only reveal: bands stay in normal flow; only copy fades in. */
@@ -44,10 +44,10 @@ const Chapter = ({
       alt=""
       loading="lazy"
       decoding="async"
-      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-[1.04]"
+      className="absolute inset-0 h-full w-full object-cover"
       style={{ objectPosition: position }}
     />
-    <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-ink-black/40 to-ink-black/10" />
+    <div className="absolute inset-0 bg-gradient-to-t from-ink-black/75 via-ink-black/10 to-transparent" />
     <div className="relative z-10 flex h-full flex-col justify-end px-6 pb-14 md:px-16 md:pb-20">
       <Reveal>
         <div className="mb-4 flex items-center gap-4 text-xs uppercase tracking-[0.35em] text-background/70">
@@ -84,7 +84,7 @@ const HomeCinematic = () => {
     img.onload = () => img.decode().catch(() => {}).finally(() => setReady(true));
     img.onerror = () => setReady(true);
     img.src = japaneseBackground;
-    [parableBoysStreet, manyFaces.url].forEach((src) => {
+    [parableBoysStreet, uniqueFaces].forEach((src) => {
       const i = new Image();
       i.src = src;
       i.decode?.().catch(() => {});
@@ -124,10 +124,10 @@ const HomeCinematic = () => {
 
       <section className="home-cinematic-pair grid w-full bg-ink-black md:grid-cols-[2fr_1fr]">
         <Link to="/music" className="group relative block min-w-0 overflow-hidden">
-          <img src={sixtiesVarietyShow} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover grayscale opacity-50 transition-transform duration-[2000ms] group-hover:scale-[1.04]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-ink-black via-ink-black/70 to-transparent" />
-          <div className="relative z-10 flex h-full flex-col justify-center gap-6 px-6 py-8 sm:flex-row sm:items-center md:gap-5 md:px-6 lg:gap-10 lg:px-10">
-            <img src={circlesSingleCover} alt="Circles single cover" loading="lazy" className="h-40 w-40 shrink-0 rounded-sm object-cover shadow-2xl transition-transform duration-500 group-hover:-rotate-2 group-hover:scale-105 lg:h-56 lg:w-56" />
+          <img src={sixtiesVarietyShow} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover grayscale" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink-black/40 via-ink-black/10 to-transparent" />
+          <div className="relative z-10 flex h-full flex-col justify-center gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-start [text-shadow:0_2px_12px_hsl(var(--ink-black)/0.6)] md:gap-5 md:px-6 lg:gap-10 lg:px-10">
+            <img src={circlesSingleCover} alt="Circles single cover" loading="lazy" className="h-40 w-40 shrink-0 rounded-sm object-cover shadow-2xl lg:h-56 lg:w-56" />
             <div className="min-w-0">
               <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">03</span> · New single</p></Reveal>
               <Reveal delay={120}><h2 className="font-heading text-5xl text-background lg:text-7xl">Circles</h2></Reveal>
@@ -136,8 +136,8 @@ const HomeCinematic = () => {
           </div>
         </Link>
         <Link to="/comics" className="group relative block min-w-0 overflow-hidden">
-          <img src={manyFaces.url} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[2000ms] group-hover:scale-[1.04]" style={{ objectPosition: "40% center" }} />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-ink-black/30 to-transparent" />
+          <img src={uniqueFaces} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-black/70 via-transparent to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
             <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">02</span> · Manga Webtoon</p></Reveal>
             <Reveal delay={120}><h2 className="font-heading text-4xl text-background lg:text-5xl">God of Lies</h2></Reveal>
