@@ -14,8 +14,8 @@ import comicsScriptsTitleVideo from "@/assets/comicsscriptstitle.mp4";
 import comicsScriptsTitleVideoWebm from "@/assets/comicsscriptstitle.webm";
 import comicsScriptsTitleFirstFrame from "@/assets/comicsscriptstitle-first.webp";
 import comicsScriptsTitleFinalFrame from "@/assets/comicsscriptstitle-final.webp";
-import comicsStoryboardStrip from "@/assets/comics-storyboard-strip.jpg";
-import comicsCoolStuffCue from "@/assets/comics-cool-stuff-cue.png";
+import comicsStoryboardStrip from "@/assets/comics-storyboard-strip.webp";
+import comicsCoolStuffCue from "@/assets/comics-cool-stuff-cue.webp";
 
 // SECONDARY: Vignette assets (Section 1) - preload after first paint
 import vignetteManyFaces from "@/assets/god-of-lies-characters.webp";
@@ -24,16 +24,16 @@ import vignetteBoardgame from "@/assets/god-of-lies-sweeping.webp";
 
 // SECONDARY: Cream section assets (Section 2) - preload after vignettes
 import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.webp";
-import shrineTreeLeft from "@/assets/comics-tree-original-left.png";
-import shrineTreeRight from "@/assets/comics-tree-original-right.png";
-import godOfLiesCover from "@/assets/god-of-lies-cover.png";
-import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.png.asset.json";
+import shrineTreeLeft from "@/assets/comics-tree-original-left.webp";
+import shrineTreeRight from "@/assets/comics-tree-original-right.webp";
+import godOfLiesCover from "@/assets/god-of-lies-cover.webp";
+import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.webp.asset.json";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
-import godOfLiesPopupCharacters from "@/assets/god-of-lies-characters-replacement.png.asset.json";
-import godOfLiesPopupDog from "@/assets/god-of-lies-popup-dog.png.asset.json";
+import godOfLiesPopupCharacters from "@/assets/god-of-lies-characters-replacement.webp.asset.json";
+import godOfLiesPopupDog from "@/assets/god-of-lies-popup-dog.webp.asset.json";
 import { ComicsLowerSlideshow } from "@/components/ComicsLowerSlideshow";
 import { PagePeel } from "@/components/PagePeel";
-import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.png";
+import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.webp";
 import type { RevealSegment } from "@/components/WordReveal";
 
 // TERTIARY: Pendragon scrollable section - preload after section 2

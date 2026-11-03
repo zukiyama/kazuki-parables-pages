@@ -2,7 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProp
 import * as Dialog from "@radix-ui/react-dialog";
 import florist from "@/assets/god-of-lies-carousel-florist.webp.asset.json";
 import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.asset.json";
-import serenePortrait from "@/assets/god-of-lies-carousel-serene-portrait.jpg.asset.json";
+import serenePortrait from "@/assets/god-of-lies-carousel-serene-portrait.webp.asset.json";
 import { nextGalleryPicture } from "@/lib/comics-slideshow";
 
 const scenes = [
