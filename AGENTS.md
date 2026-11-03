@@ -2,7 +2,7 @@
 - Read music rules in src/components/music/AGENTS.md before edits there.
 
 - The home page’s major visual bands remain in normal document flow without timed entrance transforms, so scrolling never reveals artificial gaps.
-- Home is Cinematic only; outgoing slideshow slides keep their running zoom while dissolving, so skips never snap.
+- Home is Cinematic only; outgoing slideshow artwork and title retain running animations inside the same dissolve layer, so skips never snap or remove text early.
 - The home page’s content section and every banner inside it carry the `bg-ink-black` backing, and images that sit just below the hero are preloaded and decoded on mount — no light container colour may ever show through a band while scrolling.
 - The About opening uses live biography beside a once-playing muted, smoothly slowing video and reduced-motion poster; keep its subject clear and phone copy below artwork. Fit each name line to the biography width after font loading and container resizing.
 - The Comics opening keeps phones on their original sequence with the God of Lies cover as its feature image; tablet and desktop reveal only a decoded priority-loaded double-height Seoul panorama, with portrait/landscape framing isolated by orientation. Preserve layout during pinch-zoom.
