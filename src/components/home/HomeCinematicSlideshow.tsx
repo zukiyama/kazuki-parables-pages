@@ -110,7 +110,7 @@ export default function HomeCinematicSlideshow() {
                   <h2 className="font-heading text-4xl">KAIJU</h2>
                   <p className="mt-2 font-body text-sm text-background/80"><span className="italic">noun</span> /ˈkaɪdʒuː/<br /><span className="font-medium">mysterious beast</span></p>
                 </div>
-                <p className="mt-6 whitespace-nowrap font-mono text-xl font-bold text-background animate-pulse md:text-2xl"><span className="opacity-90 blur-[0.5px]">SOMETHING IS COMING</span></p>
+                <p className="mt-6 whitespace-nowrap font-mono text-2xl font-bold text-background animate-pulse md:text-3xl"><span className="opacity-90 blur-[0.5px]">SOMETHING IS COMING</span></p>
               </div>
             </div>
           )}

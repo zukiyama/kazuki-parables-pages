@@ -601,13 +601,11 @@
 .home-cinematic-pair > a { height: 58svh; min-height: 360px; }
 /* 36vw keeps the policewoman and bike fully in frame on wide, short screens once zoomed out. */
 .home-cinematic-slideshow { height: max(60svh, 36vw); min-height: 400px; }
-/* Slow swell after the letters land, then accelerates past the camera just as the slide dissolves (slide lasts 11.4s). */
-.home-cinematic-slideshow__parable-grow { animation: parable-grow 8.6s linear 3.2s forwards; will-change: transform, opacity; }
+/* Steady slow swell after the letters land — one constant linear rate, no speed-up or fade (slide lasts 11.4s). */
+.home-cinematic-slideshow__parable-grow { animation: parable-grow 8.2s linear 3.2s forwards; will-change: transform; }
 @keyframes parable-grow {
-  0% { transform: scale(1); opacity: 1; animation-timing-function: cubic-bezier(0.3, 0, 0.7, 1); }
-  72% { transform: scale(1.35); opacity: 1; animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
-  97% { transform: scale(28); opacity: 0.9; }
-  100% { transform: scale(34); opacity: 0; }
+  from { transform: scale(1); }
+  to { transform: scale(1.3); }
 }
 .home-cinematic-slideshow__img--bottom { object-position: center bottom; transform-origin: center bottom; }
 .home-cinematic-slideshow__parable { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; }
