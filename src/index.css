@@ -599,13 +599,16 @@
 .home-cinematic-kaiju { height: 52.5svh; min-height: 300px; }
 .home-cinematic-kaiju > img { inset: auto 0 0; height: 320%; object-position: center bottom; }
 .home-cinematic-pair > a { height: 58svh; min-height: 360px; }
-.home-cinematic-slideshow { height: 60svh; min-height: 400px; }
-@media (min-width: 768px) { .home-cinematic-slideshow { height: 80svh; } }
+/* 36vw keeps the policewoman and bike fully in frame on wide, short screens once zoomed out. */
+.home-cinematic-slideshow { height: max(60svh, 36vw); min-height: 400px; }
+.home-cinematic-slideshow__parable-grow { animation: parable-grow 8s cubic-bezier(0.4, 0, 0.2, 1) 3.2s forwards; }
+@keyframes parable-grow { from { transform: scale(1); } to { transform: scale(1.3); } }
 .home-cinematic-slideshow__img--bottom { object-position: center bottom; transform-origin: center bottom; }
 .home-cinematic-slideshow__parable { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; }
 
 @media (prefers-reduced-motion: reduce) {
   .home-cinematic-slideshow__slide, .home-cinematic-slideshow__slide img { transition: none; animation: none; }
+  .home-cinematic-slideshow__parable-grow { animation: none; }
   .home-cinematic-slideshow__parable span { animation: none; opacity: 1; transform: none; }
 }
 

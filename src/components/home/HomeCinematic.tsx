@@ -126,10 +126,10 @@ const HomeCinematic = () => {
         <Link to="/music" className="group relative block min-w-0 overflow-hidden">
           <img src={sixtiesVarietyShow} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover grayscale" />
           <div className="absolute inset-0 bg-gradient-to-r from-ink-black/40 via-ink-black/10 to-transparent" />
-          <div className="relative z-10 flex h-full flex-col justify-center gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-start [text-shadow:0_2px_12px_hsl(var(--ink-black)/0.6)] md:gap-5 md:px-6 lg:gap-10 lg:px-10">
+          <div className="relative z-10 flex h-full flex-col justify-center gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-start [text-shadow:0_2px_12px_hsl(var(--ink-black)/0.6)] md:gap-5 md:px-12 lg:gap-10 lg:px-24">
             <img src={circlesSingleCover} alt="Circles single cover" loading="lazy" className="h-40 w-40 shrink-0 rounded-sm object-cover shadow-2xl lg:h-56 lg:w-56" />
             <div className="min-w-0">
-              <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">03</span> · New single</p></Reveal>
+              <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">02</span> · New single</p></Reveal>
               <Reveal delay={120}><h2 className="font-heading text-5xl text-background lg:text-7xl">Circles</h2></Reveal>
               <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Listen now →</span></Reveal>
             </div>
@@ -139,7 +139,7 @@ const HomeCinematic = () => {
           <img src={uniqueFaces} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black/70 via-transparent to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
-            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">02</span> · Manga Webtoon</p></Reveal>
+            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">03</span> · Manga Webtoon</p></Reveal>
             <Reveal delay={120}><h2 className="font-heading text-4xl text-background lg:text-5xl">God of Lies</h2></Reveal>
             <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Read more →</span></Reveal>
           </div>
