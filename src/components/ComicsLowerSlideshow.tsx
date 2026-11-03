@@ -6,9 +6,9 @@ import Footer from "@/components/Footer";
 import { GodOfLiesGallery } from "@/components/GodOfLiesGallery";
 import { COMICS_LOWER_SCREENS, nextComicsScreen, paperArrowOverlap, shelfComics } from "@/lib/comics-slideshow";
 
-import screenplayArtwork from "@/assets/the-burden-screenplay.png.asset.json";
-import shelfBackground from "@/assets/comics-sketch-background.png.asset.json";
-import comingArtwork from "@/assets/comics-coming-2027.jpeg.asset.json";
+import screenplayArtwork from "@/assets/the-burden-screenplay.webp.asset.json";
+import shelfBackground from "@/assets/comics-sketch-background.webp.asset.json";
+import comingArtwork from "@/assets/comics-coming-2027.webp.asset.json";
 
 type Comic = { cover: string; title: string; description: ReactNode; teaser: string; format: string };
 

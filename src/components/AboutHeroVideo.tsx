@@ -1,8 +1,8 @@
 import React from "react";
 import heroWebm from "@/assets/about-hero.webm.asset.json";
 import heroVideo from "@/assets/about-hero.mp4.asset.json";
-import firstFrame from "@/assets/about-hero-first.jpg.asset.json";
-import lastFrame from "@/assets/about-hero-last.jpg.asset.json";
+import firstFrame from "@/assets/about-hero-first.webp.asset.json";
+import lastFrame from "@/assets/about-hero-last.webp.asset.json";
 import { playbackRateForRemaining, STOP_REMAINING_SECONDS } from "@/lib/ease-out-playback";
 
 type Props = { className?: string; label: string; onReady?: () => void };

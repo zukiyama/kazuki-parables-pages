@@ -6,15 +6,15 @@ import { useScrollAnimation } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 // Above-the-fold assets - loaded eagerly with high priority
-import artistPortrait from "@/assets/about-portrait-postcard.png";
+import artistPortrait from "@/assets/about-portrait-postcard.webp";
 import AboutHeroVideo from "@/components/AboutHeroVideo";
-import heroFirstFrame from "@/assets/about-hero-first.jpg.asset.json";
+import heroFirstFrame from "@/assets/about-hero-first.webp.asset.json";
 
 // Below-the-fold assets - lazy loaded
 import backgroundSphere from "@/assets/about-background-new.webp";
 import cityscapeAerial from "@/assets/about-cityscape-aerial.webp";
 import childPortrait from "@/assets/about-child-portrait.webp";
-import surrealCat from "@/assets/about-surreal-cat.png";
+import surrealCat from "@/assets/about-surreal-cat.webp";
 type CrumbleLineProps = {
   children: string;
   className?: string;

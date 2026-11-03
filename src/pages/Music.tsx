@@ -20,7 +20,7 @@ import flowerEpBackground from "@/assets/kazuki-yamakawa-ep-background.webp";
 import starPeopleRiverBackground from "@/assets/star-people-river-background.webp";
 import deathOfLoveBackground from "@/assets/death-of-love-background.webp";
 import sceneOfMyRestorationBackground from "@/assets/scene-of-my-restoration-background.webp";
-import musicLogo from "@/assets/music-logo.png";
+import musicLogo from "@/assets/music-logo.webp";
 import { MusicHandwrittenTitle } from "@/components/music/MusicHandwrittenTitle";
 
 // Album covers
