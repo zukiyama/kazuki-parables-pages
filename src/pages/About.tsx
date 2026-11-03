@@ -95,6 +95,7 @@ const About = () => {
   const [headerHeight, setHeaderHeight] = React.useState(0);
   const [belowFoldVisible, setBelowFoldVisible] = React.useState(false);
   const [heroBackgroundReady, setHeroBackgroundReady] = React.useState(false);
+  const [lowerArtworkReady, setLowerArtworkReady] = React.useState(false);
   const belowFoldRef = React.useRef<HTMLDivElement>(null);
   const nameRef = React.useRef<HTMLHeadingElement>(null);
 
@@ -155,6 +156,18 @@ const About = () => {
     observer.observe(belowFoldRef.current);
     return () => observer.disconnect();
   }, []);
+
+  // Decode every lower-artwork layer before the section fades in, so nothing pops in mid-fade.
+  React.useEffect(() => {
+    if (!belowFoldVisible) return;
+    let cancelled = false;
+    Promise.all([cityscapeAerial, childPortrait, surrealCat, backgroundSphere].map(src => {
+      const img = new Image();
+      img.src = src;
+      return img.decode().catch(() => {});
+    })).then(() => { if (!cancelled) setLowerArtworkReady(true); });
+    return () => { cancelled = true; };
+  }, [belowFoldVisible]);
 
   // Decode the opening photograph before revealing it.
   React.useEffect(() => {
@@ -261,11 +274,11 @@ const About = () => {
       <div ref={belowFoldRef} className="relative z-10 -mt-8 max-sm:mt-0">
         <div 
           data-scroll-animation="background-image"
-          className={`relative pointer-events-none overflow-hidden scroll-fade-plain ${visibleElements.has("background-image") ? "visible" : ""}`}
+          className={`relative pointer-events-none overflow-hidden scroll-fade-plain ${visibleElements.has("background-image") && lowerArtworkReady ? "visible" : ""}`}
         >
           {/* Cityscape layer behind everything - tablet and desktop - lazy loaded */}
           <div 
-            className={`absolute inset-0 hidden sm:block z-0 ${showCityscape ? 'animate-cityscape-fade-in' : 'opacity-0'}`}
+            className={`absolute inset-0 hidden sm:block z-0 ${showCityscape && lowerArtworkReady ? 'animate-cityscape-fade-in' : 'opacity-0'}`}
             style={{ animationDuration: '10s', animationFillMode: 'forwards' }}
           >
             {belowFoldVisible && (
@@ -274,7 +287,6 @@ const About = () => {
                 alt=""
                 width={2560}
                 height={1440}
-                loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover"
               />
@@ -290,7 +302,6 @@ const About = () => {
               alt=""
               width={800}
               height={1200}
-              loading="lazy"
               decoding="async"
               className="w-full h-auto object-cover hidden max-sm:block"
             />
@@ -308,7 +319,6 @@ const About = () => {
                 alt=""
                 width={1145}
                 height={1374}
-                loading="lazy"
                 decoding="async"
                 className="h-auto w-full"
               />
@@ -316,14 +326,13 @@ const About = () => {
           </div>
           
           {/* Tablet and Desktop: PNG overlay with transparent areas - lazy loaded */}
-          <div className="relative z-10 hidden sm:block">
+          <div className="relative z-10 hidden aspect-[16/9] sm:block">
             {belowFoldVisible && (
               <img
                 src={backgroundSphere}
                 alt=""
                 width={2560}
                 height={1440}
-                loading="lazy"
                 decoding="async"
                 className="w-full h-auto object-cover"
               />
