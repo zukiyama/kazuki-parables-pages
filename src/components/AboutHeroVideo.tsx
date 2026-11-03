@@ -21,13 +21,6 @@ const AboutHeroVideo = ({ className = "", label, onReady }: Props) => {
     return () => video.removeEventListener("canplay", start);
   }, [reduceMotion]);
 
-  return () => {
-      stopped = true;
-      cancelAnimationFrame(frame);
-      video.removeEventListener("canplay", start);
-    };
-  }, [reduceMotion]);
-
   return (
     <video
       ref={videoRef}
