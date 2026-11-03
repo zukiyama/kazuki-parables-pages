@@ -602,14 +602,14 @@
 /* 36vw keeps the policewoman and bike fully in frame on wide, short screens once zoomed out. */
 .home-cinematic-slideshow { height: max(60svh, 36vw); min-height: 400px; }
 /* After the letters land, the word grows modestly and eases to rest, centred in place. Font-size (not transform) keeps glyphs vector-sharp. */
-@keyframes parable-word-grow { from { font-size: 1em; } to { font-size: 1.3em; } }
+@keyframes parable-word-grow { from { transform: scale(0.7692); } to { transform: scale(1); } }
 .home-cinematic-slideshow__img--bottom { object-position: center bottom; transform-origin: center bottom; }
 .home-cinematic-slideshow__parable { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; }
-.home-cinematic-slideshow__parable-word { gap: 0.06em; font-size: 1em; animation: parable-word-grow 8s cubic-bezier(0.22, 0.61, 0.36, 1) 3.2s forwards; }
+.home-cinematic-slideshow__parable-word { gap: 0.06em; font-size: 1.3em; transform: scale(0.7692); transform-origin: center center; backface-visibility: hidden; animation: parable-word-grow 8s cubic-bezier(0.22, 0.61, 0.36, 1) 3.2s forwards; }
 
 @media (prefers-reduced-motion: reduce) {
   .home-cinematic-slideshow__slide, .home-cinematic-slideshow__slide img { transition: none; animation: none; }
-  .home-cinematic-slideshow__parable-word { animation: none; }
+  .home-cinematic-slideshow__parable-word { animation: none; transform: scale(0.7692); }
   .home-cinematic-slideshow__parable span { animation: none; opacity: 1; transform: none; }
 }
 
