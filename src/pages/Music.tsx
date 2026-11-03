@@ -16,7 +16,7 @@ import spaceshipBackground from "@/assets/spaceship-background.webp";
 import manOnFilmBackground from "@/assets/man-on-film-background-film-reels.webp";
 import toDreamtManBackground from "@/assets/to-the-dreamt-man-background-final.webp";
 import centreOfWorldBackground from "@/assets/centre-of-world-background-new.webp";
-import flowerEpBackground from "@/assets/flower-ep-background-new.webp";
+import flowerEpBackground from "@/assets/kazuki-yamakawa-ep-background.webp";
 import starPeopleRiverBackground from "@/assets/star-people-river-background.webp";
 import deathOfLoveBackground from "@/assets/death-of-love-background.webp";
 import sceneOfMyRestorationBackground from "@/assets/scene-of-my-restoration-background.webp";
