@@ -102,10 +102,10 @@ export default function HomeCinematicSlideshow() {
             </div>
           )}
           {index === 2 && active === index && (
-            <div className="absolute left-[8%] top-1/3 max-w-md sm:left-1/4">
-              <div className={`tv-shop-text-reveal ${kaijuTextVisible ? "visible" : ""} leading-relaxed text-background/90`}>
-                <p className="mb-2 font-heading text-2xl sm:text-3xl md:text-4xl">summer 1979</p>
-                <p className="mb-4 font-heading text-xl sm:text-2xl md:text-3xl">Osaka Japan</p>
+            <div className="absolute left-1/4 top-[14%] max-w-md max-sm:left-[8%] max-sm:max-w-[80%]">
+              <div className={`tv-shop-text-reveal ${kaijuTextVisible ? "visible" : ""} text-background/90 leading-relaxed max-sm:text-sm`}>
+                <p className="mb-2 font-heading text-3xl md:text-4xl max-sm:text-2xl">summer 1979</p>
+                <p className="mb-4 font-heading text-2xl md:text-3xl max-sm:text-xl">Osaka Japan</p>
                 <div className="border-t border-background/30 pt-4">
                   <h2 className="mb-2 font-heading text-2xl font-bold md:text-3xl">KAIJU</h2>
                   <p className="font-body text-sm text-background/80 md:text-base"><span className="italic">noun</span> /ˈkaɪdʒuː/<br /><span className="font-medium">mysterious beast</span></p>
