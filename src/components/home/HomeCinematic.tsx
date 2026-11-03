@@ -7,7 +7,7 @@ import { useHeroHeight } from "@/hooks/useHeroHeight";
 import japaneseBackground from "@/assets/japanese-painting-background.webp";
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
 import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
-import circlesSingleCover from "@/assets/circles-single-cover-v3.webp";
+import circlesSingleCover from "@/assets/circles-single-cover-v4-small.webp";
 import uniqueFaces from "@/assets/god-of-lies-unique-faces.webp";
 import HomeCinematicSlideshow from "@/components/home/HomeCinematicSlideshow";
 
