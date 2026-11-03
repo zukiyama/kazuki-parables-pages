@@ -1,7 +1,7 @@
 # Roadmap
 
-- [ ] Check Comics video encoding and WebM-first delivery, optimizing only if needed.
-- [ ] Grow PARABLE as a whole word with the existing acceleration and timing; verify title and picture dissolve together.
+- [x] Check Comics video encoding and WebM-first delivery: existing 1976×946 VP9 WebM is 37% smaller than H.264 MP4; browser verified WebM selected and playing. No reconversion needed.
+- [x] Grow PARABLE as a whole word with the existing acceleration and timing; browser verified automatic and manual transitions preserve the running title in the image's dissolve layer, removing it only after the dissolve. Build OK.
 
 - [x] Update only Cinematic: restore decoded three-picture slideshow with falling Parable title, shorten/crop KAIJU, shorten the two-thirds God of Lies band with Music beside it, and remove Storyteller. Browser checked manual navigation, wrapping, auto-advance, title animation and all three layout choices; hosted faces artwork remains unavailable in the sandbox.
 
