@@ -13,8 +13,6 @@ const slides = [
   { image: kyotoTvShop, name: "Summer 1979", duration: 42000 },
 ];
 const letterOrder = [1, 4, 2, 6, 3, 5, 7];
-const landingDelay = [0.3, 0.8, 1.3, 0.6, 1.6, 1.1, 1.9];
-const growStart = (i: number) => 3.2 + landingDelay[letterOrder[i] - 1] - 0.3;
 
 /** Real Embla gesture surface with a separate dissolve layer, not sliding artwork. */
 export default function HomeCinematicSlideshow() {
@@ -96,10 +94,10 @@ export default function HomeCinematicSlideshow() {
           <img src={image} alt={name} className={`absolute inset-0 h-full w-full object-cover ${index === 1 ? "home-cinematic-slideshow__img--bottom" : ""} ${decoded && visible && (active === index || leaving === index) ? index === 0 ? "animate-slow-zoom-hold" : index === 1 ? "animate-slow-zoom-out" : "" : ""}`} />
           <div className="absolute inset-0 bg-ink-black/25" />
           {index === 0 && <div className="absolute inset-0 flex items-center justify-center px-8"><blockquote className="max-w-3xl text-center font-heading text-3xl italic leading-snug text-background md:text-5xl">‘Feelings are the thoughts of the heart.’</blockquote></div>}
-          {index === 1 && active === index && decoded && visible && (
+          {index === 1 && (active === index || leaving === index) && decoded && visible && (
             <div className="absolute inset-0 flex items-center justify-center">
               <h2 aria-label="PARABLE" className="home-cinematic-slideshow__parable flex gap-1 text-5xl font-black leading-none text-background sm:gap-2 sm:text-7xl lg:text-9xl">
-                {"PARABLE".split("").map((letter, i) => <span key={i} aria-hidden="true" className="home-cinematic-slideshow__letter-grow" style={{ animationDelay: `${growStart(i)}s`, animationDuration: `${11.4 - growStart(i)}s` }}><span className={`inline-block animate-letter-fall-${letterOrder[i]} opacity-0`}>{letter}</span></span>)}
+                {"PARABLE".split("").map((letter, i) => <span key={i} aria-hidden="true" className={`inline-block animate-letter-fall-${letterOrder[i]} opacity-0`}>{letter}</span>)}
               </h2>
             </div>
           )}
