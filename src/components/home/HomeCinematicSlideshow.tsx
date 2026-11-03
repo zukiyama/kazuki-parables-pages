@@ -102,15 +102,15 @@ export default function HomeCinematicSlideshow() {
             </div>
           )}
           {index === 2 && active === index && (
-            <div className="absolute left-1/4 top-[14%] max-w-md max-sm:left-[8%] max-sm:max-w-[80%]">
-              <div className={`tv-shop-text-reveal ${kaijuTextVisible ? "visible" : ""} text-background/90 leading-relaxed max-sm:text-sm`}>
-                <p className="mb-2 font-heading text-3xl md:text-4xl max-sm:text-2xl">summer 1979</p>
-                <p className="mb-4 font-heading text-2xl md:text-3xl max-sm:text-xl">Osaka Japan</p>
-                <div className="border-t border-background/30 pt-4">
-                  <h2 className="mb-2 font-heading text-2xl font-bold md:text-3xl">KAIJU</h2>
-                  <p className="font-body text-sm text-background/80 md:text-base"><span className="italic">noun</span> /ˈkaɪdʒuː/<br /><span className="font-medium">mysterious beast</span></p>
+            <div className="absolute inset-0 flex items-center px-8 md:px-16">
+              <div className={`tv-shop-text-reveal ${kaijuTextVisible ? "visible" : ""} max-w-md text-background`}>
+                <p className="font-heading text-3xl md:text-4xl">summer 1979</p>
+                <p className="mt-1 font-heading text-2xl md:text-3xl">Osaka Japan</p>
+                <div className="mt-5 border-t border-background/30 pt-4">
+                  <h2 className="font-heading text-4xl">KAIJU</h2>
+                  <p className="mt-2 font-body text-sm text-background/80"><span className="italic">noun</span> /ˈkaɪdʒuː/<br /><span className="font-medium">mysterious beast</span></p>
                 </div>
-                <p className="mt-8 text-center font-mono text-2xl font-bold tracking-wider text-background animate-pulse md:text-4xl"><span className="opacity-90 blur-[0.5px]">SOMETHING IS COMING</span></p>
+                <p className="mt-6 whitespace-nowrap font-mono text-xl font-bold text-background animate-pulse md:text-2xl"><span className="opacity-90 blur-[0.5px]">SOMETHING IS COMING</span></p>
               </div>
             </div>
           )}

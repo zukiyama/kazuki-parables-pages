@@ -287,7 +287,6 @@ const About = () => {
                 alt=""
                 width={2560}
                 height={1440}
-                loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover"
               />
@@ -303,7 +302,6 @@ const About = () => {
               alt=""
               width={800}
               height={1200}
-              loading="lazy"
               decoding="async"
               className="w-full h-auto object-cover hidden max-sm:block"
             />
@@ -321,7 +319,6 @@ const About = () => {
                 alt=""
                 width={1145}
                 height={1374}
-                loading="lazy"
                 decoding="async"
                 className="h-auto w-full"
               />
@@ -336,7 +333,6 @@ const About = () => {
                 alt=""
                 width={2560}
                 height={1440}
-                loading="lazy"
                 decoding="async"
                 className="w-full h-auto object-cover"
               />
