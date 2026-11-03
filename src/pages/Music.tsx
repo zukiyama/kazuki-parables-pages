@@ -32,7 +32,7 @@ import sceneOfMyRestorationAlbum from "@/assets/scene-of-my-restoration-album-ne
 import centreOfWorldAlbum from "@/assets/last-city-on-earth-album.webp";
 import toDreamtManAlbum from "@/assets/to-dreamt-man-album-new.webp";
 import flowerEpCover from "@/assets/kazuki-yamakawa-ep-cover.webp";
-import circlesSingleCover from "@/assets/circles-single-cover-v3.webp";
+import circlesSingleCover from "@/assets/circles-single-cover-v4.webp";
 
 const albums = [
   {
