@@ -21,6 +21,10 @@ export default function HomeCinematicSlideshow() {
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
   const dragged = useRef(false);
   const [active, setActive] = useState(0);
+  // The outgoing slide keeps its running zoom while it dissolves away, so manual skips never snap it to its end state.
+  const [leaving, setLeaving] = useState<number | null>(null);
+  const lastActive = useRef(0);
+  const [kaijuTextVisible, setKaijuTextVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [decoded, setDecoded] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -44,12 +48,29 @@ export default function HomeCinematicSlideshow() {
 
   useEffect(() => {
     if (!api) return;
-    const sync = () => setActive(api.selectedScrollSnap());
+    const sync = () => {
+      const next = api.selectedScrollSnap();
+      if (next !== lastActive.current) setLeaving(lastActive.current);
+      lastActive.current = next;
+      setActive(next);
+    };
     sync();
     api.on("select", sync);
     api.on("reInit", sync);
     return () => { api.off("select", sync); api.off("reInit", sync); };
   }, [api]);
+
+  useEffect(() => {
+    if (leaving === null) return;
+    const timer = window.setTimeout(() => setLeaving(null), 1000);
+    return () => window.clearTimeout(timer);
+  }, [leaving, active]);
+
+  useEffect(() => {
+    if (active !== 2) { setKaijuTextVisible(false); return; }
+    const timer = window.setTimeout(() => setKaijuTextVisible(true), 100);
+    return () => window.clearTimeout(timer);
+  }, [active]);
 
   useEffect(() => {
     if (!api || !visible || !decoded || reducedMotion) return;
@@ -70,7 +91,7 @@ export default function HomeCinematicSlideshow() {
       </div>
       {slides.map(({ image, name }, index) => (
         <div key={name} aria-hidden={active !== index} data-active={active === index} className={`home-cinematic-slideshow__slide pointer-events-none absolute inset-0 transition-opacity duration-1000 ${active === index ? "opacity-100" : "opacity-0"}`}>
-          <img src={image} alt={name} className={`absolute inset-0 h-full w-full object-cover ${decoded && visible && active === index ? index === 0 ? "animate-slow-zoom-hold" : index === 1 ? "animate-slow-zoom-out" : "" : ""}`} />
+          <img src={image} alt={name} className={`absolute inset-0 h-full w-full object-cover ${index === 1 ? "home-cinematic-slideshow__img--bottom" : ""} ${decoded && visible && (active === index || leaving === index) ? index === 0 ? "animate-slow-zoom-hold" : index === 1 ? "animate-slow-zoom-out" : "" : ""}`} />
           <div className="absolute inset-0 bg-ink-black/25" />
           {index === 0 && <div className="absolute inset-0 flex items-center justify-center px-8"><blockquote className="max-w-3xl text-center font-heading text-3xl italic leading-snug text-background md:text-5xl">‘Feelings are the thoughts of the heart.’</blockquote></div>}
           {index === 1 && active === index && decoded && visible && (
@@ -80,7 +101,19 @@ export default function HomeCinematicSlideshow() {
               </h2>
             </div>
           )}
-          {index === 2 && <div className="absolute inset-0 flex items-center px-8 md:px-16"><div className="max-w-md text-background"><p className="font-heading text-3xl md:text-4xl">summer 1979</p><p className="mt-1 font-heading text-2xl md:text-3xl">Osaka Japan</p><h2 className="mt-5 border-t border-background/30 pt-4 font-heading text-4xl">KAIJU</h2><p className="mt-2 font-body text-sm">mysterious beast</p><p className="mt-6 font-mono text-xl font-bold md:text-2xl">SOMETHING IS COMING</p></div></div>}
+          {index === 2 && active === index && (
+            <div className="absolute left-[8%] top-1/3 max-w-md sm:left-1/4">
+              <div className={`tv-shop-text-reveal ${kaijuTextVisible ? "visible" : ""} leading-relaxed text-background/90`}>
+                <p className="mb-2 font-heading text-2xl sm:text-3xl md:text-4xl">summer 1979</p>
+                <p className="mb-4 font-heading text-xl sm:text-2xl md:text-3xl">Osaka Japan</p>
+                <div className="border-t border-background/30 pt-4">
+                  <h2 className="mb-2 font-heading text-2xl font-bold md:text-3xl">KAIJU</h2>
+                  <p className="font-body text-sm text-background/80 md:text-base"><span className="italic">noun</span> /ˈkaɪdʒuː/<br /><span className="font-medium">mysterious beast</span></p>
+                </div>
+                <p className="mt-8 text-center font-mono text-2xl font-bold tracking-wider text-background animate-pulse md:text-4xl"><span className="opacity-90 blur-[0.5px]">SOMETHING IS COMING</span></p>
+              </div>
+            </div>
+          )}
         </div>
       ))}
       <div className="pointer-events-none absolute inset-x-0 bottom-5 z-10 flex items-center justify-center gap-5">
