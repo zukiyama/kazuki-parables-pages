@@ -602,13 +602,15 @@
 /* 36vw keeps the policewoman and bike fully in frame on wide, short screens once zoomed out. */
 .home-cinematic-slideshow { height: max(60svh, 36vw); min-height: 400px; }
 /* Grow the landed word as one unit, retaining the same acceleration and 11.4s slide timing. */
-@keyframes parable-word-grow { from { transform: scale(1); } to { transform: scale(14); } }
+/* Grow via font-size (not transform) so glyphs stay vector-sharp; the em-based nudge keeps the middle A's counter at screen centre so the camera flies through it. */
+@keyframes parable-word-grow { from { font-size: 1em; transform: none; } to { font-size: 90em; transform: translate(0.02em, 0.16em); } }
 .home-cinematic-slideshow__img--bottom { object-position: center bottom; transform-origin: center bottom; }
-.home-cinematic-slideshow__parable { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; animation: parable-word-grow 8.2s cubic-bezier(0.55, 0, 0.9, 0.45) 3.2s forwards; will-change: transform; }
+.home-cinematic-slideshow__parable { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; }
+.home-cinematic-slideshow__parable-word { gap: 0.06em; font-size: 1em; animation: parable-word-grow 8.2s cubic-bezier(0.7, 0, 1, 0.3) 3.2s forwards; }
 
 @media (prefers-reduced-motion: reduce) {
   .home-cinematic-slideshow__slide, .home-cinematic-slideshow__slide img { transition: none; animation: none; }
-  .home-cinematic-slideshow__parable { animation: none; }
+  .home-cinematic-slideshow__parable-word { animation: none; }
   .home-cinematic-slideshow__parable span { animation: none; opacity: 1; transform: none; }
 }
 
