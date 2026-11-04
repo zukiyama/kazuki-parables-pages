@@ -77,6 +77,18 @@ const Chapter = ({
 const HomeCinematic = () => {
   useScrollToTop();
   useHeroHeight();
+  type PairSide = "circles" | "god-of-lies";
+  // Any mouse/trackpad/pen cursor (incl. iPadOS, which reports touch-class media queries) drives the divider;
+  // finger taps only give the brief glow before navigating.
+  const [pairHover, setPairHover] = useState<PairSide | null>(null);
+  const [pairPress, setPairPress] = useState<PairSide | null>(null);
+  const pairHandlers = (side: PairSide) => ({
+    onPointerEnter: (e: React.PointerEvent) => { if (e.pointerType !== "touch") setPairHover(side); },
+    onPointerMove: (e: React.PointerEvent) => { if (e.pointerType !== "touch" && pairHover !== side) setPairHover(side); },
+    onPointerDown: (e: React.PointerEvent) => { if (e.pointerType === "touch") setPairPress(side); },
+    onPointerUp: () => setPairPress(null),
+    onPointerCancel: () => setPairPress(null),
+  });
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -122,9 +134,14 @@ const HomeCinematic = () => {
         A metaphysical fantasy. Summer 1979, Osaka — something is coming.
       </Chapter>
 
-      <section className="home-cinematic-pair grid w-full bg-ink-black md:grid-cols-[2fr_1fr]">
-        <Link to="/music" className="home-cinematic-pair__panel group relative block min-w-0 overflow-hidden">
-          <img src={sixtiesVarietyShow} alt="" loading="lazy" className="home-cinematic-pair__img absolute inset-0 h-full w-full object-cover grayscale" />
+      <section
+        className="home-cinematic-pair grid w-full bg-ink-black md:grid-cols-[2fr_1fr]"
+        data-hover={pairHover ?? undefined}
+        data-press={pairPress ?? undefined}
+        onPointerLeave={(e) => { if (e.pointerType !== "touch") setPairHover(null); }}
+      >
+        <Link to="/music" {...pairHandlers("circles")} className="home-cinematic-pair__panel group relative block min-w-0 overflow-hidden">
+          <img src={sixtiesVarietyShow} alt="" loading="lazy" className="home-cinematic-pair__img home-cinematic-pair__img--circles absolute inset-0 h-full w-full object-cover grayscale" />
           <div className="absolute inset-0 bg-gradient-to-r from-ink-black/40 via-ink-black/10 to-transparent" />
           <div className="home-cinematic-pair__circles relative z-10 flex h-full flex-col justify-center gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-start [text-shadow:0_2px_12px_hsl(var(--ink-black)/0.6)] md:gap-5 md:px-12 lg:gap-10 lg:px-24">
             <img src={circlesSingleCover} alt="Circles single cover" loading="lazy" className="h-40 w-40 shrink-0 rounded-sm object-cover shadow-2xl lg:h-56 lg:w-56" />
@@ -135,8 +152,8 @@ const HomeCinematic = () => {
             </div>
           </div>
         </Link>
-        <Link to="/comics" className="home-cinematic-pair__panel group relative block min-w-0 overflow-hidden">
-          <img src={uniqueFaces} alt="" loading="lazy" className="home-cinematic-pair__img absolute inset-0 h-full w-full object-cover object-left" />
+        <Link to="/comics" {...pairHandlers("god-of-lies")} className="home-cinematic-pair__panel group relative block min-w-0 overflow-hidden">
+          <img src={uniqueFaces} alt="" loading="lazy" className="home-cinematic-pair__img home-cinematic-pair__img--faces absolute inset-0 h-full w-full object-cover object-left" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black/70 via-transparent to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
             <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">03</span> · Manga Webtoon</p></Reveal>
