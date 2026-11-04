@@ -8,7 +8,7 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 // Above-the-fold assets - loaded eagerly with high priority
 import AboutHeroVideo from "@/components/AboutHeroVideo";
 import heroFirstFrame from "@/assets/about-hero-first.webp.asset.json";
-import authorPortraitAsset from "@/assets/author-hat.webp.asset.json";
+import authorPortraitAsset from "@/assets/author-hat-dark.webp.asset.json";
 
 // Below-the-fold assets - lazy loaded
 import backgroundSphere from "@/assets/about-background-new.webp";
