@@ -358,11 +358,9 @@
 .about-writer-biography p + p { margin-top: 18px; }
 .about-writer-biography a { text-decoration: underline; text-underline-offset: 4px; }
 .about-writer-biography a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
-.about-writer-portrait { position: absolute; top: 42px; right: 5%; width: min(19%, 230px); }
 @media (min-width: 1400px) {
   .about-writer-copy h1 { font-size: 64px; }
   .about-writer-stage { padding-top: 60px; }
-  .about-writer-portrait { top: 62px; }
 }
 @media (min-width: 600px) and (max-width: 900px) {
   .about-writer-stage { padding-left: 4%; padding-right: 4%; min-height: 860px; }
@@ -378,7 +376,6 @@
   .about-writer-copy { width: 100%; max-width: none; }
   .about-writer-copy h1 { font-size: 48px; }
   .about-writer-eyebrow { margin-bottom: 18px; }
-  .about-writer-portrait { top: 22px; right: 20px; width: 110px; }
 }
 @media (prefers-reduced-motion: reduce) { .about-writer-background { transition: none; } }
 
