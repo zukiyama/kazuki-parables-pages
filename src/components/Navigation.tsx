@@ -45,13 +45,11 @@ const Navigation = () => {
           </div>
           
           <div className="flex items-center space-x-8 max-sm:hidden">
-            <div className="hidden lg:flex">
-              <SocialIcons
-                ids={["spotify", "applemusic", "youtube", "tiktok", "instagram"]}
-                iconClassName="w-4 h-4"
-                linkClassName={isAboutPage ? "text-ink-black/70" : "text-[hsl(25,30%,25%)]/70"}
-              />
-            </div>
+            <SocialIcons
+              ids={["spotify", "applemusic", "youtube", "tiktok", "instagram"]}
+              iconClassName="w-4 h-4"
+              linkClassName={isAboutPage ? "text-ink-black/70" : "text-[hsl(25,30%,25%)]/70"}
+            />
             {navItems.map((item) => (
               <Link
                 key={item.path}
