@@ -358,11 +358,24 @@
 .about-writer-biography p + p { margin-top: 18px; }
 .about-writer-biography a { text-decoration: underline; text-underline-offset: 4px; }
 .about-writer-biography a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
-.about-writer-portrait { position: absolute; top: 42px; right: 5%; width: min(19%, 230px); }
+.about-writer-portrait { position: absolute; top: 40px; right: 4%; width: min(27%, 340px); z-index: 1; pointer-events: none; }
+.about-writer-portrait-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: contrast(1.05) brightness(0.97);
+  -webkit-mask-image: radial-gradient(ellipse 76% 72% at 50% 46%, #000 56%, rgba(0,0,0,0.45) 80%, rgba(0,0,0,0) 96%);
+  mask-image: radial-gradient(ellipse 76% 72% at 50% 46%, #000 56%, rgba(0,0,0,0.45) 80%, rgba(0,0,0,0) 96%);
+  animation: portrait-emerge 1500ms cubic-bezier(0.22, 1, 0.36, 1) 260ms both;
+}
+@keyframes portrait-emerge {
+  from { opacity: 0; transform: scale(1.035); }
+  to { opacity: 1; transform: scale(1); }
+}
 @media (min-width: 1400px) {
   .about-writer-copy h1 { font-size: 64px; }
   .about-writer-stage { padding-top: 60px; }
-  .about-writer-portrait { top: 62px; }
+  .about-writer-portrait { top: 62px; width: min(25%, 380px); }
 }
 @media (min-width: 600px) and (max-width: 900px) {
   .about-writer-stage { padding-left: 4%; padding-right: 4%; min-height: 860px; }
@@ -378,9 +391,9 @@
   .about-writer-copy { width: 100%; max-width: none; }
   .about-writer-copy h1 { font-size: 48px; }
   .about-writer-eyebrow { margin-bottom: 18px; }
-  .about-writer-portrait { top: 22px; right: 20px; width: 110px; }
+  .about-writer-portrait { top: 22px; right: 18px; width: 118px; }
 }
-@media (prefers-reduced-motion: reduce) { .about-writer-background { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .about-writer-background { transition: none; } .about-writer-portrait-image { animation: none; } }
 
 /* About intro: brisk, line-by-line reveal of the original handwritten artwork. */
 .about-handwritten-line {
