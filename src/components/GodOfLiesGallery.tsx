@@ -19,41 +19,15 @@ export function GodOfLiesGallery({ children, onViewerChange, renderViewerControl
   renderViewerControls?: (navigate: (direction: -1 | 1) => void) => ReactNode;
 }) {
   const [headerSpace, setHeaderSpace] = useState(0);
-  const rootRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     const header = document.querySelector<HTMLElement>('[data-header="true"]');
     if (!header) return;
-    // Measure the header's bottom against the gallery's own top, not the
-    // window top: when a tablet browser bar appears or retracts, the pinned
-    // page can sit offset from the visible viewport, and a window-relative
-    // value would let the pictures slide up under the header.
-    const update = () => {
-      const headerBottom = header.getBoundingClientRect().bottom;
-      const root = rootRef.current;
-      const top = root ? root.getBoundingClientRect().top : 0;
-      // Only trust the gallery position once it is settled on screen (not
-      // parked below on the title page or mid-pan).
-      if (root && Math.abs(top) > window.innerHeight / 2) return;
-      setHeaderSpace(Math.max(0, headerBottom - top));
-    };
+    const update = () => setHeaderSpace(header.getBoundingClientRect().bottom);
     update();
     const observer = new ResizeObserver(update);
     observer.observe(header);
-    if (rootRef.current) observer.observe(rootRef.current);
-    const vv = window.visualViewport;
     window.addEventListener('resize', update);
-    window.addEventListener('scroll', update, { passive: true });
-    vv?.addEventListener('resize', update);
-    vv?.addEventListener('scroll', update);
-    document.addEventListener('transitionend', update);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('resize', update);
-      window.removeEventListener('scroll', update);
-      vv?.removeEventListener('resize', update);
-      vv?.removeEventListener('scroll', update);
-      document.removeEventListener('transitionend', update);
-    };
+    return () => { observer.disconnect(); window.removeEventListener('resize', update); };
   }, []);
   const [selected, setSelected] = useState<number | null>(null);
   const [imagesReady, setImagesReady] = useState(false);
@@ -124,7 +98,6 @@ export function GodOfLiesGallery({ children, onViewerChange, renderViewerControl
   const scene = selected === null ? undefined : scenes[selected];
   return (
     <div
-      ref={rootRef}
       className={`god-of-lies-gallery ${imagesReady ? 'is-ready' : ''}`}
       style={{ '--god-of-lies-header-space': `${Math.round(headerSpace)}px` } as CSSProperties}
     >
