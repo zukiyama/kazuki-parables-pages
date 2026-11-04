@@ -8,7 +8,7 @@ import japaneseBackground from "@/assets/japanese-painting-background.webp";
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
 import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
 import circlesSingleCover from "@/assets/circles-single-cover-v4-small.webp";
-import uniqueFaces from "@/assets/god-of-lies-unique-faces.webp";
+import uniqueFaces from "@/assets/god-of-lies-unique-faces-framed.webp";
 import HomeCinematicSlideshow from "@/components/home/HomeCinematicSlideshow";
 
 /** Text-only reveal: bands stay in normal flow; only copy fades in. */
@@ -48,7 +48,7 @@ const Chapter = ({
       style={{ objectPosition: position }}
     />
     <div className="absolute inset-0 bg-gradient-to-t from-ink-black/75 via-ink-black/10 to-transparent" />
-    <div className="relative z-10 flex h-full flex-col justify-end px-6 pb-14 md:px-16 md:pb-20">
+    <div className="home-cinematic-pair__circles relative z-10 flex h-full flex-col justify-end px-6 pb-14 md:px-16 md:pb-20">
       <Reveal>
         <div className="mb-4 flex items-center gap-4 text-xs uppercase tracking-[0.35em] text-background/70">
           <span className="font-mono">{index}</span>
@@ -123,20 +123,20 @@ const HomeCinematic = () => {
       </Chapter>
 
       <section className="home-cinematic-pair grid w-full bg-ink-black md:grid-cols-[2fr_1fr]">
-        <Link to="/music" className="group relative block min-w-0 overflow-hidden">
-          <img src={sixtiesVarietyShow} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover grayscale" />
+        <Link to="/music" className="home-cinematic-pair__panel group relative block min-w-0 overflow-hidden">
+          <img src={sixtiesVarietyShow} alt="" loading="lazy" className="home-cinematic-pair__img absolute inset-0 h-full w-full object-cover grayscale" />
           <div className="absolute inset-0 bg-gradient-to-r from-ink-black/40 via-ink-black/10 to-transparent" />
-          <div className="relative z-10 flex h-full flex-col justify-center gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-start [text-shadow:0_2px_12px_hsl(var(--ink-black)/0.6)] md:gap-5 md:px-12 lg:gap-10 lg:px-24">
+          <div className="home-cinematic-pair__circles relative z-10 flex h-full flex-col justify-center gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-start [text-shadow:0_2px_12px_hsl(var(--ink-black)/0.6)] md:gap-5 md:px-12 lg:gap-10 lg:px-24">
             <img src={circlesSingleCover} alt="Circles single cover" loading="lazy" className="h-40 w-40 shrink-0 rounded-sm object-cover shadow-2xl lg:h-56 lg:w-56" />
             <div className="min-w-0">
-              <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">02</span> · New single</p></Reveal>
+              <Reveal><p className="mb-3 whitespace-nowrap text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">02</span> · New single</p></Reveal>
               <Reveal delay={120}><h2 className="font-heading text-5xl text-background lg:text-7xl">Circles</h2></Reveal>
-              <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Listen now →</span></Reveal>
+              <Reveal delay={240}><span className="mt-6 inline-block whitespace-nowrap text-sm uppercase tracking-[0.25em] text-background">Listen now →</span></Reveal>
             </div>
           </div>
         </Link>
-        <Link to="/comics" className="group relative block min-w-0 overflow-hidden">
-          <img src={uniqueFaces} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+        <Link to="/comics" className="home-cinematic-pair__panel group relative block min-w-0 overflow-hidden">
+          <img src={uniqueFaces} alt="" loading="lazy" className="home-cinematic-pair__img absolute inset-0 h-full w-full object-cover object-left" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black/70 via-transparent to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
             <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">03</span> · Manga Webtoon</p></Reveal>
