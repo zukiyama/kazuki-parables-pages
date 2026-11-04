@@ -8,7 +8,7 @@ import japaneseBackground from "@/assets/japanese-painting-background.webp";
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
 import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
 import circlesSingleCover from "@/assets/circles-single-cover-v4-small.webp";
-import uniqueFaces from "@/assets/god-of-lies-unique-faces-framed.webp";
+import uniqueFaces from "@/assets/god-of-lies-faces-wide.webp";
 import HomeCinematicSlideshow from "@/components/home/HomeCinematicSlideshow";
 
 /** Text-only reveal: bands stay in normal flow; only copy fades in. */
@@ -90,6 +90,27 @@ const HomeCinematic = () => {
     onPointerCancel: () => setPairPress(null),
   });
   const [ready, setReady] = useState(false);
+  // Faces sheet: 1595x630, 122px column pitch. Scale so the narrow (1/3) panel shows a whole number of
+  // columns, keeping both the narrow and widened (2/3) left edges inside a white gutter; the picture never rescales on hover.
+  const pairRef = useRef<HTMLElement>(null);
+  const [facesBox, setFacesBox] = useState<React.CSSProperties>({});
+  useEffect(() => {
+    const el = pairRef.current;
+    if (!el) return;
+    const measure = () => {
+      const cw = el.clientWidth;
+      const h = (el.firstElementChild as HTMLElement | null)?.offsetHeight ?? 0;
+      if (!cw || !h) return;
+      const w = window.matchMedia("(min-width: 768px)").matches ? cw / 3 : cw;
+      const k = Math.max(1, Math.floor((w * 630) / (h * 122)));
+      const sc = w / (k * 122);
+      setFacesBox({ width: 1595 * sc, height: 630 * sc, right: -5 * sc, left: "auto", top: "50%", transform: "translateY(-50%)", maxWidth: "none" });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     const img = new Image();
@@ -135,6 +156,7 @@ const HomeCinematic = () => {
       </Chapter>
 
       <section
+        ref={pairRef}
         className="home-cinematic-pair grid w-full bg-ink-black md:grid-cols-[2fr_1fr]"
         data-hover={pairHover ?? undefined}
         data-press={pairPress ?? undefined}
@@ -153,7 +175,7 @@ const HomeCinematic = () => {
           </div>
         </Link>
         <Link to="/comics" {...pairHandlers("god-of-lies")} className="home-cinematic-pair__panel group relative block min-w-0 overflow-hidden">
-          <img src={uniqueFaces} alt="" loading="lazy" className="home-cinematic-pair__img home-cinematic-pair__img--faces absolute inset-0 h-full w-full object-cover object-left" />
+          <img src={uniqueFaces} alt="" loading="lazy" style={facesBox} className="home-cinematic-pair__img home-cinematic-pair__img--faces absolute" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black/70 via-transparent to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
             <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">03</span> · Manga Webtoon</p></Reveal>
