@@ -382,6 +382,7 @@
   .about-writer-copy { width: 37%; }
   .about-writer-copy h1 { font-size: 40px; }
   .about-writer-biography { font-size: 17px; }
+  .about-writer-portrait { top: 34px; width: 26%; }
 }
 @media (max-width: 599px) {
   .about-writer-stage { min-height: 0; padding: 350px 24px 100px; }
