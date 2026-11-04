@@ -77,6 +77,18 @@ const Chapter = ({
 const HomeCinematic = () => {
   useScrollToTop();
   useHeroHeight();
+  type PairSide = "circles" | "god-of-lies";
+  // Any mouse/trackpad/pen cursor (incl. iPadOS, which reports touch-class media queries) drives the divider;
+  // finger taps only give the brief glow before navigating.
+  const [pairHover, setPairHover] = useState<PairSide | null>(null);
+  const [pairPress, setPairPress] = useState<PairSide | null>(null);
+  const pairHandlers = (side: PairSide) => ({
+    onPointerEnter: (e: React.PointerEvent) => { if (e.pointerType !== "touch") setPairHover(side); },
+    onPointerMove: (e: React.PointerEvent) => { if (e.pointerType !== "touch" && pairHover !== side) setPairHover(side); },
+    onPointerDown: (e: React.PointerEvent) => { if (e.pointerType === "touch") setPairPress(side); },
+    onPointerUp: () => setPairPress(null),
+    onPointerCancel: () => setPairPress(null),
+  });
   const [ready, setReady] = useState(false);
 
   useEffect(() => {

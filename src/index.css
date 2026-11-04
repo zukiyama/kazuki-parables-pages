@@ -2017,19 +2017,22 @@
   .comics-lower-slideshow__arrow, .comics-reader__copy, .comics-reader__overlay { animation: none; transition: none; }
 }
 
-/* Circles / God of Lies band: on mouse hover the divider glides so the hovered panel takes two-thirds. */
+/* Circles / God of Lies band: any cursor (data-hover, set from pointer events) glides the divider so the
+   hovered panel takes two-thirds; finger taps (data-press) only glow. Images keep a fixed size — only the frame moves. */
 .home-cinematic-pair__img { transition: filter 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
+.home-cinematic-pair[data-press] .home-cinematic-pair__img { transition-duration: 0.25s; }
 .home-cinematic-pair__circles { transform-origin: left center; transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
-@media (hover: hover) and (pointer: fine) and (min-width: 768px) {
+@media (min-width: 768px) {
   .home-cinematic-pair { transition: grid-template-columns 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
-  .home-cinematic-pair:has(> a:last-child:hover) { grid-template-columns: 1fr 2fr; }
-  .home-cinematic-pair:has(> a:last-child:hover) .home-cinematic-pair__circles { transform: translateX(-1.5rem) scale(0.75); }
-  .home-cinematic-pair:hover .home-cinematic-pair__panel .home-cinematic-pair__img { filter: brightness(0.82); }
-  .home-cinematic-pair .home-cinematic-pair__panel:hover .home-cinematic-pair__img { filter: brightness(1.08); }
-  .home-cinematic-pair .home-cinematic-pair__panel:first-child:hover .home-cinematic-pair__img { filter: grayscale(1) brightness(1.08); }
-  .home-cinematic-pair:hover .home-cinematic-pair__panel:first-child .home-cinematic-pair__img { filter: grayscale(1) brightness(0.82); }
-  .home-cinematic-pair .home-cinematic-pair__panel:first-child:hover .home-cinematic-pair__img { filter: grayscale(1) brightness(1.08); }
+  .home-cinematic-pair__img--circles { right: auto; width: 66.667vw; max-width: none; }
+  .home-cinematic-pair__img--faces { right: auto; width: auto; min-width: 66.667vw; max-width: none; }
+  .home-cinematic-pair[data-hover="god-of-lies"] { grid-template-columns: 1fr 2fr; }
+  .home-cinematic-pair[data-hover="god-of-lies"] .home-cinematic-pair__circles { transform: translateX(-1.5rem) scale(0.75); }
 }
+.home-cinematic-pair:is([data-hover],[data-press]) .home-cinematic-pair__img--faces { filter: brightness(0.82); }
+.home-cinematic-pair:is([data-hover],[data-press]) .home-cinematic-pair__img--circles { filter: grayscale(1) brightness(0.82); }
+.home-cinematic-pair:is([data-hover="god-of-lies"],[data-press="god-of-lies"]) .home-cinematic-pair__img--faces { filter: brightness(1.08); }
+.home-cinematic-pair:is([data-hover="circles"],[data-press="circles"]) .home-cinematic-pair__img--circles { filter: grayscale(1) brightness(1.08); }
 @media (prefers-reduced-motion: reduce) {
   .home-cinematic-pair, .home-cinematic-pair__img, .home-cinematic-pair__circles { transition: none; }
 }
