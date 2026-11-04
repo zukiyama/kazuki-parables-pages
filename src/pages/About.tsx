@@ -6,7 +6,6 @@ import { useScrollAnimation } from "@/components/ScrollAnimations";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 // Above-the-fold assets - loaded eagerly with high priority
-import artistPortrait from "@/assets/about-portrait-postcard.webp";
 import AboutHeroVideo from "@/components/AboutHeroVideo";
 import heroFirstFrame from "@/assets/about-hero-first.webp.asset.json";
 
@@ -72,20 +71,6 @@ const CrumbleLine = ({ children, className = "", offset, active, baseDelay = 300
   );
 };
 
-
-const StampPortrait = ({ className }: { className: string }) => (
-  <div className={`relative rotate-[-3deg] ${className}`}>
-    <img
-      src={artistPortrait}
-      alt="Kazuki Yamakawa wearing a hat in a vintage postage-stamp frame"
-      width={1254}
-      height={1254}
-      loading="eager"
-      decoding="async"
-      className="block h-full w-full object-contain drop-shadow-2xl"
-    />
-  </div>
-);
 
 const About = () => {
   useScrollToTop();
@@ -242,7 +227,6 @@ const About = () => {
               <p>The best way to get to know his music is to head over to the <Link to="/music">music page</Link>.</p>
             </div>
           </div>
-          <StampPortrait className="about-writer-portrait aspect-square" />
         </div>
       </section>
       
