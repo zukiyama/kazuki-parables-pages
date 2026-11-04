@@ -9,7 +9,6 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import AboutHeroVideo from "@/components/AboutHeroVideo";
 import heroFirstFrame from "@/assets/about-hero-first.webp.asset.json";
 import authorPortraitAsset from "@/assets/author-hat.webp.asset.json";
-import authorPortraitSmallAsset from "@/assets/author-hat-small.webp.asset.json";
 
 // Below-the-fold assets - lazy loaded
 import backgroundSphere from "@/assets/about-background-new.webp";
@@ -78,8 +77,6 @@ const AuthorPortrait = ({ className }: { className: string }) => (
   <div className={`about-writer-portrait ${className}`}>
     <img
       src={authorPortraitAsset.url}
-      srcSet={`${authorPortraitSmallAsset.url} 340w, ${authorPortraitAsset.url} 800w`}
-      sizes="(max-width: 599px) 132px, (max-width: 900px) 250px, 380px"
       alt="Kazuki Yamakawa wearing a wide-brimmed hat"
       width={800}
       height={800}
