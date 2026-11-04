@@ -176,9 +176,9 @@ const HomeCinematic = () => {
         </Link>
         <Link to="/comics" {...pairHandlers("god-of-lies")} className="home-cinematic-pair__panel group relative block min-w-0 overflow-hidden">
           <img src={uniqueFaces} alt="" loading="lazy" style={facesBox} className="home-cinematic-pair__img home-cinematic-pair__img--faces absolute" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink-black/70 via-transparent to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
-            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">03</span> · Manga Webtoon</p></Reveal>
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-black/80 via-ink-black/25 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 px-6 pb-16 pt-6 [text-shadow:0_1px_3px_hsl(var(--ink-black)/0.95),0_2px_14px_hsl(var(--ink-black)/0.8)] md:px-10 md:pb-24">
+            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] font-medium text-background/95"><span className="font-mono">03</span> · Manga Webtoon</p></Reveal>
             <Reveal delay={120}><h2 className="font-heading text-4xl text-background lg:text-5xl">God of Lies</h2></Reveal>
             <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Read more →</span></Reveal>
           </div>
