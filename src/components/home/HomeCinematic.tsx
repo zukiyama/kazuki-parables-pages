@@ -129,9 +129,9 @@ const HomeCinematic = () => {
           <div className="home-cinematic-pair__circles relative z-10 flex h-full flex-col justify-center gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-start [text-shadow:0_2px_12px_hsl(var(--ink-black)/0.6)] md:gap-5 md:px-12 lg:gap-10 lg:px-24">
             <img src={circlesSingleCover} alt="Circles single cover" loading="lazy" className="h-40 w-40 shrink-0 rounded-sm object-cover shadow-2xl lg:h-56 lg:w-56" />
             <div className="min-w-0">
-              <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">02</span> · New single</p></Reveal>
+              <Reveal><p className="mb-3 whitespace-nowrap text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">02</span> · New single</p></Reveal>
               <Reveal delay={120}><h2 className="font-heading text-5xl text-background lg:text-7xl">Circles</h2></Reveal>
-              <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Listen now →</span></Reveal>
+              <Reveal delay={240}><span className="mt-6 inline-block whitespace-nowrap text-sm uppercase tracking-[0.25em] text-background">Listen now →</span></Reveal>
             </div>
           </div>
         </Link>
