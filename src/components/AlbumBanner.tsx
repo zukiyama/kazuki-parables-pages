@@ -415,7 +415,7 @@ export const AlbumBanner = ({ selectedAlbumId, onAlbumClick, onAlbumPrefetch }: 
                 >
                   <div className="flex items-center gap-1">
                     <span className="font-palatino text-[11px] font-semibold text-yellow-300 whitespace-nowrap">
-                      EP
+                      EPs
                     </span>
                     <ChevronRight className="w-4 h-4 text-yellow-300" />
                   </div>
