@@ -2209,3 +2209,5 @@
   .ya-slideshow--phone .ya-book-grid { gap: 0.6rem 0.85rem; }
 }
 @media (prefers-reduced-motion: reduce) { .writing-phone-book__summary p, .writing-cover-zoom img, .writing-cover-zoom__overlay { transform: none; transition: none; animation: none !important; } }
+.writing-phone-book__header h2[data-tone="kaiju"] ~ .writing-phone-book__intro, .writing-phone-book__titles:has(h2[data-tone="kaiju"]) .writing-phone-book__intro { font-size: calc(1rem * var(--fit)); letter-spacing: 0.04em; }
+@media (prefers-reduced-motion: reduce) { .writing-phone-book__summary[data-tone="magazine"] p, .writing-phone-magazine__line { transform: none !important; filter: none !important; transition: none; } }
