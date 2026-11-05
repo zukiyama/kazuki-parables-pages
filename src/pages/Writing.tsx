@@ -742,6 +742,8 @@ const Writing = () => {
   }, [currentYoungAdultBook, visibleSections]);
 
   const handleBookClick = (bookId: string, slideToBook?: number) => {
+    userInteractedRef.current = true;
+    isBootingRef.current = false;
     // If it's a young adult book, set the slideshow to show that book IMMEDIATELY
     if (slideToBook !== undefined && youngAdultSlideshowRef.current) {
       youngAdultSlideshowRef.current.setCurrentBook(slideToBook);

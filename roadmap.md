@@ -1,7 +1,7 @@
 # Roadmap
 
-- [ ] Phone Writing experiment: smaller covers and viewport-sized book layouts, gentle settling/menu alignment, compact menu, fitted YA slideshow and taller handles everywhere.
-- [ ] Phone Other Works vignette framing and compact shared footer; verify small/large phones and unchanged tablet layouts.
+- [x] Phone Writing experiment: smaller covers, edited-down summaries, viewport-sized entries, gentle proximity settling, measured menu alignment, compact menu and fitted YA slideshow; taller handles everywhere. Four scrolling-rule tests pass; checked 390×844 and 375×667, including all menu entries and slideshow selections.
+- [x] Phone Other Works: both Desert images, left Revisions and both Syphons framed farther inward; compact shared footer with socials last. Browser images verified; tablet book layout unchanged. Physical-phone Safari gestures remain unverified.
 
 - [x] Phone-only: added working subtle swipe cues, enlarged/nested Burden title with lowered separated copy, centred shelf, and dynamically fitted larger reader covers with centred summaries. Browser checked both cues, touch gestures, all five readers, short phone and unchanged tablet; 15 tests pass, build OK.
 
