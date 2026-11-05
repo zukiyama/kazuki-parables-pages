@@ -110,8 +110,10 @@ function PhoneBookEntry({ book, onZoom }: { book: PhoneBook; onZoom: (book: Phon
             <img src={book.cover} alt={`${book.title} Book Cover`} width={400} height={600} loading={book.id === 'kaiju' ? 'eager' : 'lazy'} decoding="async" />
           </button>
           <div className="writing-phone-book__titles">
-            {book.intro && !book.introBelow && <p className="writing-phone-book__intro" data-italic={book.introItalic || undefined}>{book.intro}</p>}
-            <h2 data-tone={book.tone} data-long={book.title.length > 8 || undefined}>{book.title}</h2>
+            {book.tone !== 'zen' && book.intro && !book.introBelow && <p className="writing-phone-book__intro" data-italic={book.introItalic || undefined}>{book.intro}</p>}
+            <h2 data-tone={book.tone} data-long={book.title.length > 8 || undefined}>{book.tone === 'zen'
+              ? <>H<span className="writing-phone-how-o">O<span className="writing-phone-book__intro writing-phone-how-intro">This{'\n'}is</span></span>W</>
+              : book.title}</h2>
             {book.intro && book.introBelow && <p className="writing-phone-book__intro" data-below>{book.intro}</p>}
           </div>
         </header>
@@ -133,7 +135,7 @@ export function WritingPhoneBooks({ covers }: { covers: Record<string, string> }
       'Peter Mayhew had hit rock bottom when he wrote Hoax, a mystical parody intended as his sign-off, a final insult to an industry he had grown to despise… and worst of all an overnight bestseller. He had finally made his name — and could never use it again.',
       "A year later, fleeing his reputation in an Australian motel, paralysed by writer's block, he receives a phone call from someone who claims to be part of a cult modelled on his book.",
       'Peter must convince a community it was all a hoax—but in doing so, he begins to question where his book truly came from.'
-    ], intro: 'A mind-bending tale of literary fiction.', introItalic: true },
+    ], intro: 'A mind-bending tale of literary fiction', introItalic: true },
     { id: 'the-market', title: 'THE MARKET', cover: covers.market, tone: 'signal', paragraphs: [
       "James Tarreden's new life on Island—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. In fact, everything is falling into place a little too easily…",
       "Under the wing of an enigmatic young CEO, James is inducted into the secrets behind his company's new technology, and with everything he knew about reality unravelling, finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of Island."
