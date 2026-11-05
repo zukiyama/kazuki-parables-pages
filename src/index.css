@@ -2073,7 +2073,7 @@
 .comics-phone-burden__copy { position: absolute; inset: 0; z-index: 1; padding: calc(var(--chapter-header-height, 0px) + 3.5rem) 1.5rem 4.5rem; text-align: center; color: hsl(var(--screenplay-caption, var(--canvas-base))); text-shadow: 0 1px 3px hsl(var(--ink-black)), 0 2px 10px hsl(var(--ink-black) / 0.8); pointer-events: none; }
 .comics-phone-burden__copy h2 { position: relative; width: max-content; max-width: 100%; margin: 0 auto; font-family: 'Playfair Display', Georgia, serif; font-size: 4.8rem; line-height: 1; }
 .comics-phone-burden__copy h2 span { position: absolute; left: 25%; bottom: 76%; font-size: 0.38em; font-style: italic; line-height: 1; }
-.comics-phone-burden__synopsis { position: absolute; top: 49%; left: 1.5rem; right: 1.5rem; }
+.comics-phone-burden__synopsis { position: absolute; top: 56%; left: 1.5rem; right: 1.5rem; }
 .comics-phone-burden__synopsis > p:first-child { margin-top: 0; }
 .comics-phone-burden__copy p { margin-top: 0.9rem; font-family: Georgia, serif; font-size: 0.92rem; line-height: 1.5; }
 .comics-phone-burden__rule { width: 2.5rem; height: 1px; margin: 0.9rem auto 0; background: currentColor; opacity: 0.7; }
@@ -2094,4 +2094,4 @@
 .comics-phone-reader .comics-reader__copy p { margin-top: 0.4rem; }
 .comics-phone-reader .comics-reader__copy h2 { font-size: 1.5rem; margin: 0.25rem 0 0.5rem; }
 @media (max-width: 359px) { .comics-phone-burden__copy h2 { font-size: 4.1rem; } }
-@media (max-height: 700px) { .comics-phone-burden__synopsis { top: 43%; } .comics-phone-burden__copy p { font-size: 0.84rem; line-height: 1.4; } }
+@media (max-height: 700px) { .comics-phone-burden__synopsis { top: 49%; } .comics-phone-burden__copy p { font-size: 0.84rem; line-height: 1.4; } }
