@@ -167,7 +167,7 @@ const Writing = () => {
       const h = rail.offsetHeight || window.innerHeight;
       const t = title.getBoundingClientRect();
       const centre = t.top + t.height / 2 - section.getBoundingClientRect().top;
-      rail.style.top = `${Math.max(0, centre - h / 2)}px`;
+      rail.style.top = `${Math.max(0, Math.min(section.offsetHeight - h, centre - h / 2))}px`;
     };
     place();
     const late = window.setTimeout(place, 560);
