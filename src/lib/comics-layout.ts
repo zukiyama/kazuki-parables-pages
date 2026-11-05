@@ -2,6 +2,8 @@ export type ComicsLayout = {
   tabletPortraitStrip: boolean;
   landscapeStripHidden: boolean;
   popUpScene: boolean;
+  /** Phones: no trees or cue; lower chapters stack as one scrolling page. */
+  phoneStack: boolean;
 };
 
 /** Keep the current Comics presentation while the visual viewport is zoomed. */
@@ -17,5 +19,6 @@ export function getComicsLayout(
     tabletPortraitStrip: width >= 768 && height > width,
     landscapeStripHidden: width > 820 && width > height,
     popUpScene: true,
+    phoneStack: Math.min(width, height) < 600,
   };
 }
