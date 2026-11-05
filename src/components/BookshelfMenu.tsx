@@ -355,7 +355,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   return (
     <div 
       data-banner="bookshelf"
-      className={`writing-bookshelf fixed top-16 left-0 right-0 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-4 max-sm:pt-5 max-sm:pb-6 transition-all duration-500 ease-out ${
+      className={`writing-bookshelf fixed top-16 left-0 right-0 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-4 max-sm:py-2 transition-all duration-500 ease-out ${
         isWidescreen && !bannerVisible 
           ? 'opacity-0 -translate-y-full pointer-events-none' 
           : 'opacity-100 translate-y-0'
@@ -374,7 +374,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
               onClick={() => handleBookClick(book)}
             >
               {/* Book Title */}
-              <h3 className={`font-palatino text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] max-sm:whitespace-normal max-sm:leading-tight max-sm:min-h-[32px] max-sm:flex max-sm:items-center max-sm:justify-center ${
+              <h3 className={`font-palatino text-xs font-semibold mb-1 text-center group-hover:text-yellow-300 transition-colors duration-300 whitespace-nowrap max-sm:text-[10px] max-sm:whitespace-normal max-sm:leading-tight max-sm:min-h-[27px] max-sm:flex max-sm:items-center max-sm:justify-center ${
                 activeBook === book.id ? 'text-yellow-300' : 'text-white'
               }`}>
                 {book.title}

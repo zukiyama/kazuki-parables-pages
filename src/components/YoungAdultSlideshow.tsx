@@ -34,6 +34,13 @@ const books = [
   }
 ];
 
+// Phone edits only remove passages; the full summaries remain untouched above.
+const phoneSummaries = [
+  'Set in Victorian London, twelve-year-old Darwin finds himself—despite his best efforts—working as an errand boy at a curiosity shop for the eccentric |Professor Barnabas|.|BREAK|But it is there that he discovers a doorway to another London: one where people take a submarine to work, where wrens and robins can talk, and where ancient kings of England might be found running the local tavern.|BREAK||Undon|, however, is rarely what it seems, and when a delivery goes awry, Darwin will have to draw on all of his courage and invention to escape its clutches.',
+  'Deep in the endless wastes, a blind child-prince lives in a walled city with his machine father. The only human among its inhabitants, |Piotr| has never questioned his place in the world—until the arrival of a group of pilgrims from beyond the walls.|BREAK|Among them is |Flim|, a wilful, glitchy automaton the same age as |Piotr|. Their rivalry unsettles |Piotr|, awakening a dangerous question he has never dared to ask: why is he the only living boy?|BREAK|On the night he seeks answers, a terrifying attack befalls the town.',
+  '|The war is over. And we lost.||BREAK|Humans and Angels have coexisted for two hundred years, with humanity long accepting its status as subject to the extragalactic species. Now something is changing, inside space itself…|BREAK||Isaak| failed the tests. Crashed every simulation. So he can barely believe it when he\'s selected for a place at the elite |Harmann School of Aviation|. But his selection was no accident—and the war is far from over.'
+];
+
 interface YoungAdultSlideshowProps {
   onBookChange?: (index: number) => void;
   isWidescreen?: boolean;
@@ -349,7 +356,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
                       <h4 className={subtitleClasses}>{book.subtitle}</h4>
                     )}
                     <p className={`ya-summary ${summaryClasses}`}>
-                      {renderSummary(book.summary)}
+                      {renderSummary(phoneLayout ? phoneSummaries[(index - 1 + books.length) % books.length] : book.summary)}
                     </p>
                   </div>
                 </div>

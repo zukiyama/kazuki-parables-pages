@@ -2134,7 +2134,7 @@
 .ya-slideshow--phone .ya-summary span.block { margin-top: 0.55rem; }
 .ya-slideshow--phone .ya-edge-tab { width: 1.8rem; height: 3.6rem; padding: 0; }
 .ya-edge-tab { background: hsl(var(--screenplay-letterbox) / 0.55); color: hsl(var(--comics-paper) / 0.9); }
-.ya-edge-tab:hover { background: hsl(var(--screenplay-letterbox) / 0.65); color: hsl(var(--comics-paper)); }
+.ya-edge-tab:hover { background: hsl(var(--screenplay-letterbox) / 0.65) !important; color: hsl(var(--comics-paper)) !important; }
 @media (max-width: 599px), (max-height: 599px) and (max-width: 949px) {
   .writing-bookshelf { padding-top: 0.5rem; padding-bottom: 0.5rem; }
   .writing-bookshelf h3 { min-height: 27px; margin-bottom: 2px; }
