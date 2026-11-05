@@ -2164,5 +2164,11 @@
   .writing-phone-book__header img { max-height: 120px; }
   .writing-phone-book__summary { font-size: 0.8rem; line-height: 1.4; padding: 0.8rem; }
   .writing-phone-book__summary p + p { margin-top: 0.5rem; }
+  .ya-slideshow--phone .ya-content { padding: 0.75rem 1.25rem 2rem; }
+  .ya-slideshow--phone .ya-cover img { max-height: 100px; }
+  .ya-slideshow--phone .ya-summary { font-size: 0.74rem; line-height: 1.38; }
+  .ya-slideshow--phone .ya-summary span.block { margin-top: 0.45rem; }
+  .ya-slideshow--phone .ya-info > h3 { font-size: 1rem; }
+  .ya-slideshow--phone .ya-book-grid { gap: 0.6rem 0.85rem; }
 }
 @media (prefers-reduced-motion: reduce) { .writing-phone-book__summary p { transform: none; transition: none; } }
