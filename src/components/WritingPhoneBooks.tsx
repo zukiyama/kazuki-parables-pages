@@ -10,6 +10,7 @@ interface PhoneBook {
   cover: string;
   intro?: string;
   introBelow?: boolean;
+  introItalic?: boolean;
   paragraphs: string[];
   tagline?: string;
   tone: Tone;
@@ -109,7 +110,7 @@ function PhoneBookEntry({ book, onZoom }: { book: PhoneBook; onZoom: (book: Phon
             <img src={book.cover} alt={`${book.title} Book Cover`} width={400} height={600} loading={book.id === 'kaiju' ? 'eager' : 'lazy'} decoding="async" />
           </button>
           <div className="writing-phone-book__titles">
-            {book.intro && !book.introBelow && <p className="writing-phone-book__intro">{book.intro}</p>}
+            {book.intro && !book.introBelow && <p className="writing-phone-book__intro" data-italic={book.introItalic || undefined}>{book.intro}</p>}
             <h2 data-tone={book.tone} data-long={book.title.length > 8 || undefined}>{book.title}</h2>
             {book.intro && book.introBelow && <p className="writing-phone-book__intro" data-below>{book.intro}</p>}
           </div>
@@ -132,11 +133,11 @@ export function WritingPhoneBooks({ covers }: { covers: Record<string, string> }
       'Peter Mayhew had hit rock bottom when he wrote Hoax, a mystical parody intended as his sign-off, a final insult to an industry he had grown to despise… and worst of all an overnight bestseller. He had finally made his name — and could never use it again.',
       "A year later, fleeing his reputation in an Australian motel, paralysed by writer's block, he receives a phone call from someone who claims to be part of a cult modelled on his book.",
       'Peter must convince a community it was all a hoax—but in doing so, he begins to question where his book truly came from.'
-    ], tagline: 'A mind bending tale of literary fiction.' },
+    ], intro: 'A mind-bending tale of literary fiction.', introItalic: true },
     { id: 'the-market', title: 'THE MARKET', cover: covers.market, tone: 'signal', paragraphs: [
       "James Tarreden's new life on Island—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. In fact, everything is falling into place a little too easily…",
       "Under the wing of an enigmatic young CEO, James is inducted into the secrets behind his company's new technology, and with everything he knew about reality unravelling, finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of Island."
-    ], tagline: 'An existential psychological thriller.' },
+    ], intro: 'An existential psychological thriller.', introItalic: true },
     { id: 'oba', title: 'AMYA', cover: covers.amya, tone: 'magazine', paragraphs: [
       'Set in Nairobi, Kenya. A linguist specialising in rare languages is seconded, reluctantly, to a village where there have been reports of an ancient undiscovered language still being spoken.',
       'While there, he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive, awakening something that has lain silent in him for longer than he can remember.',
@@ -149,7 +150,7 @@ export function WritingPhoneBooks({ covers }: { covers: Record<string, string> }
       'A secret cabal of plumbers employed in an age old scheme that has evolved in the wastes beneath the city.',
       'And through it all, one long summer, from which nothing ever seems to emerge...'
     ] },
-    { id: 'how', title: 'HOW', cover: covers.how, intro: 'This is how.', introBelow: true, tone: 'zen', paragraphs: [
+    { id: 'how', title: 'HOW', cover: covers.how, intro: 'This\nis', tone: 'zen', paragraphs: [
       'With this realisation monk-shoemaker Shen Sho-Bi awakens from his trance of forty cycles, renounces the water-school of Luau and sets out on a journey to know the world.',
       'Part journal, part travelogue and part freeform reflection, here is the record of the wandering of the heretic Sho-Bi, which takes him from bandits and courtesans to kō matches with emperors, thought-contests with the great sages—and an audience with the gods themselves.',
       "Yet the greatest dialogue of all takes place between places, in Sho-Bi's conversations with the grass, leaves, rivers, and wind, with the world and the knowing of it."
