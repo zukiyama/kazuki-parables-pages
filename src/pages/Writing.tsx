@@ -55,6 +55,7 @@ const Writing = () => {
       setPhoneLayout(isWritingPhone(window.innerWidth, window.innerHeight));
       const banner = document.querySelector<HTMLElement>('[data-banner="bookshelf"]');
       const nav = document.querySelector<HTMLElement>('nav.fixed, [data-header]');
+      if (banner) banner.style.top = isWritingPhone(window.innerWidth, window.innerHeight) ? `${nav?.getBoundingClientRect().bottom ?? 64}px` : '';
       const top = (nav?.getBoundingClientRect().bottom ?? 64) + (banner?.offsetHeight ?? 112);
       mainRef.current?.style.setProperty('--writing-top', `${top}px`);
       mainRef.current?.style.setProperty('--writing-height', `${window.visualViewport?.height ?? window.innerHeight}px`);
@@ -140,10 +141,12 @@ const Writing = () => {
   useEffect(() => {
     const mark = () => { userInteractedRef.current = true; };
     window.addEventListener('touchstart', mark, { passive: true });
+    window.addEventListener('pointerdown', mark, { passive: true });
     window.addEventListener('wheel', mark, { passive: true });
     window.addEventListener('keydown', mark);
     return () => {
       window.removeEventListener('touchstart', mark);
+      window.removeEventListener('pointerdown', mark);
       window.removeEventListener('wheel', mark);
       window.removeEventListener('keydown', mark);
     };
