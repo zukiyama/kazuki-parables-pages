@@ -51,6 +51,7 @@ const Writing = () => {
   const isWidescreen = useWidescreenAspectRatio();
   const [phoneLayout, setPhoneLayout] = useState(() => isWritingPhone(window.innerWidth, window.innerHeight));
   useLayoutEffect(() => {
+    let lastWidth = -1;
     const sync = () => {
       setPhoneLayout(isWritingPhone(window.innerWidth, window.innerHeight));
       const banner = document.querySelector<HTMLElement>('[data-banner="bookshelf"]');
@@ -58,7 +59,13 @@ const Writing = () => {
       if (banner) banner.style.top = isWritingPhone(window.innerWidth, window.innerHeight) ? `${nav?.getBoundingClientRect().bottom ?? 64}px` : '';
       const top = (nav?.getBoundingClientRect().bottom ?? 64) + (banner?.offsetHeight ?? 112);
       mainRef.current?.style.setProperty('--writing-top', `${top}px`);
-      mainRef.current?.style.setProperty('--writing-height', `${window.visualViewport?.height ?? window.innerHeight}px`);
+      // Browser toolbars resize the visible area while scrolling. Only take a new
+      // height when the width changes (rotation), or every entry would grow and
+      // shrink together and shove the page — the old Other Works jump.
+      if (window.innerWidth !== lastWidth || !mainRef.current?.style.getPropertyValue('--writing-height')) {
+        lastWidth = window.innerWidth;
+        mainRef.current?.style.setProperty('--writing-height', `${window.innerHeight}px`);
+      }
     };
     const observer = new ResizeObserver(sync);
     const banner = document.querySelector('[data-banner="bookshelf"]');
@@ -70,9 +77,13 @@ const Writing = () => {
   }, []);
   useEffect(() => {
     if (!phoneLayout) return;
+    // Separate timers: a touch during a settle used to cancel the timer that clears
+    // `settling`, leaving it stuck on and switching locking off until reload.
     let timer: ReturnType<typeof setTimeout>;
+    let releaseTimer: ReturnType<typeof setTimeout>;
     let touching = false;
     let settling = false;
+    let movedSinceTouch = false;
     const settle = () => {
       if (touching || settling || !userInteractedRef.current || (window.visualViewport?.scale ?? 1) > 1.01) return;
       const banner = document.querySelector<HTMLElement>('[data-banner="bookshelf"]');
@@ -97,21 +108,22 @@ const Writing = () => {
         if (Math.abs(delta) < 4 || Math.abs(delta) > available * 0.4) return;
         settling = true;
         window.scrollTo({ top: window.scrollY + delta, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-        timer = setTimeout(() => { settling = false; }, 600);
+        releaseTimer = setTimeout(() => { settling = false; }, 700);
         return;
       }
       if (!shouldSettleWritingPhone(rect.top - top, rect.height, available)) return;
       settling = true;
       window.scrollTo({ top: writingPhoneTarget(rect.top + window.scrollY, top), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-      timer = setTimeout(() => { settling = false; }, 600);
+      releaseTimer = setTimeout(() => { settling = false; }, 700);
     };
-    const scroll = () => { if (settling) return; clearTimeout(timer); timer = setTimeout(settle, 220); };
-    const start = () => { touching = true; clearTimeout(timer); };
-    const end = () => { touching = false; scroll(); };
+    const scroll = () => { movedSinceTouch = true; if (settling) return; clearTimeout(timer); timer = setTimeout(settle, 220); };
+    const start = () => { touching = true; movedSinceTouch = false; clearTimeout(timer); };
+    // A plain tap (e.g. opening an Other Works title) must not trigger a settle.
+    const end = () => { touching = false; if (movedSinceTouch && !settling) { clearTimeout(timer); timer = setTimeout(settle, 220); } };
     window.addEventListener('scroll', scroll, { passive: true });
     window.addEventListener('touchstart', start, { passive: true });
     window.addEventListener('touchend', end, { passive: true });
-    return () => { clearTimeout(timer); window.removeEventListener('scroll', scroll); window.removeEventListener('touchstart', start); window.removeEventListener('touchend', end); };
+    return () => { clearTimeout(timer); clearTimeout(releaseTimer); window.removeEventListener('scroll', scroll); window.removeEventListener('touchstart', start); window.removeEventListener('touchend', end); };
   }, [phoneLayout]);
   const [scrollY, setScrollY] = useState(0);
   const [pageReady, setPageReady] = useState(false);
