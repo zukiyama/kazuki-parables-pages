@@ -1671,6 +1671,7 @@ const Writing = () => {
                   ref={youngAdultSlideshowRef} 
                   onBookChange={setCurrentYoungAdultBook}
                   isWidescreen={isWidescreen}
+                  phoneLayout={phoneLayout}
                 />
               </div>
             </div>
