@@ -185,6 +185,8 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       console.log('[BANNER CLICK DEBUG] topOffset:', topOffset, 'viewportHeight:', viewportHeight, 'availableHeight:', availableHeight, 'bannerHeight:', bannerHeight);
       
       if (isWritingPhone(window.innerWidth, window.innerHeight)) {
+        // Hold off the phone proximity lock so it can't fight this jump (up/down jitter).
+        document.documentElement.dataset.writingJumpUntil = String(Date.now() + 1600);
         return writingPhoneTarget(section.getBoundingClientRect().top + window.scrollY, topOffset);
       }
       let targetScrollPosition: number | undefined;

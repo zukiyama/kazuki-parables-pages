@@ -85,6 +85,7 @@ const Writing = () => {
     let settling = false;
     let movedSinceTouch = false;
     const settle = () => {
+      if (Number(document.documentElement.dataset.writingJumpUntil || 0) > Date.now()) return;
       if (touching || settling || !userInteractedRef.current || (window.visualViewport?.scale ?? 1) > 1.01) return;
       const banner = document.querySelector<HTMLElement>('[data-banner="bookshelf"]');
       const top = getHeaderBottom() + (banner?.offsetHeight ?? 0);
