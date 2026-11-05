@@ -159,13 +159,13 @@ const Comics = () => {
   useEffect(() => {
     // Manual early departure also consumes this visit's one automatic advance.
     if (currentSection >= 2) firstTitleVisitedRef.current = true;
-    if (!shouldAutoAdvanceComicsTitle(currentSection, firstTitleVisitedRef.current, showPopUpScene, isScrollLocked, isTransitioning)) return;
+    if (!shouldAutoAdvanceComicsTitle(currentSection, firstTitleVisitedRef.current, showPopUpScene, isScrollLocked, isTransitioning, phoneStack)) return;
     firstTitleVisitedRef.current = true;
     const timer = window.setTimeout(() => {
       advanceOpeningRef.current?.();
     }, COMICS_TITLE_PAUSE_MS);
     return () => window.clearTimeout(timer);
-  }, [currentSection, showPopUpScene, isScrollLocked, isTransitioning]);
+  }, [currentSection, showPopUpScene, isScrollLocked, isTransitioning, phoneStack]);
 
   // Pendragon unmounts the pinned pages. Rebind measurements to the new
   // elements on return instead of leaving them at the percentage fallback.

@@ -6,6 +6,8 @@ export function shouldAutoAdvanceComicsTitle(
   popUpScene: boolean,
   scrollLocked: boolean,
   transitioning: boolean,
+  phone = false,
 ): boolean {
-  return section === 1 && !alreadyVisited && popUpScene && scrollLocked && !transitioning;
+  // Phones show a "Swipe for more" cue instead of turning on their own.
+  return !phone && section === 1 && !alreadyVisited && popUpScene && scrollLocked && !transitioning;
 }
