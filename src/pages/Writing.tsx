@@ -82,6 +82,20 @@ const Writing = () => {
       const nearest = candidates.sort((a, b) => Math.abs(a.getBoundingClientRect().top - top) - Math.abs(b.getBoundingClientRect().top - top))[0];
       if (!nearest) return;
       const rect = nearest.getBoundingClientRect();
+      if (nearest.dataset.section === 'young-adult') {
+        // Same lock as tablet/desktop: centre heading + slideshow, or the slideshow alone if both can't fit.
+        const title = nearest.querySelector('h2');
+        const show = nearest.querySelector<HTMLElement>('.transition-opacity.duration-1000.delay-500');
+        if (!title || !show) return;
+        const t = title.getBoundingClientRect(); const s = show.getBoundingClientRect();
+        const box = available >= s.bottom - t.top + 16 ? { top: t.top, bottom: s.bottom } : { top: s.top, bottom: s.bottom };
+        const delta = (box.top + box.bottom) / 2 - (top + available / 2);
+        if (Math.abs(delta) < 4 || Math.abs(delta) > available * 0.4) return;
+        settling = true;
+        window.scrollTo({ top: window.scrollY + delta, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        timer = setTimeout(() => { settling = false; }, 600);
+        return;
+      }
       if (!shouldSettleWritingPhone(rect.top - top, rect.height, available)) return;
       settling = true;
       window.scrollTo({ top: writingPhoneTarget(rect.top + window.scrollY, top), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
