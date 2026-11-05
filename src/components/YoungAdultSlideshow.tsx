@@ -1,5 +1,6 @@
 import { useState, forwardRef, useImperativeHandle, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import * as Dialog from "@radix-ui/react-dialog";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Book covers
@@ -52,6 +53,7 @@ export interface YoungAdultSlideshowRef {
 }
 
 export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdultSlideshowProps>(({ onBookChange, isWidescreen = false, phoneLayout = false }, ref) => {
+  const [zoomed, setZoomed] = useState<(typeof books)[number] | null>(null);
   const [currentBook, setCurrentBookState] = useState(0);
   const [translateX, setTranslateX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -302,6 +304,18 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
   const track = [books[books.length - 1], ...books, books[0]];
 
   return (
+    <>
+    {phoneLayout && (
+      <Dialog.Root open={zoomed !== null} onOpenChange={open => { if (!open) setZoomed(null); }}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="comics-reader__overlay writing-cover-zoom__overlay" />
+          <Dialog.Content className="writing-cover-zoom" aria-describedby={undefined} onClick={() => setZoomed(null)}>
+            <Dialog.Title className="sr-only">{zoomed?.title} cover</Dialog.Title>
+            {zoomed && <img src={zoomed.cover} alt={`${zoomed.title} Book Cover`} width={800} height={1200} />}
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+    )}
     <div className={`ya-slideshow ${phoneLayout ? "ya-slideshow--phone" : ""} relative w-full ${isWidescreen ? "max-w-5xl mx-auto" : ""}`}>
     <div 
       ref={containerRef}
@@ -343,6 +357,8 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
                       loading="lazy"
                       decoding="async"
                       draggable={false}
+                      onClick={phoneLayout ? () => setZoomed(book) : undefined}
+                      style={phoneLayout ? { cursor: 'zoom-in' } : undefined}
                     />
                   </div>
                   
@@ -408,6 +424,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
         <ChevronRight className="relative w-7 h-7" />
       </Button>
     </div>
+    </>
   );
 });
 
