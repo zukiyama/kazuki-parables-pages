@@ -63,6 +63,10 @@
     --screenplay-letterbox: 0 0% 0%;
     --screenplay-caption: 36 45% 82%;
     --music-title-ink: 0 0% 100%;
+    --writing-paper: 48 65% 95%;
+    --writing-paper-ink: 25 12% 30%;
+    --writing-signal: 185 72% 80%;
+    --writing-signal-panel: 190 45% 12%;
 
     /* Typography scale for literary feel */
     --font-heading: 'Playfair Display', serif;
@@ -2095,3 +2099,70 @@
 .comics-phone-reader .comics-reader__copy h2 { font-size: 1.5rem; margin: 0.25rem 0 0.5rem; }
 @media (max-width: 359px) { .comics-phone-burden__copy h2 { font-size: 4.1rem; } }
 @media (max-height: 700px) { .comics-phone-burden__synopsis { top: 49%; } .comics-phone-burden__copy p { font-size: 0.84rem; line-height: 1.4; } }
+
+/* Phone Writing uses whole-entry proximity alignment, never mandatory snapping. */
+.writing-main[data-writing-phone="true"] { padding-top: var(--writing-top, 176px); }
+.writing-phone-trilogy { padding: 1.5rem 1.25rem 2rem; color: hsl(var(--comics-paper)); text-align: center; }
+.writing-phone-trilogy h1 { font-family: var(--font-heading); font-size: 2rem; line-height: 1.2; margin-bottom: 1rem; color: hsl(var(--screenplay-caption)); }
+.writing-phone-trilogy p { font-family: var(--font-body); font-size: 0.9rem; line-height: 1.55; }
+.writing-phone-book { min-height: calc(var(--writing-height, 100dvh) - var(--writing-top, 176px)); display: flex; align-items: center; padding: 1rem 1.25rem; color: hsl(var(--comics-paper)); }
+.writing-phone-book__content { width: 100%; }
+.writing-phone-book__header { display: grid; grid-template-columns: minmax(0, 30%) minmax(0, 1fr); gap: 1.25rem; align-items: center; margin-bottom: 1.15rem; }
+.writing-phone-book__header img { width: 100%; height: auto; max-height: 165px; object-fit: contain; object-position: left center; border-radius: 3px; box-shadow: 0 4px 18px hsl(var(--screenplay-letterbox) / 0.3); }
+.writing-phone-book__header h2 { font-family: var(--font-heading); font-size: 1.65rem; line-height: 1.16; overflow-wrap: anywhere; }
+.writing-phone-book__intro { font-family: var(--font-body); font-size: 0.75rem; line-height: 1.4; margin-bottom: 0.6rem; color: hsl(var(--screenplay-caption)); }
+.writing-phone-book__summary { padding: 1rem; border-radius: 6px; border: 1px solid hsl(var(--comics-paper) / 0.18); background: hsl(var(--screenplay-letterbox) / 0.48); backdrop-filter: blur(12px); font-family: Georgia, serif; font-size: 0.84rem; line-height: 1.48; }
+.writing-phone-book__summary p + p { margin-top: 0.65rem; }
+.writing-phone-book__summary p { opacity: 0; transform: translateY(5px); transition: opacity 550ms ease, transform 550ms ease; }
+.writing-phone-book[data-visible="true"] .writing-phone-book__summary p { opacity: 1; transform: none; }
+.writing-phone-book__summary[data-tone="paper"] { color: hsl(var(--writing-paper-ink)); background: hsl(var(--writing-paper) / 0.9); border-color: hsl(var(--writing-paper-ink) / 0.3); }
+.writing-phone-book__summary[data-tone="signal"] { color: hsl(var(--writing-signal)); background: hsl(var(--writing-signal-panel) / 0.85); border-color: hsl(var(--writing-signal) / 0.4); }
+.writing-phone-book__tagline { font-style: italic; }
+.writing-main[data-writing-phone="true"] [data-section="young-adult"] { min-height: calc(var(--writing-height, 100dvh) - var(--writing-top, 176px)); }
+.writing-main[data-writing-phone="true"] [data-section="young-adult"] > .container { padding: 0.75rem 1.25rem; }
+.writing-main[data-writing-phone="true"] [data-section="young-adult"] h2 { font-size: 1.55rem; margin-bottom: 0.35rem; }
+.writing-main[data-writing-phone="true"] [data-section="young-adult"] h2 + p { font-size: 0.8rem; margin-bottom: 0.8rem; }
+.ya-slideshow--phone .ya-panel { min-height: 0; border-radius: 6px; }
+.ya-slideshow--phone .ya-content { padding: 1rem 1.35rem 2.25rem; }
+.ya-slideshow--phone .ya-book-grid { grid-template-columns: 30% minmax(0, 1fr); gap: 0.85rem 1rem; align-items: center; }
+.ya-slideshow--phone .ya-cover { grid-column: 1; grid-row: 1 / 3; }
+.ya-slideshow--phone .ya-cover img { width: 100%; max-height: 145px; border-radius: 3px; }
+.ya-slideshow--phone .ya-info { display: contents; }
+.ya-slideshow--phone .ya-info > p:not(.ya-summary) { grid-column: 2; align-self: end; font-size: 0.65rem; line-height: 1.35; margin: 0; }
+.ya-slideshow--phone .ya-info > h3 { grid-column: 2; align-self: start; font-size: 1.15rem; line-height: 1.2; margin: 0; }
+.ya-slideshow--phone .ya-summary { grid-column: 1 / -1; max-width: none; font-size: 0.8rem; line-height: 1.45; text-align: left; }
+.ya-slideshow--phone .ya-summary span.block { margin-top: 0.55rem; }
+.ya-slideshow--phone .ya-edge-tab { width: 1.8rem; height: 3.6rem; padding: 0; }
+.ya-edge-tab { background: hsl(var(--screenplay-letterbox) / 0.55); color: hsl(var(--comics-paper) / 0.9); }
+.ya-edge-tab:hover { background: hsl(var(--screenplay-letterbox) / 0.65); color: hsl(var(--comics-paper)); }
+@media (max-width: 599px), (max-height: 599px) and (max-width: 949px) {
+  .writing-bookshelf { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+  .writing-bookshelf h3 { min-height: 27px; margin-bottom: 2px; }
+  .writing-bookshelf > div > div { padding-bottom: 0.4rem; gap: 0.75rem; justify-content: flex-start; }
+  .writing-bookshelf img { width: 40px; }
+  .writing-bookshelf > div > div > div { min-width: 64px; }
+  .site-footer > div { padding-top: 1.4rem; padding-bottom: 1.4rem; }
+  .site-footer .site-footer__layout { gap: 1.1rem; flex-direction: column; }
+  .site-footer .site-footer__socials { order: 3; margin: 0; }
+  .site-footer .site-footer__subscribe { order: 1; }
+  .site-footer .site-footer__contact { order: 2; margin: 0; }
+  .site-footer h3 { font-size: 1.1rem; margin-bottom: 0.35rem; }
+  .site-footer p { font-size: 0.78rem; line-height: 1.4; margin-bottom: 0.7rem; }
+  .site-footer .site-footer__contact p { margin-bottom: 0; }
+  .site-footer a[href*="subscribe"] { padding: 0.55rem 0.9rem; font-size: 0.75rem; }
+  .writing-main[data-writing-phone="true"] .writing-vignette--desert-left { display: block; width: 47%; }
+  .writing-main[data-writing-phone="true"] .writing-vignette--desert-right,
+  .writing-main[data-writing-phone="true"] .writing-vignette--revisions-left,
+  .writing-main[data-writing-phone="true"] .writing-vignette--syphons-left,
+  .writing-main[data-writing-phone="true"] .writing-vignette--syphons-right { width: 47%; }
+  .writing-vignette--syphons-left, .writing-vignette--revisions-left { background-position: 65% center !important; }
+  .writing-vignette--syphons-right { background-position: 35% center !important; }
+}
+@media (max-height: 740px) {
+  .writing-phone-book { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+  .writing-phone-book__header { margin-bottom: 0.75rem; }
+  .writing-phone-book__header img { max-height: 120px; }
+  .writing-phone-book__summary { font-size: 0.8rem; line-height: 1.4; padding: 0.8rem; }
+  .writing-phone-book__summary p + p { margin-top: 0.5rem; }
+}
+@media (prefers-reduced-motion: reduce) { .writing-phone-book__summary p { transform: none; transition: none; } }
