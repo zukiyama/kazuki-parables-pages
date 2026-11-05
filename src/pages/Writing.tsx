@@ -1692,6 +1692,7 @@ const Writing = () => {
           style={{ touchAction: 'manipulation' }}
         >
           {/* Vignette images - positioned on sides with gradient fade */}
+          <div className="writing-vignettes absolute inset-0 pointer-events-none" aria-hidden="true"><div className="writing-vignettes__rail">
           {/* DESERT VIGNETTE LEFT CROP ADJUST */}
           {/* DESERT LEFT vignette: uses same image as right but framed to left side (landscape only) */}
           <div 
@@ -1853,6 +1854,7 @@ const Writing = () => {
               WebkitMaskComposite: 'source-in'
             }}
           />
+          </div></div>
           
           {/* Main Content Container */}
           <div 
@@ -1925,7 +1927,7 @@ const Writing = () => {
               </div>
 
               {/* Click for details instruction */}
-              <p className={`text-center font-serif text-[0.7rem] tracking-[0.2em] uppercase mb-12 transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`}>
+              <p className={`text-center font-serif text-[0.7rem] max-sm:text-[0.56rem] tracking-[0.2em] uppercase mb-12 transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`}>
                 CLICK FOR DETAILS
               </p>
 
