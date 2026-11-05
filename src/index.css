@@ -2214,5 +2214,6 @@
 .writing-phone-book__header h2[data-tone="kaiju"] ~ .writing-phone-book__intro, .writing-phone-book__titles:has(h2[data-tone="kaiju"]) .writing-phone-book__intro { font-size: calc(1rem * var(--fit)); letter-spacing: 0.04em; }
 @media (prefers-reduced-motion: reduce) { .writing-phone-book__summary[data-tone="magazine"] p, .writing-phone-magazine__line { transform: none !important; filter: none !important; transition: none; } }
 
-.writing-phone-book__titles:has(h2[data-tone="zen"]) { width: fit-content; }
-.writing-phone-book__titles:has(h2[data-tone="zen"]) .writing-phone-book__intro { text-align: center; }
+.writing-phone-book__titles:has(h2[data-tone="zen"]) { padding-top: calc(2.6rem * var(--fit)); }
+.writing-phone-how-o { position: relative; display: inline-block; letter-spacing: 0; margin-right: 0.15em; }
+.writing-phone-how-intro { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); text-align: center; letter-spacing: normal; font-weight: 400; white-space: pre-line; margin-bottom: 0.2rem; }
