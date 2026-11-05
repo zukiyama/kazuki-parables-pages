@@ -19,4 +19,7 @@ describe("Comics first title arrival", () => {
     expect(shouldAutoAdvanceComicsTitle(1, false, false, true, false)).toBe(false);
     expect(shouldAutoAdvanceComicsTitle(1, false, true, false, false)).toBe(false);
   });
+  test("phones never turn the title page on their own", () => {
+    expect(shouldAutoAdvanceComicsTitle(1, false, true, true, false, true)).toBe(false);
+  });
 });

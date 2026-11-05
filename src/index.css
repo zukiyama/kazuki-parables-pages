@@ -2107,17 +2107,19 @@
 .writing-phone-trilogy { padding: 1.5rem 1.25rem 2rem; color: hsl(var(--comics-paper)); text-align: center; }
 .writing-phone-trilogy h1 { font-family: var(--font-heading); font-size: 2rem; line-height: 1.2; margin-bottom: 1rem; color: hsl(var(--screenplay-caption)); }
 .writing-phone-trilogy p { font-family: var(--font-body); font-size: 0.9rem; line-height: 1.55; }
-.writing-phone-book { --fit: 1; min-height: calc(var(--writing-height, 100dvh) - var(--writing-top, 176px)); display: flex; align-items: center; padding: 0.75rem 1.25rem; color: hsl(var(--comics-paper)); }
+.writing-phone-book { --fit: 1; min-height: calc(var(--writing-height, 100svh) - var(--writing-top, 176px)); display: flex; align-items: center; padding: 0.75rem 1.25rem; color: hsl(var(--comics-paper)); }
 .writing-phone-gap { height: 9rem; }
 .writing-phone-book__content { width: 100%; }
-.writing-phone-book__header { display: grid; grid-template-columns: minmax(0, 30%) minmax(0, 1fr); gap: 1.1rem; align-items: center; margin-bottom: calc(1rem * var(--fit)); }
-.writing-phone-book__cover { display: block; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
-.writing-phone-book__header img { width: 100%; height: auto; max-height: calc(165px * var(--fit)); object-fit: contain; object-position: left center; border-radius: 3px; box-shadow: 0 4px 18px hsl(var(--screenplay-letterbox) / 0.3); }
-.writing-phone-book__header h2 { font-family: var(--font-heading); font-size: calc(1.65rem * var(--fit)); font-weight: 700; line-height: 1.16; overflow-wrap: anywhere; }
-.writing-phone-book__header h2[data-tone="kaiju"] { font-family: 'Playfair Display', Georgia, serif; font-weight: 300; letter-spacing: 0.15em; font-size: calc(2.3rem * var(--fit)); }
+.writing-phone-book__header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem; align-items: center; margin-bottom: calc(1rem * var(--fit)); }
+.writing-phone-book__cover { grid-column: 2; grid-row: 1; justify-self: end; display: block; line-height: 0; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
+.writing-phone-book__header img { display: block; width: auto; height: calc(165px * var(--fit)); max-width: 34vw; object-fit: cover; border-radius: 3px; box-shadow: 0 4px 18px hsl(var(--screenplay-letterbox) / 0.3); }
+.writing-phone-book__titles { grid-column: 1; grid-row: 1; min-width: 0; }
+.writing-phone-book__header h2 { font-family: var(--font-heading); font-size: calc(2.7rem * var(--fit)); font-weight: 700; line-height: 1.02; letter-spacing: -0.01em; overflow-wrap: break-word; }
+.writing-phone-book__header h2[data-long] { font-size: calc(2.15rem * var(--fit)); }
+.writing-phone-book__header h2[data-tone="kaiju"] { font-family: 'Playfair Display', Georgia, serif; font-weight: 300; letter-spacing: 0.12em; font-size: calc(3.5rem * var(--fit)); line-height: 1; }
 .writing-phone-book__header h2[data-tone="signal"] { font-family: ui-monospace, monospace; color: hsl(var(--writing-signal)); }
-.writing-phone-book__header h2[data-tone="zen"] { font-family: Palatino, Georgia, serif; font-weight: 300; letter-spacing: 0.15em; font-size: calc(2.1rem * var(--fit)); }
-.writing-phone-book__intro { font-family: var(--font-body); font-size: calc(0.75rem * var(--fit)); line-height: 1.4; margin-bottom: 0.5rem; color: hsl(var(--screenplay-caption)); }
+.writing-phone-book__header h2[data-tone="zen"] { font-family: Palatino, Georgia, serif; font-weight: 300; letter-spacing: 0.15em; font-size: calc(3.4rem * var(--fit)); }
+.writing-phone-book__intro { font-family: var(--font-body); font-size: calc(0.85rem * var(--fit)); line-height: 1.4; margin-bottom: 0.6rem; color: hsl(var(--screenplay-caption)); }
 .writing-phone-book__summary { position: relative; padding: calc(1rem * var(--fit)); border-radius: 6px; border: 1px solid hsl(var(--comics-paper) / 0.18); background: hsl(var(--screenplay-letterbox) / 0.48); backdrop-filter: blur(12px); font-family: Georgia, serif; font-size: calc(0.84rem * var(--fit)); line-height: 1.48; }
 .writing-phone-book__summary p + p { margin-top: calc(0.6rem * var(--fit)); }
 .writing-phone-book__summary p { opacity: 0; transform: translateY(5px); transition: opacity 550ms ease, transform 550ms ease; }
@@ -2139,6 +2141,14 @@
 .writing-phone-book__summary[data-tone="dark"] { background: hsl(var(--ink-black) / 0.6); border-color: hsl(var(--comics-paper) / 0.2); backdrop-filter: blur(4px); }
 .writing-phone-book__summary[data-tone="zen"] { text-align: center; border: 0; border-radius: 0; border-top: 3px solid hsl(25 6% 45% / 0.6); border-bottom: 3px solid hsl(25 6% 45% / 0.6); color: hsl(25 6% 32%); background: hsl(60 9% 97% / 0.8); box-shadow: 0 10px 40px hsl(var(--ink-black) / 0.15); line-height: 1.7; }
 .writing-phone-book__tagline { font-style: italic; }
+.writing-phone-book__intro[data-below] { margin: 0.6rem 0 0; font-style: italic; }
+/* AMYA keeps its original magazine styling: no box, side accent, lines sliding in from alternate sides. */
+.writing-phone-book__summary[data-tone="magazine"] { padding: 0 0 0 1.1rem; border: 0; border-left: 2px solid hsl(var(--comics-paper) / 0.4); border-radius: 0; background: transparent; backdrop-filter: none; font-family: 'Merriweather', Georgia, serif; line-height: 1.6; color: hsl(var(--comics-paper) / 0.9); }
+.writing-phone-book__summary[data-tone="magazine"] p { transform: translateX(-2rem); filter: blur(4px); transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1), transform 700ms cubic-bezier(0.4, 0, 0.2, 1), filter 700ms cubic-bezier(0.4, 0, 0.2, 1); }
+.writing-phone-book__summary[data-tone="magazine"] p[data-side="right"] { transform: translateX(2rem); }
+.writing-phone-book[data-visible="true"] .writing-phone-book__summary[data-tone="magazine"] p { transform: none; filter: none; }
+.writing-phone-magazine__line { margin-top: calc(1rem * var(--fit)); height: 1px; background: linear-gradient(90deg, hsl(var(--comics-paper) / 0.3), hsl(var(--comics-paper) / 0.1), transparent); transform: scaleX(0); transform-origin: left; transition: transform 1s ease 900ms; }
+.writing-phone-book[data-visible="true"] .writing-phone-magazine__line { transform: none; }
 .writing-cover-zoom { position: fixed; inset: 0; z-index: 101; display: flex; align-items: center; justify-content: center; padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom)); outline: none; cursor: zoom-out; }
 .writing-cover-zoom img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px; box-shadow: 0 20px 60px hsl(var(--ink-black) / 0.5); animation: writing-cover-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both; }
 .writing-cover-zoom[data-state="closed"] img { animation: writing-cover-out 320ms cubic-bezier(0.4, 0, 1, 1) both; }
@@ -2148,7 +2158,7 @@
 @keyframes writing-cover-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: scale(0.45); } }
 @keyframes writing-cover-fade-out { from { opacity: 1; } to { opacity: 0; } }
 .writing-vignettes__rail { position: relative; height: 100%; }
-.writing-main[data-writing-phone="true"] [data-section="young-adult"] { min-height: calc(var(--writing-height, 100dvh) - var(--writing-top, 176px)); }
+.writing-main[data-writing-phone="true"] [data-section="young-adult"] { min-height: calc(var(--writing-height, 100svh) - var(--writing-top, 176px)); margin-top: 6rem; }
 .writing-main[data-writing-phone="true"] [data-section="young-adult"] > .container { padding: 0.75rem 1.25rem; }
 .writing-main[data-writing-phone="true"] [data-section="young-adult"] h2 { font-size: 1.55rem; margin-bottom: 0.35rem; }
 .writing-main[data-writing-phone="true"] [data-section="young-adult"] h2 + p { font-size: 0.8rem; margin-bottom: 0.8rem; }
@@ -2199,3 +2209,5 @@
   .ya-slideshow--phone .ya-book-grid { gap: 0.6rem 0.85rem; }
 }
 @media (prefers-reduced-motion: reduce) { .writing-phone-book__summary p, .writing-cover-zoom img, .writing-cover-zoom__overlay { transform: none; transition: none; animation: none !important; } }
+.writing-phone-book__header h2[data-tone="kaiju"] ~ .writing-phone-book__intro, .writing-phone-book__titles:has(h2[data-tone="kaiju"]) .writing-phone-book__intro { font-size: calc(1rem * var(--fit)); letter-spacing: 0.04em; }
+@media (prefers-reduced-motion: reduce) { .writing-phone-book__summary[data-tone="magazine"] p, .writing-phone-magazine__line { transform: none !important; filter: none !important; transition: none; } }
