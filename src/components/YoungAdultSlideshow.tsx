@@ -424,6 +424,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
         <ChevronRight className="relative w-7 h-7" />
       </Button>
     </div>
+    </>
   );
 });
 
