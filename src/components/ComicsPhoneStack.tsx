@@ -23,7 +23,7 @@ const scenes = [
 export function ComicsPhoneStack({ children, comics, open }: { children: ReactNode; comics: Comic[]; open: boolean }) {
   const stackRef = useRef<HTMLDivElement>(null);
   const nextPageRef = useRef<(index: number) => void>(() => {});
-  const readerRef = useRef<HTMLDivElement>(null);
+  const [readerElement, setReaderElement] = useState<HTMLDivElement | null>(null);
   const readerCopyRef = useRef<HTMLDivElement>(null);
   const readerCoverRef = useRef<HTMLImageElement>(null);
   const [viewport, api] = useEmblaCarousel({ loop: true, align: "center" });
@@ -33,7 +33,7 @@ export function ComicsPhoneStack({ children, comics, open }: { children: ReactNo
 
   useLayoutEffect(() => {
     if (!selected) return;
-    const reader = readerRef.current;
+    const reader = readerElement;
     const copy = readerCopyRef.current;
     const cover = readerCoverRef.current;
     if (!reader || !copy || !cover) return;
@@ -53,7 +53,7 @@ export function ComicsPhoneStack({ children, comics, open }: { children: ReactNo
     cover.addEventListener("load", fit);
     void document.fonts.ready.then(fit);
     return () => { observer.disconnect(); cover.removeEventListener("load", fit); };
-  }, [selected]);
+  }, [selected, readerElement]);
 
   useLayoutEffect(() => {
     const header = document.querySelector<HTMLElement>('[data-header="true"]');
@@ -193,7 +193,7 @@ export function ComicsPhoneStack({ children, comics, open }: { children: ReactNo
       <Dialog.Root open={selected !== null} onOpenChange={value => { if (!value) setSelected(null); }}>
         <Dialog.Portal>
           <Dialog.Overlay className="comics-reader__overlay" />
-          <Dialog.Content ref={readerRef} className="comics-reader comics-phone-reader" aria-describedby="comic-phone-reader-description" onClick={() => setSelected(null)}>
+          <Dialog.Content ref={setReaderElement} className="comics-reader comics-phone-reader" aria-describedby="comic-phone-reader-description" onClick={() => setSelected(null)}>
             {selected && <img ref={readerCoverRef} className="comics-phone-reader__cover" src={selected.cover} alt={`${selected.title} comic cover`} width={640} height={960} />}
             <div ref={readerCopyRef} className="comics-reader__copy"><p className="comics-reader__format">{selected?.format}</p><Dialog.Title>{selected?.title}</Dialog.Title><div id="comic-phone-reader-description">{selected?.description}</div><p className="comics-reader__teaser">{selected?.teaser}</p></div>
           </Dialog.Content>
