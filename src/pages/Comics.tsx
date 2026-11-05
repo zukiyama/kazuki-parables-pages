@@ -6,6 +6,7 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 import { Button } from "@/components/ui/button";
+import { ArrowDown } from "lucide-react";
 import { COMICS_TITLE_PAUSE_MS, shouldAutoAdvanceComicsTitle } from "@/lib/comics-title-timing";
 import { getComicsLayout, type ComicsLayout } from "@/lib/comics-layout";
 
@@ -1161,6 +1162,11 @@ const Comics = () => {
                     A psychological manga of deception, betrayal and redemption
                   </p>
                 </div>
+                {phoneStack && (
+                  <Button variant="ghost" className={`comics-phone-swipe comics-title-swipe ${currentSection === 1 && shrineSceneActive ? 'is-visible' : ''}`} tabIndex={currentSection === 1 ? 0 : -1} onClick={event => { event.stopPropagation(); if (currentSection !== 1) return; if (isTransitioning) pendingTitleAdvanceRef.current = true; else advanceOpeningRef.current?.(); }}>
+                    <span>Swipe for more</span><ArrowDown size={16} strokeWidth={1.25} aria-hidden="true" />
+                  </Button>
+                )}
                 </div>
 
                 <div className="comics-sky-half comics-sky-lower">

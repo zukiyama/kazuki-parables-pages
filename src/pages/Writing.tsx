@@ -79,9 +79,27 @@ const Writing = () => {
       const top = getHeaderBottom() + (banner?.offsetHeight ?? 0);
       const available = (window.visualViewport?.height ?? window.innerHeight) - top;
       const candidates = [...document.querySelectorAll<HTMLElement>('.writing-phone-book, [data-section="young-adult"]')];
-      const nearest = candidates.sort((a, b) => Math.abs(a.getBoundingClientRect().top - top) - Math.abs(b.getBoundingClientRect().top - top))[0];
+      const ya = candidates.find(el => el.dataset.section === 'young-adult');
+      const yaRect = ya?.getBoundingClientRect();
+      const nearest = ya && yaRect && yaRect.top < top + available * 0.6 && yaRect.bottom > top + available * 0.4
+        ? ya
+        : candidates.sort((a, b) => Math.abs(a.getBoundingClientRect().top - top) - Math.abs(b.getBoundingClientRect().top - top))[0];
       if (!nearest) return;
       const rect = nearest.getBoundingClientRect();
+      if (nearest.dataset.section === 'young-adult') {
+        // Same lock as tablet/desktop: centre heading + slideshow, or the slideshow alone if both can't fit.
+        const title = nearest.querySelector('h2');
+        const show = nearest.querySelector<HTMLElement>('.transition-opacity.duration-1000.delay-500');
+        if (!title || !show) return;
+        const t = title.getBoundingClientRect(); const s = show.getBoundingClientRect();
+        const box = available >= s.bottom - t.top + 16 ? { top: t.top, bottom: s.bottom } : { top: s.top, bottom: s.bottom };
+        const delta = (box.top + box.bottom) / 2 - (top + available / 2);
+        if (Math.abs(delta) < 4 || Math.abs(delta) > available * 0.4) return;
+        settling = true;
+        window.scrollTo({ top: window.scrollY + delta, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        timer = setTimeout(() => { settling = false; }, 600);
+        return;
+      }
       if (!shouldSettleWritingPhone(rect.top - top, rect.height, available)) return;
       settling = true;
       window.scrollTo({ top: writingPhoneTarget(rect.top + window.scrollY, top), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
@@ -1692,6 +1710,7 @@ const Writing = () => {
           style={{ touchAction: 'manipulation' }}
         >
           {/* Vignette images - positioned on sides with gradient fade */}
+          <div className="writing-vignettes absolute inset-0 pointer-events-none" aria-hidden="true"><div className="writing-vignettes__rail">
           {/* DESERT VIGNETTE LEFT CROP ADJUST */}
           {/* DESERT LEFT vignette: uses same image as right but framed to left side (landscape only) */}
           <div 
@@ -1853,6 +1872,7 @@ const Writing = () => {
               WebkitMaskComposite: 'source-in'
             }}
           />
+          </div></div>
           
           {/* Main Content Container */}
           <div 
@@ -1925,7 +1945,7 @@ const Writing = () => {
               </div>
 
               {/* Click for details instruction */}
-              <p className={`text-center font-serif text-[0.7rem] tracking-[0.2em] uppercase mb-12 transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`}>
+              <p className={`text-center font-serif text-[0.7rem] max-sm:text-[0.56rem] tracking-[0.2em] uppercase mb-12 transition-colors duration-700 ${otherWorksWhiteMode ? 'text-neutral-500' : 'text-neutral-500'}`}>
                 CLICK FOR DETAILS
               </p>
 
