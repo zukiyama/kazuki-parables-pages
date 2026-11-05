@@ -155,23 +155,18 @@ const Writing = () => {
   const [activeVignette, setActiveVignette] = useState<string | null>(null);
   const vignetteTitleRef = useRef<HTMLElement | null>(null);
   const vignetteRailRef = useRef<HTMLDivElement | null>(null);
+  const vignetteCentreRef = useRef<number | null>(null);
   // Phones: centre the side pictures on the tapped title. Height is fixed once per
   // open (no live viewport reads) so toolbar changes can't shift the page.
   useLayoutEffect(() => {
     const rail = vignetteRailRef.current;
     if (!phoneLayout || !rail || !activeVignette) return;
-    const place = () => {
-      const title = vignetteTitleRef.current;
-      const section = rail.closest('section');
-      if (!title || !section) return;
-      const h = rail.offsetHeight || window.innerHeight;
-      const t = title.getBoundingClientRect();
-      const centre = t.top + t.height / 2 - section.getBoundingClientRect().top;
-      rail.style.top = `${Math.max(0, Math.min(section.offsetHeight - h, centre - h / 2))}px`;
-    };
-    place();
-    const late = window.setTimeout(place, 560);
-    return () => window.clearTimeout(late);
+    // Place once at the title's final resting point (predicted at tap time), never chase it.
+    const section = rail.closest('section');
+    const centre = vignetteCentreRef.current;
+    if (!section || centre == null) return;
+    const h = rail.offsetHeight || window.innerHeight;
+    rail.style.top = `${Math.max(0, centre - h / 2)}px`;
   }, [activeVignette, phoneLayout]);
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
   const mainRef = useRef<HTMLElement>(null);
@@ -1983,8 +1978,21 @@ const Writing = () => {
 
               {/* Interactive Title List */}
               <div className="space-y-6" onClickCapture={(e) => {
-                const title = (e.target as HTMLElement).closest('button')?.querySelector('h3');
-                if (title) vignetteTitleRef.current = title;
+                const button = (e.target as HTMLElement).closest('button');
+                const title = button?.querySelector('h3');
+                const article = button?.closest('article');
+                const section = article?.closest('section');
+                if (!title || !article || !section) return;
+                vignetteTitleRef.current = title;
+                // Any other open summary above this title will collapse, lifting the title by its height.
+                let lift = 0;
+                article.parentElement?.querySelectorAll(':scope > article').forEach((other) => {
+                  if (other === article || !(other.compareDocumentPosition(article) & Node.DOCUMENT_POSITION_FOLLOWING)) return;
+                  const panel = other.querySelector(':scope > div') as HTMLElement | null;
+                  if (panel && panel.offsetHeight > 0) lift += panel.offsetHeight + parseFloat(getComputedStyle(panel).marginTop || '0');
+                });
+                const t = title.getBoundingClientRect();
+                vignetteCentreRef.current = t.top + t.height / 2 - section.getBoundingClientRect().top - lift;
               }}>
                 {/* Things That Happen in the Desert */}
                 <article className="text-center">
