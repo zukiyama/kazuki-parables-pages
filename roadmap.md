@@ -1,5 +1,8 @@
 # Roadmap
 
+- [ ] Phone Writing experiment: smaller covers and viewport-sized book layouts, gentle settling/menu alignment, compact menu, fitted YA slideshow and taller handles everywhere.
+- [ ] Phone Other Works vignette framing and compact shared footer; verify small/large phones and unchanged tablet layouts.
+
 - [x] Phone-only: added working subtle swipe cues, enlarged/nested Burden title with lowered separated copy, centred shelf, and dynamically fitted larger reader covers with centred summaries. Browser checked both cues, touch gestures, all five readers, short phone and unchanged tablet; 15 tests pass, build OK.
 
 - [x] Check Comics video encoding and WebM-first delivery: existing 1976×946 VP9 WebM is 37% smaller than H.264 MP4; browser verified WebM selected and playing. No reconversion needed.
