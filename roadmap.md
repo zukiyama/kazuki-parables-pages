@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Phone-only: add subtle swipe cues, reframe the Burden title/copy, centre the shelf block, and fit larger reader covers with centred summaries; verify phone flow.
+
 - [x] Check Comics video encoding and WebM-first delivery: existing 1976×946 VP9 WebM is 37% smaller than H.264 MP4; browser verified WebM selected and playing. No reconversion needed.
 - [x] Grow PARABLE as a whole word with the existing acceleration and timing; browser verified automatic and manual transitions preserve the running title in the image's dissolve layer, removing it only after the dissolve. Build OK.
 
