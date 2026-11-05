@@ -16,6 +16,6 @@ export function getComicsLayout(
   return {
     tabletPortraitStrip: width >= 768 && height > width,
     landscapeStripHidden: width > 820 && width > height,
-    popUpScene: width >= 768 && height >= 600,
+    popUpScene: true,
   };
 }
