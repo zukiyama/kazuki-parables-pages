@@ -2197,8 +2197,8 @@
   .writing-main[data-writing-phone="true"] .writing-vignette--syphons-right { width: 47%; }
   .writing-vignette--syphons-left, .writing-vignette--revisions-left { background-position: 65% center !important; }
   .writing-vignette--syphons-right { background-position: 35% center !important; }
-  .writing-main[data-writing-phone="true"] .writing-vignettes__rail { position: sticky; top: 0; height: 100dvh; }
-  .writing-main[data-writing-phone="true"] .writing-vignettes__rail > div { height: 100dvh; }
+  .writing-main[data-writing-phone="true"] .writing-vignettes__rail { position: absolute; left: 0; right: 0; top: 0; height: 100svh; transition: top 500ms ease-out; }
+  .writing-main[data-writing-phone="true"] .writing-vignettes__rail > div { height: 100svh; }
 }
 @media (max-height: 740px) {
   .ya-slideshow--phone .ya-content { padding: 0.75rem 1.25rem 2rem; }

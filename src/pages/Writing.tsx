@@ -153,6 +153,26 @@ const Writing = () => {
   const [otherWorksWhiteMode, setOtherWorksWhiteMode] = useState(false);
   const [expandedWork, setExpandedWork] = useState<string | null>(null);
   const [activeVignette, setActiveVignette] = useState<string | null>(null);
+  const vignetteTitleRef = useRef<HTMLElement | null>(null);
+  const vignetteRailRef = useRef<HTMLDivElement | null>(null);
+  // Phones: centre the side pictures on the tapped title. Height is fixed once per
+  // open (no live viewport reads) so toolbar changes can't shift the page.
+  useLayoutEffect(() => {
+    const rail = vignetteRailRef.current;
+    if (!phoneLayout || !rail || !activeVignette) return;
+    const place = () => {
+      const title = vignetteTitleRef.current;
+      const section = rail.closest('section');
+      if (!title || !section) return;
+      const h = rail.offsetHeight || window.innerHeight;
+      const t = title.getBoundingClientRect();
+      const centre = t.top + t.height / 2 - section.getBoundingClientRect().top;
+      rail.style.top = `${Math.max(0, Math.min(section.offsetHeight - h, centre - h / 2))}px`;
+    };
+    place();
+    const late = window.setTimeout(place, 560);
+    return () => window.clearTimeout(late);
+  }, [activeVignette, phoneLayout]);
   const youngAdultSlideshowRef = useRef<YoungAdultSlideshowRef>(null);
   const mainRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLElement | null>(null);
@@ -1722,7 +1742,7 @@ const Writing = () => {
           style={{ touchAction: 'manipulation' }}
         >
           {/* Vignette images - positioned on sides with gradient fade */}
-          <div className="writing-vignettes absolute inset-0 pointer-events-none" aria-hidden="true"><div className="writing-vignettes__rail">
+          <div className="writing-vignettes absolute inset-0 pointer-events-none" aria-hidden="true"><div ref={vignetteRailRef} className="writing-vignettes__rail">
           {/* DESERT VIGNETTE LEFT CROP ADJUST */}
           {/* DESERT LEFT vignette: uses same image as right but framed to left side (landscape only) */}
           <div 
@@ -1962,7 +1982,10 @@ const Writing = () => {
               </p>
 
               {/* Interactive Title List */}
-              <div className="space-y-6">
+              <div className="space-y-6" onClickCapture={(e) => {
+                const title = (e.target as HTMLElement).closest('button')?.querySelector('h3');
+                if (title) vignetteTitleRef.current = title;
+              }}>
                 {/* Things That Happen in the Desert */}
                 <article className="text-center">
                   <button 
