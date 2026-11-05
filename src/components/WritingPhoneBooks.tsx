@@ -137,7 +137,7 @@ export function WritingPhoneBooks({ covers }: { covers: Record<string, string> }
     { id: 'the-market', title: 'THE MARKET', cover: covers.market, tone: 'signal', paragraphs: [
       "James Tarreden's new life on Island—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. In fact, everything is falling into place a little too easily…",
       "Under the wing of an enigmatic young CEO, James is inducted into the secrets behind his company's new technology, and with everything he knew about reality unravelling, finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of Island."
-    ], intro: 'An existential psychological thriller.', introItalic: true },
+    ], intro: 'An existential psychological thriller', introItalic: true },
     { id: 'oba', title: 'AMYA', cover: covers.amya, tone: 'magazine', paragraphs: [
       'Set in Nairobi, Kenya. A linguist specialising in rare languages is seconded, reluctantly, to a village where there have been reports of an ancient undiscovered language still being spoken.',
       'While there, he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive, awakening something that has lain silent in him for longer than he can remember.',
