@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { isWritingPhone, writingPhoneTarget } from "@/lib/writing-phone-snap";
 
 // Book cover thumbnail images for banner (128x192 optimized versions)
 import kaijuCoverThumb from "@/assets/kaiju-cover-newthumbnail.webp";
@@ -183,6 +184,9 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
       const availableHeight = viewportHeight - topOffset;
       console.log('[BANNER CLICK DEBUG] topOffset:', topOffset, 'viewportHeight:', viewportHeight, 'availableHeight:', availableHeight, 'bannerHeight:', bannerHeight);
       
+      if (isWritingPhone(window.innerWidth, window.innerHeight)) {
+        return writingPhoneTarget(section.getBoundingClientRect().top + window.scrollY, topOffset);
+      }
       let targetScrollPosition: number | undefined;
       
       if (book.targetSection === 'young-adult') {
@@ -351,7 +355,7 @@ export const BookshelfMenu = ({ onBookClick, visibleSections, currentYoungAdultB
   return (
     <div 
       data-banner="bookshelf"
-      className={`fixed top-16 left-0 right-0 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-4 max-sm:pt-5 max-sm:pb-6 transition-all duration-500 ease-out ${
+      className={`writing-bookshelf fixed top-16 left-0 right-0 z-20 bg-black/80 backdrop-blur-md border-b border-white/20 py-4 max-sm:pt-5 max-sm:pb-6 transition-all duration-500 ease-out ${
         isWidescreen && !bannerVisible 
           ? 'opacity-0 -translate-y-full pointer-events-none' 
           : 'opacity-100 translate-y-0'

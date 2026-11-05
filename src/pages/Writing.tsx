@@ -8,6 +8,8 @@ import { useWidescreenAspectRatio } from "@/hooks/useWidescreenAspectRatio";
 import { YoungAdultSlideshow, YoungAdultSlideshowRef } from "@/components/YoungAdultSlideshow";
 import { BookCoverSlideshow } from "@/components/BookCoverSlideshow";
 import { BookshelfMenu } from "@/components/BookshelfMenu";
+import { WritingPhoneBooks } from "@/components/WritingPhoneBooks";
+import { isWritingPhone, writingPhoneTarget, shouldSettleWritingPhone } from "@/lib/writing-phone-snap";
 import { FloatingQuote } from "@/components/FloatingQuote";
 import { MagazineBlurb } from "@/components/MagazineBlurb";
 
@@ -47,6 +49,51 @@ import statesOfMotionCover from "@/assets/states-of-motion-cover.webp";
 const Writing = () => {
   useScrollToTop();
   const isWidescreen = useWidescreenAspectRatio();
+  const [phoneLayout, setPhoneLayout] = useState(() => isWritingPhone(window.innerWidth, window.innerHeight));
+  useLayoutEffect(() => {
+    const sync = () => {
+      setPhoneLayout(isWritingPhone(window.innerWidth, window.innerHeight));
+      const banner = document.querySelector<HTMLElement>('[data-banner="bookshelf"]');
+      const nav = document.querySelector<HTMLElement>('nav.fixed, [data-header]');
+      const top = (nav?.getBoundingClientRect().bottom ?? 64) + (banner?.offsetHeight ?? 112);
+      mainRef.current?.style.setProperty('--writing-top', `${top}px`);
+      mainRef.current?.style.setProperty('--writing-height', `${window.visualViewport?.height ?? window.innerHeight}px`);
+    };
+    const observer = new ResizeObserver(sync);
+    const banner = document.querySelector('[data-banner="bookshelf"]');
+    if (banner) observer.observe(banner);
+    sync();
+    window.addEventListener('resize', sync);
+    window.visualViewport?.addEventListener('resize', sync);
+    return () => { observer.disconnect(); window.removeEventListener('resize', sync); window.visualViewport?.removeEventListener('resize', sync); };
+  }, []);
+  useEffect(() => {
+    if (!phoneLayout) return;
+    let timer: ReturnType<typeof setTimeout>;
+    let touching = false;
+    let settling = false;
+    const settle = () => {
+      if (touching || settling || !userInteractedRef.current || (window.visualViewport?.scale ?? 1) > 1.01) return;
+      const banner = document.querySelector<HTMLElement>('[data-banner="bookshelf"]');
+      const top = getHeaderBottom() + (banner?.offsetHeight ?? 0);
+      const available = (window.visualViewport?.height ?? window.innerHeight) - top;
+      const candidates = [...document.querySelectorAll<HTMLElement>('.writing-phone-book, [data-section="young-adult"]')];
+      const nearest = candidates.sort((a, b) => Math.abs(a.getBoundingClientRect().top - top) - Math.abs(b.getBoundingClientRect().top - top))[0];
+      if (!nearest) return;
+      const rect = nearest.getBoundingClientRect();
+      if (!shouldSettleWritingPhone(rect.top - top, rect.height, available)) return;
+      settling = true;
+      window.scrollTo({ top: writingPhoneTarget(rect.top + window.scrollY, top), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      timer = setTimeout(() => { settling = false; }, 600);
+    };
+    const scroll = () => { if (settling) return; clearTimeout(timer); timer = setTimeout(settle, 220); };
+    const start = () => { touching = true; clearTimeout(timer); };
+    const end = () => { touching = false; scroll(); };
+    window.addEventListener('scroll', scroll, { passive: true });
+    window.addEventListener('touchstart', start, { passive: true });
+    window.addEventListener('touchend', end, { passive: true });
+    return () => { clearTimeout(timer); window.removeEventListener('scroll', scroll); window.removeEventListener('touchstart', start); window.removeEventListener('touchend', end); };
+  }, [phoneLayout]);
   const [scrollY, setScrollY] = useState(0);
   const [pageReady, setPageReady] = useState(false);
   const [initialBackgroundReady, setInitialBackgroundReady] = useState(false);
@@ -1033,11 +1080,12 @@ const Writing = () => {
       </div>
       
       {/* Main content - FIXED padding for widescreen, independent of banner visibility */}
-      <main ref={mainRef} className={`relative z-10 transition-all duration-500 ${
+      <main ref={mainRef} data-writing-phone={phoneLayout} className={`writing-main relative z-10 transition-all duration-500 ${
         isWidescreen 
           ? 'pt-56' 
           : 'pt-52 max-sm:pt-52'
       }`}>
+        {phoneLayout ? <WritingPhoneBooks covers={{ kaiju: kaijuCover, hoax: hoaxCover, market: theMarketCover, amya: amyaCover, states: statesOfMotionCover, how: howCover, vice: viceVersaCover }} /> : <>
         {/* KAIJU - The Parable Trilogy Section */}
         <section data-section="kaiju" className={`flex items-center justify-center relative ${
           isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
@@ -1593,6 +1641,7 @@ const Writing = () => {
         </section>
 
 
+        </>}
         {/* Young Adult Books Section */}
         <section 
           data-section="young-adult" 
@@ -1640,7 +1689,7 @@ const Writing = () => {
           {/* DESERT VIGNETTE LEFT CROP ADJUST */}
           {/* DESERT LEFT vignette: uses same image as right but framed to left side (landscape only) */}
           <div 
-            className="absolute left-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out overflow-hidden hidden md:block"
+            className="writing-vignette--desert-left absolute left-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out overflow-hidden hidden md:block"
             style={{
               opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
               maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
@@ -1664,7 +1713,7 @@ const Writing = () => {
           </div>
           {/* DESERT VIGNETTE RIGHT CROP ADJUST */}
           <div 
-            className="absolute right-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out overflow-hidden"
+            className="writing-vignette--desert-right absolute right-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out overflow-hidden"
             style={{
               opacity: activeVignette === 'desert' ? otherWorksContentOpacity : 0,
               maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 80%, transparent 100%)',
@@ -1745,7 +1794,7 @@ const Writing = () => {
           
           {/* Revisions vignettes */}
           <div 
-            className="absolute left-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="writing-vignette--revisions-left absolute left-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'revisions' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteRevisionsLeft})`,
@@ -1773,7 +1822,7 @@ const Writing = () => {
           
           {/* Syphons vignettes */}
           <div 
-            className="absolute left-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="writing-vignette--syphons-left absolute left-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'syphons' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteSyphonsLeft})`,
@@ -1786,7 +1835,7 @@ const Writing = () => {
             }}
           />
           <div 
-            className="absolute right-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
+            className="writing-vignette--syphons-right absolute right-0 top-0 h-screen w-1/3 pointer-events-none transition-opacity duration-700 ease-in-out"
             style={{
               opacity: activeVignette === 'syphons' ? otherWorksContentOpacity : 0,
               backgroundImage: `url(${vignetteSyphonsRight})`,

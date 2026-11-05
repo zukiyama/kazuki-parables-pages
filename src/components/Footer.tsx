@@ -18,15 +18,15 @@ export const Footer = ({
   
   return (
     <div className="relative">
-      <footer className={`${isDark ? 'bg-black/80 backdrop-blur-sm border-t border-white/20' : 'bg-card border-t border-border'} relative z-10 ${className}`}>
+      <footer className={`${isDark ? 'bg-black/80 backdrop-blur-sm border-t border-white/20' : 'bg-card border-t border-border'} site-footer relative z-10 ${className}`}>
         {/* beforeFooter content positioned relative to footer */}
         {beforeFooter}
         <div className="py-12 max-sm:py-8">
           <div className="container mx-auto px-6">
             {/* Main footer content - Subscribe center, Contact right */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div className="site-footer__layout flex flex-col md:flex-row md:items-center md:justify-between">
               {/* Left - Social links */}
-              <div className="flex justify-center md:justify-start md:flex-1 mb-8 md:mb-0">
+              <div className="site-footer__socials flex justify-center md:justify-start md:flex-1 mb-8 md:mb-0">
                 <SocialIcons
                   ids={["spotify", "applemusic", "featurefm", "bandcamp", "youtube", "tiktok", "instagram", "facebook"]}
                   iconClassName="w-4 h-4"
@@ -36,7 +36,7 @@ export const Footer = ({
               </div>
               
               {/* Center - Subscribe */}
-              <div className="text-center md:flex-1">
+              <div className="site-footer__subscribe text-center md:flex-1">
                 <h3 className={`font-heading text-2xl mb-3 ${isDark ? 'text-white' : 'text-ink-black'}`}>
                   Stay in Touch
                 </h3>
@@ -70,7 +70,7 @@ export const Footer = ({
               </div>
               
               {/* Right - Contact */}
-              <div className="text-center md:text-right md:flex-1 mt-8 md:mt-0 md:pr-4">
+              <div className="site-footer__contact text-center md:text-right md:flex-1 mt-8 md:mt-0 md:pr-4">
                 <h3 className={`font-heading text-2xl mb-4 ${isDark ? 'text-white' : 'text-ink-black'}`}>
                   Contact
                 </h3>

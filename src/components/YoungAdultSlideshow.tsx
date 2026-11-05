@@ -1,4 +1,5 @@
 import { useState, forwardRef, useImperativeHandle, useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Book covers
@@ -36,13 +37,14 @@ const books = [
 interface YoungAdultSlideshowProps {
   onBookChange?: (index: number) => void;
   isWidescreen?: boolean;
+  phoneLayout?: boolean;
 }
 
 export interface YoungAdultSlideshowRef {
   setCurrentBook: (index: number) => void;
 }
 
-export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdultSlideshowProps>(({ onBookChange, isWidescreen = false }, ref) => {
+export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdultSlideshowProps>(({ onBookChange, isWidescreen = false, phoneLayout = false }, ref) => {
   const [currentBook, setCurrentBookState] = useState(0);
   const [translateX, setTranslateX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -293,10 +295,10 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
   const track = [books[books.length - 1], ...books, books[0]];
 
   return (
-    <div className={`relative w-full ${isWidescreen ? "max-w-5xl mx-auto" : ""}`}>
+    <div className={`ya-slideshow ${phoneLayout ? "ya-slideshow--phone" : ""} relative w-full ${isWidescreen ? "max-w-5xl mx-auto" : ""}`}>
     <div 
       ref={containerRef}
-      className={containerClasses}
+      className={`ya-panel ${containerClasses}`}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -319,12 +321,12 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
               aria-hidden={index !== position}
               className={`flex-shrink-0 w-full ${isWidescreen ? "h-full" : ""}`}
             >
-              <div className={contentPadding}>
-                <div className={`grid grid-cols-1 gap-6 md:gap-10 items-center max-sm:gap-4 ${
+              <div className={`ya-content ${contentPadding}`}>
+                <div className={`ya-book-grid grid grid-cols-1 gap-6 md:gap-10 items-center max-sm:gap-4 ${
                   isWidescreen ? "lg:grid-cols-[1fr_1.2fr]" : "lg:grid-cols-2"
                 } ${book.layout === "cover-right" ? "lg:grid-flow-col-dense" : ""}`}>
                   {/* Book Cover */}
-                  <div className={book.layout === "cover-right" ? "lg:col-start-2" : ""}>
+                  <div className={`ya-cover ${book.layout === "cover-right" ? "lg:col-start-2" : ""}`}>
                     <img 
                       src={book.cover} 
                       alt={book.title}
@@ -338,7 +340,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
                   </div>
                   
                   {/* Book Info */}
-                  <div className={`${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-12 pl-8"} md:pl-16 md:pr-12 max-sm:px-4 max-sm:text-center ${isWidescreen ? "flex flex-col justify-center" : ""}`}>
+                  <div className={`ya-info ${book.layout === "cover-right" ? "lg:col-start-1 pl-24 pr-8" : "pr-12 pl-8"} md:pl-16 md:pr-12 max-sm:px-4 max-sm:text-center ${isWidescreen ? "flex flex-col justify-center" : ""}`}>
                     {book.series && (
                       <p className={seriesClasses}>{book.series}</p>
                     )}
@@ -346,7 +348,7 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
                     {book.subtitle && (
                       <h4 className={subtitleClasses}>{book.subtitle}</h4>
                     )}
-                    <p className={summaryClasses}>
+                    <p className={`ya-summary ${summaryClasses}`}>
                       {renderSummary(book.summary)}
                     </p>
                   </div>
@@ -373,31 +375,31 @@ export const YoungAdultSlideshow = forwardRef<YoungAdultSlideshowRef, YoungAdult
       <div aria-hidden className="pointer-events-none absolute inset-0 z-10 rounded-lg overflow-hidden">
         <span className="absolute inset-x-0 top-0 h-px bg-white/20" />
         <span className="absolute inset-x-0 bottom-0 h-px bg-white/20" />
-        <span className="absolute left-0 top-0 w-px bg-white/20" style={{ height: "calc(50% - 2.25rem)" }} />
-        <span className="absolute bottom-0 left-0 w-px bg-white/20" style={{ height: "calc(50% - 2.25rem)" }} />
-        <span className="absolute right-0 top-0 w-px bg-white/20" style={{ height: "calc(50% - 2.25rem)" }} />
-        <span className="absolute bottom-0 right-0 w-px bg-white/20" style={{ height: "calc(50% - 2.25rem)" }} />
+        <span className="absolute left-0 top-0 w-px bg-white/20" style={{ height: "calc(50% - 2.8rem)" }} />
+        <span className="absolute bottom-0 left-0 w-px bg-white/20" style={{ height: "calc(50% - 2.8rem)" }} />
+        <span className="absolute right-0 top-0 w-px bg-white/20" style={{ height: "calc(50% - 2.8rem)" }} />
+        <span className="absolute bottom-0 right-0 w-px bg-white/20" style={{ height: "calc(50% - 2.8rem)" }} />
       </div>
     </div>
       {/* Navigation - square tabs straddling the slideshow edges; hidden on mobile, use swipe instead */}
-      <button
+      <Button variant="ghost"
         type="button"
         onClick={prevBook}
         aria-label="Previous book"
-        className="absolute left-0 -translate-x-1/2 top-1/2 -translate-y-1/2 z-20 max-sm:hidden flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-md bg-black/55 backdrop-blur-md border border-white/10 text-white/90 shadow-lg overflow-hidden"
+        className="absolute left-0 -translate-x-1/2 top-1/2 -translate-y-1/2 ya-edge-tab z-20 flex items-center justify-center w-14 h-[4.5rem] md:w-16 md:h-20 rounded-md bg-black/55 backdrop-blur-md border border-white/10 text-white/90 shadow-lg overflow-hidden"
       >
         <span aria-hidden className="absolute inset-0 bg-white/10 pointer-events-none" style={{ opacity: flash === "prev" ? 1 : 0, transition: flash === "prev" ? "opacity 120ms ease-out" : "opacity 500ms ease-out" }} />
         <ChevronLeft className="relative w-7 h-7" />
-      </button>
-      <button
+      </Button>
+      <Button variant="ghost"
         type="button"
         onClick={nextBook}
         aria-label="Next book"
-        className="absolute right-0 translate-x-1/2 top-1/2 -translate-y-1/2 z-20 max-sm:hidden flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-md bg-black/55 backdrop-blur-md border border-white/10 text-white/90 shadow-lg overflow-hidden"
+        className="absolute right-0 translate-x-1/2 top-1/2 -translate-y-1/2 ya-edge-tab z-20 flex items-center justify-center w-14 h-[4.5rem] md:w-16 md:h-20 rounded-md bg-black/55 backdrop-blur-md border border-white/10 text-white/90 shadow-lg overflow-hidden"
       >
         <span aria-hidden className="absolute inset-0 bg-white/10 pointer-events-none" style={{ opacity: flash === "next" ? 1 : 0, transition: flash === "next" ? "opacity 120ms ease-out" : "opacity 500ms ease-out" }} />
         <ChevronRight className="relative w-7 h-7" />
-      </button>
+      </Button>
     </div>
   );
 });
