@@ -79,7 +79,11 @@ const Writing = () => {
       const top = getHeaderBottom() + (banner?.offsetHeight ?? 0);
       const available = (window.visualViewport?.height ?? window.innerHeight) - top;
       const candidates = [...document.querySelectorAll<HTMLElement>('.writing-phone-book, [data-section="young-adult"]')];
-      const nearest = candidates.sort((a, b) => Math.abs(a.getBoundingClientRect().top - top) - Math.abs(b.getBoundingClientRect().top - top))[0];
+      const ya = candidates.find(el => el.dataset.section === 'young-adult');
+      const yaRect = ya?.getBoundingClientRect();
+      const nearest = ya && yaRect && yaRect.top < top + available * 0.6 && yaRect.bottom > top + available * 0.4
+        ? ya
+        : candidates.sort((a, b) => Math.abs(a.getBoundingClientRect().top - top) - Math.abs(b.getBoundingClientRect().top - top))[0];
       if (!nearest) return;
       const rect = nearest.getBoundingClientRect();
       if (nearest.dataset.section === 'young-adult') {
