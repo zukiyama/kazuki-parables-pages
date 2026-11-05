@@ -231,7 +231,7 @@ const About = () => {
       </section>
       
       {/* Dark Quote Section - First Quote Only */}
-      <div className="relative z-20 -mt-20">
+      <div className="relative z-20 -mt-20 max-sm:hidden">
         <div className="bg-neutral-900 pt-12 pb-8 px-8 md:px-16 lg:px-24">
           <div className="max-w-4xl mx-auto">
             <blockquote className="relative">

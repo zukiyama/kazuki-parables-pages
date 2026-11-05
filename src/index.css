@@ -2046,3 +2046,37 @@
 }
 .home-cinematic-kaiju:active::after { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .home-cinematic-kaiju { transition: none; } }
+
+/* Phones only: lower Comics chapters stacked as one natively scrolling page. */
+.comics-phone-stack { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y pinch-zoom; opacity: 0; transition: opacity 380ms ease-out; }
+.comics-sky-pan.is-lower .comics-phone-stack { opacity: 1; }
+.comics-phone-stack__story { min-height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 1.75rem; padding: calc(var(--chapter-header-height, 0px) + 1.5rem) 0 3rem; }
+.comics-phone-carousel { overflow: hidden; touch-action: pan-y pinch-zoom; -webkit-mask-image: linear-gradient(to right, transparent 0, hsl(0 0% 0%) 13%, hsl(0 0% 0%) 87%, transparent 100%); mask-image: linear-gradient(to right, transparent 0, hsl(0 0% 0%) 13%, hsl(0 0% 0%) 87%, transparent 100%); }
+.comics-phone-carousel__track { display: flex; }
+.comics-phone-carousel__slide { flex: 0 0 74%; min-width: 0; padding: 0 0.4rem; background: transparent; border: none; outline: none; -webkit-tap-highlight-color: transparent; }
+.comics-phone-carousel__slide img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; transition: opacity 300ms ease; }
+.comics-phone-carousel__slide[data-active="false"] img { opacity: 0.9; }
+.comics-phone-stack__blurb { padding: 0 1.5rem; }
+.comics-phone-viewer { position: fixed; inset: 0; z-index: 101; display: flex; align-items: center; justify-content: center; padding: 1rem; outline: none; }
+.comics-phone-viewer img { max-width: 100%; max-height: 90dvh; object-fit: contain; }
+.comics-phone-stack__burden { background: hsl(var(--screenplay-letterbox)); }
+.comics-phone-burden { position: relative; width: 100%; aspect-ratio: 1370 / 941; overflow: hidden; }
+.comics-phone-burden img { position: absolute; top: 0; left: -16.8%; width: 121.9%; max-width: none; height: 100%; }
+.comics-phone-burden__status { position: absolute; top: 60%; left: 55.2%; width: 40%; text-align: center; font-family: var(--font-body); font-size: 0.4rem; line-height: 1.4; letter-spacing: 0.04em; white-space: nowrap; text-transform: uppercase; color: hsl(var(--screenplay-caption) / 0.8); }
+.comics-phone-burden__status span { margin: 0 0.4em; }
+.comics-phone-stack__shelf { position: relative; min-height: calc(100dvh - var(--chapter-header-height, 0px)); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; padding: 3rem 1.5rem; background: hsl(var(--comics-paper)); color: hsl(var(--ink-black)); overflow: hidden; }
+.comics-phone-stack__shelf-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% center; transform: scale(1.15); opacity: 0.65; pointer-events: none; }
+.comics-phone-stack__shelf h2, .comics-phone-stack__covers { position: relative; z-index: 1; }
+.comics-phone-stack__shelf h2 { font-family: var(--font-heading); font-size: 1.5rem; font-style: italic; text-align: center; }
+.comics-phone-stack__covers { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.25rem 1rem; width: 100%; max-width: 26rem; }
+.comics-phone-stack__cover { flex: 0 0 calc((100% - 2rem) / 3); height: auto; padding: 0; border-radius: 0; background: transparent; }
+.comics-phone-stack__cover:hover, .comics-phone-stack__cover:focus-visible { background: transparent; }
+.comics-phone-stack__cover img { width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: contain; box-shadow: 0 5px 15px hsl(var(--ink-black) / 0.18); }
+.comics-phone-stack__coming { background: hsl(var(--ink-black)); padding: 2.5rem 0; }
+.comics-phone-coming { position: relative; height: 66dvh; overflow: hidden; }
+.comics-phone-coming img { width: 100%; height: 100%; object-fit: cover; object-position: 51% center; }
+.comics-phone-coming h2 { position: absolute; bottom: 6%; left: 0; width: 100%; text-align: center; font-family: var(--font-heading); font-size: 2.25rem; color: hsl(var(--canvas-base)); text-shadow: 0 2px 3px hsl(var(--ink-black)), 0 3px 12px hsl(var(--ink-black)); }
+.comics-phone-reader { inset: 0; display: flex; flex-direction: column; justify-content: center; gap: 1.25rem; padding: 4rem 1.5rem 2rem; overflow-y: auto; }
+.comics-phone-reader__cover { width: auto; max-height: 45dvh; margin: 0 auto; object-fit: contain; }
+.comics-phone-reader .comics-reader__copy { max-height: none; overflow: visible; font-size: 0.95rem; }
+.comics-phone-reader .comics-reader__copy h2 { font-size: 1.75rem; margin: 0.4rem 0 0.75rem; }
