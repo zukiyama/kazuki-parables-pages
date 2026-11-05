@@ -2113,7 +2113,9 @@
 .writing-phone-book__header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem; align-items: center; margin-bottom: calc(1rem * var(--fit)); }
 .writing-phone-book__cover { grid-column: 2; grid-row: 1; justify-self: end; display: block; line-height: 0; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
 .writing-phone-book__header img { display: block; width: auto; height: calc(165px * var(--fit)); max-width: 34vw; object-fit: cover; border-radius: 3px; box-shadow: 0 4px 18px hsl(var(--screenplay-letterbox) / 0.3); }
-.writing-phone-book__titles { grid-column: 1; grid-row: 1; min-width: 0; }
+.writing-phone-book__titles { grid-column: 1; grid-row: 1; min-width: 0; justify-self: start; max-width: 100%; padding-left: 7%; }
+.writing-phone-book__intro { white-space: pre-line; }
+.writing-phone-book__intro[data-italic] { font-style: italic; }
 .writing-phone-book__header h2 { font-family: var(--font-heading); font-size: calc(2.7rem * var(--fit)); font-weight: 700; line-height: 1.02; letter-spacing: -0.01em; overflow-wrap: break-word; }
 .writing-phone-book__header h2[data-long] { font-size: calc(2.15rem * var(--fit)); }
 .writing-phone-book__header h2[data-tone="kaiju"] { font-family: 'Playfair Display', Georgia, serif; font-weight: 300; letter-spacing: 0.12em; font-size: calc(3.5rem * var(--fit)); line-height: 1; }
