@@ -32,6 +32,7 @@ import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
 import godOfLiesPopupCharacters from "@/assets/god-of-lies-characters-replacement.webp.asset.json";
 import godOfLiesPopupDog from "@/assets/god-of-lies-popup-dog.webp.asset.json";
 import { ComicsLowerSlideshow } from "@/components/ComicsLowerSlideshow";
+import { ComicsPhoneStack } from "@/components/ComicsPhoneStack";
 import { PagePeel } from "@/components/PagePeel";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.webp";
 import type { RevealSegment } from "@/components/WordReveal";
@@ -140,6 +141,9 @@ const Comics = () => {
   const [sectionProgress, setSectionProgress] = useState(0); // 0-1 transition progress within section
   const [isScrollLocked, setIsScrollLocked] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [phoneStack, setPhoneStack] = useState(() => typeof window !== 'undefined' && Math.min(window.innerWidth, window.innerHeight) < 600);
+  const phoneStackRef = useRef(phoneStack);
+  phoneStackRef.current = phoneStack;
   const [pinnedContainerOpacity, setPinnedContainerOpacity] = useState(1); // For dissolve to/from Pendragon
   const scrollableContentRef = useRef<HTMLDivElement>(null);
   
@@ -463,6 +467,17 @@ const Comics = () => {
         return;
       }
       
+      // Phones: the lower chapters are one natively scrolling page. Only an
+      // upward scroll from its very top steps back to the title page.
+      if (phoneStackRef.current && currentSection === 2) {
+        const stack = document.querySelector<HTMLElement>('.comics-phone-stack');
+        if (!stack || stack.scrollTop > 0 || e.deltaY >= 0 || isTransitioning) { scrollAccumulator = 0; return; }
+        e.preventDefault();
+        scrollAccumulator += e.deltaY;
+        if (scrollAccumulator < -scrollThreshold) { scrollAccumulator = 0; triggerSectionChange('prev'); }
+        return;
+      }
+
       // In pinned mode - prevent default scroll
       e.preventDefault();
       e.stopPropagation();
@@ -503,7 +518,9 @@ const Comics = () => {
     
     let touchInHeader = false;
     let touchBeganBusy = false;
+    let touchBeganAtStackTop = false;
     const handleTouchStart = (e: TouchEvent) => {
+      touchBeganAtStackTop = (document.querySelector<HTMLElement>('.comics-phone-stack')?.scrollTop ?? 0) <= 0;
       touchBeganBusy = isTransitioning || (currentSection === 0 && (openingRevealingRef.current || peelStartedRef.current));
       touchStartY = e.touches[0].clientY;
       touchAccumulator = 0;
@@ -555,6 +572,17 @@ const Comics = () => {
         return;
       }
       
+      if (phoneStackRef.current && currentSection === 2) {
+        const stack = document.querySelector<HTMLElement>('.comics-phone-stack');
+        const touchY = e.touches[0].clientY;
+        if (stack && touchBeganAtStackTop && stack.scrollTop <= 0 && touchY - touchStartY > 60 && !isTransitioning) {
+          e.preventDefault();
+          triggerSectionChange('prev');
+          touchStartY = touchY;
+        }
+        return;
+      }
+
       e.preventDefault();
       
       if (peelDraggingRef.current) return;
@@ -710,6 +738,7 @@ const Comics = () => {
       // Keep every phone orientation on the original sequence. Tablet and
       // larger viewports receive the pop-up scene, including iPad portrait.
       setShowPopUpScene(layout.popUpScene);
+      setPhoneStack(layout.phoneStack);
     };
 
     // iOS/iPadOS fires orientationchange BEFORE innerWidth/innerHeight update,
@@ -1046,7 +1075,7 @@ const Comics = () => {
                   decoding="async"
                 />
               )}
-              {showPopUpScene && panoramaReady && (
+              {showPopUpScene && panoramaReady && !phoneStack && (
                 <img className="comics-page-peel-cue" src={comicsCoolStuffCue} alt="Cool stuff here" width={1152} height={576} loading="eager" decoding="async" />
               )}
             </section>
@@ -1098,7 +1127,7 @@ const Comics = () => {
 
                 {/* Original lush pop-up trees, with only the roots replaced by
                     continuous trunks that finish beyond the viewport. */}
-                <div className={`comics-tree-rig ${shrineSceneActive ? 'is-open' : ''}`} aria-hidden="true">
+                <div className={`comics-tree-rig ${shrineSceneActive ? 'is-open' : ''} ${phoneStack ? 'hidden' : ''}`} aria-hidden="true">
                   <div className="comics-tree comics-tree--left">
                     <img src={shrineTreeLeft} alt="" width={1024} height={1536} loading="eager" decoding="async" />
                   </div>
@@ -1135,13 +1164,18 @@ const Comics = () => {
                 </div>
 
                 <div className="comics-sky-half comics-sky-lower">
-                  <ComicsLowerSlideshow comics={smallShelfComics} panorama={comicsSeoulSkyline} open={currentSection === 2} onScreenChange={handleLowerScreenChange}>
-                    <h3 className="comics-story-title">God of Lies</h3>
-                    <div className="comics-story-rule" />
-                    <p className="comics-story-description">{renderBlurbSegments(blurbMain)}</p>
-                    <p className="comics-story-teaser">A supernatural psychological manga packed with twists and reversals.</p>
-                    <p className="comics-story-format">Manga • Webtoon</p>
-                  </ComicsLowerSlideshow>
+                  {(() => {
+                    const blurb = (<>
+                      <h3 className="comics-story-title">God of Lies</h3>
+                      <div className="comics-story-rule" />
+                      <p className="comics-story-description">{renderBlurbSegments(blurbMain)}</p>
+                      <p className="comics-story-teaser">A supernatural psychological manga packed with twists and reversals.</p>
+                      <p className="comics-story-format">Manga • Webtoon</p>
+                    </>);
+                    return phoneStack
+                      ? <ComicsPhoneStack comics={smallShelfComics} open={currentSection === 2}>{blurb}</ComicsPhoneStack>
+                      : <ComicsLowerSlideshow comics={smallShelfComics} panorama={comicsSeoulSkyline} open={currentSection === 2} onScreenChange={handleLowerScreenChange}>{blurb}</ComicsLowerSlideshow>;
+                  })()}
                 </div>
               </div>
               </>
