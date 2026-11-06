@@ -121,7 +121,7 @@ const HomeCinematic = () => {
       </section>
 
       <section
-        className="home-cinematic-upper grid w-full bg-ink-black md:grid-cols-[1fr_2fr]"
+        className="home-cinematic-upper grid w-full bg-ink-black md:grid-cols-[4fr_1fr]"
         data-hover={upperHover ?? undefined}
         data-press={upperPress ?? undefined}
         onPointerLeave={(e) => {
