@@ -140,14 +140,13 @@ const HomeCinematic = () => {
             <img src={parableBoysStreet} alt="" loading="lazy" decoding="async" className="home-cinematic-upper__img home-cinematic-upper__img--kaiju absolute object-cover" style={{ objectPosition: "52% bottom" }} />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black/75 via-ink-black/10 to-transparent" />
-          <div className="home-cinematic-upper__kaiju-copy relative z-10 flex h-full flex-col items-end justify-end px-6 pb-14 text-right md:px-16 md:pb-20">
+          <div className="home-cinematic-upper__kaiju-copy relative z-10 flex h-full flex-col items-start justify-end px-6 pb-14 text-left md:px-16 md:pb-20">
             <Reveal>
-              <div className="mb-4 flex items-center justify-end gap-4 text-xs uppercase tracking-[0.35em] text-background/70">
+              <div className="mb-4 flex items-center justify-start gap-4 text-xs uppercase tracking-[0.35em] text-background/70">
                 <span className="font-mono">01</span>
                 <span className="h-px w-10 bg-background/50" />
                 <span className="home-cinematic-upper__kicker-full">The Parable Trilogy · Book One</span>
                 <span className="home-cinematic-upper__kicker-tablet">The Parable Trilogy</span>
-                <span className="home-cinematic-upper__kicker-collapsed">Book One</span>
               </div>
             </Reveal>
             <Reveal delay={120}><h2 className="font-heading text-5xl leading-[0.95] text-background md:text-8xl">KAIJU</h2></Reveal>

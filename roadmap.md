@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Keep To No One artwork stationary at its approved expanded crop; restore left-aligned KAIJU copy and shrink it as one continuous layer without hiding words. Desktop and iPad position/visibility checks passed; build OK.
+
 - [x] Put KAIJU left and a narrower To No One panel right; reveal the window by default and the seated figure on leftward hover expansion, without exposing the artwork's white outer border. Swapped their feature numbers; visually checked desktop/iPad default and expanded crops, verified phone touch feedback, build OK.
 
 - [x] Converted the active cotton-candy PNG to full-resolution WebP and added the mirrored To No One/KAIJU band with fixed artwork, stable pointer/touch feedback and 01–04 numbering. Verified desktop, iPad-width and phone layouts, hover reversal, stationary images and phone gallery enlargement; both hosted files return image/webp, 16 Comics tests pass, build OK.
