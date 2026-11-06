@@ -140,7 +140,7 @@ const HomeCinematic = () => {
             <img src={parableBoysStreet} alt="" loading="lazy" decoding="async" className="home-cinematic-upper__img home-cinematic-upper__img--kaiju absolute object-cover" style={{ objectPosition: "52% bottom" }} />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black/75 via-ink-black/10 to-transparent" />
-          <div className="home-cinematic-upper__kaiju-copy relative z-10 flex h-full flex-col items-start justify-end px-6 pb-14 text-left md:px-16 md:pb-20">
+          <div className="home-cinematic-upper__kaiju-copy relative z-10 flex h-full flex-col items-start justify-end px-6 pb-14 text-left md:px-16 md:pb-16">
             <Reveal>
               <div className="mb-4 flex items-center justify-start gap-4 text-xs uppercase tracking-[0.35em] text-background/70">
                 <span className="font-mono">01</span>
@@ -176,7 +176,9 @@ const HomeCinematic = () => {
         onPointerLeave={(e) => { if (e.pointerType !== "touch") setPairHover(null); }}
       >
         <Link to="/music" {...pairHandlers("circles")} className="home-cinematic-pair__panel group relative block min-w-0 overflow-hidden">
-          <img src={sixtiesVarietyShow} alt="" loading="lazy" className="home-cinematic-pair__img home-cinematic-pair__img--circles absolute inset-0 h-full w-full object-cover grayscale" />
+          <div className="home-cinematic-pair__art absolute inset-0">
+            <img src={sixtiesVarietyShow} alt="" loading="lazy" className="home-cinematic-pair__img home-cinematic-pair__img--circles absolute inset-0 h-full w-full object-cover grayscale" />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-r from-ink-black/40 via-ink-black/10 to-transparent" />
           <div className="home-cinematic-pair__circles relative z-10 flex h-full flex-col justify-center gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-start [text-shadow:0_2px_12px_hsl(var(--ink-black)/0.6)] md:gap-5 md:px-12 lg:gap-10 lg:px-24">
             <img src={circlesSingleCover} alt="Circles single cover" loading="lazy" className="h-40 w-40 shrink-0 rounded-sm object-cover shadow-2xl lg:h-56 lg:w-56" />
@@ -188,7 +190,9 @@ const HomeCinematic = () => {
           </div>
         </Link>
         <Link to="/comics" {...pairHandlers("god-of-lies")} className="home-cinematic-pair__panel group relative block min-w-0 overflow-hidden">
-          <img src={uniqueFaces} alt="" loading="lazy" style={facesBox} className="home-cinematic-pair__img home-cinematic-pair__img--faces absolute" />
+          <div className="home-cinematic-pair__art absolute inset-0">
+            <img src={uniqueFaces} alt="" loading="lazy" style={facesBox} className="home-cinematic-pair__img home-cinematic-pair__img--faces absolute" />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black/80 via-ink-black/25 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 px-6 pb-16 pt-6 [text-shadow:0_1px_3px_hsl(var(--ink-black)/0.95),0_2px_14px_hsl(var(--ink-black)/0.8)] md:px-10 md:pb-24">
             <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] font-medium text-background/95"><span className="font-mono">04</span> · Manga Webtoon</p></Reveal>
