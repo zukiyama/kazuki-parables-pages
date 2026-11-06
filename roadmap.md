@@ -1,5 +1,6 @@
 # Roadmap
 
+- [ ] Convert the active cotton-candy PNG to WebP and add the mirrored To No One/KAIJU homepage band with fixed artwork, pointer/touch feedback and renumbered features; verify desktop, phone and gallery enlargement.
 - [x] Phone-only: stacked smaller homepage links, enabled swipe browsing in enlarged God of Lies pictures with tap dismissal, and slightly lowered Burden title/copy. Phone gesture flow checked at 390×844; hosted illustration/Burden media unavailable in sandbox.
 
 - [x] Phone Writing experiment: smaller covers, edited-down summaries, viewport-sized entries, gentle proximity settling, measured menu alignment, compact menu and fitted YA slideshow; taller handles everywhere. Four scrolling-rule tests pass; checked 390×844 and 375×667, including all menu entries and slideshow selections.

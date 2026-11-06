@@ -597,8 +597,9 @@
 }
 
 /* Cinematic homepage */
-.home-cinematic-kaiju { height: 52.5svh; min-height: 300px; }
-.home-cinematic-kaiju > img { inset: auto 0 0; height: 320%; object-position: center bottom; }
+.home-cinematic-upper__panel { height: 52.5svh; min-height: 300px; }
+.home-cinematic-upper__img--to-no-one { width: 100vw; max-width: none; }
+.home-cinematic-upper__img--kaiju { inset: auto 0 0 auto; width: 100vw; max-width: none; height: 320%; }
 .home-cinematic-pair > a { height: 58svh; min-height: 360px; }
 /* 36vw keeps the policewoman and bike fully in frame on wide, short screens once zoomed out. */
 .home-cinematic-slideshow { height: max(60svh, 36vw); min-height: 400px; }
@@ -2041,15 +2042,30 @@
   .home-cinematic-pair, .home-cinematic-pair__img, .home-cinematic-pair__circles { transition: none; }
 }
 
-/* KAIJU band: same subtle frame glow and enlarge as the Circles / God of Lies panels; the picture itself stays put. */
-@media (hover: hover), (any-pointer: fine) {
-  .home-cinematic-kaiju { transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
-  .home-cinematic-kaiju::after { content: ""; position: absolute; inset: 0; z-index: 20; pointer-events: none; opacity: 0; transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1); box-shadow: inset 0 0 0 1px hsl(var(--background) / 0.35), inset 0 0 60px hsl(var(--background) / 0.22), inset 0 0 160px hsl(var(--background) / 0.1); }
-  .home-cinematic-kaiju:hover { transform: scale(1.012); z-index: 5; }
-  .home-cinematic-kaiju:hover::after { opacity: 1; }
+/* To No One / KAIJU band: the mirror of the lower band. Pointer state supports iPad trackpads;
+   viewport-width artwork stays stationary while the divider and copy move. */
+.home-cinematic-upper__img { transition: filter 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
+.home-cinematic-upper__kaiju-copy { transform-origin: right center; transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
+.home-cinematic-upper__panel::after { content: ""; position: absolute; inset: 0; z-index: 20; pointer-events: none; opacity: 0; transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1); box-shadow: inset 0 0 0 1px hsl(var(--background) / 0.35), inset 0 0 60px hsl(var(--background) / 0.22), inset 0 0 160px hsl(var(--background) / 0.1); }
+.home-cinematic-upper[data-press="to-no-one"] > a:first-child::after,
+.home-cinematic-upper[data-press="kaiju"] > a:last-child::after { opacity: 1; transition-duration: 0.25s; }
+@media (min-width: 768px) {
+  .home-cinematic-upper { transition: grid-template-columns 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
+  .home-cinematic-upper__panel { transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+  .home-cinematic-upper[data-hover="to-no-one"] { grid-template-columns: 2fr 1fr; }
+  .home-cinematic-upper[data-hover="to-no-one"] > a:first-child,
+  .home-cinematic-upper[data-hover="kaiju"] > a:last-child { transform: scale(1.012); z-index: 5; }
+  .home-cinematic-upper[data-hover="to-no-one"] > a:first-child::after,
+  .home-cinematic-upper[data-hover="kaiju"] > a:last-child::after { opacity: 1; }
+  .home-cinematic-upper[data-hover="to-no-one"] .home-cinematic-upper__kaiju-copy { transform: translateX(1.5rem) scale(0.75); }
 }
-.home-cinematic-kaiju:active::after { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .home-cinematic-kaiju { transition: none; } }
+.home-cinematic-upper:is([data-hover],[data-press]) .home-cinematic-upper__img { filter: brightness(0.82); }
+.home-cinematic-upper:is([data-hover="to-no-one"],[data-press="to-no-one"]) > a:first-child .home-cinematic-upper__img,
+.home-cinematic-upper:is([data-hover="kaiju"],[data-press="kaiju"]) > a:last-child .home-cinematic-upper__img { filter: brightness(1.08); }
+@media (prefers-reduced-motion: reduce) {
+  .home-cinematic-upper, .home-cinematic-upper__panel, .home-cinematic-upper__panel::after,
+  .home-cinematic-upper__img, .home-cinematic-upper__kaiju-copy { transition: none; }
+}
 
 /* Phones only: lower Comics chapters stacked as one natively scrolling page. */
 .comics-phone-stack { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y pinch-zoom; opacity: 0; transition: opacity 380ms ease-out; }
