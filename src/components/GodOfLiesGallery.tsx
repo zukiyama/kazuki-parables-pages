@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import florist from "@/assets/god-of-lies-carousel-florist.webp.asset.json";
-import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.webp.asset.json";
-import serenePortrait from "@/assets/god-of-lies-carousel-serene-portrait.webp.asset.json";
+import florist from "@/assets/god-of-lies-carousel-florist.webp";
+import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.webp";
+import serenePortrait from "@/assets/god-of-lies-carousel-serene-portrait.webp";
 import { nextGalleryPicture } from "@/lib/comics-slideshow";
 
 const scenes = [
-  { src: cottonCandy.url, alt: "Chang-Min and Seok-seol shopping with cotton candy" },
-  { src: serenePortrait.url, alt: "Smiling young man in a patterned robe with tassel earrings, eyes closed" },
-  { src: florist.url, alt: "Two people among potted plants on a flying terrace beneath a ringed planet" },
+  { src: cottonCandy, alt: "Chang-Min and Seok-seol shopping with cotton candy" },
+  { src: serenePortrait, alt: "Smiling young man in a patterned robe with tassel earrings, eyes closed" },
+  { src: florist, alt: "Two people among potted plants on a flying terrace beneath a ringed planet" },
 ];
 
 // The pictures centre between the fixed header's bottom border and the blurb,

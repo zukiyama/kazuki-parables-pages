@@ -5,18 +5,18 @@ import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import { ArrowDown } from "lucide-react";
 import { shelfComics } from "@/lib/comics-slideshow";
-import florist from "@/assets/god-of-lies-carousel-florist.webp.asset.json";
-import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.webp.asset.json";
-import serenePortrait from "@/assets/god-of-lies-carousel-serene-portrait.webp.asset.json";
-import screenplayArtwork from "@/assets/the-burden-screenplay.webp.asset.json";
-import shelfBackground from "@/assets/comics-sketch-background.webp.asset.json";
+import florist from "@/assets/god-of-lies-carousel-florist.webp";
+import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.webp";
+import serenePortrait from "@/assets/god-of-lies-carousel-serene-portrait.webp";
+import screenplayArtwork from "@/assets/the-burden-screenplay.webp";
+import shelfBackground from "@/assets/comics-sketch-background.webp";
 
 type Comic = { cover: string; title: string; description: ReactNode; teaser: string; format: string };
 
 const scenes = [
-  { src: cottonCandy.url, alt: "Chang-Min and Seok-seol shopping with cotton candy" },
-  { src: serenePortrait.url, alt: "Smiling young man in a patterned robe with tassel earrings, eyes closed" },
-  { src: florist.url, alt: "Two people among potted plants on a flying terrace beneath a ringed planet" },
+  { src: cottonCandy, alt: "Chang-Min and Seok-seol shopping with cotton candy" },
+  { src: serenePortrait, alt: "Smiling young man in a patterned robe with tassel earrings, eyes closed" },
+  { src: florist, alt: "Two people among potted plants on a flying terrace beneath a ringed planet" },
 ];
 
 function PhoneIllustrationViewer({ initialIndex, onNavigate, onClose }: { initialIndex: number; onNavigate: (index: number) => void; onClose: () => void }) {
@@ -173,7 +173,7 @@ export function ComicsPhoneStack({ children, comics, open }: { children: ReactNo
       </section>
 
       <section className="comics-phone-stack__burden" data-phone-page aria-label="The Burden">
-        <img className="comics-phone-burden__art" src={screenplayArtwork.url} alt="A man in a suit beside an old woman in a wheelchair under a street lamp" width={1670} height={941} />
+        <img className="comics-phone-burden__art" src={screenplayArtwork} alt="A man in a suit beside an old woman in a wheelchair under a street lamp" width={1670} height={941} />
         <div className="comics-phone-burden__copy">
           <h2><span>The</span>Burden</h2>
           <div className="comics-phone-burden__synopsis">
@@ -190,7 +190,7 @@ export function ComicsPhoneStack({ children, comics, open }: { children: ReactNo
       </section>
 
       <section className="comics-phone-stack__shelf" data-phone-page aria-label="Stories waiting to be told">
-        <img className="comics-phone-stack__shelf-bg" src={shelfBackground.url} alt="" aria-hidden="true" />
+        <img className="comics-phone-stack__shelf-bg" src={shelfBackground} alt="" aria-hidden="true" />
         <h2>Stories waiting to be told…</h2>
         <div className="comics-phone-stack__covers">
           {shelfComics(comics).map(comic => (
