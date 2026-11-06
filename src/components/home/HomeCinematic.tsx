@@ -150,7 +150,7 @@ const HomeCinematic = () => {
               </div>
             </Reveal>
             <Reveal delay={120}><h2 className="font-heading text-5xl leading-[0.95] text-background md:text-8xl">KAIJU</h2></Reveal>
-            <HandwrittenLine className="home-cinematic-upper__kaiju-tagline mt-3 text-3xl text-background/90 md:text-4xl" style={{ fontFamily: "Allura, cursive" }}>A metaphysical fantasy</HandwrittenLine>
+            <p className="home-cinematic-upper__kaiju-tagline mt-3 text-4xl text-background/90 md:text-5xl">A metaphysical fantasy</p>
             <Reveal delay={240}><span className="home-cinematic-upper__kaiju-cta mt-6 inline-flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-background">Enter the story <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span></span></Reveal>
           </div>
         </Link>
