@@ -20,7 +20,7 @@ const Reveal = ({ children, delay = 0, className = "" }: { children: ReactNode; 
     const el = ref.current;
     if (!el) return;
     const io = new IntersectionObserver(([e]) => e.isIntersecting && setShown(true), { threshold: 0.2 });
-    io.observe(el);
+    io.observe(el.closest("a") ?? el);
     return () => io.disconnect();
   }, []);
   return (
@@ -217,8 +217,8 @@ function HandwrittenLine({ className, children }: { className?: string; children
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const io = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { setWritten(true); io.disconnect(); } }, { threshold: 0.6 });
-    io.observe(el);
+    const io = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { setWritten(true); io.disconnect(); } }, { threshold: 0.35 });
+    io.observe(el.closest("a") ?? el);
     return () => io.disconnect();
   }, []);
   return <span ref={ref} className={`home-handwritten-line ${written ? "is-written" : ""} ${className ?? ""}`}>{children}</span>;
