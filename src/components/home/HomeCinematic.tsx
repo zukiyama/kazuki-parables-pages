@@ -124,7 +124,15 @@ const HomeCinematic = () => {
         className="home-cinematic-upper grid w-full bg-ink-black md:grid-cols-[1fr_2fr]"
         data-hover={upperHover ?? undefined}
         data-press={upperPress ?? undefined}
-        onPointerLeave={(e) => { if (e.pointerType !== "touch" && !e.currentTarget.matches(":hover")) setUpperHover(null); }}
+        onPointerLeave={(e) => {
+          if (e.pointerType === "touch") return;
+          const section = e.currentTarget;
+          const { clientX, clientY } = e;
+          requestAnimationFrame(() => {
+            const hit = document.elementFromPoint(clientX, clientY);
+            if (!hit || !section.contains(hit)) setUpperHover(null);
+          });
+        }}
         aria-label="Featured fiction and comic"
       >
         <Link to="/comics" {...upperHandlers("to-no-one")} className="home-cinematic-upper__panel home-cinematic-upper__to-no-one group relative block min-w-0 overflow-hidden bg-ink-black">
