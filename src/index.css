@@ -2002,7 +2002,7 @@
   .comics-page-peel-cue--wide-text { right: 122px; bottom: 12px; width: 253px; }
   .comics-page-peel-cue--wide-arrow { right: 58px; bottom: 26px; width: 60px; }
   /* Keep the scrollbar's space reserved so dialog scroll-locks never shift the page sideways. */
-  html:has(body[data-scroll-locked]) { scrollbar-gutter: stable; }
+  html:has(body[data-scroll-locked]) { overflow-y: scroll; }
   body[data-scroll-locked] { margin-right: 0 !important; }
 }
 @media not ((min-width: 1024px) and (hover: hover) and (pointer: fine)) {
