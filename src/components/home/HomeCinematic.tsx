@@ -121,7 +121,7 @@ const HomeCinematic = () => {
       </section>
 
       <section
-        className="home-cinematic-upper grid w-full bg-ink-black md:grid-cols-[1fr_2fr]"
+        className="home-cinematic-upper grid w-full bg-ink-black md:grid-cols-[4fr_1fr]"
         data-hover={upperHover ?? undefined}
         data-press={upperPress ?? undefined}
         onPointerLeave={(e) => {
@@ -135,18 +135,6 @@ const HomeCinematic = () => {
         }}
         aria-label="Featured fiction and comic"
       >
-        <Link to="/comics" {...upperHandlers("to-no-one")} className="home-cinematic-upper__panel home-cinematic-upper__to-no-one group relative block min-w-0 overflow-hidden bg-ink-black">
-          <div className="home-cinematic-upper__art absolute inset-0">
-            <img src={toNoOneBedroom.url} alt="" loading="lazy" decoding="async" width={1774} height={887} className="home-cinematic-upper__img home-cinematic-upper__img--to-no-one absolute inset-y-0 left-0 h-full object-cover" />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-ink-black/80 via-ink-black/20 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 px-6 pb-16 pt-6 [text-shadow:0_1px_3px_hsl(var(--ink-black)/0.95),0_2px_14px_hsl(var(--ink-black)/0.8)] md:px-10 md:pb-24">
-            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] font-medium text-background/95"><span className="font-mono">01</span> · <span className="home-cinematic-upper__kicker-full">Original comic</span><span className="home-cinematic-upper__kicker-tablet">Comic</span></p></Reveal>
-            <Reveal delay={120}><h2 className="font-heading text-4xl text-background lg:text-5xl">To No One</h2></Reveal>
-            <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Read more →</span></Reveal>
-          </div>
-        </Link>
-
         <Link to="/writing#kaiju" {...upperHandlers("kaiju")} className="home-cinematic-upper__panel home-cinematic-upper__kaiju group relative block min-w-0 overflow-hidden bg-ink-black">
           <div className="home-cinematic-upper__art absolute inset-0">
             <img src={parableBoysStreet} alt="" loading="lazy" decoding="async" className="home-cinematic-upper__img home-cinematic-upper__img--kaiju absolute object-cover" style={{ objectPosition: "52% bottom" }} />
@@ -155,7 +143,7 @@ const HomeCinematic = () => {
           <div className="home-cinematic-upper__kaiju-copy relative z-10 flex h-full flex-col items-end justify-end px-6 pb-14 text-right md:px-16 md:pb-20">
             <Reveal>
               <div className="mb-4 flex items-center justify-end gap-4 text-xs uppercase tracking-[0.35em] text-background/70">
-                <span className="font-mono">02</span>
+                <span className="font-mono">01</span>
                 <span className="h-px w-10 bg-background/50" />
                 <span className="home-cinematic-upper__kicker-full">The Parable Trilogy · Book One</span>
                 <span className="home-cinematic-upper__kicker-tablet">The Parable Trilogy</span>
@@ -165,6 +153,18 @@ const HomeCinematic = () => {
             <Reveal delay={120}><h2 className="font-heading text-5xl leading-[0.95] text-background md:text-8xl">KAIJU</h2></Reveal>
             <Reveal delay={240}><div className="home-cinematic-upper__kaiju-summary mt-5 max-w-xl font-body text-base text-background/80 md:text-lg">A metaphysical fantasy. Summer 1979, Osaka — something is coming.</div></Reveal>
             <Reveal delay={360}><span className="home-cinematic-upper__kaiju-cta mt-8 inline-flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-background">Enter the story <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span></span></Reveal>
+          </div>
+        </Link>
+
+        <Link to="/comics" {...upperHandlers("to-no-one")} className="home-cinematic-upper__panel home-cinematic-upper__to-no-one group relative block min-w-0 overflow-hidden bg-ink-black">
+          <div className="home-cinematic-upper__art absolute inset-0">
+            <img src={toNoOneBedroom.url} alt="" loading="lazy" decoding="async" width={1774} height={887} className="home-cinematic-upper__img home-cinematic-upper__img--to-no-one absolute right-0 h-full object-cover" />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-black/80 via-ink-black/20 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 px-6 pb-16 pt-6 [text-shadow:0_1px_3px_hsl(var(--ink-black)/0.95),0_2px_14px_hsl(var(--ink-black)/0.8)] md:px-6 md:pb-24">
+            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] font-medium text-background/95"><span className="font-mono">02</span> · <span className="home-cinematic-upper__kicker-full">Original comic</span><span className="home-cinematic-upper__kicker-tablet">Comic</span></p></Reveal>
+            <Reveal delay={120}><h2 className="font-heading text-4xl text-background lg:text-5xl">To No One</h2></Reveal>
+            <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Read more →</span></Reveal>
           </div>
         </Link>
       </section>
