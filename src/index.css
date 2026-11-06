@@ -599,6 +599,10 @@
 /* Cinematic homepage */
 .home-cinematic-upper__panel { height: 52.5svh; min-height: 300px; }
 .home-cinematic-upper__img--to-no-one { top: -1%; right: -1vw; width: 102vw; max-width: none; height: 102%; object-position: center; }
+@media (max-width: 767px) {
+  /* Trim the drawing's fine top edge on phones while retaining the approved crop and bottom anchoring. */
+  .home-cinematic-upper__img--to-no-one { top: -4%; height: 105%; }
+}
 .home-cinematic-upper__img--kaiju { inset: auto 0 0 auto; width: 100vw; max-width: none; height: 320%; }
 .home-cinematic-pair > a { height: 58svh; min-height: 360px; }
 /* 36vw keeps the policewoman and bike fully in frame on wide, short screens once zoomed out. */
