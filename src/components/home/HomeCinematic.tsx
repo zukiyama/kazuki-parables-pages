@@ -149,9 +149,8 @@ const HomeCinematic = () => {
                 <span className="home-cinematic-upper__kicker-tablet">The Parable Trilogy</span>
               </div>
             </Reveal>
-            <Reveal delay={120}><h2 className="font-heading text-5xl leading-[0.95] text-background md:text-8xl">KAIJU</h2></Reveal>
-            <Reveal delay={240}><div className="home-cinematic-upper__kaiju-summary mt-5 max-w-xl font-body text-base text-background/80 md:text-lg">A metaphysical fantasy. Summer 1979, Osaka — something is coming.</div></Reveal>
-            <Reveal delay={360}><span className="home-cinematic-upper__kaiju-cta mt-8 inline-flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-background">Enter the story <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span></span></Reveal>
+            <Reveal delay={120}><h2 className="font-heading text-5xl leading-[0.95] text-background md:text-7xl">KAIJU</h2></Reveal>
+            <Reveal delay={240}><span className="home-cinematic-upper__kaiju-cta mt-8 inline-flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-background">Enter the story <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span></span></Reveal>
           </div>
         </Link>
 

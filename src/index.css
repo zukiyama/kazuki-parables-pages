@@ -1980,6 +1980,29 @@
 .comics-screenplay-slide__artwork img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .comics-screenplay-slide__status { position: absolute; top: 59%; left: 56%; width: 39%; text-align: center; font-family: var(--font-body); font-size: 0.7rem; line-height: 1.4; text-transform: uppercase; color: hsl(var(--screenplay-caption) / 0.8); }
 .comics-screenplay-slide__status span { margin: 0 0.45em; }
+.comics-screenplay-slide__wide-copy { display: none; }
+/* Widescreen desktops only (keep in sync with WIDESCREEN_DESKTOP): the words float on their own layer,
+   centred between header and footer, while the text-free artwork rises so the pair sit just above the footer. */
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .comics-screenplay-slide .comics-film-stage { position: relative; }
+  .comics-screenplay-slide__artwork > .comics-screenplay-slide__status { display: none; }
+  .comics-screenplay-slide__wide-copy {
+    display: block; position: absolute; z-index: 1; top: 50%; transform: translateY(-50%);
+    left: calc(100cqw * 935 / 1670); width: calc(100cqw * 655 / 1670); pointer-events: none;
+  }
+  .comics-screenplay-slide__wide-copy img { display: block; width: 100%; height: auto; }
+  .comics-screenplay-slide__wide-copy p { margin-top: calc(100cqw * 15 / 1670); text-align: center; font-family: var(--font-body); font-size: 0.7rem; line-height: 1.4; text-transform: uppercase; color: hsl(var(--screenplay-caption) / 0.8); }
+  .comics-screenplay-slide__wide-copy p span { margin: 0 0.45em; }
+  @container (aspect-ratio >= 1670 / 941) {
+    /* Wheelchair/feet line (~86.6% down the artwork) lands 2.5% of the stage above the footer. */
+    .comics-screenplay-slide__artwork { transform: translateY(min(0px, calc(97.5cqh - 100cqw * 815 / 1670))); }
+  }
+  .comics-page-peel-cue { display: none; }
+  .comics-page-peel-cue--wide { display: block; right: 4.25rem; bottom: 0.6rem; width: 20rem; height: 4rem; }
+}
+@media not ((min-width: 1024px) and (hover: hover) and (pointer: fine)) {
+  .comics-page-peel-cue--wide { display: none; }
+}
 .comics-shelf-slide { background: hsl(var(--comics-paper)); color: hsl(var(--ink-black)); display: grid; grid-template-rows: minmax(0, 1fr) auto minmax(1.5rem, 0.6fr) auto minmax(0, 1fr); justify-items: center; padding: 2rem 10%; }
 .comics-shelf-slide__background { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.65; pointer-events: none; }
 .comics-shelf-slide h2, .comics-shelf-slide__grid { position: relative; z-index: 1; }
@@ -2064,6 +2087,8 @@
   .home-cinematic-upper__panel { transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
   .home-cinematic-upper__to-no-one { transform-origin: right center; }
   .home-cinematic-upper__kaiju .home-cinematic-upper__art { inset: 0 auto 0 0; width: 100vw; transform-origin: left center; }
+  /* Blue trousers sit at 51.7% of the artwork; shift so they centre in the full 80vw KAIJU frame. */
+  .home-cinematic-upper__img--kaiju { right: auto; left: -11.7vw; }
   .home-cinematic-upper__to-no-one .home-cinematic-upper__art { left: auto; right: 0; width: 100vw; transform-origin: right center; }
   .home-cinematic-upper__img--to-no-one { right: -43vw; width: 135vw; object-position: right center; }
   .home-cinematic-upper__kaiju-copy { width: 80vw; }
