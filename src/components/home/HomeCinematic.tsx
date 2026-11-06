@@ -149,8 +149,9 @@ const HomeCinematic = () => {
                 <span className="home-cinematic-upper__kicker-tablet">The Parable Trilogy</span>
               </div>
             </Reveal>
-            <Reveal delay={120}><h2 className="font-heading text-5xl leading-[0.95] text-background md:text-7xl">KAIJU</h2></Reveal>
-            <Reveal delay={240}><span className="home-cinematic-upper__kaiju-cta mt-8 inline-flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-background">Enter the story <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span></span></Reveal>
+            <Reveal delay={120}><h2 className="font-heading text-5xl leading-[0.95] text-background md:text-8xl">KAIJU</h2></Reveal>
+            <HandwrittenLine className="home-cinematic-upper__kaiju-tagline mt-4 font-comic text-lg text-background/85 md:text-xl">A metaphysical fantasy.</HandwrittenLine>
+            <Reveal delay={240}><span className="home-cinematic-upper__kaiju-cta mt-6 inline-flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-background">Enter the story <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span></span></Reveal>
           </div>
         </Link>
 
@@ -209,3 +210,16 @@ const HomeCinematic = () => {
 };
 
 export default HomeCinematic;
+
+function HandwrittenLine({ className, children }: { className?: string; children: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [written, setWritten] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { setWritten(true); io.disconnect(); } }, { threshold: 0.6 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return <span ref={ref} className={`home-handwritten-line ${written ? "is-written" : ""} ${className ?? ""}`}>{children}</span>;
+}
