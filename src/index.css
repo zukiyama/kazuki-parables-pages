@@ -2030,17 +2030,15 @@
 .home-cinematic-pair__img { transition: filter 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
 .home-cinematic-pair[data-press] .home-cinematic-pair__img { transition-duration: 0.25s; }
 .home-cinematic-pair__circles { transform-origin: left center; transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
-.home-cinematic-pair__art { pointer-events: none; transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+.home-cinematic-pair__art { pointer-events: none; }
 @media (min-width: 768px) {
   .home-cinematic-pair { transition: grid-template-columns 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
   .home-cinematic-pair__img--circles { right: auto; width: 66.667vw; max-width: none; }
   .home-cinematic-pair__panel { position: relative; transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
   .home-cinematic-pair__panel:first-child, .home-cinematic-pair__panel:first-child .home-cinematic-pair__art { transform-origin: left center; }
   .home-cinematic-pair__panel:last-child, .home-cinematic-pair__panel:last-child .home-cinematic-pair__art { transform-origin: right center; }
-  .home-cinematic-pair[data-hover="circles"] > a:first-child .home-cinematic-pair__art,
-  .home-cinematic-pair[data-hover="god-of-lies"] > a:last-child .home-cinematic-pair__art { transform: scale(0.9881422925); }
   .home-cinematic-pair__panel::after { content: ""; position: absolute; inset: 0; z-index: 20; pointer-events: none; opacity: 0; transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1); box-shadow: inset 0 0 0 1px hsl(var(--background) / 0.35), inset 0 0 60px hsl(var(--background) / 0.22), inset 0 0 160px hsl(var(--background) / 0.1); }
-  .home-cinematic-pair[data-hover="circles"] > a:first-child, .home-cinematic-pair[data-hover="god-of-lies"] > a:last-child { transform: scale(1.012); z-index: 5; }
+  .home-cinematic-pair[data-hover="circles"] > a:first-child, .home-cinematic-pair[data-hover="god-of-lies"] > a:last-child { z-index: 5; }
   .home-cinematic-pair:is([data-hover="circles"],[data-press="circles"]) > a:first-child::after, .home-cinematic-pair:is([data-hover="god-of-lies"],[data-press="god-of-lies"]) > a:last-child::after { opacity: 1; }
   .home-cinematic-pair[data-hover="god-of-lies"] { grid-template-columns: 1fr 2fr; }
   .home-cinematic-pair[data-hover="god-of-lies"] .home-cinematic-pair__circles { transform: translateX(-1.5rem) scale(0.75); }
