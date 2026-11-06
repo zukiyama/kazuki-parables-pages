@@ -24,3 +24,6 @@
 - Phones (shorter side under 600px) get no trees or page-corner cue on Comics; after the title, ComicsPhoneStack shows story, Burden and shelf as full-screen pages turned by an eased swipe/wheel, then scrolls freely to the dark footer (no Coming 2027 on phones); only an upward swipe from its top returns to the title. Tablet/desktop keep the arrowed slideshow.
 - Phone readers fit covers against dialog/copy size; enlarged illustrations use isolated looping Embla: swipes browse, taps dismiss without turning pages.
 - Writing phone entries are isolated from the existing tablet/desktop layouts; menu jumps and proximity settling share whole-section top alignment using measured header/menu space. Oversized entries scroll freely; touch/zoom never settle; heights fixed per width; separate settle/release timers. Phone entries keep each book's desktop panel style, auto-shrink type to fit the screen, keep the rising quote gaps between entries, and place Other Works vignettes once at the tapped title's final centre.
+
+- All site media (images, video, audio, fonts) must be real files committed in the repo (src/assets or public); never use lovable-assets/.asset.json pointers or remote CDN storage, so the GitHub repo is fully self-contained.
+- Widescreen desktop reserves scrollbar space (scrollbar-gutter: stable) so dialog scroll-locks never shift the page.
