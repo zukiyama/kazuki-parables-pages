@@ -210,16 +210,3 @@ const HomeCinematic = () => {
 };
 
 export default HomeCinematic;
-
-function HandwrittenLine({ className, style, children }: { className?: string; style?: import("react").CSSProperties; children: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [written, setWritten] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { setWritten(true); io.disconnect(); } }, { threshold: 0.35 });
-    io.observe(el.closest("a") ?? el);
-    return () => io.disconnect();
-  }, []);
-  return <span ref={ref} style={style} className={`home-handwritten-line ${written ? "is-written" : ""} ${className ?? ""}`}>{children}</span>;
-}
