@@ -2030,10 +2030,15 @@
 .home-cinematic-pair__img { transition: filter 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
 .home-cinematic-pair[data-press] .home-cinematic-pair__img { transition-duration: 0.25s; }
 .home-cinematic-pair__circles { transform-origin: left center; transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
+.home-cinematic-pair__art { pointer-events: none; transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
 @media (min-width: 768px) {
   .home-cinematic-pair { transition: grid-template-columns 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
   .home-cinematic-pair__img--circles { right: auto; width: 66.667vw; max-width: none; }
   .home-cinematic-pair__panel { position: relative; transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+  .home-cinematic-pair__panel:first-child, .home-cinematic-pair__panel:first-child .home-cinematic-pair__art { transform-origin: left center; }
+  .home-cinematic-pair__panel:last-child, .home-cinematic-pair__panel:last-child .home-cinematic-pair__art { transform-origin: right center; }
+  .home-cinematic-pair[data-hover="circles"] > a:first-child .home-cinematic-pair__art,
+  .home-cinematic-pair[data-hover="god-of-lies"] > a:last-child .home-cinematic-pair__art { transform: scale(0.9881422925); }
   .home-cinematic-pair__panel::after { content: ""; position: absolute; inset: 0; z-index: 20; pointer-events: none; opacity: 0; transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1); box-shadow: inset 0 0 0 1px hsl(var(--background) / 0.35), inset 0 0 60px hsl(var(--background) / 0.22), inset 0 0 160px hsl(var(--background) / 0.1); }
   .home-cinematic-pair[data-hover="circles"] > a:first-child, .home-cinematic-pair[data-hover="god-of-lies"] > a:last-child { transform: scale(1.012); z-index: 5; }
   .home-cinematic-pair:is([data-hover="circles"],[data-press="circles"]) > a:first-child::after, .home-cinematic-pair:is([data-hover="god-of-lies"],[data-press="god-of-lies"]) > a:last-child::after { opacity: 1; }
@@ -2045,7 +2050,7 @@
 .home-cinematic-pair:is([data-hover="god-of-lies"],[data-press="god-of-lies"]) .home-cinematic-pair__img--faces { filter: brightness(1.08); }
 .home-cinematic-pair:is([data-hover="circles"],[data-press="circles"]) .home-cinematic-pair__img--circles { filter: grayscale(1) brightness(1.08); }
 @media (prefers-reduced-motion: reduce) {
-  .home-cinematic-pair, .home-cinematic-pair__img, .home-cinematic-pair__circles { transition: none; }
+  .home-cinematic-pair, .home-cinematic-pair__img, .home-cinematic-pair__art, .home-cinematic-pair__circles { transition: none; }
 }
 
 /* KAIJU / To No One band: only the frame opens; the approved expanded crop stays fixed. */
@@ -2060,6 +2065,7 @@
   .home-cinematic-upper { transition: grid-template-columns 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
   .home-cinematic-upper__panel { transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
   .home-cinematic-upper__to-no-one { transform-origin: right center; }
+  .home-cinematic-upper__kaiju .home-cinematic-upper__art { inset: 0 auto 0 0; width: 100vw; transform-origin: left center; }
   .home-cinematic-upper__to-no-one .home-cinematic-upper__art { left: auto; right: 0; width: 100vw; transform-origin: right center; }
   .home-cinematic-upper__img--to-no-one { right: -43vw; width: 135vw; object-position: right center; }
   .home-cinematic-upper__kaiju-copy { width: 80vw; }

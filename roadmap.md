@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Stop God of Lies artwork trembling during hover expansion; keep KAIJU artwork fixed while To No One opens and lower the KAIJU copy slightly. Frame-by-frame desktop/tablet checks show fixed KAIJU geometry, only sub-0.07px God of Lies rounding, visible lowered copy, no runtime errors, and build OK.
+
 - [x] Keep To No One artwork stationary at its approved expanded crop; restore left-aligned KAIJU copy and shrink it as one continuous layer without hiding words. Desktop and iPad position/visibility checks passed; build OK.
 
 - [x] Put KAIJU left and a narrower To No One panel right; reveal the window by default and the seated figure on leftward hover expansion, without exposing the artwork's white outer border. Swapped their feature numbers; visually checked desktop/iPad default and expanded crops, verified phone touch feedback, build OK.
