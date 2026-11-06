@@ -17,7 +17,8 @@ import comicsScriptsTitleFirstFrame from "@/assets/comicsscriptstitle-first.webp
 import comicsScriptsTitleFinalFrame from "@/assets/comicsscriptstitle-final.webp";
 import comicsStoryboardStrip from "@/assets/comics-storyboard-strip.webp";
 import comicsCoolStuffCue from "@/assets/comics-cool-stuff-cue.webp";
-import comicsCoolStuffCueWide from "@/assets/comics-cool-stuff-cue-wide.webp";
+import comicsCoolStuffTextWide from "@/assets/comics-cool-stuff-text-wide.webp";
+import comicsCoolStuffArrowWide from "@/assets/comics-cool-stuff-arrow-wide.webp";
 
 // SECONDARY: Vignette assets (Section 1) - preload after first paint
 import vignetteManyFaces from "@/assets/god-of-lies-characters.webp";
@@ -1080,7 +1081,8 @@ const Comics = () => {
               {showPopUpScene && panoramaReady && !phoneStack && (
                 <>
                   <img className="comics-page-peel-cue" src={comicsCoolStuffCue} alt="Cool stuff here" width={1152} height={576} loading="eager" decoding="async" />
-                  <img className="comics-page-peel-cue comics-page-peel-cue--wide" src={comicsCoolStuffCueWide} alt="Cool stuff here" width={640} height={128} loading="eager" decoding="async" />
+                  <img className="comics-page-peel-cue comics-page-peel-cue--wide comics-page-peel-cue--wide-text" src={comicsCoolStuffTextWide} alt="Cool stuff here" width={507} height={83} loading="eager" decoding="async" />
+                  <img className="comics-page-peel-cue comics-page-peel-cue--wide comics-page-peel-cue--wide-arrow" src={comicsCoolStuffArrowWide} alt="" aria-hidden="true" width={119} height={38} loading="eager" decoding="async" />
                 </>
               )}
             </section>

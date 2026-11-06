@@ -1998,7 +1998,12 @@
     .comics-screenplay-slide__artwork { transform: translateY(min(0px, calc(97.5cqh - 100cqw * 815 / 1670))); }
   }
   .comics-page-peel-cue { display: none; }
-  .comics-page-peel-cue--wide { display: block; right: 4.25rem; bottom: 0.6rem; width: 20rem; height: 4rem; }
+  .comics-page-peel-cue--wide { display: block; height: auto; }
+  .comics-page-peel-cue--wide-text { right: 122px; bottom: 12px; width: 253px; }
+  .comics-page-peel-cue--wide-arrow { right: 58px; bottom: 26px; width: 60px; }
+  /* Keep the scrollbar's space reserved so dialog scroll-locks never shift the page sideways. */
+  html { scrollbar-gutter: stable; }
+  body[data-scroll-locked] { margin-right: 0 !important; }
 }
 @media not ((min-width: 1024px) and (hover: hover) and (pointer: fine)) {
   .comics-page-peel-cue--wide { display: none; }
