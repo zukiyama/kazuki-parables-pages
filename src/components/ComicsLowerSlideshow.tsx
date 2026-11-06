@@ -9,6 +9,11 @@ import { COMICS_LOWER_SCREENS, nextComicsScreen, paperArrowOverlap, shelfComics 
 import screenplayArtwork from "@/assets/the-burden-screenplay.webp";
 import shelfBackground from "@/assets/comics-sketch-background.webp";
 import comingArtwork from "@/assets/comics-coming-2027.webp";
+import screenplayArtworkClean from "@/assets/the-burden-screenplay-clean.webp";
+import screenplayTitleText from "@/assets/the-burden-screenplay-text.webp";
+
+/** Laptops and monitors (mouse/trackpad), never iPads or phones. Mirrored in index.css. */
+const WIDESCREEN_DESKTOP = "(min-width: 1024px) and (hover: hover) and (pointer: fine)";
 
 type Comic = { cover: string; title: string; description: ReactNode; teaser: string; format: string };
 
@@ -48,6 +53,29 @@ export function ComicsLowerSlideshow({ children, comics, panorama, open, onScree
     observer.observe(header);
     window.addEventListener("resize", measure);
     return () => { observer.disconnect(); window.removeEventListener("resize", measure); };
+  }, []);
+  // Widescreen desktops only: sit "Manga • Webtoon" midway between the teaser line and the footer.
+  useEffect(() => {
+    const shell = shellRef.current;
+    const footer = footerRef.current;
+    if (!shell || !footer) return;
+    const query = window.matchMedia(WIDESCREEN_DESKTOP);
+    let delta = 0;
+    const measure = () => {
+      const format = shell.querySelector<HTMLElement>(".comics-story-slide .comics-story-format");
+      const teaser = shell.querySelector<HTMLElement>(".comics-story-slide .comics-story-teaser");
+      if (!format || !teaser) return;
+      if (!query.matches) { delta = 0; format.style.transform = ""; return; }
+      const rect = format.getBoundingClientRect();
+      const naturalTop = rect.top - delta;
+      const target = (teaser.getBoundingClientRect().bottom + footer.getBoundingClientRect().top) / 2 - rect.height / 2;
+      delta = Math.max(0, Math.round(target - naturalTop));
+      format.style.transform = delta ? `translateY(${delta}px)` : "";
+    };
+    measure();
+    const observer = new ResizeObserver(measure); observer.observe(shell); observer.observe(footer);
+    query.addEventListener("change", measure);
+    return () => { observer.disconnect(); query.removeEventListener("change", measure); };
   }, []);
   useEffect(() => {
     const footer = footerRef.current;
@@ -220,8 +248,15 @@ export function ComicsLowerSlideshow({ children, comics, panorama, open, onScree
           <section className="comics-lower-slideshow__slide comics-screenplay-slide" aria-label={COMICS_LOWER_SCREENS[2]} aria-hidden={screen !== 2} ref={element => { if (screen !== 2) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
             <div className="comics-film-stage">
             <div className="comics-screenplay-slide__artwork">
-              <img src={screenplayArtwork} alt="The Burden. A phone call from a sister he hasn't spoken to in years. A mother he swore never to see again. As her memories fade, Hiroshi's own resurface in a new light." />
+              <picture>
+                <source media={WIDESCREEN_DESKTOP} srcSet={screenplayArtworkClean} />
+                <img src={screenplayArtwork} alt="The Burden. A phone call from a sister he hasn't spoken to in years. A mother he swore never to see again. As her memories fade, Hiroshi's own resurface in a new light." />
+              </picture>
               <p className="comics-screenplay-slide__status">Full-length screenplay <span aria-hidden="true">•</span> In development</p>
+            </div>
+            <div className="comics-screenplay-slide__wide-copy" aria-hidden="true">
+              <img src={screenplayTitleText} alt="" width={655} height={465} />
+              <p>Full-length screenplay <span>•</span> In development</p>
             </div>
             </div>
           </section>
