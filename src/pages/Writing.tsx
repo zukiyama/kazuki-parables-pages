@@ -1192,7 +1192,7 @@ const Writing = () => {
                   Book One of the Parable Trilogy
                 </span>
                 <h2 
-                  className={`font-light tracking-[0.15em] text-white ${isWidescreen ? 'text-6xl' : 'text-7xl max-sm:text-6xl'}`}
+                  className={`font-light tracking-[0.15em] text-white ${isWidescreen ? 'text-7xl' : 'text-[84px] max-sm:text-6xl'}`}
                   style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
                 >
                   KAIJU
