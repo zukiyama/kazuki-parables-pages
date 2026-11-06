@@ -6,9 +6,9 @@ import Footer from "@/components/Footer";
 import { GodOfLiesGallery } from "@/components/GodOfLiesGallery";
 import { COMICS_LOWER_SCREENS, nextComicsScreen, paperArrowOverlap, shelfComics } from "@/lib/comics-slideshow";
 
-import screenplayArtwork from "@/assets/the-burden-screenplay.webp.asset.json";
-import shelfBackground from "@/assets/comics-sketch-background.webp.asset.json";
-import comingArtwork from "@/assets/comics-coming-2027.webp.asset.json";
+import screenplayArtwork from "@/assets/the-burden-screenplay.webp";
+import shelfBackground from "@/assets/comics-sketch-background.webp";
+import comingArtwork from "@/assets/comics-coming-2027.webp";
 
 type Comic = { cover: string; title: string; description: ReactNode; teaser: string; format: string };
 
@@ -135,7 +135,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, open, onScree
   }, [open]);
   useEffect(() => { if (!open) jumpTo(1); }, [jumpTo, open]);
   useEffect(() => {
-    [panorama, screenplayArtwork.url, shelfBackground.url, comingArtwork.url, ...comics.map(c => c.cover)].forEach(src => {
+    [panorama, screenplayArtwork, shelfBackground, comingArtwork, ...comics.map(c => c.cover)].forEach(src => {
       const image = new Image(); image.src = src; void image.decode().catch(() => {});
     });
   }, [panorama]);
@@ -198,7 +198,7 @@ export function ComicsLowerSlideshow({ children, comics, panorama, open, onScree
           <section className="comics-lower-slideshow__slide comics-coming-slide" aria-label={COMICS_LOWER_SCREENS[0]} aria-hidden={screen !== 0} ref={element => { if (screen !== 0) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
             <div className="comics-film-stage">
               <div className="comics-coming-slide__artwork">
-                <img src={comingArtwork.url} alt="Chang-Min seated among guitars in a sunlit studio with glowing butterflies" width={1874} height={839} />
+                <img src={comingArtwork} alt="Chang-Min seated among guitars in a sunlit studio with glowing butterflies" width={1874} height={839} />
                 <h2>Coming 2027</h2>
               </div>
             </div>
@@ -220,13 +220,13 @@ export function ComicsLowerSlideshow({ children, comics, panorama, open, onScree
           <section className="comics-lower-slideshow__slide comics-screenplay-slide" aria-label={COMICS_LOWER_SCREENS[2]} aria-hidden={screen !== 2} ref={element => { if (screen !== 2) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
             <div className="comics-film-stage">
             <div className="comics-screenplay-slide__artwork">
-              <img src={screenplayArtwork.url} alt="The Burden. A phone call from a sister he hasn't spoken to in years. A mother he swore never to see again. As her memories fade, Hiroshi's own resurface in a new light." />
+              <img src={screenplayArtwork} alt="The Burden. A phone call from a sister he hasn't spoken to in years. A mother he swore never to see again. As her memories fade, Hiroshi's own resurface in a new light." />
               <p className="comics-screenplay-slide__status">Full-length screenplay <span aria-hidden="true">•</span> In development</p>
             </div>
             </div>
           </section>
           <section className="comics-lower-slideshow__slide comics-shelf-slide" aria-label={COMICS_LOWER_SCREENS[3]} aria-hidden={screen !== 3} ref={element => { paperRef.current = element; if (screen !== 3) element?.setAttribute("inert", ""); else element?.removeAttribute("inert"); }}>
-            <img className="comics-shelf-slide__background" src={shelfBackground.url} alt="" aria-hidden="true" />
+            <img className="comics-shelf-slide__background" src={shelfBackground} alt="" aria-hidden="true" />
             <h2>Stories waiting to be told…</h2>
             <div className="comics-shelf-slide__grid">
               {shelfComics(comics).map(comic => <Button variant="link" className="comics-shelf-slide__cover" key={comic.title} aria-label={`Explore ${comic.title}`} onClick={event => {

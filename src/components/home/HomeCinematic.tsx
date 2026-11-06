@@ -6,7 +6,7 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useHeroHeight } from "@/hooks/useHeroHeight";
 import japaneseBackground from "@/assets/japanese-painting-background.webp";
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
-import toNoOneBedroom from "@/assets/to-no-one-bedroom.webp.asset.json";
+import toNoOneBedroom from "@/assets/to-no-one-bedroom.webp";
 import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
 import circlesSingleCover from "@/assets/circles-single-cover-v4-small.webp";
 import uniqueFaces from "@/assets/god-of-lies-faces-wide.webp";
@@ -86,7 +86,7 @@ const HomeCinematic = () => {
     img.onload = () => img.decode().catch(() => {}).finally(() => setReady(true));
     img.onerror = () => setReady(true);
     img.src = japaneseBackground;
-    [parableBoysStreet, toNoOneBedroom.url, uniqueFaces].forEach((src) => {
+    [parableBoysStreet, toNoOneBedroom, uniqueFaces].forEach((src) => {
       const i = new Image();
       i.src = src;
       i.decode?.().catch(() => {});
@@ -157,7 +157,7 @@ const HomeCinematic = () => {
 
         <Link to="/comics" {...upperHandlers("to-no-one")} className="home-cinematic-upper__panel home-cinematic-upper__to-no-one group relative block min-w-0 overflow-hidden bg-ink-black">
           <div className="home-cinematic-upper__art absolute inset-0">
-            <img src={toNoOneBedroom.url} alt="" loading="lazy" decoding="async" width={1774} height={887} className="home-cinematic-upper__img home-cinematic-upper__img--to-no-one absolute right-0 h-full object-cover" />
+            <img src={toNoOneBedroom} alt="" loading="lazy" decoding="async" width={1774} height={887} className="home-cinematic-upper__img home-cinematic-upper__img--to-no-one absolute right-0 h-full object-cover" />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black/80 via-ink-black/20 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 px-6 pb-16 pt-6 [text-shadow:0_1px_3px_hsl(var(--ink-black)/0.95),0_2px_14px_hsl(var(--ink-black)/0.8)] md:px-6 md:pb-24">

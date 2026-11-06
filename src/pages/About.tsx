@@ -7,7 +7,7 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 // Above-the-fold assets - loaded eagerly with high priority
 import AboutHeroVideo from "@/components/AboutHeroVideo";
-import heroFirstFrame from "@/assets/about-hero-first.webp.asset.json";
+import heroFirstFrame from "@/assets/about-hero-first.webp";
 
 // Below-the-fold assets - lazy loaded
 import backgroundSphere from "@/assets/about-background-new.webp";
@@ -165,7 +165,7 @@ const About = () => {
       } finally {
       }
     };
-    img.src = heroFirstFrame.url;
+    img.src = heroFirstFrame;
   }, []);
 
   // Reveal the cityscape (and the cat fading with it) once the lower artwork

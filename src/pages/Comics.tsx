@@ -28,10 +28,10 @@ import godOfLiesStreetScene from "@/assets/god-of-lies-cream-blurb.webp";
 import shrineTreeLeft from "@/assets/comics-tree-original-left.webp";
 import shrineTreeRight from "@/assets/comics-tree-original-right.webp";
 import godOfLiesCover from "@/assets/god-of-lies-cover.webp";
-import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.webp.asset.json";
+import godOfLiesUploadedCover from "@/assets/god-of-lies-uploaded-cover.webp";
 import comicsSeoulSkyline from "@/assets/comics-seoul-hill-tall.webp";
-import godOfLiesPopupCharacters from "@/assets/god-of-lies-characters-replacement.webp.asset.json";
-import godOfLiesPopupDog from "@/assets/god-of-lies-popup-dog.webp.asset.json";
+import godOfLiesPopupCharacters from "@/assets/god-of-lies-characters-replacement.webp";
+import godOfLiesPopupDog from "@/assets/god-of-lies-popup-dog.webp";
 import { ComicsLowerSlideshow } from "@/components/ComicsLowerSlideshow";
 import { ComicsPhoneStack } from "@/components/ComicsPhoneStack";
 import { PagePeel } from "@/components/PagePeel";
@@ -255,7 +255,7 @@ const Comics = () => {
         shrineTreeLeft,
         shrineTreeRight,
         godOfLiesCover,
-        godOfLiesUploadedCover.url,
+        godOfLiesUploadedCover,
         comicsSeoulSkyline,
         comicsKeepGoingArrow
       ];
@@ -1139,8 +1139,8 @@ const Comics = () => {
 
                 <div className="comics-sky-half" onClick={() => { if (currentSection !== 1) return; if (isTransitioning) pendingTitleAdvanceRef.current = true; else advanceOpeningRef.current?.(); }}>
                 <div ref={characterPopupRef} className={`comics-character-popup ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''} ${currentSection >= 2 ? 'is-departing' : ''}`} aria-hidden="true">
-                  <img className="comics-character-men" src={godOfLiesPopupCharacters.url} alt="" width={768} height={1152} loading="eager" decoding="async" />
-                  <img className="comics-character-dog" src={godOfLiesPopupDog.url} alt="" width={1312} height={1199} loading="eager" decoding="async" />
+                  <img className="comics-character-men" src={godOfLiesPopupCharacters} alt="" width={768} height={1152} loading="eager" decoding="async" />
+                  <img className="comics-character-dog" src={godOfLiesPopupDog} alt="" width={1312} height={1199} loading="eager" decoding="async" />
                 </div>
                 <div className={`comics-shrine-scene ${shrineSceneActive || currentSection >= 2 ? 'is-open' : ''}`} aria-hidden="true">
                   <div className="comics-shrine-vignette" />
