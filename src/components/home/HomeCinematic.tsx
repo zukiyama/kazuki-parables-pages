@@ -73,7 +73,7 @@ const HomeCinematic = () => {
       const w = window.matchMedia("(min-width: 768px)").matches ? cw / 3 : cw;
       const k = Math.max(1, Math.floor((w * 630) / (h * 122)));
       const sc = w / (k * 122);
-      setFacesBox({ width: 1595 * sc, height: 630 * sc, right: -5 * sc, left: "auto", top: "50%", transform: "translateY(-50%)", maxWidth: "none" });
+      setFacesBox({ width: 1595 * sc, height: 630 * sc, right: -5 * sc, left: "auto", top: Math.round((h - 630 * sc) / 2), maxWidth: "none" });
     };
     measure();
     const ro = new ResizeObserver(measure);
