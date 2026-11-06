@@ -1,5 +1,6 @@
 # Roadmap
 
+- [x] Converted the active cotton-candy PNG to full-resolution WebP and added the mirrored To No One/KAIJU band with fixed artwork, stable pointer/touch feedback and 01–04 numbering. Verified desktop, iPad-width and phone layouts, hover reversal, stationary images and phone gallery enlargement; both hosted files return image/webp, 16 Comics tests pass, build OK.
 - [x] Phone-only: stacked smaller homepage links, enabled swipe browsing in enlarged God of Lies pictures with tap dismissal, and slightly lowered Burden title/copy. Phone gesture flow checked at 390×844; hosted illustration/Burden media unavailable in sandbox.
 
 - [x] Phone Writing experiment: smaller covers, edited-down summaries, viewport-sized entries, gentle proximity settling, measured menu alignment, compact menu and fitted YA slideshow; taller handles everywhere. Four scrolling-rule tests pass; checked 390×844 and 375×667, including all menu entries and slideshow selections.

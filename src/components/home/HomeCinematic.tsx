@@ -6,6 +6,7 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useHeroHeight } from "@/hooks/useHeroHeight";
 import japaneseBackground from "@/assets/japanese-painting-background.webp";
 import parableBoysStreet from "@/assets/parable-boys-street.webp";
+import toNoOneBedroom from "@/assets/to-no-one-bedroom.webp.asset.json";
 import sixtiesVarietyShow from "@/assets/sixties-variety-show.webp";
 import circlesSingleCover from "@/assets/circles-single-cover-v4-small.webp";
 import uniqueFaces from "@/assets/god-of-lies-faces-wide.webp";
@@ -33,55 +34,23 @@ const Reveal = ({ children, delay = 0, className = "" }: { children: ReactNode; 
   );
 };
 
-const Chapter = ({
-  index, kicker, title, children, to, cta, image, position = "center", className = "",
-}: {
-  index: string; kicker: string; title: ReactNode; children?: ReactNode; to: string; cta: string; image: string; position?: string; className?: string;
-}) => (
-  <Link to={to} className={`group relative block w-full overflow-hidden bg-ink-black ${className}`}>
-    <img
-      src={image}
-      alt=""
-      loading="lazy"
-      decoding="async"
-      className="absolute inset-0 h-full w-full object-cover"
-      style={{ objectPosition: position }}
-    />
-    <div className="absolute inset-0 bg-gradient-to-t from-ink-black/75 via-ink-black/10 to-transparent" />
-    <div className="home-cinematic-pair__circles relative z-10 flex h-full flex-col justify-end px-6 pb-14 md:px-16 md:pb-20">
-      <Reveal>
-        <div className="mb-4 flex items-center gap-4 text-xs uppercase tracking-[0.35em] text-background/70">
-          <span className="font-mono">{index}</span>
-          <span className="h-px w-10 bg-background/50" />
-          <span>{kicker}</span>
-        </div>
-      </Reveal>
-      <Reveal delay={120}>
-        <h2 className="font-heading text-5xl leading-[0.95] text-background md:text-8xl">{title}</h2>
-      </Reveal>
-      {children && (
-        <Reveal delay={240}>
-          <div className="mt-5 max-w-xl font-body text-base text-background/80 md:text-lg">{children}</div>
-        </Reveal>
-      )}
-      <Reveal delay={360}>
-        <span className="mt-8 inline-flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-background">
-          {cta}
-          <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span>
-        </span>
-      </Reveal>
-    </div>
-  </Link>
-);
-
 const HomeCinematic = () => {
   useScrollToTop();
   useHeroHeight();
+  type UpperSide = "to-no-one" | "kaiju";
   type PairSide = "circles" | "god-of-lies";
-  // Any mouse/trackpad/pen cursor (incl. iPadOS, which reports touch-class media queries) drives the divider;
-  // finger taps only give the brief glow before navigating.
+  // Cursor-like pointers drive both dividers, including iPadOS trackpads. Finger taps only glow before navigation.
+  const [upperHover, setUpperHover] = useState<UpperSide | null>(null);
+  const [upperPress, setUpperPress] = useState<UpperSide | null>(null);
   const [pairHover, setPairHover] = useState<PairSide | null>(null);
   const [pairPress, setPairPress] = useState<PairSide | null>(null);
+  const upperHandlers = (side: UpperSide) => ({
+    onPointerEnter: (e: React.PointerEvent) => { if (e.pointerType !== "touch") setUpperHover(side); },
+    onPointerMove: (e: React.PointerEvent) => { if (e.pointerType !== "touch" && upperHover !== side) setUpperHover(side); },
+    onPointerDown: (e: React.PointerEvent) => { if (e.pointerType === "touch") setUpperPress(side); },
+    onPointerUp: () => setUpperPress(null),
+    onPointerCancel: () => setUpperPress(null),
+  });
   const pairHandlers = (side: PairSide) => ({
     onPointerEnter: (e: React.PointerEvent) => { if (e.pointerType !== "touch") setPairHover(side); },
     onPointerMove: (e: React.PointerEvent) => { if (e.pointerType !== "touch" && pairHover !== side) setPairHover(side); },
@@ -117,7 +86,7 @@ const HomeCinematic = () => {
     img.onload = () => img.decode().catch(() => {}).finally(() => setReady(true));
     img.onerror = () => setReady(true);
     img.src = japaneseBackground;
-    [parableBoysStreet, uniqueFaces].forEach((src) => {
+    [parableBoysStreet, toNoOneBedroom.url, uniqueFaces].forEach((src) => {
       const i = new Image();
       i.src = src;
       i.decode?.().catch(() => {});
@@ -151,9 +120,54 @@ const HomeCinematic = () => {
         </div>
       </section>
 
-      <Chapter className="home-cinematic-kaiju" index="01" kicker="The Parable Trilogy · Book One" title="KAIJU" to="/writing#kaiju" cta="Enter the story" image={parableBoysStreet} position="52% bottom">
-        A metaphysical fantasy. Summer 1979, Osaka — something is coming.
-      </Chapter>
+      <section
+        className="home-cinematic-upper grid w-full bg-ink-black md:grid-cols-[1fr_2fr]"
+        data-hover={upperHover ?? undefined}
+        data-press={upperPress ?? undefined}
+        onPointerLeave={(e) => {
+          if (e.pointerType === "touch") return;
+          const section = e.currentTarget;
+          const { clientX, clientY } = e;
+          requestAnimationFrame(() => {
+            const hit = document.elementFromPoint(clientX, clientY);
+            if (!hit || !section.contains(hit)) setUpperHover(null);
+          });
+        }}
+        aria-label="Featured fiction and comic"
+      >
+        <Link to="/comics" {...upperHandlers("to-no-one")} className="home-cinematic-upper__panel home-cinematic-upper__to-no-one group relative block min-w-0 overflow-hidden bg-ink-black">
+          <div className="home-cinematic-upper__art absolute inset-0">
+            <img src={toNoOneBedroom.url} alt="" loading="lazy" decoding="async" width={1774} height={887} className="home-cinematic-upper__img home-cinematic-upper__img--to-no-one absolute inset-y-0 left-0 h-full object-cover" />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-black/80 via-ink-black/20 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 px-6 pb-16 pt-6 [text-shadow:0_1px_3px_hsl(var(--ink-black)/0.95),0_2px_14px_hsl(var(--ink-black)/0.8)] md:px-10 md:pb-24">
+            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] font-medium text-background/95"><span className="font-mono">01</span> · <span className="home-cinematic-upper__kicker-full">Original comic</span><span className="home-cinematic-upper__kicker-tablet">Comic</span></p></Reveal>
+            <Reveal delay={120}><h2 className="font-heading text-4xl text-background lg:text-5xl">To No One</h2></Reveal>
+            <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Read more →</span></Reveal>
+          </div>
+        </Link>
+
+        <Link to="/writing#kaiju" {...upperHandlers("kaiju")} className="home-cinematic-upper__panel home-cinematic-upper__kaiju group relative block min-w-0 overflow-hidden bg-ink-black">
+          <div className="home-cinematic-upper__art absolute inset-0">
+            <img src={parableBoysStreet} alt="" loading="lazy" decoding="async" className="home-cinematic-upper__img home-cinematic-upper__img--kaiju absolute object-cover" style={{ objectPosition: "52% bottom" }} />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-black/75 via-ink-black/10 to-transparent" />
+          <div className="home-cinematic-upper__kaiju-copy relative z-10 flex h-full flex-col items-end justify-end px-6 pb-14 text-right md:px-16 md:pb-20">
+            <Reveal>
+              <div className="mb-4 flex items-center justify-end gap-4 text-xs uppercase tracking-[0.35em] text-background/70">
+                <span className="font-mono">02</span>
+                <span className="h-px w-10 bg-background/50" />
+                <span className="home-cinematic-upper__kicker-full">The Parable Trilogy · Book One</span>
+                <span className="home-cinematic-upper__kicker-tablet">The Parable Trilogy</span>
+                <span className="home-cinematic-upper__kicker-collapsed">Book One</span>
+              </div>
+            </Reveal>
+            <Reveal delay={120}><h2 className="font-heading text-5xl leading-[0.95] text-background md:text-8xl">KAIJU</h2></Reveal>
+            <Reveal delay={240}><div className="home-cinematic-upper__kaiju-summary mt-5 max-w-xl font-body text-base text-background/80 md:text-lg">A metaphysical fantasy. Summer 1979, Osaka — something is coming.</div></Reveal>
+            <Reveal delay={360}><span className="home-cinematic-upper__kaiju-cta mt-8 inline-flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-background">Enter the story <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span></span></Reveal>
+          </div>
+        </Link>
+      </section>
 
       <section
         ref={pairRef}
@@ -168,7 +182,7 @@ const HomeCinematic = () => {
           <div className="home-cinematic-pair__circles relative z-10 flex h-full flex-col justify-center gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-start [text-shadow:0_2px_12px_hsl(var(--ink-black)/0.6)] md:gap-5 md:px-12 lg:gap-10 lg:px-24">
             <img src={circlesSingleCover} alt="Circles single cover" loading="lazy" className="h-40 w-40 shrink-0 rounded-sm object-cover shadow-2xl lg:h-56 lg:w-56" />
             <div className="min-w-0">
-              <Reveal><p className="mb-3 whitespace-nowrap text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">02</span> · New single</p></Reveal>
+              <Reveal><p className="mb-3 whitespace-nowrap text-xs uppercase tracking-[0.35em] text-background/70"><span className="font-mono">03</span> · New single</p></Reveal>
               <Reveal delay={120}><h2 className="font-heading text-5xl text-background lg:text-7xl">Circles</h2></Reveal>
               <Reveal delay={240}><span className="mt-6 inline-block whitespace-nowrap text-sm uppercase tracking-[0.25em] text-background">Listen now →</span></Reveal>
             </div>
@@ -178,7 +192,7 @@ const HomeCinematic = () => {
           <img src={uniqueFaces} alt="" loading="lazy" style={facesBox} className="home-cinematic-pair__img home-cinematic-pair__img--faces absolute" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black/80 via-ink-black/25 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 px-6 pb-16 pt-6 [text-shadow:0_1px_3px_hsl(var(--ink-black)/0.95),0_2px_14px_hsl(var(--ink-black)/0.8)] md:px-10 md:pb-24">
-            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] font-medium text-background/95"><span className="font-mono">03</span> · Manga Webtoon</p></Reveal>
+            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] font-medium text-background/95"><span className="font-mono">04</span> · Manga Webtoon</p></Reveal>
             <Reveal delay={120}><h2 className="font-heading text-4xl text-background lg:text-5xl">God of Lies</h2></Reveal>
             <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Read more →</span></Reveal>
           </div>
