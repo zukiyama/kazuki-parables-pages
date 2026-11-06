@@ -141,7 +141,7 @@ const HomeCinematic = () => {
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black/80 via-ink-black/20 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 px-6 pb-16 pt-6 [text-shadow:0_1px_3px_hsl(var(--ink-black)/0.95),0_2px_14px_hsl(var(--ink-black)/0.8)] md:px-10 md:pb-24">
-            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] font-medium text-background/95"><span className="font-mono">01</span> · Original comic</p></Reveal>
+            <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] font-medium text-background/95"><span className="font-mono">01</span> · <span className="home-cinematic-upper__kicker-full">Original comic</span><span className="home-cinematic-upper__kicker-tablet">Comic</span></p></Reveal>
             <Reveal delay={120}><h2 className="font-heading text-4xl text-background lg:text-5xl">To No One</h2></Reveal>
             <Reveal delay={240}><span className="mt-6 inline-block text-sm uppercase tracking-[0.25em] text-background">Read more →</span></Reveal>
           </div>
@@ -157,12 +157,14 @@ const HomeCinematic = () => {
               <div className="mb-4 flex items-center justify-end gap-4 text-xs uppercase tracking-[0.35em] text-background/70">
                 <span className="font-mono">02</span>
                 <span className="h-px w-10 bg-background/50" />
-                <span>The Parable Trilogy · Book One</span>
+                <span className="home-cinematic-upper__kicker-full">The Parable Trilogy · Book One</span>
+                <span className="home-cinematic-upper__kicker-tablet">The Parable Trilogy</span>
+                <span className="home-cinematic-upper__kicker-collapsed">Book One</span>
               </div>
             </Reveal>
             <Reveal delay={120}><h2 className="font-heading text-5xl leading-[0.95] text-background md:text-8xl">KAIJU</h2></Reveal>
-            <Reveal delay={240}><div className="mt-5 max-w-xl font-body text-base text-background/80 md:text-lg">A metaphysical fantasy. Summer 1979, Osaka — something is coming.</div></Reveal>
-            <Reveal delay={360}><span className="mt-8 inline-flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-background">Enter the story <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span></span></Reveal>
+            <Reveal delay={240}><div className="home-cinematic-upper__kaiju-summary mt-5 max-w-xl font-body text-base text-background/80 md:text-lg">A metaphysical fantasy. Summer 1979, Osaka — something is coming.</div></Reveal>
+            <Reveal delay={360}><span className="home-cinematic-upper__kaiju-cta mt-8 inline-flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-background">Enter the story <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span></span></Reveal>
           </div>
         </Link>
       </section>
