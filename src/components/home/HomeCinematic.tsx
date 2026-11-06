@@ -211,7 +211,7 @@ const HomeCinematic = () => {
 
 export default HomeCinematic;
 
-function HandwrittenLine({ className, children }: { className?: string; children: string }) {
+function HandwrittenLine({ className, style, children }: { className?: string; style?: import("react").CSSProperties; children: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [written, setWritten] = useState(false);
   useEffect(() => {
@@ -221,5 +221,5 @@ function HandwrittenLine({ className, children }: { className?: string; children
     io.observe(el.closest("a") ?? el);
     return () => io.disconnect();
   }, []);
-  return <span ref={ref} className={`home-handwritten-line ${written ? "is-written" : ""} ${className ?? ""}`}>{children}</span>;
+  return <span ref={ref} style={style} className={`home-handwritten-line ${written ? "is-written" : ""} ${className ?? ""}`}>{children}</span>;
 }
