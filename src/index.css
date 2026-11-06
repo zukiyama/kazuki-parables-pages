@@ -2062,8 +2062,8 @@
   .home-cinematic-upper[data-hover="to-no-one"] > a:first-child::after,
   .home-cinematic-upper[data-hover="kaiju"] > a:last-child::after { opacity: 1; }
   .home-cinematic-upper[data-hover="to-no-one"] .home-cinematic-upper__kaiju-copy { padding-left: 1.5rem; padding-right: 1.5rem; }
-  .home-cinematic-upper[data-hover="to-no-one"] .home-cinematic-upper__kicker-full,
-  .home-cinematic-upper[data-hover="to-no-one"] .home-cinematic-upper__kicker-tablet,
+  .home-cinematic-upper[data-hover="to-no-one"] .home-cinematic-upper__kaiju .home-cinematic-upper__kicker-full,
+  .home-cinematic-upper[data-hover="to-no-one"] .home-cinematic-upper__kaiju .home-cinematic-upper__kicker-tablet,
   .home-cinematic-upper[data-hover="to-no-one"] .home-cinematic-upper__kaiju-summary,
   .home-cinematic-upper[data-hover="to-no-one"] .home-cinematic-upper__kaiju-cta { display: none; }
   .home-cinematic-upper[data-hover="to-no-one"] .home-cinematic-upper__kicker-collapsed { display: inline; }
