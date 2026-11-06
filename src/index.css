@@ -1999,8 +1999,8 @@
   }
   .comics-page-peel-cue { display: none; }
   .comics-page-peel-cue--wide { display: block; height: auto; }
-  .comics-page-peel-cue--wide-text { right: 122px; bottom: 12px; width: 253px; }
-  .comics-page-peel-cue--wide-arrow { right: 58px; bottom: 26px; width: 60px; }
+  .comics-page-peel-cue--wide-text { right: 136px; bottom: 12px; width: 253px; }
+  .comics-page-peel-cue--wide-arrow { right: 72px; bottom: 26px; width: 60px; }
   /* Keep the scrollbar's space reserved so dialog scroll-locks never shift the page sideways. */
   html:has(body[data-scroll-locked]) { overflow-y: scroll; }
   body[data-scroll-locked] { margin-right: 0 !important; }

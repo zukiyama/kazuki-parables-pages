@@ -10,4 +10,4 @@
 
 
 - All site media (images, video, audio, fonts) must be real files committed in the repo (src/assets or public); never use lovable-assets/.asset.json pointers or remote CDN storage, so the GitHub repo is fully self-contained.
-- Widescreen desktop reserves scrollbar space only while a dialog scroll-lock is active (avoids an empty strip on non-scrolling pages), so dialog scroll-locks never shift the page.
+- Widescreen desktop keeps the page scrollbar shown (html overflow-y: scroll) only while a dialog scroll-lock is active, so dialog scroll-locks never shift the page.
