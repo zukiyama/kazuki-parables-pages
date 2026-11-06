@@ -128,7 +128,9 @@ const HomeCinematic = () => {
         aria-label="Featured fiction and comic"
       >
         <Link to="/comics" {...upperHandlers("to-no-one")} className="home-cinematic-upper__panel home-cinematic-upper__to-no-one group relative block min-w-0 overflow-hidden bg-ink-black">
-          <img src={toNoOneBedroom.url} alt="" loading="lazy" decoding="async" width={1774} height={887} className="home-cinematic-upper__img home-cinematic-upper__img--to-no-one absolute inset-y-0 left-0 h-full object-cover" />
+          <div className="home-cinematic-upper__art absolute inset-0">
+            <img src={toNoOneBedroom.url} alt="" loading="lazy" decoding="async" width={1774} height={887} className="home-cinematic-upper__img home-cinematic-upper__img--to-no-one absolute inset-y-0 left-0 h-full object-cover" />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black/80 via-ink-black/20 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 px-6 pb-16 pt-6 [text-shadow:0_1px_3px_hsl(var(--ink-black)/0.95),0_2px_14px_hsl(var(--ink-black)/0.8)] md:px-10 md:pb-24">
             <Reveal><p className="mb-3 text-xs uppercase tracking-[0.35em] font-medium text-background/95"><span className="font-mono">01</span> · Original comic</p></Reveal>
@@ -138,7 +140,9 @@ const HomeCinematic = () => {
         </Link>
 
         <Link to="/writing#kaiju" {...upperHandlers("kaiju")} className="home-cinematic-upper__panel home-cinematic-upper__kaiju group relative block min-w-0 overflow-hidden bg-ink-black">
-          <img src={parableBoysStreet} alt="" loading="lazy" decoding="async" className="home-cinematic-upper__img home-cinematic-upper__img--kaiju absolute object-cover" style={{ objectPosition: "52% bottom" }} />
+          <div className="home-cinematic-upper__art absolute inset-0">
+            <img src={parableBoysStreet} alt="" loading="lazy" decoding="async" className="home-cinematic-upper__img home-cinematic-upper__img--kaiju absolute object-cover" style={{ objectPosition: "52% bottom" }} />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-t from-ink-black/75 via-ink-black/10 to-transparent" />
           <div className="home-cinematic-upper__kaiju-copy relative z-10 flex h-full flex-col items-end justify-end px-6 pb-14 text-right md:px-16 md:pb-20">
             <Reveal>

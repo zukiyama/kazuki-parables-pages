@@ -2045,6 +2045,9 @@
 /* To No One / KAIJU band: the mirror of the lower band. Pointer state supports iPad trackpads;
    viewport-width artwork stays stationary while the divider and copy move. */
 .home-cinematic-upper__img { transition: filter 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
+.home-cinematic-upper__art { transform-origin: center; transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+.home-cinematic-upper[data-hover="to-no-one"] > a:first-child .home-cinematic-upper__art,
+.home-cinematic-upper[data-hover="kaiju"] > a:last-child .home-cinematic-upper__art { transform: scale(0.9881422925); }
 .home-cinematic-upper__kaiju-copy { transform-origin: right center; transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
 .home-cinematic-upper__panel::after { content: ""; position: absolute; inset: 0; z-index: 20; pointer-events: none; opacity: 0; transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1); box-shadow: inset 0 0 0 1px hsl(var(--background) / 0.35), inset 0 0 60px hsl(var(--background) / 0.22), inset 0 0 160px hsl(var(--background) / 0.1); }
 .home-cinematic-upper[data-press="to-no-one"] > a:first-child::after,
@@ -2064,7 +2067,7 @@
 .home-cinematic-upper:is([data-hover="kaiju"],[data-press="kaiju"]) > a:last-child .home-cinematic-upper__img { filter: brightness(1.08); }
 @media (prefers-reduced-motion: reduce) {
   .home-cinematic-upper, .home-cinematic-upper__panel, .home-cinematic-upper__panel::after,
-  .home-cinematic-upper__img, .home-cinematic-upper__kaiju-copy { transition: none; }
+  .home-cinematic-upper__img, .home-cinematic-upper__art, .home-cinematic-upper__kaiju-copy { transition: none; }
 }
 
 /* Phones only: lower Comics chapters stacked as one natively scrolling page. */
