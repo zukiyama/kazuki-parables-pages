@@ -2288,3 +2288,9 @@
 .writing-phone-book__titles:has(h2[data-tone="zen"]) { padding-top: calc(2.6rem * var(--fit)); }
 .writing-phone-how-o { position: relative; display: inline-block; letter-spacing: 0; margin-right: 0.15em; }
 .writing-phone-how-intro { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); text-align: center; letter-spacing: normal; font-weight: 400; white-space: pre-line; margin-bottom: 0.2rem; }
+
+/* KAIJU tagline writes itself in from the left, like a pen moving across the line. */
+.home-handwritten-line { display: inline-block; white-space: nowrap; clip-path: inset(-0.3em 100% -0.3em 0); }
+.home-handwritten-line.is-written { animation: home-handwrite 1.4s cubic-bezier(0.45, 0.05, 0.4, 1) 0.35s both; }
+@keyframes home-handwrite { from { clip-path: inset(-0.3em 100% -0.3em 0); } to { clip-path: inset(-0.3em 0 -0.3em 0); } }
+@media (prefers-reduced-motion: reduce) { .home-handwritten-line, .home-handwritten-line.is-written { animation: none; clip-path: none; } }
