@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import { ArrowDown } from "lucide-react";
 import { shelfComics } from "@/lib/comics-slideshow";
 import florist from "@/assets/god-of-lies-carousel-florist.webp.asset.json";
-import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.asset.json";
+import cottonCandy from "@/assets/god-of-lies-carousel-cotton-candy.webp.asset.json";
 import serenePortrait from "@/assets/god-of-lies-carousel-serene-portrait.webp.asset.json";
 import screenplayArtwork from "@/assets/the-burden-screenplay.webp.asset.json";
 import shelfBackground from "@/assets/comics-sketch-background.webp.asset.json";
