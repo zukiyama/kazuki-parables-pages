@@ -2054,10 +2054,10 @@
 @media (min-width: 768px) {
   .home-cinematic-upper { transition: grid-template-columns 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
   .home-cinematic-upper__panel { transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
-  .home-cinematic-upper__img--to-no-one { width: 135vw; object-position: right center; }
+  .home-cinematic-upper__img--to-no-one { right: -5vw; width: 135vw; object-position: right center; }
   .home-cinematic-upper[data-hover="kaiju"] > a:first-child .home-cinematic-upper__art { transform: scale(0.9881422925); }
   .home-cinematic-upper[data-hover="to-no-one"] { grid-template-columns: 1fr 2fr; }
-  .home-cinematic-upper[data-hover="to-no-one"] > a:last-child .home-cinematic-upper__art { transform: translateX(35vw) scale(0.9881422925); }
+  .home-cinematic-upper[data-hover="to-no-one"] > a:last-child .home-cinematic-upper__art { transform: translateX(38vw) scale(0.9881422925); }
   .home-cinematic-upper[data-hover="kaiju"] > a:first-child,
   .home-cinematic-upper[data-hover="to-no-one"] > a:last-child { transform: scale(1.012); z-index: 5; }
   .home-cinematic-upper[data-hover="kaiju"] > a:first-child::after,
