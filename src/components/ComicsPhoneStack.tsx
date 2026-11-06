@@ -19,6 +19,29 @@ const scenes = [
   { src: florist.url, alt: "Two people among potted plants on a flying terrace beneath a ringed planet" },
 ];
 
+function PhoneIllustrationViewer({ initialIndex, onNavigate, onClose }: { initialIndex: number; onNavigate: (index: number) => void; onClose: () => void }) {
+  const [viewport, api] = useEmblaCarousel({ loop: true, startIndex: initialIndex });
+  const [active, setActive] = useState(initialIndex);
+  const gesture = useRef({ x: 0, y: 0, dragged: false });
+  useEffect(() => {
+    if (!api) return;
+    const sync = () => { const index = api.selectedScrollSnap(); setActive(index); onNavigate(index); };
+    api.on("select", sync);
+    return () => { api.off("select", sync); };
+  }, [api, onNavigate]);
+  return <Dialog.Content className="comics-phone-viewer" aria-describedby={undefined}
+    onTouchStart={event => { const touch = event.touches[0]; if (touch) gesture.current = { x: touch.clientX, y: touch.clientY, dragged: false }; }}
+    onTouchMove={event => { const touch = event.touches[0]; if (touch && (Math.abs(touch.clientX - gesture.current.x) > 10 || Math.abs(touch.clientY - gesture.current.y) > 10 || event.touches.length > 1)) gesture.current.dragged = true; }}
+    onClick={() => { if (!gesture.current.dragged) onClose(); }}>
+    <Dialog.Title className="sr-only">{scenes[active].alt}</Dialog.Title>
+    <div ref={viewport} className="comics-phone-viewer__viewport" aria-label="Enlarged God of Lies illustrations" aria-roledescription="carousel">
+      <div className="comics-phone-viewer__track">
+        {scenes.map(scene => <div key={scene.src} className="comics-phone-viewer__slide"><img src={scene.src} alt={scene.alt} width={1536} height={1024} draggable={false} /></div>)}
+      </div>
+    </div>
+  </Dialog.Content>;
+}
+
 /** Phones only: the lower Comics chapters as one natively scrolling page. */
 export function ComicsPhoneStack({ children, comics, open }: { children: ReactNode; comics: Comic[]; open: boolean }) {
   const stackRef = useRef<HTMLDivElement>(null);
@@ -183,10 +206,7 @@ export function ComicsPhoneStack({ children, comics, open }: { children: ReactNo
       <Dialog.Root open={enlarged !== null} onOpenChange={value => { if (!value) setEnlarged(null); }}>
         <Dialog.Portal>
           <Dialog.Overlay className="god-of-lies-gallery__overlay comics-phone-fade" />
-          <Dialog.Content className="comics-phone-viewer" aria-describedby={undefined} onClick={() => setEnlarged(null)}>
-            <Dialog.Title className="sr-only">{enlarged !== null ? scenes[enlarged].alt : ""}</Dialog.Title>
-            {enlarged !== null && <img src={scenes[enlarged].src} alt={scenes[enlarged].alt} width={1536} height={1024} />}
-          </Dialog.Content>
+          {enlarged !== null && <PhoneIllustrationViewer initialIndex={enlarged} onNavigate={index => api?.scrollTo(index, true)} onClose={() => setEnlarged(null)} />}
         </Dialog.Portal>
       </Dialog.Root>
 

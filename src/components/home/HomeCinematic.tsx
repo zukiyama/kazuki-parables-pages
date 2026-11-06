@@ -143,7 +143,7 @@ const HomeCinematic = () => {
           <h1 className="font-heading text-6xl leading-[0.9] text-background md:text-9xl">
             Kazuki<br />Yamakawa
           </h1>
-          <div className="mt-8 flex flex-wrap gap-x-8 gap-y-2 text-sm uppercase tracking-[0.25em] text-background/80">
+          <div className="home-cinematic-opening-links mt-8 flex flex-wrap gap-x-8 gap-y-2 text-sm uppercase tracking-[0.25em] text-background/80">
             <Link to="/writing" className="hover:text-background">Fiction</Link>
             <Link to="/comics" className="hover:text-background">Comics & Scripts</Link>
             <Link to="/music" className="hover:text-background">Music</Link>
