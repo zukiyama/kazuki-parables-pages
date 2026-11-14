@@ -14,6 +14,7 @@ const MobileMenu = () => {
     { path: '/writing', label: 'Writing' },
     { path: '/music', label: 'Music' },
     { path: '/comics', label: 'Comics & Scripts' },
+    { path: '/kazukilabs', label: 'KazukiLabs' },
   ];
 
   const handleLinkClick = () => {

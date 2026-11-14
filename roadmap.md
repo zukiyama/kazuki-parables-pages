@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Add KazukiLabs last in desktop/phone navigation and embed the uploaded self-contained AR test with direct full-screen access. Desktop/phone menu and camera start/close checks passed using a simulated camera; build OK. Physical Android AR remains device-dependent and unverified.
+
 - [x] Stop God of Lies artwork trembling during hover expansion; keep KAIJU artwork fixed while To No One opens and lower the KAIJU copy slightly. Frame-by-frame desktop/tablet checks show fixed KAIJU geometry, only sub-0.07px God of Lies rounding, visible lowered copy, no runtime errors, and build OK.
 
 - [x] Keep To No One artwork stationary at its approved expanded crop; restore left-aligned KAIJU copy and shrink it as one continuous layer without hiding words. Desktop and iPad position/visibility checks passed; build OK.

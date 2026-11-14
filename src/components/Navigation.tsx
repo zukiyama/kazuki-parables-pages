@@ -13,6 +13,7 @@ const Navigation = () => {
     { path: "/writing", label: "Writing" },
     { path: "/music", label: "Music" },
     { path: "/comics", label: "Comics & Scripts" },
+    { path: "/kazukilabs", label: "KazukiLabs" },
   ];
 
   const isAboutPage = location.pathname === "/about";
@@ -44,7 +45,7 @@ const Navigation = () => {
             </button>
           </div>
           
-          <div className="flex items-center space-x-8 max-sm:hidden">
+          <div className="flex items-center space-x-4 xl:space-x-8 max-sm:hidden">
             <SocialIcons
               ids={["spotify", "applemusic", "youtube", "tiktok", "instagram"]}
               iconClassName="w-4 h-4"

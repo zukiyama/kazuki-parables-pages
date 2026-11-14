@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AR Blob Test</title>
+<style>
+  html,body{margin:0;background:#0b1220;color:#e8f6ff;font:17px/1.45 system-ui,sans-serif}
+  main{padding:20px;max-width:520px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 4px}
+  p{margin:8px 0}
+  #blobPreview{width:112px;height:88px;image-rendering:pixelated;display:block;margin:14px auto;animation:bob 1.2s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(-8px) scale(1.04,.96)}}
+  ul{list-style:none;padding:0;margin:14px 0}
+  li{padding:8px 10px;margin:6px 0;background:#15203a;border-radius:8px}
+  li.ok{border-left:5px solid #4be3c0}
+  li.bad{border-left:5px solid #ff7a7a}
+  li.unk{border-left:5px solid #f3c95a}
+  #verdict{font-weight:600;padding:12px;border-radius:8px;background:#1b2a4a}
+  button{font:inherit;font-weight:600;width:100%;padding:16px;margin:8px 0;border:0;border-radius:10px;background:#4be3c0;color:#06212a}
+  button.alt{background:#2a3b63;color:#e8f6ff}
+  #log{white-space:pre-wrap;font-size:14px;color:#a9c3e6;margin-top:12px}
+  #ov{display:none;position:fixed;inset:0;pointer-events:none}
+  #ovHint{position:absolute;left:12px;right:12px;top:14px;padding:10px;border-radius:10px;background:rgba(6,20,40,.65);text-align:center}
+  #ovExit{position:absolute;left:25%;width:50%;bottom:24px;pointer-events:auto}
+  #camWrap{display:none;position:fixed;inset:0;background:#000}
+  #camWrap video{width:100%;height:100%;object-fit:cover}
+  #camBlob{position:absolute;left:50%;top:55%;width:140px;height:110px;margin-left:-70px;image-rendering:pixelated;opacity:.8;animation:bob 1.2s ease-in-out infinite}
+  #camExit{position:absolute;left:25%;width:50%;bottom:24px}
+</style>
+</head>
+<body>
+<main>
+  <h1>AR Blob Test</h1>
+  <p>Open this page in <b>Chrome on the Samsung S21</b>.</p>
+  <canvas id="blobPreview" width="14" height="11"></canvas>
+  <ul id="checks"></ul>
+  <p id="verdict">Checking…</p>
+  <button id="btnAR">1. Start AR test</button>
+  <button id="btnCam" class="alt">2. Camera-only test</button>
+  <div id="log"></div>
+</main>
+
+<div id="ov">
+  <div id="ovHint">Move the phone slowly over a table or the floor…</div>
+  <button id="ovExit">Exit AR</button>
+</div>
+
+<div id="camWrap">
+  <video id="camVideo" playsinline muted></video>
+  <canvas id="camBlob" width="14" height="11"></canvas>
+  <button id="camExit">Close camera</button>
+</div>
+
+<script>
+// ---------- pixel blob ----------
+var SPRITE = [
+  "....000000....",
+  "..0011111100..",
+  ".011111111110.",
+  ".011211112110.",
+  "01113111131110",
+  "01113111131110",
+  "01111111111110",
+  "01111144111110",
+  "01111111111110",
+  ".011111111110.",
+  "..0000000000.."
+];
+var PAL = {
+  "0":[170,255,250,240],
+  "1":[60,220,230,140],
+  "2":[255,255,255,255],
+  "3":[10,40,70,240],
+  "4":[10,40,70,200]
+};
+var SW = 14, SH = 11;
+function spritePixels(){
+  var d = new Uint8Array(SW*SH*4);
+  for (var y=0;y<SH;y++) for (var x=0;x<SW;x++){
+    var c = PAL[SPRITE[y][x]];
+    if (c){ var i=(y*SW+x)*4; d[i]=c[0]; d[i+1]=c[1]; d[i+2]=c[2]; d[i+3]=c[3]; }
+  }
+  return d;
+}
+function paintSprite(canvas){
+  var ctx = canvas.getContext("2d");
+  var img = ctx.createImageData(SW,SH);
+  img.data.set(spritePixels());
+  ctx.putImageData(img,0,0);
+}
+paintSprite(document.getElementById("blobPreview"));
+paintSprite(document.getElementById("camBlob"));
+
+// ---------- helpers ----------
+var $ = function(id){ return document.getElementById(id); };
+function log(msg){ $("log").textContent += msg + "\n"; }
+function check(label, state, detail){
+  var li = document.createElement("li");
+  li.className = state;
+  var mark = state==="ok" ? "✓ " : state==="bad" ? "✗ " : "? ";
+  li.textContent = mark + label + (detail ? " — " + detail : "");
+  $("checks").appendChild(li);
+}
+
+// ---------- diagnostics ----------
+var arSupported = false;
+(async function diagnose(){
+  check("Secure page (https)", window.isSecureContext ? "ok" : "bad");
+  var framed = false;
+  try { framed = window.self !== window.top; } catch(e){ framed = true; }
+  check("Page opened directly (not inside a frame)", framed ? "bad" : "ok");
+  check("Browser has AR built in (WebXR)", navigator.xr ? "ok" : "bad");
+  if (navigator.xr){
+    try {
+      arSupported = await navigator.xr.isSessionSupported("immersive-ar");
+      check("This device can start an AR session", arSupported ? "ok" : "bad");
+    } catch(e){
+      check("This device can start an AR session", "bad", e.name);
+    }
+  }
+  var cam = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  check("Camera available to web pages", cam ? "ok" : "bad");
+  $("verdict").textContent = arSupported
+    ? "AR looks available. Press “Start AR test”."
+    : "AR is not available on this page or device. Try the camera-only test and send Claude a screenshot of this screen.";
+})();
+
+// ---------- AR test ----------
+$("btnAR").onclick = async function(){
+  if (!navigator.xr){ log("AR failed: this browser has no WebXR."); return; }
+  var canvas = document.createElement("canvas");
+  var gl = canvas.getContext("webgl", {xrCompatible:true, alpha:true, antialias:false});
+  if (!gl){ log("AR failed: WebGL not available."); return; }
+  var ov = $("ov");
+  ov.style.display = "block";
+  var session;
+  try {
+    session = await navigator.xr.requestSession("immersive-ar", {
+      optionalFeatures: ["hit-test","dom-overlay"],
+      domOverlay: {root: ov}
+    });
+  } catch(e){
+    ov.style.display = "none";
+    log("AR failed to start: " + e.name + " — " + e.message);
+    return;
+  }
+  try {
+    await runAR(session, gl);
+  } catch(e){
+    log("AR error: " + e.name + " — " + e.message);
+    try { session.end(); } catch(_){}
+  }
+};
+
+async function runAR(session, gl){
+  if (gl.makeXRCompatible) await gl.makeXRCompatible();
+  session.updateRenderState({baseLayer: new XRWebGLLayer(session, gl)});
+  var refSpace = await session.requestReferenceSpace("local");
+
+  var hitSource = null;
+  try {
+    var viewerSpace = await session.requestReferenceSpace("viewer");
+    hitSource = await session.requestHitTestSource({space: viewerSpace});
+  } catch(e){ hitSource = null; }
+
+  // shaders
+  function sh(type, src){
+    var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  var prog = gl.createProgram();
+  gl.attachShader(prog, sh(gl.VERTEX_SHADER,
+    "attribute vec3 p;attribute vec2 uv;uniform mat4 P;uniform mat4 V;varying vec2 v;" +
+    "void main(){v=uv;gl_Position=P*V*vec4(p,1.0);}"));
+  gl.attachShader(prog, sh(gl.FRAGMENT_SHADER,
+    "precision mediump float;uniform sampler2D t;uniform float time;varying vec2 v;" +
+    "void main(){vec4 c=texture2D(t,v);float scan=0.85+0.15*sin(v.y*70.0+time*6.0);" +
+    "float a=c.a*scan;gl_FragColor=vec4(c.rgb*a,a);}"));
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+  var aP = gl.getAttribLocation(prog,"p"), aUV = gl.getAttribLocation(prog,"uv");
+  var uP = gl.getUniformLocation(prog,"P"), uV = gl.getUniformLocation(prog,"V");
+  var uTime = gl.getUniformLocation(prog,"time");
+
+  var tex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,SW,SH,0,gl.RGBA,gl.UNSIGNED_BYTE,spritePixels());
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+  var buf = gl.createBuffer();
+  var verts = new Float32Array(20); // 4 x (x,y,z,u,v)
+
+  var pos = null;        // blob base position in the room
+  var placed = false;    // true once the player taps
+  var lastHit = null;    // latest surface point under screen centre
+  var sawSurface = false;
+  var frames = 0;
+  var hint = $("ovHint");
+
+  session.addEventListener("select", function(){
+    if (lastHit){ pos = lastHit.slice(); }
+    placed = true;
+    hint.textContent = lastHit ? "Placed on the surface. Walk around it! Tap to move it."
+                               : "Placed in mid-air (no surface found yet).";
+  });
+  $("ovExit").addEventListener("beforexrselect", function(e){ e.preventDefault(); });
+  $("ovExit").onclick = function(){ session.end(); };
+
+  session.addEventListener("end", function(){
+    $("ov").style.display = "none";
+    log("AR session ended after " + frames + " frames. Surface detection: " +
+        (hitSource ? (sawSurface ? "WORKED" : "no surface found") : "not supported") + ".");
+    log(frames > 0 ? "RESULT: AR works on this page." : "RESULT: AR started but drew nothing.");
+  });
+
+  function onFrame(t, frame){
+    session.requestAnimationFrame(onFrame);
+    var pose = frame.getViewerPose(refSpace);
+    if (!pose) return;
+    frames++;
+    var time = t / 1000;
+
+    lastHit = null;
+    if (hitSource){
+      var hits = frame.getHitTestResults(hitSource);
+      if (hits.length){
+        var hp = hits[0].getPose(refSpace);
+        if (hp){
+          var q = hp.transform.position;
+          lastHit = [q.x, q.y, q.z];
+          if (!sawSurface){ sawSurface = true; hint.textContent = "Surface found! Tap the screen to put the blob down."; }
+        }
+      }
+    }
+
+    var m = pose.transform.matrix;
+    if (!placed){
+      if (lastHit) pos = lastHit.slice();
+      else pos = [m[12]-m[8]*1.0, m[13]-m[9]*1.0-0.15, m[14]-m[10]*1.0]; // 1 m ahead
+    }
+
+    // billboard: faces the camera, stays upright
+    var rx = m[0], rz = m[2], len = Math.hypot(rx, rz);
+    if (len < 0.001){ rx = 1; rz = 0; len = 1; }
+    rx /= len; rz /= len;
+    var squish = Math.sin(time*4)*0.07;
+    var w = 0.16*(1 - squish), h = 0.125*(1 + squish);
+    var hop = Math.abs(Math.sin(time*2))*0.03;
+    var bx = pos[0], by = pos[1] + hop, bz = pos[2];
+    var hw = w/2;
+    verts.set([
+      bx-rx*hw, by,   bz-rz*hw, 0,1,
+      bx+rx*hw, by,   bz+rz*hw, 1,1,
+      bx-rx*hw, by+h, bz-rz*hw, 0,0,
+      bx+rx*hw, by+h, bz+rz*hw, 1,0
+    ]);
+
+    var layer = session.renderState.baseLayer;
+    gl.bindFramebuffer(gl.FRAMEBUFFER, layer.framebuffer);
+    gl.clearColor(0,0,0,0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.disable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.useProgram(prog);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, verts, gl.DYNAMIC_DRAW);
+    gl.enableVertexAttribArray(aP);
+    gl.vertexAttribPointer(aP, 3, gl.FLOAT, false, 20, 0);
+    gl.enableVertexAttribArray(aUV);
+    gl.vertexAttribPointer(aUV, 2, gl.FLOAT, false, 20, 12);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.uniform1f(uTime, time);
+
+    for (var i=0;i<pose.views.length;i++){
+      var view = pose.views[i];
+      var vp = layer.getViewport(view);
+      gl.viewport(vp.x, vp.y, vp.width, vp.height);
+      gl.uniformMatrix4fv(uP, false, view.projectionMatrix);
+      gl.uniformMatrix4fv(uV, false, view.transform.inverse.matrix);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+  }
+  session.requestAnimationFrame(onFrame);
+}
+
+// ---------- camera-only test ----------
+var camStream = null;
+$("btnCam").onclick = async function(){
+  try {
+    camStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}, audio:false});
+    var v = $("camVideo");
+    v.srcObject = camStream;
+    $("camWrap").style.display = "block";
+    await v.play();
+    log("RESULT: camera feed works on this page.");
+  } catch(e){
+    $("camWrap").style.display = "none";
+    log("Camera failed: " + e.name + " — " + e.message);
+  }
+};
+$("camExit").onclick = function(){
+  if (camStream) camStream.getTracks().forEach(function(t){ t.stop(); });
+  camStream = null;
+  $("camWrap").style.display = "none";
+};
+</script>
+</body>
+</html>
