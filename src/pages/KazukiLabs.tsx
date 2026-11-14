@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import arcade from "@/assets/kazukilabs-arcade.webp";
 
-const gameUrl = `${import.meta.env.BASE_URL}labs/ar-pet-4.html`;
+const gameUrl = `${import.meta.env.BASE_URL}labs/ar-pet-5.html`;
 
 /** Title with a moon circling "LABS", a river line and a small mountain. */
 const LabsLogo = () => (
@@ -83,7 +83,7 @@ const KazukiLabs = () => {
             <iframe
               ref={frameRef}
               src={gameUrl}
-              title="AR Pet 4"
+              title="AR Pet 5"
               allow="camera; xr-spatial-tracking; fullscreen"
               allowFullScreen
               onLoad={handleFrameLoad}
