@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AR Blob Test 2</title>
+<style>
+  html,body{margin:0;background:#0b1220;color:#e8f6ff;font:17px/1.45 system-ui,sans-serif}
+  main{padding:20px;max-width:520px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 4px}
+  p{margin:8px 0}
+  ul{list-style:none;padding:0;margin:14px 0}
+  li{padding:8px 10px;margin:6px 0;background:#15203a;border-radius:8px}
+  li.ok{border-left:5px solid #4be3c0}
+  li.bad{border-left:5px solid #ff7a7a}
+  button{font:inherit;font-weight:600;width:100%;padding:16px;margin:8px 0;border:0;border-radius:10px;background:#4be3c0;color:#06212a}
+  #log{white-space:pre-wrap;font-size:14px;color:#a9c3e6;margin-top:12px}
+  #ov{display:none;position:fixed;inset:0;pointer-events:none}
+  #ovHint{position:absolute;left:12px;right:12px;top:14px;padding:10px;border-radius:10px;background:rgba(6,20,40,.65);text-align:center}
+  #ovStat{position:absolute;left:12px;bottom:90px;padding:6px 10px;border-radius:8px;background:rgba(6,20,40,.65);font-size:13px}
+  #ovExit{position:absolute;left:25%;width:50%;bottom:24px;pointer-events:auto}
+</style>
+</head>
+<body>
+<main>
+  <h1>AR Blob Test 2</h1>
+  <p>3D blob, locked to the surface. Open in <b>Chrome on the Samsung S21</b>.</p>
+  <ul id="checks"></ul>
+  <button id="btnAR">Start AR</button>
+  <p><b>How to scan:</b> good light, and move the phone slowly side to side over the table for a few seconds until a ring appears. Then tap where you want the blob.</p>
+  <div id="log"></div>
+</main>
+
+<div id="ov">
+  <div id="ovHint">Scanning… move the phone slowly side to side over the table.</div>
+  <div id="ovStat"></div>
+  <button id="ovExit">Exit AR</button>
+</div>
+
+<script>
+var $ = function(id){ return document.getElementById(id); };
+function log(msg){ $("log").textContent += msg + "\n"; }
+function check(label, ok, detail){
+  var li = document.createElement("li");
+  li.className = ok ? "ok" : "bad";
+  li.textContent = (ok ? "✓ " : "✗ ") + label + (detail ? " — " + detail : "");
+  $("checks").appendChild(li);
+}
+
+(async function diagnose(){
+  check("Secure page (https)", window.isSecureContext);
+  check("Browser has AR built in (WebXR)", !!navigator.xr);
+  if (navigator.xr){
+    try { check("This device can start an AR session", await navigator.xr.isSessionSupported("immersive-ar")); }
+    catch(e){ check("This device can start an AR session", false, e.name); }
+  }
+})();
+
+// ---------- tiny matrix helpers (column-major) ----------
+function mul(a,b){
+  var o = new Float32Array(16);
+  for (var c=0;c<4;c++) for (var r=0;r<4;r++)
+    o[c*4+r] = a[r]*b[c*4] + a[4+r]*b[c*4+1] + a[8+r]*b[c*4+2] + a[12+r]*b[c*4+3];
+  return o;
+}
+function T(x,y,z){ return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, x,y,z,1]); }
+function S(x,y,z){ return new Float32Array([x,0,0,0, 0,y,0,0, 0,0,z,0, 0,0,0,1]); }
+function RY(a){ var c=Math.cos(a), s=Math.sin(a); return new Float32Array([c,0,-s,0, 0,1,0,0, s,0,c,0, 0,0,0,1]); }
+
+// ---------- start ----------
+$("btnAR").onclick = async function(){
+  if (!navigator.xr){ log("AR failed: this browser has no WebXR."); return; }
+  var canvas = document.createElement("canvas");
+  var gl = canvas.getContext("webgl", {xrCompatible:true, alpha:true, antialias:true});
+  if (!gl){ log("AR failed: WebGL not available."); return; }
+  var ov = $("ov");
+  ov.style.display = "block";
+  var session;
+  try {
+    session = await navigator.xr.requestSession("immersive-ar", {
+      requiredFeatures: ["hit-test"],
+      optionalFeatures: ["anchors","dom-overlay"],
+      domOverlay: {root: ov}
+    });
+  } catch(e){
+    ov.style.display = "none";
+    log("AR failed to start: " + e.name + " — " + e.message);
+    return;
+  }
+  try { await runAR(session, gl); }
+  catch(e){
+    log("AR error: " + e.name + " — " + e.message);
+    try { session.end(); } catch(_){}
+  }
+};
+
+async function runAR(session, gl){
+  if (gl.makeXRCompatible) await gl.makeXRCompatible();
+  session.updateRenderState({baseLayer: new XRWebGLLayer(session, gl)});
+  var refSpace = await session.requestReferenceSpace("local");
+  var viewerSpace = await session.requestReferenceSpace("viewer");
+
+  // Surface finder under screen centre (drives the ring). Planes + feature points,
+  // so objects on the table count as well as the table itself.
+  var hitSource = null;
+  try { hitSource = await session.requestHitTestSource({space: viewerSpace, entityTypes: ["plane","point"]}); }
+  catch(e){ try { hitSource = await session.requestHitTestSource({space: viewerSpace}); } catch(e2){} }
+
+  // Surface finder under the finger (so the blob goes exactly where you tap).
+  var tapSource = null;
+  if (session.requestHitTestSourceForTransientInput){
+    try { tapSource = await session.requestHitTestSourceForTransientInput({profile: "generic-touchscreen", entityTypes: ["plane","point"]}); }
+    catch(e){ try { tapSource = await session.requestHitTestSourceForTransientInput({profile: "generic-touchscreen"}); } catch(e2){} }
+  }
+
+  // ---------- shaders ----------
+  function sh(type, src){
+    var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  function program(vs, fs, attr){
+    var p = gl.createProgram();
+    gl.attachShader(p, sh(gl.VERTEX_SHADER, vs));
+    gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs));
+    gl.bindAttribLocation(p, 0, attr);
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    var u = {}, n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS);
+    for (var i=0;i<n;i++){ var info = gl.getActiveUniform(p, i); u[info.name] = gl.getUniformLocation(p, info.name); }
+    return {p:p, u:u};
+  }
+
+  // Blob body: smooth squashed sphere, translucent hologram shading.
+  var body = program(
+    "attribute vec3 p;uniform mat4 P;uniform mat4 V;uniform mat4 M;uniform float time;" +
+    "varying vec3 vN;varying vec3 vW;varying float vY;" +
+    "void main(){vec3 q=p;vec3 n=p;" +
+    "float t=clamp((0.3-p.y)/1.1,0.0,1.0);t=t*t*(3.0-2.0*t);" +
+    "q.xz*=1.0+0.18*t;" +
+    "if(p.y<0.0){q.y*=0.55;n.y/=0.55;}" +
+    "n=normalize(n);" +
+    "q+=n*0.025*sin(time*2.2+p.y*4.0+p.x*3.0+p.z*2.0);" +
+    "q.y+=0.55;" +
+    "vec4 w=M*vec4(q,1.0);vW=w.xyz;vN=(M*vec4(n,0.0)).xyz;vY=q.y;" +
+    "gl_Position=P*V*w;}",
+    "precision highp float;uniform vec3 cam;uniform float time;uniform float back;" +
+    "varying vec3 vN;varying vec3 vW;varying float vY;" +
+    "void main(){vec3 n=normalize(vN);vec3 v=normalize(cam-vW);" +
+    "float f=1.0-abs(dot(n,v));float rim=pow(f,2.2);" +
+    "float scan=0.5+0.5*sin(vW.y*900.0-time*5.0);" +
+    "float glow=0.8+0.2*sin(time*1.7);" +
+    "vec3 base=mix(vec3(0.10,0.75,0.95),vec3(0.45,1.0,0.85),clamp(vY/1.55,0.0,1.0));" +
+    "vec3 col=base*(0.55+0.2*scan)+vec3(0.75,1.0,1.0)*rim*1.2;" +
+    "float a=(0.22+0.10*scan+0.75*rim)*glow;" +
+    "if(back>0.5){a*=0.45;col*=0.8;}else{" +
+    "vec3 h=normalize(normalize(vec3(0.3,1.0,0.4))+v);float spec=pow(max(dot(n,h),0.0),40.0);" +
+    "col+=vec3(spec);a+=spec*0.6;}" +
+    "a=clamp(a,0.0,0.95);gl_FragColor=vec4(col*a,a);}",
+    "p");
+
+  // Solid parts: eyes, eye shine, mouth.
+  var solid = program(
+    "attribute vec3 p;uniform mat4 P;uniform mat4 V;uniform mat4 M;varying vec3 vN;" +
+    "void main(){vN=(M*vec4(p,0.0)).xyz;gl_Position=P*V*M*vec4(p,1.0);}",
+    "precision mediump float;uniform vec4 color;varying vec3 vN;" +
+    "void main(){float l=0.7+0.3*normalize(vN).y;gl_FragColor=vec4(color.rgb*l*color.a,color.a);}",
+    "p");
+
+  // Flat discs: soft shadow under the blob, and the scanning ring.
+  var flat = program(
+    "attribute vec2 q;uniform mat4 P;uniform mat4 V;uniform mat4 M;varying vec2 v;" +
+    "void main(){v=q;gl_Position=P*V*M*vec4(q.x,0.0,q.y,1.0);}",
+    "precision mediump float;uniform float kind;uniform float time;varying vec2 v;" +
+    "void main(){float r=length(v);" +
+    "if(kind<0.5){float a=0.45*(1.0-smoothstep(0.15,1.0,r));gl_FragColor=vec4(0.0,0.0,0.0,a);}" +
+    "else{float ring=1.0-smoothstep(0.05,0.09,abs(r-0.82));float dot_=1.0-smoothstep(0.08,0.12,r);" +
+    "float a=max(ring,dot_)*(0.7+0.3*sin(time*5.0));gl_FragColor=vec4(vec3(0.4,1.0,0.9)*a,a);}}",
+    "q");
+
+  // ---------- geometry ----------
+  var LAT = 40, LON = 64, sv = [], si = [];
+  for (var i=0;i<=LAT;i++){
+    var th = Math.PI*i/LAT;
+    for (var j=0;j<=LON;j++){
+      var ph = 2*Math.PI*j/LON;
+      sv.push(Math.sin(th)*Math.cos(ph), Math.cos(th), Math.sin(th)*Math.sin(ph));
+    }
+  }
+  for (i=0;i<LAT;i++) for (j=0;j<LON;j++){
+    var a = i*(LON+1)+j, b = a+LON+1;
+    si.push(a, a+1, b,  b, a+1, b+1);
+  }
+  var sphereVB = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, sphereVB);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sv), gl.STATIC_DRAW);
+  var sphereIB = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereIB);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(si), gl.STATIC_DRAW);
+  var sphereCount = si.length;
+  var quadVB = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, quadVB);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+
+  // ---------- state ----------
+  var SIZE = 0.065;          // blob is about 14 cm wide
+  var pos = null, yaw = 0;   // where the blob sits, and which way it faces
+  var anchor = null;         // the lock that keeps it glued to the real world
+  var anchorState = "none";
+  var wantPlace = false, released = false;
+  var sawSurface = false, frames = 0;
+  var hint = $("ovHint"), stat = $("ovStat");
+
+  session.addEventListener("selectstart", function(){ wantPlace = true; released = false; });
+  session.addEventListener("select", function(){ if (wantPlace) released = true; });
+  $("ovExit").addEventListener("beforexrselect", function(e){ e.preventDefault(); });
+  $("ovExit").onclick = function(){ session.end(); };
+  session.addEventListener("end", function(){
+    $("ov").style.display = "none";
+    log("AR ended after " + frames + " frames.");
+    log("Surface found: " + (sawSurface ? "yes" : "no") + ". Tap-to-place: " + (tapSource ? "exact spot" : "screen centre") + ".");
+    log("World lock (anchor): " + anchorState + ".");
+  });
+
+  function place(hit, camM){
+    var hp = hit.getPose(refSpace);
+    if (!hp) return false;
+    var q = hp.transform.position;
+    pos = [q.x, q.y, q.z];
+    yaw = Math.atan2(camM[12]-q.x, camM[14]-q.z);   // face whoever placed it
+    if (anchor && anchor.delete){ try { anchor.delete(); } catch(e){} }
+    anchor = null;
+    if (hit.createAnchor){
+      anchorState = "locking…";
+      hit.createAnchor().then(function(an){
+        anchor = an; anchorState = "locked";
+        hint.textContent = "Locked in place. Walk around it! Tap elsewhere to move it.";
+      }, function(e){
+        anchorState = "failed (" + e.name + ")";
+        hint.textContent = "Placed, but the world lock failed — it may drift.";
+      });
+    } else {
+      anchorState = "not supported";
+      hint.textContent = "Placed (no world lock on this browser — it may drift).";
+    }
+    return true;
+  }
+
+  function onFrame(t, frame){
+    session.requestAnimationFrame(onFrame);
+    var pose = frame.getViewerPose(refSpace);
+    if (!pose) { stat.textContent = "Tracking lost — move slowly, more light"; return; }
+    frames++;
+    var time = t / 1000;
+    var camM = pose.transform.matrix;
+
+    // surface under screen centre
+    var centreHit = null, centrePose = null;
+    if (hitSource){
+      var hits = frame.getHitTestResults(hitSource);
+      if (hits.length){
+        centreHit = hits[0];
+        centrePose = centreHit.getPose(refSpace);
+        if (centrePose && !sawSurface){
+          sawSurface = true;
+          hint.textContent = "Surface found! Tap where you want the blob.";
+        }
+      }
+    }
+
+    // placing
+    if (wantPlace){
+      var hit = null;
+      if (tapSource){
+        var tr = frame.getHitTestResultsForTransientInput(tapSource);
+        for (var k=0;k<tr.length && !hit;k++) if (tr[k].results.length) hit = tr[k].results[0];
+        if (!hit && released){
+          wantPlace = false;
+          hint.textContent = "No surface detected where you tapped — scan that spot a bit more.";
+        }
+      } else if (released){
+        hit = centreHit;
+        if (!hit){ wantPlace = false; hint.textContent = "No surface found yet — keep scanning."; }
+      }
+      if (hit && place(hit, camM)) wantPlace = false;
+    }
+
+    // follow the world lock as the phone refines its map
+    if (anchor){
+      var ap = frame.getPose(anchor.anchorSpace, refSpace);
+      if (ap){ var aq = ap.transform.position; pos = [aq.x, aq.y, aq.z]; }
+    }
+    stat.textContent = "Surface: " + (centrePose ? "✓" : "…") + "   Lock: " + anchorState;
+
+    // ---------- draw ----------
+    var layer = session.renderState.baseLayer;
+    gl.bindFramebuffer(gl.FRAMEBUFFER, layer.framebuffer);
+    gl.clearColor(0,0,0,0);
+    gl.depthMask(true);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.enableVertexAttribArray(0);
+
+    var blobM = null, parts = [];
+    if (pos){
+      var br = Math.sin(time*1.8);
+      blobM = mul(mul(T(pos[0],pos[1],pos[2]), RY(yaw)), S(SIZE*(1-0.02*br), SIZE*(1+0.04*br), SIZE*(1-0.02*br)));
+      var blink = (time % 4.2) > 4.05 ? 0.12 : 1;
+      var dark = [0.03,0.10,0.20,0.92], white = [1,1,1,0.95];
+      [-1,1].forEach(function(sx){
+        parts.push([mul(blobM, mul(T(sx*0.36,0.85,0.86), S(0.11,0.16*blink,0.06))), dark]);
+        if (blink === 1) parts.push([mul(blobM, mul(T(sx*0.36+0.035,0.91,0.915), S(0.035,0.035,0.02))), white]);
+      });
+      parts.push([mul(blobM, mul(T(0,0.50,1.02), S(0.12,0.045,0.05))), dark]);
+    }
+
+    for (var i=0;i<pose.views.length;i++){
+      var view = pose.views[i];
+      var vp = layer.getViewport(view);
+      gl.viewport(vp.x, vp.y, vp.width, vp.height);
+      var P = view.projectionMatrix, V = view.transform.inverse.matrix;
+      var cp = view.transform.position;
+
+      // flat discs
+      gl.disable(gl.DEPTH_TEST);
+      gl.disable(gl.CULL_FACE);
+      gl.useProgram(flat.p);
+      gl.bindBuffer(gl.ARRAY_BUFFER, quadVB);
+      gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+      gl.uniformMatrix4fv(flat.u.P, false, P);
+      gl.uniformMatrix4fv(flat.u.V, false, V);
+      gl.uniform1f(flat.u.time, time);
+      if (centrePose && !wantPlace){
+        gl.uniform1f(flat.u.kind, 1);
+        gl.uniformMatrix4fv(flat.u.M, false, mul(centrePose.transform.matrix, S(0.05,1,0.05)));
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      }
+      if (!pos) continue;
+      gl.uniform1f(flat.u.kind, 0);
+      gl.uniformMatrix4fv(flat.u.M, false, mul(T(pos[0],pos[1]+0.002,pos[2]), S(0.105,1,0.105)));
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+      // blob: far side of the skin, then the face, then the near side of the skin.
+      // That order is what lets you see the face through the body from behind.
+      gl.bindBuffer(gl.ARRAY_BUFFER, sphereVB);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereIB);
+      gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
+      gl.enable(gl.CULL_FACE);
+
+      gl.useProgram(body.p);
+      gl.uniformMatrix4fv(body.u.P, false, P);
+      gl.uniformMatrix4fv(body.u.V, false, V);
+      gl.uniformMatrix4fv(body.u.M, false, blobM);
+      gl.uniform1f(body.u.time, time);
+      gl.uniform3f(body.u.cam, cp.x, cp.y, cp.z);
+      gl.uniform1f(body.u.back, 1);
+      gl.cullFace(gl.FRONT);
+      gl.drawElements(gl.TRIANGLES, sphereCount, gl.UNSIGNED_SHORT, 0);
+
+      gl.useProgram(solid.p);
+      gl.uniformMatrix4fv(solid.u.P, false, P);
+      gl.uniformMatrix4fv(solid.u.V, false, V);
+      gl.enable(gl.DEPTH_TEST);
+      gl.cullFace(gl.BACK);
+      for (var k2=0;k2<parts.length;k2++){
+        gl.uniformMatrix4fv(solid.u.M, false, parts[k2][0]);
+        gl.uniform4fv(solid.u.color, parts[k2][1]);
+        gl.drawElements(gl.TRIANGLES, sphereCount, gl.UNSIGNED_SHORT, 0);
+      }
+      gl.disable(gl.DEPTH_TEST);
+
+      gl.useProgram(body.p);
+      gl.uniform1f(body.u.back, 0);
+      gl.cullFace(gl.BACK);
+      gl.drawElements(gl.TRIANGLES, sphereCount, gl.UNSIGNED_SHORT, 0);
+    }
+  }
+  session.requestAnimationFrame(onFrame);
+}
+</script>
+</body>
+</html>

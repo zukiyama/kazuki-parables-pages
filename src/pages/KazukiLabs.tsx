@@ -3,7 +3,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 
-const gameUrl = `${import.meta.env.BASE_URL}labs/ar-blob-test.html`;
+const gameUrl = `${import.meta.env.BASE_URL}labs/ar-blob-2.html`;
 
 const KazukiLabs = () => (
   <div className="min-h-screen bg-background text-foreground">
@@ -19,7 +19,7 @@ const KazukiLabs = () => (
       </div>
       <iframe
         src={gameUrl}
-        title="AR Blob Test"
+        title="AR Blob Test 2"
         allow="camera; xr-spatial-tracking; fullscreen"
         allowFullScreen
         className="block h-[max(680px,calc(100dvh-200px))] w-full border-0"
