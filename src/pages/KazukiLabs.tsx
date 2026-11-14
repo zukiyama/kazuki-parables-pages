@@ -4,7 +4,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { shouldRequestLandscape } from "@/lib/kazukilabs-launch";
 import arcade from "@/assets/kazukilabs-arcade-wide.webp";
-import labsLogo from "@/assets/kazukilabs-logo.webp";
+import labsLogo from "@/assets/kazukilabs-logo-violet.webp";
 
 type Game = {
   title: string;
@@ -240,13 +240,13 @@ const KazukiLabs = () => {
       <Navigation />
       <main className="pb-12 pt-16">
         <header className="mx-auto mb-4 px-4 text-center">
-          <h1 className="sr-only">KAZUKI LABS</h1>
+          <h1 className="sr-only">KazukiLabs</h1>
           <img
             src={labsLogo}
-            alt="KAZUKI LABS"
-            width={1400}
-            height={403}
-            className="mx-auto h-auto w-[min(88vw,24rem)]"
+            alt="KazukiLabs — violet arcade lettering with a moon, mountain and river"
+            width={1920}
+            height={640}
+            className="mx-auto h-auto w-[min(92vw,40rem)]"
             fetchPriority="high"
           />
           <p className="mx-auto mt-2 max-w-2xl font-heading text-base italic text-muted-foreground sm:text-xl">
