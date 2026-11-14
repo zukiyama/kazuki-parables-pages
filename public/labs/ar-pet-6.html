@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AR Pet 6</title>
+<style>
+  html,body{margin:0;background:#0b1220;color:#e8f6ff;font:17px/1.45 system-ui,sans-serif}
+  main{padding:20px;max-width:520px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 4px}
+  p{margin:8px 0}
+  ul{list-style:none;padding:0;margin:14px 0}
+  li{padding:8px 10px;margin:6px 0;background:#15203a;border-radius:8px}
+  li.ok{border-left:5px solid #4be3c0} li.bad{border-left:5px solid #ff7a7a} li.unk{border-left:5px solid #f3c95a}
+  button{font:inherit;font-weight:600;border:0;border-radius:10px;background:#4be3c0;color:#06212a}
+  #btnAR{width:100%;padding:16px;margin:8px 0}
+  #log{white-space:pre-wrap;font-size:14px;color:#a9c3e6;margin-top:12px}
+  #ov{display:none;position:fixed;inset:0;pointer-events:none}
+  #ovHint{position:absolute;left:12px;right:12px;top:14px;padding:10px;border-radius:10px;background:rgba(6,20,40,.65);text-align:center}
+  #ovStat{position:absolute;left:8px;right:8px;bottom:170px;padding:6px 10px;border-radius:8px;background:rgba(6,20,40,.65);font-size:12px}
+  #ovBtns{position:absolute;left:8px;right:8px;bottom:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;pointer-events:auto}
+  #ovBtns button{padding:12px 2px;font-size:13px;background:rgba(75,227,192,.9)}
+  #ovBtns button.alt{background:rgba(42,59,99,.9);color:#e8f6ff}
+</style>
+</head>
+<body>
+<main>
+  <h1>AR Pet — build 6</h1>
+  <p>Open in <b>Chrome on the Samsung S21</b>. Wait for the hand-tracking line to turn green before starting.</p>
+  <ul id="checks"></ul>
+  <button id="btnAR">Start AR</button>
+  <p><b>Steps:</b> 1) find the surface and tap the middle. 2) Mark its edge: aim the ring at the edge and tap, all the way round. 3) Scan the objects slowly from every side. 4) Release the pet.</p>
+  <div id="log"></div>
+</main>
+<div id="ov">
+  <div id="ovHint"></div>
+  <div id="ovStat"></div>
+  <div id="ovBtns"></div>
+</div>
+<script>
+// ================= SIM: world map + creature brain + hand physics (no graphics in here) =================
+var N = 96, CELL = 0.01, HALF = N * CELL / 2;
+var mapH = new Float32Array(N * N), mapN = new Uint8Array(N * N), mapT = new Uint8Array(N * N), mapS = new Float32Array(N * N);
+var mapBase = 0, mapCover = 0, mapDirty = true, mapObjN = 0;       // mapT: 0 unknown, 1 table, 2 object, 3 drop
+var areaPoly = null, drawn = [], polyMask = null, objH = null;       // what the player marked by hand: always wins over the scan
+var SND = { meow: function () {}, purr: function () {}, hiss: function () {}, chirp: function () {}, crunch: function () {}, thud: function () {}, growl: function () {} };
+var newObj = null;
+
+function mapClear() { mapH.fill(0); mapN.fill(0); mapT.fill(0); mapS.fill(-0.5); mapBase = 0; mapCover = 0; mapDirty = true; }
+function mapAdd(x, y, z) { // one measured 3D point, in play-area coordinates
+  var i = Math.floor((x + HALF) / CELL), j = Math.floor((z + HALF) / CELL);
+  if (i < 0 || j < 0 || i >= N || j >= N || y > 0.6) return;
+  if (y < -0.3) y = -0.3;
+  var k = j * N + i, n = mapN[k], a = n < 12 ? 1 / (n + 1) : 0.06;
+  mapH[k] += (y - mapH[k]) * a;
+  if (n < 255) mapN[k] = n + 1;
+}
+function inPoly(p, x, z) { var c = false; for (var i = 0, j = p.length - 1; i < p.length; j = i++) { if ((p[i][1] > z) !== (p[j][1] > z) && x < (p[j][0] - p[i][0]) * (z - p[i][1]) / (p[j][1] - p[i][1]) + p[i][0]) c = !c; } return c; }
+function rebuildMasks() {
+  var i, j, o;
+  polyMask = null; objH = null;
+  if (areaPoly && areaPoly.length >= 3) { polyMask = new Uint8Array(N * N); for (j = 0; j < N; j++) for (i = 0; i < N; i++) if (inPoly(areaPoly, (i + 0.5) * CELL - HALF, (j + 0.5) * CELL - HALF)) polyMask[j * N + i] = 1; }
+  for (o = 0; o < drawn.length; o++) { var d = drawn[o]; if (d.poly.length < 3) continue; if (!objH) objH = new Float32Array(N * N);
+    for (j = 0; j < N; j++) for (i = 0; i < N; i++) if (inPoly(d.poly, (i + 0.5) * CELL - HALF, (j + 0.5) * CELL - HALF)) objH[j * N + i] = Math.max(objH[j * N + i], d.h); }
+  mapProcess();
+}
+var _hist = new Uint16Array(41), _nb = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+function mapProcess() {
+  var k, i, j;
+  _hist.fill(0);
+  for (k = 0; k < N * N; k++) if (mapN[k] >= 2) { var b = Math.round(mapH[k] / 0.005) + 20; if (b >= 0 && b < 41) _hist[b]++; }
+  var best = 20, bc = 0;
+  for (i = 0; i < 41; i++) if (_hist[i] > bc) { bc = _hist[i]; best = i; }
+  if (bc >= 30) mapBase += ((best - 20) * 0.005 - mapBase) * 0.5;   // table level = commonest height
+  var known = 0, total = 0, nw = 0, nwx = 0, nwz = 0, was; mapObjN = 0;
+  for (j = 0; j < N; j++) for (i = 0; i < N; i++) {
+    k = j * N + i; var c = 0; was = mapT[k];
+    for (var dj = -1; dj <= 1; dj++) for (var di = -1; di <= 1; di++) {
+      var ii = i + di, jj = j + dj; if (ii < 0 || jj < 0 || ii >= N || jj >= N) continue;
+      var kk = jj * N + ii; if (mapN[kk] >= 2) _nb[c++] = mapH[kk];
+    }
+    var inR = polyMask ? polyMask[k] === 1 : (i - 48) * (i - 48) + (j - 48) * (j - 48) < 900; if (inR) total++;
+    if (c < 5 && !(mapN[k] >= 2 && c >= 3)) { mapT[k] = 0; mapS[k] = -0.5; }
+    else {
+      for (var a = 1; a < c; a++) { var v = _nb[a], b2 = a - 1; while (b2 >= 0 && _nb[b2] > v) { _nb[b2 + 1] = _nb[b2]; b2--; } _nb[b2 + 1] = v; }
+      var m = _nb[c >> 1] - mapBase;
+      if (m < -0.05) { mapT[k] = 3; mapS[k] = -0.5; }
+      else if (m < 0.022) { mapT[k] = 1; mapS[k] = 0; }
+      else { mapT[k] = 2; mapS[k] = m; }
+      if (inR) known++;
+    }
+    if (polyMask) { if (!polyMask[k]) { mapT[k] = 3; mapS[k] = -0.5; } else if (mapT[k] === 0 || mapT[k] === 3) { mapT[k] = 1; mapS[k] = 0; } }
+    if (objH && objH[k] > 0) { mapT[k] = 2; mapS[k] = objH[k]; }
+    if (mapT[k] === 2) { mapObjN++; if (was !== 2) { nw++; nwx += i; nwz += j; } }
+  }
+  mapCover = total ? known / total : 0; mapDirty = true;
+  if (nw >= 12) newObj = { x: (nwx / nw + 0.5) * CELL - HALF, z: (nwz / nw + 0.5) * CELL - HALF };
+}
+function cellK(x, z) { var i = Math.floor((x + HALF) / CELL), j = Math.floor((z + HALF) / CELL); return (i < 0 || j < 0 || i >= N || j >= N) ? -1 : j * N + i; }
+function cellType(x, z) { var k = cellK(x, z); return k < 0 ? (polyMask ? 3 : 0) : mapT[k]; }
+function groundH(x, z) { var k = cellK(x, z); return (k >= 0 && mapT[k] === 2) ? mapS[k] : 0; }
+function solid(x, z) { var t = cellType(x, z); return t === 1 || t === 2; }
+
+function rnd(a, b) { return a + Math.random() * (b - a); }
+function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+function angDiff(a, b) { var d = (a - b) % (2 * Math.PI); if (d > Math.PI) d -= 2 * Math.PI; if (d < -Math.PI) d += 2 * Math.PI; return d; }
+function dist3(a, b) { return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]); }
+
+// ---------- things in the world ----------
+var SIZE = 0.06;                      // creature length in metres
+var mood = { hunger: 0.25, energy: 0.85, playful: 0.5, fear: 0, anger: 0, affection: 0.35, curiosity: 0.6 };
+var FING = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16], [17, 18, 19, 20]];
+var CAPS = [[1, 2, 0.011], [2, 3, 0.010], [3, 4, 0.009], [5, 6, 0.009], [6, 7, 0.008], [7, 8, 0.008], [9, 10, 0.009], [10, 11, 0.008], [11, 12, 0.008], [13, 14, 0.009], [14, 15, 0.008], [15, 16, 0.008],
+  [17, 18, 0.008], [18, 19, 0.007], [19, 20, 0.007], [0, 5, 0.018], [0, 9, 0.018], [0, 13, 0.018], [0, 17, 0.018], [5, 9, 0.014], [9, 13, 0.014], [13, 17, 0.014], [0, 1, 0.016], [5, 17, 0.014], [1, 5, 0.014], [1, 9, 0.013], [2, 5, 0.011]];
+var WEBS = [[6, 10], [10, 14], [14, 18], [7, 11], [11, 15], [15, 19], [8, 12], [12, 16], [16, 20]];
+var PARTS = [['head', 0.42, 0.5, 0.36], ['chest', 0.15, 0.5, 0.33], ['hips', -0.15, 0.5, 0.33], ['tail', -0.5, 0.36, 0.42], ['tail', -0.72, 0.34, 0.5]];
+var hand = { vis: false, lost: 9, j: [], jv: [], tip: [0, 1, 0], tipV: [0, 0, 0], tipF: 1, speed: 0, steady: 0, pc: [0, 1, 0], pn: [0, 1, 0], pv: [0, 0, 0], closed: 0, was: false, lost0: 9, bkLast: 0, bkDir: 0, bkN: 0, bkT: 9, beckT: 0 };
+(function () { for (var i = 0; i < 21; i++) { hand.j.push([0, 1, 0]); hand.jv.push([0, 0, 0]); } })();
+var camL = [0, 0.3, 0.3];
+var food = { on: false, onFinger: false, x: 0, y: 0, z: 0 };
+var fly = { on: false, x: 0, y: 0, z: 0, cx: 0, cz: 0, t: 0, life: 0, next: 25, rest: 0 };
+var cat = { x: 0, y: 0, z: 0, gy: 0, head: 0, act: 'idle', t: 0, dur: 1.5, speed: 0, tx: 0, tz: 0, goal: '', phase: 0, gait: 0, turn: 0,
+  vx: 0, vy: 0, vz: 0, rollA: 0, rollDir: 1, look: null, cool: 0, pokes: 0, contact: 0, petT: 0, hidden: true, kick: 0, runs: 0,
+  j: null, next: null, nextDur: 1, wallH: 0, wallX: 0, wallZ: 0, ledge: false, topX: 0, topZ: 0, topH: 0, cx0: 0, cz0: 0,
+  hf: 1, hu: 0.5, fdir: 1, fwalk: 0, slopeP: 0, sliding: false, slipT: 0, hop: null, pushX: 0, pushZ: 1, cqx: 0, cqz: 0, tremble: 0, stalk: false, said: false, stuck: 0, backT: 0,
+  heard: 0, lookCamT: 0, wantHop: false, squish: 0, squeeze: 0, struggle: 0, swing: 0, swingV: 0, holdRoll: 0, holdF: 8, gv: [0, 0, 0], gp: null, dropped: false, biteT: 0, covT: 0, air: false, airF: false, mouthT: 0, talk: 0, talkK: '', seq: null, hops: 0, spinD: 1, greet: false, beckCool: 0, joy: 0, restT: 0,
+  upPeak: 0, pkx: 0, pkz: 0, thrown: false, flip: 0, flipV: 0, holdPart: 'chest', gz: 0, gyo: 0.33, hp: 0, hpv: 0, hr: 0, hrv: 0, holdA: 4, holdB: 8, grabGap: 0.03, bat: false, forceClimb: false };
+var petName = '';
+var POSE0 = { by: 0, pitch: 0, roll: 0, spine: 0, headP: 0, headY: 0, tilt: 0, footF: 0, footH: 0, splay: 0, tailP: 0.1, tailC: 0.17, tailS: 0.15, tailF: 1.5, ears: 0, eyes: 1, pupil: 0.45, wide: 1, puff: 1, sq: 1 };
+var POSES = {
+  sit: { by: -0.07, pitch: -0.45, spine: 0.25, footH: 0.16, footF: -0.03, headP: 0.4, tailP: -0.25, tailC: 0.45 },
+  sulk: { by: -0.07, pitch: -0.45, spine: 0.3, footH: 0.16, headP: 0.5, tailP: -0.25, tailC: 0.3, ears: 0.6, eyes: 0.6, tailS: 0.5, tailF: 4 },
+  loaf: { by: -0.16, footF: 0.05, footH: 0.1, tailP: -0.1, tailC: 0.5, eyes: 0.5, tailS: 0.05 },
+  ball: { by: -0.17, spine: 0.6, headP: 0.6, headY: 0.9, eyes: 0.25, tailP: -0.2, tailC: 0.6, tailS: 0 },
+  sleep: { by: -0.17, spine: 0.5, headP: 0.6, headY: 0.9, eyes: 0, tailP: -0.2, tailC: 0.6, tailS: 0 },
+  crouch: { by: -0.1, headP: -0.1, ears: 0.3, tailP: 0, tailS: 0.3, tailF: 5, pupil: 0.9 },
+  wiggle: { by: -0.09, pitch: 0.2, headP: -0.25, pupil: 1, tailP: 0.2, tailS: 0.5, tailF: 9, ears: 0.2 },
+  edgePeek: { pitch: 0.3, headP: 0.8, footF: 0.06, spine: 0.15, tailS: 0.35, tailF: 3 },
+  lookUp: { headP: -0.9, pitch: -0.12 },
+  sniff: { headP: 0.35, pitch: 0.08, tailS: 0.25 },
+  climb: { pitch: -1.35, ears: 0.3, tailP: -0.3 },
+  hiss: { by: 0.03, spine: 0.7, puff: 1.2, ears: 1, tailP: 1.3, tailC: -0.05, pupil: 0.2, wide: 1.15, headP: 0.15, tailS: 0.1, tailF: 8 },
+  petted: { pitch: 0.22, spine: -0.2, eyes: 0.15, tailP: 1.35, tailC: 0.05, ears: 0.15 },
+  pushed: { by: -0.03, pitch: 0.12, spine: 0.3, ears: 0.6, eyes: 0.7, footF: 0.08, footH: -0.06, tailP: 0.2, tailS: 0.4, tailF: 6 },
+  roll: { roll: 3.14159, by: -0.17, tailP: 0, tailS: 0.4, tailF: 3, pupil: 0.8 },
+  tumble: { by: -0.15, ears: 0.8, wide: 1.2 },
+  hang: { pitch: -1.5, tailS: 0.5, ears: 0.6, wide: 1.2 },
+  stretch: { by: -0.03, pitch: 0.4, spine: -0.5, footF: 0.2, tailP: 1.2, eyes: 0.3 },
+  groom: { by: -0.07, pitch: -0.45, spine: 0.3, footH: 0.16, headP: 1.0, headY: 0.5, tilt: 0.3, tailP: -0.25, tailC: 0.45, eyes: 0.4 },
+  jump: { spine: -0.3, sq: 1.08, pupil: 0.9, tailP: 0.8 },
+  land: { by: -0.1, sq: 0.82, spine: 0.3 },
+  flat: { by: -0.19, splay: 1, sq: 0.7, eyes: 0.5, ears: 0.5, tailP: -0.3, tailC: 0, tailS: 0 },
+  pinned: { by: -0.12, splay: 1, ears: 0.9, wide: 1.25, pupil: 0.9, tailP: -0.2, tailC: 0, tailS: 0.5, tailF: 10 },
+  skid: { by: -0.05, pitch: -0.25, footF: 0.16, footH: 0.1, ears: 0.7, wide: 1.2 },
+  duck: { by: -0.17, ears: 1, eyes: 0.7, tailP: -0.2, tailC: 0.1 },
+  eat: { by: -0.03, headP: 0.8, pitch: 0.15, tailP: 0.9 },
+  startled: { puff: 1.2, ears: 1, wide: 1.3, pupil: 1, spine: 0.4 },
+  rub: { roll: 0.25, eyes: 0.2, tailP: 1.4, tailC: 0.05, tilt: 0.4 },
+  held: { ears: 0.7, wide: 1.2, pupil: 0.9, tailS: 0.5, tailF: 5 },
+  happy: { tailP: 1.25, tailC: 0.04 },
+  yawn: { headP: -0.55, eyes: 0, ears: 0.4, tailP: 0.3 },
+  knead: { by: -0.03, pitch: 0.1, eyes: 0.3, tailP: 0.9, headP: 0.3 },
+  sleepSide: { roll: 1.5, by: -0.2, eyes: 0, headP: 0.2, tailP: -0.1, tailC: 0.2, tailS: 0, spine: -0.15 },
+  standUp: { pitch: -1.15, by: -0.02, footH: 0.1, headP: 0.9, tailP: -0.25, tailC: 0.1, pupil: 0.9 },
+  crab: { spine: 0.75, puff: 1.15, by: 0.03, tailP: 1.3, tailC: -0.03, ears: 0.3, pupil: 1 },
+  tilt: { by: -0.07, pitch: -0.45, spine: 0.25, footH: 0.16, footF: -0.03, headP: 0.3, tilt: 0.5, tailP: -0.25, tailC: 0.45, pupil: 0.8 },
+  chaseTail: { spine: 0.2, headY: 1.2, pupil: 1, tailS: 0.6, tailF: 8 },
+  joy: { roll: 0.5, eyes: 0.3, tailP: 1.2, tailC: 0.05, by: -0.1, pupil: 0.9 }
+};
+var ACT_POSE = { sit: 'sit', lookCam: 'sit', meow: 'sit', beg: 'standUp', watch: 'sit', sulk: 'sulk', loaf: 'loaf', sleep: 'sleep', wiggle: 'wiggle', edgePeek: 'edgePeek',
+  lookUp: 'lookUp', sniff: 'sniff', sniffFinger: 'sniff', climb: 'climb', hiss: 'hiss', petted: 'petted', pushed: 'pushed', roll: 'roll', tumble: 'tumble',
+  hang: 'hang', cling: 'hang', stretch: 'stretch', groom: 'groom', jump: 'jump', fall: 'jump', handHop: 'jump', land: 'land', getUp: 'land', skid: 'skid', duck: 'duck',
+  eat: 'eat', startled: 'startled', rub: 'rub', swipe: 'sit', hiding: 'crouch', spin: 'jump', flat: 'flat', pinned: 'pinned', held: 'held', enclosed: 'ball', covered: 'ball', yawn: 'yawn', knead: 'knead', sleepSide: 'sleepSide', standUp: 'standUp', headTilt: 'tilt', chaseTail: 'chaseTail' };
+var LEGAIR = { jump: 1, fall: 1, roll: 1, tumble: 1, hang: 1, cling: 1, held: 1, climb: 1, handHop: 1, spin: 1, sleepSide: 1, standUp: 2, beg: 2 };
+var pose = {}, poseT = {}; (function () { for (var k in POSE0) { pose[k] = POSE0[k]; poseT[k] = POSE0[k]; } })();
+
+function setAct(a, dur) { if (cat.seq && cat.seq.length && BUSY[a]) cat.seq = null; cat.act = a; cat.t = 0; cat.dur = dur === undefined ? 1 : dur; cat.said = false; if (a !== 'walk' && a !== 'run') { cat.speed = 0; cat.stalk = false; } if (a !== 'petted' && a !== 'rub' && a !== 'enclosed') SND.purr(false); cat.tremble = 0; cat.slopeP = 0; if (a !== 'pinned' && a !== 'petted') cat.squish = 0; if (a !== 'held') { cat.squeeze = 0; cat.struggle = 0; cat.holdRoll = 0; cat.swing = 0; } }
+function faceTo(x, z, dt, rate) { var a = Math.atan2(x - cat.x, z - cat.z), d = angDiff(a, cat.head), m = (rate || 6) * dt; cat.head += clamp(d, -m, m); return Math.abs(d); }
+function lineClear(x0, z0, x1, z1, gy) {
+  var d = Math.hypot(x1 - x0, z1 - z0), n = Math.max(1, Math.ceil(d / 0.01));
+  for (var i = 1; i <= n; i++) { var x = x0 + (x1 - x0) * i / n, z = z0 + (z1 - z0) * i / n; if (!solid(x, z) || Math.abs(groundH(x, z) - gy) > 0.02) return false; }
+  return true;
+}
+function pickTarget(rmin, rmax, awayX, awayZ) {
+  var bx = 0, bz = 0, bs = -1;
+  for (var i = 0; i < 14; i++) {
+    var a = rnd(0, 6.283), r = rnd(rmin, rmax), x = cat.x + Math.sin(a) * r, z = cat.z + Math.cos(a) * r;
+    if (!lineClear(cat.x, cat.z, x, z, cat.gy)) continue;
+    if (!solid(x + Math.sin(a) * SIZE, z + Math.cos(a) * SIZE)) continue;   // keep a margin from edges
+    var s = awayX === undefined ? 1 : Math.hypot(x - awayX, z - awayZ);
+    if (s > bs) { bs = s; bx = x; bz = z; if (awayX === undefined) break; }
+  }
+  if (bs < 0) return false;
+  cat.tx = bx; cat.tz = bz; return true;
+}
+function findFloorNear(x, z) {
+  if (cellType(x, z) === 1) return [x, z];
+  for (var r = 0.02; r < 0.5; r += 0.02) for (var i = 0; i < 10; i++) { var a = rnd(0, 6.283), px = x + Math.sin(a) * r, pz = z + Math.cos(a) * r; if (cellType(px, pz) === 1) return [px, pz]; }
+  return null;
+}
+function findObject() {
+  var bd = 1e9, found = false;
+  for (var i = 0; i < 60; i++) {
+    var k = (Math.random() * N * N) | 0; if (mapT[k] !== 2 || mapS[k] < 0.03) continue;
+    var x = ((k % N) + 0.5) * CELL - HALF, z = (((k / N) | 0) + 0.5) * CELL - HALF, d = Math.hypot(x - cat.x, z - cat.z);
+    if (d < bd && d < 0.45) { bd = d; cat.tx = x; cat.tz = z; found = true; }
+  }
+  return found;
+}
+function go(x, z, goal, run) { cat.tx = x; cat.tz = z; cat.goal = goal; setAct(run ? 'run' : 'walk', 9); }
+function startJump(x1, z1, y1, h, dur, next, nextDur) {
+  cat.j = { x0: cat.x, z0: cat.z, y0: cat.y, x1: x1, z1: z1, y1: y1, h: h };
+  if (Math.hypot(x1 - cat.x, z1 - cat.z) > 0.005) cat.head = Math.atan2(x1 - cat.x, z1 - cat.z);
+  setAct('jump', dur); cat.next = next; cat.nextDur = nextDur === undefined ? 1 : nextDur;
+}
+function startFall(v) { setAct('fall', 6); cat.vx = v ? v[0] * 0.6 : 0; cat.vy = v ? clamp(v[1] * 0.6, -1, 0.4) : 0; cat.vz = v ? v[2] * 0.6 : 0; }
+function tipDist() { return Math.hypot(hand.tip[0] - cat.x, hand.tip[1] - (cat.y + SIZE * 0.35), hand.tip[2] - cat.z); }
+function tipDistH() { return Math.hypot(hand.tip[0] - cat.x, hand.tip[2] - cat.z); }
+function handOK() { return hand.vis || hand.lost < 0.45; }
+function handHeld() { return hand.vis || hand.lost < 1.5; }      // while it is being carried, forgive brief losses of sight
+function mew(k) { var m = mood; if (!k) k = m.anger > 0.55 ? 'angry' : m.fear > 0.55 ? 'scared' : m.hunger > 0.7 ? 'demand' : m.playful > 0.65 ? 'excited' : m.affection > 0.6 ? 'happy' : 'curious';
+  var lv = k === 'angry' ? m.anger : k === 'scared' ? m.fear : k === 'demand' ? m.hunger : k === 'excited' ? m.playful : k === 'happy' ? m.affection : m.curiosity; cat.mouthT = 0.5; SND.meow(k, clamp(lv, 0.2, 1)); }
+
+// ---------- the hand as a shape: skeleton, palm, places to stand, contact ----------
+function handDerive(dt) {
+  var j = hand.j, k, i;
+  for (k = 0; k < 3; k++) hand.pc[k] = (j[0][k] + j[5][k] + j[9][k] + j[13][k] + j[17][k]) / 5;
+  var ax = j[5][0] - j[0][0], ay = j[5][1] - j[0][1], az = j[5][2] - j[0][2], bx = j[17][0] - j[0][0], by = j[17][1] - j[0][1], bz = j[17][2] - j[0][2];
+  var nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx, nl = Math.hypot(nx, ny, nz) || 1; nx /= nl; ny /= nl; nz /= nl;
+  if (ny < 0) { nx = -nx; ny = -ny; nz = -nz; }       // whichever face of the hand is upward is the one it can stand on
+  hand.pn[0] = nx; hand.pn[1] = ny; hand.pn[2] = nz;
+  var cd = (dist3(j[8], hand.pc) + dist3(j[12], hand.pc) + dist3(j[16], hand.pc) + dist3(j[20], hand.pc)) / 4;
+  hand.closed = 1 - clamp((cd - 0.045) / 0.045, 0, 1);
+  hand.pv = hand.jv[9];
+  var best = 1e9, bf = 1, cx = cat.x, cy = cat.y + SIZE * 0.35, cz = cat.z;
+  for (i = 0; i < 5; i++) { var tp = j[FING[i][3]], d = Math.hypot(tp[0] - cx, tp[1] - cy, tp[2] - cz); if (d < best) { best = d; bf = i; } }
+  hand.tipF = bf; hand.tip = j[FING[bf][3]]; hand.tipV = hand.jv[FING[bf][3]];
+  hand.speed = Math.hypot(hand.tipV[0], hand.tipV[1], hand.tipV[2]); hand.steady = hand.speed < 0.05 ? hand.steady + dt : 0;
+  // beckoning: the index finger curling and straightening a few times while the hand stays put
+  var fl = dist3(j[5], j[6]) + dist3(j[6], j[7]) + dist3(j[7], j[8]) || 1, curl = dist3(j[8], j[5]) / fl; hand.bkT += dt; if (hand.beckT > 0) hand.beckT -= dt;
+  if (hand.bkT > 1) { hand.bkN = 0; hand.bkDir = 0; hand.bkLast = curl; }
+  if (Math.hypot(hand.pv[0], hand.pv[1], hand.pv[2]) < 0.3) {
+    if (hand.bkDir >= 0 && curl < hand.bkLast - 0.16) { hand.bkDir = -1; hand.bkN++; hand.bkT = 0; hand.bkLast = curl; }
+    else if (hand.bkDir <= 0 && curl > hand.bkLast + 0.16) { hand.bkDir = 1; hand.bkN++; hand.bkT = 0; hand.bkLast = curl; }
+    else if ((hand.bkDir < 0 && curl < hand.bkLast) || (hand.bkDir > 0 && curl > hand.bkLast)) hand.bkLast = curl;
+  }
+  if (hand.bkN >= 3) { hand.bkN = 0; hand.beckT = 1.5; }
+}
+function pathPt(f, i) { return i <= 0 ? hand.pc : hand.j[FING[f][Math.min(3, i - 1)]]; }
+function handPath(f, u) { // a walkway from the middle of the palm (u=-1) to the knuckle (0) and out to the fingertip (3)
+  var t = clamp(u + 1, 0, 3.999), i = Math.floor(t), s = t - i, a = pathPt(f, i), b = pathPt(f, i + 1);
+  return [a[0] + (b[0] - a[0]) * s, a[1] + (b[1] - a[1]) * s, a[2] + (b[2] - a[2]) * s];
+}
+function pathDir(f, u) { var t = clamp(u + 1, 0, 3.999), i = Math.floor(t), a = pathPt(f, i), b = pathPt(f, i + 1), d = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], l = Math.hypot(d[0], d[1], d[2]) || 1; return [d[0] / l, d[1] / l, d[2] / l]; }
+function fingerLowSteady() { return hand.steady > 0.6 && hand.tip[1] - cat.gy < SIZE * 2.4 && hand.pn[1] > 0.5; }
+var _ct = { pen: 0, nx: 0, ny: 1, nz: 0, ji: 0, qx: 0, qy: 0, qz: 0 };
+function contact(cx, cy, cz, rc) { // deepest overlap between the creature's body and any bone of the hand
+  var best = 0, j = hand.j;
+  for (var k = 0; k < CAPS.length + WEBS.length; k++) {
+    var cp = k < CAPS.length ? CAPS[k] : WEBS[k - CAPS.length], a = j[cp[0]], b = j[cp[1]], r = k < CAPS.length ? cp[2] : 0.008;
+    if (k >= CAPS.length && dist3(a, b) > 0.034) continue;      // fingers spread wide: a real gap
+    var dx = b[0] - a[0], dy = b[1] - a[1], dz = b[2] - a[2], ll = dx * dx + dy * dy + dz * dz || 1e-9;
+    var t = clamp(((cx - a[0]) * dx + (cy - a[1]) * dy + (cz - a[2]) * dz) / ll, 0, 1), qx = a[0] + dx * t, qy = a[1] + dy * t, qz = a[2] + dz * t;
+    var ex = cx - qx, ey = cy - qy, ez = cz - qz, d = Math.hypot(ex, ey, ez), pen = rc + r - d;
+    if (pen > best) { best = pen; _ct.pen = pen; if (d < 1e-5) { ex = 0; ey = 1; ez = 0; d = 1; } _ct.nx = ex / d; _ct.ny = ey / d; _ct.nz = ez / d; _ct.ji = t < 0.5 ? cp[0] : cp[1]; _ct.qx = qx; _ct.qy = qy; _ct.qz = qz; }
+  }
+  return best > 0 ? _ct : null;
+}
+function nearestSite() { var bd = 1e9, bf = 2, bu = -0.5; for (var f = 0; f < 5; f++) for (var u = -1; u <= 3; u += 0.5) { var p = handPath(f, u), d = Math.hypot(p[0] - cat.x, p[1] - cat.y, p[2] - cat.z); if (d < bd) { bd = d; bf = f; bu = u; } } cat.hf = bf; cat.hu = bu; }
+function ontoHand(f, u, dur) { cat.hf = f; cat.hu = u; cat.fwalk = 0; cat.slipT = 0; setAct('onHand', dur === undefined ? rnd(8, 16) : dur); }
+
+function moveStep(dt, sp) {
+  var sx = Math.sin(cat.head), cz = Math.cos(cat.head), la = SIZE * 0.55 + sp * 0.12, px = cat.x + sx * la, pz = cat.z + cz * la, tp = cellType(px, pz);
+  if (tp === 3) return 'edge';
+  if (tp === 0) return 'unknown';
+  var dh = groundH(px, pz) - cat.gy;
+  if (dh > 0.02) { cat.wallH = dh; cat.wallX = px; cat.wallZ = pz; return 'wall'; }
+  if (dh < -0.02) { cat.wallH = -dh; cat.wallX = px; cat.wallZ = pz; return 'ledge'; }
+  cat.x += sx * sp * dt; cat.z += cz * sp * dt; cat.speed = sp;
+  cat.gy = groundH(cat.x, cat.z); cat.y = cat.gy; cat.phase += sp * dt / (SIZE * 0.17);
+  return 'ok';
+}
+function turnAway() {
+  if (pickTarget(0.06, 0.3)) go(cat.tx, cat.tz, 'wander');
+  else { cat.head += Math.PI * rnd(0.7, 1.3); setAct('idle', rnd(0.5, 1.5)); }
+}
+function fleeFrom(x, z) {
+  mood.fear = clamp(mood.fear + 0.1, 0, 1);
+  if (pickTarget(0.12, 0.4, x, z)) go(cat.tx, cat.tz, 'flee', true); else setAct('watch', 2);
+}
+function goFood() {
+  if (food.y - groundH(food.x, food.z) > SIZE * 1.6) { setAct('beg', 2.2); return; }
+  go(food.x, food.z, 'food');
+}
+function pounceFinger() {
+  if (!handOK()) { setAct('idle', 1); return; }
+  var tx = hand.tip[0], tz = hand.tip[2], up = hand.tip[1] - cat.gy;
+  mood.playful = clamp(mood.playful + 0.05, 0, 1); mood.energy -= 0.02;
+  if (up > SIZE * 0.8 && up < SIZE * 4) {            // leap and grab the finger
+    var f = hand.tipF; startJump(tx, tz, hand.tip[1] - SIZE * 0.55, SIZE * 0.3, 0.3, function () { cat.hf = f; setAct('cling', rnd(1.2, 2)); });
+  } else if (solid(tx, tz) && Math.abs(groundH(tx, tz) - cat.gy) < 0.03) {
+    var d = tipDistH() || 1, k = Math.max(0, d - SIZE * 0.75) / d;
+    startJump(cat.x + (tx - cat.x) * k, cat.z + (tz - cat.z) * k, cat.gy, SIZE * 0.7, 0.3, function () {
+      setAct('swipe', 0.35);
+      cat.next = function () { if (Math.random() < 0.6 && pickTarget(0.1, 0.3, hand.tip[0], hand.tip[2])) go(cat.tx, cat.tz, 'dart', true); else setAct('roll', rnd(2, 4)); };
+    });
+  } else setAct('watch', 1.5);
+}
+function pounceFly() {
+  if (!fly.on || !solid(fly.x, fly.z) || Math.abs(groundH(fly.x, fly.z) - cat.gy) > 0.03) { setAct('watch', 1.5); return; }
+  startJump(fly.x, fly.z, cat.gy, Math.max(SIZE * 0.5, fly.y - cat.gy), 0.35, function () {
+    if (fly.on && Math.hypot(fly.x - cat.x, fly.z - cat.z) < SIZE && Math.random() < 0.5) { fly.on = false; fly.next = rnd(30, 60); SND.chirp(); mood.playful -= 0.15; setAct('groom', 3); }
+    else { fly.rest = 0; fly.cx += rnd(-0.08, 0.08); fly.cz += rnd(-0.08, 0.08); setAct('idle', 0.8); }
+  });
+}
+function afterKnock() {
+  if (mood.anger > 0.6) setAct('hiss', 1.6);
+  else if (mood.fear > 0.6) fleeFrom(hand.tip[0], hand.tip[2]);
+  else if (mood.playful > 0.5 && handOK()) go(hand.tip[0], hand.tip[2], 'chase', true);
+  else setAct('watch', 2);
+}
+function nextSeq() { var c = cat; if (c.seq && c.seq.length) { var q = c.seq.shift(); setAct(q[0], q[1]); return true; } return false; }
+function goSleep() { cat.seq = [['knead', rnd(2, 3)], ['circle', 1.6], [Math.random() < 0.4 ? 'sleepSide' : 'sleep', rnd(12, 25)]]; setAct('yawn', 1.4); }
+function crab(n) { // sideways hops with an arched back
+  var c = cat, s = c.spinD, x = c.x + Math.cos(c.head) * s * SIZE * 0.9, z = c.z - Math.sin(c.head) * s * SIZE * 0.9, h0 = c.head;
+  if (n <= 0 || !solid(x, z) || Math.abs(groundH(x, z) - c.gy) > 0.02 || !solid(x + (x - c.x), z + (z - c.z))) { setAct('wiggle', 0.5); c.next = function () { setAct('idle', 0.5); }; return; }
+  startJump(x, z, c.gy, SIZE * 0.45, 0.24, function () { crab(n - 1); }); c.head = h0; pose.spine = 0.7; pose.puff = 1.15;
+}
+function airPounce() { // stalk and pounce on nothing at all
+  var c = cat, x = c.x + Math.sin(c.head) * SIZE * 2.2, z = c.z + Math.cos(c.head) * SIZE * 2.2;
+  if (!lineClear(c.x, c.z, x, z, c.gy) || !solid(x + Math.sin(c.head) * SIZE, z + Math.cos(c.head) * SIZE)) { c.head += rnd(1.5, 3); setAct('idle', 0.4); return; }
+  setAct('wiggle', 0.8); c.next = function () { startJump(x, z, cat.gy, SIZE * 0.9, 0.36, function () { if (Math.random() < 0.5) setAct('roll', rnd(1.5, 3)); else { cat.spinD = Math.random() < 0.5 ? 1 : -1; crab(2); } }); };
+}
+function afterDrop() { // it was picked up and dropped: it is not pleased
+  cat.dropped = false; mood.anger = clamp(mood.anger + 0.3, 0, 1);
+  if (mood.affection > 0.8) { setAct('watch', 2); return; }
+  var r = Math.random();
+  if (handOK() && r < 0.35) { SND.growl(); go(hand.tip[0], hand.tip[2], 'attack', true); }
+  else if (r < 0.7) { SND.growl(); setAct('hiss', 2); }
+  else if (pickTarget(0.12, 0.35, camL[0], camL[2])) go(cat.tx, cat.tz, 'sulk');
+  else setAct('sulk', rnd(4, 7));
+}
+function choose() {
+  var m = mood; cat.look = null; cat.goal = '';
+  if (food.on && m.hunger > 0.15 && solid(food.x, food.z)) { goFood(); return; }
+  if (m.hunger > 0.7 && Math.random() < 0.5) { setAct('meow', 2.2); return; }
+  if (fly.on && Math.random() < 0.4 + 0.5 * m.playful) {
+    if (solid(fly.cx, fly.cz) && Math.abs(groundH(fly.cx, fly.cz) - cat.gy) < 0.02) { go(fly.x, fly.z, 'fly'); cat.stalk = true; } else setAct('watch', 2);
+    return;
+  }
+  if (newObj && Math.hypot(newObj.x - cat.x, newObj.z - cat.z) < 0.6) { var no = newObj; newObj = null; mew('curious'); cat.forceClimb = Math.random() < 0.5; go(no.x, no.z, 'obj'); return; }   // something new has appeared: go and investigate
+  newObj = null;
+  if (m.energy < 0.22) { goSleep(); return; }
+  var w = [['walk', 1 + 3 * m.curiosity], ['obj', 2 * m.curiosity], ['zoom', 2 * m.playful * m.energy], ['sit', 1.5], ['groom', 1.2], ['stretch', 0.6],
+    ['lookCam', 0.8 + m.affection], ['loaf', 0.6 + (1 - m.energy)], ['roll', 0.8 * m.playful], ['sleep', 1.5 * (1 - m.energy)], ['hide', mapObjN > 20 ? 0.7 * m.playful + 0.8 * m.fear : 0],
+    ['airPounce', 1.3 * m.playful], ['crab', 0.8 * m.playful * m.energy], ['chaseTail', 0.6 * m.playful], ['headTilt', 0.5 * m.curiosity], ['yawn', 0.6 * (1 - m.energy)]];
+  var tot = 0, i; for (i = 0; i < w.length; i++) tot += w[i][1];
+  var r = Math.random() * tot, pick = 'sit'; for (i = 0; i < w.length; i++) { r -= w[i][1]; if (r <= 0) { pick = w[i][0]; break; } }
+  if (pick === 'hide') { hideFromCam(); return; }
+  if (pick === 'airPounce') { airPounce(); return; }
+  if (pick === 'crab') { cat.spinD = Math.random() < 0.5 ? 1 : -1; crab(2 + ((Math.random() * 3) | 0)); return; }
+  if (pick === 'chaseTail') { cat.spinD = Math.random() < 0.5 ? 1 : -1; setAct('chaseTail', rnd(1.4, 2.4)); return; }
+  if (pick === 'headTilt') { setAct('headTilt', rnd(1.5, 3)); return; }
+  if (pick === 'yawn') { setAct('yawn', 1.4); return; }
+  if (pick === 'obj' && findObject()) { go(cat.tx, cat.tz, 'obj'); return; }
+  if (pick === 'zoom' && pickTarget(0.12, 0.4)) { cat.runs = 2 + ((Math.random() * 3) | 0); go(cat.tx, cat.tz, 'zoom', true); return; }
+  if (pick === 'walk' || pick === 'obj' || pick === 'zoom') { if (pickTarget(0.05, 0.3)) go(cat.tx, cat.tz, 'wander'); else setAct('sit', rnd(2, 4)); return; }
+  if (pick === 'sit') setAct('sit', rnd(3, 7)); else if (pick === 'groom') setAct('groom', rnd(3, 6)); else if (pick === 'stretch') setAct('stretch', 1.8);
+  else if (pick === 'lookCam') setAct('lookCam', rnd(2, 4)); else if (pick === 'loaf') setAct('loaf', rnd(5, 10)); else if (pick === 'roll') setAct('roll', rnd(3, 6));
+  else goSleep();
+}
+function arrive() {
+  var g = cat.goal;
+  if (g === 'zoom') { if (--cat.runs > 0 && pickTarget(0.12, 0.4)) go(cat.tx, cat.tz, 'zoom', true); else setAct('idle', rnd(0.5, 1.5)); }
+  else if (g === 'finger') setAct('sniffFinger', rnd(1.5, 3));
+  else if (g === 'chase') { setAct('wiggle', 0.7); cat.next = pounceFinger; }
+  else if (g === 'attack') { SND.hiss(); setAct('swipe', 0.35); cat.next = function () { setAct('swipe', 0.35); cat.next = function () { fleeFrom(hand.tip[0], hand.tip[2]); }; }; }
+  else if (g === 'fly') { setAct('wiggle', 0.8); cat.next = pounceFly; }
+  else if (g === 'food') setAct('eat', 3);
+  else if (g === 'call') setAct('lookCam', rnd(2, 3));
+  else if (g === 'hide') setAct('hiding', rnd(4, 7));
+  else if (g === 'dinner') setAct('meow', 2.2);
+  else if (g === 'sulk') { cat.head = Math.atan2(cat.x - camL[0], cat.z - camL[2]); setAct('sulk', rnd(4, 8)); }
+  else if (g === 'flee' || g === 'dart') setAct('watch', rnd(1.5, 3));
+  else setAct('idle', rnd(0.5, 2));
+}
+function blocked(r) {
+  var run = cat.act === 'run', g = cat.goal, sx = Math.sin(cat.head), cz = Math.cos(cat.head), resume = cat.act, lx, lz;
+  var chasing = g === 'chase' || g === 'finger' || g === 'fly' || g === 'food' || g === 'attack';
+  if (r === 'edge') { cat.ledge = false; if (run) { setAct('skid', 0.55); cat.speed = 5 * SIZE; } else setAct('edgePeek', rnd(1.8, 3)); return; }
+  if (r === 'unknown') { if (chasing) setAct('watch', 1.5); else turnAway(); return; }
+  var small = cat.wallH <= SIZE * 0.5; lx = cat.wallX + sx * SIZE * 0.4; lz = cat.wallZ + cz * SIZE * 0.4;
+  if (r === 'wall') {
+    if (small && solid(lx, lz) && Math.abs(groundH(lx, lz) - (cat.gy + cat.wallH)) < 0.02) { var tx = cat.tx, tz = cat.tz; startJump(lx, lz, groundH(lx, lz), cat.wallH + SIZE * 0.2, 0.3, function () { cat.tx = tx; cat.tz = tz; cat.goal = g; setAct(resume, 6); }); return; }
+    if (chasing) { setAct('lookUp', 1.5); cat.goal = 'x'; return; }
+    if (g !== 'wander' && g !== 'obj' && g !== '') { turnAway(); return; }
+    setAct('sniff', rnd(1.2, 2)); return;
+  }
+  if (small && solid(lx, lz)) { startJump(lx, lz, groundH(lx, lz), SIZE * 0.2, 0.28, 'idle', 0.4); return; }
+  cat.ledge = true; setAct('edgePeek', rnd(1.5, 2.5));
+}
+function decideClimb() {
+  var sx = Math.sin(cat.head), cz = Math.cos(cat.head), tx = cat.wallX + sx * SIZE * 0.5, tz = cat.wallZ + cz * SIZE * 0.5;
+  var th = groundH(tx, tz) - cat.gy;
+  var fc = cat.forceClimb; cat.forceClimb = false;
+  if (cat.goal !== 'x' && cellType(tx, tz) === 2 && th > 0.02 && th <= 0.3 && (fc || Math.random() < 0.35 + 0.5 * mood.curiosity * mood.energy)) {
+    cat.topX = tx; cat.topZ = tz; cat.topH = th; cat.cx0 = cat.x; cat.cz0 = cat.z; setAct('climb', 0.7 + th * 5);
+  } else if (Math.random() < 0.3) hideFromCam(); else turnAway();
+}
+
+// ---------- reactions to the player's hand ----------
+var PASSIVE = { idle: 1, walk: 1, sit: 1, groom: 1, loaf: 1, lookCam: 1, stretch: 1, sniff: 1, lookUp: 1, edgePeek: 1, meow: 1, watch: 1, beg: 1, sulk: 1, hiding: 1, yawn: 1, knead: 1, circle: 1, headTilt: 1, standUp: 1, chaseTail: 1 };
+var BUSY = { jump: 1, climb: 1, fall: 1, gone: 1, land: 1, tumble: 1, cling: 1, onHand: 1, handHop: 1, hang: 1, swipe: 1, startled: 1, getUp: 1, skid: 1, held: 1, enclosed: 1, flat: 1, covered: 1 };
+function knock(px, pz, sp) { // a sharp jab: sent tumbling or hopping back
+  var a = cat.act, k = Math.min(sp * 0.6, 0.5);
+  cat.pokes += 1; mood.fear = clamp(mood.fear + 0.12, 0, 1);
+  mood.anger = clamp(mood.anger + (mood.playful > 0.6 ? 0.03 : 0.07) * cat.pokes, 0, 1);
+  if (mood.playful > 0.6) mood.playful = clamp(mood.playful + 0.08, 0, 1);
+  SND.chirp();
+  if (sp > 0.6 || a === 'sit' || a === 'sleep' || a === 'loaf' || a === 'roll' || a === 'lookCam' || a === 'watch' || a === 'sulk' || a === 'pinned') {
+    cat.vx = px * k; cat.vz = pz * k; cat.rollDir = Math.random() < 0.5 ? -1 : 1; cat.rollA = pose.roll; setAct('tumble', 3);
+  } else {
+    var lx = cat.x + px * SIZE * 1.4, lz = cat.z + pz * SIZE * 1.4;
+    if (!solid(lx, lz) || Math.abs(groundH(lx, lz) - cat.gy) > 0.02) { lx = cat.x; lz = cat.z; }
+    var h0 = cat.head; startJump(lx, lz, cat.gy, SIZE * 0.6, 0.28, afterKnock); cat.head = h0;
+  }
+}
+function escapeOver(ct) { // nowhere left to be pushed: spring over or away from the finger rather than let it pass through
+  var px = ct.nx, pz = ct.nz, hl = Math.hypot(px, pz) || 1; px /= hl; pz /= hl;
+  var tries = [[-px, -pz, 1.9, 1.5], [-pz, px, 1.6, 0.6], [pz, -px, 1.6, 0.6], [px, pz, 1.4, 0.5]];
+  for (var i = 0; i < tries.length; i++) { var x = cat.x + tries[i][0] * SIZE * tries[i][2], z = cat.z + tries[i][1] * SIZE * tries[i][2]; if (solid(x, z) && Math.abs(groundH(x, z) - cat.gy) < 0.02 && solid(x + tries[i][0] * SIZE, z + tries[i][1] * SIZE)) { startJump(x, z, cat.gy, SIZE * tries[i][3], 0.32, afterKnock); return; } }
+  var h0 = cat.head; startJump(cat.x, cat.z, cat.gy, SIZE * 1.6, 0.4, afterKnock); cat.head = h0;
+}
+function partPos(i) { var L = SIZE * 1.2, P = PARTS[i]; return [cat.x + Math.sin(cat.head) * P[1] * L, cat.y + P[3] * L, cat.z + Math.cos(cat.head) * P[1] * L]; }
+function tryHold() { // two fingertips closing on any part of it (body, head or tail): picked up by that part
+  var pairs = [[4, 8], [4, 12], [4, 16], [4, 20], [8, 12]], best = 1e9, bp = -1, ba = 4, bb = 8, bg = 0;
+  for (var i = 0; i < pairs.length; i++) {
+    var A = hand.j[pairs[i][0]], B = hand.j[pairs[i][1]], gap = dist3(A, B); if (gap < 0.003 || (i === 4 && gap < SIZE * 0.3)) continue;   // two fingers only count when they are spread with it between them
+    var mx = (A[0] + B[0]) / 2, my = (A[1] + B[1]) / 2, mz = (A[2] + B[2]) / 2;
+    for (var p = 0; p < PARTS.length; p++) {
+      var tail = PARTS[p][0] === 'tail'; if (gap > SIZE * (tail ? 0.55 : 0.9)) continue;
+      var pp = partPos(p), dx = mx - pp[0], dy = my - pp[1], dz = mz - pp[2];
+      var vx = pp[0] - camL[0], vy = pp[1] - camL[1], vz = pp[2] - camL[2], vl = Math.hypot(vx, vy, vz) || 1, al = (dx * vx + dy * vy + dz * vz) / vl * 0.5;   // be forgiving about distance from the camera, which the phone judges worst
+      dx -= vx / vl * al; dy -= vy / vl * al; dz -= vz / vl * al;
+      var d = Math.hypot(dx, dy, dz) / (PARTS[p][2] * SIZE * (i === 4 ? 0.6 : 1)); if (d < 1 && d < best) { best = d; bp = p; ba = pairs[i][0]; bb = pairs[i][1]; bg = gap; }
+    }
+  }
+  if (bp < 0) return false;
+  var c = cat; c.holdPart = PARTS[bp][0]; c.gz = PARTS[bp][1]; c.gyo = PARTS[bp][3]; c.holdA = ba; c.holdB = bb; c.grabGap = Math.max(bg, SIZE * 0.25);
+  c.gp = null; c.hp = pose.pitch; c.hpv = 0; c.hr = 0; c.hrv = 0; c.gv = [0, 0, 0]; setAct('held', 99); mood.fear = clamp(mood.fear + 0.1, 0, 1); mew(c.holdPart === 'tail' ? 'angry' : 'curious'); return true;
+}
+function handContact(dt) { // returns true when the hand is touching the creature and the touch has been dealt with
+  var c = cat, a = c.act, ct = contact(c.x, c.y + SIZE * 0.35, c.z, SIZE * 0.42); if (!ct) return false;
+  var v = hand.jv[ct.ji], sp = Math.hypot(v[0], v[1], v[2]), into = -(v[0] * ct.nx + v[1] * ct.ny + v[2] * ct.nz), depth = ct.pen / (SIZE * 0.45);
+  c.contact = 0.35; c.cqx = ct.qx; c.cqz = ct.qz;
+  if (into > 0.4) { var hv = Math.hypot(v[0], v[2]), hn = Math.hypot(ct.nx, ct.nz) || 1; if (hv > 0.05) knock(v[0] / hv, v[2] / hv, sp); else knock(ct.nx / hn, ct.nz / hn, sp); return true; }
+  if (a === 'roll' && depth < 0.5) { c.kick = 1; c.backT += dt; mood.playful = clamp(mood.playful + dt * 0.08, 0, 1); if (c.backT > 5 && Math.random() < dt * 0.5) { c.backT = 0; mood.anger = clamp(mood.anger + 0.2, 0, 1); SND.chirp(); setAct('swipe', 0.35); c.next = function () { fleeFrom(hand.tip[0], hand.tip[2]); }; } return true; }
+  if (depth < 0.3 && sp < 0.3 && into < 0.1 && a !== 'pinned' && (a !== 'pushed' || sp < 0.08)) {      // light slow touch = stroking
+    c.squish = ct.ny < -0.5 ? depth * 0.6 : 0; if (a !== 'petted') setAct('petted', 99); return true;
+  }
+  if (ct.ny < -0.55) {                                                                  // pressed from above: squashed flat, never passed through
+    c.squish = clamp(depth, 0, 1); if (a !== 'pinned') setAct('pinned', rnd(2, 3.2));
+    if (c.squish > 0.88) { mood.anger = clamp(mood.anger + 0.15, 0, 1); escapeOver(ct); }
+    return true;
+  }
+  if (ct.ny > 0.5 && hand.pn[1] > 0.5 && a !== 'roll') { nearestSite(); ontoHand(c.hf, c.hu); return true; }   // the hand is under it: it is now standing on the hand
+  var hl = Math.hypot(ct.nx, ct.nz) || 1, px = ct.nx / hl, pz = ct.nz / hl, mv = ct.pen / Math.max(hl, 0.4) + 0.0005, qx = c.x + px * mv, qz = c.z + pz * mv;
+  c.pushX = px; c.pushZ = pz;
+  if (solid(qx, qz) && Math.abs(groundH(qx, qz) - c.gy) < 0.02 && cellType(c.x + px * SIZE * 1.1, c.z + pz * SIZE * 1.1) !== 3) { c.x = qx; c.z = qz; }
+  else { escapeOver(ct); return true; }
+  for (var it = 0; it < 3; it++) {            // wedged between several fingers: keep easing out; if it cannot, it springs free
+    var c2 = contact(c.x, c.y + SIZE * 0.35, c.z, SIZE * 0.42); if (!c2 || c2.pen < SIZE * 0.05) break;
+    var h2 = Math.hypot(c2.nx, c2.nz) || 1, m2 = c2.pen / Math.max(h2, 0.4), x2 = c.x + c2.nx / h2 * m2, z2 = c.z + c2.nz / h2 * m2;
+    if (solid(x2, z2) && Math.abs(groundH(x2, z2) - c.gy) < 0.02) { c.x = x2; c.z = z2; } else break;
+    if (it === 2 && c2.pen > SIZE * 0.25) { escapeOver(c2); return true; }
+  }
+  if (a !== 'pushed') setAct('pushed', rnd(2.5, 6));
+  return true;
+}
+function handReact(dt) {
+  if (!hand.vis || cat.hidden) return;
+  var a = cat.act;
+  if (!BUSY[a] && a !== 'jump' && tryHold()) return;
+  if (!BUSY[a] && handContact(dt)) return;
+  a = cat.act; if (BUSY[a]) return;
+  var d = tipDist(), dH = tipDistH(), above = hand.tip[1] - cat.y, tx = hand.tip[0], tz = hand.tip[2];
+  var ax = cat.x - tx, az = cat.z - tz, al = Math.hypot(ax, az) || 1; ax /= al; az /= al;
+  if (a === 'roll') cat.kick = dH < SIZE * 1.1 ? 1 : 0;
+  if (hand.beckT > 0 && cat.beckCool <= 0 && PASSIVE[a] && d < 0.6) {                // beckoned over with a finger
+    cat.beckCool = 3; hand.beckT = 0;
+    if (mood.anger < 0.6 && Math.random() < 0.5 + 0.5 * mood.affection) { mew('curious'); go(tx, tz, 'finger'); } else { cat.lookCamT = 0; setAct('watch', 2); }
+    return;
+  }
+  if (cat.greet && PASSIVE[a] && d < 0.45 && hand.steady > 0.3) { cat.greet = false; if (mood.anger < 0.5 && mood.fear < 0.5) { mew('curious'); go(tx, tz, 'finger'); return; } }
+  if (d > 0.18 || !PASSIVE[a]) return;
+  if (above > SIZE * 1.5 && dH < SIZE * 1.4 && hand.speed < 0.25 && a !== 'standUp' && cat.cool <= 0 && mood.fear < 0.5) { cat.cool = 3; setAct('standUp', rnd(1.5, 2.8)); return; }   // finger dangling overhead: up on its hind legs to bat at it
+  var toward = hand.tipV[0] * ax + hand.tipV[2] * az;
+  if (hand.speed > 0.35 && toward > 0.15 && d < 0.12) {                    // a finger rushing at it
+    if (mood.playful > 0.55 && Math.random() < 0.6) {                      // dodge: jump over it or sideways
+      var ox, oz, hh;
+      if (above < SIZE * 0.9) { ox = tx - ax * SIZE * 1.5; oz = tz - az * SIZE * 1.5; hh = SIZE * 1.4; }
+      else { var s = Math.random() < 0.5 ? 1 : -1; ox = cat.x - az * s * SIZE * 1.6; oz = cat.z + ax * s * SIZE * 1.6; hh = SIZE * 0.5; }
+      if (solid(ox, oz) && Math.abs(groundH(ox, oz) - cat.gy) < 0.02) {
+        startJump(ox, oz, cat.gy, hh, 0.32, function () { mood.playful = clamp(mood.playful + 0.05, 0, 1); setAct('wiggle', 0.6); cat.next = pounceFinger; });
+        return;
+      }
+    }
+    if (above > SIZE * 0.8 && Math.random() < 0.5) { setAct('duck', 0.7); return; }
+    mood.fear = clamp(mood.fear + 0.2, 0, 1);
+    var bx = cat.x + ax * SIZE * 1.5, bz = cat.z + az * SIZE * 1.5;
+    if (!solid(bx, bz) || Math.abs(groundH(bx, bz) - cat.gy) > 0.02) { bx = cat.x; bz = cat.z; }
+    var hd = cat.head; startJump(bx, bz, cat.gy, SIZE * 0.6, 0.28, afterKnock); cat.head = hd; return;
+  }
+  if (cat.cool > 0 || a === 'sleep') return;
+  cat.cool = rnd(2, 4);
+  if (mood.anger > 0.6) { SND.growl(); setAct('hiss', 1.8); }
+  else if (mood.fear > 0.6) fleeFrom(tx, tz);
+  else if (food.on && food.onFinger && mood.hunger > 0.3) goFood();
+  else if (mood.playful > 0.6 && hand.speed > 0.05) go(tx, tz, 'chase', true);
+  else if (mood.curiosity + mood.affection > 0.7) go(tx, tz, 'finger');
+  else setAct('watch', 2);
+}
+
+// ---------- one tick of the whole simulation ----------
+function simUpdate(dt, time, playing) {
+  var m = mood, c = cat, k;
+  m.hunger += dt / 200; m.fear -= dt * 0.08; m.anger -= dt * 0.025;
+  m.energy -= dt * ((c.act === 'run' || c.act === 'walk') ? 0.006 : 0.001);
+  if (c.act === 'sleep') m.energy += dt * 0.05;
+  m.playful += (Math.random() - 0.5) * dt * 0.08 + dt * 0.004 * (m.energy - 0.4);
+  m.curiosity += (Math.random() - 0.5) * dt * 0.06;
+  for (k in m) m[k] = clamp(m[k], 0, 1);
+  if (m.curiosity < 0.2) m.curiosity = 0.2;
+  c.pokes = Math.max(0, c.pokes - dt * 0.15); c.cool -= dt; if (c.act !== 'petted') c.petT = Math.max(0, c.petT - dt * 0.5);
+  hand.lost0 = hand.lost; if (hand.vis) { hand.lost = 0; handDerive(dt); } else hand.lost += dt;
+  if (food.on) { if (food.onFinger) { if (hand.vis) { food.x = hand.tip[0]; food.y = hand.tip[1] + 0.006; food.z = hand.tip[2]; } } else food.y = groundH(food.x, food.z) + 0.004; }
+  if (!fly.on) { fly.next -= dt; if (fly.next <= 0 && playing && !c.hidden) { var fp = findFloorNear(rnd(-0.2, 0.2), rnd(-0.2, 0.2)); if (fp) { fly.cx = fp[0]; fly.cz = fp[1]; fly.on = true; fly.life = rnd(18, 30); fly.t = 0; fly.rest = 0; } else fly.next = 5; } }
+  else {
+    fly.t += dt; fly.life -= dt; if (fly.life <= 0) { fly.on = false; fly.next = rnd(25, 55); }
+    if (fly.rest > 0) { fly.rest -= dt; fly.y = groundH(fly.x, fly.z) + 0.003; }
+    else {
+      fly.x = fly.cx + Math.sin(fly.t * 2.3) * 0.07 + Math.sin(fly.t * 5.1) * 0.02; fly.z = fly.cz + Math.cos(fly.t * 1.7) * 0.07 + Math.cos(fly.t * 4.3) * 0.02;
+      fly.y = groundH(fly.cx, fly.cz) + 0.035 + 0.02 * Math.sin(fly.t * 3.3);
+      if (Math.random() < dt * 0.15 && solid(fly.x, fly.z)) fly.rest = rnd(1.5, 3);
+    }
+  }
+  if (!playing) return;
+  c.t += dt; c.kick = 0; if (c.biteT > 0) c.biteT -= dt; if (c.mouthT > 0) c.mouthT -= dt; c.beckCool -= dt;
+  if (c.talk > 0) { c.talk -= dt; if (c.talk <= 0 && !c.hidden) mew(c.talkK || undefined); }
+  if (hand.vis && !hand.was && hand.lost0 > 1.5) c.greet = Math.random() < 0.35 + 0.6 * m.curiosity;      // a hand has arrived: it wants to know about it
+  hand.was = hand.vis;
+  if (newObj && PASSIVE[c.act] && c.act !== 'walk' && !c.hidden && c.t > 0.5) choose();
+  var h0 = c.head;
+  // something real has been put down over it (a box, a cup): it is underneath
+  if (!c.hidden && !BUSY[c.act] && cellType(c.x, c.z) === 2 && groundH(c.x, c.z) > c.gy + SIZE * 0.8) { c.covT += dt; if (c.covT > 1) { setAct('covered', 99); c.covT = 0; } }
+  else if (!c.hidden && !BUSY[c.act] && !solid(c.x, c.z)) { c.stuck += dt; if (c.stuck > 1) { var fl = findFloorNear(0, 0); if (fl) startJump(fl[0], fl[1], 0, SIZE, 0.4, 'land', 0.4); c.stuck = 0; } } else { c.stuck = 0; c.covT = 0; }
+  handReact(dt);
+  var a = c.act, sx = Math.sin(c.head), cz = Math.cos(c.head), near = hand.vis && tipDist() < 0.25, p, s, n = hand.pn;
+  c.look = near ? hand.tip : (fly.on && Math.hypot(fly.x - c.x, fly.z - c.z) < 0.3 ? [fly.x, fly.y, fly.z] : null);
+  if (c.heard > 0) c.heard -= dt;
+  if (c.lookCamT > 0) { c.lookCamT -= dt; if (!near) c.look = camL; }
+  switch (a) {
+    case 'circle': c.look = null; c.head += dt * 4.5; c.speed = SIZE * 0.6; c.phase += dt * 5; if (c.t > c.dur && !nextSeq()) setAct('idle', 1); break;
+    case 'chaseTail': c.look = null; c.head += dt * 9 * c.spinD; c.speed = SIZE; c.phase += dt * 9; if (c.t > c.dur) { setAct('headTilt', rnd(1.2, 2)); if (Math.random() < 0.4) mew('excited'); } break;
+    case 'yawn': c.look = null; if (!c.said && c.t > 0.3) { c.said = true; c.mouthT = 0.9; } if (c.t > c.dur && !nextSeq()) setAct('idle', 1); break;
+    case 'sleepSide': c.look = null; m.energy = clamp(m.energy + dt * 0.05, 0, 1); if (c.t > c.dur) { c.seq = [['stretch', 1.8], ['yawn', 1.4]]; nextSeq(); } break;
+    case 'standUp': if (near) faceTo(hand.tip[0], hand.tip[2], dt, 5); if (c.t > c.dur) { if (near && m.playful > 0.5) { setAct('wiggle', 0.6); c.next = pounceFinger; } else setAct('watch', 1.5); } break;
+    case 'spin': c.head += dt * 6.283 / c.dur; if (c.t > c.dur) setAct('lookCam', 1.5); break;
+    case 'hiding': c.look = camL; if (c.t > c.dur) { if (m.playful > 0.5 && Math.random() < 0.6) { var tc = towardCam(); if (tc) { go(tc[0], tc[1], 'call', true); break; } } setAct('watch', 2); } break;
+    case 'covered':
+      c.look = null; if (!c.said && c.t > 1.5) { c.said = true; mew('muffled'); }
+      if (c.t > 8 && Math.random() < dt * 0.2) mew('muffled');
+      if (!(cellType(c.x, c.z) === 2 && groundH(c.x, c.z) > c.gy + SIZE * 0.5)) { c.gy = groundH(c.x, c.z); c.y = c.gy; setAct('stretch', 1.6); }
+      break;
+    case 'idle': if (c.t > c.dur) choose(); break;
+    case 'walk': case 'run':
+      if (c.goal === 'finger' || c.goal === 'chase' || c.goal === 'attack') { if (!handOK()) { setAct('idle', 1); break; } c.tx = hand.tip[0]; c.tz = hand.tip[2]; }
+      if (c.goal === 'fly') { if (!fly.on) { setAct('idle', 1); break; } c.tx = fly.x; c.tz = fly.z; }
+      if (c.goal === 'food') { if (!food.on) { setAct('idle', 1); break; } c.tx = food.x; c.tz = food.z; }
+      var sp = (a === 'run' ? 5 : (c.stalk ? 0.7 : 1.6)) * SIZE * (0.8 + 0.4 * m.energy);
+      var dd = Math.hypot(c.tx - c.x, c.tz - c.z), reach = c.goal === 'fly' ? SIZE * 2.5 : c.goal === 'chase' ? SIZE * 2 : (c.goal === 'finger' || c.goal === 'food' || c.goal === 'attack') ? SIZE * 1.0 : SIZE * 0.3;
+      if (dd < reach) { c.speed = 0; arrive(); break; }
+      if (faceTo(c.tx, c.tz, dt, a === 'run' ? 9 : 5) > 1.2) { c.speed = 0; break; }
+      var r = moveStep(dt, sp); if (r !== 'ok') { blocked(r); break; }
+      if (c.t > c.dur) setAct('idle', 1);
+      break;
+    case 'skid':
+      s = 5 * SIZE * (1 - c.t / c.dur); if (solid(c.x + sx * SIZE * 0.45, c.z + cz * SIZE * 0.45)) { c.x += sx * s * dt * 0.6; c.z += cz * s * dt * 0.6; }
+      if (c.t > c.dur) { m.fear = clamp(m.fear + 0.1, 0, 1); if (pickTarget(0.1, 0.3)) go(c.tx, c.tz, 'wander', true); else { c.head += Math.PI; setAct('idle', 1); } }
+      break;
+    case 'edgePeek':
+      if (c.t > c.dur) {
+        var lx = c.wallX + sx * SIZE * 0.6, lz = c.wallZ + cz * SIZE * 0.6;
+        if (c.ledge && Math.random() < 0.6 && solid(lx, lz)) startJump(lx, lz, groundH(lx, lz), SIZE * 0.3, 0.45, 'land', 0.45);
+        else turnAway();
+      } break;
+    case 'sniff': if (c.t > c.dur) { if (c.wallH > SIZE * 1.2) setAct('lookUp', rnd(1, 2)); else decideClimb(); } break;
+    case 'lookUp': if (c.t > c.dur) decideClimb(); break;
+    case 'climb':
+      if (c.t > 0.5) { s = clamp((c.t - 0.5) / (c.dur - 0.5), 0, 1); c.y = c.gy + c.topH * s; c.x = c.cx0 + (c.wallX - c.cx0) * s * 0.8; c.z = c.cz0 + (c.wallZ - c.cz0) * s * 0.8; }
+      if (c.t > c.dur) { c.x = c.topX; c.z = c.topZ; c.gy = groundH(c.x, c.z); c.y = c.gy; m.energy -= 0.08; setAct(Math.random() < 0.5 ? 'sit' : 'loaf', rnd(4, 9)); }
+      break;
+    case 'jump':
+      s = clamp(c.t / c.dur, 0, 1); p = c.j; c.x = p.x0 + (p.x1 - p.x0) * s; c.z = p.z0 + (p.z1 - p.z0) * s; c.y = p.y0 + (p.y1 - p.y0) * s + 4 * p.h * s * (1 - s);
+      if (s >= 1) { c.gy = groundH(c.x, c.z); var nx = c.next; c.next = null; if (typeof nx === 'function') nx(); else setAct(nx || 'idle', c.nextDur); }
+      break;
+    case 'wiggle': if (c.goal === 'chase' && handOK()) faceTo(hand.tip[0], hand.tip[2], dt, 6); if (c.t > c.dur) { var f = c.next; c.next = null; if (f) f(); else setAct('idle', 1); } break;
+    case 'meow': c.look = camL; faceTo(camL[0], camL[2], dt, 3); if (!c.said && c.t > 0.5) { c.said = true; mew(); } if (c.t > c.dur) setAct('idle', rnd(1, 3)); break;
+    case 'beg': c.look = [food.x, food.y, food.z]; if (!c.said && c.t > 0.6) { c.said = true; mew('demand'); } if (c.t > c.dur) setAct('idle', 1); break;
+    case 'lookCam': c.look = camL; faceTo(camL[0], camL[2], dt, 2); if (c.t > c.dur) setAct('idle', 1); break;
+    case 'watch': if (near) faceTo(hand.tip[0], hand.tip[2], dt, 3); if (c.t > c.dur) setAct('idle', 1); break;
+    case 'sulk': c.look = null; if (c.t > c.dur) setAct('idle', 1); break;
+    case 'sleep': c.look = null; if (c.t > c.dur) { c.seq = [['stretch', 1.8], ['yawn', 1.4]]; nextSeq(); } break;
+    case 'roll': c.look = null; if (c.t > c.dur) setAct('getUp', 0.5), c.next = null; break;
+    case 'flat': c.look = null; if (c.t > c.dur) { setAct('getUp', 0.6); c.next = c.dropped ? afterDrop : afterKnock; } break;
+    case 'getUp': if (c.t > c.dur) { var g2 = c.next; c.next = null; if (g2) g2(); else setAct('idle', 1); } break;
+    case 'land': if (c.t > c.dur) setAct('idle', rnd(0.5, 1.5)); break;
+    case 'eat':
+      c.look = null; if (Math.hypot(food.x - c.x, food.z - c.z) > SIZE * 1.8 || !food.on) { if (food.on) goFood(); else setAct('idle', 1); break; }
+      faceTo(food.x, food.z, dt, 5); if (!c.said && c.t > 0.4) { c.said = true; SND.crunch(); }
+      if (c.t > c.dur) { food.on = false; m.hunger = 0; m.affection = clamp(m.affection + 0.2, 0, 1); m.anger *= 0.5; setAct('groom', 3); }
+      break;
+    case 'sniffFinger':
+      if (!handOK()) { setAct('idle', 1); break; }
+      faceTo(hand.tip[0], hand.tip[2], dt, 5);
+      if (tipDistH() > SIZE * 2.4) { if (m.curiosity > 0.4) go(hand.tip[0], hand.tip[2], 'finger'); else setAct('watch', 2); break; }
+      if (c.t > c.dur) {
+        var q = Math.random(), hopNow = c.wantHop && fingerLowSteady(); c.wantHop = false;
+        if (food.on && food.onFinger) setAct('eat', 3);
+        else if (hopNow || (fingerLowSteady() && q < 0.4 + 0.4 * m.curiosity)) {
+          var hf = hand.tipF, hu = hand.closed < 0.4 && Math.random() < 0.5 ? -0.5 : 2.2; p = handPath(hf, hu);
+          startJump(p[0], p[2], p[1] + 0.009, SIZE * 0.5, 0.35, function () { ontoHand(hf, hu); });
+        }
+        else if (m.affection > 0.55 && q < 0.7) { setAct('rub', rnd(2, 3.5)); SND.purr(0.3 + 0.7 * mood.affection); }
+        else if (m.playful > 0.5) { setAct('swipe', 0.35); c.next = function () { go(hand.tip[0], hand.tip[2], 'chase', true); }; }
+        else setAct('watch', 2);
+      } break;
+    case 'rub': m.affection = clamp(m.affection + dt * 0.04, 0, 1); if (c.t > c.dur || !handOK()) setAct('idle', 1); break;
+    case 'petted':
+      c.look = null; c.contact -= dt; c.petT += dt; m.affection = clamp(m.affection + dt * 0.06, 0, 1); m.anger -= dt * 0.25; m.fear -= dt * 0.2;
+      SND.purr(m.anger > 0.5 ? 0 : 0.25 + 0.75 * m.affection);
+      if (c.contact <= 0) { setAct('idle', 1.5); break; }
+      if (c.petT > 7 + 10 * m.affection) { c.petT = 0; if (m.affection > 0.75) setAct('roll', 4); else { m.anger = clamp(m.anger + 0.35, 0, 1); SND.chirp(); setAct('swipe', 0.35); c.next = function () { fleeFrom(hand.tip[0], hand.tip[2]); }; } }
+      break;
+    case 'pushed':                         // leaning into the finger, paws braced, sliding backwards
+      c.contact -= dt; c.tremble = 1; m.anger = clamp(m.anger + dt * 0.04, 0, 1); m.energy -= dt * 0.01;
+      if (c.contact <= 0) { setAct(m.anger > 0.5 ? 'hiss' : 'watch', 1.5); break; }
+      faceTo(c.cqx, c.cqz, dt, 7);
+      if (c.t > c.dur) {                   // had enough of being shoved: pick a way out
+        var ct2 = contact(c.x, c.y + SIZE * 0.35, c.z, SIZE * 0.6), rr = Math.random();
+        if (m.fear > 0.5) fleeFrom(c.cqx, c.cqz);
+        else if (m.anger > 0.55) { SND.growl(); setAct('swipe', 0.35); c.next = function () { setAct('hiss', 1.5); }; }
+        else if (ct2 && rr < 0.5) escapeOver(ct2);
+        else if (m.affection > 0.6 && rr < 0.8) { setAct('rub', rnd(2, 3)); SND.purr(0.3 + 0.7 * mood.affection); }
+        else fleeFrom(c.cqx, c.cqz);
+      }
+      break;
+    case 'pinned':                         // squashed under a fingertip, legs splayed, wriggling
+      c.contact -= dt; c.tremble = 1; m.anger = clamp(m.anger + dt * 0.08, 0, 1);
+      if (c.contact <= 0) { setAct('getUp', 0.5); c.next = afterKnock; break; }
+      if (c.t > c.dur) { var ct3 = contact(c.x, c.y + SIZE * 0.35, c.z, SIZE * 0.6); if (ct3) escapeOver(ct3); else setAct('getUp', 0.5); }
+      break;
+    case 'tumble':
+      s = Math.hypot(c.vx, c.vz); c.rollA += dt * s / (SIZE * 0.3) * c.rollDir;
+      var ux = c.x + c.vx * dt, uz = c.z + c.vz * dt, ut = cellType(ux, uz);
+      if (ut === 3) { c.x = ux; c.z = uz; startFall([c.vx * 2, 0, c.vz * 2]); break; }
+      if (ut === 0 || groundH(ux, uz) - c.gy > 0.02) { c.vx *= -0.3; c.vz *= -0.3; SND.thud(); }
+      else { c.x = ux; c.z = uz; if (groundH(ux, uz) < c.gy - 0.02) { startFall([c.vx * 2, 0, c.vz * 2]); break; } }
+      var dec = Math.exp(-3.5 * dt); c.vx *= dec; c.vz *= dec;
+      if (s < 0.02 || c.t > c.dur) { pose.roll = angDiff(c.rollA, 0); if (c.dropped) setAct('flat', rnd(0.8, 1.4)); else if (Math.cos(c.rollA) < 0) setAct('roll', rnd(1.5, 3)); else { setAct('getUp', 0.5); c.next = afterKnock; } }
+      break;
+    case 'startled': if (c.t > c.dur) afterKnock(); break;
+    case 'duck': if (c.t > c.dur) setAct('watch', 1.5); break;
+    case 'hiss':
+      if (!c.said) { c.said = true; SND.hiss(); }
+      if (handOK()) { faceTo(hand.tip[0], hand.tip[2], dt, 7); if (c.t > 0.4 && tipDistH() < SIZE * 1.6) { setAct('swipe', 0.35); c.next = function () { if (mood.fear > 0.4) fleeFrom(hand.tip[0], hand.tip[2]); else setAct('hiss', 1.2); }; break; } }
+      if (c.t > c.dur) setAct('watch', 2);
+      break;
+    case 'swipe': if (handOK()) faceTo(hand.tip[0], hand.tip[2], dt, 8); if (c.t > c.dur) { var f2 = c.next; c.next = null; if (f2) f2(); else setAct('idle', 1); } break;
+    case 'cling':
+      if (!handHeld()) { startFall(); break; }
+      p = hand.j[FING[c.hf][3]]; if (Math.hypot(hand.jv[FING[c.hf][3]][0], hand.jv[FING[c.hf][3]][1], hand.jv[FING[c.hf][3]][2]) > 1.1) { startFall(hand.tipV); break; }
+      c.x = p[0]; c.y = p[1] - SIZE * 0.55; c.z = p[2];
+      if (c.t > c.dur) { if (n[1] > 0.6 && hand.speed < 0.2 && Math.random() < 0.7) ontoHand(c.hf, 2.6, rnd(5, 12)); else startFall(); }
+      break;
+    case 'onHand':                         // standing on the hand: the whole hand is its ground
+      if (!handHeld()) { startFall(); break; }
+      if (hand.vis) {
+        var pvy = hand.pv[1];                // tossed: the hand rushes upward and then stops, and it carries on up
+        if (pvy > c.upPeak) { c.upPeak = pvy; c.pkx = hand.pv[0]; c.pkz = hand.pv[2]; } else c.upPeak = Math.max(0, c.upPeak - dt * 1.2);
+        if (c.upPeak > 0.45 && pvy < c.upPeak * 0.35 && hand.closed < 0.6) {
+          setAct('fall', 6); c.vx = c.pkx * 0.7; c.vz = c.pkz * 0.7; c.vy = Math.min(3, c.upPeak * 0.95); c.thrown = true; c.flip = 0; c.flipV = (c.vy > 1 ? rnd(7, 11) : rnd(3, 5)) * (Math.random() < 0.5 ? 1 : -1); c.upPeak = 0;
+          if (m.affection > 0.4 || m.playful > 0.5) { m.playful = clamp(m.playful + 0.12, 0, 1); mew('excited'); } else { m.fear = clamp(m.fear + 0.25, 0, 1); mew('scared'); }
+          break;
+        }
+        if (hand.closed > 0.75 && c.hu < 1.2) { setAct('enclosed', 99); break; }
+        if (n[1] < 0.22) { c.slipT += dt; c.sliding = true; if (c.slipT > 0.7) { startFall(hand.pv); break; } } else c.slipT = 0;   // hand turned right over
+      }
+      var fd = pathDir(c.hf, c.hu), slope = Math.asin(clamp(fd[1], -1, 1));
+      if (Math.abs(slope) > 0.75) { c.hu += (slope > 0 ? -1 : 1) * dt * (Math.abs(slope) - 0.55) * 4; c.sliding = true; c.fwalk = 0; c.restT = 0; m.fear = clamp(m.fear + dt * 0.05, 0, 1); }
+      else { if (n[1] >= 0.22) c.sliding = false; c.restT += dt;
+        if (c.joy > 0) { c.joy -= dt; SND.purr(0.6 + 0.4 * m.affection); }
+        if (c.fwalk > 0) { c.fwalk -= dt; c.hu += c.fdir * dt * 1.0; c.speed = SIZE; c.phase += dt * 7; c.restT = 0; } else { c.speed = 0; if (c.joy <= 0 && Math.random() < dt * (0.12 + 0.25 * m.curiosity)) { c.fwalk = rnd(0.5, 1.4); c.fdir = Math.random() < 0.5 ? -1 : 1; } } }
+      if (c.hu > 3.02) {                   // reached a fingertip
+        if (c.sliding) { setAct('hang', rnd(1.6, 2.6)); break; }
+        c.hu = 3; c.fdir = -1; c.fwalk = 0;
+        var gf = c.hf + (Math.random() < 0.5 ? -1 : 1);
+        if (gf >= 0 && gf <= 4 && dist3(hand.j[FING[c.hf][3]], hand.j[FING[gf][3]]) < SIZE * 2.5 && Math.random() < 0.5) { c.hop = { f0: c.hf, u0: 3, f1: gf, u1: 2.8 }; setAct('handHop', 0.3); break; }
+      }
+      if (c.hu < -1) {
+        c.hu = -1; var nf = c.hf, bestY = 1e9;
+        if (c.sliding) { for (k = 0; k < 5; k++) { var py = pathPt(k, 1)[1]; if (py < bestY) { bestY = py; nf = k; } } if (bestY < hand.pc[1] - 0.004) { c.hf = nf; c.hu = -0.98; } }
+        else { c.hf = (Math.random() * 5) | 0; c.fdir = 1; }
+      }
+      p = handPath(c.hf, c.hu); fd = pathDir(c.hf, c.hu); slope = Math.asin(clamp(fd[1], -1, 1));
+      c.x = p[0] + n[0] * 0.009; c.y = p[1] + n[1] * 0.009; c.z = p[2] + n[2] * 0.009;
+      var facing = c.fwalk > 0 ? c.fdir : (c.sliding ? (slope > 0 ? 1 : -1) : 1);
+      c.head = Math.atan2(fd[0] * facing, fd[2] * facing); c.slopeP = -slope * facing;
+      if (c.t > c.dur) {
+        var gx = c.x + rnd(-1, 1) * SIZE, gz = c.z + rnd(-1, 1) * SIZE;
+        if (!c.sliding && solid(gx, gz) && c.y - groundH(gx, gz) < SIZE * 2.2 && c.y - groundH(gx, gz) > -0.01) startJump(gx, gz, groundH(gx, gz), SIZE * 0.3, 0.4, 'land', 0.4); else c.dur += 4;
+      }
+      break;
+    case 'handHop':
+      if (!handHeld()) { startFall(); break; }
+      s = clamp(c.t / c.dur, 0, 1); var pa = handPath(c.hop.f0, c.hop.u0), pb = handPath(c.hop.f1, c.hop.u1);
+      c.x = pa[0] + (pb[0] - pa[0]) * s; c.z = pa[2] + (pb[2] - pa[2]) * s; c.y = pa[1] + (pb[1] - pa[1]) * s + 0.009 + 4 * SIZE * 0.4 * s * (1 - s);
+      if (Math.hypot(pb[0] - pa[0], pb[2] - pa[2]) > 0.003) c.head = Math.atan2(pb[0] - pa[0], pb[2] - pa[2]);
+      if (s >= 1) ontoHand(c.hop.f1, c.hop.u1, rnd(5, 12));
+      break;
+    case 'enclosed':                       // inside a closed fist
+      if (!hand.vis) { if (hand.lost > 2) startFall(); break; }
+      c.x = hand.pc[0] + n[0] * 0.012; c.y = hand.pc[1] + n[1] * 0.012; c.z = hand.pc[2] + n[2] * 0.012; c.look = null;
+      if (Math.hypot(hand.pv[0], hand.pv[1], hand.pv[2]) > 0.8) m.fear = clamp(m.fear + dt * 0.3, 0, 1);
+      if (m.affection > 0.6 && m.fear < 0.3) SND.purr(0.3 + 0.5 * m.affection); else if (c.t > 2 && Math.random() < dt * 0.25) mew('muffled');
+      if (hand.closed < 0.45) { if (n[1] > 0.4) ontoHand(2, -0.6, rnd(5, 12)); else startFall(hand.pv); }
+      break;
+    case 'held':                           // pinched between two fingertips and lifted: it hangs from wherever it was taken hold of
+      if (!handHeld()) { c.dropped = true; startFall(c.gv); break; }
+      var T = hand.j[c.holdA], F = hand.j[c.holdB], gdx = F[0] - T[0], gdy = F[1] - T[1], gdz = F[2] - T[2], gap = Math.hypot(gdx, gdy, gdz) || 1e-4;
+      var G = [(T[0] + F[0]) / 2, (T[1] + F[1]) / 2, (T[2] + F[2]) / 2], L = SIZE * 1.2, accF = 0, accL = 0;
+      if (hand.vis && gap > c.grabGap * 1.6 + 0.012) { c.dropped = true; startFall(c.gv); break; }      // fingers opened: let go
+      if (c.gp && hand.vis) { var ovx = c.gv[0], ovz = c.gv[2]; for (k = 0; k < 3; k++) c.gv[k] = c.gv[k] * 0.6 + (G[k] - c.gp[k]) / dt * 0.4;
+        var axx = (c.gv[0] - ovx) / dt, azz = (c.gv[2] - ovz) / dt; accF = axx * sx + azz * cz; accL = axx * cz - azz * sx; }
+      c.gp = G;
+      var far = Math.abs(c.gz) > 0.3, peq = c.gz < -0.3 ? 1.45 : c.gz > 0.3 ? -1.3 : -(c.gz > 0 ? 1 : -1) * 0.45;   // by the tail: head down. By the head or scruff: hind end down.
+      c.hpv += (-28 * (c.hp - peq) - 3.2 * c.hpv - clamp(accF, -25, 25) * (far ? 1.4 : 0.6)) * dt; c.hp = clamp(c.hp + c.hpv * dt, -2.6, 2.6);
+      c.hrv += (-28 * c.hr - 3.2 * c.hrv - clamp(accL, -25, 25) * 1.2) * dt; c.hr = clamp(c.hr + c.hrv * dt, -1.2, 1.2);
+      c.squeeze = clamp((c.grabGap * 0.85 - gap) / (SIZE * 0.3), 0, 1);
+      if (!far && Math.hypot(gdx, gdz) > gap * 0.35) { var hy1 = Math.atan2(gdx, gdz) - Math.PI / 2, hy2 = hy1 + Math.PI, useA = Math.abs(angDiff(hy1, c.head)) < Math.abs(angDiff(hy2, c.head)) ? hy1 : hy2; c.head += clamp(angDiff(useA, c.head), -dt * 8, dt * 8); c.holdRoll = Math.asin(clamp(gdy / gap, -1, 1)) * (useA === hy1 ? 1 : -1) * 0.6 + c.hr; }
+      else { c.holdRoll = c.hr; c.head += c.hrv * dt * 0.6; }
+      var cph = Math.cos(c.hp), fx = Math.sin(c.head) * cph, fy = -Math.sin(c.hp), fz = Math.cos(c.head) * cph, fl2 = Math.min(1, dt * 30);
+      c.x += (G[0] - fx * c.gz * L - c.x) * fl2; c.z += (G[2] - fz * c.gz * L - c.z) * fl2; c.y += (G[1] - fy * c.gz * L - (c.gyo - 0.33) * L * cph - 0.33 * L - c.y) * fl2;
+      m.fear = clamp(m.fear + dt * 0.05 * (1 - m.affection), 0, 1); m.anger = clamp(m.anger + dt * ((c.holdPart === 'tail' ? 0.12 : 0.04) + c.squeeze * 0.12), 0, 1);
+      c.struggle = clamp((m.anger + m.fear) * 0.6 + c.squeeze * 0.6 + (c.holdPart === 'tail' ? 0.25 : 0), 0, 1); c.bat = c.holdPart === 'tail' && c.struggle > 0.3;
+      if (c.t > 3 && c.struggle > 0.4 && Math.random() < dt * 0.35) { c.biteT = 0.35; SND.chirp(); }
+      if (Math.random() < dt * (0.12 + c.squeeze * 0.6 + (c.holdPart === 'tail' ? 0.2 : 0))) mew(c.struggle > 0.5 ? 'angry' : 'scared');
+      break;
+    case 'hang':
+      if (!handHeld()) { startFall(); break; }
+      p = hand.j[FING[c.hf][3]]; c.x = p[0]; c.y = p[1] - SIZE * 0.6; c.z = p[2];
+      if (c.t > c.dur) { if (Math.abs(Math.asin(clamp(pathDir(c.hf, 2.5)[1], -1, 1))) < 0.4 && n[1] > 0.5 && Math.random() < 0.5) ontoHand(c.hf, 2.8, rnd(5, 10)); else startFall(); }
+      break;
+    case 'fall':
+      c.vy -= 5 * dt; c.x += c.vx * dt; c.y += c.vy * dt; c.z += c.vz * dt; if (c.thrown) c.flip += c.flipV * dt;
+      if (hand.vis && c.vy < 0.2 && c.t > 0.12) {            // caught: a hand is underneath
+        var cc = contact(c.x, c.y + SIZE * 0.2, c.z, SIZE * 0.5);
+        if (cc && cc.ny > 0.25 && hand.pn[1] > 0.35) { var th = c.thrown; nearestSite(); ontoHand(c.hf, c.hu); c.dropped = false; c.thrown = false; c.flip = 0; if (th) { c.joy = 2.5; m.playful = clamp(m.playful + 0.1, 0, 1); m.affection = clamp(m.affection + 0.03, 0, 1); mew('happy'); } break; }
+      }
+      if (solid(c.x, c.z) && c.y <= groundH(c.x, c.z)) {
+        c.gy = groundH(c.x, c.z); c.y = c.gy; m.fear = clamp(m.fear + 0.15, 0, 1); SND.thud();
+        var hs = Math.hypot(c.vx, c.vz), hard = c.vy < -0.7 || c.dropped, wasThrown = c.thrown; c.thrown = false; c.flip = 0;
+        if (wasThrown && !c.dropped && m.playful > 0.5 && c.vy > -1.6) { setAct('roll', rnd(1.5, 3)); mew('excited'); break; }
+        if (hard && hs > 0.12) { c.rollDir = Math.random() < 0.5 ? -1 : 1; c.rollA = 0; setAct('tumble', 2); }
+        else if (hard) { var bh = c.head; startJump(c.x, c.z, c.gy, SIZE * 0.3, 0.22, function () { SND.thud(); setAct('flat', rnd(0.8, 1.4)); }); c.head = bh; }   // a little bounce, then flat out
+        else setAct('land', 0.45);
+      }
+      else if (c.y < -0.3 || c.t > c.dur) { c.hidden = true; c.dropped = false; c.thrown = false; c.flip = 0; setAct('gone', rnd(2, 3.5)); }
+      break;
+    case 'gone':
+      if (c.t > c.dur) { var rp = findFloorNear(0, 0) || [0, 0]; c.x = rp[0]; c.z = rp[1]; c.gy = groundH(c.x, c.z); c.y = c.gy; c.hidden = false; SND.chirp(); setAct('land', 0.5); }
+      break;
+    default: if (c.t > c.dur && !nextSeq()) setAct('idle', 1);     // sit, groom, stretch, loaf, knead, head tilt …
+  }
+  // smoothed values the animation uses
+  var moving = c.speed > 0.001 && (c.act === 'walk' || c.act === 'run' || c.act === 'onHand' || c.act === 'circle' || c.act === 'chaseTail');
+  c.gait += ((moving ? 1 : 0) - c.gait) * Math.min(1, dt * 8);
+  c.turn += (clamp(angDiff(c.head, h0) / dt, -6, 6) - c.turn) * Math.min(1, dt * 8);
+  c.air = LEGAIR[c.act] === 1; c.airF = LEGAIR[c.act] === 2;
+  var pn = ACT_POSE[c.act], src = pn ? POSES[pn] : null;
+  if (c.act === 'walk' && c.stalk) src = POSES.crouch;
+  if (c.act === 'onHand' && c.sliding) src = POSES.skid;
+  if (c.act === 'onHand' && !c.sliding && c.hu > 2.9 && c.fwalk <= 0) src = POSES.edgePeek;
+  if ((c.act === 'idle' || c.act === 'walk') && m.affection > 0.7 && !c.stalk) src = POSES.happy;
+  for (k in POSE0) poseT[k] = (src && src[k] !== undefined) ? src[k] : POSE0[k];
+  if (m.anger > 0.5) { poseT.ears = Math.max(poseT.ears, m.anger); poseT.tailS = Math.max(poseT.tailS, 0.45); poseT.tailF = Math.max(poseT.tailF, 5); poseT.pupil = Math.min(poseT.pupil, 0.3); }
+  if (m.fear > 0.5) { poseT.ears = Math.max(poseT.ears, m.fear * 0.8); poseT.by = Math.min(poseT.by, -0.04); poseT.pupil = 1; poseT.wide = Math.max(poseT.wide, 1.15); }
+  if (m.playful > 0.7 && poseT.pupil < 0.8) poseT.pupil = 0.8;
+  if (c.act === 'pinned' || c.act === 'petted') { poseT.by -= c.squish * 0.1; poseT.sq = 1 - c.squish * 0.35; }
+  if (c.act === 'held') { poseT.wide = 1.2 + c.squeeze * 0.4; poseT.sq = 1 + c.squeeze * 0.12; poseT.roll = c.holdRoll; poseT.pitch = c.hp; pose.pitch = c.hp; pose.roll = c.holdRoll; }
+  if (c.act === 'onHand' && c.joy > 0) for (k in POSES.joy) poseT[k] = POSES.joy[k];
+  if (c.act === 'onHand' && c.joy <= 0 && !c.sliding && c.restT > 3 && m.fear < 0.4) for (k in POSES.sit) poseT[k] = POSES.sit[k];
+  if (c.act === 'roll') poseT.roll = pose.roll < 0 ? -3.14159 : 3.14159;
+  if (c.look && c.act !== 'sleep' && c.act !== 'groom' && c.act !== 'tumble' && c.act !== 'flat') {
+    var lx2 = c.look[0] - c.x, ly2 = c.look[1] - (c.y + SIZE * 0.6), lz2 = c.look[2] - c.z;
+    poseT.headY = clamp(angDiff(Math.atan2(lx2, lz2), c.head), -1.3, 1.3);
+    poseT.headP = clamp(-Math.atan2(ly2, Math.hypot(lx2, lz2)) - poseT.pitch, -1, 1);
+  }
+  var f3 = Math.min(1, dt * 10); for (k in POSE0) pose[k] += (poseT[k] - pose[k]) * f3;
+}
+function spawnCat() { var p = findFloorNear(0, 0) || [0, 0]; cat.x = p[0]; cat.z = p[1]; cat.gy = groundH(p[0], p[1]); cat.y = cat.gy; cat.hidden = false; cat.head = Math.atan2(camL[0] - cat.x, camL[2] - cat.z); setAct('land', 0.6); }
+function topMood() { var b = 'calm', v = 0.55, m = mood; if (m.playful > v) { b = 'playful'; v = m.playful; } if (m.affection > v) { b = 'affectionate'; v = m.affection; } if (m.hunger > v) { b = 'hungry'; v = m.hunger; } if (m.fear > 0.4 && m.fear + 0.2 > v) { b = 'scared'; v = m.fear + 0.2; } if (m.anger > 0.4 && m.anger + 0.25 > v) { b = 'angry'; v = m.anger + 0.25; } if (m.energy < 0.25) b = 'sleepy'; return b; }
+
+// ---------- voice ----------
+function towardCam() {
+  var dx = camL[0] - cat.x, dz = camL[2] - cat.z, d = Math.hypot(dx, dz) || 1; dx /= d; dz /= d;
+  for (var r = Math.min(0.4, d); r > 0.04; r -= 0.03) { var x = cat.x + dx * r, z = cat.z + dz * r; if (lineClear(cat.x, cat.z, x, z, cat.gy) && solid(x + dx * SIZE, z + dz * SIZE)) return [x, z]; }
+  return null;
+}
+function hideFromCam() { // run and crouch behind an object, out of sight of the camera
+  var best = null, bd = 1e9;
+  for (var i = 0; i < 80; i++) {
+    var k = (Math.random() * N * N) | 0; if (mapT[k] !== 2 || mapS[k] < SIZE * 0.8) continue;
+    var ox = ((k % N) + 0.5) * CELL - HALF, oz = (((k / N) | 0) + 0.5) * CELL - HALF, dx = ox - camL[0], dz = oz - camL[2], l = Math.hypot(dx, dz) || 1;
+    for (var r = 0.02; r < 0.12; r += 0.01) { var x = ox + dx / l * r, z = oz + dz / l * r; if (cellType(x, z) === 2) continue; if (cellType(x, z) !== 1) break; x += dx / l * SIZE * 0.6; z += dz / l * SIZE * 0.6; if (cellType(x, z) === 1 && lineClear(cat.x, cat.z, x, z, cat.gy)) { var d = Math.hypot(x - cat.x, z - cat.z); if (d < bd) { bd = d; best = [x, z]; } } break; }
+  }
+  if (best) go(best[0], best[1], 'hide', true); else if (pickTarget(0.12, 0.4, camL[0], camL[2])) go(cat.tx, cat.tz, 'flee', true); else setAct('watch', 2);
+}
+function shout() {
+  if (cat.hidden) return;
+  mood.fear = clamp(mood.fear + 0.5, 0, 1); mood.affection = clamp(mood.affection - 0.05, 0, 1); cat.heard = 1.5;
+  if (BUSY[cat.act]) return;
+  hideFromCam();
+}
+function lev(a, b) { if (Math.abs(a.length - b.length) > 2) return 9; var p = [], i, j; for (j = 0; j <= b.length; j++) p[j] = j; for (i = 1; i <= a.length; i++) { var q = [i]; for (j = 1; j <= b.length; j++) q[j] = Math.min(p[j] + 1, q[j - 1] + 1, p[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); p = q; } return p[b.length]; }
+var SOUNDS = { sit: ['set', 'seat', 'sits', 'sitting', 'sip'], come: ['calm', 'comb', 'coming', 'cum'], stay: ['state', 'steak', 'stays'], roll: ['role', 'rolled', 'rolling', 'row'], spin: ['spinning', 'pin', 'spain'], jump: ['jumped', 'jumping', 'dump', 'jumps'],
+  down: ['town', 'dawn'], hide: ['height', 'hid', 'hiding'], sleep: ['sleeping', 'sleepy', 'slip'], speak: ['speaking', 'spoke', 'peak'], play: ['playing', 'plate', 'pray'], fetch: ['fetching', 'french', 'catch'], dinner: ['diner', 'thinner', 'dinnertime'], here: ['hear'], good: ['could', 'goods'], no: ['know', 'nope'] };
+function hear(text) { // it answers back in its own voice
+  var r = hear0(text); if (!cat.hidden && cat.act !== 'sleep' && cat.act !== 'sleepSide' && Math.random() < 0.85) { cat.talk = rnd(0.4, 0.9); cat.talkK = /ignored|busy|did not know/.test(r) ? 'curious' : ''; } return r;
+}
+function hear0(text) { // returns a short description of what the pet did
+  if (cat.hidden) return 'it is not here';
+  var s = ' ' + String(text).toLowerCase().replace(/[^a-z0-9' ]/g, ' ').replace(/\s+/g, ' ').trim() + ' ', toks = s.trim().split(' '), c = cat, m = mood, a = c.act, p;
+  function word(w) { for (var i = 0; i < toks.length; i++) { var t = toks[i]; if (t === w) return true; if (SOUNDS[w] && SOUNDS[w].indexOf(t) >= 0) return true; if (w.length >= 4 && t.length >= 4 && (t.indexOf(w) === 0 || lev(t, w) <= 1)) return true; } return false; }
+  function has() { for (var i = 0; i < arguments.length; i++) { var w = arguments[i]; if (w.indexOf(' ') >= 0 ? s.indexOf(' ' + w + ' ') >= 0 : word(w)) return true; } return false; }
+  c.heard = 1.2; c.lookCamT = 2.5;
+  var free = !!PASSIVE[a] || a === 'run' || a === 'roll' || a === 'petted' || a === 'sniffFinger' || a === 'rub', asleep = a === 'sleep' || a === 'sleepSide';
+  var obey = Math.random() < 0.45 + 0.55 * m.affection, named = false, nm = petName.toLowerCase().split(' ');
+  if (petName) { if (s.indexOf(' ' + petName.toLowerCase() + ' ') >= 0) named = true; else for (var qi = 0; qi < toks.length && !named; qi++) for (var qj = 0; qj < nm.length; qj++) if (nm[qj].length >= 3 && lev(toks[qi], nm[qj]) <= Math.max(1, Math.floor(nm[qj].length / 4))) named = true; }
+  if (has('dinner', 'dinner time', 'food', 'feeding time', 'feeding', 'treat', 'treats', 'breakfast', 'supper', 'lunch', 'hungry', 'biscuits', 'tea time')) {
+    m.hunger = Math.max(m.hunger, 0.5); if (BUSY[a] && !asleep) return 'it heard "dinner" but is busy';
+    if (food.on && solid(food.x, food.z)) { goFood(); return 'it is going for the food'; }
+    p = towardCam(); mew('excited'); if (p) go(p[0], p[1], 'dinner', true); else setAct('meow', 2.2); return 'it came running for dinner (press Feed)';
+  }
+  if (has('get off', 'off', 'get down', 'down you go') && a === 'onHand') { c.dur = 0; return 'it will hop off when it can'; }
+  if (asleep) { if (named || has('wake', 'wake up', 'morning')) { c.seq = [['yawn', 1.4]]; setAct('stretch', 1.8); return 'it woke up'; } return 'it is asleep (an ear twitched)'; }
+  if (has('good', 'clever', 'well done', 'love you', 'lovely', 'sweet', 'beautiful', 'good boy', 'good girl', 'good cat', 'sorry')) {
+    m.affection = clamp(m.affection + 0.08, 0, 1); m.anger = clamp(m.anger - 0.15, 0, 1); m.fear = clamp(m.fear - 0.1, 0, 1); SND.chirp();
+    if (PASSIVE[a]) setAct('lookCam', 2); return 'it liked that';
+  }
+  if (has('no', 'bad', 'naughty', 'stop', 'stop it', 'bad cat')) {
+    m.affection = clamp(m.affection - 0.03, 0, 1); m.fear = clamp(m.fear + 0.05, 0, 1);
+    if (free || a === 'hiss' || a === 'wiggle') { setAct('watch', 2.5); return 'it stopped and is watching you'; } return 'it heard you';
+  }
+  if (has('calm down', 'calm', 'easy', 'gently', 'shush', 'its ok', "it's ok", 'its okay', "it's okay", 'there there', 'relax')) { m.anger = clamp(m.anger - 0.25, 0, 1); m.fear = clamp(m.fear - 0.25, 0, 1); if (a === 'hiss') setAct('watch', 2); return 'it is calming down'; }
+  if (!free) return named ? 'it heard its name but is busy' : 'it heard you but is busy';
+  if (has('climb', 'climb up', 'climb on', 'jump on', 'get up there', 'up there', 'on the box', 'on top', 'get on top')) { if (!obey) return 'it ignored you'; if (findObject()) { c.forceClimb = true; go(c.tx, c.tz, 'obj'); return 'it is off to climb something'; } return 'it cannot see anything to climb'; }
+  if (has('go away', 'shoo', 'leave', 'get lost', 'scram')) { if (pickTarget(0.12, 0.4, camL[0], camL[2])) go(c.tx, c.tz, 'sulk'); return 'it stalked off'; }
+  if (has('look at me', 'look', 'over here look')) { setAct('lookCam', rnd(2, 4)); return 'it is looking at you'; }
+  if (has('stand', 'stand up', 'beg', 'up on your legs', 'paws up')) { if (obey) { setAct('standUp', rnd(1.8, 3)); return 'it stood up on its hind legs'; } return 'it ignored you'; }
+  if (has('tail', 'chase your tail', 'dance', 'dizzy')) { if (obey) { c.spinD = Math.random() < 0.5 ? 1 : -1; setAct('chaseTail', rnd(1.6, 2.6)); return 'it chased its tail'; } return 'it ignored you'; }
+  if (has('pounce', 'attack', 'get him', 'kill')) { if (obey) { if (handOK()) go(hand.tip[0], hand.tip[2], 'chase', true); else airPounce(); return 'it pounced'; } return 'it ignored you'; }
+  if (has('follow', 'follow me', 'follow my finger')) { if (!handOK()) return 'it cannot see your hand'; if (obey) { go(hand.tip[0], hand.tip[2], 'finger'); return 'it is following your finger'; } return 'it ignored you'; }
+  if (has('kiss', 'kisses', 'cuddle', 'hug')) { m.affection = clamp(m.affection + 0.05, 0, 1); p = obey ? towardCam() : null; if (p) { go(p[0], p[1], 'call'); return 'it is coming for a fuss'; } return 'it blinked slowly at you'; }
+  if (has('tired', 'sleepy', 'yawn', 'nap', 'nap time')) { if (obey) { goSleep(); return 'it is settling down for a nap'; } return 'it ignored you'; }
+  if (has('behind', 'go behind', 'hide behind')) { if (obey) { hideFromCam(); return 'it went behind something'; } return 'it ignored you'; }
+  if (has('fly', 'the fly', 'bug')) { if (fly.on) { go(fly.x, fly.z, 'fly'); c.stalk = true; return 'it is stalking the fly'; } return 'it looked for a fly'; }
+  if (has('get on', 'hop on', 'climb on', 'on my finger', 'up here', 'on my hand', 'my hand')) {
+    if (!handOK()) return 'it cannot see your hand'; if (!obey) return 'it ignored you'; c.wantHop = true; go(hand.tip[0], hand.tip[2], 'finger'); return 'it is coming to your hand';
+  }
+  if (has('come', 'here', 'come here', 'over here', 'this way') || named) {
+    var will = named && !has('come', 'here') ? Math.random() < 0.3 + 0.6 * m.affection : obey;
+    p = will ? towardCam() : null; if (p) { go(p[0], p[1], 'call'); return named ? 'it knows its name and is coming over' : 'it is coming'; }
+    setAct('lookCam', rnd(1.5, 3)); return named ? 'it looked at you, but stayed put (cats)' : 'it looked at you and ignored that';
+  }
+  var did = '';
+  if (has('hide')) { if (obey) { hideFromCam(); did = 'it went to hide'; } }
+  else if (has('sit', 'sit down')) { if (obey) { setAct('sit', rnd(4, 7)); did = 'it sat'; } }
+  else if (has('stay', 'wait')) { if (obey) { setAct('sit', 12); did = 'it is staying'; } }
+  else if (has('lie down', 'down', 'lay down')) { if (obey) { setAct('loaf', rnd(5, 9)); did = 'it lay down'; } }
+  else if (has('sleep', 'bedtime', 'bed time', 'night night', 'go to sleep', 'goodnight', 'good night')) { if (obey) { goSleep(); did = 'it is going to sleep'; } }
+  else if (has('jump', 'hop', 'up')) { if (obey) { var h0 = c.head; startJump(c.x, c.z, c.gy, SIZE * 1.2, 0.4, 'land', 0.3); c.head = h0; did = 'it jumped'; } }
+  else if (has('roll', 'roll over', 'belly')) { if (obey) { setAct('roll', rnd(3, 5)); did = 'it rolled over'; } }
+  else if (has('speak', 'meow', 'talk', 'say hello', 'hello')) { if (obey) { setAct('meow', 2.2); did = 'it meowed'; } }
+  else if (has('spin', 'turn around', 'twirl', 'turn')) { if (obey) { setAct('spin', 0.8); did = 'it spun round'; } }
+  else if (has('play', 'playtime', 'play time', 'zoomies')) { m.playful = clamp(m.playful + 0.3, 0, 1); if (obey && pickTarget(0.12, 0.4)) { c.runs = 3; go(c.tx, c.tz, 'zoom', true); did = 'it got the zoomies'; } }
+  else if (has('fetch', 'get it', 'catch', 'chase')) { if (obey) { if (fly.on) { go(fly.x, fly.z, 'fly'); c.stalk = true; did = 'it is stalking the fly'; } else if (handOK()) { go(hand.tip[0], hand.tip[2], 'chase', true); did = 'it is chasing your finger'; } } }
+  else if (has('explore', 'go and look', 'have a look', 'whats that', "what's that")) { if (obey && findObject()) { go(c.tx, c.tz, 'obj'); did = 'it went to look at an object'; } }
+  else return 'it listened, but did not know those words';
+  if (did) { m.affection = clamp(m.affection + 0.01, 0, 1); return did; }
+  if (PASSIVE[c.act]) setAct('lookCam', rnd(1, 2)); return 'it understood, but ignored you (make friends first)';
+}
+
+</script>
+<script>
+// ================= MAIN: camera, depth, hand tracking, drawing, sound, setup, buttons =================
+var $ = function (id) { return document.getElementById(id); };
+function log(msg) { $("log").textContent += msg + "\n"; }
+function check(id, label, ok, detail) {
+  var li = $(id) || document.createElement("li"); li.id = id;
+  li.className = ok === null ? "unk" : ok ? "ok" : "bad";
+  li.textContent = (ok === null ? "… " : ok ? "✓ " : "✗ ") + label + (detail ? " — " + detail : "");
+  if (!li.parentNode) $("checks").appendChild(li);
+}
+
+// ---------- matrices and vectors (column-major) ----------
+function mul(a, b) { var o = new Float32Array(16); for (var c = 0; c < 4; c++) for (var r = 0; r < 4; r++) o[c * 4 + r] = a[r] * b[c * 4] + a[4 + r] * b[c * 4 + 1] + a[8 + r] * b[c * 4 + 2] + a[12 + r] * b[c * 4 + 3]; return o; }
+function T(x, y, z) { return new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1]); }
+function S(x, y, z) { return new Float32Array([x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1]); }
+function RX(a) { var c = Math.cos(a), s = Math.sin(a); return new Float32Array([1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1]); }
+function RY(a) { var c = Math.cos(a), s = Math.sin(a); return new Float32Array([c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1]); }
+function RZ(a) { var c = Math.cos(a), s = Math.sin(a); return new Float32Array([c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]); }
+function v3(M, x, y, z) { return [M[0] * x + M[4] * y + M[8] * z + M[12], M[1] * x + M[5] * y + M[9] * z + M[13], M[2] * x + M[6] * y + M[10] * z + M[14]]; }
+function d3(M, x, y, z) { return [M[0] * x + M[4] * y + M[8] * z, M[1] * x + M[5] * y + M[9] * z, M[2] * x + M[6] * y + M[10] * z]; }
+function nrm(a) { var l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; }
+function crs(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
+function rotAx(v, k, a) { var c = Math.cos(a), s = Math.sin(a), cr = crs(k, v), kd = (k[0] * v[0] + k[1] * v[1] + k[2] * v[2]) * (1 - c); return [v[0] * c + cr[0] * s + k[0] * kd, v[1] * c + cr[1] * s + k[1] * kd, v[2] * c + cr[2] * s + k[2] * kd]; }
+function frameY(H, dir, X, s) { // a bone whose shape hangs along its own -y: point that at dir
+  var y = [-dir[0], -dir[1], -dir[2]], d = X[0] * y[0] + X[1] * y[1] + X[2] * y[2], x = nrm([X[0] - y[0] * d, X[1] - y[1] * d, X[2] - y[2] * d]), z = crs(x, y);
+  return new Float32Array([x[0] * s, x[1] * s, x[2] * s, 0, y[0] * s, y[1] * s, y[2] * s, 0, z[0] * s, z[1] * s, z[2] * s, 0, H[0], H[1], H[2], 1]);
+}
+function frameZ(H, dir, X, s) { // a bone whose shape runs along its own -z
+  var z = [-dir[0], -dir[1], -dir[2]], d = X[0] * z[0] + X[1] * z[1] + X[2] * z[2], x = nrm([X[0] - z[0] * d, X[1] - z[1] * d, X[2] - z[2] * d]), y = crs(z, x);
+  return new Float32Array([x[0] * s, x[1] * s, x[2] * s, 0, y[0] * s, y[1] * s, y[2] * s, 0, z[0] * s, z[1] * s, z[2] * s, 0, H[0], H[1], H[2], 1]);
+}
+function boneM(a, b, w) { // a box stretched from a to b
+  var dx = b[0] - a[0], dy = b[1] - a[1], dz = b[2] - a[2], len = Math.hypot(dx, dy, dz) || 1e-4, zx = dx / len, zy = dy / len, zz = dz / len;
+  var ux = 0, uy = 1, uz = 0; if (Math.abs(zy) > 0.9) { ux = 1; uy = 0; }
+  var xx = uy * zz - uz * zy, xy = uz * zx - ux * zz, xz = ux * zy - uy * zx, xl = Math.hypot(xx, xy, xz) || 1; xx /= xl; xy /= xl; xz /= xl;
+  var yx = zy * xz - zz * xy, yy = zz * xx - zx * xz, yz = zx * xy - zy * xx, L = len + w * 0.5;
+  return new Float32Array([xx * w, xy * w, xz * w, 0, yx * w, yy * w, yz * w, 0, zx * L, zy * L, zz * L, 0, (a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2, 1]);
+}
+
+// ---------- the cat's body, sculpted from tiny cubes (3D pixels) ----------
+var VS = 0.02, vvx = [], vix = [], PART = {};
+function voxPart(name, fn, r) {
+  var lo = [-Math.ceil(r[0] / VS) * VS, -Math.ceil(r[1] / VS) * VS, -Math.ceil(r[2] / VS) * VS], nx = Math.ceil((r[3] - lo[0]) / VS), ny = Math.ceil((r[4] - lo[1]) / VS), nz = Math.ceil((r[5] - lo[2]) / VS);
+  var g = new Uint8Array(nx * ny * nz), x, y, z, start = vix.length;
+  for (z = 0; z < nz; z++) for (y = 0; y < ny; y++) for (x = 0; x < nx; x++) if (fn(lo[0] + (x + 0.5) * VS, lo[1] + (y + 0.5) * VS, lo[2] + (z + 0.5) * VS)) g[(z * ny + y) * nx + x] = 1;
+  function at(x, y, z) { return (x < 0 || y < 0 || z < 0 || x >= nx || y >= ny || z >= nz) ? 0 : g[(z * ny + y) * nx + x]; }
+  var D = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]], Q = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
+  for (z = 0; z < nz; z++) for (y = 0; y < ny; y++) for (x = 0; x < nx; x++) {
+    if (!g[(z * ny + y) * nx + x]) continue;
+    var hsh = Math.sin(x * 12.9898 + y * 78.233 + z * 37.719 + name.length) * 43758.5453, sh = 0.78 + 0.44 * (hsh - Math.floor(hsh));
+    for (var f = 0; f < 6; f++) {
+      var d = D[f]; if (at(x + d[0], y + d[1], z + d[2])) continue;
+      var u = [d[1], d[2], d[0]], w = crs(d, u), base = vvx.length / 7;
+      for (var q = 0; q < 4; q++) { for (var k = 0; k < 3; k++) vvx.push(lo[k] + ([x, y, z][k] + 0.5) * VS + 0.5 * VS * (d[k] + Q[q][0] * u[k] + Q[q][1] * w[k])); vvx.push(d[0], d[1], d[2], sh); }
+      vix.push(base, base + 1, base + 2, base, base + 2, base + 3);
+    }
+  }
+  PART[name] = { start: start, count: vix.length - start };
+}
+function E(x, y, z, cx, cy, cz, rx, ry, rz) { var a = (x - cx) / rx, b = (y - cy) / ry, c = (z - cz) / rz; return a * a + b * b + c * c < 1; }
+voxPart("chest", function (x, y, z) { return E(x, y, z, 0, 0, 0, 0.15, 0.135, 0.21); }, [0.15, 0.135, 0.21, 0.15, 0.135, 0.21]);
+voxPart("hips", function (x, y, z) { return E(x, y, z, 0, 0, 0, 0.145, 0.13, 0.2); }, [0.145, 0.13, 0.2, 0.145, 0.13, 0.2]);
+voxPart("head", function (x, y, z) { return E(x, y, z, 0, 0, 0, 0.155, 0.125, 0.125) || E(x, y, z, 0, -0.035, 0.105, 0.075, 0.055, 0.06) || E(Math.abs(x), y, z, 0.09, -0.03, 0.04, 0.06, 0.05, 0.07); }, [0.16, 0.13, 0.13, 0.16, 0.13, 0.17]);
+voxPart("ear", function (x, y, z) { return y > 0 && y < 0.17 && Math.abs(x) < 0.07 * (1 - y / 0.17) + 0.008 && Math.abs(z) < 0.02 + 0.02 * (1 - y / 0.17); }, [0.08, 0, 0.04, 0.08, 0.17, 0.04]);
+voxPart("upper", function (x, y, z) { var yy = Math.max(-0.14, Math.min(0, y)); return Math.hypot(x, y - yy, z) < 0.048; }, [0.05, 0.19, 0.05, 0.05, 0.05, 0.05]);
+voxPart("lower", function (x, y, z) { var yy = Math.max(-0.15, Math.min(0, y)); return Math.hypot(x, y - yy, z) < 0.036 || E(x, y, z, 0, -0.15, 0.025, 0.048, 0.032, 0.065); }, [0.05, 0.19, 0.05, 0.05, 0.04, 0.09]);
+voxPart("tail", function (x, y, z) { var zz = Math.max(-0.1, Math.min(0, z)); return Math.hypot(x, y, z - zz) < 0.034; }, [0.04, 0.04, 0.14, 0.04, 0.04, 0.04]);
+var VOXV = vvx.length / 7;
+
+// ---------- sound (all synthesised, no files) ----------
+var AC = null, sndT = 0;
+function audioInit() {
+  try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+  var nb = AC.createBuffer(1, AC.sampleRate, AC.sampleRate), nd = nb.getChannelData(0); for (var i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+  function noise(t, dur, type, freq, vol) {
+    var s = AC.createBufferSource(), f = AC.createBiquadFilter(), g = AC.createGain(); s.buffer = nb; s.loop = true; f.type = type; f.frequency.value = freq;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 0.03); g.gain.linearRampToValueAtTime(0, t + dur);
+    s.connect(f); f.connect(g); g.connect(AC.destination); s.start(t); s.stop(t + dur + 0.05);
+  }
+  function tone(t, dur, type, f0, f1, vol) {
+    var o = AC.createOscillator(), g = AC.createGain(); o.type = type; o.frequency.setValueAtTime(f0, t); o.frequency.linearRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 0.015); g.gain.linearRampToValueAtTime(0, t + dur);
+    o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + dur + 0.05);
+  }
+  function shaper() { var w = AC.createWaveShaper(), c = new Float32Array(256); for (var q = 0; q < 256; q++) { var x = q / 128 - 1; c[q] = Math.tanh(x * 4); } w.curve = c; return w; }
+  function voice(t, f0, f1, f2, dur, b0, b1, b2, gain, amHz, amDepth, lp) { // one cat sound: a pitch curve through a moving mouth-shaped filter
+    var o = AC.createOscillator(), g = AC.createGain(), f = AC.createBiquadFilter(), pk = dur * 0.3, out = g;
+    o.type = "sawtooth"; o.frequency.setValueAtTime(f0, t); o.frequency.linearRampToValueAtTime(f1, t + pk); o.frequency.linearRampToValueAtTime(f2, t + dur);
+    f.type = "bandpass"; f.Q.value = 3; f.frequency.setValueAtTime(b0, t); f.frequency.linearRampToValueAtTime(b1, t + pk); f.frequency.linearRampToValueAtTime(b2, t + dur);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain, t + Math.min(0.06, dur * 0.25)); g.gain.linearRampToValueAtTime(gain * 0.7, t + dur * 0.6); g.gain.linearRampToValueAtTime(0, t + dur);
+    if (amHz) { var l = AC.createOscillator(), lg = AC.createGain(); l.frequency.value = amHz; lg.gain.value = gain * amDepth; l.connect(lg); lg.connect(g.gain); l.start(t); l.stop(t + dur + 0.05); }
+    o.connect(f); f.connect(g);
+    if (lp) { var lf = AC.createBiquadFilter(); lf.type = "lowpass"; lf.frequency.value = lp; g.connect(lf); out = lf; }
+    out.connect(AC.destination); o.start(t); o.stop(t + dur + 0.05);
+  }
+  SND.meow = function (kind, lv) { // curious, happy, excited, demand, angry, scared, muffled: each a different shape, pitched and stretched by how strongly it is felt
+    var t = AC.currentTime, r = rnd(0.92, 1.1), k = lv === undefined ? 0.6 : lv, u = 1 + 0.15 * k;
+    if (kind === "curious") voice(t, 480 * r, 700 * r, 900 * r * u, 0.26 + 0.1 * k, 1300, 1900, 2500, 0.24, 26, 0.5);
+    else if (kind === "happy") voice(t, 620 * r, 920 * r * u, 720 * r, 0.24 + 0.08 * k, 1500, 2500, 1700, 0.24, 0, 0);
+    else if (kind === "excited") { voice(t, 700 * r, 1020 * r * u, 820 * r, 0.15, 1700, 2700, 2000, 0.26, 0, 0); voice(t + 0.21, 760 * r, 1100 * r * u, 900 * r, 0.17, 1800, 2800, 2100, 0.26, 0, 0); if (k > 0.7) voice(t + 0.44, 800 * r, 1150 * r, 950 * r, 0.14, 1800, 2800, 2100, 0.22, 0, 0); }
+    else if (kind === "angry") voice(t, 430 * r, 540 * r * u, 290 * r, 0.6 + 0.35 * k, 900, 1500, 700, 0.3, 44, 0.55);
+    else if (kind === "scared") voice(t, 820 * r, 1150 * r * u, 930 * r, 0.2, 2000, 3000, 2300, 0.3, 0, 0);
+    else if (kind === "muffled") voice(t, 500 * r, 800 * r, 540 * r, 0.5, 1200, 1900, 1000, 0.3, 0, 0, 480);
+    else voice(t, 520 * r, 880 * r * u, 570 * r, 0.5 + 0.35 * k, 1400, 2400, 1100, 0.3, 0, 0);
+  };
+  SND.hiss = function () { // a spit, then a long breathy rush that flutters
+    var t = AC.currentTime, s = AC.createBufferSource(), bp = AC.createBiquadFilter(), hp = AC.createBiquadFilter(), g = AC.createGain(), l = AC.createOscillator(), lg = AC.createGain(), dur = rnd(0.8, 1.1);
+    s.buffer = nb; s.loop = true; bp.type = "bandpass"; bp.frequency.setValueAtTime(6200, t); bp.frequency.linearRampToValueAtTime(4200, t + dur); bp.Q.value = 0.7; hp.type = "highpass"; hp.frequency.value = 2400;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.5, t + 0.02); g.gain.linearRampToValueAtTime(0.32, t + 0.12); g.gain.linearRampToValueAtTime(0.26, t + dur * 0.7); g.gain.linearRampToValueAtTime(0, t + dur);
+    l.frequency.value = 36; lg.gain.value = 0.09; l.connect(lg); lg.connect(g.gain);
+    s.connect(bp); bp.connect(hp); hp.connect(g); g.connect(AC.destination); s.start(t); l.start(t); s.stop(t + dur + 0.05); l.stop(t + dur + 0.05);
+    noise(t, 0.05, "highpass", 6500, 0.45);
+  };
+  SND.chirp = function () { tone(AC.currentTime, 0.09, "sine", 900, 1500, 0.15); };
+  SND.thud = function () { tone(AC.currentTime, 0.12, "sine", 260, 140, 0.2); };
+  SND.crunch = function () { for (var k = 0; k < 6; k++) noise(AC.currentTime + k * 0.4, 0.07, "bandpass", 1600, 0.2); };
+  SND.growl = function () { // a low rattling rumble, roughened so a small phone speaker can carry it
+    var t = AC.currentTime, o = AC.createOscillator(), o2 = AC.createOscillator(), mix = AC.createGain(), ws = shaper(), bp = AC.createBiquadFilter(), lp2 = AC.createBiquadFilter(), g = AC.createGain(), l = AC.createOscillator(), lg = AC.createGain(), dur = rnd(1.1, 1.5);
+    o.type = "sawtooth"; o2.type = "sawtooth"; o.frequency.setValueAtTime(98, t); o.frequency.linearRampToValueAtTime(112, t + dur * 0.4); o.frequency.linearRampToValueAtTime(86, t + dur);
+    o2.frequency.setValueAtTime(147, t); o2.frequency.linearRampToValueAtTime(168, t + dur * 0.4); o2.frequency.linearRampToValueAtTime(129, t + dur); mix.gain.value = 0.5;
+    bp.type = "bandpass"; bp.frequency.value = 520; bp.Q.value = 0.8; lp2.type = "lowpass"; lp2.frequency.value = 2200;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.42, t + 0.15); g.gain.linearRampToValueAtTime(0.36, t + dur * 0.75); g.gain.linearRampToValueAtTime(0, t + dur);
+    l.type = "sawtooth"; l.frequency.setValueAtTime(24, t); l.frequency.linearRampToValueAtTime(31, t + dur); lg.gain.value = 0.26; l.connect(lg); lg.connect(g.gain);
+    o.connect(mix); o2.connect(mix); mix.connect(ws); ws.connect(bp); bp.connect(lp2); lp2.connect(g); g.connect(AC.destination);
+    o.start(t); o2.start(t); l.start(t); o.stop(t + dur + 0.05); o2.stop(t + dur + 0.05); l.stop(t + dur + 0.05);
+  };
+  var ps = AC.createBufferSource(), pf = AC.createBiquadFilter(), pg = AC.createGain(), pm = AC.createGain(), lfo = AC.createOscillator(), lg2 = AC.createGain();
+  ps.buffer = nb; ps.loop = true; pf.type = "bandpass"; pf.frequency.value = 320; pf.Q.value = 1; pg.gain.value = 0; pm.gain.value = 0.5;
+  lfo.frequency.value = 24; lg2.gain.value = 0.5; lfo.connect(lg2); lg2.connect(pm.gain);
+  ps.connect(pf); pf.connect(pm); pm.connect(pg); pg.connect(AC.destination); ps.start(); lfo.start();
+  ["meow", "hiss", "chirp", "thud", "crunch", "growl"].forEach(function (n) { var f0 = SND[n]; SND[n] = function (a1, a2) { sndT = performance.now(); f0(a1, a2); }; });
+  var purrLv = 0;
+  SND.purr = function (lv) { // louder, faster and higher the happier it is
+    lv = lv ? Math.max(0.05, Math.min(1, +lv === lv ? lv : 0.5)) : 0; if (Math.abs(lv - purrLv) < 0.02) return; purrLv = lv; var t = AC.currentTime;
+    pg.gain.setTargetAtTime(lv ? 0.12 + 0.42 * lv : 0, t, 0.2); lfo.frequency.setTargetAtTime(21 + 9 * lv, t, 0.3); pf.frequency.setTargetAtTime(250 + 330 * lv, t, 0.3);
+  };
+}
+
+// ---------- hand tracker (loads in the background) ----------
+var tracker = null, trackState = "loading";
+(async function () {
+  check("cHand", "Hand tracking", null, "loading");
+  try {
+    var base = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
+    var v = await import(base + "/vision_bundle.mjs");
+    var fsr = await v.FilesetResolver.forVisionTasks(base + "/wasm");
+    var opt = function (d) { return { baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task", delegate: d }, runningMode: "VIDEO", numHands: 1, minHandDetectionConfidence: 0.4, minHandPresenceConfidence: 0.4, minTrackingConfidence: 0.4 }; };
+    try { tracker = await v.HandLandmarker.createFromOptions(fsr, opt("GPU")); trackState = "ready"; }
+    catch (e) { tracker = await v.HandLandmarker.createFromOptions(fsr, opt("CPU")); trackState = "ready (slow mode)"; }
+    check("cHand", "Hand tracking", true, trackState);
+  } catch (e) { trackState = "failed: " + e.message; check("cHand", "Hand tracking", false, e.message); }
+})();
+(async function () {
+  check("cSec", "Secure page (https)", window.isSecureContext);
+  check("cXR", "Browser has AR built in (WebXR)", !!navigator.xr);
+  if (navigator.xr) { try { check("cAR", "This device can start an AR session", await navigator.xr.isSessionSupported("immersive-ar")); } catch (e) { check("cAR", "This device can start an AR session", false, e.name); } }
+  check("cCat", "Cat model built", VOXV < 65000, (vix.length / 6) + " pixel faces");
+})();
+
+$("btnAR").onclick = async function () {
+  if (!navigator.xr) { log("AR failed: this browser has no WebXR."); return; }
+  audioInit();
+  var canvas = document.createElement("canvas");
+  var gl = canvas.getContext("webgl", { xrCompatible: true, alpha: true, antialias: true });
+  if (!gl) { log("AR failed: WebGL not available."); return; }
+  var ov = $("ov"); ov.style.display = "block";
+  var session;
+  try {
+    session = await navigator.xr.requestSession("immersive-ar", {
+      requiredFeatures: ["hit-test"],
+      optionalFeatures: ["anchors", "dom-overlay", "depth-sensing", "camera-access"],
+      depthSensing: { usagePreference: ["cpu-optimized"], dataFormatPreference: ["luminance-alpha"] },
+      domOverlay: { root: ov }
+    });
+  } catch (e) { ov.style.display = "none"; log("AR failed to start: " + e.name + " — " + e.message); return; }
+  try { await runAR(session, gl); }
+  catch (e) { log("AR error: " + e.name + " — " + e.message); try { session.end(); } catch (_) {} }
+};
+
+async function runAR(session, gl) {
+  if (gl.makeXRCompatible) await gl.makeXRCompatible();
+  session.updateRenderState({ baseLayer: new XRWebGLLayer(session, gl), depthNear: 0.02, depthFar: 20 });
+  var refSpace = await session.requestReferenceSpace("local");
+  var viewerSpace = await session.requestReferenceSpace("viewer");
+  var hitSource = null, tapSource = null, binding = null;
+  try { hitSource = await session.requestHitTestSource({ space: viewerSpace, entityTypes: ["plane", "point"] }); }
+  catch (e) { try { hitSource = await session.requestHitTestSource({ space: viewerSpace }); } catch (e2) {} }
+  if (session.requestHitTestSourceForTransientInput) {
+    try { tapSource = await session.requestHitTestSourceForTransientInput({ profile: "generic-touchscreen", entityTypes: ["plane", "point"] }); }
+    catch (e) { try { tapSource = await session.requestHitTestSourceForTransientInput({ profile: "generic-touchscreen" }); } catch (e2) {} }
+  }
+  var depthOK = false, depthLA = false;
+  try { depthOK = session.depthUsage === "cpu-optimized"; depthLA = session.depthDataFormat === "luminance-alpha"; } catch (e) { depthOK = false; }
+  try { binding = new XRWebGLBinding(session, gl); } catch (e) { binding = null; }
+
+  // ---------- shaders ----------
+  function sh(type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
+  function program(vs, fs, attrs) {
+    var p = gl.createProgram(); gl.attachShader(p, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs));
+    for (var q = 0; q < attrs.length; q++) gl.bindAttribLocation(p, q, attrs[q]); gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    var u = {}, n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS); for (var i = 0; i < n; i++) { var info = gl.getActiveUniform(p, i); u[info.name] = gl.getUniformLocation(p, info.name); }
+    return { p: p, u: u };
+  }
+  // every solid shape: soft top light, a faint cool rim so black fur keeps its form, and it fades where the live depth map says something real is in front
+  var lit = program(
+    "attribute vec3 p;attribute vec3 n;attribute float s;uniform mat4 P;uniform mat4 V;uniform mat4 M;varying vec3 vN;varying vec3 vW;varying float vZ;varying float vS;" +
+    "void main(){vec4 w4=M*vec4(p,1.0);vW=w4.xyz;vec4 w=V*w4;vZ=-w.z;vN=(M*vec4(n,0.0)).xyz;vS=s;gl_Position=P*w;}",
+    "precision highp float;uniform vec4 color;uniform float glow;uniform vec3 cam;uniform sampler2D uD;uniform mat4 uDUV;uniform float uRaw;uniform vec4 uVPt;uniform float uUseD;" +
+    "varying vec3 vN;varying vec3 vW;varying float vZ;varying float vS;" +
+    "float vis(){if(uUseD<0.5)return 1.0;" +
+    "vec2 nv=vec2((gl_FragCoord.x-uVPt.x)/uVPt.z,1.0-(gl_FragCoord.y-uVPt.y)/uVPt.w);" +
+    "vec2 uv=(uDUV*vec4(nv,0.0,1.0)).xy;vec2 pk=texture2D(uD,uv).ra;" +
+    "float d=dot(pk,vec2(255.0,65280.0))*uRaw;if(d<=0.0)return 1.0;" +
+    "float tol=0.05+0.06*vZ;return 1.0-smoothstep(tol*0.6,tol,vZ-d);}" +
+    "void main(){vec3 nn=normalize(vN);float l=0.45+0.55*max(dot(nn,normalize(vec3(0.3,1.0,0.4))),0.0);" +
+    "float rim=pow(1.0-abs(dot(nn,normalize(cam-vW))),3.0);" +
+    "vec3 c=(color.rgb+vec3(0.03,0.035,0.05))*l*vS+vec3(0.10,0.13,0.20)*rim;c=mix(c,color.rgb,glow);float a=color.a*vis();gl_FragColor=vec4(c*a,a);}",
+    ["p", "n", "s"]);
+  var body = program(
+    "attribute vec3 p;uniform mat4 P;uniform mat4 V;uniform mat4 M;uniform float time;varying vec3 vN;varying vec3 vW;varying float vY;" +
+    "void main(){vec3 q=p;vec3 n=p;float t=clamp((0.3-p.y)/1.1,0.0,1.0);t=t*t*(3.0-2.0*t);q.xz*=1.0+0.18*t;" +
+    "if(p.y<0.0){q.y*=0.55;n.y/=0.55;}n=normalize(n);q+=n*0.025*sin(time*2.2+p.y*4.0+p.x*3.0+p.z*2.0);q.y+=0.55;" +
+    "vec4 w=M*vec4(q,1.0);vW=w.xyz;vN=(M*vec4(n,0.0)).xyz;vY=q.y;gl_Position=P*V*w;}",
+    "precision highp float;uniform vec3 cam;uniform float time;uniform float back;varying vec3 vN;varying vec3 vW;varying float vY;" +
+    "void main(){vec3 n=normalize(vN);vec3 v=normalize(cam-vW);float f=1.0-abs(dot(n,v));float rim=pow(f,2.2);" +
+    "float scan=0.5+0.5*sin(vW.y*1800.0-time*5.0);float glow=0.8+0.2*sin(time*1.7);" +
+    "vec3 base=mix(vec3(0.10,0.75,0.95),vec3(0.45,1.0,0.85),clamp(vY/1.55,0.0,1.0));" +
+    "vec3 col=base*(0.55+0.2*scan)+vec3(0.75,1.0,1.0)*rim*1.2;float a=(0.22+0.10*scan+0.75*rim)*glow;" +
+    "if(back>0.5){a*=0.45;col*=0.8;}else{vec3 h=normalize(normalize(vec3(0.3,1.0,0.4))+v);float spec=pow(max(dot(n,h),0.0),40.0);col+=vec3(spec);a+=spec*0.6;}" +
+    "a=clamp(a,0.0,0.95);gl_FragColor=vec4(col*a,a);}", ["p"]);
+  var flat = program(
+    "attribute vec2 q;uniform mat4 P;uniform mat4 V;uniform mat4 M;varying vec2 v;void main(){v=q;gl_Position=P*V*M*vec4(q.x,0.0,q.y,1.0);}",
+    "precision mediump float;uniform float kind;uniform float time;varying vec2 v;void main(){float r=length(v);" +
+    "if(kind<0.5){float a=0.45*(1.0-smoothstep(0.15,1.0,r));gl_FragColor=vec4(0.0,0.0,0.0,a);}" +
+    "else{float ring=1.0-smoothstep(0.05,0.09,abs(r-0.82));float dot_=1.0-smoothstep(0.08,0.12,r);" +
+    "float a=max(ring,dot_)*(0.7+0.3*sin(time*5.0));gl_FragColor=vec4(vec3(0.4,1.0,0.9)*a,a);}}", ["q"]);
+  var mapP = program(
+    "attribute vec4 a;uniform mat4 P;uniform mat4 V;uniform vec3 org;uniform float bias;uniform float pts;varying float vT;" +
+    "void main(){float y=a.y;if(pts>0.5&&a.w>2.5)y=0.0;vT=a.w;gl_Position=P*V*vec4(org+vec3(a.x,y+bias,a.z),1.0);gl_PointSize=5.0;" +
+    "if(pts>0.5&&a.w<0.5)gl_Position=vec4(2.0,2.0,2.0,1.0);}",
+    "precision mediump float;varying float vT;void main(){vec4 c=vec4(0.3,1.0,0.9,0.45);if(vT>1.5)c=vec4(1.0,0.75,0.2,0.9);if(vT>2.5)c=vec4(1.0,0.2,0.6,0.35);gl_FragColor=vec4(c.rgb*c.a,c.a);}", ["a"]);
+  var blit = program(
+    "attribute vec2 q;uniform float flip;varying vec2 v;void main(){v=q*0.5+0.5;v.y=mix(v.y,1.0-v.y,flip);gl_Position=vec4(q,0.0,1.0);}",
+    "precision mediump float;uniform sampler2D t;varying vec2 v;void main(){gl_FragColor=texture2D(t,v);}", ["q"]);
+
+  // ---------- geometry ----------
+  var i, j, k, sv = [], si = [], LAT = 20, LON = 32;
+  for (i = 0; i <= LAT; i++) { var th = Math.PI * i / LAT; for (j = 0; j <= LON; j++) { var ph = 2 * Math.PI * j / LON; sv.push(Math.sin(th) * Math.cos(ph), Math.cos(th), Math.sin(th) * Math.sin(ph)); } }
+  for (i = 0; i < LAT; i++) for (j = 0; j < LON; j++) { var a0 = i * (LON + 1) + j, b0 = a0 + LON + 1; si.push(a0, a0 + 1, b0, b0, a0 + 1, b0 + 1); }
+  function buf(target, data) { var bf = gl.createBuffer(); gl.bindBuffer(target, bf); gl.bufferData(target, data, gl.STATIC_DRAW); return bf; }
+  var sphereVB = buf(gl.ARRAY_BUFFER, new Float32Array(sv)), sphereIB = buf(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(si)), sphereCount = si.length;
+  var quadVB = buf(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]));
+  var cv = [], cn = [], ci = [];
+  [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]].forEach(function (n) {
+    var u = [n[1], n[2], n[0]], w = crs(n, u), bb = cv.length / 3;
+    [[-1, -1], [1, -1], [1, 1], [-1, 1]].forEach(function (q) { for (var k2 = 0; k2 < 3; k2++) cv.push(0.5 * (n[k2] + q[0] * u[k2] + q[1] * w[k2])); cn.push(n[0], n[1], n[2]); });
+    ci.push(bb, bb + 1, bb + 2, bb, bb + 2, bb + 3);
+  });
+  var cubeP = buf(gl.ARRAY_BUFFER, new Float32Array(cv)), cubeN = buf(gl.ARRAY_BUFFER, new Float32Array(cn)), cubeIB = buf(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(ci));
+  var voxVB = buf(gl.ARRAY_BUFFER, new Float32Array(vvx)), voxIB = buf(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(vix));
+  var mapData = new Float32Array(N * N * 4), gi = [];
+  for (j = 0; j < N; j++) for (i = 0; i < N; i++) { var k0 = (j * N + i) * 4; mapData[k0] = (i + 0.5) * CELL - HALF; mapData[k0 + 1] = -0.5; mapData[k0 + 2] = (j + 0.5) * CELL - HALF; }
+  for (j = 0; j < N - 1; j++) for (i = 0; i < N - 1; i++) { var g0 = j * N + i; gi.push(g0, g0 + N, g0 + 1, g0 + 1, g0 + N, g0 + N + 1); }
+  var mapVB = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, mapVB); gl.bufferData(gl.ARRAY_BUFFER, mapData, gl.DYNAMIC_DRAW);
+  var mapIB = buf(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(gi)), mapCount = gi.length;
+  var depthTex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, depthTex);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.bindTexture(gl.TEXTURE_2D, null);
+  var hfbo = null, htex = null, hpix = null, himg = null, bw = 0, bh = 0;
+
+  // ---------- state ----------
+  var phase = "find";                 // find -> edge -> scan -> play   (plus "obj": drawing an object by hand)
+  var origin = null, anchor = null, anchorState = "none", backTo = "scan";
+  var A = T(0, 0, 0), Ai = T(0, 0, 0), aPos = [0, 0, 0], aYaw0 = null, aYaw = 0, tableDy = 0, calib = [], planeSource = null, surf = null, surfAny = null, objRect = false, fx = [], hGone = -9, hloc = [];
+  function setA() { A = mul(T(aPos[0], aPos[1] + tableDy, aPos[2]), RY(aYaw)); Ai = mul(RY(-aYaw), T(-aPos[0], -aPos[1] - tableDy, -aPos[2])); }
+  try { planeSource = await session.requestHitTestSource({ space: viewerSpace, entityTypes: ["plane"] }); } catch (e) { planeSource = null; }
+  var wantPlace = false, released = false, frames = 0, lastT = 0, errText = "", feedArmed = false, tapRay = null, pendTap = false;
+  var creature = "cat", showMap = false, showHand = false, flip = 1, sizes = [0.045, 0.06, 0.09], sizeI = 1;
+  var useD = 0, dUV = new Float32Array(16), dRaw = 0, depthSeen = false, mapTimer = 0, sectors = 0;
+  var edgePts = [], objPts = [], objHt = 0.08, aim = null, phaseT = 0;
+  var hw = [], hwT = [], hPrevAll = [], hjv = [], hSeen = -9, hZ = 0, hPrevT = 0, hBox = null, hMs = 0, hEvery = 2, hWas = false, hErr = "";
+  for (i = 0; i < 21; i++) { hw.push([0, 0, 0]); hwT.push([0, 0, 0]); hPrevAll.push([0, 0, 0]); hjv.push([0, 0, 0]); hloc.push([0, 1, 0]); }
+  var PAIRS = [[0, 5], [0, 17], [5, 17], [0, 9], [5, 9], [9, 13], [13, 17], [0, 13]];
+  var BONES = [[0, 1, 3], [1, 2, 2], [2, 3, 1.8], [3, 4, 1.6], [0, 5, 3], [5, 6, 1.8], [6, 7, 1.6], [7, 8, 1.5], [5, 9, 3], [9, 10, 1.8], [10, 11, 1.6], [11, 12, 1.5],
+    [9, 13, 3], [13, 14, 1.8], [14, 15, 1.6], [15, 16, 1.5], [13, 17, 3], [17, 18, 1.6], [18, 19, 1.5], [19, 20, 1.4], [0, 17, 3], [0, 9, 4], [0, 13, 4], [5, 17, 3], [1, 5, 3], [1, 9, 3], [2, 5, 2]];
+  var SCANX = [[5, 9], [9, 13], [13, 17], [6, 10], [10, 14], [14, 18], [7, 11], [11, 15], [15, 19], [1, 5], [0, 9]];
+  var tailN = [], tailOK = false; for (i = 0; i < 8; i++) tailN.push([0, 0, 0]);
+  var hint = $("ovHint"), stat = $("ovStat");
+  function say(t) { hint.textContent = t; }
+
+  // ---------- buttons: the row changes with what you are doing ----------
+  var BTN = {}; window.__btn = BTN;
+  function buttons(list) {
+    var box = $("ovBtns"); box.innerHTML = ""; for (var kk in BTN) delete BTN[kk];
+    list.forEach(function (b) {
+      var el = document.createElement("button"); el.textContent = b[0]; if (b[2]) el.className = "alt";
+      el.addEventListener("beforexrselect", function (e) { e.preventDefault(); }); el.onclick = b[1]; box.appendChild(el); BTN[b[0]] = b[1];
+    });
+  }
+  function exitB() { return ["Exit", function () { session.end(); }, 1]; }
+  function goFind() { phase = "find"; buttons([exitB()]); say("Move the phone slowly over the surface until a ring appears, then tap the middle of the play area."); }
+  function goEdge() {
+    phase = "edge"; phaseT = lastT; edgePts = []; cat.hidden = true;
+    buttons([["Undo", function () { edgePts.pop(); }, 1], ["Done", function () { if (edgePts.length < 3) { say("Mark at least 3 points round the edge first."); return; } areaPoly = edgePts.slice(); fx.push({ kind: "edge", t0: lastT, poly: areaPoly.slice(), h: 0 }); rebuildMasks(); goScan(); }], ["Skip", function () { areaPoly = null; rebuildMasks(); goScan(); }, 1], exitB()]);
+    say("Mark the edge. Aim the ring exactly at the edge of the surface and tap. Work your way round: a point at every corner or bend.");
+  }
+  function goScan() {
+    phase = "scan"; cat.hidden = true; sectors = 0;
+    buttons([["Add object", function () { goObj("scan"); }, 1], ["Rescan", function () { mapClear(); sectors = 0; rebuildMasks(); }, 1], ["Release pet", function () { goPlay(true); }], exitB()]);
+    if (!depthOK) say("This phone gives no depth, so objects are not scanned. Use Add object to mark each one by hand, then Release pet.");
+  }
+  function goObj(from) {
+    backTo = from; phase = "obj"; phaseT = lastT; objPts = []; objRect = false; objHt = 0.08;
+    buttons([["Start again", function () { objPts = []; objRect = false; }, 1], ["Lower", function () { objHt = Math.max(0.01, objHt - 0.01); }, 1], ["Higher", function () { objHt = Math.min(0.5, objHt + 0.01); }, 1],
+      ["Save", function () { if (!objRect) { say("Three taps first: two corners along one side of its base, then one on the opposite side."); return; } drawn.push({ poly: objPts.slice(), h: objHt }); fx.push({ kind: "obj", t0: lastT, poly: objPts.slice(), h: objHt }); rebuildMasks(); if (backTo === "play") goPlay(false); else goScan(); }],
+      ["Cancel", function () { if (backTo === "play") goPlay(false); else goScan(); }, 1]]);
+    say("Draw an object in three taps: aim the ring at two corners along one side of its base, then anywhere on the opposite side.");
+  }
+  function goPlay(spawn) {
+    phase = "play"; phaseT = lastT; mapProcess(); if (spawn) for (var qf = 0; qf < drawn.length; qf++) fx.push({ kind: "obj", t0: lastT + qf * 0.25, poly: drawn[qf].poly, h: drawn[qf].h });
+    if (!findFloorNear(0, 0)) { areaPoly = []; for (var q0 = 0; q0 < 16; q0++) areaPoly.push([Math.sin(q0 * 0.3927) * 0.25, Math.cos(q0 * 0.3927) * 0.25]); rebuildMasks(); say("No surface was marked or scanned, so I have assumed a clear circle 50 cm across. Use Menu, Redo edge to mark the real edge."); spawn = true; }
+    if (spawn || cat.hidden) spawnCat();
+    var spawned = spawn; buttons([["Feed", function () {
+      if (hand.vis) { food.on = true; food.onFinger = true; say("Food is on your fingertip. Hold it near the pet."); } else { feedArmed = true; say("Tap the surface to drop some food."); }
+    }], ["Talk", talk], [petName ? petName.slice(0, 8) : "Name", nameIt], ["Menu", goMenu, 1]]);
+    if (spawned && findFloorNear(0, 0) && !areaPolyAuto()) say("Here it comes. Put your hand flat on the surface near it, or try to stroke it slowly.");
+  }
+  function areaPolyAuto() { return hint.textContent.indexOf('assumed a clear circle') >= 0; }
+  function goMenu() {
+    buttons([[creature === "cat" ? "Cat" : "Blob", function () { creature = creature === "cat" ? "blob" : "cat"; goMenu(); }, 1], ["Size " + ["S", "M", "L"][sizeI], function () { sizeI = (sizeI + 1) % 3; SIZE = sizes[sizeI]; goMenu(); }, 1],
+      ["Lines " + (showHand ? "on" : "off"), function () { showHand = !showHand; goMenu(); }, 1], ["Map", function () { showMap = !showMap; }, 1], ["Flip hand", function () { flip = 1 - flip; }, 1],
+      ["Redo edge", goEdge, 1], ["Add object", function () { goObj("play"); }, 1], ["Clear objs", function () { drawn = []; rebuildMasks(); }, 1], ["Rescan", function () { mapClear(); rebuildMasks(); goScan(); }, 1], ["Back", function () { goPlay(false); }], exitB()]);
+  }
+  goFind();
+
+  // ---------- voice: speech commands, naming, and loudness (shouting) ----------
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition, listening = false, micStream = null, analyser = null, micBuf = null, micState = "off", loudN = 0, lastShout = 0;
+  try { petName = localStorage.getItem("arpet_name") || ""; } catch (e) {}
+  function micStart() {
+    if (!AC || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { micState = "none"; return; }
+    navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: false, autoGainControl: false } }).then(function (st) {
+      if (listening) { st.getTracks().forEach(function (tk) { tk.stop(); }); return; }
+      micStream = st; analyser = AC.createAnalyser(); analyser.fftSize = 512; micBuf = new Float32Array(512); AC.createMediaStreamSource(st).connect(analyser); micState = "on";
+    }, function (e) { micState = "blocked"; });
+  }
+  function micStop() { if (micStream) micStream.getTracks().forEach(function (tk) { tk.stop(); }); micStream = null; analyser = null; }
+  function listen(label, cb) {
+    if (!SR) { say("Speech recognition is not available in this browser."); return; }
+    if (listening) return;
+    listening = true; micStop(); say(label);
+    var rec = new SR(), got = false; rec.lang = "en-GB"; rec.interimResults = true; rec.maxAlternatives = 5;
+    rec.onresult = function (e) { var r = e.results[e.results.length - 1]; if (!r.isFinal) { say("Hearing: “" + r[0].transcript + "”…"); return; } got = true; var alts = []; for (var q = 0; q < r.length; q++) alts.push(r[q].transcript); cb(alts); };
+    rec.onerror = function (e) { got = true; say("Microphone: " + e.error + "."); };
+    rec.onend = function () { listening = false; if (!got) say("I did not catch that. Press Talk and try again, close to the phone."); setTimeout(micStart, 300); };
+    setTimeout(function () { try { rec.start(); } catch (e) { listening = false; say("Microphone: " + e.message); } }, 200);
+  }
+  var UNKNOWN = "it listened, but did not know those words";
+  function talk() {
+    listen("Listening… speak to " + (petName || "it") + " now.", function (alts) {
+      var best = alts[0], msg = "";
+      for (var q = 0; q < alts.length; q++) { // the phone offers several guesses at what you said: use the first one the pet understands
+        var saveA = cat.act, m2 = hear(alts[q]); if (q === 0) msg = m2;
+        if (m2 !== UNKNOWN) { best = alts[q]; msg = m2; break; }
+        if (cat.act !== saveA) break;
+      }
+      say("“" + best + "” — " + msg + ".");
+    });
+  }
+  function nameIt() {
+    listen("Say the name you want to give it.", function (alts) {
+      var nm = alts[0].trim().split(/\s+/).slice(0, 3).join(" "); if (!nm) return;
+      petName = nm; try { localStorage.setItem("arpet_name", nm); } catch (e) {}
+      say("Its name is now “" + nm + "”. Press Talk and call it."); if (phase === "play") { cat.heard = 1.5; cat.lookCamT = 3; goPlay(false); }
+    });
+  }
+  micStart();
+
+  session.addEventListener("selectstart", function () { wantPlace = true; released = false; });
+  session.addEventListener("select", function (ev) {
+    if (wantPlace) released = true; pendTap = true; tapRay = null;
+    try { var rp = ev.frame.getPose(ev.inputSource.targetRaySpace, refSpace); if (rp) { var m = rp.transform.matrix; tapRay = { o: [m[12], m[13], m[14]], d: [-m[8], -m[9], -m[10]] }; } } catch (e) {}
+  });
+  session.addEventListener("end", function () {
+    $("ov").style.display = "none"; SND.purr(false); micStop();
+    log("AR ended after " + frames + " frames.");
+    log("Depth map: " + (depthOK ? (depthSeen ? "working" : "enabled but no data") : "not available") + ". World lock: " + anchorState + ".");
+    log("Hand tracking: " + trackState + (binding ? "" : " (no camera binding)") + (hMs ? ", " + hMs.toFixed(0) + " ms per check" : "") + (hErr ? " — " + hErr : "") + ".");
+    log("Microphone: " + micState + ". Speech recognition: " + (SR ? "available" : "not available") + ".");
+    log("Edge marked: " + (areaPoly ? areaPoly.length + " points" : "no") + ". Objects drawn: " + drawn.length + ". Scan coverage: " + Math.round(mapCover * 100) + "%." + (errText ? " Error: " + errText : ""));
+  });
+  function rayPlane(o, d, y) { if (d[1] > -0.03) return null; var t = (y - o[1]) / d[1]; if (t < 0 || t > 3) return null; return [o[0] + d[0] * t, y, o[2] + d[2] * t]; }
+
+  // ---------- depth -> hidden 3D map ----------
+  function sampleDepth(di, P, camM) {
+    var nx = 44, ny = 44, ox = Math.random(), oy = Math.random();
+    for (var b = 0; b < ny; b++) for (var a2 = 0; a2 < nx; a2++) {
+      var u = (a2 + ox) / nx, v = (b + oy) / ny;
+      if (hBox && u > hBox[0] && u < hBox[2] && v > hBox[1] && v < hBox[3]) continue;   // don't map the hand as furniture
+      var d = di.getDepthInMeters(u, v); if (!(d > 0.1 && d < 1.6)) continue;
+      var X = ((2 * u - 1) + P[8]) / P[0] * d, Y = ((1 - 2 * v) + P[9]) / P[5] * d, Z = -d;
+      var wp = v3(Ai, camM[0] * X + camM[4] * Y + camM[8] * Z + camM[12], camM[1] * X + camM[5] * Y + camM[9] * Z + camM[13], camM[2] * X + camM[6] * Y + camM[10] * Z + camM[14]); mapAdd(wp[0], wp[1], wp[2]);
+    }
+  }
+  function mapUpload() {
+    for (var q = 0; q < N * N; q++) { mapData[q * 4 + 1] = mapS[q]; mapData[q * 4 + 3] = mapT[q]; }
+    gl.bindBuffer(gl.ARRAY_BUFFER, mapVB); gl.bufferSubData(gl.ARRAY_BUFFER, 0, mapData); mapDirty = false;
+  }
+
+  // ---------- camera picture -> full hand skeleton in 3D ----------
+  function handDetect(view, P, camM, now) {
+    var cam = view.camera; if (!cam || !tracker || !binding) return;
+    var tex = binding.getCameraImage(cam); if (!tex) return;
+    if (!hfbo) {
+      var sc = 320 / Math.max(cam.width, cam.height); bw = Math.max(16, Math.round(cam.width * sc)); bh = Math.max(16, Math.round(cam.height * sc));
+      htex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, htex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, bw, bh, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      hfbo = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, hfbo); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, htex, 0);
+      hpix = new Uint8Array(bw * bh * 4); himg = new ImageData(new Uint8ClampedArray(hpix.buffer), bw, bh);
+    }
+    gl.bindFramebuffer(gl.FRAMEBUFFER, hfbo); gl.viewport(0, 0, bw, bh);
+    gl.disable(gl.DEPTH_TEST); gl.disable(gl.BLEND); gl.disable(gl.CULL_FACE); gl.colorMask(true, true, true, true);
+    gl.useProgram(blit.p); gl.disableVertexAttribArray(1); gl.disableVertexAttribArray(2); gl.bindBuffer(gl.ARRAY_BUFFER, quadVB); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(blit.u.t, 0); gl.uniform1f(blit.u.flip, flip);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); gl.readPixels(0, 0, bw, bh, gl.RGBA, gl.UNSIGNED_BYTE, hpix); gl.bindTexture(gl.TEXTURE_2D, null);
+    var t0 = performance.now(), res = tracker.detectForVideo(himg, t0), ms = performance.now() - t0;
+    hMs = hMs ? hMs * 0.9 + ms * 0.1 : ms; hEvery = hMs > 45 ? 5 : hMs > 28 ? 3 : 2;
+    if (!res || !res.landmarks || !res.landmarks.length || !res.worldLandmarks || !res.worldLandmarks.length) return;
+    var lm = res.landmarks[0], wl = res.worldLandmarks[0], tan = [], q, st = 0, sw = 0, u0 = 1, v0 = 1, u1 = 0, v1 = 0;
+    for (q = 0; q < 21; q++) { tan.push([((2 * lm[q].x - 1) + P[8]) / P[0], ((1 - 2 * lm[q].y) + P[9]) / P[5]]); u0 = Math.min(u0, lm[q].x); u1 = Math.max(u1, lm[q].x); v0 = Math.min(v0, lm[q].y); v1 = Math.max(v1, lm[q].y); }
+    for (q = 0; q < PAIRS.length; q++) { var pa = PAIRS[q][0], pb = PAIRS[q][1]; st += Math.hypot(tan[pa][0] - tan[pb][0], tan[pa][1] - tan[pb][1]); sw += Math.hypot(wl[pa].x - wl[pb].x, wl[pa].y - wl[pb].y); }
+    if (st < 1e-4) return;
+    var Z = sw / st; if (!(Z > 0.05 && Z < 1.5)) return;      // distance from the apparent size of the palm
+    var fresh = now - hSeen > 0.45; hZ = fresh ? Z : hZ + (Z - hZ) * 0.35;
+    var zm = (wl[0].z + wl[5].z + wl[9].z + wl[13].z + wl[17].z) / 5, cx = camM[12], cy = camM[13], cz = camM[14];
+    for (q = 0; q < 21; q++) {
+      var Zi = hZ + (wl[q].z - zm), X = tan[q][0] * Zi, Y = tan[q][1] * Zi, Zv = -Zi;
+      hwT[q][0] = camM[0] * X + camM[4] * Y + camM[8] * Zv + cx; hwT[q][1] = camM[1] * X + camM[5] * Y + camM[9] * Zv + cy; hwT[q][2] = camM[2] * X + camM[6] * Y + camM[10] * Zv + cz;
+    }
+    if (origin) {   // surface snap: whichever part of the hand is lowest and looks close to the surface is assumed to be resting on it
+      var low = 0; for (q = 1; q < 21; q++) if (hwT[q][1] < hwT[low][1]) low = q;
+      var tl = v3(Ai, hwT[low][0], hwT[low][1], hwT[low][2]), cl = v3(Ai, cx, cy, cz), dy = tl[1] - cl[1], g = groundH(tl[0], tl[2]) + 0.008, h = tl[1] - g, kk = 1;
+      if (dy < -0.03) { var sPlane = (g - cl[1]) / dy; if (h < 0) kk = sPlane; else if (h < 0.06) kk = 1 + (sPlane - 1) * 0.6 * (1 - h / 0.06); }
+      if (kk !== 1 && kk > 0.5 && kk < 1.6) for (q = 0; q < 21; q++) { hwT[q][0] = cx + (hwT[q][0] - cx) * kk; hwT[q][1] = cy + (hwT[q][1] - cy) * kk; hwT[q][2] = cz + (hwT[q][2] - cz) * kk; }
+    }
+    var dtD = now - hPrevT, okV = !fresh && dtD > 0 && dtD < 0.5;
+    for (q = 0; q < 21; q++) for (var c2 = 0; c2 < 3; c2++) { hjv[q][c2] = okV ? hjv[q][c2] * 0.5 + (hwT[q][c2] - hPrevAll[q][c2]) / dtD * 0.5 : 0; hPrevAll[q][c2] = hwT[q][c2]; }
+    hPrevT = now; hSeen = now; hBox = [u0 - 0.08, v0 - 0.08, u1 + 0.08, v1 + 0.08];
+  }
+
+  // ---------- every frame ----------
+  function onFrame(t, frame) {
+    session.requestAnimationFrame(onFrame);
+    try { tick(t, frame); } catch (e) { if (!errText) { errText = e.name + ": " + e.message; log("Frame error: " + errText); } }
+  }
+  function tick(t, frame) {
+    var vpose = frame.getViewerPose(refSpace);
+    if (!vpose) { stat.textContent = "Tracking lost — move slowly, more light"; return; }
+    frames++;
+    var time = t / 1000, dt = clamp(time - lastT, 0.001, 0.06); lastT = time;
+    var view = vpose.views[0], P = view.projectionMatrix, camM = view.transform.matrix, q, c2;
+    var camO = [camM[12], camM[13], camM[14]], camD = [-camM[8], -camM[9], -camM[10]];
+
+    var centrePose = null, centreHit = null;
+    if (hitSource) { var hits = frame.getHitTestResults(hitSource); if (hits.length) { centreHit = hits[0]; centrePose = centreHit.getPose(refSpace); } }
+    if (anchor && origin) { var ap = frame.getPose(anchor.anchorSpace, refSpace); if (ap) { var am = ap.transform.matrix, yw = Math.atan2(-am[2], am[0]); if (aYaw0 === null) aYaw0 = yw; aPos = [am[12], am[13], am[14]]; if (Math.hypot(am[0], am[2]) > 0.5) aYaw = angDiff(yw, aYaw0); setA(); } }
+    var camLo = v3(Ai, camO[0], camO[1], camO[2]), camLd = d3(Ai, camD[0], camD[1], camD[2]);
+    aim = origin ? rayPlane(camLo, camLd, 0) : null; surf = null; surfAny = null;
+    if (origin) {
+      if (centrePose) { var cq = centrePose.transform.position; surfAny = v3(Ai, cq.x, cq.y, cq.z); }
+      if (planeSource) { var ph = frame.getHitTestResults(planeSource); if (ph.length) { var pp = ph[0].getPose(refSpace); if (pp) { var pq = pp.transform.position; surf = v3(Ai, pq.x, pq.y, pq.z); } } }
+      // keep measuring the true height of the surface: if the play space sat even a centimetre above or below it, marks would slide as the camera moves
+      if (surf && Math.abs(surf[1]) < 0.05 && (phase === "edge" || phase === "obj" || phase === "scan") && frames % 3 === 0) { calib.push(surf[1]); if (calib.length >= 24) { calib.sort(function (a, b) { return a - b; }); var md = calib[12]; calib = []; if (Math.abs(md) > 0.0015) { tableDy += md * 0.8; setA(); } } }
+    }
+
+    // taps
+    if (phase === "find") {
+      if (wantPlace) {
+        var hit = null;
+        if (tapSource) { var tr = frame.getHitTestResultsForTransientInput(tapSource); for (q = 0; q < tr.length && !hit; q++) if (tr[q].results.length) hit = tr[q].results[0]; if (!hit && released) { hit = centreHit; wantPlace = false; } }
+        else if (released) { hit = centreHit; wantPlace = false; }
+        if (hit) {
+          wantPlace = false; var hp = hit.getPose(refSpace);
+          if (hp) {
+            var hq = hp.transform.position; aPos = [hq.x, hq.y, hq.z]; aYaw = 0; aYaw0 = null; tableDy = 0; calib = []; setA(); origin = [0, 0, 0]; mapClear(); areaPoly = null; drawn = []; rebuildMasks();
+            if (hit.createAnchor) { anchorState = "locking…"; hit.createAnchor().then(function (an) { anchor = an; anchorState = "locked"; }, function (e) { anchorState = "failed (" + e.name + ")"; }); } else anchorState = "not supported";
+            goEdge();
+          }
+        }
+      }
+      pendTap = false;
+    } else if (pendTap) {
+      pendTap = false; wantPlace = false;
+      if (time - phaseT < 0.5) { /* the tap that changed the screen does not also count as a mark */ } else
+      if (phase === "edge" && aim) edgePts.push([aim[0], aim[2]]);
+      else if (phase === "obj" && aim) {
+        if (!objRect) {                    // two corners along one side, then one tap on the far side: that is a whole box base
+          objPts.push([aim[0], aim[2]]);
+          if (objPts.length === 3) { var p0 = objPts[0], p1 = objPts[1], ex = p1[0] - p0[0], ez = p1[1] - p0[1], el = Math.hypot(ex, ez) || 1, nx = -ez / el, nz = ex / el, dd = (objPts[2][0] - p0[0]) * nx + (objPts[2][1] - p0[1]) * nz;
+            objPts = [p0, p1, [p1[0] + nx * dd, p1[1] + nz * dd], [p0[0] + nx * dd, p0[1] + nz * dd]]; objRect = true; }
+        } else if (surfAny && surfAny[1] > 0.012 && surfAny[1] < 0.5) objHt = Math.round(surfAny[1] * 200) / 200;   // after that, aim at its top and tap to measure the height
+      }
+      else if (phase === "play") {
+        var tp = tapRay ? rayPlane(v3(Ai, tapRay.o[0], tapRay.o[1], tapRay.o[2]), d3(Ai, tapRay.d[0], tapRay.d[1], tapRay.d[2]), 0) : null; if (!tp) tp = aim;
+        if (tp) {
+          var lx = tp[0], lz = tp[2];
+          if (feedArmed) { feedArmed = false; food.on = true; food.onFinger = false; food.x = lx; food.z = lz; say("Food dropped."); }
+          else if (PASSIVE[cat.act] && solid(lx, lz) && !cat.hidden) { mood.curiosity = clamp(mood.curiosity + 0.1, 0, 1); go(lx, lz, "call"); }
+        }
+      }
+    }
+
+    // live depth
+    var di = null; useD = 0;
+    if (depthOK) { try { di = frame.getDepthInformation(view); } catch (e) { di = null; } }
+    if (di && di.data) {
+      depthSeen = true;
+      if (depthLA) {
+        gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, depthTex); gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE_ALPHA, di.width, di.height, 0, gl.LUMINANCE_ALPHA, gl.UNSIGNED_BYTE, new Uint8Array(di.data, 0, di.width * di.height * 2));
+        gl.activeTexture(gl.TEXTURE0); useD = 1; dUV = di.normDepthBufferFromNormView.matrix; dRaw = di.rawValueToMeters;
+      }
+      if (origin && phase !== "find" && phase !== "edge" && frames % (phase === "scan" ? 2 : 4) === 0) {
+        sampleDepth(di, P, camM);
+        if (phase === "scan") sectors |= 1 << (Math.floor((Math.atan2(camLo[0], camLo[2]) + Math.PI) / (Math.PI / 2)) & 3);
+      }
+    }
+    if (origin) { mapTimer += dt; if (mapTimer > 0.5) { mapTimer = 0; if (depthOK && phase !== "edge") mapProcess(); } if (mapDirty) mapUpload(); }
+
+    // hand
+    if (tracker && binding && frames % hEvery === 0) { try { handDetect(view, P, camM, time); } catch (e) { if (!hErr) hErr = e.name + ": " + e.message; } }
+    var hvis = time - hSeen < 0.45;
+    if (hvis) { // steady when still, quick when moving
+      for (q = 0; q < 21; q++) { var mvd = Math.hypot(hwT[q][0] - hw[q][0], hwT[q][1] - hw[q][1], hwT[q][2] - hw[q][2]), f = hWas ? clamp(1 - Math.exp(-dt * (10 + mvd * 900)), 0, 1) : 1; for (c2 = 0; c2 < 3; c2++) hw[q][c2] += (hwT[q][c2] - hw[q][c2]) * f; }
+    } else hBox = null;
+    if (hvis && !hWas && time - hGone > 1 && origin) fx.push({ kind: "hand", t0: time });      // a hand has just been recognised: one scan sweep, then nothing
+    if (hvis) hGone = time;
+    hWas = hvis;
+    hand.vis = hvis && !!origin;
+    if (hvis) for (q = 0; q < 21; q++) { hloc[q] = v3(Ai, hw[q][0], hw[q][1], hw[q][2]); if (hand.vis) { var lv = d3(Ai, hjv[q][0], hjv[q][1], hjv[q][2]); for (c2 = 0; c2 < 3; c2++) { hand.j[q][c2] = hloc[q][c2]; hand.jv[q][c2] = lv[c2]; } } }
+    if (origin) camL = camLo;
+
+    if (analyser && frames % 3 === 0) {
+      analyser.getFloatTimeDomainData(micBuf); var sum = 0; for (q = 0; q < micBuf.length; q++) sum += micBuf[q] * micBuf[q];
+      if (Math.sqrt(sum / micBuf.length) > 0.3 && performance.now() - sndT > 900) loudN++; else loudN = 0;
+      if (loudN >= 2 && time - lastShout > 4 && phase === "play") { lastShout = time; loudN = 0; shout(); say("That was loud. You scared it!"); }
+    }
+    simUpdate(dt, time, phase === "play");
+
+    // ---------- draw ----------
+    var layer = session.renderState.baseLayer, vp = layer.getViewport(view), V = mul(view.transform.inverse.matrix, A), cp = { x: camLo[0], y: camLo[1], z: camLo[2] };
+    gl.bindFramebuffer(gl.FRAMEBUFFER, layer.framebuffer);
+    gl.viewport(vp.x, vp.y, vp.width, vp.height);
+    gl.colorMask(true, true, true, true); gl.depthMask(true); gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.enableVertexAttribArray(0); gl.disable(gl.CULL_FACE);
+    function litOn() {
+      gl.useProgram(lit.p); gl.uniformMatrix4fv(lit.u.P, false, P); gl.uniformMatrix4fv(lit.u.V, false, V); gl.uniform3f(lit.u.cam, cp.x, cp.y, cp.z);
+      gl.uniform1i(lit.u.uD, 1); gl.uniformMatrix4fv(lit.u.uDUV, false, dUV); gl.uniform1f(lit.u.uRaw, dRaw); gl.uniform4f(lit.u.uVPt, vp.x, vp.y, vp.width, vp.height); gl.uniform1f(lit.u.uUseD, useD);
+      gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, depthTex); gl.activeTexture(gl.TEXTURE0);
+    }
+    function cubeOn() { gl.bindBuffer(gl.ARRAY_BUFFER, cubeP); gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0); gl.enableVertexAttribArray(1); gl.bindBuffer(gl.ARRAY_BUFFER, cubeN); gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 0, 0); gl.disableVertexAttribArray(2); gl.vertexAttrib1f(2, 1); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeIB); }
+    function voxOn() { gl.bindBuffer(gl.ARRAY_BUFFER, voxVB); gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 28, 0); gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 28, 12); gl.enableVertexAttribArray(2); gl.vertexAttribPointer(2, 1, gl.FLOAT, false, 28, 24); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, voxIB); }
+    function sphereOn(two) { gl.bindBuffer(gl.ARRAY_BUFFER, sphereVB); gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0); gl.disableVertexAttribArray(2); gl.vertexAttrib1f(2, 1); if (two) { gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 0, 0); } else gl.disableVertexAttribArray(1); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereIB); }
+    function shape(M, col, glow, n, off) { gl.uniformMatrix4fv(lit.u.M, false, M); gl.uniform4fv(lit.u.color, col); gl.uniform1f(lit.u.glow, glow); gl.drawElements(gl.TRIANGLES, n, gl.UNSIGNED_SHORT, off || 0); }
+    function flatOn() { gl.useProgram(flat.p); gl.disableVertexAttribArray(1); gl.disableVertexAttribArray(2); gl.bindBuffer(gl.ARRAY_BUFFER, quadVB); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0); gl.uniformMatrix4fv(flat.u.P, false, P); gl.uniformMatrix4fv(flat.u.V, false, V); gl.uniform1f(flat.u.time, time); }
+    function mapOn(pts) { gl.useProgram(mapP.p); gl.disableVertexAttribArray(1); gl.disableVertexAttribArray(2); gl.bindBuffer(gl.ARRAY_BUFFER, mapVB); gl.vertexAttribPointer(0, 4, gl.FLOAT, false, 0, 0); gl.uniformMatrix4fv(mapP.u.P, false, P); gl.uniformMatrix4fv(mapP.u.V, false, V); gl.uniform3f(mapP.u.org, 0, 0, 0); gl.uniform1f(mapP.u.pts, pts); gl.uniform1f(mapP.u.bias, pts ? 0.002 : -0.004); }
+    function W(p2, y) { return [p2[0], (y || 0), p2[1]]; }
+    function line(a, b, w, col) { shape(boneM(a, b, w), col, 1, 36); }
+
+    if (origin && phase === "play") {
+      // 1. invisible stand-ins for real things: scanned or drawn objects, and the whole hand. They only write depth, so they hide the pet.
+      gl.enable(gl.DEPTH_TEST); gl.disable(gl.BLEND); gl.colorMask(false, false, false, false);
+      mapOn(0); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, mapIB); gl.drawElements(gl.TRIANGLES, mapCount, gl.UNSIGNED_SHORT, 0);
+      if (hvis) { litOn(); gl.uniform1f(lit.u.uUseD, 0); cubeOn(); for (q = 0; q < BONES.length; q++) shape(boneM(hloc[BONES[q][0]], hloc[BONES[q][1]], BONES[q][2] * 0.01), FUR, 0, 36); }
+      gl.colorMask(true, true, true, true); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+      if (!cat.hidden) {
+        var wx = cat.x + (cat.tremble ? Math.sin(time * 47) * 0.0012 : 0), wy = cat.y, wz = cat.z;
+        if (solid(cat.x, cat.z)) { // soft shadow on whatever is underneath
+          var gy = groundH(cat.x, cat.z), air = clamp((cat.y - gy) / (SIZE * 3), 0, 1), ss = SIZE * 0.55 * (1 - 0.5 * air);
+          if (cat.y >= gy - 0.005) { gl.depthMask(false); flatOn(); gl.uniform1f(flat.u.kind, 0); gl.uniformMatrix4fv(flat.u.M, false, mul(T(wx, gy + 0.003, wz), S(ss, 1, ss))); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); gl.depthMask(true); }
+        }
+        if (creature === "cat") drawCat(time, dt, wx, wy, wz);
+        else {
+          var SB = SIZE * 0.42, hop = cat.speed > 0.001 ? Math.abs(Math.sin(cat.phase * 0.5)) : 0, rl = cat.act === "tumble" ? cat.rollA : pose.roll;
+          var bm = mul(T(wx, wy + hop * SIZE * 0.25, wz), mul(RY(cat.head), mul(T(0, SB * 0.75, 0), mul(RZ(rl), mul(T(0, -SB * 0.75, 0), S(SB * (1 - 0.1 * hop), SB * (pose.sq + 0.15 * hop + pose.by), SB * (1 - 0.1 * hop)))))));
+          sphereOn(false); gl.enable(gl.CULL_FACE); gl.depthMask(false);
+          gl.useProgram(body.p); gl.uniformMatrix4fv(body.u.P, false, P); gl.uniformMatrix4fv(body.u.V, false, V); gl.uniformMatrix4fv(body.u.M, false, bm); gl.uniform1f(body.u.time, time); gl.uniform3f(body.u.cam, cp.x, cp.y, cp.z);
+          gl.uniform1f(body.u.back, 1); gl.cullFace(gl.FRONT); gl.drawElements(gl.TRIANGLES, sphereCount, gl.UNSIGNED_SHORT, 0);
+          litOn(); gl.uniform1f(lit.u.uUseD, 0); sphereOn(true); gl.cullFace(gl.BACK);
+          var bl = pose.eyes * ((time % 4.2) > 4.05 ? 0.12 : 1), dark = [0.03, 0.10, 0.20, 0.92];
+          [-1, 1].forEach(function (sx) { shape(mul(bm, mul(T(sx * 0.36, 0.85, 0.86), S(0.11 * pose.wide, 0.16 * pose.wide * Math.max(bl, 0.08), 0.06))), dark, 0, sphereCount); });
+          shape(mul(bm, mul(T(0, 0.50, 1.02), S(0.12, 0.045, 0.05))), dark, 0, sphereCount);
+          sphereOn(false); gl.useProgram(body.p); gl.uniform1f(body.u.back, 0); gl.drawElements(gl.TRIANGLES, sphereCount, gl.UNSIGNED_SHORT, 0);
+          gl.disable(gl.CULL_FACE); gl.depthMask(true);
+        }
+      }
+      litOn(); sphereOn(true);
+      if (fly.on) {
+        var fm = T(fly.x, fly.y, fly.z);
+        shape(mul(fm, S(0.003, 0.0025, 0.004)), [0.02, 0.02, 0.02, 1], 0, sphereCount);
+        if (fly.rest <= 0) { var wf = 0.3 + 0.7 * Math.abs(Math.sin(time * 70)); shape(mul(fm, mul(T(0, 0.002, 0), S(0.007 * wf, 0.0006, 0.003))), [0.8, 0.9, 1, 0.5], 1, sphereCount); }
+      }
+      if (food.on) shape(mul(T(food.x, food.y, food.z), S(0.006, 0.004, 0.006)), [0.55, 0.3, 0.12, 1], 0, sphereCount);
+    }
+    gl.disable(gl.DEPTH_TEST); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.colorMask(true, true, true, true);
+    // one-off scan sweeps: over a hand when it is recognised, over an object or the edge when it is mapped. Nothing stays on screen afterwards.
+    if (origin && (fx.length || (hvis && showHand))) {
+      litOn(); gl.uniform1f(lit.u.uUseD, 0); cubeOn();
+      if (hvis && showHand) for (q = 0; q < 20; q++) line(hloc[BONES[q][0]], hloc[BONES[q][1]], 0.002, [0.45, 1, 0.9, 0.5]);
+      for (var fi = fx.length - 1; fi >= 0; fi--) {
+        var F = fx[fi], fs = (time - F.t0) / (F.kind === "hand" ? 0.85 : 1.1);
+        if (fs > 1.35 || (F.kind === "hand" && !hvis)) { fx.splice(fi, 1); continue; }
+        if (F.kind === "hand") {
+          var w0 = hloc[0], m0 = hloc[12], ax2 = [m0[0] - w0[0], m0[1] - w0[1], m0[2] - w0[2]], al2 = ax2[0] * ax2[0] + ax2[1] * ax2[1] + ax2[2] * ax2[2] || 1e-6, band = fs * 1.5 - 0.25;
+          var seg2 = function (pa, pb, wd) { var mx = (pa[0] + pb[0]) / 2 - w0[0], my = (pa[1] + pb[1]) / 2 - w0[1], mz = (pa[2] + pb[2]) / 2 - w0[2], u = (mx * ax2[0] + my * ax2[1] + mz * ax2[2]) / al2, d = u - band, a = d > 0 ? Math.max(0, 1 - d * 9) : Math.max(0, 1 + d * 2.2); if (a > 0.03) line(pa, pb, wd, [0.35 + 0.65 * (d > -0.08 ? 1 : 0), 1, 0.95, a * 0.9]); };
+          for (q = 0; q < 20; q++) seg2(hloc[BONES[q][0]], hloc[BONES[q][1]], 0.0016);
+          for (q = 0; q < SCANX.length; q++) seg2(hloc[SCANX[q][0]], hloc[SCANX[q][1]], 0.001);
+          if (band > -0.1 && band < 1.15) { var bc = [w0[0] + ax2[0] * band, w0[1] + ax2[1] * band, w0[2] + ax2[2] * band], lt = nrm([hloc[5][0] - hloc[17][0], hloc[5][1] - hloc[17][1], hloc[5][2] - hloc[17][2]]);
+            line([bc[0] - lt[0] * 0.06, bc[1] - lt[1] * 0.06, bc[2] - lt[2] * 0.06], [bc[0] + lt[0] * 0.06, bc[1] + lt[1] * 0.06, bc[2] + lt[2] * 0.06], 0.0012, [1, 1, 1, 0.85]); }
+        } else {
+          var fa = clamp(1.35 - fs, 0, 1), pl2 = F.poly, yy2 = F.h * clamp(fs * 1.15, 0, 1), col2 = F.kind === "edge" ? [1, 0.45, 0.8, fa] : [0.4, 1, 0.95, fa];
+          for (q = 0; q < pl2.length; q++) { var nq = pl2[(q + 1) % pl2.length]; line(W(pl2[q], yy2 + 0.003), W(nq, yy2 + 0.003), 0.003, col2); if (F.h > 0) { line(W(pl2[q], 0.002), W(pl2[q], yy2), 0.0015, [0.4, 1, 0.95, fa * 0.5]); line(W(pl2[q], 0.002), W(nq, 0.002), 0.0015, [0.4, 1, 0.95, fa * 0.4]); if (fs > 0.87) line(W(pl2[q], F.h), W(pl2[(q + 2) % pl2.length], F.h), 0.001, [1, 1, 1, fa * 0.5]); } }
+          if (F.kind === "edge") { var hd2 = (fs * 1.2) % 1 * pl2.length, i0 = Math.floor(hd2) % pl2.length, fr = hd2 - Math.floor(hd2), pa2 = pl2[i0], pb2 = pl2[(i0 + 1) % pl2.length]; shape(mul(T(pa2[0] + (pb2[0] - pa2[0]) * fr, 0.006, pa2[1] + (pb2[1] - pa2[1]) * fr), S(0.012, 0.004, 0.012)), [1, 1, 1, fa], 1, 36); }
+        }
+      }
+    }
+    if (origin && (phase === "scan" || showMap)) { mapOn(1); gl.drawArrays(gl.POINTS, 0, N * N); }
+    if (origin && (phase === "edge" || phase === "obj" || showMap)) { // what you have drawn by hand
+      litOn(); gl.uniform1f(lit.u.uUseD, 0); cubeOn();
+      var ec = [1, 0.3, 0.7, 0.9], oc = [1, 0.85, 0.2, 0.9], ep = phase === "edge" ? edgePts : (areaPoly || []);
+      if (phase === "obj" && !objRect && aim && objPts.length) line(W(objPts[objPts.length - 1], 0.003), [aim[0], 0.003, aim[2]], 0.002, oc);
+      for (q = 0; q < ep.length; q++) { var e2 = ep[(q + 1) % ep.length]; if (q < ep.length - 1 || ep.length > 2) line(W(ep[q], 0.003), W(e2, 0.003), 0.004, ec); shape(mul(T(ep[q][0], 0.004, ep[q][1]), S(0.012, 0.004, 0.012)), ec, 1, 36); }
+      if (phase === "edge" && aim && edgePts.length) line(W(edgePts[edgePts.length - 1], 0.003), [aim[0], aim[1] + 0.003, aim[2]], 0.002, ec);
+      var all = drawn.concat(phase === "obj" ? [{ poly: objPts, h: objHt }] : []);
+      for (var o = 0; o < all.length; o++) { var pl = all[o].poly, hh = all[o].h; for (q = 0; q < pl.length; q++) { var n2 = pl[(q + 1) % pl.length]; line(W(pl[q], 0.002), W(pl[q], hh), 0.003, oc); if (pl.length > 1) { line(W(pl[q], hh), W(n2, hh), 0.003, oc); line(W(pl[q], 0.002), W(n2, 0.002), 0.002, oc); } } }
+    }
+    flatOn(); gl.uniform1f(flat.u.kind, 1);
+    if (phase === "find" && centrePose) { gl.uniformMatrix4fv(flat.u.M, false, mul(centrePose.transform.matrix, S(0.05, 1, 0.05))); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); }
+    if ((phase === "edge" || phase === "obj") && aim) { gl.uniformMatrix4fv(flat.u.M, false, mul(T(aim[0], aim[1] + 0.004, aim[2]), S(0.018, 1, 0.018))); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); }
+
+    // ---------- on-screen text ----------
+    if (frames % 12 === 0) {
+      if (phase === "scan" && depthOK) {
+        var pc = Math.round(mapCover * 100), ns = (sectors & 1) + ((sectors >> 1) & 1) + ((sectors >> 2) & 1) + ((sectors >> 3) & 1);
+        say("Scan " + pc + "%, seen from " + ns + " of 4 sides. " + (ns < 3 ? "Walk round and scan from another side, slowly." : pc < 70 ? "Go in close over each object, about a hand's length away." : "Good. Orange dots should cover each object. If one is missed, use Add object. Then Release pet."));
+      }
+      if (phase === "edge") say(edgePts.length + " edge point" + (edgePts.length === 1 ? "" : "s") + ". Aim the ring at the edge and tap. Go all the way round, then Done." + (aim ? "" : " (Point the phone down at the surface.)"));
+      if (phase === "obj") say(!objRect ? "Object: tap " + (objPts.length === 0 ? "the first corner of its base." : objPts.length === 1 ? "the next corner along the same side." : "anywhere on the opposite side of its base.") : "Height " + Math.round(objHt * 100) + " cm. Walk round it: the frame should stay on the object. Use Higher/Lower, or aim at its top and tap, then Save.");
+      stat.textContent = "Depth " + (depthOK ? (depthSeen ? "✓" : "…") : "✗") + " · Lock " + anchorState + " · Hand " + (tracker && binding ? (hvis ? "✓ seen" : "ready") + (hMs ? " " + hMs.toFixed(0) + "ms" : "") : "✗") + " · Mic " + (micState === "on" ? "✓" : listening ? "…" : micState) +
+        (phase === "play" ? " · " + topMood() + " · " + cat.act : "") + (errText ? " · ERR " + errText : "") + (hErr ? " · hand: " + hErr : "");
+    }
+
+    // ---------- the cat ----------
+    function drawCat(time, dt, wx, wy, wz) {
+      var L = SIZE * 1.2, p = pose, c = cat, a = c.act, g = c.gait, ph = c.phase, run = a === "run", HB = 0.33, m, s2;
+      var Rg = mul(T(wx, wy, wz), mul(RY(c.head), mul(RX(c.slopeP), S(L, L, L))));
+      var pitch = p.pitch + (a === "fall" && c.thrown ? c.flip : 0), by = p.by, roll = a === "tumble" ? c.rollA : p.roll, spine = p.spine;
+      if (a === "jump" && c.j) { var js = clamp(c.t / Math.max(0.05, c.dur), 0, 1); pitch += (0.5 - js) * -0.7 * Math.min(1, c.j.h / (SIZE * 0.6)); }      // nose up on take-off, nose down coming in to land
+      if (a === "sleep" || a === "sleepSide") by += Math.sin(time * 1.2) * 0.004;
+      if (run) { spine += Math.sin(ph) * 0.3 * g; pitch += Math.sin(ph + 1) * 0.08 * g; by += Math.abs(Math.sin(ph)) * 0.04 * g; } else by += Math.sin(ph * 2) * 0.008 * g;
+      if (a === "hang" || a === "cling") roll += Math.sin(time * 5) * 0.18;
+      if (a === "wiggle") roll += Math.sin(time * 22) * 0.07;
+      if (a === "held") roll += Math.sin(time * 17) * 0.1 * c.struggle;
+      if (a === "pinned") roll += Math.sin(time * 26) * 0.06;
+      if (a === "pushed") { roll += Math.sin(time * 31) * 0.025; pitch += Math.sin(time * 9) * 0.02; }
+      var kq = 1 / Math.sqrt(Math.max(0.3, p.sq)), br = 1 + 0.025 * Math.sin(time * (a === "sleep" ? 1.2 : 2.6)), tb = clamp(c.turn * 0.06, -0.35, 0.35);
+      var B = mul(Rg, mul(T(0, HB + by, 0), mul(RZ(roll), mul(RX(pitch), S(kq, p.sq, kq)))));
+      var chest = mul(B, mul(RY(tb), mul(RX(spine * 0.45), T(0, 0, 0.15)))), hips = mul(B, mul(RY(-tb), mul(RX(-spine * 0.45), T(0, 0, -0.15))));
+      var X = nrm(d3(B, 1, 0, 0));
+      litOn(); voxOn();
+      function part(n, M) { shape(M, FUR, 0, PART[n].count, PART[n].start * 2); }
+      part("chest", mul(chest, S(p.puff * br, p.puff * br, 1))); part("hips", mul(hips, S(p.puff, p.puff, 1)));
+      // head
+      var hp = p.headP, hy = p.headY;
+      if (a === "sniff" || a === "sniffFinger") hp += Math.sin(time * 14) * 0.07;
+      if (a === "eat") hp += Math.sin(time * 9) * 0.12;
+      if (a === "groom") hp += Math.sin(time * 6) * 0.12;
+      if (a === "rub") hy += Math.sin(time * 3) * 0.4;
+      if (c.mouthT > 0) hp -= 0.22 * Math.min(1, c.mouthT * 4);
+      if (a === "headTilt") hy += Math.sin(time * 1.3) * 0.15;
+      if (a === "standUp" || a === "beg") hp += Math.sin(time * 5) * 0.05;
+      if (c.biteT > 0) hp += 0.5 * Math.sin(c.biteT * 18);
+      var H = mul(chest, mul(T(0, 0.075, 0.2), mul(RY(hy), mul(RX(hp), mul(RZ(p.tilt), mul(T(0, 0.035, 0.075), S(1.14, 1.14, 1.14)))))));
+      part("head", H);
+      [-1, 1].forEach(function (sx) { var ev = p.ears + (c.heard > 0 ? 0.2 + Math.sin(time * 30 + sx) * 0.2 : 0) + ((time * 0.37 + sx) % 5 < 0.12 ? 0.35 : 0); part("ear", mul(H, mul(T(sx * 0.092, 0.08, -0.02), mul(RZ(-sx * (0.18 + ev * 0.9)), RX(-ev * 0.5))))); });
+      // legs: each paw is given a place to be, and the knee is worked out from that
+      var PH = run ? [3.14, 3.54, 0, 0.4] : [1.57, 4.71, 0, 3.14], stride = 0.2, lift = run ? 0.1 : 0.06, legs = [];
+      for (var i = 0; i < 4; i++) {
+        var front = i < 2, side = i % 2 ? 1 : -1, base = front ? chest : hips, Hp = front ? v3(base, side * 0.085, -0.05, 0.07) : v3(base, side * 0.09, -0.04, -0.06), F;
+        if (!c.air && !(c.airF && front)) {
+          var rx = side * (front ? 0.085 : 0.09) * (1 + p.splay * 1.7), rz = (front ? 0.22 + p.footF : -0.21 + p.footH) + p.splay * (front ? 0.1 : -0.1), thp = ph + PH[i];
+          var fz = rz - Math.cos(thp) * stride * g, fy = Math.max(0, Math.sin(thp)) * lift * g + 0.012;
+          if (a === "swipe" && i === 1) { s2 = Math.sin(Math.PI * clamp(c.t / c.dur, 0, 1)); fy += 0.22 * s2; fz += 0.2 * s2; }
+          if (a === "petted" && front && mood.affection > 0.5) fy += Math.max(0, Math.sin(time * 6 + i * 3.14)) * 0.035;      // kneading
+          if (a === "pinned") { rx += Math.sin(time * 19 + i * 1.9) * 0.03; fz += Math.cos(time * 17 + i) * 0.03; }
+          if (a === "pushed") fz += Math.sin(time * 38 + i) * 0.006;
+          if (a === "knead" && front) fy += Math.max(0, Math.sin(time * 5 + i * 3.14)) * 0.045;
+          if (a === "stretch" && front) { fy += 0.0; rx *= 1.25; }
+          F = v3(Rg, rx, fy, fz);
+          if (a === "groom" && i === 0) F = v3(H, -0.03, -0.11 + Math.sin(time * 6) * 0.015, 0.15);
+        } else {
+          var dir, len = 0.27;
+          if (a === "held" && c.bat && front && c.gp) { var gd = nrm([c.gp[0] - Hp[0], c.gp[1] - Hp[1], c.gp[2] - Hp[2]]), rl2 = 0.27 * L * (0.72 + 0.28 * Math.sin(time * 12 + i * 3.14)); F = [Hp[0] + gd[0] * rl2, Hp[1] + gd[1] * rl2, Hp[2] + gd[2] * rl2]; }   // held by the tail: it twists up to bat at your fingers
+          else if (a === "held") { var sg = c.struggle; F = [Hp[0] + Math.sin(time * 14 + i * 2) * 0.35 * sg * 0.27 * L, Hp[1] - 0.27 * L, Hp[2] + Math.cos(time * 11 + i) * 0.35 * sg * 0.27 * L]; }   // limbs dangle straight down whatever way up it is held
+          else {
+            if (c.airF) { dir = [side * 0.12, -0.55 + Math.sin(time * 9 + i * 3.14) * 0.3, 0.85]; len = 0.21; }      // up on its hind legs, front paws batting
+            else if (a === "sleepSide") { var tw = (time % 7) < 0.6 ? Math.sin(time * 23 + i) * 0.18 : 0; dir = [0, -1, (front ? 0.25 : -0.25) + tw]; len = 0.24; }   // asleep on its side, paws twitching in a dream
+            else if (a === "roll") { dir = [side * 0.15, -1, Math.sin(time * (c.kick ? 20 : 4) + i * 1.7) * 0.5]; len = c.kick ? 0.2 + 0.07 * Math.sin(time * 20 + i) : 0.2; }
+            else if (a === "tumble") { dir = [0, -1, 0]; len = 0.16; }
+            else if (a === "hang" || a === "cling") { dir = front ? [0, -0.15, 1] : [0, -1, -0.2 + Math.sin(time * 5 + i) * 0.3]; len = front ? 0.29 : 0.26; }
+            else if (a === "climb") { dir = front ? [0, -0.3, 1] : [0, -1, 0.1]; len = 0.22 + 0.07 * Math.sin(time * 16 + i * 3.14 + (front ? 0 : 3.14)); }
+            else { s2 = clamp(c.t / Math.max(0.05, c.dur), 0, 1); dir = front ? [0, -0.7 - 0.2 * s2, 0.7 - 0.2 * s2] : [0, -0.7 - 0.2 * s2, -0.7 + 0.9 * s2]; }
+            var dw = d3(B, dir[0], dir[1], dir[2]), dl = Math.hypot(dir[0], dir[1], dir[2]) || 1; F = [Hp[0] + dw[0] / dl * len, Hp[1] + dw[1] / dl * len, Hp[2] + dw[2] / dl * len];
+          }
+        }
+        var l1 = 0.14 * L, l2 = 0.17 * L, dv = [F[0] - Hp[0], F[1] - Hp[1], F[2] - Hp[2]], dist = Math.hypot(dv[0], dv[1], dv[2]) || 1e-5, dd = clamp(dist, Math.abs(l1 - l2) + 1e-4, l1 + l2 - 1e-4);
+        var ang = Math.acos(clamp((l1 * l1 + dd * dd - l2 * l2) / (2 * l1 * dd), -1, 1)) * (front ? 1 : -1), kd = rotAx([dv[0] / dist, dv[1] / dist, dv[2] / dist], X, ang);
+        var K = [Hp[0] + kd[0] * l1, Hp[1] + kd[1] * l1, Hp[2] + kd[2] * l1];
+        legs.push(frameY(Hp, kd, X, L), frameY(K, nrm([F[0] - K[0], F[1] - K[1], F[2] - K[2]]), X, L));
+      }
+      for (i = 0; i < 8; i += 2) { part("upper", legs[i]); part("lower", legs[i + 1]); }
+      // tail: a chain that trails behind and settles, so it has weight
+      var tb0 = v3(hips, 0, 0.03, -0.19), seg = 0.082 * L, prev = tb0, far = Math.hypot(tailN[0][0] - tb0[0], tailN[0][1] - tb0[1], tailN[0][2] - tb0[2]) > seg * 8;
+      for (i = 0; i < 8; i++) {
+        var an = p.tailP + p.tailC * i + (p.tailC < 0.12 && i > 5 ? 0.5 : 0), swy = Math.sin(time * p.tailF - i * 0.55) * p.tailS * (0.4 + i * 0.12);
+        var dl2 = [Math.sin(swy) * Math.cos(an), Math.sin(an), -Math.cos(swy) * Math.cos(an)], wd = nrm(d3(hips, dl2[0], dl2[1], dl2[2])), des = [prev[0] + wd[0] * seg, prev[1] + wd[1] * seg, prev[2] + wd[2] * seg];
+        if (a === "held" && c.holdPart === "tail" && c.gp) { var tt = (i + 1) / 8 * Math.min(1, Math.hypot(c.gp[0] - tb0[0], c.gp[1] - tb0[1], c.gp[2] - tb0[2]) / (seg * 8) + 0.6); des = [tb0[0] + (c.gp[0] - tb0[0]) * tt, tb0[1] + (c.gp[1] - tb0[1]) * tt, tb0[2] + (c.gp[2] - tb0[2]) * tt]; }   // the tail runs straight up to the fingers holding it
+        var tn = tailN[i], kf = (!tailOK || far) ? 1 : Math.min(1, dt * (30 - i * 2.6));
+        tn[0] += (des[0] - tn[0]) * kf; tn[1] += (des[1] - tn[1]) * kf; tn[2] += (des[2] - tn[2]) * kf;
+        var rd = nrm([tn[0] - prev[0], tn[1] - prev[1], tn[2] - prev[2]]); tn[0] = prev[0] + rd[0] * seg; tn[1] = prev[1] + rd[1] * seg; tn[2] = prev[2] + rd[2] * seg;
+        var tsc = L * (1 - i * 0.055) * (p.puff > 1.1 ? 1.6 : 1), fmz = frameZ(prev, rd, X, 1);
+        part("tail", mul(fmz, S(tsc, tsc, L * 0.86))); prev = tn;
+      }
+      tailOK = true;
+      // face: pixel-art eyes with slit pupils that widen with mood, lids, nose, whiskers
+      cubeOn();
+      function box(M, x, y, z, sx, sy, sz, cl, gw) { shape(mul(M, mul(T(x, y, z), S(sx, sy, sz))), cl, gw, 36); }
+      var blink = (time % 4.7) > 4.55 ? 0.08 : 1, eo = clamp(p.eyes * blink, 0, 1), ew = 0.064 * p.wide, ehh = 0.06 * p.wide, rows = [0.55, 0.9, 1, 0.9, 0.6], pw = 0.01 + 0.036 * p.pupil;
+      var ang2 = clamp(mood.anger, 0, 1), lookX = clamp(hy, -1, 1) * 0.008;
+      [-1, 1].forEach(function (sx) {
+        var ex = sx * 0.072, ey = 0.012, ez = 0.112, n = rows.length, rh = ehh / n;
+        for (var r = 0; r < n; r++) {
+          var yy = ey + ehh / 2 - (r + 0.5) * rh, open = (r + 0.5) / n >= (1 - eo) * 0.5 + ang2 * 0.0 && (r + 0.5) / n <= 1 - (1 - eo) * 0.5;
+          if (!open) continue;
+          box(H, ex, yy, ez, ew * rows[r], rh * 1.02, 0.012, EYE, 1);
+          if (r > 0 && r < n - 1 || p.pupil > 0.8) box(H, ex + lookX, yy, ez + 0.005, Math.min(pw, ew * rows[r] * 0.8), rh * 1.02, 0.006, PUP, 1);
+        }
+        if (eo > 0.5) box(H, ex - 0.014 + lookX, ey + ehh * 0.22, ez + 0.009, 0.011, 0.011, 0.004, [1, 1, 1, 1], 1);
+        if (ang2 > 0.45) shape(mul(H, mul(T(ex, ey + ehh * 0.42, ez + 0.008), mul(RZ(sx * 0.45), S(ew * 1.25, ehh * 0.42 * ang2, 0.012)))), FUR, 0, 36);   // angry brow
+        for (var w = 0; w < 3; w++) shape(mul(H, mul(T(sx * 0.055, -0.045, 0.135), mul(RY(sx * (1.0 + 0.22 * w - p.pupil * 0.3)), mul(RX((w - 1) * 0.16), mul(T(0, 0, 0.065), S(0.004, 0.004, 0.13)))))), WHI, 1, 36);
+      });
+      box(H, 0, -0.028, 0.166, 0.024, 0.014, 0.01, [0.16, 0.09, 0.1, 1], 0);
+      var mo = Math.max(c.mouthT > 0 ? Math.min(1, c.mouthT * 4) : 0, a === "hiss" || c.biteT > 0 ? 1 : 0, a === "yawn" ? Math.sin(Math.PI * clamp(c.t / c.dur, 0, 1)) * 1.6 : 0);
+      if (mo > 0.05) { box(H, 0, -0.058 - 0.008 * mo, 0.158, 0.03, 0.02 * mo + 0.004, 0.012, [0.5, 0.12, 0.16, 1], 1); if (a === "hiss" || a === "yawn" || c.biteT > 0) { box(H, -0.011, -0.05, 0.166, 0.005, 0.012, 0.004, [1, 1, 1, 1], 1); box(H, 0.011, -0.05, 0.166, 0.005, 0.012, 0.004, [1, 1, 1, 1], 1); } }
+    }
+  }
+  var FUR = [0.03, 0.03, 0.04, 1], EYE = [0.78, 1.0, 0.3, 1], PUP = [0.01, 0.01, 0.02, 1], WHI = [0.55, 0.57, 0.62, 0.85];
+  session.requestAnimationFrame(onFrame);
+}
+
+</script>
+</body>
+</html>
