@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AR Pet 4</title>
+<style>
+  html,body{margin:0;background:#0b1220;color:#e8f6ff;font:17px/1.45 system-ui,sans-serif}
+  main{padding:20px;max-width:520px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 4px}
+  p{margin:8px 0}
+  ul{list-style:none;padding:0;margin:14px 0}
+  li{padding:8px 10px;margin:6px 0;background:#15203a;border-radius:8px}
+  li.ok{border-left:5px solid #4be3c0} li.bad{border-left:5px solid #ff7a7a} li.unk{border-left:5px solid #f3c95a}
+  button{font:inherit;font-weight:600;border:0;border-radius:10px;background:#4be3c0;color:#06212a}
+  #btnAR{width:100%;padding:16px;margin:8px 0}
+  #log{white-space:pre-wrap;font-size:14px;color:#a9c3e6;margin-top:12px}
+  #ov{display:none;position:fixed;inset:0;pointer-events:none}
+  #ovHint{position:absolute;left:12px;right:12px;top:14px;padding:10px;border-radius:10px;background:rgba(6,20,40,.65);text-align:center}
+  #ovStat{position:absolute;left:8px;right:8px;bottom:118px;padding:6px 10px;border-radius:8px;background:rgba(6,20,40,.65);font-size:12px}
+  #ovBtns{position:absolute;left:8px;right:8px;bottom:14px;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;pointer-events:auto}
+  #ovBtns button{padding:12px 1px;font-size:12px;background:rgba(75,227,192,.9)}
+  #ovBtns button.alt{background:rgba(42,59,99,.9);color:#e8f6ff}
+</style>
+</head>
+<body>
+<main>
+  <h1>AR Pet — build 4</h1>
+  <p>Open in <b>Chrome on the Samsung S21</b>. Wait for the hand-tracking line to turn green before starting.</p>
+  <ul id="checks"></ul>
+  <button id="btnAR">Start AR</button>
+  <p><b>Steps:</b> 1) find the table and tap the middle of a clear patch. 2) Scan it slowly from a few sides, close to objects. 3) Press “Release pet”.</p>
+  <div id="log"></div>
+</main>
+<div id="ov">
+  <div id="ovHint"></div>
+  <div id="ovStat"></div>
+  <div id="ovBtns">
+    <button id="bMain">Release pet</button><button id="bFeed">Feed</button><button id="bTalk">Talk</button><button id="bName">Name</button><button id="bWho">Cat</button>
+    <button id="bSize" class="alt">Size M</button><button id="bMap" class="alt">Map</button><button id="bDots" class="alt">Finger dot</button><button id="bFlip" class="alt">Flip hand</button><button id="bExit" class="alt">Exit</button>
+  </div>
+</div>
+<script>
+// ================= SIM: world map + creature brain (no graphics in here) =================
+var N = 96, CELL = 0.01, HALF = N * CELL / 2;
+var mapH = new Float32Array(N * N), mapN = new Uint8Array(N * N), mapT = new Uint8Array(N * N), mapS = new Float32Array(N * N);
+var mapBase = 0, mapCover = 0, mapDirty = true;       // mapT: 0 unknown, 1 table, 2 object, 3 drop
+var SND = { meow: function () {}, purr: function () {}, hiss: function () {}, chirp: function () {}, crunch: function () {}, thud: function () {} };
+
+function mapClear() { mapH.fill(0); mapN.fill(0); mapT.fill(0); mapS.fill(-0.5); mapBase = 0; mapCover = 0; mapDirty = true; }
+function mapFlat() { // fallback when the phone gives no depth: assume a clear flat patch
+  mapClear();
+  for (var j = 0; j < N; j++) for (var i = 0; i < N; i++) if ((i - 48) * (i - 48) + (j - 48) * (j - 48) < 26 * 26) { mapN[j * N + i] = 5; }
+  mapProcess();
+}
+function mapAdd(x, y, z) { // one measured 3D point, in play-area coordinates
+  var i = Math.floor((x + HALF) / CELL), j = Math.floor((z + HALF) / CELL);
+  if (i < 0 || j < 0 || i >= N || j >= N || y > 0.6) return;
+  if (y < -0.3) y = -0.3;
+  var k = j * N + i, n = mapN[k], a = n < 12 ? 1 / (n + 1) : 0.06;
+  mapH[k] += (y - mapH[k]) * a;
+  if (n < 255) mapN[k] = n + 1;
+}
+var _hist = new Uint16Array(41), _nb = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+function mapProcess() {
+  var k, i, j;
+  _hist.fill(0);
+  for (k = 0; k < N * N; k++) if (mapN[k] >= 2) { var b = Math.round(mapH[k] / 0.005) + 20; if (b >= 0 && b < 41) _hist[b]++; }
+  var best = 20, bc = 0;
+  for (i = 0; i < 41; i++) if (_hist[i] > bc) { bc = _hist[i]; best = i; }
+  if (bc >= 30) mapBase += ((best - 20) * 0.005 - mapBase) * 0.5;   // table level = commonest height
+  var known = 0, total = 0;
+  for (j = 0; j < N; j++) for (i = 0; i < N; i++) {
+    k = j * N + i; var c = 0;
+    for (var dj = -1; dj <= 1; dj++) for (var di = -1; di <= 1; di++) {
+      var ii = i + di, jj = j + dj; if (ii < 0 || jj < 0 || ii >= N || jj >= N) continue;
+      var kk = jj * N + ii; if (mapN[kk] >= 2) _nb[c++] = mapH[kk];
+    }
+    var inR = (i - 48) * (i - 48) + (j - 48) * (j - 48) < 900; if (inR) total++;
+    if (c < 5 && !(mapN[k] >= 2 && c >= 3)) { mapT[k] = 0; mapS[k] = -0.5; continue; }
+    for (var a = 1; a < c; a++) { var v = _nb[a], b2 = a - 1; while (b2 >= 0 && _nb[b2] > v) { _nb[b2 + 1] = _nb[b2]; b2--; } _nb[b2 + 1] = v; }
+    var m = _nb[c >> 1] - mapBase;
+    if (m < -0.05) { mapT[k] = 3; mapS[k] = -0.5; }
+    else if (m < 0.022) { mapT[k] = 1; mapS[k] = 0; }
+    else { mapT[k] = 2; mapS[k] = m; }
+    if (inR) known++;
+  }
+  mapCover = total ? known / total : 0; mapDirty = true;
+}
+function cellK(x, z) { var i = Math.floor((x + HALF) / CELL), j = Math.floor((z + HALF) / CELL); return (i < 0 || j < 0 || i >= N || j >= N) ? -1 : j * N + i; }
+function cellType(x, z) { var k = cellK(x, z); return k < 0 ? 0 : mapT[k]; }
+function groundH(x, z) { var k = cellK(x, z); return (k >= 0 && mapT[k] === 2) ? mapS[k] : 0; }
+function solid(x, z) { var t = cellType(x, z); return t === 1 || t === 2; }
+
+function rnd(a, b) { return a + Math.random() * (b - a); }
+function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+function angDiff(a, b) { var d = (a - b) % (2 * Math.PI); if (d > Math.PI) d -= 2 * Math.PI; if (d < -Math.PI) d += 2 * Math.PI; return d; }
+
+// ---------- things in the world ----------
+var SIZE = 0.06;                      // creature length in metres
+var mood = { hunger: 0.25, energy: 0.85, playful: 0.5, fear: 0, anger: 0, affection: 0.35, curiosity: 0.6 };
+var hand = { vis: false, tip: [0, 1, 0], tipV: [0, 0, 0], speed: 0, steady: 0, lost: 9, pts: [[0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0]] };
+var camL = [0, 0.3, 0.3];
+var food = { on: false, onFinger: false, x: 0, y: 0, z: 0 };
+var fly = { on: false, x: 0, y: 0, z: 0, cx: 0, cz: 0, t: 0, life: 0, next: 25, rest: 0 };
+var cat = { x: 0, y: 0, z: 0, gy: 0, head: 0, act: 'idle', t: 0, dur: 1.5, speed: 0, tx: 0, tz: 0, goal: '', phase: 0,
+  vx: 0, vy: 0, vz: 0, rollA: 0, rollDir: 1, look: null, cool: 0, pokes: 0, contact: 0, petT: 0, hidden: true, kick: 0, runs: 0,
+  j: null, next: null, nextDur: 1, wallH: 0, wallX: 0, wallZ: 0, ledge: false, topX: 0, topZ: 0, topH: 0, cx0: 0, cz0: 0,
+  fu: 0.5, fdir: 1, fwalk: 0, slopeP: 0, sliding: false, pushX: 0, pushZ: 1, tremble: 0, stalk: false, said: false, stuck: 0, backT: 0, heard: 0, lookCamT: 0, wantHop: false };
+var petName = '';
+var POSE0 = { by: 0, pitch: 0, roll: 0, headP: 0, headY: 0, legF: 0, legH: 0, lenF: 1, lenH: 1, tailP: 0.5, tailC: 0.25, tailS: 0.15, tailF: 1.5, ears: 0, eyes: 1, puff: 1 };
+var POSES = {
+  sit: { by: -0.08, pitch: -0.55, legF: 0.55, lenF: 1.25, legH: 1.35, lenH: 0.8, headP: 0.5, tailP: -0.1, tailC: 0.5 },
+  loaf: { by: -0.2, lenF: 0.3, lenH: 0.3, tailP: 0, tailC: 0.6, eyes: 0.5, tailS: 0.05 },
+  sleep: { by: -0.22, lenF: 0.2, lenH: 0.2, headP: 0.7, headY: 0.9, eyes: 0, tailP: 0, tailC: 0.7, tailS: 0 },
+  crouch: { by: -0.12, lenF: 0.55, lenH: 0.55, headP: -0.1, tailP: 0.1, tailS: 0.3, tailF: 5, ears: 0.3 },
+  wiggle: { by: -0.1, pitch: 0.18, lenF: 0.5, lenH: 0.75, headP: -0.2, tailP: 0.3, tailS: 0.5, tailF: 9, ears: 0.2 },
+  edgePeek: { pitch: 0.25, headP: 0.8, lenF: 0.7, tailS: 0.35, tailF: 3 },
+  lookUp: { headP: -0.9, pitch: -0.1 },
+  sniff: { headP: 0.3, tailS: 0.25 },
+  climb: { pitch: -1.35, tailP: -0.3, ears: 0.3 },
+  hiss: { by: 0.06, puff: 1.25, ears: 1, tailP: 1.2, tailC: 0.05, lenF: 1.1, lenH: 1.1, headP: 0.1, tailS: 0.1, tailF: 8 },
+  petted: { pitch: 0.2, eyes: 0.1, tailP: 1.3, tailC: 0.1, ears: 0.2 },
+  pushed: { pitch: 0.15, legF: -0.4, legH: -0.4, ears: 0.6, eyes: 0.6, tailP: 0.2, tailS: 0.4, tailF: 6 },
+  roll: { roll: 3.14159, by: -0.23, tailP: 0, tailS: 0.4, tailF: 3 },
+  tumble: { by: -0.2, ears: 0.8 },
+  hang: { pitch: -1.5, legF: -1.57, legH: 0.3, tailS: 0.5, ears: 0.6 },
+  stretch: { pitch: 0.35, lenF: 0.6, legF: -0.9, tailP: 1.2, eyes: 0.3 },
+  groom: { by: -0.08, pitch: -0.55, legF: 0.55, lenF: 1.25, legH: 1.35, lenH: 0.8, headP: 1.1, headY: 0.5, tailP: -0.1, tailC: 0.5, eyes: 0.4 },
+  jump: { legF: -0.9, legH: 0.9, tailP: 0.8 },
+  land: { by: -0.12, lenF: 0.6, lenH: 0.6 },
+  skid: { pitch: -0.25, legF: -0.8, legH: -0.5, ears: 0.7, by: -0.05 },
+  duck: { by: -0.22, lenF: 0.25, lenH: 0.25, ears: 1, eyes: 0.7, tailP: 0, tailC: 0.1 },
+  eat: { headP: 0.75, lenF: 0.8, pitch: 0.15, tailP: 0.9 },
+  startled: { puff: 1.2, ears: 1, legF: -0.5, legH: 0.5 },
+  rub: { roll: 0.25, eyes: 0.2, tailP: 1.4, tailC: 0.05, headP: 0.2 },
+  happy: { tailP: 1.3, tailC: 0.08 }
+};
+var ACT_POSE = { sit: 'sit', lookCam: 'sit', meow: 'sit', beg: 'sit', watch: 'sit', loaf: 'loaf', sleep: 'sleep', wiggle: 'wiggle', edgePeek: 'edgePeek',
+  lookUp: 'lookUp', sniff: 'sniff', sniffFinger: 'sniff', climb: 'climb', hiss: 'hiss', petted: 'petted', pushed: 'pushed', roll: 'roll', tumble: 'tumble',
+  hang: 'hang', cling: 'hang', stretch: 'stretch', groom: 'groom', jump: 'jump', fall: 'jump', land: 'land', getUp: 'land', skid: 'skid', duck: 'duck',
+  eat: 'eat', startled: 'startled', rub: 'rub', swipe: 'sit', hiding: 'duck', spin: 'jump' };
+var pose = {}, poseT = {}; (function () { for (var k in POSE0) { pose[k] = POSE0[k]; poseT[k] = POSE0[k]; } })();
+
+function setAct(a, dur) { cat.act = a; cat.t = 0; cat.dur = dur === undefined ? 1 : dur; cat.said = false; if (a !== 'walk' && a !== 'run') { cat.speed = 0; cat.stalk = false; } if (a !== 'petted' && a !== 'rub') SND.purr(false); cat.tremble = 0; cat.slopeP = 0; }
+function faceTo(x, z, dt, rate) { var a = Math.atan2(x - cat.x, z - cat.z), d = angDiff(a, cat.head), m = (rate || 6) * dt; cat.head += clamp(d, -m, m); return Math.abs(d); }
+function lineClear(x0, z0, x1, z1, gy) {
+  var d = Math.hypot(x1 - x0, z1 - z0), n = Math.max(1, Math.ceil(d / 0.01));
+  for (var i = 1; i <= n; i++) { var x = x0 + (x1 - x0) * i / n, z = z0 + (z1 - z0) * i / n; if (!solid(x, z) || Math.abs(groundH(x, z) - gy) > 0.02) return false; }
+  return true;
+}
+function pickTarget(rmin, rmax, awayX, awayZ) {
+  var bx = 0, bz = 0, bs = -1;
+  for (var i = 0; i < 14; i++) {
+    var a = rnd(0, 6.283), r = rnd(rmin, rmax), x = cat.x + Math.sin(a) * r, z = cat.z + Math.cos(a) * r;
+    if (!lineClear(cat.x, cat.z, x, z, cat.gy)) continue;
+    if (!solid(x + Math.sin(a) * SIZE, z + Math.cos(a) * SIZE)) continue;   // keep a margin from edges
+    var s = awayX === undefined ? 1 : Math.hypot(x - awayX, z - awayZ);
+    if (s > bs) { bs = s; bx = x; bz = z; if (awayX === undefined) break; }
+  }
+  if (bs < 0) return false;
+  cat.tx = bx; cat.tz = bz; return true;
+}
+function findFloorNear(x, z) {
+  if (cellType(x, z) === 1) return [x, z];
+  for (var r = 0.02; r < 0.5; r += 0.02) for (var i = 0; i < 10; i++) { var a = rnd(0, 6.283), px = x + Math.sin(a) * r, pz = z + Math.cos(a) * r; if (cellType(px, pz) === 1) return [px, pz]; }
+  return null;
+}
+function findObject() {
+  var bd = 1e9, found = false;
+  for (var i = 0; i < 60; i++) {
+    var k = (Math.random() * N * N) | 0; if (mapT[k] !== 2 || mapS[k] < 0.03) continue;
+    var x = ((k % N) + 0.5) * CELL - HALF, z = (((k / N) | 0) + 0.5) * CELL - HALF, d = Math.hypot(x - cat.x, z - cat.z);
+    if (d < bd && d < 0.45) { bd = d; cat.tx = x; cat.tz = z; found = true; }
+  }
+  return found;
+}
+function go(x, z, goal, run) { cat.tx = x; cat.tz = z; cat.goal = goal; setAct(run ? 'run' : 'walk', 9); }
+function startJump(x1, z1, y1, h, dur, next, nextDur) {
+  cat.j = { x0: cat.x, z0: cat.z, y0: cat.y, x1: x1, z1: z1, y1: y1, h: h };
+  if (Math.hypot(x1 - cat.x, z1 - cat.z) > 0.005) cat.head = Math.atan2(x1 - cat.x, z1 - cat.z);
+  setAct('jump', dur); cat.next = next; cat.nextDur = nextDur === undefined ? 1 : nextDur;
+}
+function startFall(v) { setAct('fall', 6); cat.vx = v ? v[0] * 0.5 : 0; cat.vy = v ? Math.min(v[1] * 0.5, 0.3) : 0; cat.vz = v ? v[2] * 0.5 : 0; }
+function tipDist() { return Math.hypot(hand.tip[0] - cat.x, hand.tip[1] - (cat.y + SIZE * 0.35), hand.tip[2] - cat.z); }
+function tipDistH() { return Math.hypot(hand.tip[0] - cat.x, hand.tip[2] - cat.z); }
+function handOK() { return hand.vis || hand.lost < 0.45; }
+function fingerPoint(u) { // point along the index finger, 0 = knuckle, 1 = tip
+  var P = hand.pts, f = clamp(u, 0, 1) * 3, i = Math.min(2, Math.floor(f)), s = f - i, a = P[i], b = P[i + 1];
+  return [a[0] + (b[0] - a[0]) * s, a[1] + (b[1] - a[1]) * s, a[2] + (b[2] - a[2]) * s];
+}
+function fingerDir() { var a = hand.pts[0], b = hand.pts[3], d = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], l = Math.hypot(d[0], d[1], d[2]) || 1; return [d[0] / l, d[1] / l, d[2] / l]; }
+function fingerLowSteady() { return hand.steady > 0.6 && hand.tip[1] - cat.gy < SIZE * 2.4 && Math.abs(Math.asin(clamp(fingerDir()[1], -1, 1))) < 0.5; }
+
+function moveStep(dt, sp) {
+  var sx = Math.sin(cat.head), cz = Math.cos(cat.head), la = SIZE * 0.55 + sp * 0.12, px = cat.x + sx * la, pz = cat.z + cz * la, tp = cellType(px, pz);
+  if (tp === 3) return 'edge';
+  if (tp === 0) return 'unknown';
+  var dh = groundH(px, pz) - cat.gy;
+  if (dh > 0.02) { cat.wallH = dh; cat.wallX = px; cat.wallZ = pz; return 'wall'; }
+  if (dh < -0.02) { cat.wallH = -dh; cat.wallX = px; cat.wallZ = pz; return 'ledge'; }
+  cat.x += sx * sp * dt; cat.z += cz * sp * dt; cat.speed = sp;
+  cat.gy = groundH(cat.x, cat.z); cat.y = cat.gy; cat.phase += sp * dt / (SIZE * 0.16);
+  return 'ok';
+}
+function turnAway() {
+  if (pickTarget(0.06, 0.3)) go(cat.tx, cat.tz, 'wander');
+  else { cat.head += Math.PI * rnd(0.7, 1.3); setAct('idle', rnd(0.5, 1.5)); }
+}
+function fleeFrom(x, z) {
+  mood.fear = clamp(mood.fear + 0.1, 0, 1);
+  if (pickTarget(0.12, 0.4, x, z)) go(cat.tx, cat.tz, 'flee', true); else setAct('watch', 2);
+}
+function goFood() {
+  if (food.y - groundH(food.x, food.z) > SIZE * 1.6) { setAct('beg', 2.2); return; }
+  go(food.x, food.z, 'food');
+}
+function pounceFinger() {
+  if (!handOK()) { setAct('idle', 1); return; }
+  var tx = hand.tip[0], tz = hand.tip[2], up = hand.tip[1] - cat.gy;
+  mood.playful = clamp(mood.playful + 0.05, 0, 1); mood.energy -= 0.02;
+  if (up > SIZE * 0.8 && up < SIZE * 4) {            // leap and grab the finger
+    startJump(tx, tz, hand.tip[1] - SIZE * 0.55, SIZE * 0.3, 0.3, function () { setAct('cling', rnd(1.2, 2)); });
+  } else if (solid(tx, tz) && Math.abs(groundH(tx, tz) - cat.gy) < 0.03) {
+    var d = tipDistH() || 1, k = Math.max(0, d - SIZE * 0.6) / d;
+    startJump(cat.x + (tx - cat.x) * k, cat.z + (tz - cat.z) * k, cat.gy, SIZE * 0.7, 0.3, function () {
+      setAct('swipe', 0.35);
+      cat.next = function () { if (Math.random() < 0.6 && pickTarget(0.1, 0.3, hand.tip[0], hand.tip[2])) go(cat.tx, cat.tz, 'dart', true); else setAct('roll', rnd(2, 4)); };
+    });
+  } else setAct('watch', 1.5);
+}
+function pounceFly() {
+  if (!fly.on || !solid(fly.x, fly.z) || Math.abs(groundH(fly.x, fly.z) - cat.gy) > 0.03) { setAct('watch', 1.5); return; }
+  startJump(fly.x, fly.z, cat.gy, Math.max(SIZE * 0.5, fly.y - cat.gy), 0.35, function () {
+    if (fly.on && Math.hypot(fly.x - cat.x, fly.z - cat.z) < SIZE && Math.random() < 0.5) { fly.on = false; fly.next = rnd(30, 60); SND.chirp(); mood.playful -= 0.15; setAct('groom', 3); }
+    else { fly.rest = 0; fly.cx += rnd(-0.08, 0.08); fly.cz += rnd(-0.08, 0.08); setAct('idle', 0.8); }
+  });
+}
+function afterKnock() {
+  if (mood.anger > 0.6) setAct('hiss', 1.6);
+  else if (mood.fear > 0.6) fleeFrom(hand.tip[0], hand.tip[2]);
+  else if (mood.playful > 0.5 && handOK()) go(hand.tip[0], hand.tip[2], 'chase', true);
+  else setAct('watch', 2);
+}
+function choose() {
+  var m = mood; cat.look = null; cat.goal = '';
+  if (food.on && m.hunger > 0.15 && solid(food.x, food.z)) { goFood(); return; }
+  if (m.hunger > 0.7 && Math.random() < 0.5) { setAct('meow', 2.2); return; }
+  if (fly.on && Math.random() < 0.4 + 0.5 * m.playful) {
+    if (solid(fly.cx, fly.cz) && Math.abs(groundH(fly.cx, fly.cz) - cat.gy) < 0.02) { go(fly.x, fly.z, 'fly'); cat.stalk = true; } else setAct('watch', 2);
+    return;
+  }
+  if (m.energy < 0.22) { setAct('sleep', rnd(12, 25)); return; }
+  var w = [['walk', 1 + 3 * m.curiosity], ['obj', 2 * m.curiosity], ['zoom', 2 * m.playful * m.energy], ['sit', 1.5], ['groom', 1], ['stretch', 0.5],
+    ['lookCam', 0.8 + m.affection], ['loaf', 0.6 + (1 - m.energy)], ['roll', 0.8 * m.playful], ['sleep', 1.5 * (1 - m.energy)]];
+  var tot = 0, i; for (i = 0; i < w.length; i++) tot += w[i][1];
+  var r = Math.random() * tot, pick = 'sit'; for (i = 0; i < w.length; i++) { r -= w[i][1]; if (r <= 0) { pick = w[i][0]; break; } }
+  if (pick === 'obj' && findObject()) { go(cat.tx, cat.tz, 'obj'); return; }
+  if (pick === 'zoom' && pickTarget(0.12, 0.4)) { cat.runs = 2 + ((Math.random() * 3) | 0); go(cat.tx, cat.tz, 'zoom', true); return; }
+  if (pick === 'walk' || pick === 'obj' || pick === 'zoom') { if (pickTarget(0.05, 0.3)) go(cat.tx, cat.tz, 'wander'); else setAct('sit', rnd(2, 4)); return; }
+  if (pick === 'sit') setAct('sit', rnd(3, 7)); else if (pick === 'groom') setAct('groom', rnd(3, 5)); else if (pick === 'stretch') setAct('stretch', 1.6);
+  else if (pick === 'lookCam') setAct('lookCam', rnd(2, 4)); else if (pick === 'loaf') setAct('loaf', rnd(5, 10)); else if (pick === 'roll') setAct('roll', rnd(3, 6));
+  else setAct('sleep', rnd(10, 20));
+}
+function arrive() {
+  var g = cat.goal;
+  if (g === 'zoom') { if (--cat.runs > 0 && pickTarget(0.12, 0.4)) go(cat.tx, cat.tz, 'zoom', true); else setAct('idle', rnd(0.5, 1.5)); }
+  else if (g === 'finger') setAct('sniffFinger', rnd(1.5, 3));
+  else if (g === 'chase') { setAct('wiggle', 0.7); cat.next = pounceFinger; }
+  else if (g === 'fly') { setAct('wiggle', 0.8); cat.next = pounceFly; }
+  else if (g === 'food') setAct('eat', 3);
+  else if (g === 'call') setAct('lookCam', rnd(2, 3));
+  else if (g === 'hide') setAct('hiding', rnd(4, 7));
+  else if (g === 'dinner') setAct('meow', 2.2);
+  else if (g === 'flee' || g === 'dart') setAct('watch', rnd(1.5, 3));
+  else setAct('idle', rnd(0.5, 2));
+}
+function blocked(r) {
+  var run = cat.act === 'run', g = cat.goal, sx = Math.sin(cat.head), cz = Math.cos(cat.head), resume = cat.act, lx, lz;
+  if (r === 'edge') { cat.ledge = false; if (run) { setAct('skid', 0.55); cat.speed = 5 * SIZE; } else setAct('edgePeek', rnd(1.8, 3)); return; }
+  if (r === 'unknown') { if (g === 'chase' || g === 'finger' || g === 'fly') setAct('watch', 1.5); else turnAway(); return; }
+  var small = cat.wallH <= SIZE * 0.5; lx = cat.wallX + sx * SIZE * 0.4; lz = cat.wallZ + cz * SIZE * 0.4;
+  if (r === 'wall') {
+    if (small && solid(lx, lz) && Math.abs(groundH(lx, lz) - (cat.gy + cat.wallH)) < 0.02) { var tx = cat.tx, tz = cat.tz; startJump(lx, lz, groundH(lx, lz), cat.wallH + SIZE * 0.2, 0.3, function () { cat.tx = tx; cat.tz = tz; cat.goal = g; setAct(resume, 6); }); return; }
+    if (g === 'chase' || g === 'finger' || g === 'fly' || g === 'food' || g === 'flee' || g === 'dart' || g === 'zoom' || g === 'hide' || g === 'dinner') { if (g !== 'chase' && g !== 'finger' && g !== 'fly' && g !== 'food') turnAway(); else setAct('lookUp', 1.5); cat.goal = 'x'; return; }
+    setAct('sniff', rnd(1.2, 2)); return;
+  }
+  // ledge (a step down)
+  if (small && solid(lx, lz)) { startJump(lx, lz, groundH(lx, lz), SIZE * 0.2, 0.28, 'idle', 0.4); return; }
+  cat.ledge = true; setAct('edgePeek', rnd(1.5, 2.5));
+}
+function decideClimb() {
+  var sx = Math.sin(cat.head), cz = Math.cos(cat.head), tx = cat.wallX + sx * SIZE * 0.5, tz = cat.wallZ + cz * SIZE * 0.5;
+  var th = groundH(tx, tz) - cat.gy;
+  if (cat.goal !== 'x' && cellType(tx, tz) === 2 && th > 0.02 && th <= 0.3 && Math.random() < 0.35 + 0.5 * mood.curiosity * mood.energy) {
+    cat.topX = tx; cat.topZ = tz; cat.topH = th; cat.cx0 = cat.x; cat.cz0 = cat.z; setAct('climb', 0.7 + th * 5);
+  } else turnAway();
+}
+
+// ---------- reactions to the player's finger ----------
+var PASSIVE = { idle: 1, walk: 1, sit: 1, groom: 1, loaf: 1, lookCam: 1, stretch: 1, sniff: 1, lookUp: 1, edgePeek: 1, meow: 1, watch: 1, beg: 1 };
+var BUSY = { jump: 1, climb: 1, fall: 1, gone: 1, land: 1, tumble: 1, cling: 1, onFinger: 1, hang: 1, swipe: 1, startled: 1, getUp: 1, skid: 1 };
+function handReact(dt) {
+  if (!hand.vis || cat.hidden) return;
+  var a = cat.act; if (BUSY[a]) return;
+  var d = tipDist(), dH = tipDistH(), above = hand.tip[1] - cat.y, tx = hand.tip[0], tz = hand.tip[2];
+  var ax = cat.x - tx, az = cat.z - tz, al = Math.hypot(ax, az) || 1; ax /= al; az /= al;
+  if (d < SIZE * 0.5 + 0.014) {                                            // touching
+    if (hand.speed > 0.3) {                                                // a poke
+      cat.pokes += 1; mood.fear = clamp(mood.fear + 0.12, 0, 1);
+      mood.anger = clamp(mood.anger + (mood.playful > 0.6 ? 0.03 : 0.07) * cat.pokes, 0, 1);
+      if (mood.playful > 0.6) mood.playful = clamp(mood.playful + 0.08, 0, 1);
+      var hv = Math.hypot(hand.tipV[0], hand.tipV[2]), px = hv > 0.05 ? hand.tipV[0] / hv : ax, pz = hv > 0.05 ? hand.tipV[2] / hv : az, k = Math.min(hand.speed * 0.6, 0.5);
+      SND.chirp();
+      if (hand.speed > 0.6 || a === 'sit' || a === 'sleep' || a === 'loaf' || a === 'roll' || a === 'lookCam' || a === 'watch') {
+        cat.vx = px * k; cat.vz = pz * k; cat.rollDir = Math.random() < 0.5 ? -1 : 1; cat.rollA = pose.roll; setAct('tumble', 3);
+      } else {
+        var lx = cat.x + px * SIZE * 1.4, lz = cat.z + pz * SIZE * 1.4;
+        if (!solid(lx, lz) || Math.abs(groundH(lx, lz) - cat.gy) > 0.02) { lx = cat.x; lz = cat.z; }
+        var h0 = cat.head; startJump(lx, lz, cat.gy, SIZE * 0.6, 0.28, afterKnock); cat.head = h0;
+      }
+      return;
+    }
+    cat.contact = 0.4;
+    if (a === 'roll') { cat.kick = 1; cat.backT += dt; mood.playful = clamp(mood.playful + dt * 0.08, 0, 1); if (cat.backT > 5 && Math.random() < dt * 0.5) { cat.backT = 0; mood.anger = clamp(mood.anger + 0.2, 0, 1); SND.chirp(); setAct('swipe', 0.35); cat.next = function () { fleeFrom(hand.tip[0], hand.tip[2]); }; } return; }
+    if (above > SIZE * 0.45) { if (a !== 'petted') { setAct('petted', 99); SND.purr(true); } return; }
+    cat.pushX = ax; cat.pushZ = az; if (a !== 'pushed') setAct('pushed', rnd(4, 7)); return;
+  }
+  if (a === 'roll') cat.kick = dH < SIZE * 1.1 ? 1 : 0;
+  if (d > 0.18 || !PASSIVE[a]) return;
+  var toward = hand.tipV[0] * ax + hand.tipV[2] * az;
+  if (hand.speed > 0.35 && toward > 0.15 && d < 0.12) {                    // finger rushing at it
+    if (mood.playful > 0.55 && Math.random() < 0.6) {                      // dodge: jump over it or sideways
+      var ox, oz, hh;
+      if (above < SIZE * 0.9) { ox = tx - ax * SIZE * 1.5; oz = tz - az * SIZE * 1.5; hh = SIZE * 1.4; }
+      else { var s = Math.random() < 0.5 ? 1 : -1; ox = cat.x - az * s * SIZE * 1.6; oz = cat.z + ax * s * SIZE * 1.6; hh = SIZE * 0.5; }
+      if (solid(ox, oz) && Math.abs(groundH(ox, oz) - cat.gy) < 0.02) {
+        startJump(ox, oz, cat.gy, hh, 0.32, function () { mood.playful = clamp(mood.playful + 0.05, 0, 1); setAct('wiggle', 0.6); cat.next = pounceFinger; });
+        return;
+      }
+    }
+    if (above > SIZE * 0.8 && Math.random() < 0.5) { setAct('duck', 0.7); return; }
+    mood.fear = clamp(mood.fear + 0.2, 0, 1);
+    var bx = cat.x + ax * SIZE * 1.5, bz = cat.z + az * SIZE * 1.5;
+    if (!solid(bx, bz) || Math.abs(groundH(bx, bz) - cat.gy) > 0.02) { bx = cat.x; bz = cat.z; }
+    var hd = cat.head; startJump(bx, bz, cat.gy, SIZE * 0.6, 0.28, afterKnock); cat.head = hd; setAct('jump', 0.28); cat.next = afterKnock; return;
+  }
+  if (cat.cool > 0 || a === 'sleep') return;
+  cat.cool = rnd(2, 4);
+  if (mood.anger > 0.6) setAct('hiss', 1.8);
+  else if (mood.fear > 0.6) fleeFrom(tx, tz);
+  else if (food.on && food.onFinger && mood.hunger > 0.3) goFood();
+  else if (mood.playful > 0.6 && hand.speed > 0.05) go(tx, tz, 'chase', true);
+  else if (mood.curiosity + mood.affection > 0.7) go(tx, tz, 'finger');
+  else setAct('watch', 2);
+}
+
+// ---------- one tick of the whole simulation ----------
+function simUpdate(dt, time, playing) {
+  var m = mood, c = cat, k;
+  // moods drift
+  m.hunger += dt / 200; m.fear -= dt * 0.08; m.anger -= dt * 0.025;
+  m.energy -= dt * ((c.act === 'run' || c.act === 'walk') ? 0.006 : 0.001);
+  if (c.act === 'sleep') m.energy += dt * 0.05;
+  m.playful += (Math.random() - 0.5) * dt * 0.08 + dt * 0.004 * (m.energy - 0.4);
+  m.curiosity += (Math.random() - 0.5) * dt * 0.06;
+  for (k in m) m[k] = clamp(m[k], 0, 1);
+  if (m.curiosity < 0.2) m.curiosity = 0.2;
+  c.pokes = Math.max(0, c.pokes - dt * 0.15); c.cool -= dt; if (c.act !== 'petted') c.petT = Math.max(0, c.petT - dt * 0.5);
+  if (hand.vis) hand.lost = 0; else hand.lost += dt;
+  // food
+  if (food.on) { if (food.onFinger) { if (hand.vis) { food.x = hand.tip[0]; food.y = hand.tip[1] + 0.006; food.z = hand.tip[2]; } } else food.y = groundH(food.x, food.z) + 0.004; }
+  // fly
+  if (!fly.on) { fly.next -= dt; if (fly.next <= 0 && playing && !c.hidden) { var fp = findFloorNear(rnd(-0.2, 0.2), rnd(-0.2, 0.2)); if (fp) { fly.cx = fp[0]; fly.cz = fp[1]; fly.on = true; fly.life = rnd(18, 30); fly.t = 0; fly.rest = 0; } else fly.next = 5; } }
+  else {
+    fly.t += dt; fly.life -= dt; if (fly.life <= 0) { fly.on = false; fly.next = rnd(25, 55); }
+    if (fly.rest > 0) { fly.rest -= dt; fly.y = groundH(fly.x, fly.z) + 0.003; }
+    else {
+      fly.x = fly.cx + Math.sin(fly.t * 2.3) * 0.07 + Math.sin(fly.t * 5.1) * 0.02; fly.z = fly.cz + Math.cos(fly.t * 1.7) * 0.07 + Math.cos(fly.t * 4.3) * 0.02;
+      fly.y = groundH(fly.cx, fly.cz) + 0.035 + 0.02 * Math.sin(fly.t * 3.3);
+      if (Math.random() < dt * 0.15 && solid(fly.x, fly.z)) fly.rest = rnd(1.5, 3);
+    }
+  }
+  if (!playing) return;
+  c.t += dt; c.kick = 0;
+  // rescue if the map changed under its feet
+  if (!c.hidden && !BUSY[c.act] && !solid(c.x, c.z)) { c.stuck += dt; if (c.stuck > 1) { var fl = findFloorNear(0, 0); if (fl) startJump(fl[0], fl[1], 0, SIZE, 0.4, 'land', 0.4); c.stuck = 0; } } else c.stuck = 0;
+  handReact(dt);
+  var a = c.act, sx = Math.sin(c.head), cz = Math.cos(c.head), near = hand.vis && tipDist() < 0.25, p, s;
+  c.look = near ? hand.tip : (fly.on && Math.hypot(fly.x - c.x, fly.z - c.z) < 0.3 ? [fly.x, fly.y, fly.z] : null);
+  if (c.heard > 0) c.heard -= dt;
+  if (c.lookCamT > 0) { c.lookCamT -= dt; if (!near) c.look = camL; }
+  switch (a) {
+    case 'spin': c.head += dt * 6.283 / c.dur; if (c.t > c.dur) setAct('lookCam', 1.5); break;
+    case 'hiding': c.look = camL; if (c.t > c.dur) setAct('watch', 2); break;
+    case 'idle': if (c.t > c.dur) choose(); break;
+    case 'walk': case 'run':
+      if (c.goal === 'finger' || c.goal === 'chase') { if (!handOK()) { setAct('idle', 1); break; } c.tx = hand.tip[0]; c.tz = hand.tip[2]; }
+      if (c.goal === 'fly') { if (!fly.on) { setAct('idle', 1); break; } c.tx = fly.x; c.tz = fly.z; }
+      if (c.goal === 'food') { if (!food.on) { setAct('idle', 1); break; } c.tx = food.x; c.tz = food.z; }
+      var sp = (a === 'run' ? 5 : (c.stalk ? 0.7 : 1.6)) * SIZE * (0.8 + 0.4 * m.energy);
+      var dd = Math.hypot(c.tx - c.x, c.tz - c.z), reach = c.goal === 'fly' ? SIZE * 2.5 : c.goal === 'chase' ? SIZE * 2 : (c.goal === 'finger' || c.goal === 'food') ? SIZE * 0.95 : SIZE * 0.3;
+      if (dd < reach) { c.speed = 0; arrive(); break; }
+      if (faceTo(c.tx, c.tz, dt, a === 'run' ? 9 : 5) > 1.2) { c.speed = 0; break; }
+      var r = moveStep(dt, sp); if (r !== 'ok') { blocked(r); break; }
+      if (c.t > c.dur) setAct('idle', 1);
+      break;
+    case 'skid':
+      s = 5 * SIZE * (1 - c.t / c.dur); if (solid(c.x + sx * SIZE * 0.45, c.z + cz * SIZE * 0.45)) { c.x += sx * s * dt * 0.6; c.z += cz * s * dt * 0.6; }
+      if (c.t > c.dur) { m.fear = clamp(m.fear + 0.1, 0, 1); if (pickTarget(0.1, 0.3)) go(c.tx, c.tz, 'wander', true); else { c.head += Math.PI; setAct('idle', 1); } }
+      break;
+    case 'edgePeek':
+      if (c.t > c.dur) {
+        var lx = c.wallX + sx * SIZE * 0.6, lz = c.wallZ + cz * SIZE * 0.6;
+        if (c.ledge && Math.random() < 0.6 && solid(lx, lz)) startJump(lx, lz, groundH(lx, lz), SIZE * 0.3, 0.45, 'land', 0.45);
+        else turnAway();
+      } break;
+    case 'sniff': if (c.t > c.dur) { if (c.wallH > SIZE * 1.2) setAct('lookUp', rnd(1, 2)); else decideClimb(); } break;
+    case 'lookUp': if (c.t > c.dur) decideClimb(); break;
+    case 'climb':
+      if (c.t > 0.5) { s = clamp((c.t - 0.5) / (c.dur - 0.5), 0, 1); c.y = c.gy + c.topH * s; c.x = c.cx0 + (c.wallX - c.cx0) * s * 0.8; c.z = c.cz0 + (c.wallZ - c.cz0) * s * 0.8; }
+      if (c.t > c.dur) { c.x = c.topX; c.z = c.topZ; c.gy = groundH(c.x, c.z); c.y = c.gy; m.energy -= 0.08; setAct(Math.random() < 0.5 ? 'sit' : 'loaf', rnd(4, 9)); }
+      break;
+    case 'jump':
+      s = clamp(c.t / c.dur, 0, 1); p = c.j; c.x = p.x0 + (p.x1 - p.x0) * s; c.z = p.z0 + (p.z1 - p.z0) * s; c.y = p.y0 + (p.y1 - p.y0) * s + 4 * p.h * s * (1 - s);
+      if (s >= 1) { c.gy = groundH(c.x, c.z); var nx = c.next; c.next = null; if (typeof nx === 'function') nx(); else setAct(nx || 'idle', c.nextDur); }
+      break;
+    case 'wiggle': if (c.goal === 'chase' && handOK()) faceTo(hand.tip[0], hand.tip[2], dt, 6); if (c.t > c.dur) { var f = c.next; c.next = null; if (f) f(); else setAct('idle', 1); } break;
+    case 'meow': c.look = camL; faceTo(camL[0], camL[2], dt, 3); if (!c.said && c.t > 0.5) { c.said = true; SND.meow(); } if (c.t > c.dur) setAct('idle', rnd(1, 3)); break;
+    case 'beg': c.look = [food.x, food.y, food.z]; if (!c.said && c.t > 0.6) { c.said = true; SND.meow(); } if (c.t > c.dur) setAct('idle', 1); break;
+    case 'lookCam': c.look = camL; faceTo(camL[0], camL[2], dt, 2); if (c.t > c.dur) setAct('idle', 1); break;
+    case 'watch': if (near) faceTo(hand.tip[0], hand.tip[2], dt, 3); if (c.t > c.dur) setAct('idle', 1); break;
+    case 'sleep': c.look = null; if (c.t > c.dur) setAct('stretch', 1.6); break;
+    case 'roll': c.look = null; if (c.t > c.dur) setAct('getUp', 0.5), c.next = null; break;
+    case 'getUp': if (c.t > c.dur) { var g2 = c.next; c.next = null; if (g2) g2(); else setAct('idle', 1); } break;
+    case 'land': if (c.t > c.dur) setAct('idle', rnd(0.5, 1.5)); break;
+    case 'eat':
+      c.look = null; if (Math.hypot(food.x - c.x, food.z - c.z) > SIZE * 1.7 || !food.on) { if (food.on) goFood(); else setAct('idle', 1); break; }
+      faceTo(food.x, food.z, dt, 5); if (!c.said && c.t > 0.4) { c.said = true; SND.crunch(); }
+      if (c.t > c.dur) { food.on = false; m.hunger = 0; m.affection = clamp(m.affection + 0.2, 0, 1); m.anger *= 0.5; setAct('groom', 3); }
+      break;
+    case 'sniffFinger':
+      if (!handOK()) { setAct('idle', 1); break; }
+      faceTo(hand.tip[0], hand.tip[2], dt, 5);
+      if (tipDistH() > SIZE * 2.2) { if (m.curiosity > 0.4) go(hand.tip[0], hand.tip[2], 'finger'); else setAct('watch', 2); break; }
+      if (c.t > c.dur) {
+        var q = Math.random();
+        var hopNow = c.wantHop && fingerLowSteady(); c.wantHop = false;
+        if (food.on && food.onFinger) setAct('eat', 3);
+        else if (hopNow) { p = fingerPoint(0.7); startJump(p[0], p[2], p[1] + 0.009, SIZE * 0.5, 0.35, function () { cat.fu = 0.7; setAct('onFinger', rnd(8, 16)); }); }
+        else if (m.affection > 0.55 && q < 0.4) { setAct('rub', rnd(2, 3.5)); SND.purr(true); }
+        else if (fingerLowSteady() && q < 0.4 + 0.4 * m.curiosity) { p = fingerPoint(0.7); startJump(p[0], p[2], p[1] + 0.009, SIZE * 0.5, 0.35, function () { cat.fu = 0.7; setAct('onFinger', rnd(6, 14)); }); }
+        else if (m.playful > 0.5) { setAct('swipe', 0.35); c.next = function () { go(hand.tip[0], hand.tip[2], 'chase', true); }; }
+        else setAct('watch', 2);
+      } break;
+    case 'rub': m.affection = clamp(m.affection + dt * 0.04, 0, 1); if (c.t > c.dur || !handOK()) setAct('idle', 1); break;
+    case 'petted':
+      c.look = null; c.contact -= dt; c.petT += dt; m.affection = clamp(m.affection + dt * 0.06, 0, 1); m.anger -= dt * 0.1; m.fear -= dt * 0.1;
+      if (c.contact <= 0) { setAct('idle', 1.5); break; }
+      if (c.petT > 7 + 10 * m.affection) { c.petT = 0; if (m.affection > 0.75) setAct('roll', 4); else { m.anger = clamp(m.anger + 0.35, 0, 1); SND.chirp(); setAct('swipe', 0.35); c.next = function () { fleeFrom(hand.tip[0], hand.tip[2]); }; } }
+      break;
+    case 'pushed':
+      c.contact -= dt; c.tremble = 1; m.anger = clamp(m.anger + dt * 0.04, 0, 1); m.energy -= dt * 0.01;
+      if (c.contact <= 0) { setAct('idle', 1); break; }
+      faceTo(hand.tip[0], hand.tip[2], dt, 6);
+      var pen = SIZE * 0.5 + 0.012 - tipDistH();
+      if (cellType(c.x + c.pushX * SIZE * 1.2, c.z + c.pushZ * SIZE * 1.2) === 3 || c.t > c.dur) { fleeFrom(hand.tip[0], hand.tip[2]); break; }   // near the edge: bolt
+      if (pen > 0) { var qx = c.x + c.pushX * pen, qz = c.z + c.pushZ * pen; if (solid(qx, qz) && Math.abs(groundH(qx, qz) - c.gy) < 0.02) { c.x = qx; c.z = qz; } else fleeFrom(hand.tip[0], hand.tip[2]); }
+      break;
+    case 'tumble':
+      s = Math.hypot(c.vx, c.vz); c.rollA += dt * s / (SIZE * 0.3) * c.rollDir;
+      var ux = c.x + c.vx * dt, uz = c.z + c.vz * dt, ut = cellType(ux, uz);
+      if (ut === 3) { c.x = ux; c.z = uz; startFall([c.vx * 2, 0, c.vz * 2]); break; }
+      if (ut === 0 || groundH(ux, uz) - c.gy > 0.02) { c.vx *= -0.3; c.vz *= -0.3; SND.thud(); }
+      else { c.x = ux; c.z = uz; if (groundH(ux, uz) < c.gy - 0.02) { startFall([c.vx * 2, 0, c.vz * 2]); break; } }
+      var dec = Math.exp(-3.5 * dt); c.vx *= dec; c.vz *= dec;
+      if (s < 0.02 || c.t > c.dur) { pose.roll = angDiff(c.rollA, 0); if (Math.cos(c.rollA) < 0) { setAct('roll', rnd(1.5, 3)); } else { setAct('getUp', 0.5); c.next = afterKnock; } }
+      break;
+    case 'startled': if (c.t > c.dur) afterKnock(); break;
+    case 'duck': if (c.t > c.dur) setAct('watch', 1.5); break;
+    case 'hiss':
+      if (!c.said) { c.said = true; SND.hiss(); }
+      if (handOK()) { faceTo(hand.tip[0], hand.tip[2], dt, 7); if (c.t > 0.4 && tipDistH() < SIZE * 1.6) { setAct('swipe', 0.35); c.next = function () { if (mood.fear > 0.4) fleeFrom(hand.tip[0], hand.tip[2]); else setAct('hiss', 1.2); }; break; } }
+      if (c.t > c.dur) setAct('watch', 2);
+      break;
+    case 'swipe': if (c.t > c.dur) { var f2 = c.next; c.next = null; if (f2) f2(); else setAct('idle', 1); } break;
+    case 'cling':
+      if (!handOK()) { startFall(); break; }
+      if (hand.speed > 0.9) { startFall(hand.tipV); break; }
+      c.x = hand.tip[0]; c.y = hand.tip[1] - SIZE * 0.55; c.z = hand.tip[2];
+      if (c.t > c.dur) { if (Math.abs(Math.asin(clamp(fingerDir()[1], -1, 1))) < 0.5 && hand.speed < 0.15 && Math.random() < 0.7) { c.fu = 0.85; setAct('onFinger', rnd(5, 12)); } else startFall(); }
+      break;
+    case 'onFinger':
+      if (!handOK()) { startFall(); break; }
+      if (hand.speed > 1.0) { startFall(hand.tipV); break; }
+      var fd = fingerDir(), slope = Math.asin(clamp(fd[1], -1, 1));
+      if (Math.abs(slope) > 0.6) { c.fu += (slope > 0 ? -1 : 1) * dt * (Math.abs(slope) - 0.4) * 1.5; c.sliding = true; c.fwalk = 0; }
+      else { c.sliding = false; if (c.fwalk > 0) { c.fwalk -= dt; c.fu += c.fdir * dt * 0.25; c.speed = SIZE; c.phase += dt * 6; } else { c.speed = 0; if (Math.random() < dt * 0.4) { c.fwalk = rnd(0.5, 1.5); c.fdir = Math.random() < 0.5 ? -1 : 1; } } }
+      if (c.fu > 1.02) { if (c.sliding || Math.random() < 0.5) { setAct('hang', rnd(1, 1.8)); break; } c.fu = 1; c.fdir = -1; }
+      if (c.fu < 0) c.fu = 0;
+      p = fingerPoint(c.fu); c.x = p[0]; c.y = p[1] + 0.009; c.z = p[2];
+      var facing = (c.fwalk > 0 ? c.fdir : (c.sliding ? (slope > 0 ? 1 : -1) : 1));
+      c.head = Math.atan2(fd[0] * facing, fd[2] * facing); c.slopeP = -slope * facing;
+      if (c.t > c.dur) {
+        var gx = c.x + rnd(-1, 1) * SIZE, gz = c.z + rnd(-1, 1) * SIZE;
+        if (!c.sliding && solid(gx, gz) && c.y - groundH(gx, gz) < SIZE * 3) startJump(gx, gz, groundH(gx, gz), SIZE * 0.3, 0.4, 'land', 0.4); else c.dur += 4;
+      }
+      break;
+    case 'hang':
+      if (!handOK()) { startFall(); break; }
+      c.x = hand.tip[0]; c.y = hand.tip[1] - SIZE * 0.6; c.z = hand.tip[2];
+      if (c.t > c.dur) { if (Math.abs(Math.asin(clamp(fingerDir()[1], -1, 1))) < 0.4 && Math.random() < 0.5) { c.fu = 0.95; setAct('onFinger', rnd(5, 10)); } else startFall(); }
+      break;
+    case 'fall':
+      c.vy -= 5 * dt; c.x += c.vx * dt; c.y += c.vy * dt; c.z += c.vz * dt;
+      if (solid(c.x, c.z) && c.y <= groundH(c.x, c.z)) { c.gy = groundH(c.x, c.z); c.y = c.gy; m.fear = clamp(m.fear + 0.15, 0, 1); SND.thud(); setAct('land', 0.45); }
+      else if (c.y < -0.3 || c.t > c.dur) { c.hidden = true; setAct('gone', rnd(2, 3.5)); }
+      break;
+    case 'gone':
+      if (c.t > c.dur) { var rp = findFloorNear(0, 0) || [0, 0]; c.x = rp[0]; c.z = rp[1]; c.gy = groundH(c.x, c.z); c.y = c.gy; c.hidden = false; SND.chirp(); setAct('land', 0.5); }
+      break;
+    default: if (c.t > c.dur) setAct('idle', 1);     // sit, groom, stretch, loaf …
+  }
+  // pose
+  var pn = ACT_POSE[c.act], src = pn ? POSES[pn] : null;
+  if (c.act === 'walk' && c.stalk) src = POSES.crouch;
+  if ((c.act === 'idle' || c.act === 'walk') && m.affection > 0.7 && !c.stalk) src = POSES.happy;
+  for (k in POSE0) poseT[k] = (src && src[k] !== undefined) ? src[k] : POSE0[k];
+  if (m.anger > 0.5) poseT.ears = Math.max(poseT.ears, m.anger); if (m.fear > 0.5) { poseT.ears = Math.max(poseT.ears, m.fear * 0.8); poseT.by = Math.min(poseT.by, -0.04); }
+  if (c.act === 'roll') poseT.roll = pose.roll < 0 ? -3.14159 : 3.14159;
+  if (c.look && c.act !== 'sleep' && c.act !== 'groom' && c.act !== 'tumble') {
+    var lx2 = c.look[0] - c.x, ly2 = c.look[1] - (c.y + SIZE * 0.6), lz2 = c.look[2] - c.z;
+    poseT.headY = clamp(angDiff(Math.atan2(lx2, lz2), c.head), -1.3, 1.3);
+    poseT.headP = clamp(-Math.atan2(ly2, Math.hypot(lx2, lz2)) - poseT.pitch, -1, 1);
+  }
+  var f3 = Math.min(1, dt * 10); for (k in POSE0) pose[k] += (poseT[k] - pose[k]) * f3;
+}
+function spawnCat() { var p = findFloorNear(0, 0) || [0, 0]; cat.x = p[0]; cat.z = p[1]; cat.gy = groundH(p[0], p[1]); cat.y = cat.gy; cat.hidden = false; cat.head = Math.atan2(camL[0] - cat.x, camL[2] - cat.z); setAct('land', 0.6); }
+function topMood() { var b = 'calm', v = 0.55, m = mood; if (m.playful > v) { b = 'playful'; v = m.playful; } if (m.affection > v) { b = 'affectionate'; v = m.affection; } if (m.hunger > v) { b = 'hungry'; v = m.hunger; } if (m.fear > 0.4 && m.fear + 0.2 > v) { b = 'scared'; v = m.fear + 0.2; } if (m.anger > 0.4 && m.anger + 0.25 > v) { b = 'angry'; v = m.anger + 0.25; } if (m.energy < 0.25) b = 'sleepy'; return b; }
+
+// ---------- voice ----------
+function towardCam() {
+  var dx = camL[0] - cat.x, dz = camL[2] - cat.z, d = Math.hypot(dx, dz) || 1; dx /= d; dz /= d;
+  for (var r = Math.min(0.4, d); r > 0.04; r -= 0.03) { var x = cat.x + dx * r, z = cat.z + dz * r; if (lineClear(cat.x, cat.z, x, z, cat.gy) && solid(x + dx * SIZE, z + dz * SIZE)) return [x, z]; }
+  return null;
+}
+function hideFromCam() { // run and crouch behind an object, out of sight of the camera
+  var best = null, bd = 1e9;
+  for (var i = 0; i < 80; i++) {
+    var k = (Math.random() * N * N) | 0; if (mapT[k] !== 2 || mapS[k] < SIZE * 0.8) continue;
+    var ox = ((k % N) + 0.5) * CELL - HALF, oz = (((k / N) | 0) + 0.5) * CELL - HALF, dx = ox - camL[0], dz = oz - camL[2], l = Math.hypot(dx, dz) || 1;
+    for (var r = 0.02; r < 0.12; r += 0.01) { var x = ox + dx / l * r, z = oz + dz / l * r; if (cellType(x, z) === 2) continue; if (cellType(x, z) !== 1) break; x += dx / l * SIZE * 0.6; z += dz / l * SIZE * 0.6; if (cellType(x, z) === 1 && lineClear(cat.x, cat.z, x, z, cat.gy)) { var d = Math.hypot(x - cat.x, z - cat.z); if (d < bd) { bd = d; best = [x, z]; } } break; }
+  }
+  if (best) go(best[0], best[1], 'hide', true); else fleeFrom(camL[0], camL[2]);
+}
+function shout() {
+  if (cat.hidden) return;
+  mood.fear = clamp(mood.fear + 0.5, 0, 1); mood.affection = clamp(mood.affection - 0.05, 0, 1); cat.heard = 1.5;
+  if (BUSY[cat.act]) return;
+  hideFromCam();
+}
+function hear(text) { // returns a short description of what the pet did
+  if (cat.hidden) return 'it is not here';
+  var s = ' ' + String(text).toLowerCase().replace(/[^a-z0-9' ]/g, ' ').replace(/\s+/g, ' ') + ' ', c = cat, m = mood, a = c.act, p;
+  function has() { for (var i = 0; i < arguments.length; i++) if (s.indexOf(' ' + arguments[i] + ' ') >= 0) return true; return false; }
+  c.heard = 1.2; c.lookCamT = 2.5;
+  var free = !!PASSIVE[a] || a === 'run' || a === 'roll' || a === 'hiding', asleep = a === 'sleep';
+  var obey = Math.random() < 0.15 + 0.85 * m.affection, named = petName && has(petName.toLowerCase());
+  if (has('dinner', 'dinner time', 'food', 'feeding time', 'treat', 'treats', 'breakfast', 'supper', 'lunch', 'hungry', 'biscuits', 'tea time')) {
+    m.hunger = Math.max(m.hunger, 0.5); if (BUSY[a] && !asleep) return 'it heard "dinner" but is busy';
+    if (food.on && solid(food.x, food.z)) { goFood(); return 'it is going for the food'; }
+    p = towardCam(); SND.meow(); if (p) go(p[0], p[1], 'dinner', true); else setAct('meow', 2.2); return 'it came running for dinner (press Feed)';
+  }
+  if (has('get off', 'off', 'get down', 'down you go') && a === 'onFinger') { c.dur = 0; return 'it is hopping off'; }
+  if (asleep) { if (named || has('wake', 'wake up', 'morning')) { setAct('stretch', 1.6); return 'it woke up'; } return 'it is asleep (an ear twitched)'; }
+  if (has('good', 'clever', 'well done', 'love you', 'lovely', 'sweet', 'beautiful', 'good boy', 'good girl', 'good cat')) {
+    m.affection = clamp(m.affection + 0.08, 0, 1); m.anger = clamp(m.anger - 0.1, 0, 1); m.fear = clamp(m.fear - 0.1, 0, 1); SND.chirp();
+    if (free) setAct('lookCam', 2); return 'it liked that';
+  }
+  if (has('no', 'bad', 'naughty', 'stop', 'stop it', 'bad cat')) {
+    m.affection = clamp(m.affection - 0.03, 0, 1); m.fear = clamp(m.fear + 0.05, 0, 1);
+    if (free || a === 'hiss' || a === 'wiggle' || a === 'sniffFinger') { setAct('watch', 2.5); return 'it stopped and is watching you'; } return 'it heard you';
+  }
+  if (!free) return named ? 'it heard its name but is busy' : 'it heard you but is busy';
+  if (has('get on', 'hop on', 'climb on', 'on my finger', 'up here', 'on my hand')) {
+    if (!handOK()) return 'it cannot see your finger'; if (!obey) return 'it ignored you'; c.wantHop = true; go(hand.tip[0], hand.tip[2], 'finger'); return 'it is coming to your finger';
+  }
+  if (has('come', 'here', 'come here', 'over here', 'this way') || named) {
+    var will = named && !has('come', 'here') ? Math.random() < 0.25 + 0.6 * m.affection : obey;
+    p = will ? towardCam() : null; if (p) { go(p[0], p[1], 'call'); return named ? 'it knows its name and is coming over' : 'it is coming'; }
+    setAct('lookCam', rnd(1.5, 3)); return named ? 'it looked at you, but stayed put (cats)' : 'it looked at you and ignored that';
+  }
+  var did = '';
+  if (has('hide')) { if (obey) { hideFromCam(); did = 'it went to hide'; } }
+  else if (has('sit', 'sit down')) { if (obey) { setAct('sit', rnd(4, 7)); did = 'it sat'; } }
+  else if (has('stay', 'wait')) { if (obey) { setAct('sit', 12); did = 'it is staying'; } }
+  else if (has('lie down', 'down', 'lay down')) { if (obey) { setAct('loaf', rnd(5, 9)); did = 'it lay down'; } }
+  else if (has('sleep', 'bedtime', 'bed time', 'night night', 'go to sleep', 'goodnight', 'good night')) { if (obey) { setAct('sleep', rnd(12, 25)); did = 'it curled up to sleep'; } }
+  else if (has('jump', 'hop', 'up')) { if (obey) { var h0 = c.head; startJump(c.x, c.z, c.gy, SIZE * 1.2, 0.4, 'land', 0.3); c.head = h0; did = 'it jumped'; } }
+  else if (has('roll', 'roll over', 'belly')) { if (obey) { setAct('roll', rnd(3, 5)); did = 'it rolled over'; } }
+  else if (has('speak', 'meow', 'talk', 'say hello', 'hello')) { if (obey) { setAct('meow', 2.2); did = 'it meowed'; } }
+  else if (has('spin', 'turn around', 'twirl', 'turn')) { if (obey) { setAct('spin', 0.8); did = 'it spun round'; } }
+  else if (has('play', 'playtime', 'play time', 'zoomies')) { m.playful = clamp(m.playful + 0.3, 0, 1); if (obey && pickTarget(0.12, 0.4)) { c.runs = 3; go(c.tx, c.tz, 'zoom', true); did = 'it got the zoomies'; } }
+  else if (has('fetch', 'get it', 'catch', 'chase')) { if (obey) { if (fly.on) { go(fly.x, fly.z, 'fly'); c.stalk = true; did = 'it is stalking the fly'; } else if (handOK()) { go(hand.tip[0], hand.tip[2], 'chase', true); did = 'it is chasing your finger'; } } }
+  else if (has('climb', 'explore')) { if (obey && findObject()) { go(c.tx, c.tz, 'obj'); did = 'it went to look at an object'; } }
+  else return 'it listened, but did not know those words';
+  if (did) { m.affection = clamp(m.affection + 0.01, 0, 1); return did; }
+  if (PASSIVE[c.act]) setAct('lookCam', rnd(1, 2)); return 'it understood, but ignored you (make friends first)';
+}
+
+</script>
+<script>
+// ================= MAIN: camera, depth, hand tracking, drawing, sound, buttons =================
+var $ = function (id) { return document.getElementById(id); };
+function log(msg) { $("log").textContent += msg + "\n"; }
+function check(id, label, ok, detail) {
+  var li = $(id) || document.createElement("li"); li.id = id;
+  li.className = ok === null ? "unk" : ok ? "ok" : "bad";
+  li.textContent = (ok === null ? "… " : ok ? "✓ " : "✗ ") + label + (detail ? " — " + detail : "");
+  if (!li.parentNode) $("checks").appendChild(li);
+}
+
+// ---------- matrices (column-major) ----------
+function mul(a, b) { var o = new Float32Array(16); for (var c = 0; c < 4; c++) for (var r = 0; r < 4; r++) o[c * 4 + r] = a[r] * b[c * 4] + a[4 + r] * b[c * 4 + 1] + a[8 + r] * b[c * 4 + 2] + a[12 + r] * b[c * 4 + 3]; return o; }
+function T(x, y, z) { return new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1]); }
+function S(x, y, z) { return new Float32Array([x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1]); }
+function RX(a) { var c = Math.cos(a), s = Math.sin(a); return new Float32Array([1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1]); }
+function RY(a) { var c = Math.cos(a), s = Math.sin(a); return new Float32Array([c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1]); }
+function RZ(a) { var c = Math.cos(a), s = Math.sin(a); return new Float32Array([c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]); }
+
+// ---------- sound (all synthesised, no files) ----------
+var AC = null, sndT = 0;
+function audioInit() {
+  try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+  var nb = AC.createBuffer(1, AC.sampleRate, AC.sampleRate), nd = nb.getChannelData(0); for (var i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+  function noise(t, dur, type, freq, vol) {
+    var s = AC.createBufferSource(), f = AC.createBiquadFilter(), g = AC.createGain(); s.buffer = nb; s.loop = true; f.type = type; f.frequency.value = freq;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 0.03); g.gain.linearRampToValueAtTime(0, t + dur);
+    s.connect(f); f.connect(g); g.connect(AC.destination); s.start(t); s.stop(t + dur + 0.05);
+  }
+  function tone(t, dur, type, f0, f1, vol) {
+    var o = AC.createOscillator(), g = AC.createGain(); o.type = type; o.frequency.setValueAtTime(f0, t); o.frequency.linearRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 0.015); g.gain.linearRampToValueAtTime(0, t + dur);
+    o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + dur + 0.05);
+  }
+  SND.meow = function () {
+    var t = AC.currentTime, o = AC.createOscillator(), g = AC.createGain(), f = AC.createBiquadFilter(), hi = rnd(0.9, 1.15);
+    o.type = "sawtooth"; o.frequency.setValueAtTime(520 * hi, t); o.frequency.linearRampToValueAtTime(880 * hi, t + 0.12); o.frequency.linearRampToValueAtTime(600 * hi, t + 0.5);
+    f.type = "bandpass"; f.Q.value = 3; f.frequency.setValueAtTime(1400, t); f.frequency.linearRampToValueAtTime(2400, t + 0.15); f.frequency.linearRampToValueAtTime(1100, t + 0.5);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.3, t + 0.06); g.gain.linearRampToValueAtTime(0.2, t + 0.3); g.gain.linearRampToValueAtTime(0, t + 0.55);
+    o.connect(f); f.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + 0.6);
+  };
+  SND.hiss = function () { noise(AC.currentTime, 0.6, "highpass", 3500, 0.3); };
+  SND.chirp = function () { tone(AC.currentTime, 0.09, "sine", 900, 1500, 0.15); };
+  SND.thud = function () { tone(AC.currentTime, 0.12, "sine", 260, 140, 0.2); };
+  SND.crunch = function () { for (var k = 0; k < 6; k++) noise(AC.currentTime + k * 0.4, 0.07, "bandpass", 1600, 0.2); };
+  var ps = AC.createBufferSource(), pf = AC.createBiquadFilter(), pg = AC.createGain(), pm = AC.createGain(), lfo = AC.createOscillator(), lg = AC.createGain();
+  ps.buffer = nb; ps.loop = true; pf.type = "bandpass"; pf.frequency.value = 320; pf.Q.value = 1; pg.gain.value = 0; pm.gain.value = 0.5;
+  lfo.frequency.value = 24; lg.gain.value = 0.5; lfo.connect(lg); lg.connect(pm.gain);
+  ps.connect(pf); pf.connect(pm); pm.connect(pg); pg.connect(AC.destination); ps.start(); lfo.start();
+  ['meow', 'hiss', 'chirp', 'thud', 'crunch'].forEach(function (n) { var f0 = SND[n]; SND[n] = function () { sndT = performance.now(); f0(); }; });
+  var purring = false;
+  SND.purr = function (on) { if (on === purring) return; purring = on; pg.gain.setTargetAtTime(on ? 0.35 : 0, AC.currentTime, 0.15); };
+}
+
+// ---------- hand tracker (loads in the background) ----------
+var tracker = null, trackState = "loading";
+(async function () {
+  check("cHand", "Hand tracking", null, "loading");
+  try {
+    var base = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
+    var v = await import(base + "/vision_bundle.mjs");
+    var fsr = await v.FilesetResolver.forVisionTasks(base + "/wasm");
+    var opt = function (d) { return { baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task", delegate: d }, runningMode: "VIDEO", numHands: 1 }; };
+    try { tracker = await v.HandLandmarker.createFromOptions(fsr, opt("GPU")); trackState = "ready"; }
+    catch (e) { tracker = await v.HandLandmarker.createFromOptions(fsr, opt("CPU")); trackState = "ready (slow mode)"; }
+    check("cHand", "Hand tracking", true, trackState);
+  } catch (e) { trackState = "failed: " + e.message; check("cHand", "Hand tracking", false, e.message); }
+})();
+(async function () {
+  check("cSec", "Secure page (https)", window.isSecureContext);
+  check("cXR", "Browser has AR built in (WebXR)", !!navigator.xr);
+  if (navigator.xr) { try { check("cAR", "This device can start an AR session", await navigator.xr.isSessionSupported("immersive-ar")); } catch (e) { check("cAR", "This device can start an AR session", false, e.name); } }
+})();
+
+$("btnAR").onclick = async function () {
+  if (!navigator.xr) { log("AR failed: this browser has no WebXR."); return; }
+  audioInit();
+  var canvas = document.createElement("canvas");
+  var gl = canvas.getContext("webgl", { xrCompatible: true, alpha: true, antialias: true });
+  if (!gl) { log("AR failed: WebGL not available."); return; }
+  var ov = $("ov"); ov.style.display = "block";
+  var session;
+  try {
+    session = await navigator.xr.requestSession("immersive-ar", {
+      requiredFeatures: ["hit-test"],
+      optionalFeatures: ["anchors", "dom-overlay", "depth-sensing", "camera-access"],
+      depthSensing: { usagePreference: ["cpu-optimized"], dataFormatPreference: ["luminance-alpha"] },
+      domOverlay: { root: ov }
+    });
+  } catch (e) { ov.style.display = "none"; log("AR failed to start: " + e.name + " — " + e.message); return; }
+  try { await runAR(session, gl); }
+  catch (e) { log("AR error: " + e.name + " — " + e.message); try { session.end(); } catch (_) {} }
+};
+
+async function runAR(session, gl) {
+  if (gl.makeXRCompatible) await gl.makeXRCompatible();
+  session.updateRenderState({ baseLayer: new XRWebGLLayer(session, gl), depthNear: 0.02, depthFar: 20 });
+  var refSpace = await session.requestReferenceSpace("local");
+  var viewerSpace = await session.requestReferenceSpace("viewer");
+  var hitSource = null, tapSource = null, binding = null;
+  try { hitSource = await session.requestHitTestSource({ space: viewerSpace, entityTypes: ["plane", "point"] }); }
+  catch (e) { try { hitSource = await session.requestHitTestSource({ space: viewerSpace }); } catch (e2) {} }
+  if (session.requestHitTestSourceForTransientInput) {
+    try { tapSource = await session.requestHitTestSourceForTransientInput({ profile: "generic-touchscreen", entityTypes: ["plane", "point"] }); }
+    catch (e) { try { tapSource = await session.requestHitTestSourceForTransientInput({ profile: "generic-touchscreen" }); } catch (e2) {} }
+  }
+  var depthOK = false, depthLA = false;
+  try { depthOK = session.depthUsage === "cpu-optimized"; depthLA = session.depthDataFormat === "luminance-alpha"; } catch (e) { depthOK = false; }
+  try { binding = new XRWebGLBinding(session, gl); } catch (e) { binding = null; }
+
+  // ---------- shaders ----------
+  function sh(type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
+  function program(vs, fs, a0, a1) {
+    var p = gl.createProgram(); gl.attachShader(p, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs));
+    gl.bindAttribLocation(p, 0, a0); if (a1) gl.bindAttribLocation(p, 1, a1); gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    var u = {}, n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS); for (var i = 0; i < n; i++) { var info = gl.getActiveUniform(p, i); u[info.name] = gl.getUniformLocation(p, info.name); }
+    return { p: p, u: u };
+  }
+  // solid lit shapes (the cat, fly, food). Fades out where the live depth map says something real is in front.
+  var lit = program(
+    "attribute vec3 p;attribute vec3 n;uniform mat4 P;uniform mat4 V;uniform mat4 M;varying vec3 vN;varying float vZ;" +
+    "void main(){vec4 w=V*M*vec4(p,1.0);vZ=-w.z;vN=(M*vec4(n,0.0)).xyz;gl_Position=P*w;}",
+    "precision highp float;uniform vec4 color;uniform float glow;uniform sampler2D uD;uniform mat4 uDUV;uniform float uRaw;uniform vec4 uVPt;uniform float uUseD;" +
+    "varying vec3 vN;varying float vZ;" +
+    "float vis(){if(uUseD<0.5)return 1.0;" +
+    "vec2 nv=vec2((gl_FragCoord.x-uVPt.x)/uVPt.z,1.0-(gl_FragCoord.y-uVPt.y)/uVPt.w);" +
+    "vec2 uv=(uDUV*vec4(nv,0.0,1.0)).xy;vec2 pk=texture2D(uD,uv).ra;" +
+    "float d=dot(pk,vec2(255.0,65280.0))*uRaw;if(d<=0.0)return 1.0;" +
+    "float tol=0.05+0.06*vZ;return 1.0-smoothstep(tol*0.6,tol,vZ-d);}" +
+    "void main(){float l=0.5+0.5*max(dot(normalize(vN),normalize(vec3(0.3,1.0,0.4))),0.0);" +
+    "vec3 c=mix(color.rgb*l+vec3(0.035)*l,color.rgb,glow);float a=color.a*vis();gl_FragColor=vec4(c*a,a);}",
+    "p", "n");
+  var body = program(
+    "attribute vec3 p;uniform mat4 P;uniform mat4 V;uniform mat4 M;uniform float time;varying vec3 vN;varying vec3 vW;varying float vY;" +
+    "void main(){vec3 q=p;vec3 n=p;float t=clamp((0.3-p.y)/1.1,0.0,1.0);t=t*t*(3.0-2.0*t);q.xz*=1.0+0.18*t;" +
+    "if(p.y<0.0){q.y*=0.55;n.y/=0.55;}n=normalize(n);q+=n*0.025*sin(time*2.2+p.y*4.0+p.x*3.0+p.z*2.0);q.y+=0.55;" +
+    "vec4 w=M*vec4(q,1.0);vW=w.xyz;vN=(M*vec4(n,0.0)).xyz;vY=q.y;gl_Position=P*V*w;}",
+    "precision highp float;uniform vec3 cam;uniform float time;uniform float back;varying vec3 vN;varying vec3 vW;varying float vY;" +
+    "void main(){vec3 n=normalize(vN);vec3 v=normalize(cam-vW);float f=1.0-abs(dot(n,v));float rim=pow(f,2.2);" +
+    "float scan=0.5+0.5*sin(vW.y*1800.0-time*5.0);float glow=0.8+0.2*sin(time*1.7);" +
+    "vec3 base=mix(vec3(0.10,0.75,0.95),vec3(0.45,1.0,0.85),clamp(vY/1.55,0.0,1.0));" +
+    "vec3 col=base*(0.55+0.2*scan)+vec3(0.75,1.0,1.0)*rim*1.2;float a=(0.22+0.10*scan+0.75*rim)*glow;" +
+    "if(back>0.5){a*=0.45;col*=0.8;}else{vec3 h=normalize(normalize(vec3(0.3,1.0,0.4))+v);float spec=pow(max(dot(n,h),0.0),40.0);col+=vec3(spec);a+=spec*0.6;}" +
+    "a=clamp(a,0.0,0.95);gl_FragColor=vec4(col*a,a);}", "p");
+  var flat = program(
+    "attribute vec2 q;uniform mat4 P;uniform mat4 V;uniform mat4 M;varying vec2 v;void main(){v=q;gl_Position=P*V*M*vec4(q.x,0.0,q.y,1.0);}",
+    "precision mediump float;uniform float kind;uniform float time;varying vec2 v;void main(){float r=length(v);" +
+    "if(kind<0.5){float a=0.45*(1.0-smoothstep(0.15,1.0,r));gl_FragColor=vec4(0.0,0.0,0.0,a);}" +
+    "else{float ring=1.0-smoothstep(0.05,0.09,abs(r-0.82));float dot_=1.0-smoothstep(0.08,0.12,r);" +
+    "float a=max(ring,dot_)*(0.7+0.3*sin(time*5.0));gl_FragColor=vec4(vec3(0.4,1.0,0.9)*a,a);}}", "q");
+  // the hidden 3D map: drawn as dots while scanning, and as an invisible "stand-in" surface that hides the creature behind real objects
+  var mapP = program(
+    "attribute vec4 a;uniform mat4 P;uniform mat4 V;uniform vec3 org;uniform float bias;uniform float pts;varying float vT;" +
+    "void main(){float y=a.y;if(pts>0.5&&a.w>2.5)y=0.0;vT=a.w;gl_Position=P*V*vec4(org+vec3(a.x,y+bias,a.z),1.0);gl_PointSize=5.0;" +
+    "if(pts>0.5&&a.w<0.5)gl_Position=vec4(2.0,2.0,2.0,1.0);}",
+    "precision mediump float;varying float vT;void main(){vec4 c=vec4(0.3,1.0,0.9,0.45);if(vT>1.5)c=vec4(1.0,0.75,0.2,0.9);if(vT>2.5)c=vec4(1.0,0.2,0.6,0.5);gl_FragColor=vec4(c.rgb*c.a,c.a);}", "a");
+  var blit = program(
+    "attribute vec2 q;uniform float flip;varying vec2 v;void main(){v=q*0.5+0.5;v.y=mix(v.y,1.0-v.y,flip);gl_Position=vec4(q,0.0,1.0);}",
+    "precision mediump float;uniform sampler2D t;varying vec2 v;void main(){gl_FragColor=texture2D(t,v);}", "q");
+
+  // ---------- geometry ----------
+  var i, j, sv = [], si = [], LAT = 24, LON = 40;
+  for (i = 0; i <= LAT; i++) { var th = Math.PI * i / LAT; for (j = 0; j <= LON; j++) { var ph = 2 * Math.PI * j / LON; sv.push(Math.sin(th) * Math.cos(ph), Math.cos(th), Math.sin(th) * Math.sin(ph)); } }
+  for (i = 0; i < LAT; i++) for (j = 0; j < LON; j++) { var a = i * (LON + 1) + j, b = a + LON + 1; si.push(a, a + 1, b, b, a + 1, b + 1); }
+  function buf(target, data) { var bf = gl.createBuffer(); gl.bindBuffer(target, bf); gl.bufferData(target, data, gl.STATIC_DRAW); return bf; }
+  var sphereVB = buf(gl.ARRAY_BUFFER, new Float32Array(sv)), sphereIB = buf(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(si)), sphereCount = si.length;
+  var quadVB = buf(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]));
+  var cv = [], cn = [], ci = [];
+  [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]].forEach(function (n) {
+    var u = [n[1], n[2], n[0]], w = [n[1] * u[2] - n[2] * u[1], n[2] * u[0] - n[0] * u[2], n[0] * u[1] - n[1] * u[0]], bb = cv.length / 3;
+    [[-1, -1], [1, -1], [1, 1], [-1, 1]].forEach(function (q) { for (var k = 0; k < 3; k++) cv.push(0.5 * (n[k] + q[0] * u[k] + q[1] * w[k])); cn.push(n[0], n[1], n[2]); });
+    ci.push(bb, bb + 1, bb + 2, bb, bb + 2, bb + 3);
+  });
+  var cubeP = buf(gl.ARRAY_BUFFER, new Float32Array(cv)), cubeN = buf(gl.ARRAY_BUFFER, new Float32Array(cn)), cubeIB = buf(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(ci));
+  var mapData = new Float32Array(N * N * 4), gi = [];
+  for (j = 0; j < N; j++) for (i = 0; i < N; i++) { var k0 = (j * N + i) * 4; mapData[k0] = (i + 0.5) * CELL - HALF; mapData[k0 + 1] = -0.5; mapData[k0 + 2] = (j + 0.5) * CELL - HALF; }
+  for (j = 0; j < N - 1; j++) for (i = 0; i < N - 1; i++) { var g0 = j * N + i; gi.push(g0, g0 + N, g0 + 1, g0 + 1, g0 + N, g0 + N + 1); }
+  var mapVB = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, mapVB); gl.bufferData(gl.ARRAY_BUFFER, mapData, gl.DYNAMIC_DRAW);
+  var mapIB = buf(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(gi)), mapCount = gi.length;
+  var depthTex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, depthTex);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.bindTexture(gl.TEXTURE_2D, null);
+  var hfbo = null, htex = null, hpix = null, himg = null, bw = 0, bh = 0;
+
+  // ---------- state ----------
+  var phase = "find";                 // find -> scan -> play
+  var origin = null, anchor = null, anchorState = "none";
+  var wantPlace = false, released = false, frames = 0, lastT = 0, errText = "", feedArmed = false;
+  var creature = "cat", showMap = false, showDots = true, flip = 1, sizes = [0.045, 0.06, 0.09], sizeI = 1;
+  var useD = 0, dUV = new Float32Array(16), dRaw = 0, depthSeen = false, mapTimer = 0;
+  var hw = [], hwT = [], hSeen = -9, hZ = 0, hPrev = null, hPrevT = 0, hv = [0, 0, 0], hBox = null, hMs = 0, hEvery = 3, hWas = false, hErr = "";
+  for (i = 0; i < 21; i++) { hw.push([0, 0, 0]); hwT.push([0, 0, 0]); }
+  var PAIRS = [[0, 5], [0, 17], [5, 17], [0, 9], [5, 9], [9, 13], [13, 17], [0, 13]];
+  var BONES = [[0, 1, 3], [1, 2, 2], [2, 3, 1.8], [3, 4, 1.6], [0, 5, 3], [5, 6, 1.8], [6, 7, 1.6], [7, 8, 1.5], [5, 9, 3], [9, 10, 1.8], [10, 11, 1.6], [11, 12, 1.5],
+    [9, 13, 3], [13, 14, 1.8], [14, 15, 1.6], [15, 16, 1.5], [13, 17, 3], [17, 18, 1.6], [18, 19, 1.5], [19, 20, 1.4], [0, 17, 3], [0, 9, 4], [0, 13, 4]];
+  var hint = $("ovHint"), stat = $("ovStat");
+  function say(t) { hint.textContent = t; }
+  say("Scanning… move the phone slowly side to side over the table until a ring appears.");
+
+  // ---------- buttons ----------
+  ["bMain", "bFeed", "bTalk", "bName", "bWho", "bSize", "bMap", "bDots", "bFlip", "bExit"].forEach(function (id) { $(id).addEventListener("beforexrselect", function (e) { e.preventDefault(); }); });
+  $("bExit").onclick = function () { session.end(); };
+  $("bMain").onclick = function () {
+    if (phase === "scan") { phase = "play"; mapProcess(); spawnCat(); $("bMain").textContent = "Rescan"; say("Here it comes. Try putting your finger on the table near it."); }
+    else if (phase === "play") { phase = "scan"; mapClear(); cat.hidden = true; fly.on = false; food.on = false; $("bMain").textContent = "Release pet"; say("Rescanning. Sweep slowly over the area from a few sides."); }
+  };
+  $("bFeed").onclick = function () {
+    if (phase !== "play") return;
+    if (hand.vis) { food.on = true; food.onFinger = true; say("Food is on your fingertip. Hold it near the pet."); }
+    else { feedArmed = true; say("Tap the table to drop some food."); }
+  };
+  $("bWho").onclick = function () { creature = creature === "cat" ? "blob" : "cat"; $("bWho").textContent = creature === "cat" ? "Cat" : "Blob"; };
+  $("bSize").onclick = function () { sizeI = (sizeI + 1) % 3; SIZE = sizes[sizeI]; $("bSize").textContent = "Size " + ["S", "M", "L"][sizeI]; };
+  $("bMap").onclick = function () { showMap = !showMap; };
+  $("bDots").onclick = function () { showDots = !showDots; };
+  $("bFlip").onclick = function () { flip = 1 - flip; };
+  // ---------- voice: speech commands, naming, and loudness (shouting) ----------
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition, listening = false, micStream = null, analyser = null, micBuf = null, micState = "off", loudN = 0, lastShout = 0;
+  try { petName = localStorage.getItem("arpet_name") || ""; } catch (e) {}
+  if (petName) $("bName").textContent = petName.slice(0, 8);
+  function micStart() {
+    if (!AC || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { micState = "none"; return; }
+    navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: false, autoGainControl: false } }).then(function (st) {
+      if (listening) { st.getTracks().forEach(function (tk) { tk.stop(); }); return; }
+      micStream = st; analyser = AC.createAnalyser(); analyser.fftSize = 512; micBuf = new Float32Array(512); AC.createMediaStreamSource(st).connect(analyser); micState = "on";
+    }, function (e) { micState = "blocked"; });
+  }
+  function micStop() { if (micStream) micStream.getTracks().forEach(function (tk) { tk.stop(); }); micStream = null; analyser = null; }
+  function listen(label, cb) {
+    if (!SR) { say("Speech recognition is not available in this browser."); return; }
+    if (listening) return;
+    listening = true; micStop(); $("bTalk").textContent = "Listening"; say(label);
+    var rec = new SR(), got = false; rec.lang = "en-GB"; rec.interimResults = false; rec.maxAlternatives = 4;
+    rec.onresult = function (e) { got = true; var alts = []; for (var i = 0; i < e.results[0].length; i++) alts.push(e.results[0][i].transcript); cb(alts); };
+    rec.onerror = function (e) { got = true; say("Microphone: " + e.error + "."); };
+    rec.onend = function () { listening = false; $("bTalk").textContent = "Talk"; if (!got) say("I did not catch that."); setTimeout(micStart, 300); };
+    setTimeout(function () { try { rec.start(); } catch (e) { listening = false; $("bTalk").textContent = "Talk"; say("Microphone: " + e.message); } }, 200);
+  }
+  $("bTalk").onclick = function () {
+    if (phase !== "play") { say("Release the pet first."); return; }
+    listen("Listening… speak to " + (petName || "it") + " now.", function (alts) {
+      var msg = "", unknown = "it listened, but did not know those words", used = alts[0];
+      for (var i = 0; i < alts.length; i++) { // try each thing the phone thinks it heard until one means something
+        var s2 = " " + alts[i].toLowerCase() + " ";
+        if (i < alts.length - 1 && !(petName && s2.indexOf(petName.toLowerCase()) >= 0) && !KNOWN.test(s2)) continue;
+        used = alts[i]; msg = hear(alts[i]); break;
+      }
+      say("“" + used + "” — " + (msg || unknown) + ".");
+    });
+  };
+  var KNOWN = /\b(dinner|food|feeding|treats?|breakfast|supper|lunch|hungry|biscuits|tea time|off|down|wake|morning|good|clever|well done|love|lovely|sweet|beautiful|no|bad|naughty|stop|get on|hop on|climb|finger|hand|up|come|here|this way|hide|sit|stay|wait|lie|lay|sleep|bedtime|bed time|night|goodnight|jump|hop|roll|belly|speak|meow|talk|hello|spin|turn|twirl|play|playtime|zoomies|fetch|get it|catch|chase|explore)\b/;
+  $("bName").onclick = function () {
+    listen("Say the name you want to give it.", function (alts) {
+      var nm = alts[0].trim().split(/\s+/).slice(0, 3).join(" "); if (!nm) return;
+      petName = nm; try { localStorage.setItem("arpet_name", nm); } catch (e) {}
+      $("bName").textContent = nm.slice(0, 8); say("Its name is now “" + nm + "”. Press Talk and call it.");
+      if (phase === "play") { cat.heard = 1.5; cat.lookCamT = 3; }
+    });
+  };
+  micStart();
+  session.addEventListener("selectstart", function () { wantPlace = true; released = false; });
+  session.addEventListener("select", function () { if (wantPlace) released = true; });
+  session.addEventListener("end", function () {
+    $("ov").style.display = "none"; SND.purr(false); micStop();
+    log("AR ended after " + frames + " frames.");
+    log("Depth map: " + (depthOK ? (depthSeen ? "working" : "enabled but no data") : "not available") + ". World lock: " + anchorState + ".");
+    log("Hand tracking: " + trackState + (binding ? "" : " (no camera binding)") + (hMs ? ", " + hMs.toFixed(0) + " ms per check" : "") + (hErr ? " — " + hErr : "") + ".");
+    log("Microphone: " + micState + ". Speech recognition: " + (SR ? "available" : "not available") + ".");
+    log("Scan coverage: " + Math.round(mapCover * 100) + "%." + (errText ? " Error: " + errText : ""));
+  });
+
+  function tapped(hit) {
+    var hp = hit.getPose(refSpace); if (!hp) return;
+    var q = hp.transform.position;
+    if (phase === "find") {
+      origin = [q.x, q.y, q.z];
+      if (hit.createAnchor) { anchorState = "locking…"; hit.createAnchor().then(function (an) { anchor = an; anchorState = "locked"; }, function (e) { anchorState = "failed (" + e.name + ")"; }); } else anchorState = "not supported";
+      if (depthOK) { phase = "scan"; mapClear(); $("bMain").textContent = "Release pet"; say("Now scan: sweep slowly over the whole area, from two or three sides. Go close to objects."); }
+      else { mapFlat(); phase = "play"; spawnCat(); $("bMain").textContent = "—"; say("No depth on this phone, so the pet assumes a clear flat area."); }
+    } else if (phase === "play" && origin) {
+      var lx = q.x - origin[0], lz = q.z - origin[2];
+      if (feedArmed) { feedArmed = false; food.on = true; food.onFinger = false; food.x = lx; food.z = lz; say("Food dropped."); }
+      else if (PASSIVE[cat.act] && solid(lx, lz) && !cat.hidden) { mood.curiosity = clamp(mood.curiosity + 0.1, 0, 1); go(lx, lz, "call"); }
+    }
+  }
+
+  // ---------- depth -> hidden 3D map ----------
+  function sampleDepth(di, P, camM) {
+    var nx = 44, ny = 44, ox = Math.random(), oy = Math.random();
+    for (var b = 0; b < ny; b++) for (var a2 = 0; a2 < nx; a2++) {
+      var u = (a2 + ox) / nx, v = (b + oy) / ny;
+      if (hBox && u > hBox[0] && u < hBox[2] && v > hBox[1] && v < hBox[3]) continue;   // don't map the hand as furniture
+      var d = di.getDepthInMeters(u, v); if (!(d > 0.1 && d < 1.6)) continue;
+      var X = ((2 * u - 1) + P[8]) / P[0] * d, Y = ((1 - 2 * v) + P[9]) / P[5] * d, Z = -d;
+      mapAdd(camM[0] * X + camM[4] * Y + camM[8] * Z + camM[12] - origin[0], camM[1] * X + camM[5] * Y + camM[9] * Z + camM[13] - origin[1], camM[2] * X + camM[6] * Y + camM[10] * Z + camM[14] - origin[2]);
+    }
+  }
+  function mapUpload() {
+    for (var k = 0; k < N * N; k++) { mapData[k * 4 + 1] = mapS[k]; mapData[k * 4 + 3] = mapT[k]; }
+    gl.bindBuffer(gl.ARRAY_BUFFER, mapVB); gl.bufferSubData(gl.ARRAY_BUFFER, 0, mapData); mapDirty = false;
+  }
+
+  // ---------- camera picture -> hand position ----------
+  function handDetect(view, P, camM, now) {
+    var cam = view.camera; if (!cam || !tracker || !binding) return;
+    var tex = binding.getCameraImage(cam); if (!tex) return;
+    if (!hfbo) {
+      var sc = 288 / Math.max(cam.width, cam.height); bw = Math.max(16, Math.round(cam.width * sc)); bh = Math.max(16, Math.round(cam.height * sc));
+      htex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, htex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, bw, bh, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      hfbo = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, hfbo); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, htex, 0);
+      hpix = new Uint8Array(bw * bh * 4); himg = new ImageData(new Uint8ClampedArray(hpix.buffer), bw, bh);
+    }
+    gl.bindFramebuffer(gl.FRAMEBUFFER, hfbo); gl.viewport(0, 0, bw, bh);
+    gl.disable(gl.DEPTH_TEST); gl.disable(gl.BLEND); gl.disable(gl.CULL_FACE); gl.colorMask(true, true, true, true);
+    gl.useProgram(blit.p); gl.disableVertexAttribArray(1); gl.bindBuffer(gl.ARRAY_BUFFER, quadVB); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(blit.u.t, 0); gl.uniform1f(blit.u.flip, flip);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); gl.readPixels(0, 0, bw, bh, gl.RGBA, gl.UNSIGNED_BYTE, hpix); gl.bindTexture(gl.TEXTURE_2D, null);
+    var t0 = performance.now(), res = tracker.detectForVideo(himg, t0), ms = performance.now() - t0;
+    hMs = hMs ? hMs * 0.9 + ms * 0.1 : ms; hEvery = hMs > 45 ? 6 : hMs > 25 ? 4 : 3;
+    if (!res || !res.landmarks || !res.landmarks.length || !res.worldLandmarks || !res.worldLandmarks.length) return;
+    var lm = res.landmarks[0], wl = res.worldLandmarks[0], tan = [], k, st = 0, sw = 0, u0 = 1, v0 = 1, u1 = 0, v1 = 0;
+    for (k = 0; k < 21; k++) { tan.push([((2 * lm[k].x - 1) + P[8]) / P[0], ((1 - 2 * lm[k].y) + P[9]) / P[5]]); u0 = Math.min(u0, lm[k].x); u1 = Math.max(u1, lm[k].x); v0 = Math.min(v0, lm[k].y); v1 = Math.max(v1, lm[k].y); }
+    for (k = 0; k < PAIRS.length; k++) { var pa = PAIRS[k][0], pb = PAIRS[k][1]; st += Math.hypot(tan[pa][0] - tan[pb][0], tan[pa][1] - tan[pb][1]); sw += Math.hypot(wl[pa].x - wl[pb].x, wl[pa].y - wl[pb].y); }
+    if (st < 1e-4) return;
+    var Z = sw / st; if (!(Z > 0.05 && Z < 1.5)) return;      // distance from apparent hand size
+    var fresh = now - hSeen > 0.45; hZ = fresh ? Z : hZ + (Z - hZ) * 0.4;
+    var zm = (wl[0].z + wl[5].z + wl[9].z + wl[13].z + wl[17].z) / 5, cx = camM[12], cy = camM[13], cz = camM[14];
+    for (k = 0; k < 21; k++) {
+      var Zi = hZ + (wl[k].z - zm), X = tan[k][0] * Zi, Y = tan[k][1] * Zi, Zv = -Zi;
+      hwT[k][0] = camM[0] * X + camM[4] * Y + camM[8] * Zv + cx; hwT[k][1] = camM[1] * X + camM[5] * Y + camM[9] * Zv + cy; hwT[k][2] = camM[2] * X + camM[6] * Y + camM[10] * Zv + cz;
+    }
+    if (origin) {   // surface snap: a fingertip that looks close to the table is assumed to be touching it
+      var tp = hwT[8], dy = tp[1] - cy, g = origin[1] + groundH(tp[0] - origin[0], tp[2] - origin[2]) + 0.008, h = tp[1] - g, kk = 1;
+      if (dy < -0.03) { var sPlane = (g - cy) / dy; if (h < 0) kk = sPlane; else if (h < 0.06) kk = 1 + (sPlane - 1) * 0.6 * (1 - h / 0.06); }
+      if (kk !== 1 && kk > 0.5 && kk < 1.6) for (k = 0; k < 21; k++) { hwT[k][0] = cx + (hwT[k][0] - cx) * kk; hwT[k][1] = cy + (hwT[k][1] - cy) * kk; hwT[k][2] = cz + (hwT[k][2] - cz) * kk; }
+    }
+    var tipN = hwT[8];
+    if (hPrev && !fresh && now - hPrevT < 0.5 && now > hPrevT) { var dtD = now - hPrevT; for (k = 0; k < 3; k++) hv[k] = hv[k] * 0.5 + (tipN[k] - hPrev[k]) / dtD * 0.5; } else hv = [0, 0, 0];
+    hPrev = [tipN[0], tipN[1], tipN[2]]; hPrevT = now; hSeen = now; hBox = [u0 - 0.08, v0 - 0.08, u1 + 0.08, v1 + 0.08];
+  }
+  function boneM(a, b, w) {
+    var dx = b[0] - a[0], dy = b[1] - a[1], dz = b[2] - a[2], len = Math.hypot(dx, dy, dz) || 1e-4, zx = dx / len, zy = dy / len, zz = dz / len;
+    var ux = 0, uy = 1, uz = 0; if (Math.abs(zy) > 0.9) { ux = 1; uy = 0; }
+    var xx = uy * zz - uz * zy, xy = uz * zx - ux * zz, xz = ux * zy - uy * zx, xl = Math.hypot(xx, xy, xz) || 1; xx /= xl; xy /= xl; xz /= xl;
+    var yx = zy * xz - zz * xy, yy = zz * xx - zx * xz, yz = zx * xy - zy * xx, L = len + w * 0.5;
+    return new Float32Array([xx * w, xy * w, xz * w, 0, yx * w, yy * w, yz * w, 0, zx * L, zy * L, zz * L, 0, (a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2, 1]);
+  }
+
+  // ---------- the cat's body, built from blocks ----------
+  var FUR = [0.035, 0.035, 0.045, 1], EYE = [0.75, 1.0, 0.25, 1];
+  function catParts(root, time) {
+    var p = pose, c = cat, out = [], a = c.act, moving = c.speed > 0.001, run = a === "run", ph = c.phase, amp = moving ? (run ? 0.9 : 0.55) : 0;
+    var pitch = p.pitch + c.slopeP, by = p.by, roll = a === "tumble" ? c.rollA : p.roll;
+    if (run && moving) { pitch += Math.sin(ph) * 0.14; by += Math.abs(Math.sin(ph)) * 0.07; }
+    if (a === "hang" || a === "cling") roll += Math.sin(time * 5) * 0.18;
+    if (a === "wiggle") roll += Math.sin(time * 22) * 0.08;
+    var breathe = 1 + 0.02 * Math.sin(time * (a === "sleep" ? 1.2 : 2.4));
+    var B = mul(root, mul(T(0, by + 0.36, 0), mul(RZ(roll), mul(RX(pitch), T(0, -0.36, 0)))));
+    function box(M, x, y, z, sx, sy, sz, cl, g) { out.push({ m: mul(M, mul(T(x, y, z), S(sx, sy, sz))), c: cl || FUR, g: g || 0 }); }
+    box(B, 0, 0.36, 0, 0.30 * p.puff, 0.26 * breathe * p.puff, 0.62);
+    var hp = p.headP, hy = p.headY;
+    if (a === "sniff" || a === "sniffFinger") hp += Math.sin(time * 14) * 0.07;
+    if (a === "eat") hp += Math.sin(time * 9) * 0.12;
+    if (a === "groom") hp += Math.sin(time * 6) * 0.15;
+    if (a === "rub") hy += Math.sin(time * 3) * 0.4;
+    var H = mul(B, mul(T(0, 0.44, 0.30), mul(RY(hy), mul(RX(hp), T(0, 0.06, 0.10)))));
+    box(H, 0, 0, 0, 0.34, 0.28, 0.26);
+    var blink = (time % 4.7) > 4.55 ? 0.1 : 1, eo = p.eyes * blink;
+    [-1, 1].forEach(function (sx) {
+      var ev = p.ears + (c.heard > 0 ? 0.25 + Math.sin(time * 30 + sx) * 0.25 : 0);
+      box(mul(H, mul(T(sx * 0.115, 0.14, -0.02), mul(RZ(-sx * ev * 0.9), RX(-ev * 0.6)))), 0, 0.05, 0, 0.09, 0.12, 0.05);
+      if (eo > 0.05) box(H, sx * 0.085, 0.02, 0.131, 0.075, 0.075 * eo, 0.012, EYE, 1);
+    });
+    var sw = Math.sin(ph) * amp, sw2 = Math.sin(ph + 2.2) * amp, leg = [], q;
+    leg[0] = p.legF + (run ? sw : sw); leg[1] = p.legF + (run ? sw : -sw); leg[2] = p.legH + (run ? sw2 : -sw); leg[3] = p.legH + (run ? sw2 : sw);
+    for (q = 0; q < 4; q++) {
+      if (a === "roll") leg[q] += Math.sin(time * (c.kick ? 20 : 4) + q * 1.7) * 0.5;
+      if (a === "climb" || a === "cling") leg[q] += Math.sin(time * 16 + q * 3.14) * 0.5;
+      if (a === "pushed") leg[q] += Math.sin(time * 40 + q) * 0.05;
+    }
+    if (a === "swipe") leg[1] -= 1.7 * Math.sin(Math.PI * clamp(c.t / c.dur, 0, 1));
+    if (a === "groom") leg[0] -= 1.1;
+    var hips = [[-0.10, 0.22, p.lenF], [0.10, 0.22, p.lenF], [-0.10, -0.22, p.lenH], [0.10, -0.22, p.lenH]];
+    for (q = 0; q < 4; q++) box(mul(B, mul(T(hips[q][0], 0.24, hips[q][1]), RX(leg[q]))), 0, -0.12 * hips[q][2], 0, 0.08, 0.24 * hips[q][2], 0.08);
+    var Tm = mul(B, mul(T(0, 0.42, -0.31), mul(RY(Math.sin(time * p.tailF) * p.tailS), RX(p.tailP)))), tw = 0.06 * (p.puff > 1.1 ? 1.7 : 1);
+    for (q = 0; q < 4; q++) { Tm = mul(Tm, RX(p.tailC)); box(Tm, 0, 0, -0.07, tw, tw, 0.14); Tm = mul(Tm, T(0, 0, -0.14)); }
+    return out;
+  }
+
+  // ---------- every frame ----------
+  function onFrame(t, frame) {
+    session.requestAnimationFrame(onFrame);
+    try { tick(t, frame); } catch (e) { if (!errText) { errText = e.name + ": " + e.message; log("Frame error: " + errText); } }
+  }
+  function tick(t, frame) {
+    var vpose = frame.getViewerPose(refSpace);
+    if (!vpose) { stat.textContent = "Tracking lost — move slowly, more light"; return; }
+    frames++;
+    var time = t / 1000, dt = clamp(time - lastT, 0.001, 0.06); lastT = time;
+    var view = vpose.views[0], P = view.projectionMatrix, camM = view.transform.matrix, k, q;
+
+    var centrePose = null, centreHit = null;
+    if (hitSource) { var hits = frame.getHitTestResults(hitSource); if (hits.length) { centreHit = hits[0]; centrePose = centreHit.getPose(refSpace); } }
+    if (phase === "find" && centrePose && frames % 30 === 0) say("Surface found. Tap the middle of the clear area you want to play on.");
+    if (wantPlace) {
+      var hit = null;
+      if (tapSource) { var tr = frame.getHitTestResultsForTransientInput(tapSource); for (k = 0; k < tr.length && !hit; k++) if (tr[k].results.length) hit = tr[k].results[0]; if (!hit && released) wantPlace = false; }
+      else if (released) { hit = centreHit; if (!hit) wantPlace = false; }
+      if (hit) { wantPlace = false; tapped(hit); }
+    }
+    if (anchor && origin) { var ap = frame.getPose(anchor.anchorSpace, refSpace); if (ap) { q = ap.transform.position; origin[0] = q.x; origin[1] = q.y; origin[2] = q.z; } }
+
+    // live depth
+    var di = null; useD = 0;
+    if (depthOK) { try { di = frame.getDepthInformation(view); } catch (e) { di = null; } }
+    if (di && di.data) {
+      depthSeen = true;
+      if (depthLA) {
+        gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, depthTex); gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE_ALPHA, di.width, di.height, 0, gl.LUMINANCE_ALPHA, gl.UNSIGNED_BYTE, new Uint8Array(di.data, 0, di.width * di.height * 2));
+        gl.activeTexture(gl.TEXTURE0); useD = 1; dUV = di.normDepthBufferFromNormView.matrix; dRaw = di.rawValueToMeters;
+      }
+      if (origin && frames % (phase === "scan" ? 2 : 4) === 0) sampleDepth(di, P, camM);
+    }
+    if (origin) { mapTimer += dt; if (mapTimer > 0.5) { mapTimer = 0; if (depthOK) mapProcess(); } if (mapDirty) mapUpload(); }
+
+    // hand
+    if (tracker && binding && frames % hEvery === 0) { try { handDetect(view, P, camM, time); } catch (e) { if (!hErr) hErr = e.name + ": " + e.message; } }
+    var hvis = time - hSeen < 0.45, f = hWas ? 1 - Math.exp(-dt * 20) : 1;
+    if (hvis) for (k = 0; k < 21; k++) for (q = 0; q < 3; q++) hw[k][q] += (hwT[k][q] - hw[k][q]) * f;
+    else hBox = null;
+    hWas = hvis;
+    hand.vis = hvis && !!origin;
+    if (hand.vis) {
+      var ids = [5, 6, 7, 8]; for (k = 0; k < 4; k++) for (q = 0; q < 3; q++) hand.pts[k][q] = hw[ids[k]][q] - origin[q];
+      hand.tip = hand.pts[3]; hand.tipV = hv; hand.speed = Math.hypot(hv[0], hv[1], hv[2]); hand.steady = hand.speed < 0.05 ? hand.steady + dt : 0;
+    }
+    if (origin) camL = [camM[12] - origin[0], camM[13] - origin[1], camM[14] - origin[2]];
+
+    if (analyser && frames % 3 === 0) {
+      analyser.getFloatTimeDomainData(micBuf); var sum = 0; for (k = 0; k < micBuf.length; k++) sum += micBuf[k] * micBuf[k];
+      var rms = Math.sqrt(sum / micBuf.length);
+      if (rms > 0.3 && performance.now() - sndT > 900) loudN++; else loudN = 0;
+      if (loudN >= 2 && time - lastShout > 4 && phase === "play") { lastShout = time; loudN = 0; shout(); say("That was loud. You scared it!"); }
+    }
+    simUpdate(dt, time, phase === "play");
+
+    // ---------- draw ----------
+    var layer = session.renderState.baseLayer, vp = layer.getViewport(view), V = view.transform.inverse.matrix, cp = view.transform.position;
+    gl.bindFramebuffer(gl.FRAMEBUFFER, layer.framebuffer);
+    gl.viewport(vp.x, vp.y, vp.width, vp.height);
+    gl.colorMask(true, true, true, true); gl.depthMask(true); gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.enableVertexAttribArray(0); gl.disable(gl.CULL_FACE);
+    function litOn() {
+      gl.useProgram(lit.p); gl.uniformMatrix4fv(lit.u.P, false, P); gl.uniformMatrix4fv(lit.u.V, false, V);
+      gl.uniform1i(lit.u.uD, 1); gl.uniformMatrix4fv(lit.u.uDUV, false, dUV); gl.uniform1f(lit.u.uRaw, dRaw); gl.uniform4f(lit.u.uVPt, vp.x, vp.y, vp.width, vp.height); gl.uniform1f(lit.u.uUseD, useD);
+      gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, depthTex); gl.activeTexture(gl.TEXTURE0);
+    }
+    function cubeOn() { gl.bindBuffer(gl.ARRAY_BUFFER, cubeP); gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0); gl.enableVertexAttribArray(1); gl.bindBuffer(gl.ARRAY_BUFFER, cubeN); gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 0, 0); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeIB); }
+    function sphereOn(two) { gl.bindBuffer(gl.ARRAY_BUFFER, sphereVB); gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0); if (two) { gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 0, 0); } else gl.disableVertexAttribArray(1); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereIB); }
+    function shape(M, col, glow, n) { gl.uniformMatrix4fv(lit.u.M, false, M); gl.uniform4fv(lit.u.color, col); gl.uniform1f(lit.u.glow, glow); gl.drawElements(gl.TRIANGLES, n, gl.UNSIGNED_SHORT, 0); }
+    function flatOn() { gl.useProgram(flat.p); gl.disableVertexAttribArray(1); gl.bindBuffer(gl.ARRAY_BUFFER, quadVB); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0); gl.uniformMatrix4fv(flat.u.P, false, P); gl.uniformMatrix4fv(flat.u.V, false, V); gl.uniform1f(flat.u.time, time); }
+    function mapOn(pts) { gl.useProgram(mapP.p); gl.disableVertexAttribArray(1); gl.bindBuffer(gl.ARRAY_BUFFER, mapVB); gl.vertexAttribPointer(0, 4, gl.FLOAT, false, 0, 0); gl.uniformMatrix4fv(mapP.u.P, false, P); gl.uniformMatrix4fv(mapP.u.V, false, V); gl.uniform3f(mapP.u.org, origin[0], origin[1], origin[2]); gl.uniform1f(mapP.u.pts, pts); gl.uniform1f(mapP.u.bias, pts ? 0.002 : -0.004); }
+
+    if (origin && phase === "play") {
+      // 1. invisible stand-ins for real things: scanned objects and the hand. They only write depth, so they hide the pet.
+      gl.enable(gl.DEPTH_TEST); gl.disable(gl.BLEND); gl.colorMask(false, false, false, false);
+      mapOn(0); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, mapIB); gl.drawElements(gl.TRIANGLES, mapCount, gl.UNSIGNED_SHORT, 0);
+      if (hvis) { litOn(); gl.uniform1f(lit.u.uUseD, 0); cubeOn(); for (k = 0; k < BONES.length; k++) shape(boneM(hw[BONES[k][0]], hw[BONES[k][1]], BONES[k][2] * 0.01), FUR, 0, 36); }
+      gl.colorMask(true, true, true, true); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+      if (!cat.hidden) {
+        var wx = origin[0] + cat.x + (cat.tremble ? Math.sin(time * 47) * 0.0012 : 0), wy = origin[1] + cat.y, wz = origin[2] + cat.z;
+        // 2. soft shadow on whatever is underneath
+        if (solid(cat.x, cat.z)) {
+          var gy = groundH(cat.x, cat.z), air = clamp((cat.y - gy) / (SIZE * 3), 0, 1), ss = SIZE * 0.55 * (1 - 0.5 * air);
+          if (cat.y >= gy - 0.005) { gl.depthMask(false); flatOn(); gl.uniform1f(flat.u.kind, 0); gl.uniformMatrix4fv(flat.u.M, false, mul(T(wx, origin[1] + gy + 0.003, wz), S(ss, 1, ss))); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); gl.depthMask(true); }
+        }
+        // 3. the pet
+        if (creature === "cat") {
+          var Lc = SIZE * 1.2, parts = catParts(mul(T(wx, wy, wz), mul(RY(cat.head), S(Lc, Lc, Lc))), time);
+          litOn(); cubeOn(); for (k = 0; k < parts.length; k++) shape(parts[k].m, parts[k].c, parts[k].g, 36);
+        } else {
+          var SB = SIZE * 0.42, hop = cat.speed > 0.001 ? Math.abs(Math.sin(cat.phase * 0.5)) : 0, rl = cat.act === "tumble" ? cat.rollA : pose.roll;
+          var bm = mul(T(wx, wy + hop * SIZE * 0.25, wz), mul(RY(cat.head), mul(T(0, SB * 0.75, 0), mul(RZ(rl), mul(T(0, -SB * 0.75, 0), S(SB * (1 - 0.1 * hop), SB * (1 + 0.15 * hop + pose.by), SB * (1 - 0.1 * hop)))))));
+          sphereOn(false); gl.enable(gl.CULL_FACE); gl.depthMask(false);
+          gl.useProgram(body.p); gl.uniformMatrix4fv(body.u.P, false, P); gl.uniformMatrix4fv(body.u.V, false, V); gl.uniformMatrix4fv(body.u.M, false, bm); gl.uniform1f(body.u.time, time); gl.uniform3f(body.u.cam, cp.x, cp.y, cp.z);
+          gl.uniform1f(body.u.back, 1); gl.cullFace(gl.FRONT); gl.drawElements(gl.TRIANGLES, sphereCount, gl.UNSIGNED_SHORT, 0);
+          litOn(); gl.uniform1f(lit.u.uUseD, 0); sphereOn(true); gl.cullFace(gl.BACK);
+          var bl = pose.eyes * ((time % 4.2) > 4.05 ? 0.12 : 1), dark = [0.03, 0.10, 0.20, 0.92];
+          [-1, 1].forEach(function (sx) { shape(mul(bm, mul(T(sx * 0.36, 0.85, 0.86), S(0.11, 0.16 * Math.max(bl, 0.08), 0.06))), dark, 0, sphereCount); });
+          shape(mul(bm, mul(T(0, 0.50, 1.02), S(0.12, 0.045, 0.05))), dark, 0, sphereCount);
+          sphereOn(false); gl.useProgram(body.p); gl.uniform1f(body.u.back, 0); gl.drawElements(gl.TRIANGLES, sphereCount, gl.UNSIGNED_SHORT, 0);
+          gl.disable(gl.CULL_FACE); gl.depthMask(true);
+        }
+      }
+      // 4. fly and food
+      litOn(); sphereOn(true);
+      if (fly.on) {
+        var fm = T(origin[0] + fly.x, origin[1] + fly.y, origin[2] + fly.z);
+        shape(mul(fm, S(0.003, 0.0025, 0.004)), [0.02, 0.02, 0.02, 1], 0, sphereCount);
+        if (fly.rest <= 0) { var wf = 0.3 + 0.7 * Math.abs(Math.sin(time * 70)); shape(mul(fm, mul(T(0, 0.002, 0), S(0.007 * wf, 0.0006, 0.003))), [0.8, 0.9, 1, 0.5], 1, sphereCount); }
+      }
+      if (food.on) shape(mul(T(origin[0] + food.x, origin[1] + food.y, origin[2] + food.z), S(0.006, 0.004, 0.006)), [0.55, 0.3, 0.12, 1], 0, sphereCount);
+      if (hvis && showDots) { gl.disable(gl.DEPTH_TEST); gl.uniform1f(lit.u.uUseD, 0); shape(mul(T(hw[8][0], hw[8][1], hw[8][2]), S(0.004, 0.004, 0.004)), [0.5, 1, 0.9, 0.8], 1, sphereCount); }
+    }
+    gl.disable(gl.DEPTH_TEST); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.colorMask(true, true, true, true);
+    if (origin && (phase === "scan" || showMap)) { mapOn(1); gl.drawArrays(gl.POINTS, 0, N * N); }
+    if (phase === "find" && centrePose) { flatOn(); gl.uniform1f(flat.u.kind, 1); gl.uniformMatrix4fv(flat.u.M, false, mul(centrePose.transform.matrix, S(0.05, 1, 0.05))); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); }
+
+    // ---------- on-screen text ----------
+    if (frames % 12 === 0) {
+      if (phase === "scan") {
+        var pc = Math.round(mapCover * 100);
+        say("Scan " + pc + "%. " + (pc < 30 ? "Sweep slowly across the whole area." : pc < 65 ? "Now from another side, and go close to objects." : "Good. Press Release pet when ready (more scanning = better)."));
+      }
+      stat.textContent = "Depth " + (depthOK ? (depthSeen ? "✓" : "…") : "✗") + " · Lock " + anchorState + " · Hand " + (tracker && binding ? (hvis ? "✓ seen" : "ready") + (hMs ? " " + hMs.toFixed(0) + "ms" : "") : "✗") + " · Mic " + (micState === "on" ? "✓" : listening ? "…" : micState) +
+        (phase === "play" ? " · " + topMood() + " · " + cat.act : "") + (errText ? " · ERR " + errText : "") + (hErr ? " · hand: " + hErr : "");
+    }
+  }
+  session.requestAnimationFrame(onFrame);
+}
+
+</script>
+</body>
+</html>

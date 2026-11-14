@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] KazukiLabs: swap the cabinet game for AR Pet 4 and fit its tall phone screen inside the bezel (whole screen visible, centred, screen background matched). Desktop/phone checked; physical Android AR and the game's Google-hosted hand-tracking download remain unverified.
+
 - [x] Make To No One's starting width half God of Lies's starting width, retain its fixed photo, and recenter the KAIJU boy in the wider starting frame. Desktop/tablet widths, text fit, blue-trouser alignment and stationary photos during hover verified; phone layout unchanged; build OK.
 
 - [x] Add KazukiLabs last in desktop/phone navigation and embed the uploaded self-contained AR test with direct full-screen access. Desktop/phone menu and camera start/close checks passed using a simulated camera; build OK. Physical Android AR remains device-dependent and unverified.
