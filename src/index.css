@@ -2092,11 +2092,12 @@
   .home-cinematic-upper__panel { transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
   .home-cinematic-upper__to-no-one { transform-origin: right center; }
   .home-cinematic-upper__kaiju .home-cinematic-upper__art { inset: 0 auto 0 0; width: 100vw; transform-origin: left center; }
-  /* Blue trousers sit at 51.7% of the artwork; shift so they centre in the full 80vw KAIJU frame. */
-  .home-cinematic-upper__img--kaiju { right: auto; left: -11.7vw; }
+  /* Blue trousers sit at 51.7% of the artwork; centre them in the full five-sixths KAIJU frame.
+     This static offset never follows the animated divider. */
+  .home-cinematic-upper__img--kaiju { right: auto; left: -10.0333333333vw; }
   .home-cinematic-upper__to-no-one .home-cinematic-upper__art { left: auto; right: 0; width: 100vw; transform-origin: right center; }
   .home-cinematic-upper__img--to-no-one { right: -43vw; width: 135vw; object-position: right center; }
-  .home-cinematic-upper__kaiju-copy { width: 80vw; }
+  .home-cinematic-upper__kaiju-copy { width: 83.3333333333vw; }
   .home-cinematic-upper[data-hover="kaiju"] > a:first-child .home-cinematic-upper__art { transform: scale(0.9881422925); }
   .home-cinematic-upper[data-hover="to-no-one"] { grid-template-columns: 1fr 2fr; }
   .home-cinematic-upper[data-hover="to-no-one"] > a:last-child .home-cinematic-upper__art { transform: scale(0.9881422925); }
@@ -2104,7 +2105,7 @@
   .home-cinematic-upper[data-hover="to-no-one"] > a:last-child { transform: scale(1.012); z-index: 5; }
   .home-cinematic-upper[data-hover="kaiju"] > a:first-child::after,
   .home-cinematic-upper[data-hover="to-no-one"] > a:last-child::after { opacity: 1; }
-  .home-cinematic-upper[data-hover="to-no-one"] .home-cinematic-upper__kaiju-copy { transform: scale(0.4166666667); }
+  .home-cinematic-upper[data-hover="to-no-one"] .home-cinematic-upper__kaiju-copy { transform: scale(0.4); }
 }
 @media (min-width: 768px) and (max-width: 1100px) {
   .home-cinematic-upper .home-cinematic-upper__kicker-full { display: none; }

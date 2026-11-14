@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Make To No One's starting width half God of Lies's starting width, retain its fixed photo, and recenter the KAIJU boy in the wider starting frame. Desktop/tablet widths, text fit, blue-trouser alignment and stationary photos during hover verified; phone layout unchanged; build OK.
+
 - [x] Add KazukiLabs last in desktop/phone navigation and embed the uploaded self-contained AR test with direct full-screen access. Desktop/phone menu and camera start/close checks passed using a simulated camera; build OK. Physical Android AR remains device-dependent and unverified.
 
 - [x] Stop God of Lies artwork trembling during hover expansion; keep KAIJU artwork fixed while To No One opens and lower the KAIJU copy slightly. Frame-by-frame desktop/tablet checks show fixed KAIJU geometry, only sub-0.07px God of Lies rounding, visible lowered copy, no runtime errors, and build OK.
