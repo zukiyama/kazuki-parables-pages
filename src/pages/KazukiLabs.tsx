@@ -1,71 +1,126 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, ExternalLink, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, RotateCw, X } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import arcade from "@/assets/kazukilabs-arcade-crop.webp";
+import { shouldRequestLandscape } from "@/lib/kazukilabs-launch";
+import arcade from "@/assets/kazukilabs-arcade-wide.webp";
+import labsLogo from "@/assets/kazukilabs-logo.webp";
 
-type Game = { title: string; tagline: string; url: string | null; art: "pet" | "soon" };
+type Game = {
+  title: string;
+  tagline: string;
+  url: string | null;
+  art: "pet" | "lift";
+  orientation: "portrait" | "landscape";
+};
 
 const games: Game[] = [
-  { title: "AR PET", tagline: "KAZUKI & KIZUKI", url: `${import.meta.env.BASE_URL}labs/ar-pet-6.html`, art: "pet" },
-  { title: "COMING SOON", tagline: "NEW GAME LOADING", url: null, art: "soon" },
+  {
+    title: "KAZUKI & KITSUKI",
+    tagline: "",
+    url: `${import.meta.env.BASE_URL}labs/ar-pet-6.html`,
+    art: "pet",
+    orientation: "portrait",
+  },
+  {
+    title: "LIFT ME UP",
+    tagline: "SIDE-SCROLLING ADVENTURE",
+    url: null,
+    art: "lift",
+    orientation: "landscape",
+  },
 ];
 
-/** Title with a moon circling "LABS", a river line and a small mountain. */
-const LabsLogo = () => (
-  <svg viewBox="0 0 640 150" role="img" aria-label="KAZUKI LABS" className="mx-auto h-auto w-full max-w-md">
-    <text x="20" y="98" fontFamily="'Playfair Display', serif" fontSize="76" letterSpacing="6" fill="currentColor">KAZUKI</text>
-    <text x="378" y="98" fontFamily="'Playfair Display', serif" fontSize="76" fontStyle="italic" letterSpacing="4" fill="currentColor">LABS</text>
-    <circle cx="482" cy="72" r="62" fill="none" stroke="hsl(var(--primary))" strokeWidth="2.5" />
-    <path d="M430 70 l22 -26 l14 16 l10 -10 l22 20" fill="none" stroke="hsl(var(--primary))" strokeWidth="2" opacity="0.55" />
-    <path d="M14 124 C 120 108, 200 138, 320 122 S 520 106, 626 124" fill="none" stroke="hsl(var(--primary))" strokeWidth="2.5" strokeLinecap="round" />
-  </svg>
-);
-
-/** Old vector-arcade style title screen, drawn in glowing lines. */
+/** Crisp, glowing arcade title cards. The pet pair echoes the site's hat-and-cat emblem. */
 const TitleScreen = ({ game, index }: { game: Game; index: number }) => (
-  <svg viewBox="0 0 320 210" className="h-full w-full" aria-hidden="true" style={{ fontFamily: "'Courier New', monospace" }}>
+  <svg
+    viewBox="0 0 336 200"
+    className="h-full w-full"
+    aria-hidden="true"
+    style={{ fontFamily: "'Courier New', monospace" }}
+  >
     <defs>
-      <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-        <feGaussianBlur stdDeviation="1.4" result="b" />
-        <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+      <filter id="arcade-glow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="1.25" result="blur" />
+        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
       </filter>
     </defs>
-    <rect width="320" height="210" fill="#05060d" />
-    <g filter="url(#glow)" fill="none" strokeWidth="1.4">
-      {/* perspective grid floor */}
+    <rect width="336" height="200" fill="#05060d" />
+    <g filter="url(#arcade-glow)" fill="none" strokeWidth="1.25">
       {Array.from({ length: 9 }).map((_, i) => (
-        <line key={`v${i}`} x1={160} y1={120} x2={-80 + i * 60} y2={210} stroke="#ff4fa3" opacity="0.55" />
+        <line key={`vertical-${i}`} x1={168} y1={123} x2={-80 + i * 62} y2={200} stroke="#ff4fa3" opacity="0.55" />
       ))}
-      {[124, 132, 145, 165, 195].map((y) => (
-        <line key={`h${y}`} x1={0} y1={y} x2={320} y2={y} stroke="#ff4fa3" opacity="0.55" />
+      {[126, 135, 148, 168, 194].map((y) => (
+        <line key={`horizontal-${y}`} x1={0} y1={y} x2={336} y2={y} stroke="#ff4fa3" opacity="0.55" />
       ))}
-      {game.art === "pet" ? (
-        <g stroke="#5ff4ff">
-          {/* moon */}
-          <circle cx="250" cy="52" r="22" stroke="#ffe066" />
-          {/* two little pets */}
-          <path d="M98 118 q0 -26 22 -26 q22 0 22 26 z" />
-          <path d="M104 96 l-4 -12 l10 7 M136 96 l4 -12 l-10 7" />
-          <circle cx="113" cy="106" r="2" /><circle cx="127" cy="106" r="2" />
-          <path d="M178 118 q0 -22 19 -22 q19 0 19 22 z" stroke="#ff9e5f" />
-          <path d="M184 100 l-3 -10 l8 6 M210 100 l3 -10 l-8 6" stroke="#ff9e5f" />
-          <circle cx="192" cy="108" r="2" stroke="#ff9e5f" /><circle cx="203" cy="108" r="2" stroke="#ff9e5f" />
-        </g>
-      ) : (
-        <g stroke="#ffe066">
-          <rect x="130" y="70" width="60" height="40" />
-          <path d="M146 90 h28 M160 76 v28" />
-        </g>
-      )}
     </g>
-    <g filter="url(#glow)" textAnchor="middle">
-      <text x="160" y="40" fontSize="30" fontWeight="bold" fill="none" stroke="#5ff4ff" strokeWidth="1.2" letterSpacing="3">{game.title}</text>
-      <text x="160" y="58" fontSize="11" fill="#ffe066" letterSpacing="2">{game.tagline}</text>
-      <text x="160" y="200" fontSize="12" fill="#ffffff" letterSpacing="2" className="animate-pulse">
-        {game.url ? "PRESS START" : "STAY TUNED"}
+
+    {game.art === "pet" ? (
+      <g filter="url(#arcade-glow)" shapeRendering="crispEdges">
+        <circle cx="282" cy="74" r="20" fill="none" stroke="#ffe066" strokeWidth="2" />
+        {/* Kazuki: a pixel traveller in a hat and backpack, facing Kitsuki. */}
+        <g fill="#5ff4ff">
+          <rect x="91" y="64" width="23" height="5" />
+          <rect x="87" y="69" width="30" height="16" />
+          <rect x="82" y="85" width="43" height="5" />
+          <rect x="94" y="90" width="23" height="19" />
+          <rect x="117" y="95" width="7" height="6" />
+          <rect x="111" y="94" width="4" height="4" fill="#05060d" />
+          <rect x="85" y="109" width="34" height="31" />
+          <rect x="76" y="113" width="10" height="27" />
+          <rect x="70" y="116" width="8" height="20" opacity="0.75" />
+          <rect x="118" y="112" width="7" height="28" />
+          <rect x="118" y="137" width="11" height="7" />
+          <rect x="87" y="139" width="11" height="27" />
+          <rect x="107" y="139" width="11" height="27" />
+          <rect x="80" y="164" width="18" height="6" />
+          <rect x="107" y="164" width="19" height="6" />
+        </g>
+        {/* Kitsuki: a small cat turned left towards Kazuki. */}
+        <g fill="#ff9e5f">
+          <rect x="210" y="120" width="37" height="24" />
+          <rect x="199" y="111" width="24" height="27" />
+          <polygon points="199,111 199,99 209,111" />
+          <polygon points="212,111 222,99 222,116" />
+          <rect x="195" y="120" width="6" height="6" />
+          <rect x="202" y="117" width="4" height="4" fill="#05060d" />
+          <rect x="212" y="144" width="8" height="22" />
+          <rect x="237" y="144" width="8" height="22" />
+          <rect x="246" y="111" width="7" height="28" />
+          <rect x="251" y="103" width="14" height="9" />
+          <rect x="259" y="94" width="7" height="12" />
+        </g>
+      </g>
+    ) : (
+      <g filter="url(#arcade-glow)" fill="none" stroke="#ffe066" strokeWidth="2" shapeRendering="crispEdges">
+        <path d="M108 153 H228 M124 153 V160 H212 V153" />
+        <rect x="156" y="124" width="24" height="29" />
+        <rect x="161" y="111" width="14" height="13" />
+        <path d="M168 97 V68 M156 80 L168 68 L180 80" stroke="#5ff4ff" />
+        <path d="M131 111 V89 M121 99 L131 89 L141 99" stroke="#ff4fa3" />
+        <path d="M205 111 V89 M195 99 L205 89 L215 99" stroke="#ff4fa3" />
+        <path d="M88 142 H113 M223 130 H250" stroke="#5ff4ff" />
+      </g>
+    )}
+
+    <g filter="url(#arcade-glow)" textAnchor="middle">
+      <text
+        x="168"
+        y="37"
+        fontSize={game.art === "pet" ? "23" : "29"}
+        fontWeight="bold"
+        fill="none"
+        stroke="#5ff4ff"
+        strokeWidth="1.1"
+        letterSpacing={game.art === "pet" ? "1" : "3"}
+      >
+        {game.title}
       </text>
-      <text x="16" y="16" fontSize="9" fill="#ff4fa3" textAnchor="start">GAME {index + 1}/{games.length}</text>
+      {game.tagline && <text x="168" y="57" fontSize="10" fill="#ffe066" letterSpacing="1.4">{game.tagline}</text>}
+      <text x="168" y="190" fontSize="12" fill="#ffffff" letterSpacing="2" className="animate-pulse">
+        {game.url ? "PRESS START" : "COMING SOON"}
+      </text>
+      <text x="15" y="16" fontSize="9" fill="#ff4fa3" textAnchor="start">GAME {index + 1}/{games.length}</text>
     </g>
   </svg>
 );
@@ -88,7 +143,7 @@ const useClick = () => {
       o.start();
       o.stop(c.currentTime + 0.07);
     } catch {
-      /* sound is optional */
+      /* Sound is optional. */
     }
   }, []);
 };
@@ -100,7 +155,7 @@ const ArcadeButton = ({ label, onPress, color, children }: { label: string; onPr
       aria-label={label}
       onClick={onPress}
       className="flex aspect-square w-[2.6em] items-center justify-center rounded-full border-2 border-foreground/20 transition-[transform,box-shadow] duration-75 active:translate-y-[0.25em] active:shadow-none"
-      style={{ background: color, boxShadow: `0 0.28em 0 rgba(0,0,0,0.35), inset 0 -0.2em 0 rgba(0,0,0,0.15)` }}
+      style={{ background: color, boxShadow: "0 0.28em 0 rgba(0,0,0,0.35), inset 0 -0.2em 0 rgba(0,0,0,0.15)" }}
     >
       {children}
     </button>
@@ -111,64 +166,128 @@ const ArcadeButton = ({ label, onPress, color, children }: { label: string; onPr
 const KazukiLabs = () => {
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [showRotateHint, setShowRotateHint] = useState(false);
+  const fullscreenForGame = useRef(false);
   const click = useClick();
   const game = games[index];
 
-  const step = (d: number) => {
+  const step = (direction: number) => {
     click();
-    setIndex((i) => (i + d + games.length) % games.length);
+    setIndex((current) => (current + direction + games.length) % games.length);
   };
-  const start = () => {
+
+  const closeGame = useCallback(() => {
+    setPlaying(false);
+    setShowRotateHint(false);
+    if (fullscreenForGame.current) {
+      fullscreenForGame.current = false;
+      screen.orientation?.unlock();
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    }
+  }, []);
+
+  const start = async () => {
     click();
-    if (game.url) setPlaying(true);
+    if (!game.url) return;
+    setPlaying(true);
+    setShowRotateHint(false);
+
+    const isPhone = window.innerWidth < 768 && navigator.maxTouchPoints > 0;
+    if (!shouldRequestLandscape(game, isPhone)) return;
+
+    try {
+      const orientation = screen.orientation as ScreenOrientation & { lock?: (value: "landscape") => Promise<void> };
+      if (!document.documentElement.requestFullscreen || !orientation.lock) throw new Error("Orientation lock unavailable");
+      await document.documentElement.requestFullscreen();
+      fullscreenForGame.current = true;
+      await orientation.lock("landscape");
+    } catch {
+      // iPhone Safari and some Android versions require a manual turn instead.
+      setShowRotateHint(true);
+    }
   };
 
   useEffect(() => {
     if (!playing) return;
-    const prev = document.body.style.overflow;
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setPlaying(false);
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = prev;
-      window.removeEventListener("keydown", onKey);
+    const onKey = (event: KeyboardEvent) => event.key === "Escape" && closeGame();
+    const onFullscreen = () => {
+      if (!document.fullscreenElement && fullscreenForGame.current) {
+        fullscreenForGame.current = false;
+        screen.orientation?.unlock();
+        setShowRotateHint(true);
+      }
     };
-  }, [playing]);
+    window.addEventListener("keydown", onKey);
+    document.addEventListener("fullscreenchange", onFullscreen);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("fullscreenchange", onFullscreen);
+    };
+  }, [playing, closeGame]);
+
+  useEffect(() => () => {
+    if (fullscreenForGame.current) {
+      screen.orientation?.unlock();
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    }
+  }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <Navigation />
-      <main className="mx-auto px-2 pb-12 pt-24 sm:px-6">
-        <header className="mb-4 text-center">
+      <main className="pb-12 pt-16">
+        <header className="mx-auto mb-4 px-4 text-center">
           <h1 className="sr-only">KAZUKI LABS</h1>
-          <LabsLogo />
+          <img
+            src={labsLogo}
+            alt="KAZUKI LABS"
+            width={1400}
+            height={403}
+            className="mx-auto h-auto w-[min(88vw,24rem)]"
+            fetchPriority="high"
+          />
           <p className="mx-auto mt-2 max-w-2xl font-heading text-base italic text-muted-foreground sm:text-xl">
-            Take control of KAZUKI and KIZUKI in their stunning new adventure…
+            Try playing as KAZUKI and KIZUKI in their stunning new adventure…
           </p>
         </header>
 
-        {/* Cabinet scales with the screen height on desktop and the full width on phones. */}
-        <div className="relative mx-auto w-full max-w-[min(100%,calc((100svh-5rem)*0.9))]" style={{ fontSize: "clamp(9px, 1.6vw, 20px)" }}>
-          <img src={arcade} alt="A bright Japanese arcade cabinet" width={1076} height={1040} className="block h-auto w-full rounded-md" />
+        <section aria-label="KazukiLabs arcade" className="relative w-full overflow-hidden">
+          {/* Phones crop away the shop, keeping the cabinet, screen and controls centred. */}
           <div
-            className="absolute overflow-hidden rounded-[4px] shadow-[inset_0_0_24px_hsl(var(--ink-black))]"
-            style={{ left: "18.4%", top: "24.5%", width: "64.1%", height: "43.3%", background: "#05060d" }}
-            aria-live="polite"
+            className="relative left-1/2 w-[165vw] -translate-x-1/2 sm:left-auto sm:w-full sm:translate-x-0"
+            style={{ fontSize: "clamp(12px, 1.6vw, 22px)" }}
           >
-            <TitleScreen key={index} game={game} index={index} />
-            <span className="sr-only">{`Game ${index + 1}: ${game.title}`}</span>
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.25)_0_1px,transparent_1px_3px)]" />
-          </div>
+            <img
+              src={arcade}
+              alt="A bright Japanese arcade cabinet surrounded by capsule and claw machines"
+              width={1672}
+              height={941}
+              className="block h-auto w-full select-none"
+              fetchPriority="high"
+              draggable={false}
+            />
+            <div
+              className="absolute overflow-hidden rounded-[4px] bg-ink-black shadow-[inset_0_0_24px_hsl(var(--ink-black))]"
+              style={{ left: "30.55%", top: "31.45%", width: "38.45%", height: "40.85%" }}
+              aria-live="polite"
+            >
+              <TitleScreen key={index} game={game} index={index} />
+              <span className="sr-only">{`Game ${index + 1}: ${game.title}`}</span>
+              <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.25)_0_1px,transparent_1px_3px)]" />
+            </div>
 
-          {/* Playable control panel between the red and blue buttons. */}
-          <div className="absolute flex items-start justify-center gap-[0.6em]" style={{ left: "43%", width: "20%", top: "79.5%" }}>
-            <ArcadeButton label="Prev" onPress={() => step(-1)} color="#7cc4f0"><ChevronLeft className="h-[1.4em] w-[1.4em] text-ink-black" /></ArcadeButton>
-            <ArcadeButton label="Start" onPress={start} color="#ffd23f"><span className="text-[0.6em] font-black text-ink-black">GO</span></ArcadeButton>
-            <ArcadeButton label="Next" onPress={() => step(1)} color="#7cc4f0"><ChevronRight className="h-[1.4em] w-[1.4em] text-ink-black" /></ArcadeButton>
+            <div className="absolute flex -translate-x-1/2 items-start justify-center gap-[0.85em]" style={{ left: "50%", top: "84%" }}>
+              <ArcadeButton label="Prev" onPress={() => step(-1)} color="#7cc4f0"><ChevronLeft className="h-[1.4em] w-[1.4em] text-ink-black" /></ArcadeButton>
+              <ArcadeButton label="Start" onPress={start} color="#ffd23f"><span className="text-[0.6em] font-black text-ink-black">GO</span></ArcadeButton>
+              <ArcadeButton label="Next" onPress={() => step(1)} color="#7cc4f0"><ChevronRight className="h-[1.4em] w-[1.4em] text-ink-black" /></ArcadeButton>
+            </div>
           </div>
-        </div>
+        </section>
 
-        <p className="mt-6 text-center font-heading text-lg">Play the full game soon on Steam.</p>
+        <p className="mt-6 px-4 text-center font-heading text-lg">Play the full game soon on Steam.</p>
       </main>
       <Footer />
 
@@ -178,7 +297,12 @@ const KazukiLabs = () => {
             <a href={game.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-background underline">
               <ExternalLink className="h-4 w-4" /> Open in new tab
             </a>
-            <button type="button" onClick={() => setPlaying(false)} aria-label="Close game" className="rounded-full p-2 text-background hover:bg-background/10">
+            {showRotateHint && (
+              <p className="flex items-center gap-2 text-center text-xs text-background sm:text-sm" role="status">
+                <RotateCw className="h-4 w-4 shrink-0" /> Turn your phone sideways to play
+              </p>
+            )}
+            <button type="button" onClick={closeGame} aria-label="Close game" className="rounded-full p-2 text-background hover:bg-background/10">
               <X />
             </button>
           </div>

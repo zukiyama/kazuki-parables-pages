@@ -1,5 +1,9 @@
 # Roadmap
 
+- [x] Renovate KazukiLabs with the uploaded full-width arcade scene and transparent logo; centre controls and reframe phones. Both uploads are optimized WebP files in `src/assets`; old cabinet artwork remains preserved but unused.
+- [x] Replace title cards with Kazuki & Kitsuki character art and Lift Me Up; preserve AR Pet 6 and prepare landscape-only launching for Lift Me Up. Unsupported phone browsers receive a manual rotate prompt; physical orientation lock remains device-dependent until the game is supplied.
+- [x] Verify desktop, iPad and phone layouts, cabinet controls, playback and build. Playwright checked 1440×900, 950×783, 1024×1366 and 390×844, game switching and AR Pet 6 open/close; three orientation-rule tests pass and build OK.
+
 - [x] Replace the KazukiLabs cabinet game and full-screen link with uploaded AR Pet 5; cabinet layout and earlier experiments preserved. Embedded heading and actual full-screen link checked, no runtime errors, build OK; physical-phone AR unverified.
 
 - [x] KazukiLabs: swap the cabinet game for AR Pet 4 and fit its tall phone screen inside the bezel (whole screen visible, centred, screen background matched). Desktop/phone checked; physical Android AR and the game's Google-hosted hand-tracking download remain unverified.
