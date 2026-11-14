@@ -18,7 +18,7 @@ const games: Game[] = [
   {
     title: "KAZUKI & KITSUKI",
     tagline: "",
-    url: `${import.meta.env.BASE_URL}labs/ar-pet-6.html`,
+    url: `${import.meta.env.BASE_URL}labs/holo-pet-7.html`,
     art: "pet",
     orientation: "portrait",
   },

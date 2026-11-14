@@ -7,7 +7,7 @@ describe("KazukiLabs phone orientation", () => {
   });
 
   test("AR Pet and desktop play never request landscape", () => {
-    expect(shouldRequestLandscape({ url: "labs/ar-pet-6.html", orientation: "portrait" }, true)).toBe(false);
+    expect(shouldRequestLandscape({ url: "labs/holo-pet-7.html", orientation: "portrait" }, true)).toBe(false);
     expect(shouldRequestLandscape({ url: "labs/lift-me-up.html", orientation: "landscape" }, false)).toBe(false);
   });
 
