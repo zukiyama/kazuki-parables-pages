@@ -4,7 +4,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { shouldRequestLandscape } from "@/lib/kazukilabs-launch";
 import arcade from "@/assets/kazukilabs-arcade-wide.webp";
-import labsLogo from "@/assets/kazukilabs-logo-violet.webp";
+import labsLogo from "@/assets/kazukilabs-logo-coral.webp";
 
 type Game = {
   title: string;
@@ -243,7 +243,7 @@ const KazukiLabs = () => {
           <h1 className="sr-only">KazukiLabs</h1>
           <img
             src={labsLogo}
-            alt="KazukiLabs — violet arcade lettering with a moon, mountain and river"
+            alt="KazukiLabs — lavender arcade lettering with a coral moon, white mountain and coral river"
             width={1920}
             height={640}
             className="mx-auto h-auto w-[min(92vw,40rem)]"
