@@ -91,7 +91,6 @@ const Comics = () => {
   const [zoomedImage, setZoomedImage] = useState<{src: string; alt: string} | null>(null);
   const [visibleRows, setVisibleRows] = useState<Set<string>>(new Set());
   const [showGodOfLiesDescription, setShowGodOfLiesDescription] = useState(false);
-  const [pageReady, setPageReady] = useState(false);
   const [isNarrowPortrait, setIsNarrowPortrait] = useState(false);
   const [topSectionsLoaded, setTopSectionsLoaded] = useState(false);
   const [headerBottom, setHeaderBottom] = useState(0);
@@ -700,7 +699,6 @@ const Comics = () => {
   // Force scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0);
-    setPageReady(true);
     setCurrentSection(0);
     setSectionProgress(1);
     setIsScrollLocked(true);
@@ -968,7 +966,7 @@ const Comics = () => {
   // Pendragon is now ONLY in scrollable content - no pinned version
 
   return (
-    <div className={`min-h-screen-stable bg-white overflow-x-hidden transition-opacity duration-300 flex flex-col ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
+    <div className="min-h-screen-stable bg-background overflow-x-hidden flex flex-col animate-[fade-in-delayed_350ms_ease-out_both] motion-reduce:animate-none">
       <Navigation />
 
       <main className="relative flex-1">

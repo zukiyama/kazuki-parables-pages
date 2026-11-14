@@ -236,7 +236,7 @@ const KazukiLabs = () => {
   }, []);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
+    <div className="min-h-screen overflow-x-hidden bg-background text-foreground animate-[fade-in-delayed_350ms_ease-out_both] motion-reduce:animate-none">
       <Navigation />
       <main className="pb-12 pt-16">
         <header className="mx-auto mb-4 px-4 text-center">
