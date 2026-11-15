@@ -1,5 +1,9 @@
 # Roadmap
 
+- [x] Remove God of Lies per-letter filters and settled transforms to eliminate clipped italic overhang and shadow-box artifacts; preserve staggered entrance and spacing.
+- [x] Add KazukiLabs header/logo and intro/artwork clearance; centre the Steam line with equal 36px spacing above and below.
+- [x] Verify title rendering and KazukiLabs spacing at desktop 1440×900, tablet 1037×783 and phone 390×844; all letters settle without filters/transforms, spacing checks pass, build OK.
+
 - [x] Add 350ms opacity-only opening fades to Comics & Scripts and KazukiLabs. Browser verified desktop, tablet and phone fade samples, unchanged transforms, reduced-motion instant visibility and no runtime errors; build OK.
 
 - [x] Renovate KazukiLabs with the uploaded full-width arcade scene and transparent logo; centre controls and reframe phones. Both uploads are optimized WebP files in `src/assets`; old cabinet artwork remains preserved but unused.

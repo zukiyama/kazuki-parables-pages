@@ -238,8 +238,8 @@ const KazukiLabs = () => {
   return (
     <div className="min-h-screen overflow-x-hidden bg-background text-foreground animate-[fade-in-delayed_350ms_ease-out_both] motion-reduce:animate-none">
       <Navigation />
-      <main className="pb-12 pt-16">
-        <header className="mx-auto mb-4 px-4 text-center">
+      <main className="pt-28 sm:pt-24">
+        <header className="mx-auto mb-6 px-4 text-center">
           <h1 className="sr-only">KazukiLabs</h1>
           <img
             src={labsLogo}
@@ -287,7 +287,7 @@ const KazukiLabs = () => {
           </div>
         </section>
 
-        <p className="mt-6 px-4 text-center font-heading text-lg">Play the full game soon on Steam.</p>
+        <p className="px-4 py-9 text-center font-heading text-lg">Play the full game soon on Steam.</p>
       </main>
       <Footer />
 
