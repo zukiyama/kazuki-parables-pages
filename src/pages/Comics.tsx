@@ -144,7 +144,7 @@ const Comics = () => {
   const [flickbookRisen, setFlickbookRisen] = useState(false);
   useEffect(() => {
     if (!flickbookText) { setFlickbookRisen(false); return; }
-    const t = window.setTimeout(() => setFlickbookRisen(true), TO_NO_ONE_WRITTEN_MS + 900);
+    const t = window.setTimeout(() => setFlickbookRisen(true), TO_NO_ONE_WRITTEN_MS + 250);
     return () => window.clearTimeout(t);
   }, [flickbookText]);
 
@@ -1185,13 +1185,13 @@ const Comics = () => {
                     style={{
                       top: flickbookRisen ? '9%' : '50%',
                       transform: `translate(-50%, ${flickbookRisen ? '0' : '-50%'})`,
-                      transition: 'top 2.6s cubic-bezier(.45,0,.3,1), transform 2.6s cubic-bezier(.45,0,.3,1)',
+                      transition: 'top 1.1s cubic-bezier(.65,0,.35,1), transform 1.1s cubic-bezier(.65,0,.35,1)',
                     }}
                   >
                     <ToNoOneTitle start={flickbookText} />
                     <p
                       className="absolute inset-x-0 top-full mx-auto mt-10 max-w-sm text-center font-body text-sm leading-relaxed sm:mt-14 sm:text-base"
-                      style={{ opacity: flickbookRisen ? 1 : 0, transition: 'opacity 1.2s ease-out 2.4s' }}
+                      style={{ opacity: flickbookRisen ? 1 : 0, transition: 'opacity 0.9s ease-out 1.1s' }}
                     >
                       A short wordless comic about a letter written to no one, and the small things that answer back. One quiet room, one unsent page, and a voice that only the paper can hear. Placeholder text — the real description is coming soon.
                     </p>
