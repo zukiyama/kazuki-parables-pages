@@ -66,6 +66,7 @@ const Navigation = () => {
                       : "text-[hsl(25,30%,25%)] hover:text-[hsl(25,45%,40%)]"
                 }`}
               >
+                {item.path === "/kazukilabs" && <span className="labs-nav-diagonals" aria-hidden="true" />}
                 <span className="relative">{item.label}</span>
               </Link>
             ))}

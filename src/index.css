@@ -2308,18 +2308,27 @@
   text-shadow: 0 1px 3px hsl(var(--ink-black) / 0.85), 0 2px 12px hsl(var(--ink-black) / 0.6);
 }
 
-/* Local pixel lettering pairs the series with its hand-drawn space setting. */
-@font-face {
-  font-family: 'Phobos Pixel';
-  src: url('/labs/fonts/pixelify-sans-500.ttf') format('truetype');
-  font-weight: 500;
-  font-display: swap;
+.phobos-player {
+  box-shadow: 0 0 0 1px hsl(var(--foreground) / 0.15), 0 12px 30px hsl(var(--ink-black) / 0.18);
 }
-.phobos-title { letter-spacing: 0; line-height: 1; }
-.phobos-title__intro { font-family: 'Phobos Pixel', monospace; font-size: 1.5rem; font-weight: 500; }
-.phobos-title__place { font-family: 'Parable Impact Fallback', Impact, sans-serif; font-size: 4.5rem; font-weight: 400; color: hsl(var(--phobos-title)); }
-.dark { --phobos-title: 8 75% 72%; }
-@media (min-width: 640px) {
-  .phobos-title__intro { font-size: 1.75rem; }
-  .phobos-title__place { font-size: 5.5rem; }
+.labs-nav-diagonals {
+  position: absolute;
+  inset: -1.5rem 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.labs-nav-diagonals::before,
+.labs-nav-diagonals::after {
+  content: '';
+  position: absolute;
+  left: 45%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  transform: skewX(-30deg);
+  background: linear-gradient(to bottom, currentColor 0 32%, transparent 32% 68%, currentColor 68% 100%);
+  opacity: 0.14;
+}
+.labs-nav-diagonals::after {
+  left: 67%;
 }

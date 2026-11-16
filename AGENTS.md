@@ -14,4 +14,4 @@
 - All site media (images, video, audio, fonts) must be real files committed in the repo (src/assets or public); never use lovable-assets/.asset.json pointers or remote CDN storage, so the GitHub repo is fully self-contained.
 - Widescreen desktop keeps the page scrollbar shown (html overflow-y: scroll) only while a dialog scroll-lock is active, so dialog scroll-locks never shift the page.
 - Comics title glyphs animate without per-letter filters and settle to transform:none, because filtered glyph layers clip italic overhang and inherited text shadows.
-- Keep the PHOBOS series in an isolated section after the Steam line, with local fast-start MP4/WebP media and native controls using metadata-only preload; visitors choose when playback downloads begin.
+- Keep the PHOBOS series in an isolated section after the Steam line, with local fast-start MP4/WebP media and native controls using metadata-only preload; visitors choose when playback downloads begin. Preserve supplied title lettering as a transparent local asset, and round the player wrapper and video together so native controls remain usable.

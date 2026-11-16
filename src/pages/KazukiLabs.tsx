@@ -352,7 +352,7 @@ const KazukiLabs = () => {
           </div>
         </section>
 
-        <p className="px-4 py-9 text-center font-heading text-lg">Play the full game soon on Steam.</p>
+        <p className="px-4 py-9 text-center font-heading text-lg">Play the full game soon on Steam</p>
         <PhobosSection />
       </main>
       <Footer />
