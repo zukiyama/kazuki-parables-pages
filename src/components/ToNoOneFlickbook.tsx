@@ -481,7 +481,7 @@ function createToNoOne(container, opts) {
       if (t < TL.cam1 + 0.2 || dirty || (lastFrame & 1)) {
         dirty = false;
         var tq = fq / FPS; simHair(tq); render(t);
-        if (!lastSettled && t >= TL.cam1) { lastSettled = true; if (opts.onSettled) opts.onSettled(); if (opts.onComplete) opts.onComplete(); }
+        if (!lastSettled && t >= TL.cam1 - 2.4) { /* title begins while the camera finishes */ lastSettled = true; if (opts.onSettled) opts.onSettled(); if (opts.onComplete) opts.onComplete(); }
       }
     } else if (dirty && ready && TL) { dirty = false; simHair(Math.floor(pausedAt * FPS + 1e-6) / FPS); render(pausedAt); }
     raf = requestAnimationFrame(tick);

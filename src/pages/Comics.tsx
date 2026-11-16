@@ -38,8 +38,7 @@ import { ComicsLowerSlideshow } from "@/components/ComicsLowerSlideshow";
 import { ComicsPhoneStack } from "@/components/ComicsPhoneStack";
 import { PagePeel } from "@/components/PagePeel";
 import ToNoOneFlickbook from "@/components/ToNoOneFlickbook";
-import ToNoOneTitle, { TO_NO_ONE_WRITTEN_MS } from "@/components/ToNoOneTitle";
-import toNoOneTitleArt from "@/assets/to-no-one-title.webp";
+import ToNoOneTitle, { TO_NO_ONE_WRITTEN_MS, TO_NO_ONE_TITLE_ART } from "@/components/ToNoOneTitle";
 
 const TO_NO_ONE_ATLAS = "/to-no-one-atlas.webp";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.webp";
@@ -139,15 +138,13 @@ const Comics = () => {
     const img = new Image();
     img.src = TO_NO_ONE_ATLAS;
     img.decode?.().catch(() => {});
-    const title = new Image();
-    title.src = toNoOneTitleArt;
-    title.decode?.().catch(() => {});
+    TO_NO_ONE_TITLE_ART.forEach((src) => { const art = new Image(); art.src = src; art.decode?.().catch(() => {}); });
   }, []);
   // Once the title is written it rises to the top and the blurb appears.
   const [flickbookRisen, setFlickbookRisen] = useState(false);
   useEffect(() => {
     if (!flickbookText) { setFlickbookRisen(false); return; }
-    const t = window.setTimeout(() => setFlickbookRisen(true), TO_NO_ONE_WRITTEN_MS + 350);
+    const t = window.setTimeout(() => setFlickbookRisen(true), TO_NO_ONE_WRITTEN_MS + 250);
     return () => window.clearTimeout(t);
   }, [flickbookText]);
 
