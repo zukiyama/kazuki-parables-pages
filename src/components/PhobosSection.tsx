@@ -4,11 +4,11 @@ import poster from "@/assets/another-day-on-phobos-poster.webp";
 import title from "@/assets/another-day-on-phobos-title-upload.webp";
 
 const PhobosSection = () => (
-  <section aria-labelledby="phobos-title" className="phobos-section px-5 pb-14 pt-8 text-center sm:pb-20 sm:pt-12">
+  <section aria-labelledby="phobos-title" className="phobos-section px-5 pb-14 pt-12 text-center sm:pb-20 sm:pt-16">
     <h2 id="phobos-title" className="mx-auto w-full max-w-[23rem] sm:max-w-[28rem]">
-      <img src={title} alt="Another Day on PHOBOS" width={1920} height={640} className="block h-auto w-full" />
+      <img src={title} alt="Another Day on PHOBOS" width={1920} height={672} className="block h-auto w-full" />
     </h2>
-    <p className="mx-auto my-8 max-w-xl font-heading text-base sm:my-10 sm:text-lg">
+    <p className="mx-auto my-6 max-w-xl font-heading text-base sm:my-8 sm:text-lg">
       Join the doctor on the strangest assignment in the galaxy
     </p>
     <div className="phobos-player mx-auto w-full max-w-[25rem] overflow-hidden rounded-[2rem] bg-ink-black p-2 sm:p-2.5">
