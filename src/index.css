@@ -2326,3 +2326,12 @@
   .phobos-title__intro { font-size: 1.75rem; }
   .phobos-title__place { font-size: 5.5rem; }
 }
+
+/* To No One flickbook page (beneath the Comics title page) */
+:root {
+  --to-no-one-paper: 37 41% 86%;
+  --to-no-one-ink: 240 5% 12%;
+}
+.to-no-one-page { background-color: hsl(var(--to-no-one-paper)); }
+.to-no-one-copy { color: hsl(var(--to-no-one-ink)); }
+.to-no-one-copy__rule { background-color: hsl(var(--to-no-one-ink) / 0.6); }

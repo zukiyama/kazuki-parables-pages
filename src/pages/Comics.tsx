@@ -37,6 +37,9 @@ import godOfLiesPopupDog from "@/assets/god-of-lies-popup-dog.webp";
 import { ComicsLowerSlideshow } from "@/components/ComicsLowerSlideshow";
 import { ComicsPhoneStack } from "@/components/ComicsPhoneStack";
 import { PagePeel } from "@/components/PagePeel";
+import ToNoOneFlickbook from "@/components/ToNoOneFlickbook";
+
+const TO_NO_ONE_ATLAS = "/to-no-one-atlas.webp";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.webp";
 import type { RevealSegment } from "@/components/WordReveal";
 
@@ -120,6 +123,21 @@ const Comics = () => {
   const handleLowerScreenChange = useCallback((screen: number) => { lowerScreenRef.current = screen; }, []);
   const [panoramaReady, setPanoramaReady] = useState(false);
   const [openingRevealing, setOpeningRevealing] = useState(false);
+  // To No One flickbook: the page directly beneath the opening title page.
+  const [flickbookOpen, setFlickbookOpen] = useState(false);
+  const [flickbookPlay, setFlickbookPlay] = useState(false);
+  const [flickbookText, setFlickbookText] = useState(false);
+  const [flickbookKey, setFlickbookKey] = useState(0);
+  const flickbookOpenRef = useRef(false);
+  flickbookOpenRef.current = flickbookOpen;
+  const flickbookPassedRef = useRef(false);
+  const dismissFlickbookRef = useRef<((direction: 'next' | 'prev') => void) | null>(null);
+  // Preload the flickbook atlas while the title page shows so it starts instantly.
+  useEffect(() => {
+    const img = new Image();
+    img.src = TO_NO_ONE_ATLAS;
+    img.decode?.().catch(() => {});
+  }, []);
 
   // Fetch the next page immediately, not through the deferred secondary queue.
   useEffect(() => {
@@ -504,9 +522,11 @@ const Comics = () => {
       }, 150);
       
       if (scrollAccumulator > scrollThreshold) {
+        if (currentSection === 0 && flickbookOpenRef.current) { dismissFlickbookRef.current?.('next'); scrollAccumulator = 0; return; }
         if (currentSection === 0 && peelTurnRef.current?.()) { peelStartedRef.current = true; scrollAccumulator = 0; return; }
         triggerSectionChange('next');
       } else if (scrollAccumulator < -scrollThreshold) {
+        if (currentSection === 0 && flickbookOpenRef.current) { dismissFlickbookRef.current?.('prev'); scrollAccumulator = 0; return; }
         // Only the God of Lies blurb screen steps back up to the title page;
         // on the Pendragon or shelf screens an upward scroll does nothing.
         if (currentSection === 2 && lowerScreenRef.current !== 1) scrollAccumulator = 0;
@@ -600,10 +620,12 @@ const Comics = () => {
       touchAccumulator = delta;
       
       if (touchAccumulator > 60) {
+        if (currentSection === 0 && flickbookOpenRef.current) { dismissFlickbookRef.current?.('next'); touchStartY = touchY; return; }
         if (currentSection === 0 && peelTurnRef.current?.()) { peelStartedRef.current = true; touchStartY = touchY; return; }
         triggerSectionChange('next');
         touchStartY = touchY;
       } else if (touchAccumulator < -60) {
+        if (currentSection === 0 && flickbookOpenRef.current) { dismissFlickbookRef.current?.('prev'); touchStartY = touchY; return; }
         // Only the God of Lies blurb screen steps back up to the title page.
         if (currentSection === 2 && lowerScreenRef.current !== 1) { touchStartY = touchY; }
         else { triggerSectionChange('prev'); touchStartY = touchY; }
@@ -643,6 +665,7 @@ const Comics = () => {
       const nowInStrip = e.clientY >= window.innerHeight - 32;
       const entered = nowInStrip && !inBottomStripRef.current;
       inBottomStripRef.current = nowInStrip;
+      if (entered && currentSection === 0 && flickbookOpenRef.current) { dismissFlickbookRef.current?.('next'); return; }
       if (entered && currentSection <= 1) {
         const busy = isTransitioning || (currentSection === 0 && (openingRevealingRef.current || peelStartedRef.current));
         if (busy) pendingTitleAdvanceRef.current = true;
@@ -663,6 +686,29 @@ const Comics = () => {
   }, [showPopUpScene, isScrollLocked, currentSection, isTransitioning]);
 
   useEffect(() => { openingRevealingRef.current = openingRevealing; }, [openingRevealing]);
+
+  // Leaving the flickbook: forward continues to God of Lies, back returns to the title page.
+  dismissFlickbookRef.current = (direction) => {
+    if (!flickbookOpenRef.current) return;
+    flickbookOpenRef.current = false;
+    setFlickbookOpen(false);
+    if (direction === 'next') {
+      flickbookPassedRef.current = true;
+      advanceOpeningRef.current?.();
+    } else {
+      setFlickbookPlay(false);
+      setFlickbookText(false);
+      setFlickbookKey(k => k + 1);
+    }
+  };
+  // Back on the title page after God of Lies: the flickbook plays afresh next turn.
+  useEffect(() => {
+    if (currentSection !== 0 || !flickbookPassedRef.current) return;
+    flickbookPassedRef.current = false;
+    setFlickbookPlay(false);
+    setFlickbookText(false);
+    setFlickbookKey(k => k + 1);
+  }, [currentSection]);
   useEffect(() => { if (currentSection !== 0) peelStartedRef.current = false; }, [currentSection]);
 
   // A scroll, swipe or tap made while the opening page is still turning is
@@ -950,8 +996,8 @@ const Comics = () => {
   // After section 3, normal scrolling begins
   
   // Title screen: visible ONLY on section 0, fades out when transitioning to section 1
-  const titleVisible = currentSection === 0;
-  const titleOpacity = currentSection === 0 ? 1 : 0;
+  const titleVisible = currentSection === 0 && !flickbookOpen;
+  const titleOpacity = titleVisible ? 1 : 0;
   
   // Vignettes: visible on section 1, fades in when arriving, fades out when leaving to section 2
   const vignetteVisible = currentSection === 1;
@@ -1091,11 +1137,46 @@ const Comics = () => {
                 boxStyle={{ top: headerBottom }}
                 ready={panoramaReady}
                 pageShown={titleVisible}
-                onRevealChange={setOpeningRevealing}
-                onTurned={() => advanceOpeningRef.current?.()}
+                // The flickbook sits beneath, so the God of Lies trees wait until it is left.
+                onRevealChange={(revealed) => { openingRevealingRef.current = revealed; }}
+                onTurned={() => {
+                  peelStartedRef.current = false;
+                  pendingTitleAdvanceRef.current = false;
+                  openingRevealingRef.current = false;
+                  flickbookOpenRef.current = true;
+                  setFlickbookOpen(true);
+                  setFlickbookPlay(true);
+                }}
                 turnRef={peelTurnRef}
                 draggingRef={peelDraggingRef}
               />
+            )}
+
+            {showPopUpScene && (
+              <section
+                className="to-no-one-page absolute inset-x-0 bottom-0 overflow-hidden"
+                aria-label="To No One"
+                style={{
+                  top: headerBottom,
+                  zIndex: 5,
+                  opacity: currentSection === 0 ? 1 : 0,
+                  pointerEvents: flickbookOpen ? 'auto' : 'none',
+                  transition: 'opacity 0.6s ease-out',
+                }}
+                onClick={() => { if (flickbookText) dismissFlickbookRef.current?.('next'); }}
+              >
+                <ToNoOneFlickbook key={flickbookKey} src={TO_NO_ONE_ATLAS} play={flickbookPlay} onComplete={() => setFlickbookText(true)} />
+                <div
+                  className={`to-no-one-copy absolute inset-x-0 bottom-0 flex h-1/2 flex-col items-center justify-center gap-4 bg-transparent px-8 text-center transition-opacity duration-1000 ease-out landscape:inset-y-0 landscape:left-auto landscape:right-0 landscape:h-full landscape:w-[40%] ${flickbookText ? 'opacity-100' : 'opacity-0'}`}
+                  aria-hidden={!flickbookText}
+                >
+                  <h2 className="font-playfair text-5xl italic lg:text-6xl xl:text-7xl">To No One</h2>
+                  <div className="to-no-one-copy__rule h-0.5 w-16" />
+                  <p className="max-w-sm font-body text-sm leading-relaxed sm:text-base">
+                    A short wordless comic about a letter written to no one, and the small things that answer back.
+                  </p>
+                </div>
+              </section>
             )}
 
             {/* SECTION 1: VIGNETTES - Slide in from sides with summary text */}
