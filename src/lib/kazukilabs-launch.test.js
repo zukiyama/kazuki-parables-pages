@@ -6,8 +6,8 @@ describe("KazukiLabs phone orientation", () => {
     expect(shouldRequestLandscape({ url: "labs/lift-me-up.html", orientation: "landscape" }, true)).toBe(true);
   });
 
-  test("AR Pet and desktop play never request landscape", () => {
-    expect(shouldRequestLandscape({ url: "labs/holo-pet-7.html", orientation: "portrait" }, true)).toBe(false);
+  test("the default game and desktop play never request landscape", () => {
+    expect(shouldRequestLandscape({ url: "labs/kazuki-and-kizuki-embed.html", orientation: "portrait" }, true)).toBe(false);
     expect(shouldRequestLandscape({ url: "labs/lift-me-up.html", orientation: "landscape" }, false)).toBe(false);
   });
 
