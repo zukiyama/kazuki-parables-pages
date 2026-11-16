@@ -18,7 +18,7 @@ const games: Game[] = [
   {
     title: "KAZUKI & KIZUKI",
     tagline: "",
-    url: `${import.meta.env.BASE_URL}labs/kazuki-and-kizuki-embed-3.html`,
+    url: `${import.meta.env.BASE_URL}labs/kazuki-and-kizuki-embed-4.html`,
     art: "pet",
     orientation: "portrait",
   },

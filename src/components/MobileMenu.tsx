@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import SocialIcons from './SocialIcons';
-import LabsSlashMark from './LabsSlashMark';
 
 const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -81,7 +80,6 @@ const MobileMenu = () => {
                 }`}
               >
                 <span className="relative inline-flex items-center">
-                  {item.path === '/kazukilabs' ? <LabsSlashMark /> : null}
                   <span className="relative">{item.label}</span>
                 </span>
               </Link>

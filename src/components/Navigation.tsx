@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import MobileMenu from "./MobileMenu";
 import SocialIcons from "./SocialIcons";
-import LabsSlashMark from "./LabsSlashMark";
 
 const Navigation = () => {
   const location = useLocation();
@@ -67,7 +66,6 @@ const Navigation = () => {
                       : "text-[hsl(25,30%,25%)] hover:text-[hsl(25,45%,40%)]"
                 }`}
               >
-                {item.path === "/kazukilabs" ? <LabsSlashMark /> : null}
                 <span className="relative">{item.label}</span>
               </Link>
             ))}
