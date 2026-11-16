@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Add the centred Another Day on PHOBOS section below Steam with local pixel/condensed lettering, a 900×1600 fast-start MP4 (9.2 MiB) and WebP poster, native controls and a clearly marked placeholder TikTok link. Desktop/tablet/phone playback, pause and seek verified; desktop fullscreen entry/exit passed, seven arcade regression tests passed and build OK.
+
 - [x] Fix fullscreen exit restoring the active zoomed cabinet using untransformed measurements and scroll restoration. Fullscreen/resize/exit preserves exact cabinet bounds and scroll in Chromium; desktop/tablet/phone launch and in-game Quit pass, seven tests pass and build OK. Game file unchanged.
 
 - [x] Replace the arcade game with embed-4 using local fonts; New game → pause → Save and quit game verified at desktop, tablet and phone sizes. Six launch/quit tests pass; build OK.

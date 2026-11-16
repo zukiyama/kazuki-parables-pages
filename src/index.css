@@ -67,6 +67,7 @@
     --writing-paper-ink: 25 12% 30%;
     --writing-signal: 185 72% 80%;
     --writing-signal-panel: 190 45% 12%;
+    --phobos-title: 8 57% 43%;
 
     /* Typography scale for literary feel */
     --font-heading: 'Playfair Display', serif;
@@ -2305,4 +2306,20 @@
   font-weight: 500;
   letter-spacing: 0.012em;
   text-shadow: 0 1px 3px hsl(var(--ink-black) / 0.85), 0 2px 12px hsl(var(--ink-black) / 0.6);
+}
+
+/* Local pixel lettering pairs the series with its hand-drawn space setting. */
+@font-face {
+  font-family: 'Phobos Pixel';
+  src: url('/labs/fonts/pixelify-sans-500.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+}
+.phobos-title { letter-spacing: 0; line-height: 1; }
+.phobos-title__intro { font-family: 'Phobos Pixel', monospace; font-size: 1.5rem; font-weight: 500; }
+.phobos-title__place { font-family: 'Parable Impact Fallback', Impact, sans-serif; font-size: 4.5rem; font-weight: 400; color: hsl(var(--phobos-title)); }
+.dark { --phobos-title: 8 75% 72%; }
+@media (min-width: 640px) {
+  .phobos-title__intro { font-size: 1.75rem; }
+  .phobos-title__place { font-size: 5.5rem; }
 }

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, RotateCw } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import PhobosSection from "@/components/PhobosSection";
 import { getCabinetZoom, isArcadeQuitMessage, shouldRequestLandscape } from "@/lib/kazukilabs-launch";
 import arcade from "@/assets/kazukilabs-arcade-wide.webp";
 import labsLogo from "@/assets/kazukilabs-logo-coral.webp";
@@ -352,6 +353,7 @@ const KazukiLabs = () => {
         </section>
 
         <p className="px-4 py-9 text-center font-heading text-lg">Play the full game soon on Steam.</p>
+        <PhobosSection />
       </main>
       <Footer />
 
