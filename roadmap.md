@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Replace the cabinet game with embed-3 using local fonts; remove outside exit/new-tab controls. Actual New game → pause → Save and quit game verified at desktop, tablet and phone sizes; tablet/desktop zoom back out, phone overlay closes, scrolling returns. Six launch/quit tests pass; build OK.
+
 - [x] Replace the KazukiLabs game with the uploaded release, rename the cabinet card and intro to Kazuki & Kiz, retain full-screen permission and verify launch/full-screen/new-game/close on desktop and phone-sized Chromium. Game font saved locally; original in-game naming and gameplay preserved. Three launch tests pass; build OK.
 
 - [x] Remove God of Lies per-letter filters and settled transforms to eliminate clipped italic overhang and shadow-box artifacts; preserve staggered entrance and spacing.

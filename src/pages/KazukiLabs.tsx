@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, ExternalLink, RotateCw, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, RotateCw } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { shouldRequestLandscape } from "@/lib/kazukilabs-launch";
+import { isArcadeQuitMessage, shouldRequestLandscape } from "@/lib/kazukilabs-launch";
 import arcade from "@/assets/kazukilabs-arcade-wide.webp";
 import labsLogo from "@/assets/kazukilabs-logo-coral.webp";
 
@@ -18,7 +18,7 @@ const games: Game[] = [
   {
     title: "KAZUKI & KIZUKI",
     tagline: "",
-    url: `${import.meta.env.BASE_URL}labs/kazuki-and-kizuki-embed.html`,
+    url: `${import.meta.env.BASE_URL}labs/kazuki-and-kizuki-embed-3.html`,
     art: "pet",
     orientation: "portrait",
   },
@@ -172,6 +172,7 @@ const KazukiLabs = () => {
   const [zoom, setZoom] = useState<string | null>(null);
   const cabinetRef = useRef<HTMLDivElement>(null);
   const screenRef = useRef<HTMLDivElement>(null);
+  const gameFrameRef = useRef<HTMLIFrameElement>(null);
 
   // Zoom the cabinet so its screen nearly fills the window, leaving the machine visible at the edges.
   const computeZoom = useCallback(() => {
@@ -232,6 +233,9 @@ const KazukiLabs = () => {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKey = (event: KeyboardEvent) => event.key === "Escape" && closeGame();
+    const onMessage = (event: MessageEvent) => {
+      if (isArcadeQuitMessage(event, window.location.origin, gameFrameRef.current?.contentWindow)) closeGame();
+    };
     const onFullscreen = () => {
       if (!document.fullscreenElement && fullscreenForGame.current) {
         fullscreenForGame.current = false;
@@ -242,11 +246,13 @@ const KazukiLabs = () => {
     const onResize = () => cabinetMode && setZoom(computeZoom());
     window.addEventListener("resize", onResize);
     window.addEventListener("keydown", onKey);
+    window.addEventListener("message", onMessage);
     document.addEventListener("fullscreenchange", onFullscreen);
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("resize", onResize);
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("message", onMessage);
       document.removeEventListener("fullscreenchange", onFullscreen);
     };
   }, [playing, closeGame, cabinetMode, computeZoom]);
@@ -300,7 +306,7 @@ const KazukiLabs = () => {
               aria-live="polite"
             >
               {playing && cabinetMode && game.url ? (
-                <iframe src={game.url} title={game.title} allow="camera; xr-spatial-tracking; fullscreen" allowFullScreen className="absolute inset-0 h-full w-full border-0 bg-ink-black" />
+                <iframe ref={gameFrameRef} src={game.url} title={game.title} allow="camera; xr-spatial-tracking; fullscreen" allowFullScreen className="absolute inset-0 h-full w-full border-0 bg-ink-black" />
               ) : (
                 <TitleScreen key={index} game={game} index={index} />
               )}
@@ -320,33 +326,14 @@ const KazukiLabs = () => {
       </main>
       <Footer />
 
-      {playing && cabinetMode && (
-        <div className="fixed right-3 top-3 z-[110] flex items-center gap-2">
-          <a href={game.url ?? undefined} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-full bg-ink-black/80 px-3 py-2 text-sm text-background">
-            <ExternalLink className="h-4 w-4" /> New tab
-          </a>
-          <button type="button" onClick={closeGame} aria-label="Close game" className="rounded-full bg-ink-black/80 p-2 text-background hover:bg-ink-black">
-            <X />
-          </button>
-        </div>
-      )}
-
       {playing && !cabinetMode && game.url && (
         <div className="fixed inset-0 z-[100] flex flex-col bg-ink-black">
-          <div className="flex items-center justify-between gap-2 p-2">
-            <a href={game.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-background underline">
-              <ExternalLink className="h-4 w-4" /> Open in new tab
-            </a>
-            {showRotateHint && (
-              <p className="flex items-center gap-2 text-center text-xs text-background sm:text-sm" role="status">
-                <RotateCw className="h-4 w-4 shrink-0" /> Turn your phone sideways to play
-              </p>
-            )}
-            <button type="button" onClick={closeGame} aria-label="Close game" className="rounded-full p-2 text-background hover:bg-background/10">
-              <X />
-            </button>
-          </div>
-          <iframe src={game.url} title={game.title} allow="camera; xr-spatial-tracking; fullscreen" allowFullScreen className="w-full flex-1 border-0 bg-background" />
+          {showRotateHint && (
+            <p className="flex items-center justify-center gap-2 p-2 text-center text-xs text-background sm:text-sm" role="status">
+              <RotateCw className="h-4 w-4 shrink-0" /> Turn your phone sideways to play
+            </p>
+          )}
+          <iframe ref={gameFrameRef} src={game.url} title={game.title} allow="camera; xr-spatial-tracking; fullscreen" allowFullScreen className="min-h-0 w-full flex-1 border-0 bg-background" />
         </div>
       )}
     </div>

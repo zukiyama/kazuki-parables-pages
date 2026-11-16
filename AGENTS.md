@@ -1,5 +1,5 @@
 # Project architecture
-- Keep uploaded Labs HTML experiments in public/labs and embed them with camera/XR permissions plus a direct full-screen link, because mobile AR may require a top-level document and experiments must remain self-contained.
+- Keep uploaded Labs HTML experiments in public/labs with local fonts and camera/XR/fullscreen permissions; active games close through a same-origin, active-iframe-validated Quit message rather than outside controls, preserving the cabinet illusion.
 - Read music rules in src/components/music/AGENTS.md before edits there.
 - Read Comics and Writing page rules in src/pages/AGENTS.md before edits there.
 
