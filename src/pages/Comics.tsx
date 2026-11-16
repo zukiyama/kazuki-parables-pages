@@ -1190,8 +1190,8 @@ const Comics = () => {
                   >
                     <ToNoOneTitle start={flickbookText} />
                     <p
-                      className="absolute inset-x-0 top-full mx-auto mt-4 max-w-sm text-center font-body text-sm leading-relaxed sm:mt-6 sm:text-base"
-                      style={{ opacity: flickbookRisen ? 1 : 0, transition: 'opacity 0.8s ease-out 0.7s' }}
+                      className="absolute inset-x-0 top-full mx-auto mt-10 max-w-sm text-center font-body text-sm leading-relaxed sm:mt-14 sm:text-base"
+                      style={{ opacity: flickbookRisen ? 1 : 0, transition: 'opacity 0.9s ease-out 1.1s' }}
                     >
                       A short wordless comic about a letter written to no one, and the small things that answer back. One quiet room, one unsent page, and a voice that only the paper can hear. Placeholder text — the real description is coming soon.
                     </p>
