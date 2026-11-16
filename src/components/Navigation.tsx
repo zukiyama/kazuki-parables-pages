@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import MobileMenu from "./MobileMenu";
 import SocialIcons from "./SocialIcons";
+import LabsSlashMark from "./LabsSlashMark";
 
 const Navigation = () => {
   const location = useLocation();
@@ -56,7 +57,7 @@ const Navigation = () => {
                 key={item.path}
                 to={item.path}
                 onClick={() => window.scrollTo(0, 0)}
-                className={`font-body text-sm tracking-wide transition-colors ${
+                className={`group relative inline-flex items-center font-body text-sm tracking-wide transition-colors ${
                   isAboutPage
                     ? location.pathname === item.path
                       ? "text-[hsl(30,20%,35%)] font-semibold"
@@ -66,7 +67,8 @@ const Navigation = () => {
                       : "text-[hsl(25,30%,25%)] hover:text-[hsl(25,45%,40%)]"
                 }`}
               >
-                {item.label}
+                {item.path === "/kazukilabs" ? <LabsSlashMark /> : null}
+                <span className="relative">{item.label}</span>
               </Link>
             ))}
           </div>

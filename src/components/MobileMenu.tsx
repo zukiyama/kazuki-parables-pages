@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import SocialIcons from './SocialIcons';
+import LabsSlashMark from './LabsSlashMark';
 
 const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,7 +70,7 @@ const MobileMenu = () => {
                 key={item.path}
                 to={item.path}
                 onClick={handleLinkClick}
-                className={`font-body text-base px-4 py-3 transition-colors ${
+                className={`group font-body text-base px-4 py-3 transition-colors ${
                   isAboutPage
                     ? location.pathname === item.path
                       ? 'text-[hsl(30,20%,35%)] font-semibold bg-gray-50'
@@ -79,7 +80,10 @@ const MobileMenu = () => {
                       : 'text-[hsl(25,30%,25%)] hover:bg-[hsl(39,30%,88%)]'
                 }`}
               >
-                {item.label}
+                <span className="relative inline-flex items-center">
+                  {item.path === '/kazukilabs' ? <LabsSlashMark /> : null}
+                  <span className="relative">{item.label}</span>
+                </span>
               </Link>
             ))}
           </nav>
