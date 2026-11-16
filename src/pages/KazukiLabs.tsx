@@ -168,6 +168,22 @@ const KazukiLabs = () => {
   const [playing, setPlaying] = useState(false);
   const [showRotateHint, setShowRotateHint] = useState(false);
   const fullscreenForGame = useRef(false);
+  const [cabinetMode, setCabinetMode] = useState(false);
+  const [zoom, setZoom] = useState<string | null>(null);
+  const cabinetRef = useRef<HTMLDivElement>(null);
+  const screenRef = useRef<HTMLDivElement>(null);
+
+  // Zoom the cabinet so its screen nearly fills the window, leaving the machine visible at the edges.
+  const computeZoom = useCallback(() => {
+    const cab = cabinetRef.current, scr = screenRef.current;
+    if (!cab || !scr) return null;
+    const w = cab.getBoundingClientRect();
+    const r = scr.getBoundingClientRect();
+    const baseW = r.width, baseH = r.height;
+    const s = Math.min((window.innerWidth * 0.9) / baseW, (window.innerHeight * 0.86) / baseH);
+    const cx = r.left + baseW / 2 - w.left, cy = r.top + baseH / 2 - w.top;
+    return `translate(${window.innerWidth / 2 - w.left - s * cx}px, ${window.innerHeight / 2 - w.top - s * cy}px) scale(${s})`;
+  }, []);
   const click = useClick();
   const game = games[index];
 
@@ -178,6 +194,7 @@ const KazukiLabs = () => {
 
   const closeGame = useCallback(() => {
     setPlaying(false);
+    setZoom(null);
     setShowRotateHint(false);
     if (fullscreenForGame.current) {
       fullscreenForGame.current = false;
@@ -189,6 +206,9 @@ const KazukiLabs = () => {
   const start = async () => {
     click();
     if (!game.url) return;
+    const inCabinet = window.innerWidth >= 768;
+    setCabinetMode(inCabinet);
+    if (inCabinet) setZoom(computeZoom());
     setPlaying(true);
     setShowRotateHint(false);
 
@@ -219,14 +239,17 @@ const KazukiLabs = () => {
         setShowRotateHint(true);
       }
     };
+    const onResize = () => cabinetMode && setZoom(computeZoom());
+    window.addEventListener("resize", onResize);
     window.addEventListener("keydown", onKey);
     document.addEventListener("fullscreenchange", onFullscreen);
     return () => {
       document.body.style.overflow = previousOverflow;
+      window.removeEventListener("resize", onResize);
       window.removeEventListener("keydown", onKey);
       document.removeEventListener("fullscreenchange", onFullscreen);
     };
-  }, [playing, closeGame]);
+  }, [playing, closeGame, cabinetMode, computeZoom]);
 
   useEffect(() => () => {
     if (fullscreenForGame.current) {
@@ -254,11 +277,12 @@ const KazukiLabs = () => {
           </p>
         </header>
 
-        <section aria-label="KazukiLabs arcade" className="relative w-full overflow-hidden">
+        <section aria-label="KazukiLabs arcade" className={`relative w-full ${zoom ? "z-[60]" : "overflow-hidden"}`}>
           {/* Phones crop away the shop, keeping the cabinet, screen and controls centred. */}
           <div
-            className="relative left-1/2 w-[165vw] -translate-x-1/2 sm:left-auto sm:w-full sm:translate-x-0"
-            style={{ fontSize: "clamp(12px, 1.6vw, 22px)" }}
+            ref={cabinetRef}
+            className="relative left-1/2 origin-top-left transition-transform duration-700 ease-in-out motion-reduce:transition-none w-[165vw] -translate-x-1/2 sm:left-auto sm:w-full sm:translate-x-0"
+            style={{ fontSize: "clamp(12px, 1.6vw, 22px)", ...(zoom ? { transform: zoom } : {}) }}
           >
             <img
               src={arcade}
@@ -270,13 +294,18 @@ const KazukiLabs = () => {
               draggable={false}
             />
             <div
+              ref={screenRef}
               className="absolute overflow-hidden rounded-[4px] bg-ink-black shadow-[inset_0_0_24px_hsl(var(--ink-black))]"
               style={{ left: "30.55%", top: "31.45%", width: "38.45%", height: "40.85%" }}
               aria-live="polite"
             >
-              <TitleScreen key={index} game={game} index={index} />
+              {playing && cabinetMode && game.url ? (
+                <iframe src={game.url} title={game.title} allow="camera; xr-spatial-tracking; fullscreen" allowFullScreen className="absolute inset-0 h-full w-full border-0 bg-ink-black" />
+              ) : (
+                <TitleScreen key={index} game={game} index={index} />
+              )}
               <span className="sr-only">{`Game ${index + 1}: ${game.title}`}</span>
-              <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.25)_0_1px,transparent_1px_3px)]" />
+              <div aria-hidden="true" className="pointer-events-none absolute inset-0 transition-opacity duration-500 data-[off=true]:opacity-0 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.25)_0_1px,transparent_1px_3px)]" data-off={playing && cabinetMode} />
             </div>
 
             <div className="absolute flex -translate-x-1/2 items-start justify-center gap-[0.85em]" style={{ left: "50%", top: "84%" }}>
@@ -291,7 +320,18 @@ const KazukiLabs = () => {
       </main>
       <Footer />
 
-      {playing && game.url && (
+      {playing && cabinetMode && (
+        <div className="fixed right-3 top-3 z-[110] flex items-center gap-2">
+          <a href={game.url ?? undefined} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-full bg-ink-black/80 px-3 py-2 text-sm text-background">
+            <ExternalLink className="h-4 w-4" /> New tab
+          </a>
+          <button type="button" onClick={closeGame} aria-label="Close game" className="rounded-full bg-ink-black/80 p-2 text-background hover:bg-ink-black">
+            <X />
+          </button>
+        </div>
+      )}
+
+      {playing && !cabinetMode && game.url && (
         <div className="fixed inset-0 z-[100] flex flex-col bg-ink-black">
           <div className="flex items-center justify-between gap-2 p-2">
             <a href={game.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-background underline">

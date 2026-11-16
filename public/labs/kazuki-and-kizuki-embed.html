@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <title>Kazuki and Kizuki</title>
-<style>@font-face{font-family:"Pixelify Sans";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/pixelify-sans-400.ttf") format("truetype")}@font-face{font-family:"Pixelify Sans";font-style:normal;font-weight:500;font-display:swap;src:url("fonts/pixelify-sans-500.ttf") format("truetype")}@font-face{font-family:"Pixelify Sans";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/pixelify-sans-600.ttf") format("truetype")}@font-face{font-family:"Pixelify Sans";font-style:normal;font-weight:700;font-display:swap;src:url("fonts/pixelify-sans-700.ttf") format("truetype")}</style>
+<style>@font-face{font-family:"Pixelify Sans";font-weight:400;font-display:swap;src:url("fonts/pixelify-sans-400.ttf") format("truetype")}@font-face{font-family:"Pixelify Sans";font-weight:500;font-display:swap;src:url("fonts/pixelify-sans-500.ttf") format("truetype")}@font-face{font-family:"Pixelify Sans";font-weight:600;font-display:swap;src:url("fonts/pixelify-sans-600.ttf") format("truetype")}@font-face{font-family:"Pixelify Sans";font-weight:700;font-display:swap;src:url("fonts/pixelify-sans-700.ttf") format("truetype")}</style>
 <style>
 /* Layout: one 16:9 stage, letterboxed on ink; menus sit over the live world, left-aligned like a film title card. */
 :root{--ink:#0b0a10;--cream:#f3e6bd;--eye:#f0d848;--dim:rgba(243,230,189,.62);--panel:rgba(11,10,16,.78);--display:"Pixelify Sans",ui-monospace,Menlo,monospace;color-scheme:dark}
@@ -70,7 +70,6 @@ input[type=checkbox]{accent-color:var(--eye);width:1.2em;height:1.2em}
   <div id="ui">
     <section id="title">
       <h1>KAZUKI<small>AND</small>KIZUKI</h1>
-      <p class="sub">Sequences 1 to 19 · the desert to the way home</p>
       <nav>
         <button id="b-new">New game</button>
         <button id="b-continue">Continue</button>
@@ -3865,7 +3864,7 @@ function* toyScript(from) {
   TOY.ph = 'zoom'; TOY.z = 0; G.gar.on = false; const lines = [[.5, 'k', 'There is a queue.'], [1.45, 'k', 'There is a great deal of queue.'], [2.5, 'k', 'Every road. All of them.'], [3.5, 'k', 'Kizuki. I think we are popular.'], [4.6, 'c', 'Meow.'], [6.35, 'k', '...Oh.']]; let li = 0;
   SH.sp.k = [240, 150]; SH.sp.c = [240, 150]; G.dlg = null; while (TOY.z < 7) { if (li < lines.length && TOY.z > lines[li][0]) { G.dlg = null; G.bark(lines[li][1], lines[li][2], 2.6); li++; } yield 0; }
   yield 1.6; SH.sp.b = [372, 168]; SH.sp.a = [72, 150]; yield* say('b', 'Mum. This one has a little man in it. In a hat.'); yield* say('a', 'You have a universe at home.'); yield* say('b', 'Not a little one. With a MAN in it.'); yield* say('a', '...Slightly used. One owner. Four moons. Go on, then.'); yield .4; TOY.reach = .01; yield until(() => TOY.reach >= 1); Au.thud(.6); yield 1.2;
-  F.seq18 = true; F.points = (F.points || 0) + 150; G.bonus = { text: 'SEQUENCE 18', sub: 'the universe is on a shelf · total ' + F.points, t: 4 }; Au.bell(); saveNow(true); yield 3.6; G.fadeT = 1; yield 1.4; yield* carryScript();
+  F.seq18 = true; F.points = (F.points || 0) + 150; G.bonus = { text: 'SOLD', sub: 'the universe is on a shelf · total ' + F.points, t: 4 }; Au.bell(); saveNow(true); yield 3.6; G.fadeT = 1; yield 1.4; yield* carryScript();
 }
 function stepToy(dt) {
   const ih = Input.hit, ic = Input.cur, h = TOY.hand; TOY.t += dt;
@@ -4085,7 +4084,7 @@ function drawToy(c, W, H) {
   const t = TOY.t; c.imageSmoothingEnabled = false;
   if (TOY.ph === 'rack' || TOY.ph === 'lift') { rackDraw(c, W, H); return; }
   if (TOY.ph === 'shop') { stageShop(c, t, TOY.pan); return; }
-  if (TOY.ph === 'tbc') { c.fillStyle = '#0b0a10'; c.fillRect(0, 0, W, H); const a = clamp(t - .6, 0, 1); c.globalAlpha = a; ptext(c, 'KAZUKI AND KIZUKI', 240 - 102, 96, '#f0d848', 3); ptext(c, 'ARE ON A SHELF', 240 - 56, 124, '#f4efe2', 2); ptext(c, 'SEQUENCE 19 IS NEXT', 240 - 38, 150, '#8a8698'); c.imageSmoothingEnabled = false; c.drawImage(bigCard(2), 240 - 22, 170, 44, 66); c.globalAlpha = 1; return; }
+  if (TOY.ph === 'tbc') { c.fillStyle = '#0b0a10'; c.fillRect(0, 0, W, H); const a = clamp(t - .6, 0, 1); c.globalAlpha = a; ptext(c, 'KAZUKI AND KIZUKI', 240 - 102, 96, '#f0d848', 3); ptext(c, 'ARE ON A SHELF', 240 - 56, 124, '#f4efe2', 2); ptext(c, 'TO BE CONTINUED', 240 - 38, 150, '#8a8698'); c.imageSmoothingEnabled = false; c.drawImage(bigCard(2), 240 - 22, 170, 44, 66); c.globalAlpha = 1; return; }
   // the pull back: each view sits inside the next one's window
   if (!Rn.zA) { for (const k of ['zA', 'zB']) { Rn[k] = document.createElement('canvas'); Rn[k].width = 480; Rn[k].height = 270; } }
   const ST = [c2 => stageShop(c2, t, 0), stageStreet, stageCity, stagePlanet, stageGalaxy, stageMany, null], WIN = [STREET_WIN, CITY_WIN, PLANET_WIN, GAL_WIN, MANY_WIN, null];
@@ -4845,7 +4844,7 @@ function drawToy(c, W, H) {
   const t = TOY.t; c.imageSmoothingEnabled = false;
   if (TOY.ph === 'rack' || TOY.ph === 'lift') { rackDraw(c, W, H); return; }
   if (TOY.ph === 'shop') { stageShop(c, t, TOY.pan); return; }
-  if (TOY.ph === 'tbc') { c.fillStyle = '#0b0a10'; c.fillRect(0, 0, W, H); const a = clamp(t - .6, 0, 1); c.globalAlpha = a; ptext(c, 'KAZUKI AND KIZUKI', 240 - 102, 96, '#f0d848', 3); ptext(c, 'ARE ON A SHELF', 240 - 56, 124, '#f4efe2', 2); ptext(c, 'SEQUENCE 19 IS NEXT', 240 - 38, 150, '#8a8698'); c.drawImage(bigCard(4), 240 - 22, 170, 44, 66); c.globalAlpha = 1; return; }
+  if (TOY.ph === 'tbc') { c.fillStyle = '#0b0a10'; c.fillRect(0, 0, W, H); const a = clamp(t - .6, 0, 1); c.globalAlpha = a; ptext(c, 'KAZUKI AND KIZUKI', 240 - 102, 96, '#f0d848', 3); ptext(c, 'ARE ON A SHELF', 240 - 56, 124, '#f4efe2', 2); ptext(c, 'TO BE CONTINUED', 240 - 38, 150, '#8a8698'); c.drawImage(bigCard(4), 240 - 22, 170, 44, 66); c.globalAlpha = 1; return; }
   if (!Rn.zA) for (const k of ['zA', 'zB', 'zC', 'zM']) { Rn[k] = document.createElement('canvas'); Rn[k].width = 480; Rn[k].height = 270; }
   const STG = [c2 => stageShop(c2, t, 0), stageStreet, stageCity, stageRegion, stagePlanet2, stageGalaxy2, stageMany2], WIN = [STREET_WIN, CITY_WIN, REGION_WIN, PLANET_WIN2, GAL_WIN2, MANY_WIN2], LAST = 6;
   const zi = Math.min(LAST, Math.floor(TOY.z)), u0 = TOY.z - zi, u = zi >= LAST && TOY.z >= LAST + 1 ? 1 : u0 * u0 * (3 - 2 * u0), a = Rn.zA.getContext('2d'), b = Rn.zB.getContext('2d'); a.imageSmoothingEnabled = b.imageSmoothingEnabled = false;
@@ -5037,7 +5036,7 @@ function* carryScript() {
   const F = G.flags; TOY.ph = 'carry'; TOY.t = 0; TOY.sw = TOY.swV = 0; TOY.shk = 0; G.fade = 1; G.fadeT = 0; SH.sp = { b: [250, 150], a: [330, 96], k: [236, 118], c: [236, 118] }; yield 2.2;
   G.promptNow = { id: 'shake', force: true, a: 0, t: 99, parts: [{ t: Input.label('left'), key: true }, { t: Input.label('right'), key: true }, { t: 'hold on' }] };
   yield* say('b', 'It is warm.'); yield* say('a', 'They are, when they are still going.'); yield 1; TOY.swV += 5; TOY.shk = 1; Au.clink(); yield .5; yield* say('b', 'It RATTLES!'); G.bark('k', 'Oh no.', 1.8); yield 2; yield* say('a', 'Do not shake it, dear. There are people in it.'); yield* say('b', 'Only little ones.'); yield .6; G.bark('c', 'Meow.', 1.6); yield 2;
-  yield* say('b', 'Can I get the one with the fish next time?'); yield* say('a', 'We will see.'); G.promptNow = null; yield 2.4; F.seq19 = true; F.points = (F.points || 0) + 200; G.bonus = { text: 'SEQUENCE 19', sub: 'carried home · total ' + F.points, t: 3.4 }; Au.bell(); saveNow(true); yield 3.6; G.fadeT = 1; yield 1.6;
+  yield* say('b', 'Can I get the one with the fish next time?'); yield* say('a', 'We will see.'); G.promptNow = null; yield 2.4; F.seq19 = true; F.points = (F.points || 0) + 200; G.bonus = { text: 'CARRIED HOME', sub: '+200 points · total ' + F.points, t: 3.4 }; Au.bell(); saveNow(true); yield 3.6; G.fadeT = 1; yield 1.6;
   TOY.ph = 'credits'; TOY.t = 0; G.fade = 1; G.fadeT = 0; yield until(() => TOY.t > 44 || (TOY.t > 3 && Input.cur.run && TOY.t > 20)); G.fadeT = 1; yield 1.4; TOY.ph = 'tbc'; TOY.t = 0; G.fade = 1; G.fadeT = 0; yield 6; Host.show('end');
 }
 function carryStep(dt) { const ih = Input.hit; if (ih.left) { TOY.swV -= 3; TOY.shk = 1; Au.burst(1500, 1, .05, .07); } if (ih.right) { TOY.swV += 3; TOY.shk = 1; Au.burst(1700, 1, .05, .07); } TOY.swV += (-TOY.sw * 30 - TOY.swV * 2) * dt; TOY.sw = clamp(TOY.sw + TOY.swV * dt, -.7, .7); TOY.shk = Math.max(0, (TOY.shk || 0) - dt * 1.2); if (TOY.ph === 'credits' && Input.cur.run) TOY.t += dt * 3; }
@@ -5193,7 +5192,7 @@ function* carryScript() {
   const F = G.flags; TOY.ph = 'carry'; TOY.t = 0; TOY.sw = TOY.swV = 0; TOY.shk = 0; TOY.kc = null; TOY.crEnd = false; G.fade = 1; G.fadeT = 0; SH.sp = { b: [250, 150], a: [330, 96], k: [236, 118], c: [236, 118] }; yield 2.2;
   G.promptNow = { id: 'shake', force: true, a: 0, t: 99, parts: [{ t: Input.label('left'), key: true }, { t: Input.label('right'), key: true }, { t: 'hold on' }] };
   yield* say('b', 'It is warm.'); yield* say('a', 'They are, when they are still going.'); yield 1; TOY.swV += 5; TOY.shk = 1; Au.clink(); yield .5; yield* say('b', 'It RATTLES!'); G.bark('k', 'Oh no.', 1.8); yield 2; yield* say('a', 'Do not shake it, dear. There are people in it.'); yield* say('b', 'Only little ones.'); yield .6; G.bark('c', 'Meow.', 1.6); yield 2;
-  yield* say('b', 'Can I get the one with the fish next time?'); yield* say('a', 'We will see.'); G.promptNow = null; yield 2.4; F.seq19 = true; F.points = (F.points || 0) + 200; G.bonus = { text: 'SEQUENCE 19', sub: 'carried home · total ' + F.points, t: 3.4 }; Au.bell(); saveNow(true); yield 3.6; G.fadeT = 1; yield 1.6;
+  yield* say('b', 'Can I get the one with the fish next time?'); yield* say('a', 'We will see.'); G.promptNow = null; yield 2.4; F.seq19 = true; F.points = (F.points || 0) + 200; G.bonus = { text: 'CARRIED HOME', sub: '+200 points · total ' + F.points, t: 3.4 }; Au.bell(); saveNow(true); yield 3.6; G.fadeT = 1; yield 1.6;
   TOY.ph = 'credits'; TOY.t = 0; G.fade = 1; G.fadeT = 0; G.dlg = null; yield until(() => TOY.crEnd); yield 1;
   // the cat comes on from the side, looks up at where the names were, says what it thinks, and goes to sleep
   const k = TOY.kc = { x: 520, st: 'walk', t: 0, u: 0 }; yield until(() => k.x <= 262); k.st = 'sit'; k.t = 0; yield 2; Au.meow(0); G.dlg = { who: 'c', text: 'Meow.', n: 0, auto: 1.6 }; yield 2.6; k.st = 'curl'; yield until(() => k.u >= 1); yield 4.5;
@@ -5412,7 +5411,7 @@ function drawSmash(c, W, H) {
   for (let k = 0; k < 5; k++) { c.fillStyle = 'rgba(10,4,14,.10)'; const m = 30 - k * 6; c.fillRect(0, 0, m * 1.6, H); c.fillRect(W - m * 1.6, 0, m * 1.6, H); }
 }
 /* Game: state, story scripts, triggers, camera, saves, loop. */
-const BUILD = '1.0.0', SAVE_KEY = 'kk.save.v1', SET_KEY = 'kk.settings.v1';
+const BUILD = '1.0.1', SAVE_KEY = 'kk.save.v1', SET_KEY = 'kk.settings.v1';
 const store = { get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } } };
 const PROMPTS = {
   move: '{left} {right}  walk', run: 'hold {run}  run — keep going and he sprints', jump: '{jump}  jump — hold it for height', crouch: '{down}  crouch — while running, roll',
