@@ -13,6 +13,8 @@ interface PagePeelProps {
   /** Whether the page is currently the visible one. */
   pageShown: boolean;
   onTurned: () => void;
+  /** Fires the moment a turn is committed, before the page finishes moving. */
+  onTurnStart?: () => void;
   onRevealChange: (revealed: boolean) => void;
   /** Exposes a programmatic turn (wheel / swipe). Returns true when handled. */
   turnRef: MutableRefObject<(() => boolean) | null>;
@@ -41,7 +43,7 @@ const clipHalf = (poly: Pt[], side: (p: Pt) => number, keepPositive: boolean): P
 
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
-export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, onRevealChange, turnRef, draggingRef }: PagePeelProps) => {
+export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, onTurnStart, onRevealChange, turnRef, draggingRef }: PagePeelProps) => {
   const overlayRef = useRef<HTMLDivElement>(null);
   const flapRef = useRef<HTMLDivElement>(null);
   const pRef = useRef<Pt | null>(null);
@@ -55,6 +57,8 @@ export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, onRe
   readyRef.current = ready;
   const onTurnedRef = useRef(onTurned);
   onTurnedRef.current = onTurned;
+  const onTurnStartRef = useRef(onTurnStart);
+  onTurnStartRef.current = onTurnStart;
   const revealRef = useRef(false);
   const onRevealRef = useRef(onRevealChange);
   onRevealRef.current = onRevealChange;
@@ -155,6 +159,7 @@ export const PagePeel = ({ targetRef, boxStyle, ready, pageShown, onTurned, onRe
   const turn = useCallback(() => {
     if (turnedRef.current || !readyRef.current) return;
     turnedRef.current = true;
+    onTurnStartRef.current?.();
     const { w, h } = size();
     const from = pRef.current;
     const dist = from ? (from.x + 1.1 * w) / (2.1 * w) : 1;

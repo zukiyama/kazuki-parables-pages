@@ -2335,3 +2335,16 @@
 .to-no-one-page { background-color: hsl(var(--to-no-one-paper)); }
 .to-no-one-copy { color: hsl(var(--to-no-one-ink)); }
 .to-no-one-copy__rule { background-color: hsl(var(--to-no-one-ink) / 0.6); }
+
+/* To No One handwritten title */
+.to-no-one-title__pen { stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+.to-no-one-title__settle, .to-no-one-title__blots { opacity: 0; }
+.to-no-one-title.is-writing .to-no-one-title__pen { animation-name: to-no-one-pen; animation-timing-function: cubic-bezier(.45,.05,.55,.95); animation-fill-mode: forwards; }
+.to-no-one-title.is-writing .to-no-one-title__settle { animation: to-no-one-fade 400ms ease-out forwards; }
+.to-no-one-title.is-writing .to-no-one-title__blots { animation: to-no-one-fade 260ms ease-out forwards; }
+@keyframes to-no-one-pen { to { stroke-dashoffset: 0; } }
+@keyframes to-no-one-fade { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .to-no-one-title__pen { stroke-dashoffset: 0; }
+  .to-no-one-title__settle, .to-no-one-title__blots { opacity: 1; }
+}

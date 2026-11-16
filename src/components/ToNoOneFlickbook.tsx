@@ -472,7 +472,7 @@ function createToNoOne(container, opts) {
     if (!TL || !playing) { buildTimeline(); buildEvents(); }
     dirty = true;
   }
-  function now() { return performance.now() / 1000; }
+  function now() { return performance.now() / 1000 * 1.3; } // playback speed
   function tick() {
     raf = 0; if (destroyed) return;
     if (playing && ready && visible) {

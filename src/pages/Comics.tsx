@@ -38,6 +38,8 @@ import { ComicsLowerSlideshow } from "@/components/ComicsLowerSlideshow";
 import { ComicsPhoneStack } from "@/components/ComicsPhoneStack";
 import { PagePeel } from "@/components/PagePeel";
 import ToNoOneFlickbook from "@/components/ToNoOneFlickbook";
+import ToNoOneTitle, { TO_NO_ONE_WRITTEN_MS } from "@/components/ToNoOneTitle";
+import toNoOneTitleArt from "@/assets/to-no-one-title.webp";
 
 const TO_NO_ONE_ATLAS = "/to-no-one-atlas.webp";
 import comicsKeepGoingArrow from "@/assets/comics-keep-going-arrow.webp";
@@ -137,7 +139,17 @@ const Comics = () => {
     const img = new Image();
     img.src = TO_NO_ONE_ATLAS;
     img.decode?.().catch(() => {});
+    const title = new Image();
+    title.src = toNoOneTitleArt;
+    title.decode?.().catch(() => {});
   }, []);
+  // Once the title is written it rises to the top and the blurb appears.
+  const [flickbookRisen, setFlickbookRisen] = useState(false);
+  useEffect(() => {
+    if (!flickbookText) { setFlickbookRisen(false); return; }
+    const t = window.setTimeout(() => setFlickbookRisen(true), TO_NO_ONE_WRITTEN_MS + 350);
+    return () => window.clearTimeout(t);
+  }, [flickbookText]);
 
   // Fetch the next page immediately, not through the deferred secondary queue.
   useEffect(() => {
@@ -1139,6 +1151,7 @@ const Comics = () => {
                 pageShown={titleVisible}
                 // The flickbook sits beneath, so the God of Lies trees wait until it is left.
                 onRevealChange={(revealed) => { openingRevealingRef.current = revealed; }}
+                onTurnStart={() => setFlickbookPlay(true)}
                 onTurned={() => {
                   peelStartedRef.current = false;
                   pendingTitleAdvanceRef.current = false;
@@ -1167,14 +1180,25 @@ const Comics = () => {
               >
                 <ToNoOneFlickbook key={flickbookKey} src={TO_NO_ONE_ATLAS} play={flickbookPlay} onComplete={() => setFlickbookText(true)} className={undefined} style={undefined} />
                 <div
-                  className={`to-no-one-copy absolute inset-x-0 bottom-0 flex h-1/2 flex-col items-center justify-center gap-4 bg-transparent px-8 text-center transition-opacity duration-1000 ease-out landscape:inset-y-0 landscape:left-auto landscape:right-0 landscape:h-full landscape:w-[40%] ${flickbookText ? 'opacity-100' : 'opacity-0'}`}
+                  className="to-no-one-copy absolute inset-x-0 bottom-0 h-1/2 landscape:inset-y-0 landscape:left-auto landscape:right-0 landscape:h-full landscape:w-[40%]"
                   aria-hidden={!flickbookText}
                 >
-                  <h2 className="font-playfair text-5xl italic lg:text-6xl xl:text-7xl">To No One</h2>
-                  <div className="to-no-one-copy__rule h-0.5 w-16" />
-                  <p className="max-w-sm font-body text-sm leading-relaxed sm:text-base">
-                    A short wordless comic about a letter written to no one, and the small things that answer back.
-                  </p>
+                  <div
+                    className="absolute left-1/2 w-[86%] max-w-xl"
+                    style={{
+                      top: flickbookRisen ? '9%' : '50%',
+                      transform: `translate(-50%, ${flickbookRisen ? '0' : '-50%'})`,
+                      transition: 'top 1.1s cubic-bezier(.65,0,.35,1), transform 1.1s cubic-bezier(.65,0,.35,1)',
+                    }}
+                  >
+                    <ToNoOneTitle start={flickbookText} />
+                    <p
+                      className="absolute inset-x-0 top-full mx-auto mt-4 max-w-sm text-center font-body text-sm leading-relaxed sm:mt-6 sm:text-base"
+                      style={{ opacity: flickbookRisen ? 1 : 0, transition: 'opacity 0.8s ease-out 0.7s' }}
+                    >
+                      A short wordless comic about a letter written to no one, and the small things that answer back. One quiet room, one unsent page, and a voice that only the paper can hear. Placeholder text — the real description is coming soon.
+                    </p>
+                  </div>
                 </div>
               </section>
             )}
