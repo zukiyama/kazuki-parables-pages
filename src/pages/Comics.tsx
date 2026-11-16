@@ -140,11 +140,11 @@ const Comics = () => {
     img.decode?.().catch(() => {});
     TO_NO_ONE_TITLE_ART.forEach((src) => { const art = new Image(); art.src = src; art.decode?.().catch(() => {}); });
   }, []);
-  // Once the title is written it rises to the top and the blurb appears.
-  const [flickbookRisen, setFlickbookRisen] = useState(false);
+  // Reserve the complete layout from the start; fade copy in after the pen lifts.
+  const [flickbookCopyVisible, setFlickbookCopyVisible] = useState(false);
   useEffect(() => {
-    if (!flickbookText) { setFlickbookRisen(false); return; }
-    const t = window.setTimeout(() => setFlickbookRisen(true), TO_NO_ONE_WRITTEN_MS + 250);
+    if (!flickbookText) { setFlickbookCopyVisible(false); return; }
+    const t = window.setTimeout(() => setFlickbookCopyVisible(true), TO_NO_ONE_WRITTEN_MS + 250);
     return () => window.clearTimeout(t);
   }, [flickbookText]);
 
@@ -1180,21 +1180,23 @@ const Comics = () => {
                   className="to-no-one-copy absolute inset-x-0 bottom-0 h-1/2 landscape:inset-y-0 landscape:left-auto landscape:right-0 landscape:h-full landscape:w-[40%]"
                   aria-hidden={!flickbookText}
                 >
-                  <div
-                    className="absolute left-1/2 w-[86%] max-w-xl"
-                    style={{
-                      top: flickbookRisen ? '9%' : '50%',
-                      transform: `translate(-50%, ${flickbookRisen ? '0' : '-50%'})`,
-                      transition: 'top 1.1s cubic-bezier(.65,0,.35,1), transform 1.1s cubic-bezier(.65,0,.35,1)',
-                    }}
-                  >
+                  <div className="absolute left-1/2 top-1/2 w-[86%] max-w-xl -translate-x-1/2 -translate-y-1/2">
                     <ToNoOneTitle start={flickbookText} />
-                    <p
-                      className="absolute inset-x-0 top-full mx-auto mt-10 max-w-sm text-center font-body text-sm leading-relaxed sm:mt-14 sm:text-base"
-                      style={{ opacity: flickbookRisen ? 1 : 0, transition: 'opacity 0.9s ease-out 1.1s' }}
+                    <div
+                      className="mx-auto mt-5 max-w-sm space-y-4 text-center font-body text-sm leading-relaxed sm:mt-8 sm:space-y-6 sm:text-base motion-reduce:transition-none"
+                      aria-hidden={!flickbookCopyVisible}
+                      style={{ opacity: flickbookCopyVisible ? 1 : 0, transition: 'opacity 0.9s ease-out' }}
                     >
-                      A short wordless comic about a letter written to no one, and the small things that answer back. One quiet room, one unsent page, and a voice that only the paper can hear. Placeholder text — the real description is coming soon.
-                    </p>
+                      <p>A short wordless comic about a letter written to no one, and the small things that answer back. One quiet room, one unsent page, and a voice that only the paper can hear. Placeholder text — the real description is coming soon.</p>
+                      <div className="space-y-1">
+                        <p>Read it on Webtoons now</p>
+                        <a href="https://www.webtoons.com/" target="_blank" rel="noopener noreferrer" tabIndex={flickbookCopyVisible ? 0 : -1} className="underline underline-offset-4" onClick={(event) => event.stopPropagation()}>Webtoons — placeholder link</a>
+                      </div>
+                      <div className="space-y-1">
+                        <p>Follow on Instagram</p>
+                        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" tabIndex={flickbookCopyVisible ? 0 : -1} className="underline underline-offset-4" onClick={(event) => event.stopPropagation()}>Instagram — placeholder link</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </section>

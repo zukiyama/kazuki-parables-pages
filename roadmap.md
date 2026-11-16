@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Keep To No One lettering stationary, vertically centre the full title/copy group, and fade in the description plus Webtoons and Instagram placeholder links after writing. Tablet-width and phone playback/layout verified; 16 Comics checks pass and build OK.
+
 - [x] Remove header diagonals completely and restore the first PHOBOS title styling; preserve player, tagline and social links. Desktop, tablet and phone display verified; build OK.
 
 - [x] Match KazukiLabs header diagonals to the lettering and restore complete PHOBOS artwork while preserving the Another Day On line pixel-for-pixel. Desktop, tablet and phone title display verified; build OK.

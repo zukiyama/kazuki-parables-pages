@@ -3,6 +3,7 @@
 - Measure cabinet zoom from untransformed layout offsets and suspend recalculation during iframe fullscreen; restore scroll on exit so browser fullscreen transitions never compound the zoom.
 - Read music rules in src/components/music/AGENTS.md before edits there.
 - Read Comics and Writing page rules in src/pages/AGENTS.md before edits there.
+- Reserve To No One's title, description and social-link heights in one centred normal-flow group; reveal copy with opacity only so handwriting never changes position.
 
 - The home page’s major visual bands remain in normal document flow without timed entrance transforms, so scrolling never reveals artificial gaps.
 - Home is Cinematic only; outgoing slideshow artwork and title retain running animations inside the same dissolve layer, so skips never snap or remove text early.
