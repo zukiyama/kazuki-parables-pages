@@ -2335,6 +2335,23 @@
 .to-no-one-page { background-color: hsl(var(--to-no-one-paper)); }
 .to-no-one-copy { color: hsl(var(--to-no-one-ink)); }
 .to-no-one-copy__rule { background-color: hsl(var(--to-no-one-ink) / 0.6); }
+.to-no-one-details { opacity: 0; transition: opacity 2.2s cubic-bezier(.25,.1,.25,1); }
+.to-no-one-details.is-visible { opacity: 1; }
+.to-no-one-scroll {
+  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; gap: 3px; height: 48px;
+  padding: 4px 16px; color: hsl(var(--to-no-one-ink));
+  font-family: var(--font-body, Georgia, serif); font-size: 12px; font-weight: 400;
+  opacity: 0; pointer-events: none; transition: opacity 1.6s ease-in-out;
+}
+.to-no-one-scroll:hover { background: transparent; }
+.to-no-one-scroll.is-visible { opacity: .7; pointer-events: auto; transition-delay: 2.3s; }
+@media (orientation: portrait) {
+  .to-no-one-page .to-no-one-copy > div { top: calc(50% - 48px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .to-no-one-details, .to-no-one-scroll, .to-no-one-scroll.is-visible { transition-duration: 0s; transition-delay: 0s; }
+}
 
 /* To No One handwritten title */
 .to-no-one-title__pen { stroke-dasharray: 1 1; stroke-dashoffset: 1; }

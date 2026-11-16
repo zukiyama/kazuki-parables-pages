@@ -1183,22 +1183,31 @@ const Comics = () => {
                   <div className="absolute left-1/2 top-1/2 w-[86%] max-w-xl -translate-x-1/2 -translate-y-1/2">
                     <ToNoOneTitle start={flickbookText} />
                     <div
-                      className="mx-auto mt-5 max-w-sm space-y-4 text-center font-body text-sm leading-relaxed sm:mt-8 sm:space-y-6 sm:text-base motion-reduce:transition-none"
+                      className={`to-no-one-details mx-auto mt-5 max-w-sm text-center sm:mt-8 ${flickbookCopyVisible ? 'is-visible' : ''}`}
                       aria-hidden={!flickbookCopyVisible}
-                      style={{ opacity: flickbookCopyVisible ? 1 : 0, transition: 'opacity 0.9s ease-out' }}
                     >
-                      <p>A short wordless comic about a letter written to no one, and the small things that answer back. One quiet room, one unsent page, and a voice that only the paper can hear. Placeholder text — the real description is coming soon.</p>
-                      <div className="space-y-1">
-                        <p>Read it on Webtoons now</p>
-                        <a href="https://www.webtoons.com/" target="_blank" rel="noopener noreferrer" tabIndex={flickbookCopyVisible ? 0 : -1} className="underline underline-offset-4" onClick={(event) => event.stopPropagation()}>Webtoons — placeholder link</a>
-                      </div>
-                      <div className="space-y-1">
-                        <p>Follow on Instagram</p>
-                        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" tabIndex={flickbookCopyVisible ? 0 : -1} className="underline underline-offset-4" onClick={(event) => event.stopPropagation()}>Instagram — placeholder link</a>
+                      <p className="font-display text-base italic leading-relaxed sm:text-xl">A short wordless comic about a letter written to no one, and the small things that answer back.</p>
+                      <div className="mt-6 space-y-5 sm:mt-9 sm:space-y-7">
+                        <div className="space-y-1.5">
+                          <p className="font-body text-xs uppercase opacity-65">Read it on Webtoons now</p>
+                          <a href="https://www.webtoons.com/" target="_blank" rel="noopener noreferrer" tabIndex={flickbookCopyVisible ? 0 : -1} className="font-display text-base underline decoration-current/40 underline-offset-4 sm:text-lg" onClick={(event) => event.stopPropagation()}>To No One on Webtoons <span className="font-body text-xs no-underline opacity-60">(placeholder)</span></a>
+                        </div>
+                        <div className="space-y-1.5">
+                          <p className="font-body text-xs uppercase opacity-65">Follow on Instagram</p>
+                          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" tabIndex={flickbookCopyVisible ? 0 : -1} className="font-display text-base underline decoration-current/40 underline-offset-4 sm:text-lg" onClick={(event) => event.stopPropagation()}>To No One on Instagram <span className="font-body text-xs no-underline opacity-60">(placeholder)</span></a>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <Button
+                  variant="ghost"
+                  className={`to-no-one-scroll ${flickbookCopyVisible ? 'is-visible' : ''}`}
+                  disabled={!flickbookCopyVisible || !flickbookOpen}
+                  onClick={(event) => { event.stopPropagation(); dismissFlickbookRef.current?.('next'); }}
+                >
+                  <span>Scroll for more</span><ArrowDown size={16} strokeWidth={1.25} aria-hidden="true" />
+                </Button>
               </section>
             )}
 

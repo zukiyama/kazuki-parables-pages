@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Soften To No One's description fade, refine typography and social-link hierarchy, and reveal a centred bottom Scroll for more control after the copy fades in. Desktop/tablet cursor clicks and phone touch taps reach God of Lies; stationary title and clear spacing verified, 16 Comics tests pass and build OK.
+
 - [x] Keep To No One lettering stationary, vertically centre the full title/copy group, and fade in the description plus Webtoons and Instagram placeholder links after writing. Tablet-width and phone playback/layout verified; 16 Comics checks pass and build OK.
 
 - [x] Remove header diagonals completely and restore the first PHOBOS title styling; preserve player, tagline and social links. Desktop, tablet and phone display verified; build OK.
