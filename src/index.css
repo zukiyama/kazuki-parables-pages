@@ -2345,6 +2345,7 @@
   opacity: 0; pointer-events: none; transition: opacity 1.6s ease-in-out;
 }
 .to-no-one-scroll:hover { background: transparent; }
+.to-no-one-page .to-no-one-scroll:disabled { opacity: 0; }
 .to-no-one-scroll.is-visible { opacity: .7; pointer-events: auto; transition-delay: 2.3s; }
 @media (orientation: portrait) {
   .to-no-one-page .to-no-one-copy > div { top: calc(50% - 48px); }
