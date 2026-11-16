@@ -1165,7 +1165,7 @@ const Comics = () => {
                 }}
                 onClick={() => { if (flickbookText) dismissFlickbookRef.current?.('next'); }}
               >
-                <ToNoOneFlickbook key={flickbookKey} src={TO_NO_ONE_ATLAS} play={flickbookPlay} onComplete={() => setFlickbookText(true)} />
+                <ToNoOneFlickbook key={flickbookKey} src={TO_NO_ONE_ATLAS} play={flickbookPlay} onComplete={() => setFlickbookText(true)} className={undefined} style={undefined} />
                 <div
                   className={`to-no-one-copy absolute inset-x-0 bottom-0 flex h-1/2 flex-col items-center justify-center gap-4 bg-transparent px-8 text-center transition-opacity duration-1000 ease-out landscape:inset-y-0 landscape:left-auto landscape:right-0 landscape:h-full landscape:w-[40%] ${flickbookText ? 'opacity-100' : 'opacity-0'}`}
                   aria-hidden={!flickbookText}
