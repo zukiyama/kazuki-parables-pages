@@ -1,5 +1,6 @@
 # Project architecture
 - Keep uploaded Labs HTML experiments in public/labs with local fonts and camera/XR/fullscreen permissions; active games close through a same-origin, active-iframe-validated Quit message rather than outside controls, preserving the cabinet illusion.
+- Measure cabinet zoom from untransformed layout offsets and suspend recalculation during iframe fullscreen; restore scroll on exit so browser fullscreen transitions never compound the zoom.
 - Read music rules in src/components/music/AGENTS.md before edits there.
 - Read Comics and Writing page rules in src/pages/AGENTS.md before edits there.
 

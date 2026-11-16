@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, RotateCw } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { isArcadeQuitMessage, shouldRequestLandscape } from "@/lib/kazukilabs-launch";
+import { getCabinetZoom, isArcadeQuitMessage, shouldRequestLandscape } from "@/lib/kazukilabs-launch";
 import arcade from "@/assets/kazukilabs-arcade-wide.webp";
 import labsLogo from "@/assets/kazukilabs-logo-coral.webp";
 
@@ -173,17 +173,25 @@ const KazukiLabs = () => {
   const cabinetRef = useRef<HTMLDivElement>(null);
   const screenRef = useRef<HTMLDivElement>(null);
   const gameFrameRef = useRef<HTMLIFrameElement>(null);
+  const fullscreenScrollRef = useRef<{ x: number; y: number } | null>(null);
 
   // Zoom the cabinet so its screen nearly fills the window, leaving the machine visible at the edges.
   const computeZoom = useCallback(() => {
     const cab = cabinetRef.current, scr = screenRef.current;
     if (!cab || !scr) return null;
-    const w = cab.getBoundingClientRect();
-    const r = scr.getBoundingClientRect();
-    const baseW = r.width, baseH = r.height;
-    const s = Math.min((window.innerWidth * 0.9) / baseW, (window.innerHeight * 0.86) / baseH);
-    const cx = r.left + baseW / 2 - w.left, cy = r.top + baseH / 2 - w.top;
-    return `translate(${window.innerWidth / 2 - w.left - s * cx}px, ${window.innerHeight / 2 - w.top - s * cy}px) scale(${s})`;
+    // The section stays in document flow; the cabinet and screen rects are transformed
+    // (and the iframe itself enters the fullscreen top layer), so never measure those.
+    const stage = cab.parentElement;
+    if (!stage) return null;
+    const origin = stage.getBoundingClientRect();
+    return getCabinetZoom({
+      left: origin.left + cab.offsetLeft,
+      top: origin.top + cab.offsetTop,
+      screenLeft: scr.offsetLeft,
+      screenTop: scr.offsetTop,
+      screenWidth: scr.offsetWidth,
+      screenHeight: scr.offsetHeight,
+    }, { width: window.innerWidth, height: window.innerHeight });
   }, []);
   const click = useClick();
   const game = games[index];
@@ -232,23 +240,44 @@ const KazukiLabs = () => {
     if (!playing) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const onKey = (event: KeyboardEvent) => event.key === "Escape" && closeGame();
+    let restoreFrame = 0;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !document.fullscreenElement && !fullscreenScrollRef.current) closeGame();
+    };
     const onMessage = (event: MessageEvent) => {
       if (isArcadeQuitMessage(event, window.location.origin, gameFrameRef.current?.contentWindow)) closeGame();
     };
     const onFullscreen = () => {
+      if (cabinetMode) {
+        if (document.fullscreenElement) {
+          fullscreenScrollRef.current ??= { x: window.scrollX, y: window.scrollY };
+        } else {
+          // Wait for the browser to restore the iframe from its fullscreen top layer.
+          cancelAnimationFrame(restoreFrame);
+          restoreFrame = requestAnimationFrame(() => {
+            const position = fullscreenScrollRef.current;
+            if (position) window.scrollTo({ left: position.x, top: position.y, behavior: "instant" });
+            fullscreenScrollRef.current = null;
+            setZoom(computeZoom());
+          });
+        }
+      }
       if (!document.fullscreenElement && fullscreenForGame.current) {
         fullscreenForGame.current = false;
         screen.orientation?.unlock();
         setShowRotateHint(true);
       }
     };
-    const onResize = () => cabinetMode && setZoom(computeZoom());
+    const onResize = () => {
+      if (cabinetMode && !document.fullscreenElement && !fullscreenScrollRef.current) setZoom(computeZoom());
+    };
     window.addEventListener("resize", onResize);
     window.addEventListener("keydown", onKey);
     window.addEventListener("message", onMessage);
     document.addEventListener("fullscreenchange", onFullscreen);
     return () => {
+      cancelAnimationFrame(restoreFrame);
+      fullscreenScrollRef.current = null;
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("resize", onResize);
       window.removeEventListener("keydown", onKey);

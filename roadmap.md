@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Fix fullscreen exit restoring the active zoomed cabinet using untransformed measurements and scroll restoration. Fullscreen/resize/exit preserves exact cabinet bounds and scroll in Chromium; desktop/tablet/phone launch and in-game Quit pass, seven tests pass and build OK. Game file unchanged.
+
 - [x] Replace the arcade game with embed-4 using local fonts; New game → pause → Save and quit game verified at desktop, tablet and phone sizes. Six launch/quit tests pass; build OK.
 - [x] Remove the KazukiLabs diagonal menu marks on desktop and phones; both menus verified without the strokes.
 

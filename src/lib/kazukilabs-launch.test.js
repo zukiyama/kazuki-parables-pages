@@ -1,5 +1,16 @@
 import { describe, expect, test } from "bun:test";
-import { isArcadeQuitMessage, shouldRequestLandscape } from "./kazukilabs-launch";
+import { getCabinetZoom, isArcadeQuitMessage, shouldRequestLandscape } from "./kazukilabs-launch";
+
+describe("KazukiLabs fullscreen cabinet restoration", () => {
+  test("returning to the same viewport reproduces the original cabinet zoom", () => {
+    const layout = { left: 0, top: -200, screenLeft: 300, screenTop: 180, screenWidth: 400, screenHeight: 240 };
+    const before = getCabinetZoom(layout, { width: 1000, height: 800 });
+    expect(before).toBe("translate(-625px, -75px) scale(2.25)");
+    // A different fullscreen viewport must not compound the previously applied zoom.
+    expect(getCabinetZoom(layout, { width: 1400, height: 900 })).not.toBe(before);
+    expect(getCabinetZoom(layout, { width: 1000, height: 800 })).toBe(before);
+  });
+});
 
 describe("KazukiLabs phone orientation", () => {
   test("a playable landscape platformer requests landscape on a phone", () => {
