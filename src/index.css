@@ -2327,7 +2327,7 @@
   height: 100%;
   transform: skewX(-30deg);
   background: linear-gradient(to bottom, currentColor 0 32%, transparent 32% 68%, currentColor 68% 100%);
-  opacity: 0.14;
+  opacity: 1;
 }
 .labs-nav-diagonals::after {
   left: 67%;

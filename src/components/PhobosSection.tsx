@@ -6,7 +6,7 @@ import title from "@/assets/another-day-on-phobos-title.webp";
 const PhobosSection = () => (
   <section aria-labelledby="phobos-title" className="phobos-section px-5 pb-14 pt-8 text-center sm:pb-20 sm:pt-12">
     <h2 id="phobos-title" className="mx-auto w-full max-w-[23rem] sm:max-w-[28rem]">
-      <img src={title} alt="Another Day on PHOBOS" width={930} height={320} className="block h-auto w-full" />
+      <img src={title} alt="Another Day on PHOBOS" width={930} height={340} className="block h-auto w-full" />
     </h2>
     <p className="mx-auto my-8 max-w-xl font-heading text-base sm:my-10 sm:text-lg">
       Join the doctor on the strangest assignment in the galaxy
