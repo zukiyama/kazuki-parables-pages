@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Remove header diagonals completely and restore the first PHOBOS title styling; preserve player, tagline and social links. Desktop, tablet and phone display verified; build OK.
+
 - [x] Match KazukiLabs header diagonals to the lettering and restore complete PHOBOS artwork while preserving the Another Day On line pixel-for-pixel. Desktop, tablet and phone title display verified; build OK.
 
 - [x] Refine PHOBOS with extracted uploaded title lettering, rounded phone-style player, evenly spaced doctor tagline, updated TikTok/Instagram handles and no placeholder copy; add very faint KazukiLabs header diagonals and remove Steam punctuation. Desktop/tablet/phone playback, pause, seek, links and layout verified; desktop fullscreen checked and seven arcade tests passed. Doctor name remains unspecified, so the line says “Join the doctor”.

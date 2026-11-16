@@ -1,12 +1,12 @@
 import { ArrowUpRight } from "lucide-react";
 import episode from "@/assets/another-day-on-phobos-episode-1.mp4";
 import poster from "@/assets/another-day-on-phobos-poster.webp";
-import title from "@/assets/another-day-on-phobos-title.webp";
 
 const PhobosSection = () => (
   <section aria-labelledby="phobos-title" className="phobos-section px-5 pb-14 pt-8 text-center sm:pb-20 sm:pt-12">
-    <h2 id="phobos-title" className="mx-auto w-full max-w-[23rem] sm:max-w-[28rem]">
-      <img src={title} alt="Another Day on PHOBOS" width={930} height={340} className="block h-auto w-full" />
+    <h2 id="phobos-title" className="phobos-title">
+      <span className="phobos-title__intro block">ANOTHER DAY ON</span>
+      <span className="phobos-title__place mt-1 block">PHOBOS</span>
     </h2>
     <p className="mx-auto my-8 max-w-xl font-heading text-base sm:my-10 sm:text-lg">
       Join the doctor on the strangest assignment in the galaxy
