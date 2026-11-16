@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import officeView from "@/assets/office-window-view.webp";
 import boysTowerBlocks from "@/assets/boys-tower-blocks.webp";
-import kyotoTvShop from "@/assets/kyoto-tv-shop-realistic.webp";
+import kyotoTvShop from "@/assets/osaka-tv-shop-street.webp";
 
 const slides = [
   { image: officeView, name: "Thoughts of the heart", duration: 12600 },
