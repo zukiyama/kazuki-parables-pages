@@ -16,7 +16,7 @@ type Game = {
 
 const games: Game[] = [
   {
-    title: "KAZUKI & KIZ",
+    title: "KAZUKI & KIZUKI",
     tagline: "",
     url: `${import.meta.env.BASE_URL}labs/kazuki-and-kizuki-embed.html`,
     art: "pet",
@@ -58,7 +58,7 @@ const TitleScreen = ({ game, index }: { game: Game; index: number }) => (
     {game.art === "pet" ? (
       <g filter="url(#arcade-glow)" shapeRendering="crispEdges">
         <circle cx="282" cy="74" r="20" fill="none" stroke="#ffe066" strokeWidth="2" />
-        {/* Kazuki: a pixel traveller in a hat and backpack, facing Kiz. */}
+        {/* Kazuki: a pixel traveller in a hat and backpack, facing Kizuki. */}
         <g fill="#5ff4ff">
           <rect x="91" y="64" width="23" height="5" />
           <rect x="87" y="69" width="30" height="16" />
@@ -76,7 +76,7 @@ const TitleScreen = ({ game, index }: { game: Game; index: number }) => (
           <rect x="80" y="164" width="18" height="6" />
           <rect x="107" y="164" width="19" height="6" />
         </g>
-        {/* Kiz: a small cat turned left towards Kazuki. */}
+        {/* Kizuki: a small cat turned left towards Kazuki. */}
         <g fill="#ff9e5f">
           <rect x="210" y="120" width="37" height="24" />
           <rect x="199" y="111" width="24" height="27" />
@@ -250,7 +250,7 @@ const KazukiLabs = () => {
             fetchPriority="high"
           />
           <p className="mx-auto mt-2 max-w-2xl font-heading text-base italic text-muted-foreground sm:text-xl">
-            Try playing as KAZUKI and KIZ in their stunning new adventure…
+            Try playing as KAZUKI and KIZUKI in their stunning new adventure…
           </p>
         </header>
 
