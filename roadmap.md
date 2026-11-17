@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Replace the Writing page's Land and Market covers with separate 640×960 cover and 128×192 menu WebP files, and swap the Market background at its native 1672×941 size without changing navigation or scrolling. Desktop/phone artwork and menu selections verified; four scrolling tests pass and build OK.
+
 - [x] Soften To No One's description fade, refine typography and social-link hierarchy, and reveal a centred bottom Scroll for more control after the copy fades in. Desktop/tablet cursor clicks and phone touch taps reach God of Lies; stationary title and clear spacing verified, 16 Comics tests pass and build OK.
 
 - [x] Keep To No One lettering stationary, vertically centre the full title/copy group, and fade in the description plus Webtoons and Instagram placeholder links after writing. Tablet-width and phone playback/layout verified; 16 Comics checks pass and build OK.

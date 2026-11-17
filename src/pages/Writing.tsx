@@ -16,7 +16,7 @@ import { MagazineBlurb } from "@/components/MagazineBlurb";
 // Background images
 import schoolBackground from "@/assets/school-background-montage.webp";
 import hoaxBackground from "@/assets/hoax-background-desert-road.webp";
-import theMarketBackground from "@/assets/the-market-background-new.webp";
+import theMarketBackgroundAsset from "@/assets/the-market-background-experiment.webp.asset.json";
 import howBackground from "@/assets/how-background.webp";
 import viceVersaBackground from "@/assets/vice-versa-background.webp";
 import amyaNewBackground from "@/assets/amya-new-background.webp";
@@ -40,11 +40,14 @@ import vignetteSyphonsRight from "@/assets/vignette-syphons-right.webp";
 // Book covers
 import kaijuCover from "@/assets/kaiju-cover-new.webp";
 import hoaxCover from "@/assets/hoax-cover.webp";
-import theMarketCover from "@/assets/the-market-cover-new.webp";
+import theMarketCoverAsset from "@/assets/the-market-cover-experiment.webp.asset.json";
 import howCover from "@/assets/how-cover.webp";
 import viceVersaCover from "@/assets/vice-versa-cover.webp";
 import amyaCover from "@/assets/amya-cover.webp";
 import statesOfMotionCover from "@/assets/states-of-motion-cover.webp";
+
+const theMarketBackground = theMarketBackgroundAsset.url;
+const theMarketCover = theMarketCoverAsset.url;
 
 const Writing = () => {
   useScrollToTop();

@@ -6,7 +6,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 // Book covers
 import professorBarnabasCover from "@/assets/professor-barnabas-cover-new2.webp";
 import toFlyCover from "@/assets/to-fly-cover-new.webp";
-import landDreamSkyCover from "@/assets/land-dream-sky-cover-new.webp";
+import landDreamSkyCoverAsset from "@/assets/land-dream-sky-cover-experiment.webp.asset.json";
+
+const landDreamSkyCover = landDreamSkyCoverAsset.url;
 
 const books = [
   {
