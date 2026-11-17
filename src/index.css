@@ -2347,6 +2347,23 @@
 .to-no-one-scroll:hover { background: transparent; }
 .to-no-one-page .to-no-one-scroll:disabled { opacity: 0; }
 .to-no-one-scroll.is-visible { opacity: .7; pointer-events: auto; transition-delay: 2.3s; }
+/* Clicking the cue must never leave a blue focus ring, a pressed background
+   or a text selection behind: it is a pointer/touch control, not a form field. */
+.to-no-one-scroll,
+.to-no-one-scroll:focus,
+.to-no-one-scroll:focus-visible,
+.to-no-one-scroll:active,
+.to-no-one-scroll:hover {
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.to-no-one-scroll,
+.to-no-one-scroll * { user-select: none; -webkit-user-select: none; }
+.to-no-one-scroll::selection,
+.to-no-one-scroll *::selection { background: transparent; color: inherit; }
 @media (orientation: portrait) {
   .to-no-one-page .to-no-one-copy > div { top: calc(50% - 48px); }
 }
