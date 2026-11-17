@@ -377,6 +377,11 @@ const Comics = () => {
     
     const triggerSectionChange = (direction: 'next' | 'prev') => {
       if (isTransitioning) return;
+      // Stepping back from God of Lies returns to the finished To No One page.
+      if (direction === 'prev' && currentSection === 1 && flickbookPassedRef.current) {
+        flickbookOpenRef.current = true;
+        setFlickbookOpen(true);
+      }
       if (showPopUpScene && direction === 'next' && currentSection >= maxPinnedSection) return;
       if (showPopUpScene && document.querySelector('[role="dialog"]')) return;
       
@@ -697,6 +702,7 @@ const Comics = () => {
   useEffect(() => { openingRevealingRef.current = openingRevealing; }, [openingRevealing]);
 
   // Leaving the flickbook: forward continues to God of Lies, back returns to the title page.
+  // Once played, it stays finished until the visitor leaves the Comics page.
   dismissFlickbookRef.current = (direction) => {
     if (!flickbookOpenRef.current) return;
     flickbookOpenRef.current = false;
@@ -704,20 +710,8 @@ const Comics = () => {
     if (direction === 'next') {
       flickbookPassedRef.current = true;
       advanceOpeningRef.current?.();
-    } else {
-      setFlickbookPlay(false);
-      setFlickbookText(false);
-      setFlickbookKey(k => k + 1);
     }
   };
-  // Back on the title page after God of Lies: the flickbook plays afresh next turn.
-  useEffect(() => {
-    if (currentSection !== 0 || !flickbookPassedRef.current) return;
-    flickbookPassedRef.current = false;
-    setFlickbookPlay(false);
-    setFlickbookText(false);
-    setFlickbookKey(k => k + 1);
-  }, [currentSection]);
   useEffect(() => { if (currentSection !== 0) peelStartedRef.current = false; }, [currentSection]);
 
   // A scroll, swipe or tap made while the opening page is still turning is
