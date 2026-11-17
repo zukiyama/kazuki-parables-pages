@@ -2,7 +2,8 @@ import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { FloatingQuote } from '@/components/FloatingQuote';
 
-type Tone = 'kaiju' | 'memo' | 'frost' | 'dark' | 'zen' | 'magazine';
+type Tone = 'kaiju' | 'frost' | 'dark' | 'zen' | 'magazine';
+type Palette = 'dusk' | 'outback' | 'summer' | 'noir';
 
 interface PhoneBook {
   id: string;
@@ -14,7 +15,10 @@ interface PhoneBook {
   paragraphs: string[];
   tagline?: string;
   tone: Tone;
-  variant?: 'dusk';
+  /** Colour palette matched to the book's background (magazine tone only). */
+  palette?: Palette;
+  /** Italic epigraph shown first inside the magazine accent border. */
+  quote?: string;
 }
 
 // Same rising quotes (and order) used between entries on tablet/desktop.
@@ -33,20 +37,16 @@ function Summary({ book }: { book: PhoneBook }) {
     </p>
   ));
   const tagline = book.tagline && <p className="writing-phone-book__tagline">{book.tagline}</p>;
-  if (book.tone === 'memo') return (
-    <div className="writing-phone-book__summary" data-tone="memo">
-      <i className="writing-phone-tape" data-corner="tl" /><i className="writing-phone-tape" data-corner="tr" />
-      <i className="writing-phone-tape" data-corner="bl" /><i className="writing-phone-tape" data-corner="br" />
-      {body}{tagline}
-    </div>
-  );
-  if (book.tone === 'magazine') return (
-    <div className="writing-phone-book__summary" data-tone="magazine" data-variant={book.variant}>
-      {book.paragraphs.map((text, i) => <p key={text} data-side={i % 2 ? 'right' : 'left'} style={{ transitionDelay: `${300 + i * 120}ms` }}>{text}</p>)}
-      {book.tagline && <p className="writing-phone-book__tagline" data-side="left" style={{ transitionDelay: `${300 + book.paragraphs.length * 120}ms` }}>{book.tagline}</p>}
+  if (book.tone === 'magazine') {
+    const lines = book.quote ? [book.quote, ...book.paragraphs] : book.paragraphs;
+    return (
+    <div className="writing-phone-book__summary" data-tone="magazine" data-palette={book.palette}>
+      {lines.map((text, i) => <p key={text} className={book.quote && i === 0 ? 'writing-phone-magazine__quote' : undefined} data-side={i % 2 ? 'right' : 'left'} style={{ transitionDelay: `${300 + i * 120}ms` }}>{text}</p>)}
+      {book.tagline && <p className="writing-phone-book__tagline" data-side="left" style={{ transitionDelay: `${300 + lines.length * 120}ms` }}>{book.tagline}</p>}
       <div className="writing-phone-magazine__line" />
     </div>
-  );
+    );
+  }
   return (
     <div className="writing-phone-book__summary" data-tone={book.tone}>
       {book.tone === 'kaiju' && <div className="writing-phone-rule" />}
@@ -106,7 +106,7 @@ function PhoneBookEntry({ book, onZoom }: { book: PhoneBook; onZoom: (book: Phon
           </button>
           <div className="writing-phone-book__titles">
             {book.tone !== 'zen' && book.intro && !book.introBelow && <p className="writing-phone-book__intro" data-italic={book.introItalic || undefined}>{book.intro}</p>}
-            <h2 data-tone={book.tone} data-variant={book.variant} data-long={book.title.length > 8 || undefined}>{book.tone === 'zen'
+            <h2 data-tone={book.tone} data-palette={book.palette} data-long={book.title.length > 8 || undefined}>{book.tone === 'zen'
               ? <>H<span className="writing-phone-how-o">O<span className="writing-phone-book__intro writing-phone-how-intro">This{'\n'}is</span></span>W</>
               : book.title}</h2>
             {book.intro && book.introBelow && <p className="writing-phone-book__intro" data-below>{book.intro}</p>}
@@ -126,12 +126,12 @@ export function WritingPhoneBooks({ covers }: { covers: Record<string, string> }
       'Kenji and a group of misfits realise that they each share a secret, and begin to suspect the town is not all it seems.',
       'For Hinata Togawa, a seemingly minor disappearance leads to a trail of unexplained vanishings and deepening corruption.'
     ], tagline: 'Part coming of age, part mystery, and part supernatural drama, this surreal adventure ties together the lives of three groups of people in a 1979 that only happened for those who were there.' },
-    { id: 'hoax', title: 'HOAX', cover: covers.hoax, tone: 'memo', paragraphs: [
+    { id: 'hoax', title: 'HOAX', cover: covers.hoax, tone: 'magazine', palette: 'outback', paragraphs: [
       'Peter Mayhew had hit rock bottom when he wrote Hoax, a mystical parody intended as his sign-off, a final insult to an industry he had grown to despise… and worst of all an overnight bestseller. He had finally made his name — and could never use it again.',
       "A year later, fleeing his reputation in an Australian motel, paralysed by writer's block, he receives a phone call from someone who claims to be part of a cult modelled on his book.",
       'Peter must convince a community it was all a hoax—but in doing so, he begins to question where his book truly came from.'
-    ], intro: 'A mind-bending tale of literary fiction', introItalic: true },
-    { id: 'the-market', title: 'THE MARKET', cover: covers.market, tone: 'magazine', variant: 'dusk', paragraphs: [
+    ], tagline: 'A mind-bending tale of literary fiction.' },
+    { id: 'the-market', title: 'THE MARKET', cover: covers.market, tone: 'magazine', palette: 'dusk', paragraphs: [
       "James Tarreden's new life on Island—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. In fact, everything is falling into place a little too easily…",
       "Under the wing of an enigmatic young CEO, James is inducted into the secrets behind his company's new technology, and with everything he knew about reality unravelling, finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of Island."
     ], tagline: 'An existential psychological thriller.' },
@@ -140,7 +140,7 @@ export function WritingPhoneBooks({ covers }: { covers: Record<string, string> }
       'While there, he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive, awakening something that has lain silent in him for longer than he can remember.',
       'In attempting to help the young girl communicate, he discovers that he may have more to learn from her than she does from him.'
     ] },
-    { id: 'states-of-motion', title: 'STATES OF MOTION', cover: covers.states, intro: '“…the city was not the arrangement of many things but the shifting posture of one…”', tone: 'dark', paragraphs: [
+    { id: 'states-of-motion', title: 'STATES OF MOTION', cover: covers.states, quote: '“…the city was not the arrangement of many things but the shifting posture of one…”', tone: 'magazine', palette: 'summer', paragraphs: [
       'A physicist on his way to a conference, with agents of unknown enemies closing in, carrying in his head a theory too fragile to document.',
       'A pianist haunted by a melody from childhood, a song he has been chasing his entire life.',
       'A man unable to distinguish truth from fiction, whose words are so dangerous they can alter reality itself.',
@@ -152,7 +152,7 @@ export function WritingPhoneBooks({ covers }: { covers: Record<string, string> }
       'Part journal, part travelogue and part freeform reflection, here is the record of the wandering of the heretic Sho-Bi, which takes him from bandits and courtesans to kō matches with emperors, thought-contests with the great sages—and an audience with the gods themselves.',
       "Yet the greatest dialogue of all takes place between places, in Sho-Bi's conversations with the grass, leaves, rivers, and wind, with the world and the knowing of it."
     ] },
-    { id: 'vice-versa', title: 'VICE VERSA', cover: covers.vice, intro: '“I am a man without imagination…”', tone: 'dark', paragraphs: [
+    { id: 'vice-versa', title: 'VICE VERSA', cover: covers.vice, quote: '“I am a man without imagination…”', tone: 'magazine', palette: 'noir', paragraphs: [
       'Oswald T is a chaser, an investigator at one of the elite metacorporations that preside over Nexus, tasked with sniffing out undercover agents using black market technology to alter their personality.',
       'But when he is called in to a routine investigation of a rival company, something seems amiss…',
       'With a new—more deadly—form of biotech hitting the streets, Oz finds himself the hunted. To survive, he must solve the most bizarre case of his career: who killed Oswald T?'

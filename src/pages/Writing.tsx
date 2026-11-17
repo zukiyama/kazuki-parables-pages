@@ -1287,7 +1287,7 @@ const Writing = () => {
           </div>
         </section>
 
-        {/* HOAX Section - Memo style */}
+        {/* HOAX Section */}
         <section data-section="hoax" className={`flex items-center justify-center relative ${
           isWidescreen ? 'min-h-[calc(100vh-4rem)]' : 'min-h-[80vh]'
         }`}>
@@ -1309,78 +1309,18 @@ const Writing = () => {
                 <div className={`lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('hoax') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                {/* Title above the memo */}
-                  <h2 className={`font-serif font-bold mb-6 text-white tracking-wide drop-shadow-lg ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
-                    HOAX
-                  </h2>
-                  
-                  {/* Memo sheet taped to page */}
-                  <div className="relative">
-                    {/* Tape corners */}
-                    <div className="absolute -top-2 -left-2 w-10 h-6 bg-amber-100/80 rotate-[-15deg] shadow-sm" style={{ 
-                      background: 'linear-gradient(135deg, rgba(254, 249, 195, 0.9) 0%, rgba(253, 224, 71, 0.6) 100%)'
-                    }}></div>
-                    <div className="absolute -top-2 -right-2 w-10 h-6 bg-amber-100/80 rotate-[12deg] shadow-sm" style={{ 
-                      background: 'linear-gradient(135deg, rgba(254, 249, 195, 0.9) 0%, rgba(253, 224, 71, 0.6) 100%)'
-                    }}></div>
-                    <div className="absolute -bottom-2 -left-2 w-10 h-6 bg-amber-100/80 rotate-[10deg] shadow-sm" style={{ 
-                      background: 'linear-gradient(135deg, rgba(254, 249, 195, 0.9) 0%, rgba(253, 224, 71, 0.6) 100%)'
-                    }}></div>
-                    <div className="absolute -bottom-2 -right-2 w-10 h-6 bg-amber-100/80 rotate-[-8deg] shadow-sm" style={{ 
-                      background: 'linear-gradient(135deg, rgba(254, 249, 195, 0.9) 0%, rgba(253, 224, 71, 0.6) 100%)'
-                    }}></div>
-                    
-                    {/* Memo paper */}
-                    <div className={`shadow-lg ${isWidescreen ? 'p-6 pt-8' : 'p-8 pt-10'}`} style={{
-                      background: 'linear-gradient(180deg, #fffef5 0%, #fefce8 50%, #fef9c3 100%)',
-                      boxShadow: '2px 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)'
-                    }}>
-                      <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ lineHeight: '1.9' }}>
-                        Peter Mayhew had hit rock bottom when he wrote Hoax, a mystical parody intended as his sign-off, a final insult to an industry he had grown to despise… and worst of all an overnight bestseller. He had finally made his name — and could never use it again.
-                      </p>
-                      <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ lineHeight: '1.9' }}>
-                        A year later, fleeing his reputation in an Australian motel, paralysed by writer's block, with his only opportunities those to write a sequel, he receives a phone call from someone who claims to be part of a cult modelled on his book.
-                      </p>
-                      <p className={`font-serif leading-loose text-stone-600 mb-4 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ lineHeight: '1.9' }}>
-                        Walking into what feels like his own work come to life, Peter must convince a community it was all a hoax—but in doing so, he begins to question where his book truly came from.
-                      </p>
-                      <p className={`font-serif leading-loose text-stone-600 italic ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`} style={{ lineHeight: '1.9' }}>
-                        A mind bending tale of literary fiction.
-                      </p>
-                    </div>
-                    
-                    {/* Decorative visa stamps overlapping corner */}
-                    <div className="absolute -top-4 -right-6 pointer-events-none" style={{ transform: 'rotate(12deg)' }}>
-                      {/* Main eye-pyramid stamp */}
-                      <div className="relative">
-                        <svg width="80" height="80" viewBox="0 0 80 80" className="opacity-60">
-                          <circle cx="40" cy="40" r="36" fill="none" stroke="#8B4513" strokeWidth="2" strokeDasharray="4 2" />
-                          <circle cx="40" cy="40" r="28" fill="none" stroke="#8B4513" strokeWidth="1" />
-                          {/* Pyramid */}
-                          <path d="M40 20 L58 55 L22 55 Z" fill="none" stroke="#8B4513" strokeWidth="1.5" />
-                          {/* Eye */}
-                          <ellipse cx="40" cy="42" rx="10" ry="6" fill="none" stroke="#8B4513" strokeWidth="1.5" />
-                          <circle cx="40" cy="42" r="3" fill="#8B4513" />
-                        </svg>
-                      </div>
-                      
-                      {/* Secondary smaller stamp */}
-                      <div className="absolute -bottom-6 -left-10" style={{ transform: 'rotate(-25deg)' }}>
-                        <svg width="50" height="50" viewBox="0 0 50 50" className="opacity-40">
-                          <rect x="5" y="5" width="40" height="40" fill="none" stroke="#654321" strokeWidth="2" />
-                          <text x="25" y="30" textAnchor="middle" fill="#654321" fontSize="10" fontFamily="serif">✦</text>
-                        </svg>
-                      </div>
-                      
-                      {/* Third circular mark */}
-                      <div className="absolute -top-2 -left-14" style={{ transform: 'rotate(5deg)' }}>
-                        <svg width="45" height="45" viewBox="0 0 45 45" className="opacity-35">
-                          <circle cx="22.5" cy="22.5" r="18" fill="none" stroke="#704214" strokeWidth="1.5" strokeDasharray="2 3" />
-                          <circle cx="22.5" cy="22.5" r="5" fill="none" stroke="#704214" strokeWidth="1" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
+                  <MagazineBlurb
+                    title="HOAX"
+                    variant="outback"
+                    paragraphs={[
+                      <>Peter Mayhew had hit rock bottom when he wrote <em>Hoax</em>, a mystical parody intended as his sign-off, a final insult to an industry he had grown to despise… and worst of all an overnight bestseller. He had finally made his name — and could never use it again.</>,
+                      <>A year later, fleeing his reputation in an Australian motel, paralysed by writer's block, with his only opportunities those to write a sequel, he receives a phone call from someone who claims to be part of a cult modelled on his book.</>,
+                      <>Walking into what feels like his own work come to life, Peter must convince a community it was all a hoax—but in doing so, he begins to question where his book truly came from.</>
+                    ]}
+                    tagline="A mind bending tale of literary fiction."
+                    isVisible={visibleSections.has('hoax')}
+                    isWidescreen={isWidescreen}
+                  />
                 </div>
               </div>
             </div>
@@ -1517,33 +1457,22 @@ const Writing = () => {
                 <div className={`transition-all duration-1000 delay-500 ${
                   visibleSections.has('states-of-motion') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
                 }`}>
-                  <h2 className={`font-serif font-bold mb-4 text-white ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}>
-                    STATES OF MOTION
-                  </h2>
-                  {/* Original dark overlay style - same as AMYA */}
-                  <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-4' : 'p-5'}`}>
-                    <p className={`font-serif leading-relaxed text-white italic mb-3 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      "…the city was not the arrangement of many things but the shifting posture of one…"
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      A physicist on his way to a conference, with agents of unknown enemies closing in, carrying in his head a theory too fragile to document.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      A pianist haunted by a melody from childhood, a song he has been chasing his entire life.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      A man unable to distinguish truth from fiction, whose words are so dangerous they can alter reality itself.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      A secret cabal of plumbers employed in an age old scheme that has evolved in the wastes beneath the city.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white mb-2 ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      And through it all, one long summer, from which nothing ever seems to emerge...
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white italic ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      A novel of multitudes and convergences; a sequel to a story that doesn't exist; a portrait of time and place; all these and more describe a nation seen only at its margins.
-                    </p>
-                  </div>
+                  <MagazineBlurb
+                    title="STATES OF MOTION"
+                    variant="summer"
+                    compact
+                    quote="“…the city was not the arrangement of many things but the shifting posture of one…”"
+                    paragraphs={[
+                      'A physicist on his way to a conference, with agents of unknown enemies closing in, carrying in his head a theory too fragile to document.',
+                      'A pianist haunted by a melody from childhood, a song he has been chasing his entire life.',
+                      'A man unable to distinguish truth from fiction, whose words are so dangerous they can alter reality itself.',
+                      'A secret cabal of plumbers employed in an age old scheme that has evolved in the wastes beneath the city.',
+                      'And through it all, one long summer, from which nothing ever seems to emerge...'
+                    ]}
+                    tagline="A novel of multitudes and convergences; a sequel to a story that doesn't exist; a portrait of time and place; all these and more describe a nation seen only at its margins."
+                    isVisible={visibleSections.has('states-of-motion')}
+                    isWidescreen={isWidescreen}
+                  />
                 </div>
               </div>
             </div>
@@ -1633,29 +1562,21 @@ const Writing = () => {
                 <div className={`order-2 lg:order-1 transition-all duration-1000 delay-500 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
                 }`}>
-                  <h2 className={`font-serif font-bold mb-3 text-white ${isWidescreen ? 'text-3xl' : 'text-4xl'}`}>
-                    VICE VERSA
-                  </h2>
-                  {/* Original dark overlay style */}
-                  <div className={`bg-black/60 backdrop-blur-sm rounded-lg border border-white/20 ${isWidescreen ? 'p-4' : 'p-5'}`}>
-                    <blockquote className={`border-l-2 border-white/40 pl-4 mb-3 ${isWidescreen ? 'py-1' : 'py-2'}`}>
-                      <p className={`font-serif leading-relaxed text-white/90 ${isWidescreen ? 'text-base' : 'text-lg max-sm:text-base'} italic`}>
-                        "I am a man without imagination…"
-                      </p>
-                    </blockquote>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'}`}>
-                      <em>Oswald T</em> is a chaser, an investigator at one of the elite metacorporations that preside over <em>Nexus</em>, tasked with sniffing out undercover agents using black market technology to alter their personality. But when he is called in to a routine investigation of a rival company, something seems amiss… and the trail leads to the last place he could ever have imagined.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-2`}>
-                      With a new—more deadly—form of biotech hitting the streets, <em>Oz</em> finds himself the hunted. To survive, he must solve the most bizarre case of his career: who killed Oswald T?
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-3`}>
-                      A strange noir where bioengineered worker species, aquatic telephones and sentient corporations are part of everyday life.
-                    </p>
-                    <p className={`font-serif leading-relaxed text-white ${isWidescreen ? 'text-sm' : 'text-base max-sm:text-sm'} mt-3 italic`}>
-                      In a world built on belief, the inability to imagine becomes the ultimate advantage.
-                    </p>
-                  </div>
+                  <MagazineBlurb
+                    title="VICE VERSA"
+                    variant="noir"
+                    titleSize="small"
+                    compact
+                    quote="“I am a man without imagination…”"
+                    paragraphs={[
+                      <><em>Oswald T</em> is a chaser, an investigator at one of the elite metacorporations that preside over <em>Nexus</em>, tasked with sniffing out undercover agents using black market technology to alter their personality. But when he is called in to a routine investigation of a rival company, something seems amiss… and the trail leads to the last place he could ever have imagined.</>,
+                      <>With a new—more deadly—form of biotech hitting the streets, <em>Oz</em> finds himself the hunted. To survive, he must solve the most bizarre case of his career: who killed Oswald T?</>,
+                      'A strange noir where bioengineered worker species, aquatic telephones and sentient corporations are part of everyday life.'
+                    ]}
+                    tagline="In a world built on belief, the inability to imagine becomes the ultimate advantage."
+                    isVisible={visibleSections.has('vice-versa')}
+                    isWidescreen={isWidescreen}
+                  />
                 </div>
                 <div className={`order-1 lg:order-2 transition-all duration-1000 delay-300 ${
                   visibleSections.has('vice-versa') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'

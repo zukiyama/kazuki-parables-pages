@@ -64,10 +64,19 @@
     --music-title-ink: 0 0% 100%;
     --writing-paper: 48 65% 95%;
     --writing-paper-ink: 25 12% 30%;
-    /* The Market: warm sunset amber over a deep dusk-blue veil */
-    --writing-dusk-glow: 30 82% 74%;
+    /* Writing blurb palettes: accent (title/rule/tagline), text and a soft veil, matched to each book's background */
+    --writing-dusk-glow: 30 82% 74%;      /* The Market: sunset amber */
     --writing-dusk-text: 36 42% 93%;
     --writing-dusk-veil: 224 48% 10%;
+    --writing-outback-glow: 43 78% 70%;   /* HOAX: dry-grass gold over sun-baked earth */
+    --writing-outback-text: 40 45% 94%;
+    --writing-outback-veil: 24 38% 9%;
+    --writing-summer-glow: 14 68% 70%;    /* STATES OF MOTION: faded red cap, 70s park light */
+    --writing-summer-text: 42 48% 92%;
+    --writing-summer-veil: 32 32% 8%;
+    --writing-noir-glow: 40 62% 66%;      /* VICE VERSA: deco lamp brass in a teal night */
+    --writing-noir-text: 40 30% 91%;
+    --writing-noir-veil: 195 42% 7%;
     --phobos-title: 8 57% 43%;
 
     /* Typography scale for literary feel */
@@ -2222,11 +2231,16 @@
 .writing-phone-magazine__line { margin-top: calc(1rem * var(--fit)); height: 1px; background: linear-gradient(90deg, hsl(var(--comics-paper) / 0.3), hsl(var(--comics-paper) / 0.1), transparent); transform: scaleX(0); transform-origin: left; transition: transform 1s ease 900ms; }
 .writing-phone-book[data-visible="true"] .writing-phone-magazine__line { transform: none; }
 /* THE MARKET shares AMYA's magazine layout, warmed to its sunset skyline, with a soft feathered veil so the copy stays restful over bright clouds. */
-.writing-phone-book__header h2[data-variant="dusk"] { color: hsl(var(--writing-dusk-glow)); text-shadow: 0 2px 18px hsl(var(--writing-dusk-veil) / 0.7); }
-.writing-phone-book__summary[data-variant="dusk"] { isolation: isolate; border-left-color: hsl(var(--writing-dusk-glow) / 0.55); color: hsl(var(--writing-dusk-text) / 0.94); text-shadow: 0 1px 10px hsl(var(--writing-dusk-veil) / 0.6); }
-.writing-phone-book__summary[data-variant="dusk"]::before { content: ''; position: absolute; inset: -1.5rem -1.25rem -1.5rem -1.5rem; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 45% 50%, hsl(var(--writing-dusk-veil) / 0.62) 0%, hsl(var(--writing-dusk-veil) / 0.42) 55%, transparent 80%); }
-.writing-phone-book__summary[data-variant="dusk"] .writing-phone-book__tagline { margin-top: calc(0.9rem * var(--fit)); color: hsl(var(--writing-dusk-glow) / 0.9); }
-.writing-phone-book__summary[data-variant="dusk"] .writing-phone-magazine__line { background: linear-gradient(90deg, hsl(var(--writing-dusk-glow) / 0.45), hsl(var(--writing-dusk-glow) / 0.12), transparent); }
+[data-palette="dusk"] { --blurb-accent: var(--writing-dusk-glow); --blurb-text: var(--writing-dusk-text); --blurb-veil: var(--writing-dusk-veil); }
+[data-palette="outback"] { --blurb-accent: var(--writing-outback-glow); --blurb-text: var(--writing-outback-text); --blurb-veil: var(--writing-outback-veil); }
+[data-palette="summer"] { --blurb-accent: var(--writing-summer-glow); --blurb-text: var(--writing-summer-text); --blurb-veil: var(--writing-summer-veil); }
+[data-palette="noir"] { --blurb-accent: var(--writing-noir-glow); --blurb-text: var(--writing-noir-text); --blurb-veil: var(--writing-noir-veil); }
+.writing-phone-book__header h2[data-palette] { color: hsl(var(--blurb-accent)); text-shadow: 0 2px 18px hsl(var(--blurb-veil) / 0.7); }
+.writing-phone-book__summary[data-palette] { isolation: isolate; border-left-color: hsl(var(--blurb-accent) / 0.55); color: hsl(var(--blurb-text) / 0.94); text-shadow: 0 1px 10px hsl(var(--blurb-veil) / 0.6); }
+.writing-phone-book__summary[data-palette]::before { content: ''; position: absolute; inset: -1.5rem -1.25rem -1.5rem -1.5rem; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 45% 50%, hsl(var(--blurb-veil) / 0.62) 0%, hsl(var(--blurb-veil) / 0.42) 55%, transparent 80%); }
+.writing-phone-book__summary[data-palette] .writing-phone-book__tagline { margin-top: calc(0.9rem * var(--fit)); color: hsl(var(--blurb-accent) / 0.9); }
+.writing-phone-book__summary[data-palette] .writing-phone-magazine__line { background: linear-gradient(90deg, hsl(var(--blurb-accent) / 0.45), hsl(var(--blurb-accent) / 0.12), transparent); }
+.writing-phone-magazine__quote { font-style: italic; color: hsl(var(--blurb-accent, var(--comics-paper)) / 0.92); }
 .writing-cover-zoom { position: fixed; inset: 0; z-index: 101; display: flex; align-items: center; justify-content: center; padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom)); outline: none; cursor: zoom-out; }
 .writing-cover-zoom img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px; box-shadow: 0 20px 60px hsl(var(--ink-black) / 0.5); animation: writing-cover-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both; }
 .writing-cover-zoom[data-state="closed"] img { animation: writing-cover-out 320ms cubic-bezier(0.4, 0, 1, 1) both; }
@@ -2386,12 +2400,13 @@
   .to-no-one-title__settle, .to-no-one-title__blots { opacity: 1; }
 }
 
-/* THE MARKET desktop/tablet blurb: AMYA's magazine layout in sunset amber and warm cream, over a feathered dusk veil for easy reading. */
-.dusk-blurb { isolation: isolate; }
-.dusk-blurb::before { content: ''; position: absolute; inset: -3rem -3.5rem; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 45% 50%, hsl(var(--writing-dusk-veil) / 0.66) 0%, hsl(var(--writing-dusk-veil) / 0.46) 50%, transparent 76%); opacity: 0; transition: opacity 900ms ease 200ms; }
-.dusk-blurb[data-visible="true"]::before { opacity: 1; }
-.dusk-blurb h2 { color: hsl(var(--writing-dusk-glow)); letter-spacing: 0.01em; text-shadow: 0 2px 22px hsl(var(--writing-dusk-veil) / 0.75); }
-.dusk-blurb__body { border-left-color: hsl(var(--writing-dusk-glow) / 0.55); }
-.dusk-blurb__body p { color: hsl(var(--writing-dusk-text) / 0.94); text-shadow: 0 1px 12px hsl(var(--writing-dusk-veil) / 0.65); }
-.dusk-blurb__body .dusk-blurb__tagline { color: hsl(var(--writing-dusk-glow) / 0.88); }
-.dusk-blurb__line { background: linear-gradient(90deg, hsl(var(--writing-dusk-glow) / 0.45), hsl(var(--writing-dusk-glow) / 0.12), transparent); }
+/* Tinted desktop/tablet blurbs (The Market, HOAX, STATES OF MOTION, VICE VERSA): AMYA's magazine layout in each book's palette, over a feathered veil for easy reading. */
+.tinted-blurb { isolation: isolate; }
+.tinted-blurb::before { content: ''; position: absolute; inset: -3rem -3.5rem; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 45% 50%, hsl(var(--blurb-veil) / 0.66) 0%, hsl(var(--blurb-veil) / 0.46) 50%, transparent 76%); opacity: 0; transition: opacity 900ms ease 200ms; }
+.tinted-blurb[data-visible="true"]::before { opacity: 1; }
+.tinted-blurb h2 { color: hsl(var(--blurb-accent)); letter-spacing: 0.01em; text-shadow: 0 2px 22px hsl(var(--blurb-veil) / 0.75); }
+.tinted-blurb__body { border-left-color: hsl(var(--blurb-accent) / 0.55); }
+.tinted-blurb__body p { color: hsl(var(--blurb-text) / 0.94); text-shadow: 0 1px 12px hsl(var(--blurb-veil) / 0.65); }
+.tinted-blurb__body .tinted-blurb__quote { color: hsl(var(--blurb-accent) / 0.92); }
+.tinted-blurb__body .tinted-blurb__tagline { color: hsl(var(--blurb-accent) / 0.88); }
+.tinted-blurb__line { background: linear-gradient(90deg, hsl(var(--blurb-accent) / 0.45), hsl(var(--blurb-accent) / 0.12), transparent); }
