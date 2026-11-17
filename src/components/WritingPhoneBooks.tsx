@@ -2,7 +2,7 @@ import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { FloatingQuote } from '@/components/FloatingQuote';
 
-type Tone = 'kaiju' | 'memo' | 'signal' | 'frost' | 'dark' | 'zen' | 'magazine';
+type Tone = 'kaiju' | 'memo' | 'frost' | 'dark' | 'zen' | 'magazine';
 
 interface PhoneBook {
   id: string;
@@ -14,6 +14,7 @@ interface PhoneBook {
   paragraphs: string[];
   tagline?: string;
   tone: Tone;
+  variant?: 'dusk';
 }
 
 // Same rising quotes (and order) used between entries on tablet/desktop.
@@ -40,16 +41,10 @@ function Summary({ book }: { book: PhoneBook }) {
     </div>
   );
   if (book.tone === 'magazine') return (
-    <div className="writing-phone-book__summary" data-tone="magazine">
+    <div className="writing-phone-book__summary" data-tone="magazine" data-variant={book.variant}>
       {book.paragraphs.map((text, i) => <p key={text} data-side={i % 2 ? 'right' : 'left'} style={{ transitionDelay: `${300 + i * 120}ms` }}>{text}</p>)}
+      {book.tagline && <p className="writing-phone-book__tagline" data-side="left" style={{ transitionDelay: `${300 + book.paragraphs.length * 120}ms` }}>{book.tagline}</p>}
       <div className="writing-phone-magazine__line" />
-    </div>
-  );
-  if (book.tone === 'signal') return (
-    <div className="writing-phone-book__summary" data-tone="signal">
-      <div className="writing-phone-signal__bar"><span className="writing-phone-signal__dot" />CORP_01 // CLASSIFIED</div>
-      {body}{tagline}
-      <div className="writing-phone-signal__foot"><span>ACCESS: LEVEL-7</span><span>●●● LIVE</span></div>
     </div>
   );
   return (
@@ -111,7 +106,7 @@ function PhoneBookEntry({ book, onZoom }: { book: PhoneBook; onZoom: (book: Phon
           </button>
           <div className="writing-phone-book__titles">
             {book.tone !== 'zen' && book.intro && !book.introBelow && <p className="writing-phone-book__intro" data-italic={book.introItalic || undefined}>{book.intro}</p>}
-            <h2 data-tone={book.tone} data-long={book.title.length > 8 || undefined}>{book.tone === 'zen'
+            <h2 data-tone={book.tone} data-variant={book.variant} data-long={book.title.length > 8 || undefined}>{book.tone === 'zen'
               ? <>H<span className="writing-phone-how-o">O<span className="writing-phone-book__intro writing-phone-how-intro">This{'\n'}is</span></span>W</>
               : book.title}</h2>
             {book.intro && book.introBelow && <p className="writing-phone-book__intro" data-below>{book.intro}</p>}
@@ -136,10 +131,10 @@ export function WritingPhoneBooks({ covers }: { covers: Record<string, string> }
       "A year later, fleeing his reputation in an Australian motel, paralysed by writer's block, he receives a phone call from someone who claims to be part of a cult modelled on his book.",
       'Peter must convince a community it was all a hoax—but in doing so, he begins to question where his book truly came from.'
     ], intro: 'A mind-bending tale of literary fiction', introItalic: true },
-    { id: 'the-market', title: 'THE MARKET', cover: covers.market, tone: 'signal', paragraphs: [
+    { id: 'the-market', title: 'THE MARKET', cover: covers.market, tone: 'magazine', variant: 'dusk', paragraphs: [
       "James Tarreden's new life on Island—the world's first corporate nation-state—seems to be off without a hitch. Zero crime, colleagues who like him—even his love life is going disconcertingly well. In fact, everything is falling into place a little too easily…",
       "Under the wing of an enigmatic young CEO, James is inducted into the secrets behind his company's new technology, and with everything he knew about reality unravelling, finds himself in an increasingly high-stakes game of cat and mouse to discover the truth of Island."
-    ], intro: 'An existential psychological thriller', introItalic: true },
+    ], tagline: 'An existential psychological thriller.' },
     { id: 'oba', title: 'AMYA', cover: covers.amya, tone: 'magazine', paragraphs: [
       'Set in Nairobi, Kenya. A linguist specialising in rare languages is seconded, reluctantly, to a village where there have been reports of an ancient undiscovered language still being spoken.',
       'While there, he comes across a mute girl who has not spoken since she was born. Silent and guarded around people, in the forest she comes alive, awakening something that has lain silent in him for longer than he can remember.',

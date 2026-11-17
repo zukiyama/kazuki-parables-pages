@@ -2,11 +2,13 @@ import React from 'react';
 
 interface MagazineBlurbProps {
   title: string;
-  paragraphs: string[];
+  paragraphs: React.ReactNode[];
   tagline?: string;
   isVisible: boolean;
   isWidescreen: boolean;
   titleColor?: string;
+  /** 'dusk' warms the palette and adds a soft veil for bright, busy backgrounds (The Market). */
+  variant?: 'default' | 'dusk';
 }
 
 export const MagazineBlurb: React.FC<MagazineBlurbProps> = ({
@@ -15,20 +17,22 @@ export const MagazineBlurb: React.FC<MagazineBlurbProps> = ({
   tagline,
   isVisible,
   isWidescreen,
-  titleColor = 'white'
+  titleColor = 'white',
+  variant = 'default'
 }) => {
   const baseDelay = 0.3;
   const staggerDelay = 0.12;
+  const dusk = variant === 'dusk';
 
   return (
-    <div className="relative">
+    <div className={dusk ? 'relative dusk-blurb' : 'relative'} data-visible={isVisible}>
       {/* Title */}
       <h2 
         className={`font-playfair font-bold mb-6 transition-all duration-700 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         } ${isWidescreen ? 'text-4xl' : 'text-5xl'}`}
         style={{ 
-          color: titleColor,
+          color: dusk ? undefined : titleColor,
           transitionDelay: `${baseDelay}s`
         }}
       >
@@ -37,7 +41,7 @@ export const MagazineBlurb: React.FC<MagazineBlurbProps> = ({
 
       {/* Content container with left accent border */}
       <div 
-        className={`relative pl-6 border-l-2 border-white/40 transition-all duration-700 ${
+        className={`relative pl-6 border-l-2 ${dusk ? 'dusk-blurb__body' : 'border-white/40'} transition-all duration-700 ${
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}
         style={{ transitionDelay: `${baseDelay + 0.1}s` }}
@@ -50,7 +54,7 @@ export const MagazineBlurb: React.FC<MagazineBlurbProps> = ({
           return (
             <p
               key={index}
-              className={`font-merriweather leading-relaxed text-white/90 mb-4 last:mb-0 transition-all duration-700 ${
+              className={`font-merriweather leading-relaxed ${dusk ? '' : 'text-white/90'} mb-4 last:mb-0 transition-all duration-700 ${
                 isVisible 
                   ? 'opacity-100 translate-x-0 blur-0' 
                   : `opacity-0 ${isEven ? '-translate-x-8' : 'translate-x-8'} blur-sm`
@@ -68,7 +72,7 @@ export const MagazineBlurb: React.FC<MagazineBlurbProps> = ({
         {/* Optional tagline */}
         {tagline && (
           <p
-            className={`font-merriweather italic text-white/70 mt-6 transition-all duration-700 ${
+            className={`font-merriweather italic ${dusk ? 'dusk-blurb__tagline' : 'text-white/70'} mt-6 transition-all duration-700 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             } ${isWidescreen ? 'text-xs' : 'text-sm'}`}
             style={{ 
@@ -81,7 +85,7 @@ export const MagazineBlurb: React.FC<MagazineBlurbProps> = ({
 
         {/* Decorative accent line at bottom */}
         <div 
-          className={`mt-6 h-px bg-gradient-to-r from-white/30 via-white/10 to-transparent transition-all duration-1000 ${
+          className={`mt-6 h-px ${dusk ? 'dusk-blurb__line' : 'bg-gradient-to-r from-white/30 via-white/10 to-transparent'} transition-all duration-1000 ${
             isVisible ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
           }`}
           style={{ 
