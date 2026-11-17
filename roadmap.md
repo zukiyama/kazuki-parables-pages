@@ -168,3 +168,4 @@
 - [x] Remove the white frame from the God of Lies blurb pictures (thumbnails and enlarged view) so they look as they did before the zoom fix; keep the zoom fix itself intact.
 
 - [x] Phone-only: remove About dark quote band; Comics drop cue and trees, stacked scrolling lower chapters with peeking picture carousel, Burden/shelf/Coming 2027 crops and footer at the end. Checked at 390×844 with original artwork.
+- [x] Store the five Writing images as real WebP files and self-host Google Fonts so the GitHub repo is fully self-contained.

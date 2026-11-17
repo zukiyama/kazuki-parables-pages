@@ -4,7 +4,7 @@ import { isWritingPhone, writingPhoneTarget } from "@/lib/writing-phone-snap";
 // Book cover thumbnail images for banner (128x192 optimized versions)
 import kaijuCoverThumb from "@/assets/kaiju-cover-newthumbnail.webp";
 import hoaxCoverThumb from "@/assets/hoax-coverthumbnail.webp";
-import theMarketCoverThumbAsset from "@/assets/the-market-thumbnail-experiment.webp.asset.json";
+import theMarketCoverThumbAsset from "@/assets/the-market-thumbnail-experiment.webp";
 import howCoverThumb from "@/assets/how-coverthumbnail.webp";
 import viceVersaCoverThumb from "@/assets/vice-versa-coverthumbnail.webp";
 import amyaCoverThumb from "@/assets/amya-coverthumbnail.webp";
@@ -13,10 +13,10 @@ import statesOfMotionCoverThumb from "@/assets/states-of-motion-coverthumbnail.w
 // Young adult book cover thumbnails
 import professorBarnabasCoverThumb from "@/assets/professor-barnabas-cover-newthumbnail.webp";
 import toFlyCoverThumb from "@/assets/to-fly-cover-newthumbnail.webp";
-import landDreamSkyCoverThumbAsset from "@/assets/land-dream-sky-thumbnail-experiment.webp.asset.json";
+import landDreamSkyCoverThumbAsset from "@/assets/land-dream-sky-thumbnail-experiment.webp";
 
-const theMarketCoverThumb = theMarketCoverThumbAsset.url;
-const landDreamSkyCoverThumb = landDreamSkyCoverThumbAsset.url;
+const theMarketCoverThumb = theMarketCoverThumbAsset;
+const landDreamSkyCoverThumb = landDreamSkyCoverThumbAsset;
 
 interface Book {
   id: string;
