@@ -169,3 +169,5 @@
 
 - [x] Phone-only: remove About dark quote band; Comics drop cue and trees, stacked scrolling lower chapters with peeking picture carousel, Burden/shelf/Coming 2027 crops and footer at the end. Checked at 390×844 with original artwork.
 - [x] Store the five Writing images as real WebP files and self-host Google Fonts so the GitHub repo is fully self-contained.
+
+- [x] Replace the Writing page Hoax cover (640×960 page cover + 128×192 menu thumbnail) and Hoax background (native 1694×928) with new local WebP files, keeping behaviour unchanged.
