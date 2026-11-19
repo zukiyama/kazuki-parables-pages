@@ -36,13 +36,6 @@ describe("KazukiLabs in-game quit", () => {
     expect(isArcadeQuitMessage(event, origin, gameWindow)).toBe(true);
   });
 
-  test("Holo Pet can close only through the same validated Quit signal", () => {
-    const arPetEvent = { ...event, data: { source: "holo-pet", type: "quit" } };
-    expect(isArcadeQuitMessage(arPetEvent, origin, gameWindow)).toBe(true);
-    expect(isArcadeQuitMessage({ ...arPetEvent, source: {} }, origin, gameWindow)).toBe(false);
-    expect(isArcadeQuitMessage({ ...arPetEvent, origin: "https://other.example" }, origin, gameWindow)).toBe(false);
-  });
-
   test("messages from another origin or window cannot close the game", () => {
     expect(isArcadeQuitMessage({ ...event, origin: "https://other.example" }, origin, gameWindow)).toBe(false);
     expect(isArcadeQuitMessage({ ...event, source: {} }, origin, gameWindow)).toBe(false);

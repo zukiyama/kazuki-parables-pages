@@ -11,7 +11,7 @@ type Game = {
   title: string;
   tagline: string;
   url: string | null;
-  art: "pet" | "holo" | "lift";
+  art: "pet" | "lift";
   orientation: "portrait" | "landscape";
 };
 
@@ -21,13 +21,6 @@ const games: Game[] = [
     tagline: "",
     url: `${import.meta.env.BASE_URL}labs/kazuki-and-kizuki-embed-4.html`,
     art: "pet",
-    orientation: "portrait",
-  },
-  {
-    title: "HOLO PET",
-    tagline: "HOLOGRAPHIC COMPANION",
-    url: `${import.meta.env.BASE_URL}labs/holo-pet-8.html`,
-    art: "holo",
     orientation: "portrait",
   },
   {
@@ -98,15 +91,6 @@ const TitleScreen = ({ game, index }: { game: Game; index: number }) => (
           <rect x="251" y="103" width="14" height="9" />
           <rect x="259" y="94" width="7" height="12" />
         </g>
-      </g>
-    ) : game.art === "holo" ? (
-      <g filter="url(#arcade-glow)" fill="none" strokeWidth="2">
-        <rect x="128" y="72" width="80" height="94" rx="40" stroke="#5ff4ff" />
-        <path d="M129 117 H207" stroke="#ff4fa3" />
-        <path d="M137 117 H199" stroke="#ffe066" strokeWidth="5" />
-        <path d="M151 87 Q168 72 185 87" stroke="#5ff4ff" opacity="0.6" />
-        <path d="M107 91 H119 M113 85 V97 M217 139 H229 M223 133 V145" stroke="#ffe066" />
-        <circle cx="168" cy="143" r="4" fill="#5ff4ff" stroke="none" />
       </g>
     ) : (
       <g filter="url(#arcade-glow)" fill="none" stroke="#ffe066" strokeWidth="2" shapeRendering="crispEdges">
@@ -352,7 +336,7 @@ const KazukiLabs = () => {
               aria-live="polite"
             >
               {playing && cabinetMode && game.url ? (
-                <iframe ref={gameFrameRef} src={game.url} title={game.title} allow="camera; microphone; xr-spatial-tracking; fullscreen" allowFullScreen className="absolute inset-0 h-full w-full border-0 bg-ink-black" />
+                <iframe ref={gameFrameRef} src={game.url} title={game.title} allow="camera; xr-spatial-tracking; fullscreen" allowFullScreen className="absolute inset-0 h-full w-full border-0 bg-ink-black" />
               ) : (
                 <TitleScreen key={index} game={game} index={index} />
               )}
@@ -380,7 +364,7 @@ const KazukiLabs = () => {
               <RotateCw className="h-4 w-4 shrink-0" /> Turn your phone sideways to play
             </p>
           )}
-          <iframe ref={gameFrameRef} src={game.url} title={game.title} allow="camera; microphone; xr-spatial-tracking; fullscreen" allowFullScreen className="min-h-0 w-full flex-1 border-0 bg-background" />
+          <iframe ref={gameFrameRef} src={game.url} title={game.title} allow="camera; xr-spatial-tracking; fullscreen" allowFullScreen className="min-h-0 w-full flex-1 border-0 bg-background" />
         </div>
       )}
     </div>
