@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Add the uploaded Holo Pet 8 release as a temporary second arcade option named Holo Pet, with local hand-tracking dependencies, camera/microphone/XR permissions and validated in-game Quit. Desktop/phone-sized launch and return pass, the original game still quits correctly, eight arcade tests pass and no external requests occur; physical-phone AR remains unverified.
+
 - [x] Replace the Writing page's Land and Market covers with separate 640×960 cover and 128×192 menu WebP files, and swap the Market background at its native 1672×941 size without changing navigation or scrolling. Desktop/phone artwork and menu selections verified; four scrolling tests pass and build OK.
 
 - [x] Soften To No One's description fade, refine typography and social-link hierarchy, and reveal a centred bottom Scroll for more control after the copy fades in. Desktop/tablet cursor clicks and phone touch taps reach God of Lies; stationary title and clear spacing verified, 16 Comics tests pass and build OK.
