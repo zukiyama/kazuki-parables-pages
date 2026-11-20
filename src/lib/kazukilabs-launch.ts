@@ -28,6 +28,6 @@ export const isArcadeQuitMessage = (
   if (!gameWindow || event.origin !== origin || event.source !== gameWindow) return false;
   const data = event.data;
   return typeof data === "object" && data !== null &&
-    "source" in data && data.source === "kazuki-and-kizuki" &&
+    "source" in data && (data.source === "kazuki-and-kizuki" || data.source === "comet-cup") &&
     "type" in data && data.type === "quit";
 };

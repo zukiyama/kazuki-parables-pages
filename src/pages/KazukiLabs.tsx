@@ -11,7 +11,7 @@ type Game = {
   title: string;
   tagline: string;
   url: string | null;
-  art: "pet" | "lift";
+  art: "pet" | "comet" | "lift";
   orientation: "portrait" | "landscape";
 };
 
@@ -21,6 +21,13 @@ const games: Game[] = [
     tagline: "",
     url: `${import.meta.env.BASE_URL}labs/kazuki-and-kizuki-embed-4.html`,
     art: "pet",
+    orientation: "portrait",
+  },
+  {
+    title: "COMET CUP",
+    tagline: "GALACTIC CARD SPORT",
+    url: `${import.meta.env.BASE_URL}labs/comet-cup.html`,
+    art: "comet",
     orientation: "portrait",
   },
   {
@@ -91,6 +98,16 @@ const TitleScreen = ({ game, index }: { game: Game; index: number }) => (
           <rect x="251" y="103" width="14" height="9" />
           <rect x="259" y="94" width="7" height="12" />
         </g>
+      </g>
+    ) : game.art === "comet" ? (
+      <g filter="url(#arcade-glow)" fill="none" strokeWidth="2" shapeRendering="crispEdges">
+        <circle cx="168" cy="112" r="35" stroke="#6a4dff" />
+        <path d="M139 104 Q168 88 197 104 M139 120 Q168 136 197 120" stroke="#5ff4ff" />
+        <path d="M150 82 Q138 112 150 142 M186 82 Q198 112 186 142" stroke="#ff4fa3" />
+        <circle cx="168" cy="112" r="9" fill="#ffe066" stroke="#ff4fa3" />
+        <path d="M203 88 L229 68 M207 99 L247 79 M210 110 L252 105" stroke="#5ff4ff" />
+        <path d="M245 55 L252 62 L245 69 L238 62 Z" fill="#ffe066" stroke="#ffe066" />
+        <path d="M102 75 H106 V79 H102 Z M248 132 H252 V136 H248 Z" fill="#ff4fa3" stroke="none" />
       </g>
     ) : (
       <g filter="url(#arcade-glow)" fill="none" stroke="#ffe066" strokeWidth="2" shapeRendering="crispEdges">

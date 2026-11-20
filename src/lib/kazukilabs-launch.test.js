@@ -36,6 +36,10 @@ describe("KazukiLabs in-game quit", () => {
     expect(isArcadeQuitMessage(event, origin, gameWindow)).toBe(true);
   });
 
+  test("Comet Cup's Quit signal closes the cabinet", () => {
+    expect(isArcadeQuitMessage({ ...event, data: { source: "comet-cup", type: "quit" } }, origin, gameWindow)).toBe(true);
+  });
+
   test("messages from another origin or window cannot close the game", () => {
     expect(isArcadeQuitMessage({ ...event, origin: "https://other.example" }, origin, gameWindow)).toBe(false);
     expect(isArcadeQuitMessage({ ...event, source: {} }, origin, gameWindow)).toBe(false);
